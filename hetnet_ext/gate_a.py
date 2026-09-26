@@ -287,7 +287,9 @@ def main(argv=None):
             report["checks"][name] = all(probe.get(f"{name}_passed") is True for _, probe in probes)
         for name in ("shared_weights", "gradient_storage", "fresh_gradient_aggregation"):
             report["check_statuses"][name] = "PASS" if report["checks"][name] else "FAIL"
-        if not all(record["status"] == "PASS" and probe.get("gate_passed") is True for record, probe in probes):
+        if not (all(record["status"] == "PASS" and probe.get("status") == "PASS" and probe.get("gate_passed") is True
+                    for record, probe in probes)
+                and all(report["checks"][name] for name in ("shared_weights", "gradient_storage", "fresh_gradient_aggregation"))):
             report["status"] = "FAIL"
             report["reason"] = "Shared-weight/gradient contract failed; expensive smokes were not launched"
             return 1
@@ -331,6 +333,11 @@ def main(argv=None):
         for name in ("smoke_all_compositions", "determinism", "cross_composition_load"):
             report["check_statuses"][name] = "PASS" if report["checks"][name] else "FAIL"
         report["passed"] = all(report["checks"].values()) and record["status"] == "PASS"
+        report["code_sha256_after"] = code_sha256(ROOT)
+        report["source_unchanged"] = report["code_sha256_after"] == report["code_sha256"]
+        if not report["source_unchanged"]:
+            report["passed"] = False
+            report["reason"] = "Scientific code changed during Gate A; preserve this attempt and rerun from a fixed revision"
         report["status"] = "PASS" if report["passed"] else "FAIL"
         return 0 if report["passed"] else 1
     except Exception as exc:

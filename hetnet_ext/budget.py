@@ -9,7 +9,7 @@ import math
 from pathlib import Path
 import statistics
 
-from .grid import ROOT, code_sha256, file_sha256, load_grid
+from .grid import DEFAULT_GRID, ROOT, code_sha256, file_sha256, load_grid
 from .train_job import checked_number, read_json, utc_now, validate_preflight
 
 
@@ -17,7 +17,7 @@ ENDPOINTS = ("2P1A", "4P6A")
 
 
 def summarize_calibration(directory: Path, measurements: dict, expected_code: str,
-                          expected_lock: str) -> dict:
+                          expected_lock: str, expected_composition: str) -> dict:
     provenance = read_json(directory / "provenance.json")
     if provenance.get("status") != "complete" or provenance.get("mode") != "calibration":
         raise ValueError(f"Calibration is incomplete/failed: {directory}")
@@ -26,10 +26,33 @@ def summarize_calibration(directory: Path, measurements: dict, expected_code: st
     config = read_json(directory / "config.json")
     if config.get("num_epochs") != 20:
         raise ValueError("Calibration must use exactly 20 epochs")
-    required_recipe = {"epoch_size": 10, "batch_size": 500, "nprocesses": 4,
-                       "max_steps": 80, "dim": 5}
-    if any(config.get("recipe", {}).get(k) != v for k, v in required_recipe.items()):
-        raise ValueError("Calibration does not use the production E/B/P/H/map settings")
+    if expected_composition not in ENDPOINTS:
+        raise ValueError("Unknown calibration endpoint")
+    entry = next(e for e in load_grid() if e.composition == expected_composition and e.seed == 0)
+    identity = {key: entry.as_dict()[key] for key in ("composition", "nfriendly_P", "nfriendly_A", "seed")}
+    for record in (provenance, config):
+        if any(record.get("entry", {}).get(k) != v for k, v in identity.items()):
+            raise ValueError("Calibration endpoint identity differs from the expected composition/P/A/seed")
+    required_recipe = read_json(DEFAULT_GRID)["recipe"]
+    if config.get("recipe") != required_recipe:
+        raise ValueError("Calibration does not use the complete committed production recipe")
+    resolved_path = directory / "resolved_args.json"
+    resolved = read_json(resolved_path)
+    if (provenance.get("resolved_args") != resolved
+            or provenance.get("resolved_args_sha256") != file_sha256(resolved_path)):
+        raise ValueError("Resolved calibration arguments do not match hashed provenance")
+    expected_args = {**required_recipe, "num_epochs": 20,
+                     "nfriendly_P": entry.nfriendly_P, "nfriendly_A": entry.nfriendly_A, "seed": 0,
+                     "use_binary": False, "use_cuda": False, "commnet": False, "hetcomm": False,
+                     "ic3net": False, "eval": False, "random": False, "load": "",
+                     "comm_range_P": -1, "comm_range_A": -1, "lossy_comm": False,
+                     "gamma": 1.0, "vision": 2, "A_vision": -1, "tensor_obs": False,
+                     "nenemies": 1, "moving_prey": False, "no_stay": False, "mode": "mixed",
+                     "enemy_comm": False, "second_reward_scheme": False,
+                     "resolved_model": {"class": "hetgat.uavnet.UAVNetA2CEasy",
+                                        "per_class_critic": True, "with_two_state": True}}
+    if any(resolved.get(k) != v for k, v in expected_args.items()):
+        raise ValueError("Resolved calibration args differ from the original real/A2C/default-PCP recipe")
     rows = [json.loads(line) for line in (directory / "metrics.jsonl").read_text().splitlines() if line.strip()]
     if [r.get("epoch") for r in rows] != list(range(1, 21)):
         raise ValueError("Calibration must have unique complete epochs 1..20")
@@ -64,12 +87,16 @@ def summarize_calibration(directory: Path, measurements: dict, expected_code: st
         raise ValueError("Recorded checkpoint save does not match the verified final checkpoint")
     values["checkpoint_save_seconds"] = checked_number(save.get("wall_time_seconds"),
                                                        "checkpoint save duration", positive=False)
-    if values["allocation_wall_seconds"] < sum(durations) + values["checkpoint_save_seconds"] + values["setup_seconds"]:
+    residual = values["allocation_wall_seconds"] - sum(durations) - values["checkpoint_save_seconds"] - values["setup_seconds"]
+    if residual < 0:
         raise ValueError("Allocation wall time cannot be shorter than measured epochs, saves, and setup")
     return {"directory": str(directory.resolve()), "provenance_sha256": file_sha256(directory / "provenance.json"),
+            "composition": expected_composition, "resolved_args_sha256": file_sha256(resolved_path),
             "checkpoint_records_sha256": file_sha256(saves_path), "checkpoint_save_record": save,
             "mean_seconds_per_epoch": statistics.mean(durations[1:]), "p90_seconds_per_epoch": p90,
             "first_epoch_seconds": durations[0], "all_epoch_durations": durations,
+            "first_epoch_excess_seconds": max(0, durations[0] - p90),
+            "allocation_residual_seconds": residual, "residual_per_epoch_seconds": residual / 20,
             "actual_steps": sum(steps), "seconds_per_actual_step": sum(durations) / sum(steps),
             "seconds_per_update": sum(durations) / 200,
             "checkpoint_bytes": checkpoint.stat().st_size, "measurements": measurements, **values}
@@ -82,23 +109,26 @@ def project(calibrations: dict, preflight: dict, *, evaluation_reserve: float,
     checked_number(evaluation_reserve, "evaluation reserve", positive=False)
     checked_number(other_reserve, "other reserve", positive=False)
     counts = Counter(e.composition for e in load_grid())
-    envelope = max(v["p90_seconds_per_epoch"] for v in calibrations.values())
+    envelope = max(v["p90_seconds_per_epoch"] + v["residual_per_epoch_seconds"] for v in calibrations.values())
+    max_warmup = max(v["first_epoch_excess_seconds"] for v in calibrations.values())
     max_setup = max(v["setup_seconds"] for v in calibrations.values())
     max_save = max(v["checkpoint_save_seconds"] for v in calibrations.values())
     max_memory = max(v["whole_job_peak_rss_gb"] for v in calibrations.values())
     rows = []
     for composition, seeds in counts.items():
         measured = calibrations.get(composition)
-        slope = measured["p90_seconds_per_epoch"] if measured else envelope
+        slope = measured["p90_seconds_per_epoch"] + measured["residual_per_epoch_seconds"] if measured else envelope
+        warmup = measured["first_epoch_excess_seconds"] if measured else max_warmup
         setup = measured["setup_seconds"] if measured else max_setup
         save_seconds = measured["checkpoint_save_seconds"] if measured else max_save
         memory = measured["whole_job_peak_rss_gb"] if measured else max_memory
-        estimated = setup + 2000 * slope + 40 * save_seconds
+        estimated = setup + warmup + 2000 * slope + 40 * save_seconds
         # Use complete minutes so scheduler time-resolution rounding is explicit.
         requested = 60 * math.ceil(1.3 * estimated / 60)
         rows.append({"composition": composition, "seeds": seeds, "cpus_per_task": 4,
                      "slope_source": "measured_endpoint_p90_epochs_2_to_20" if measured else "modeled_max_endpoint_p90",
                      "seconds_per_epoch": slope, "estimated_wall_seconds": estimated,
+                     "first_epoch_excess_seconds": warmup,
                      "requested_wall_seconds": requested, "memory_gb_with_50pct_margin": math.ceil(1.5 * memory),
                      "memory_source": "measured_endpoint" if measured else "modeled_max_endpoint",
                      "estimated_core_hours": seeds * 4 * estimated / 3600,
@@ -107,7 +137,8 @@ def project(calibrations: dict, preflight: dict, *, evaluation_reserve: float,
     total = sum(r["guarded_core_hours"] for r in rows) + calibration_ch + evaluation_reserve + other_reserve
     remaining = preflight["remaining_core_hours"]
     return {"schema_version": 1, "created_at_utc": utc_now(), "rows": rows,
-            "projection_method": "p90 of epochs 2..20; intermediate rosters use endpoint envelope, not measured slopes",
+            "projection_method": "p90 of epochs 2..20 plus allocation residual/20; add first-epoch excess; intermediate rosters use endpoint envelope, not measured slopes",
+            "residual_assumption": "All allocation time outside declared setup, epoch timings and recorded save is amortized per epoch; includes shutdown and can overestimate recurring overhead.",
             "extrapolation_warning": "The endpoint envelope is a planning assumption, not a proved bound; recalibrate if inadequate.",
             "calibration_core_hours": calibration_ch, "evaluation_reserve_core_hours": evaluation_reserve,
             "other_reserve_core_hours": other_reserve,
@@ -137,7 +168,7 @@ def main(argv: list[str] | None = None) -> int:
         measured = read_json(args.measurements)
         current_code, lock = code_sha256(), file_sha256(ROOT / "uv.lock")
         calibrations = {name: summarize_calibration(args.calibration_root / name / "seed0",
-                                                   measured["jobs"][name], current_code, lock)
+                                                   measured["jobs"][name], current_code, lock, name)
                         for name in ENDPOINTS}
         budget = project(calibrations, preflight,
                          evaluation_reserve=measured["evaluation_reserve_core_hours"],

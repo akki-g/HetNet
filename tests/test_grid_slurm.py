@@ -120,20 +120,27 @@ class GateTests(unittest.TestCase):
             with self.subTest(bad=bad), self.assertRaises(ValueError):
                 train_job.parse_slurm_time(bad)
         env = {"SLURM_JOB_ID": "123", "SLURM_CLUSTER_NAME": "stokes", "SLURM_CPUS_PER_TASK": "4",
-               "SLURM_MEM_PER_NODE": "4096"}
+               "SLURM_MEM_PER_NODE": "4096", "SLURM_JOB_NUM_NODES": "1", "SLURM_NTASKS": "1",
+               "SLURM_JOB_CPUS_PER_NODE": "4"}
         with patch.dict(os.environ, env, clear=True), patch.object(train_job.subprocess, "check_output",
-                return_value="Partition=normal TimeLimit=01:00:00 ArrayTaskThrottle=2 Account=pi StdOut=/a StdErr=/b"):
+                return_value="NumCPUs=4 NumNodes=1 NumTasks=1 Partition=normal TimeLimit=01:00:00 ArrayTaskThrottle=2 Account=pi StdOut=/a StdErr=/b") as query:
             allocation = train_job.verify_allocation(preflight(), 4, 3600, 2)
             self.assertEqual(allocation["time_seconds"], 3600)
             for mem, seconds, concurrency in ((8, 3600, 2), (4, 7200, 2), (4, 3600, 3)):
                 with self.assertRaises(ValueError):
                     train_job.verify_allocation(preflight(), mem, seconds, concurrency)
+            query.return_value = "NumCPUs=8 NumNodes=1 NumTasks=2 Partition=normal TimeLimit=01:00:00 ArrayTaskThrottle=2 Account=pi"
+            with self.assertRaisesRegex(ValueError, "four total CPUs"):
+                train_job.verify_allocation(preflight(), 4, 3600, 2)
 
     def test_approval_is_explicit_hashed_and_threshold_aware(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
+            preflight_path = root / "preflight.json"
+            preflight_path.write_text(json.dumps(preflight()))
             report = {"code_sha256": "code", "uv_lock_sha256": "lock", "projected_total_core_hours": 5000,
-                      "remaining_core_hours": 80000, "within_partition_cap": True}
+                      "remaining_core_hours": 60000, "within_partition_cap": True,
+                      "preflight_sha256": grid.file_sha256(preflight_path)}
             path = root / "budget.json"
             path.write_text(json.dumps(report))
             approval = {"approved": False, "approved_by": "Akki", "approved_at_utc": "now",
@@ -141,24 +148,29 @@ class GateTests(unittest.TestCase):
             approval_path = root / "approval.json"
             approval_path.write_text(json.dumps(approval))
             with self.assertRaisesRegex(ValueError, "explicit"):
-                train_job.validate_approval(approval_path, "code", "lock")
+                train_job.validate_approval(approval_path, "code", "lock", preflight_path)
             approval["approved"] = True
             approval_path.write_text(json.dumps(approval))
             with self.assertRaisesRegex(ValueError, "override"):
-                train_job.validate_approval(approval_path, "code", "lock")
+                train_job.validate_approval(approval_path, "code", "lock", preflight_path)
             approval["threshold_override_approved"] = True
             approval_path.write_text(json.dumps(approval))
-            train_job.validate_approval(approval_path, "code", "lock")
+            train_job.validate_approval(approval_path, "code", "lock", preflight_path)
+            preflight_path.write_text(json.dumps({**preflight(), "remaining_core_hours": 10000}))
+            with self.assertRaisesRegex(ValueError, "current Stokes preflight hash"):
+                train_job.validate_approval(approval_path, "code", "lock", preflight_path)
+            preflight_path.write_text(json.dumps(preflight()))
             path.write_text(json.dumps({**report, "projected_total_core_hours": 1}))
             with self.assertRaisesRegex(ValueError, "hash"):
-                train_job.validate_approval(approval_path, "code", "lock")
+                train_job.validate_approval(approval_path, "code", "lock", preflight_path)
 
 
 class BudgetTests(unittest.TestCase):
     def test_cost_counts_all_seeds_cores_saves_and_reserves(self):
         def endpoint(slope):
             return {"p90_seconds_per_epoch": slope, "setup_seconds": 10, "checkpoint_save_seconds": 2,
-                    "whole_job_peak_rss_gb": 4, "allocation_wall_seconds": 500}
+                    "whole_job_peak_rss_gb": 4, "allocation_wall_seconds": 500,
+                    "residual_per_epoch_seconds": 0, "first_epoch_excess_seconds": 0}
         projected = budget.project({"2P1A": endpoint(10), "4P6A": endpoint(20)}, preflight(),
                                    evaluation_reserve=100, other_reserve=20)
         rows = {r["composition"]: r for r in projected["rows"]}
@@ -173,7 +185,8 @@ class BudgetTests(unittest.TestCase):
 
     def test_cap_violation_is_reported_without_changing_epochs(self):
         data = {"p90_seconds_per_epoch": 100, "setup_seconds": 1, "checkpoint_save_seconds": 0,
-                "whole_job_peak_rss_gb": 2, "allocation_wall_seconds": 2001}
+                "whole_job_peak_rss_gb": 2, "allocation_wall_seconds": 2001,
+                "residual_per_epoch_seconds": 0, "first_epoch_excess_seconds": 0}
         projected = budget.project({"2P1A": data, "4P6A": data}, preflight(), evaluation_reserve=0, other_reserve=0)
         self.assertFalse(projected["within_partition_cap"])
         self.assertTrue(projected["threshold_exceeded"])
@@ -184,13 +197,26 @@ class BudgetTests(unittest.TestCase):
             root = Path(tmp)
             checkpoint = root / "model_ep20.pt"
             checkpoint.write_bytes(b"test fixture only; not a trained checkpoint")
+            entry = grid.calibration_entries()[0].as_dict()
+            recipe = json.loads(grid.DEFAULT_GRID.read_text())["recipe"]
+            resolved = {**recipe, "num_epochs": 20, "nfriendly_P": 2, "nfriendly_A": 1, "seed": 0,
+                        "use_binary": False, "use_cuda": False, "commnet": False, "hetcomm": False,
+                        "ic3net": False, "eval": False, "random": False, "load": "",
+                        "comm_range_P": -1, "comm_range_A": -1, "lossy_comm": False,
+                        "gamma": 1.0, "vision": 2, "A_vision": -1, "tensor_obs": False,
+                        "nenemies": 1, "moving_prey": False, "no_stay": False, "mode": "mixed",
+                        "enemy_comm": False, "second_reward_scheme": False,
+                        "resolved_model": {"class": "hetgat.uavnet.UAVNetA2CEasy", "per_class_critic": True,
+                                           "with_two_state": True}}
+            resolved_path = root / "resolved_args.json"
+            resolved_path.write_text(json.dumps(resolved))
             provenance = {"status": "complete", "mode": "calibration", "code_sha256": "code",
                           "uv_lock_sha256": "lock", "final_checkpoint": str(checkpoint),
                           "final_checkpoint_sha256": grid.file_sha256(checkpoint),
-                          "final_parameter_signature": {"sha256": "parameters"}}
+                          "final_parameter_signature": {"sha256": "parameters"}, "entry": entry,
+                          "resolved_args": resolved, "resolved_args_sha256": grid.file_sha256(resolved_path)}
             (root / "provenance.json").write_text(json.dumps(provenance))
-            (root / "config.json").write_text(json.dumps({"num_epochs": 20, "recipe": {
-                "epoch_size": 10, "batch_size": 500, "nprocesses": 4, "max_steps": 80, "dim": 5}}))
+            (root / "config.json").write_text(json.dumps({"num_epochs": 20, "recipe": recipe, "entry": entry}))
             metrics = [{"epoch": i, "wall_time_seconds": 20 if i > 1 else 40, "steps": 20000} for i in range(1, 21)]
             (root / "metrics.jsonl").write_text("\n".join(json.dumps(m) for m in metrics))
             save = {"epoch": 20, "path": str(checkpoint), "wall_time_seconds": 1,
@@ -198,18 +224,36 @@ class BudgetTests(unittest.TestCase):
             (root / "checkpoint_records.jsonl").write_text(json.dumps(save) + "\n")
             measured = {"whole_job_peak_rss_gb": 4, "setup_seconds": 10,
                         "allocation_wall_seconds": 500, "peak_rss_source": "fixture", "accounting_evidence": "fixture"}
-            summary = budget.summarize_calibration(root, measured, "code", "lock")
+            summary = budget.summarize_calibration(root, measured, "code", "lock", "2P1A")
             self.assertEqual(summary["mean_seconds_per_epoch"], 20)
             self.assertEqual(summary["actual_steps"], 400000)
             self.assertEqual(summary["seconds_per_update"], 2.1)
             self.assertEqual(summary["checkpoint_save_seconds"], 1)
+            self.assertEqual(summary["first_epoch_excess_seconds"], 20)
+            self.assertEqual(summary["residual_per_epoch_seconds"], 69 / 20)
+            projection = budget.project({"2P1A": summary, "4P6A": summary}, preflight(), evaluation_reserve=0, other_reserve=0)
+            self.assertEqual(projection["rows"][0]["estimated_wall_seconds"], 10 + 20 + 2000 * (20 + 69 / 20) + 40)
+            with self.assertRaisesRegex(ValueError, "endpoint identity"):
+                budget.summarize_calibration(root, measured, "code", "lock", "4P6A")
+            with self.assertRaisesRegex(ValueError, "shorter than"):
+                budget.summarize_calibration(root, {**measured, "allocation_wall_seconds": 400}, "code", "lock", "2P1A")
+            resolved["use_binary"] = True
+            resolved_path.write_text(json.dumps(resolved))
+            provenance.update(resolved_args=resolved, resolved_args_sha256=grid.file_sha256(resolved_path))
+            (root / "provenance.json").write_text(json.dumps(provenance))
+            with self.assertRaisesRegex(ValueError, "original real/A2C"):
+                budget.summarize_calibration(root, measured, "code", "lock", "2P1A")
+            resolved["use_binary"] = False
+            resolved_path.write_text(json.dumps(resolved))
+            provenance.update(resolved_args=resolved, resolved_args_sha256=grid.file_sha256(resolved_path))
+            (root / "provenance.json").write_text(json.dumps(provenance))
             (root / "checkpoint_records.jsonl").write_text(json.dumps({**save, "bytes": 0}) + "\n")
             with self.assertRaisesRegex(ValueError, "does not match"):
-                budget.summarize_calibration(root, measured, "code", "lock")
+                budget.summarize_calibration(root, measured, "code", "lock", "2P1A")
             (root / "checkpoint_records.jsonl").write_text(json.dumps(save) + "\n")
             (root / "metrics.jsonl").write_text("\n".join(json.dumps(m) for m in metrics[:-1]))
             with self.assertRaisesRegex(ValueError, "complete epochs"):
-                budget.summarize_calibration(root, measured, "code", "lock")
+                budget.summarize_calibration(root, measured, "code", "lock", "2P1A")
 
 
 class SlurmTests(unittest.TestCase):

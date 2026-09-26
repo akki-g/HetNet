@@ -200,7 +200,7 @@ def _direct_original_model(args, num_p, num_a):
 
     pos = args["dim"] ** 2
     raw = {"vision": args["vision"], "P": pos + 4, "A": pos, "state": 4}
-    # main.py uses a DoubleTensor default, while fastreal.py deliberately creates
+    # main.py uses a DoubleTensor default, while fastreal.py explicitly creates
     # FloatTensor attention parameters. Preserve this released mixed-dtype state:
     # calling model.double() would silently cast checkpoint tensors on strict load.
     previous_dtype = torch.get_default_dtype()

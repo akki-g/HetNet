@@ -82,7 +82,7 @@ def validate_gate(data: dict, expected_code: str, expected_lock: str) -> None:
         raise ValueError("Gate A evidence is stale: code/config/test or uv.lock hash differs")
 
 
-def validate_approval(path: Path, expected_code: str, expected_lock: str) -> dict:
+def validate_approval(path: Path, expected_code: str, expected_lock: str, preflight_path: Path) -> dict:
     approval = read_json(path)
     if approval.get("approved") is not True or not approval.get("approved_by") or not approval.get("approved_at_utc"):
         raise ValueError("Full training requires Akki's explicit recorded budget confirmation")
@@ -92,10 +92,16 @@ def validate_approval(path: Path, expected_code: str, expected_lock: str) -> dic
     if not budget_path.is_file() or file_sha256(budget_path) != approval.get("budget_sha256"):
         raise ValueError("Budget approval must reference the exact existing budget-file hash")
     budget = read_json(budget_path)
+    preflight = read_json(preflight_path)
+    validate_preflight(preflight)
+    if budget.get("preflight_sha256") != file_sha256(preflight_path):
+        raise ValueError("Budget approval is stale: current Stokes preflight hash differs")
     if budget.get("code_sha256") != expected_code or budget.get("uv_lock_sha256") != expected_lock:
         raise ValueError("Budget was prepared for different scientific code or dependencies")
     projected = checked_number(budget.get("projected_total_core_hours"), "projected budget")
-    balance = checked_number(budget.get("remaining_core_hours"), "budget remaining balance")
+    balance = checked_number(preflight.get("remaining_core_hours"), "current remaining balance")
+    if budget.get("remaining_core_hours") != balance:
+        raise ValueError("Budget remaining balance differs from the verified current preflight")
     if (projected > 4000 or projected > 0.1 * balance) and approval.get("threshold_override_approved") is not True:
         raise ValueError("Budget crosses the 4,000 core-hour / 10% gate; explicit override approval required")
     if budget.get("within_partition_cap") is not True:
@@ -132,6 +138,11 @@ def verify_allocation(preflight: dict, memory_gb: float, time_seconds: int,
         raise ValueError("Phase A requires --cpus-per-task=4 for four collectors")
     raw = subprocess.check_output(["scontrol", "show", "job", "-o", job_id], text=True)
     fields = dict(token.split("=", 1) for token in raw.split() if "=" in token)
+    if any(fields.get(key) != value for key, value in {"NumCPUs": "4", "NumNodes": "1", "NumTasks": "1"}.items()):
+        raise ValueError("Actual allocation must have exactly four total CPUs, one node and one task")
+    if (os.environ.get("SLURM_JOB_NUM_NODES") != "1" or os.environ.get("SLURM_NTASKS") != "1"
+            or os.environ.get("SLURM_JOB_CPUS_PER_NODE") != "4"):
+        raise ValueError("Slurm environment must confirm one node, one task and four allocated CPUs")
     if fields.get("Partition") != "normal":
         raise ValueError("Actual allocation must use normal")
     if type(array_concurrency) is not int or array_concurrency < 1:
@@ -195,7 +206,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.mode == "train":
             if args.budget_approval is None:
                 raise ValueError("--budget-approval is required for full training")
-            approved = validate_approval(args.budget_approval, code_hash, lock_hash)
+            approved = validate_approval(args.budget_approval, code_hash, lock_hash, args.preflight)
         if approved:
             if (args.requested_time_seconds != approved["budget"]["array_uniform_time_seconds"]
                     or args.requested_memory_gb != approved["budget"]["array_uniform_memory_gb"]):
@@ -276,6 +287,8 @@ def main(argv: list[str] | None = None) -> int:
             raise RuntimeError("Incomplete or duplicate epoch parameter signatures")
         if final_signature != epoch_signatures[-1].get("signature"):
             raise RuntimeError("Final checkpoint signature differs from the final training epoch")
+        if code_sha256() != code_hash or file_sha256(ROOT / "uv.lock") != lock_hash:
+            raise RuntimeError("Scientific code or dependency lock changed during execution; run is invalid")
         provenance.update(status="complete", final_checkpoint=str(final),
                           final_checkpoint_sha256=file_sha256(final),
                           final_parameter_signature=final_signature,
