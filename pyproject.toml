@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools==75.8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hetnet-reproduction"
+version = "0.1.0"
+description = "Original HetNet PCP reproduction and frozen-policy experiment tooling"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "torch==2.2.1",
+    "dgl==2.1.0",
+    "torchdata==0.7.1",
+    "numpy==1.26.4",
+    "gym==0.26.2",
+    "visdom==0.2.4",
+    "bitstring==4.2.3",
+    "pandas==2.2.3",
+    "pyyaml==6.0.2",
+    "pydantic==2.10.6",
+    "ic3net-envs==0.0.2",
+]
+
+[dependency-groups]
+dev = ["pytest==8.3.5"]
+
+[tool.uv.sources]
+ic3net-envs = { path = "envs", editable = true }
+
+[tool.uv]
+build-constraint-dependencies = ["setuptools==75.8.0"]
+
+[tool.setuptools.packages.find]
+include = ["hetnet_ext*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

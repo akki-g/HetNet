@@ -131,7 +131,7 @@ def init_args_for_env(parser):
     if env_name == 'starcraft':
         import gym_starcraft
 
-    env = gym.make(env_dict[env_name])
+    env = gym.make(env_dict[env_name], disable_env_checker=True)
     env.init_args(parser)
 
 def display_models(list_models):

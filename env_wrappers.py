@@ -2,7 +2,7 @@ import time
 import numpy as np
 import torch
 from gym import spaces
-from inspect import getargspec
+from inspect import getfullargspec as getargspec
 
 class GymWrapper(object):
     '''

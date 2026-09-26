@@ -1,6 +1,6 @@
 import tracemalloc
 from collections import namedtuple
-from inspect import getargspec
+from inspect import getfullargspec as getargspec
 
 import numpy as np
 import torch
@@ -624,7 +624,8 @@ class Trainer(object):
     def reset_memory_peak(self):
         tracemalloc.stop()
         tracemalloc.start()
-        torch.cuda.reset_peak_memory_stats()
+        if torch.cuda.is_available():
+            torch.cuda.reset_peak_memory_stats()
 
         self.cpu_memory_peak = 0
         self.gpu_memory_peak = 0
@@ -639,6 +640,7 @@ class Trainer(object):
 
     def get_memory_peak(self):
         self.set_cpu_memory_peak(tracemalloc.get_traced_memory()[1])
-        self.set_gpu_memory_peak(torch.cuda.max_memory_allocated(device=torch.device('cuda')))
+        if torch.cuda.is_available():
+            self.set_gpu_memory_peak(torch.cuda.max_memory_allocated(device=torch.device('cuda')))
 
         return self.cpu_memory_peak, self.gpu_memory_peak

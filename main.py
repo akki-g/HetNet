@@ -12,6 +12,9 @@ import numpy as np
 import torch
 import visdom
 
+# Deviation A: one CPU thread per collector, matching the four-core job contract.
+torch.set_num_threads(1)
+
 import data
 from action_utils import parse_action_args
 from comm import CommNetMLP
@@ -419,7 +422,8 @@ def run(num_epochs):
                 v.data.append(stat.get(k, 0))
 
         epoch_cpu_mem_peak[0] = tracemalloc.get_traced_memory()[1]
-        epoch_gpu_mem_peak[0] = torch.cuda.max_memory_allocated(device=torch.device('cuda'))
+        if torch.cuda.is_available():
+            epoch_gpu_mem_peak[0] = torch.cuda.max_memory_allocated(device=torch.device('cuda'))
 
         global_cpu_mem_peak = np.maximum(epoch_cpu_mem_peak, global_cpu_mem_peak)
         global_gpu_mem_peak = np.maximum(epoch_gpu_mem_peak, global_gpu_mem_peak)
