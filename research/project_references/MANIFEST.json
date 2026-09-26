@@ -1,0 +1,20 @@
+[
+  {
+    "original": "../marl-comm/softrole/SOFTROLE_FEASIBILITY_REPORT.md",
+    "snapshot": "research/project_references/SOFTROLE_FEASIBILITY_REPORT.md",
+    "sha256": "0157152f3ef137157a4165db673d591106c929120fe3582d2b59bef60d92af6f",
+    "purpose": "Read-only project research snapshot; original project not modified"
+  },
+  {
+    "original": "../marl-comm/softrole/SOFTROLE_IMPLEMENTATION_REPORT.md",
+    "snapshot": "research/project_references/SOFTROLE_IMPLEMENTATION_REPORT.md",
+    "sha256": "6b1490c1280259e291377ccea93708ce860cd1866b94016ad656d670695d7a94",
+    "purpose": "Read-only project research snapshot; original project not modified"
+  },
+  {
+    "original": "../marl-comm/softrole/research/MATHEMATICAL_AUDIT.md",
+    "snapshot": "research/project_references/MATHEMATICAL_AUDIT.md",
+    "sha256": "dc9fb588509fbbe448af18db3d03a0cccdb7bdbdc557007f51317c388733c7f6",
+    "purpose": "Read-only project research snapshot; original project not modified"
+  }
+]

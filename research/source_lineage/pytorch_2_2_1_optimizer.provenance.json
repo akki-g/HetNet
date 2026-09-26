@@ -1,0 +1,5 @@
+{
+  "source_url": "https://raw.githubusercontent.com/pytorch/pytorch/v2.2.1/torch/optim/optimizer.py",
+  "sha256": "4f70441a516ca6ec52d95ab1bef2c6bccf4e1323946b9baf3896e9ee2883b5a4",
+  "purpose": "static gradient-storage compatibility audit"
+}

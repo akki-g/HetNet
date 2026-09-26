@@ -1,0 +1,29 @@
+{
+  "audit_date": "2026-09-26",
+  "papers": [
+    {
+      "file": "Seraj_2022_HetNet.pdf",
+      "title": "Learning Efficient Diverse Communication for Cooperative Heterogeneous Teaming",
+      "source_url": "https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf",
+      "sha256": "c4f7d8d45d2414ee9ef025ebb16b2a8303b40a9ea434bb5b57cb6ed8698ac723",
+      "bytes": 4898022,
+      "status": "available"
+    },
+    {
+      "file": "Seraj_2022_HetNet_Supplementary.pdf",
+      "title": "Learning Efficient Diverse Communication for Cooperative Heterogeneous Teaming \u2013 Supplementary",
+      "source_url": "https://github.com/CORE-Robotics-Lab/HetNet/blob/bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec/AAMAS_22___HetNet_Supplementary.pdf",
+      "sha256": "22262845fe6f8e1b6aa6f66f970c176a27c9a9f0550b4fc62066c7d99a928696",
+      "bytes": 319697,
+      "status": "available"
+    },
+    {
+      "file": "Singh_2019_IC3Net.pdf",
+      "title": "Learning when to Communicate at Scale in Multiagent Cooperative and Competitive Tasks",
+      "source_url": "https://arxiv.org/pdf/1812.09755",
+      "sha256": "ce68b412be766ff61aa6d75cf04a74836af505b23ac8b96d14f6e906889daed1",
+      "bytes": 1666929,
+      "status": "available"
+    }
+  ]
+}
