@@ -26,6 +26,7 @@ from eval_trainer import EvalTrainer
 from utils import *
 from pathlib import Path
 from hetnet_ext.seeding import seed_everything
+from hetnet_ext.recording import TrainingRecorder, write_checkpoint_signature, record_checkpoint
 
 if __name__ == "__main__":
     torch.multiprocessing.set_start_method('spawn')
@@ -42,6 +43,8 @@ parser = argparse.ArgumentParser(description='PyTorch RL trainer')
 parser.add_argument('--experiment_name', default='experiment', type=str,
                     help='name of the experiment')
 parser.add_argument('--save_dir', default='./saved', type=str, help='directory to save models')
+parser.add_argument('--metrics_file', default='', type=str,
+                    help='append epoch JSONL and signatures to a fresh run directory')
 
 
 parser.add_argument('--num_epochs', default=100, type=int,
@@ -379,6 +382,7 @@ run_dir = model_dir / curr_run
 def run(num_epochs):
     num_episodes = 0
     num_steps = 0
+    recorder = TrainingRecorder(args, policy_net) if args.metrics_file else None
     
     if args.save:
         os.makedirs(run_dir, exist_ok=True)
@@ -400,6 +404,9 @@ def run(num_epochs):
 
             s, cpu_mem_peak, gpu_mem_peak = trainer.train_batch(ep)
 
+            if recorder is not None:
+                recorder.add_batch(s)
+
             merge_stat(s, stat)
             trainer.display = False
             num_episodes += stat['num_episodes']
@@ -409,6 +416,8 @@ def run(num_epochs):
             epoch_gpu_mem_peak = np.maximum(epoch_gpu_mem_peak, gpu_mem_peak)
 
         epoch_time = time.time() - epoch_begin_time
+        if recorder is not None:
+            recorder.finish_epoch(ep + 1, epoch_time, policy_net)
         epoch = len(log['epoch'].data) + 1
         for k, v in log.items():
             if k == 'epoch':
@@ -453,10 +462,8 @@ def run(num_epochs):
                     vis.line(np.asarray(v.data), np.asarray(log[v.x_axis].data[-len(v.data):]),
                              win=k, opts=dict(xlabel=v.x_axis, ylabel=k))
 
-        if args.save_every and ep and args.save != '' and ep % args.save_every == 0:
-            # fname, ext = args.save.split('.')
-            # save(fname + '_' + str(ep) + '.' + ext)
-            save(str(ep), args)
+        if args.save_every and args.save != '' and (ep + 1) % args.save_every == 0 and ep + 1 < num_epochs:
+            save(ep + 1, args)
 
         # if args.save != '':
         #     save(args.save + '_' + str(ep))
@@ -473,7 +480,13 @@ def save(epoch, args):
     d['log'] = log
     d['trainer'] = trainer.state_dict()
     d['seed'] = args.seed
-    torch.save(d, run_dir / ('model_ep%i.pt' % (int(epoch))))
+    checkpoint = run_dir / ('model_ep%i.pt' % (int(epoch)))
+    checkpoint_begin_time = time.monotonic()
+    torch.save(d, checkpoint)
+    if args.metrics_file:
+        signature = write_checkpoint_signature(checkpoint, policy_net)
+        record_checkpoint(args.metrics_file, checkpoint, epoch,
+                          time.monotonic() - checkpoint_begin_time, signature)
 
 
 def load(path):
