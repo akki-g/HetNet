@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "study": "original_hetnet_real_pcp_frozen_transfer",
+  "recipe": {
+    "env_name": "predator_capture",
+    "num_epochs": 2000,
+    "epoch_size": 10,
+    "nprocesses": 4,
+    "hid_size": 128,
+    "detach_gap": 5,
+    "lrate": 0.0001,
+    "dim": 5,
+    "batch_size": 500,
+    "max_steps": 80,
+    "save_every": 50,
+    "hetgat": true,
+    "hetgat_a2c": true
+  },
+  "compositions": [
+    {"name": "2P1A", "nfriendly_P": 2, "nfriendly_A": 1, "priority": "P0", "seeds": [0, 1, 2, 3, 4]},
+    {"name": "3P3A", "nfriendly_P": 3, "nfriendly_A": 3, "priority": "P1", "seeds": [0, 1, 2, 3, 4]},
+    {"name": "4P6A", "nfriendly_P": 4, "nfriendly_A": 6, "priority": "P1", "seeds": [0, 1, 2, 3, 4]},
+    {"name": "3P1A", "nfriendly_P": 3, "nfriendly_A": 1, "priority": "P2", "seeds": [0, 1, 2]},
+    {"name": "2P2A", "nfriendly_P": 2, "nfriendly_A": 2, "priority": "P2", "seeds": [0, 1, 2]}
+  ],
+  "calibration": {
+    "num_epochs": 20,
+    "compositions": ["2P1A", "4P6A"],
+    "seed": 0
+  }
+}
