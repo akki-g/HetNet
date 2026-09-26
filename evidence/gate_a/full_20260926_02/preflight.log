@@ -1,0 +1,4 @@
+{"command": ["/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/bin/python3", "-m", "pytest", "-q", "tests/test_gate_a_contracts.py", "-k", "runtime_versions or grid_is_requested_bijection or singleton_p_is_rejected or slurm_scripts_parse", "--junitxml=/Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260926_02/preflight.xml"], "cwd": "/Users/akshatguduru/Desktop/Thesis/HetNet"}
+....                                                                     [100%]
+- generated xml file: /Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260926_02/preflight.xml -
+4 passed, 3 deselected in 2.38s

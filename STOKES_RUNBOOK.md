@@ -1,16 +1,16 @@
 # Stokes runbook: original HetNet Phase A
 
-This prepares original HetNet-Real/A2C PCP training. No cluster jobs have been submitted by this work. Calibration requires passing Gate A and verified live Stokes facts. Full Run 1 additionally requires Akki's confirmation of the measured budget. Run 2 is a later phase, with no submission script here. Consult the actual gate report; the existence of scripts does not establish a passed gate.
+This prepares original HetNet-Real/A2C PCP training. No cluster jobs have been submitted by this work. [Local Gate A passed](GATE_A_REPORT.md); calibration still requires verified live Stokes facts. Full Run 1 additionally requires Akki's confirmation of the measured budget. Run 2 is a later phase, with no submission script here.
 
 Official sources, wheel evidence, and live unknowns are documented in [STOKES_SOURCE_AUDIT.md](research/STOKES_SOURCE_AUDIT.md). Public documentation establishes neither today's partition time cap nor this user's balance, account requirement, available concurrency, or compute connectivity. The existing Newton wrapper's resources are not Stokes measurements.
 
 ## 1. Freeze the scientific checkout
 
-Use a dedicated Stokes checkout at Phase A scientific commit **`2db8a62`**, matching the passing Gate A report. The initial infrastructure commit `be2d223` was followed by audited budget/provenance fixes; do not deploy the initial commit alone. Preserve the final checkout, `uv.lock`, and `.venv-stokes` while calibration or Run 1 tasks are queued/running. Do not pull new code into it. Develop Phase B in a **separate checkout/worktree with its own environment**: extension, test, config, or script changes invalidate queued jobs' Gate A hash.
+Use a dedicated Stokes checkout of the **delivery commit containing this runbook and `GATE_A_REPORT.md`**, whose scientific files match **`2db8a62`**. Record its full `git rev-parse HEAD`. Checking out `2db8a62` alone omits later documentation and archived gate evidence; an evidence-only descendant with the matching hash below includes both. The initial infrastructure commit `be2d223` was followed by audited budget/provenance fixes; do not deploy the initial commit alone. Preserve the final checkout, `uv.lock`, and `.venv-stokes` while calibration or Run 1 tasks are queued/running. Do not pull new code into it. Develop Phase B in a **separate checkout/worktree with its own environment**: extension, test, config, or script changes invalidate queued jobs' Gate A hash.
 
 The inventory hashes tracked Python/shell sources, `pyproject.toml`, `uv.lock`, and study source/config/test/script files, including new untracked study files. Documentation/results are excluded so an evidence-only commit does not invalidate equivalent code. Every run still records HEAD, dirty status, the code inventory and lock hash. Gate A separately verifies all reviewed deviations from the original baseline.
 
-The reviewed original-file commits are `2fadecf`, `7b334c1`, `0cfcea5`, and `50d0c37`. Do not expand that allowlist automatically. The interrupted first attempt at `runs/gate_a/full_20260926_01` is preserved as incomplete evidence; the replacement target is `runs/gate_a/full_20260926_02`. Inspect its final report before using it. Starting a gate is not passing it.
+The reviewed original-file commits are `2fadecf`, `7b334c1`, `0cfcea5`, and `50d0c37`. Do not expand that allowlist automatically. The interrupted first attempt at `runs/gate_a/full_20260926_01` is preserved as incomplete evidence. The successful replacement is `runs/gate_a/full_20260926_02`, with an unchanged [report archived in Git](evidence/gate_a/full_20260926_02/gate_a_report.json). Its scientific hash is `ebd295d990637b9b6184dbf8bad846c8ec70621743aeadedba31379b41c96db4`; the launcher verifies this and the lock against its checkout before any job runs.
 
 ## 2. Local gate and task mapping
 
@@ -100,7 +100,7 @@ Choose and record calibration memory/time from local resource evidence and the l
 
 ```bash
 export HETNET_STOKES_PREFLIGHT=/absolute/path/to/verified-stokes-preflight.json
-export HETNET_GATE_A=/absolute/path/to/passing-gate-report.json
+export HETNET_GATE_A="$PWD/evidence/gate_a/full_20260926_02/gate_a_report.json"
 export HETNET_MEM_GB
 export HETNET_TIME_SECONDS
 export HETNET_ARRAY_CONCURRENCY

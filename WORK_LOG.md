@@ -15,11 +15,11 @@
 |---|---|---|
 | Research before implementation | Complete | RESEARCH_NOTES.md + primary/source audits |
 | A1 clean lock/import | Passed locally | `evidence/gate_a/clean_environment_20260926T035949Z/` |
-| A2 baseline diff | Passed precheck; included in full gate | A/B/G/C commit inventory and preserved exact diff |
-| A3 five compositions × one/four-process smoke | In progress | `runs/gate_a/full_20260926_02/`; no overall pass yet |
-| A4 shared weights and gradient aggregation | Passed bounded diagnostics | Actual 2P1A/4P6A, three updates, exact fresh gradient sums and worker storage |
-| A5 single-process determinism | Pending | Initial/first-epoch signatures and deterministic metric projection; different seed differs |
-| A6 strict cross-composition load | Pending | Five signatures, singleton-P rejection |
+| A2 baseline diff | Passed | A/B/G/C commit inventory and preserved exact diff |
+| A3 five compositions × one/four-process smoke | Passed | Twelve runs including repeat/alternate seed, 36 epochs/checkpoints; `GATE_A_REPORT.md` |
+| A4 shared weights and gradient aggregation | Passed bounded diagnostics within full gate | Actual 2P1A/4P6A, three updates, exact fresh gradient sums and worker storage |
+| A5 single-process determinism | Passed | Identical initial/all three epoch signatures and non-timing metrics; alternate seed initialization differs |
+| A6 strict cross-composition load | Passed | Source epoch3 tensor names/shapes/dtypes/values preserved in all five targets; singleton-P rejected |
 | A7 scripts/dry-run bijection | Passed locally | 21 mappings, script syntax, fail-closed infrastructure tests |
 | A8 resume | Conditional | Only implement if calibrated time exceeds cap; then full kill/resume test |
 | Stokes preflight | Awaiting user evidence | Limits/account/balance/modules/network/quota/access |
@@ -51,3 +51,12 @@ Full objective remains active; a prepared workflow or smoke pass is not completi
 - Wrote `research/RELATION_SUPPORT_AUDIT.md` before frozen outcomes. Eight A→A tensors are unused and twelve singleton-neighborhood attention tensors have zero learning gradients in source training. Existing diagnostics and the 30-update source smoke confirm the expected unchanged tensors. Larger teams activate different previously unsupported computations; this limits causal interpretation of a future transfer gap without changing any condition.
 - Copied and SHA-verified the four already-read protocol papers (Howell, CASH, Agarwal, Lowe) into this project's `research/papers/`, with a manifest. Original `marl-comm` library files were read only.
 - Committed `ANALYSIS_PLAN.md` before any frozen evaluation or bank outcomes: initial `4b4c0a6`, pre-outcome clarification `0f86729`. Fixed the 54,000 required episode inventory, final checkpoint selection, seed-level estimands/intervals, event timing, crash rules, and interpretation limits. The clarification preserves the task's mandatory fixed-oracle Gate B check on intact final banks while keeping learned-policy development on separate smoke banks. Production Phase B code remains unimplemented until Run1 proceeds.
+
+## 26 September 2026 — full local Gate A passed
+
+- Attempt `full_20260926_02` finished at 04:45:33 UTC with all eleven gate flags true. All twelve smoke runs completed: 36 epochs, 360 updates, 32,548 joint transitions and 36 checkpoints. The 22 selected pytest cases passed; the three direct gradient diagnostics passed separately.
+- Actual 2P1A/4P6A fresh-gradient reconstruction had exactly zero aggregation error on all three updates, with current storage and shared weights. Independent read-only review recomputed the six saved NPZ reductions (432 named-parameter/update checks), verified snapshot hashes, and found all 36 checkpoint model states finite.
+- Source seed0 single-process repeats matched initial/all three epoch signatures and all non-timing metrics. Source seed1 initialization differed. All 36 checkpoint states matched their sidecars; the source epoch3 state loaded identically into all five compositions, preserving mixed dtypes. These checks do not establish frozen forward behavior or performance.
+- Archived unchanged text artifacts and a SHA-256 manifest for all 168 raw files at `evidence/gate_a/full_20260926_02/`. Raw checkpoint/gradient binaries remain in the ignored original run directory. Wrote `GATE_A_REPORT.md`; marked the historical gradient blocker resolved without removing failed evidence.
+- Scientific source hash stayed `ebd295d990637b9b6184dbf8bad846c8ec70621743aeadedba31379b41c96db4` throughout the successful attempt and archival. Subsequent documentation/evidence commits retain equivalent scientific files to `2db8a62`.
+- Next dependency is the previously requested live Stokes evidence. Calibration and its concrete budget cannot proceed without those facts. No Stokes jobs, full training, Gate B or frozen outcomes exist; the overall goal remains active.
