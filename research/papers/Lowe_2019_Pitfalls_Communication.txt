@@ -1,0 +1,770 @@
+                                                     On the Pitfalls of Measuring Emergent Communication
+                                                              Ryan Lowe                                               Jakob Foerster                                Y-Lan Boureau
+                                                   Mila & Facebook AI Research                                     Facebook AI Research                          Facebook AI Research
+                                                          Montreal, QC                                                Menlo Park, CA                                 New York, NY
+                                                     ryan.lowe@cs.mcgill.ca
+
+                                                                                          Joelle Pineau                                     Yann Dauphin
+                                                                                Mila & Facebook AI Research                                    Google AI
+                                                                                       Montreal, QC                                           Accra, Ghana
+
+
+
+
+arXiv:1903.05168v1 [cs.LG] 12 Mar 2019
+                                         ABSTRACT                                                                                 idea is to use an environment consisting of randomly initialized
+                                         How do we know if communication is emerging in a multi-agent                             agents and a dedicated communication channel, which the agents
+                                         system? The vast majority of recent papers on emergent commu-                            can learn to use to accomplish tasks that require coordination.
+                                         nication show that adding a communication channel leads to an                            This approach is motivated by a utilitarian view of communication,
+                                         increase in reward or task success. This is a useful indicator, but                      where language is viewed as one of many tools an agent can use
+                                         provides only a coarse measure of the agent’s learned communica-                         towards achieving its goals, and an agent ‘understands’ language
+                                         tion abilities. As we move towards more complex environments, it                         once it can use it to accomplish these goals [15, 45]. The question
+                                         becomes imperative to have a set of finer tools that allow qualitative                   of emergent communication is also of scientific interest, as it could
+                                         and quantitative insights into the emergence of communication.                           provide insights into the origins of human language [32].
+                                         This may be especially useful to allow humans to monitor agents’                            Recently, there has been a significant revival of emergent commu-
+                                         behaviour, whether for fault detection, assessing performance, or                        nication research using methods from deep reinforcement learning
+                                         even building trust. In this paper, we examine a few intuitive ex-                       (deep RL). In this line of work, researchers define a multi-agent
+                                         isting metrics for measuring communication, and show that they                           environment where agents possess a (usually discrete and costless)
+                                         can be misleading. Specifically, by training deep reinforcement                          communication channel, and train the agents’ policies (represented
+                                         learning agents to play simple matrix games augmented with a                             by deep neural networks) to maximize the cumulative reward. In
+                                         communication channel, we find a scenario where agents appear                            most cases, the multi-agent environment is a cooperative referential
+                                         to communicate (their messages provide information about their                           game, where one agent (the ‘speaker’) has some private information
+                                         subsequent action), and yet the messages do not impact the envi-                         about a public observation, and must communicate it accurately to
+                                         ronment or other agent in any way. We explain this phenomenon                            the other agent (the ‘listener’) [7, 9, 11, 18, 23–25]. In other works,
+                                         using ablation studies and by visualizing the representations of the                     agents navigate a simulated world with a limited field of view, and
+                                         learned policies. We also survey some commonly used metrics for                          communication can help the agents coordinate to achieve a com-
+                                         measuring emergent communication, and provide recommenda-                                mon goal [4, 13, 21, 39]. Algorithmic development has led to emer-
+                                         tions as to when these metrics should be used.                                           gent communication in games with pixel-based inputs [4, 7, 24],
+                                                                                                                                  in settings incorporating human language [25, 27], and even in
+                                         KEYWORDS                                                                                 more complex games that require inferring the belief state of the
+                                                                                                                                  opponent, like Hanabi [13].
+                                         Deep learning; Learning agent capabilities; Multi-agent learning
+                                                                                                                                     Despite these advances, there has been no formal study eval-
+                                         ACM Reference Format:                                                                    uating how we measure emergent communication. Most papers
+                                         Ryan Lowe, Jakob Foerster, Y-Lan Boureau, Joelle Pineau, and Yann Dauphin.               in this area show that adding a communication channel helps the
+                                         2019. On the Pitfalls of Measuring Emergent Communication. In Proc. of the               agents achieve a higher reward, and attempt to understand the
+                                         18th International Conference on Autonomous Agents and Multiagent Systems
+                                                                                                                                  communication protocols qualitatively by, for example, plotting the
+                                         (AAMAS 2019), Montreal, Canada, May 13–17, 2019, IFAAMAS, 13 pages.
+                                                                                                                                  distribution over messages in various states of the environment.
+                                                                                                                                  This is a reasonable approach: if adding a communication channel
+                                         1     INTRODUCTION                                                                       increases the reward in an environment, then the agents are making
+                                         Communication through language is one of the hallmarks of human                          some use of that channel. But it is useful to quantify more finely
+                                         intelligence; it allows us to share information efficiently between                      the degree of communication as it can provide more insights into
+                                         humans and coordinate on shared tasks. This is a strong motivation                       agent behaviour. This may be essential for human monitoring; we
+                                         to develop machines that can communicate, so that they can share                         want to understand why agents are making certain decisions, and
+                                         their knowledge with us and help us coordinate on tasks where                            understanding their language would make this significantly easier.
+                                         humans alone perform poorly. One of the approaches for developing                        Our aim is to develop a set of evaluation tools for detecting and
+                                         agents capable of language is through emergent communication. The                        measuring emergent communication that increases the robustness
+                                                                                                                                  of emergent communication research on the way to developing
+                                         Proc. of the 18th International Conference on Autonomous Agents and Multiagent Systems   agents that communicate with humans.
+                                         (AAMAS 2019), N. Agmon, M. E. Taylor, E. Elkind, M. Veloso (eds.), May 13–17, 2019,
+                                         Montreal, Canada. © 2019 International Foundation for Autonomous Agents and
+                                         Multiagent Systems (www.ifaamas.org). All rights reserved.
+    In this paper, we take a step in this direction by analyzing some      A1 , ..., A N and N sets of observations O1 , ..., ON , one each per
+intuitive metrics and tests that have been used in the recent liter-       agent. To choose actions, each agent i uses a stochastic policy
+ature for measuring emergent communication. In particular, we              π θ i : Oi × Ai 7→ [0, 1], which produces the next state according to
+show that some of these metrics, including speaker consistency             the state transition function T : S×A1 ×· · ·×A N 7→ S. Each agent
+[21] and simply examining the agents’ policies qualitatively, can be       i obtains rewards as a function of the state and agent’s action r i : S×
+misleading if not properly understood. We use a simple class of ma-        A1 × · · · × A N 7→ R, and receives a private observation correlated
+trix games augmented with a bidirectional communication channel,           with the state oi : S 7→ Oi . The initial states are determined by a
+which we call Matrix Communication Games (MCGs), to study the              distribution ρ : S 7→ [0, 1]. Each agent i aims to maximize its own
+                                                                           total expected return Ri = Tt=0 γ t r it where γ is a discount factor
+                                                                                                         Í
+emergence of communication among deep RL agents. MCGs are
+simple and efficient for learning, and have the appealing property         and T is the time horizon.
+that the resulting communication policies are interpretable relative           More specifically, in the games we consider the action space Ai
+to more complex gridworld environments.                                    for each agent i can be subdivided into disjoint environment actions
+    To aid in our analysis, we categorize emergent communication           Aie , and communication actions Aim , such that Aie ∪ Aim = Ai
+metrics into two broad classes: those that measure positive signaling,     and Aie ∩ Aim = ∅. Environment actions are those that have a di-
+which indicates that an agent is sending messages that are related         rect effect on the environment dynamics and the rewards obtained
+in some way with its observation or action; and those that measure         by the agent. We model each agent’s communication action as a
+positive listening, indicating that the messages are influencing the       sequence of discrete symbols sent over a dedicated communication
+agents’ behaviour in some way. Both positive signaling and positive        channel, which are observed by the other agents at the next time
+listening are desirable; we want to develop communicative agents           step. Communication actions do not affect the environment dynam-
+that can both speak about their world and intentions, and can              ics (other than being observed by the other agent), and incur a fixed
+interpret the messages of others and respond accordingly. While            cost rc ∈ R <0 . In our paper, we consider the cheap talk setting [12]
+intuitively it might seem that positive listening is a prerequisite for    where rc = 0, and leave an examination of costly signaling (e.g.
+positive signaling (otherwise, why would the agent signal in the           [16, 46]) to future work.
+first place?), we show that, surprisingly, this is not always true for
+deep RL agents; it is possible for positive signaling to emerge as a       2.2    Policy gradient methods
+byproduct of the task and policy architecture.                             Policy gradient methods are a popular choice for a variety of RL
+    Our main contributions are as follows.                                 tasks. The main idea is to directly adjust the parameters θ of the
+    • We briefly survey the existing metrics for detecting emergent        policy in order to maximize the objective J (θ ) = Es∼p π ,a∼π θ [R] by
+      communication in the deep RL community, and find that the            taking steps in the direction of ∇θ J (θ ). The gradient of the policy
+      majority measure positive signaling rather than positive             can be written as [40]:
+      listening.
+                                                                                     ∇θ J (θ ) = Es∼p π ,a∼π θ [∇θ log π θ (a|s)Q π (s, a)],    (1)
+    • We run experiments on MCGs and show that agents can
+      exhibit positive signaling without positive listening. This          where pπ is the state distribution, and Q π (s, a) is an estimate of
+      lack of positive listening falsifies the hypothesis that the         the expected value of taking action a in state s.
+      agents are communicating to share information to increase               The policy gradient theorem has given rise to several practical
+      the reward of both agents. Thus, positive listening is an            algorithms, which often differ in how they estimate Q π . In the
+                                                                           simplest case, one can use a sample return R t = Ti=t γ i−t r i , which
+                                                                                                                             Í
+      important tool for understanding the purpose of emergent
+      communication.                                                       leads to the REINFORCE algorithm [43]. We use the REINFORCE
+    • We propose a metric, the causal influence of communication           algorithm in our work, as it is simple, and has been by far the most
+      (CIC), designed to directly measure positive listening. Note         popular approach among emergent communication works using
+      that a variant of CIC was developed concurrently by [21],            deep RL [6, 9, 18, 21, 23–25, 39].
+      where they showed that agents trained with causal influence
+      as an additional reward performed better in several multi-           3 EMERGENT COMMUNICATION METRICS
+      agent settings. We adopt their terminology in this paper.
+                                                                           3.1 A categorization of metrics
+    • We discuss other metrics and tests for measuring emergent
+      communication, and make recommendations for future work              When analyzing metrics to measure a certain quantity, it is impor-
+      in this area.1                                                       tant to ask what that quantity actually represents. What does it
+                                                                           mean for agents to be communicating with each other in a rein-
+2 BACKGROUND                                                               forcement learning setting? We take a pragmatic perspective, and
+                                                                           identify two broad prerequisites for communication to occur: (1)
+2.1 Markov games                                                           one agent needs to produce a signal that is in some way correlated
+The MCG environment in this paper can be considered a multi-               with its observation or intended action, and (2) another agent needs
+agent extension of partially observable Markov decision processes          to update its belief or alter its behaviour after observing the signal.
+(POMDPs) called partially observable Markov games [29]. A Markov              We define positive signaling as behaviour that satisfies criterion
+game for N agents is defined by a set of states S, N sets of actions       (1), and positive listening as behaviour that satisfies criterion (2). To
+                                                                           formalize these intuitions, we provide very broad definitions these
+1 Code available at github.com/facebookresearch/measuring-emergent-comm.
+                                                                           terms below.
+    Definition 3.1 (Positive Signaling). Let m̄ = (m 0 , m 1 , ..., mT ) be      metrics for measuring the quality of emergent communication pro-
+the sequence of messages sent by an agent over the course of a                   tocols. One of the reasons for our adoption of MCGs is that they
+trajectory of length T , and similarly for ō = (o 0 , o 1 , ..., ot ) and       are in some ways the simplest situated environment (agents have
+ā = (a 0 , a 1 , ..., aT ). An RL agent exhibits positive signaling if either   non-communicative interactions that affect each other’s reward).
+m̄ ̸⊥
+    ⊥ ō or m̄ ̸⊥   ⊥ ā, i.e. if m̄ is statistically dependent (indicated by
+                                                                                    Qualitative analysis of messages given states. An equally common
+ ⊥ ) in some way with either ā or ō.
+̸⊥
+                                                                                 practice is to analyze the communication policies qualitatively, to
+    Definition 3.2 (Positive Listening). An RL agent exhibits positive           interpret what the agents are saying. This is done most commonly
+listening if there exists a message generated by another agent m ∈               by visualizing which messages were sent with which inputs or
+Aim , for some i ∈ {1, ..., N } such that ||π (o, 0) − π (o, m)||τ > 0,          observations [4, 18, 21, 25, 39]. For very simple environments, such
+where 0 is the 0 vector, and || · ||τ is a distance in the space of              as the riddle game [14], the authors are able to make a full tree
+expected trajectories followed by π .                                            describing the agents’ policies for all states in the game. However,
+                                                                                 for other games with larger state spaces, papers simply show some
+    Evidently, these definitions are very loose, and most agents in              messages and inputs that the authors observed to have high co-
+an multi-agent environment with the capacity to communicate will                 occurrence. While this is a useful practice to understand the agents’
+satisfy them to some degree. However, we can speak of the degree                 behaviour, it is usually only testing positive signaling, as it does
+or extent to which an agent exhibits positive signaling or positive              not analyze how the message changes the other agent’s behaviour.
+listening behaviour, and measure this using metrics or tests. Thus,
+these terms are useful for categorizing different metrics of emergent               Speaker consistency. Some papers quantify the degree of align-
+communication.                                                                   ment between an agent’s messages and its actions [4, 21]. One such
+                                                                                 example is the speaker consistency (SC), proposed in [21]. The eas-
+3.2     What metrics are being used now?                                         iest way to understand the speaker consistency is as the mutual
+We now conduct a brief review of the existing metrics being used                 information between an agent’s message and its future action:
+in papers applying deep reinforcement learning to the problem of                                     Õ Õ                       p(a, m)
+                                                                                              SC =                p(a, m) log                    (2)
+emergent communication, and categorize them as being indicative                                          e      m             p(a)p(m)
+                                                                                                         a ∈A m ∈A
+of positive signaling or positive listening. We focus on metrics that
+                                                                                                                             1 {act=a,comm=m } are cal-
+                                                                                                                         ÍN
+are the most prevalent in the recent deep RL literature to give an               where the probabilities p(a, m) = N1 i=1
+overview of how current research in this area is being conducted.                culated empirically by averaging (message, action) co-occurrences
+From our review, we find that only one metric (instantaneous coor-               over the N episodes in each epoch.2 We provide an algorithm for
+dination) is explicitly designed to measure positive listening, and              calculating SC in the Appendix.
+that it has several shortcomings. This motivates our definition of a                The speaker consistency is a measure of positive signaling, as it
+new metric, the causal influence of communication, in Section 3.3.               indicates a statistical relationship between the messages and actions
+                                                                                 of an agent, and does not tell us anything about how these messages
+   Reward and task completion. As previously mentioned, in all pa-               are interpreted. On the surface, SC is a useful measure of commu-
+pers we surveyed, the authors either measure the task completion                 nication because it tells us how much an agent’s message reduces
+% of their proposed algorithm (for referential games [11, 24, 25]), or           the uncertainty about its subsequent action. Importantly, when an
+show that adding a communication channel increases the agents’ re-               agent learns a deterministic policy independent of observations, the
+ward (for games where the agents interact with the world [4, 7, 39]).            SC will be 0. Because of these appealing properties, we primarily
+For referential games [9, 24], this is an adequate measure of com-               focus on SC as our metric of comparison in our experiments.
+municative performance because these games are non-situated. In
+the terminology of [42], a non-situated environment (or simulation)                Context independence. Context independence (CI), introduced
+is one where agents’ actions consist solely of sending and receiving             by [4], is designed to measure the degree of alignment between an
+signals. Non-embodied agents in these environments do not have                   agent’s messages and task concepts (corresponding to a particular
+non-communicative actions that affect other objects or each other.               part of the input space). It is calculated as follows:
+Thus, if task success increases in this setting, it is likely because                                           ∀c : mc = arg max pcm (c |m)
+the sender agent has developed a better communication protocol,                                                                m
+                                                                                                                1 Õ
+or the listener agent has become better at understanding it.                                 CI (pcm , pmc ) =        pmc (m |c) · pcm (c |mc )
+                                                                                                                            c
+   In situated environments [42], where agents have non-                                                       |C| c
+communicative actions that affect the environment and/or modify
+                                                                                 where C is the space of all concepts, pcm (c |m) is the conditional
+their internal state, an increase in reward is still a loose measure of
+                                                                                 probability of a concept given a message, and similarly for pmc (m|c).
+both positive listening and positive signaling. If adding a commu-
+                                                                                 This quantity relies on having a well-defined notion of ‘concept’
+nication channel leads to an increase in reward, then agents must
+                                                                                 (in [4], this corresponds e.g. to the number and colour of objects),
+be using that channel to transmit some kind of information that is
+                                                                                 and a way of estimating pcm and pmc ([4] use an IBM model 1 [5]).
+affecting their behaviour. However, when comparing multiple algo-
+                                                                                    Context independence captures the same intuition as speaker
+rithms on the same environment, an increase in reward may not
+                                                                                 consistency: if a speaker is consistently using a specific word to
+necessarily indicate improved communication of one algorithm over
+                                                                                 refer to a specific concept, then communication has most likely
+another, as this increase could be simply due to the improved action
+policies. Thus, in this paper we advocate for more fine-grained                  2 The SC metric in [21] is a normalized version of the metric shown here.
+emerged. Thus, it is also a measure of positive signaling. The differ-     Algorithm 1: One-step causal influence of communication.
+ence is that CI emphasizes that a single symbol should represent a          Data: Agent policy π 1 , other agent policy π 2 , possible
+certain concept or input, whereas a high speaker consistency can                   messages m̄ = (m 0 , ..., m M −1 ), number of test games T .
+be obtained using a set of symbols for each input, so long as this          CIC = 0
+set of symbols is (roughly) disjoint for different inputs.                  for i ∈ {0, ...,T − 1} do
+                                                                                Generate new state S, observations O.
+   Entropy of message distribution. Another common practice is to
+                                                                                // Intervene by changing message m j
+measure the perplexity or entropy (H (π c )) of the distribution over
+                                                                                for j ∈ {0, ..., M − 1} do
+messages for different inputs [7, 11, 18]. Different papers interpret
+                                                                                    p(m j ) ← π 2 (m j |o 2 ), p(a|m j ) ← π 1 (a|o 1 , m j )
+the meaning of this quantity differently, but generally if the message
+                                                                                    p(a, m j ) = p(a|m j )p(m j )
+distribution has low entropy for a given input, then the speaker is
+                                                                                    p(a) = m ∈Am p(a, m)
+                                                                                             Í
+consistently using the same message to describe that input. This                                                            p(a,m )
+                                                                                     CIC += 1/T · a ∈A e p(a, m j ) log p(a)p(mj )
+                                                                                                     Í
+differs from the speaker consistency metric, as it does not measure                                                                  j
+whether or not the speaker is using a different message for each                end
+input. The entropy actually measures neither positive signaling              end
+(an agent that always outputs the same message, independent of
+observation and action, will have low entropy), nor positive listen-
+ing (it does not take into account the other agent’s response to the      opponent. We call this one-step causal influence. The one-step
+messages), which gives it questionable utility as a metric.               CIC is calculated using the mutual information between an agent’s
+   Instantaneous coordination. Another metric considered in [21] is       message and the other agent’s action, similarly as for IC (cf. Eq
+instantaneous coordination (IC). IC uses the same formula as for          2), however the probabilities p(a, m) = π 1 (a|m)π 2 (m) represent
+SC (Eq. 2), except it calculates the mutual information between one       the change in the agent’s (π π 1 ) action probability distribution when
+agent’s message and the other agent’s action, again by averaging          intervening to change the message m spoken by the other agent (π 2 ).
+(message, action) co-occurrences over episodes (see Appendix for          In other words, the probabilities are normalized over each game,
+algorithm). IC is a measure of positive listening; however, because       rather than across games. We describe in detail how to calculate
+of the way p(a, m) is calculated, it only detects cases where a mes-      the one-step CIC in Algorithm 1, and we discuss how CIC might be
+sage from one agent changes the other agent’s action regardless of        generalized to the multi-step case in Section 6.1. When calculating
+context.                                                                  the CIC, care must be taken that we condition on all the variables
+   To illustrate why this is undesirable, we describe a simple matrix     that can affect the other agent’s action, to avoid back-door paths
+communication game (MCG) example (see Section 4.1 for descrip-            [34]. In our setting this is easy, as our MCGs are not iterated (the
+tion) where IC would fail to detect positive listening. Let us draw       state and reward are independent of actions and states at previous
+the entries of the payoff matrix R ∈ R2×2 from a Gaussian N (0, 3)        timesteps).
+at each timestep (as we do in our experiments in Section 5), and fix
+agent 1 to always truthfully signal the action it will take. In this      4 EXPERIMENTAL SETUP
+case, the optimal policy for agent 2 is to select the best response       4.1 Matrix Communication Games
+to agent 1’s action, which it knows exactly because agent 1 always        Our work is based on a simple class of games called matrix games,
+signals truthfully. Depending on the payoff matrix R, sometimes the       where each agent i’s reward r it at time step t is determined via
+best response will be to take action 1, and sometimes to take action                                                          e        e
+                                                                          lookup into a fixed payoff matrix Rit ∈ R | A1 |×···×| A N | for each
+2. Clearly agent 2’s policy exhibits significant positive listening (it
+changes its action depending on the message from agent 1 and the          agent, indexed by the agents’ actions (i.e. r it = Rit (at1 , ...atN )). We
+input). However, if R is drawn randomly, when averaged across             study emergent communication in an augmented version of matrix
+inputs agent 2 will take action 1 and 2 equally. The IC will then         games which we call matrix communication games (MCGs), where
+be 0 in expectation, since it calculates p(a, m) by averaging over        agents can send discrete, costless messages over a communication
+episodes and does not condition on the input R.                           channel before acting. In other words, MCGs are matrix games
+                                                                          where |Aim | > 0 for some i ∈ {0, ..., N }. MCGs are interesting to
+                                                                          study because they are the simplest form of game where agents
+3.3    Causal influence of communication                                  can both communicate with each other, and act in the environment.
+We now propose a metric that more directly measures positive              MCGs can be easily adapted to various settings (cooperative vs. non-
+listening, which we call the causal influence of communication            cooperative, fully vs. partially observable), are simple and efficient
+(CIC). This nomenclature follows concurrent work in [21], where           for learning, and the resulting communication policies are generally
+the authors also propose to train agents to maximize causal in-           interpretable. Variants of matrix games with communication have
+fluence (both of actions and of messages), with good results on a         been used to model emergent signaling in the fields of economics,
+number of domains. We recommend the reader consult [21] for a             game theory, and evolutionary biology [12, 19, 38, 42].
+more thorough examination of causal influence.                               In our variant of the game, two agents play an MCG in rounds. A
+    CIC measures the causal effect that one agent’s message has on        round begins with one agent communicating, and ends when both
+another agent’s behaviour. In the simplest case, we can measure           agents have acted and received a reward, at which point another
+the effect that an agent’s message has on the next action of the          payoff R t +1 = (R t1+1 , R t2+1 ) is selected. The agents observe both
+Figure 1: When comparing the speaker consistency (SC), context independence (CI), and entropy of the message policy (divided
+by 5) between agents who learned to signal (real c) and agents who message randomly (rand c), it appears as though the agents
+are communicating (note we expect a lower entropy for a communicating policy).
+
+
+payoff matrices and all messages sent that round. Communication
+occurs in turns;3 at each round, one agent is randomly chosen
+to speak first, and sends a message (a one-hot vector of length
+M = |Am |) to the other agent. That agent observes the message
+from the first agent, and can in turn send its own message. After this
+exchange, both agents act simultaneously, and receive a reward. We
+consider the non-iterated case, where the actions and messages from
+previous rounds are not observed.4 To simplify learning, we use
+this reward to update both the agent’s action and communication
+policies for that round.                                                                  Figure 2: Visualization of example learned policies for two
+   For the experiments in this paper, we consider the general-sum                         agents playing 2x2 MCGs (M = 4), averaged over 1000 test
+case, where agents are not strictly cooperative and may have com-                         games. Agent 2 learns to clearly signal its next action.
+peting objectives (i.e. R 1 , R 2 ). Note that this does not mean the
+agents are strictly competitive either; the agents have some partial
+common interest in the game which permits a degree of coordina-                           gives a small reward based on the entropy of the agent’s policies, as
+tion. See the Appendix for examples of matrix games. We vary the                          is common in the RL literature to encourage exploration [8, 37, 44].
+size of the payoff matrix from 2x2, to 4x4, to 8x8, and we provide a                      Each λi is a real-valued coefficient that we tune separately. We
+communication channel slightly larger than the number of actions                          provide full hyperparameter and training details in the Appendix.
+(M = 4, 6, and 10, respectively), so that the agents can in theory
+learn flexible communication policies.                                                    5     RESULTS
+                                                                                          We now train deep RL agents to play MCGs. We find that even
+4.2     Model and learning algorithm                                                      though our agents show strong indicators of communicating ac-
+We train our agents using an adaptation of the REINFORCE algo-                            cording to speaker consistency and qualitative analysis, this does
+rithm [43]. We represent the agents’ policies using a two-layer feed-                     not mean that the communication is useful. In fact, we show that
+forward network (with parameters θ n ), with separate linear output                       this ‘communication’ occurs even if the messages are scrambled
+layers for the action a (θ a ), communication c (θ c ), and learned base-                 (replaced by a random message) before being observed.
+line V (θ v ). Let θ a = {θ a , θ n } be all the parameters of the action
+network giving rise to an action policy π θ a , and similarly for θ c                     5.1    Positive signaling with random payoffs
+and θ v (with outputs π θ c and V ). The objective for each agent can                         Fixed R setting. It is known that humans are able to use commu-
+be written as:                                                                            nication to obtain a higher reward in general-sum matrix games,
+J (θ ) =Jpol (θ a ) + λc Jpol (θ c ) + λent (Jent (θ a ) + Jent (θ c )) + λv Jv (θ v ),   such as the Prisoner’s Dilemma [36]. To our knowledge, whether
+                                                                                          RL agents can learn to communicate for various MCGs remains
+where θ = {θ n , θ a , θ c , θ v }. This can be broken down as follows:
+                                                                                          an open question. So, we first conduct an experiment where we
+Jpol (θ a ) = Eπθ a [− log πθ a (a|o) · (r − V (o))] is the normal REIN-
+                                                                                          train two REINFORCE agents to play MCGs where the payoff R t
+FORCE update for the action probabilities, with the learned value
+                                                                                          is fixed for every timestep t. We vary the size of the payoff matrix
+function V (o), o ∈ O as a baseline to reduce the variance. Jpol (θ c )
+                                                                                          and communication channel as described in Section 4.1. We find
+takes the same form, except V only uses information available to the
+                                                                                          experimentally that, for every payoff matrix we tried, the agents
+agent at the time it sends its message, which may not include the
+                                                                                          don’t learn to communicate. Instead, when there is partial common
+message of the other agent (there is no separate value function for
+                                                                                          interest, agents collapse to executing a single action (even with
+the communication output). This value function is updated using
+                                                                                          a well-tuned λent ), and in zero-sum games they cycle between
+the squared loss Jv (θ v ) = (r − V (o))2 . The entropy bonus Jent (θ )
+                                                                                          actions without communicating. Intuitively, this makes sense; the
+3 The exact form of communication is not important for our results; we have observed
+                                                                                          main utility in an agent learning to communicate in this setting is in
+similar behaviour when agents speak simultaneously, or if only one agent speaks.
+4 In Section 5.3 we show that the iterated case where agents (trained using the A2C       reducing the other agent’s uncertainty about their action. Evidently,
+algorithm [30]) have a memory of previous interactions produces similar behaviour.        when always playing the same payoff it is easier for these naïve
+  Payoff     min(CIC)       Average          % games with
+   Size                       CIC         CIC < 1.02 · min(CIC)
+   2x2         1.386      1.408 ± 0.002        89.3 ± 0.6%
+   4x4         1.792      1.797 ± 0.001        97.9 ± 0.4%
+   8x8         2.303      2.303 ± 0.001        99.9 ± 0.1%
+Table 1: Causal influence values for various matrix sizes, cal-
+culated over 1000 test games. In all cases, the average CIC is
+very close to the minimum CIC (when changing the message
+has no effect on the action distribution).
+
+
+
+  Experiments        2x2 payoff      4x4 payoff      8x8 payoff
+   Scrambled c      0.198 ± 0.038   0.487 ± 0.051   0.597 ± 0.091       Figure 3: Activations of the last layer of the policy network
+  Separate c net    0.028 ± 0.002   0.124 ± 0.011   0.020 ± 0.019       for both the standard architecture (left), and when using a
+  No c training     0.171 ± 0.033   0.428 ± 0.025   0.686 ± 0.049       separate network for communication (right). Calculated on
+     Default        0.202 ± 0.040   0.510 ± 0.094   0.541 ± 0.090       100 random 2x2 games, and reduced to 3D using PCA.
+Table 2: SC values for the randomized R setting. ‘Scrambled
+c’ is when the messages are replaced by a random message                5.2    Positive signaling ̸=⇒ positive listening
+before being observed, ‘Separate c net’ is when the action              It turns out that, in the randomized R setting, the communication
+and message networks have no shared parameters, and ‘No                 has very little effect on the agents’ behaviour. We show this in two
+c training’ is when λc = 0.                                             ways. First, we examine the trained policies directly to see how
+                                                                        altering the message in various games changes the resulting action
+                                                                        selection, using the CIC metric. We calculate the CIC over 1000 test
+                                                                        games, and show the results in Table 1. We find that, for the vast
+agents to adapt to the actions of the opponent directly, rather than
+                                                                        majority of games, the message sent by an agent has no effect on
+learning a communication protocol.
+                                                                        the action of the opponent. Thus, communication is not having a
+   Randomized R setting. One way we can increase the uncertainty        significant effect on the training process.
+each agent has about the other’s action (with the hope of producing         Second, we conduct an experiment where we train the agents in
+emergent communication) is by randomizing the payoffs at each           the randomized R setting described above, except we scramble the
+round. In our next experiment, we train two agents on an MCG            messages received by both agents. That is, each agent outputs some
+where, at every round, each entry of the payoff matrix Rit is drawn     message c i , but we have both agents observe a different commu-
+from a Gaussian distribution N (µ, σ 2 ), with µ = 0 and σ 2 = 3.       nication c i′ , which has no relation to c i and is drawn uniformly at
+   As shown in Figure 1, in this randomized setting speaker consis-     random from the set of messages. Thus, there is no possibility for
+tency emerges. The SC for the generated messages is significantly       the agents’ messages to impact the learning whatsoever. However,
+greater than for random messages, which rules out the possibility       as shown in Table 2, the SC between the agents’ action and sent
+that the agents’ messages are simply acting as a random public          message (not the random replacement message) is still positive
+signal that the agents are using to condition their actions (as would   and indistinguishable from the SC in the regular MCG set-up. This
+be the case in a correlated equilibrium [3]). The CI is also higher     is convincing evidence that the correlation between actions and
+for the generated messages, and the entropy of the message distri-      communications does not emerge because the message are useful,
+bution is lower, both indicating that communication has emerged.        but rather as a byproduct of optimization.
+We also examine the policies qualitatively in Figure 2, and find that      Why is the SC positive? If the emergent communication is not
+one agent clearly learns to signal its intended action. One plausible   useful at all, why is the SC positive? To help us understand what the
+explanation for this phenomenon is that the agents have uncer-          policies are learning, we train agents according to the randomized R
+tainty about the intended action of the other agent, and receiving a    setting in Section 5.1, and we plot the activations of the last hidden
+high reward in these games requires agents to predict the intended      layer (values in the policy network after the last activation function)
+action of the opponent. An agent can do this in two ways: first by      for 100 inputs using principal component analysis (PCA) [35] in Fig-
+using the opponent’s payoff matrix (and its own) to determine what      ure 3. This shows us our policy network’s learned representations
+action they are likely to take to achieve a high reward, and second     of the data [26]. When using shared features (left), the network
+using the opponent’s message to predict their most likely action.       learns to separate the inputs based on which action the agent takes.
+When the payoff matrix is changing at each time step, predicting        This makes sense: in order to take the appropriate action for a given
+the action of the opponent conditioned solely on the payoff matrix      input, the representations need to be linearly separable at the last
+becomes significantly harder. Thus, the agents seem to learn to         layer of the network, since the action output layer has a linear
+leverage the communication channel to provide additional infor-         decision boundary [17]. This separation of representations does
+mation to the other agent, which is beneficial for both agents when     not occur in the last layer of a separate communication network,
+the game has partial common interest.                                   which provides further evidence for this explanation.
+Figure 4: Accuracy in predicting the opponent’s action using action classifier probes, for 2x2 payoffs (left), 4x4 payoffs (center),
+and 8x8 payoffs (right). ‘no c’ indicates that the other agent’s communication was not used to predict their action, and ‘from
+input’ indicates that a separate network was trained to predict the action (rather than using a linear model on top of the last
+hidden layer of the policy network).
+
+
+  Experiments         2x2 payoff       4x4 payoff       8x8 payoff          environment, using the A2C algorithm [30]. We keep the policy
+   Scrambled c       0.195 ± 0.059    0.127 ± 0.065    0.208 ± 0.067        architectures the same, except we give each agent a memory of the
+  Separate c net     0.016± 0.019     0.019 ± 0.011    0.000 ± 0.000        previous 5 rounds (the actions and the messages of both agents),
+     Default         0.169 ± 0.015    0.130 ± 0.055    0.269 ± 0.076        which is concatenated to the input at each round. We increase the
+                                                                            discount factor γ to 0.9. Changing our REINFORCE algorithm (Eq.
+Table 3: Speaker consistency values for different experi-
+                                                                            1) to A2C requires changing the way Q π is estimated; instead of
+ments in the iterated MCG case with A2C agents [30].
+                                                                            using the next reward, we use the n-step return (sum of n next
+   This separation of representations makes it easy for a relation-         rewards), with n = 5 [30]. The results are shown in Table 3. We can
+ship to emerge between an agent’s actions and messages, even if             see that the same general trend is present: there is positive SC in
+the parameters of the communication head are completely random;             the randomized R setting, even when scrambling the messages c;
+since the communication output layer also has a linear decision             however, the SC disappears when a different network is used to
+boundary, it is likely to separate based on intended actions to some        produce the messages.
+degree. Indeed, we find that SC emerges using our architecture
+when the communication parameters are not trained (Table 2).                6 DISCUSSION
+Further, when we re-train the agents using completely separate net-         6.1 How general is this analysis?
+works for the actions and messages, we find that the SC completely
+disappears (see Table 2), showing that it was indeed our choice of             Positive signaling without positive listening. An important ques-
+architecture that resulted in the emergent signaling behaviour.             tion is whether the behaviours observed in this paper are specific
+                                                                            to training our policy architecture on MCGs, and whether any of
+   Why aren’t the agents using the messages? We would imagine               these insights can be applied in other emergent communication
+that, even if the correlation between actions and messages emerged          settings. We conjecture that this could indeed happen whenever the
+accidentally, that this might still be useful for the agents in selecting   agent’s architecture uses shared feature learning layers between
+their action. After all, isn’t more information about the opponent          the action and communication outputs; policies will always learn
+strictly better? To answer this question, we use a set of action classi-    representations that separate the inputs based on the desired ac-
+fier probes, related to the linear classifier probes for understanding      tion, and this may lead to spurious correlations between an agent’s
+hidden layers of neural networks proposed in [1]. Specifically, in          messages and actions. Since sharing features is quite common in RL
+the randomized R setting, we train a neural network ‘probe’ to              (e.g. [20]), it is possible that this becomes an occasional occurrence
+predict the action of the opponent in the current round, based on           in emergent communication work.
+either part of the input (using 2-layer MLP probes) or part of the             However, our claim is not that this specific failure case will be
+last hidden layer of the policy network (using linear probes).              frequently observed; rather, our goal is to highlight the importance
+   The results are shown in Figure 4. We observe that removing the          of understanding what our metrics are measuring, and encourage
+opponent’s message from the input does not significantly reduce             emergent communication researchers to explore quantitative met-
+the accuracy in predicting the opponent’s action, both when using           rics for measuring the impact that the agents’ communication is
+a probe directly from the input and a probe from the last layer of          having on their behaviour (i.e. positive listening).
+the network. This suggests that the information being provided
+by the messages is redundant when compared to the information                  Scaling causal influence. In this paper, we focused on the one-step
+provided by the payoff matrix itself.                                       approximation to CIC, which only calculates the effect of an agent’s
+                                                                            message (which consists of one symbol) on the other agent’s next
+5.3    Results in the iterated MCG setting                                  action. While this is sufficient for the non-iterated MCG setting, as
+The results in our paper are not limited to the non-iterated case.          we move to more complex environments we will need to measure
+To show this, we run experiments on an iterated version of our              the effect of compositional messages on the long-term behaviour
+             Positive signaling        Positive listening
+  Metric   Sufficient? Necessary?    Sufficient? Necessary?     Remarks
+   SC           ✓           ✗            ✗∗           ✗         Not necessary for positive signaling, as there may be no relationship between the
+                                                                message and subsequent action (can communicate previous observations or actions).
+    CI         ✓             ✗           ✗∗           ✗         More restrictive than SC, punishes formation of synonyms.
+     πc)
+  H (π         ✗             ✗           ✗∗           ✗         Useful for diagnosing policy behaviour, but not as a metric.
+    IC         ✗             ✗           ✓            ✗∗        Since it is not state-dependent, IC can miss many positive listening relationships.
+   MIN         ✗             ✗           ✗∗           ✓                1 | | = 0, then no positive listening is present.
+                                                                If | |Wm
+    ∆r         ✓             ✗           ✓            ✗         Should always be measured, strong indicator that communication is present. But less
+                                                                applicable when comparing the communicative behaviour of two policies
+  Qual.        ✓            ✓            ✗∗            ✗        Very useful for understanding agent behaviour. Can come in many forms.
+  CIC          ✗            ✗∗           ✓             ✓        Should always be used to determine effect communication has on agent behaviour.
+Table 4: Summary of the metrics analyzed in this paper (∆r = increase in reward when adding a communication channel, Qual.
+= qualitative analysis of messages, and MIN = message input norm, detailed in Section 6.2). Asterisks (∗ ) mark relationships
+we have shown experimentally (Sections 5 and 6.2) or via counterexample (Section 3). See text for a more detailed explanation.
+
+
+of all other agents in the environment. In this case, calculating           is useful from the perspective of detecting positive signaling, but
+CIC naïvely using Algorithm 1 will be computationally expensive.            we reiterate that the observed relationships may be spurious.
+However, we can make this efficient via sampling; rather than iter-            There are other aspects of the environment that an agent could
+ating over all possible messages and all agents, the CIC could be           learn to signal about: an agent might send a message to get an-
+calculated by iterating over a small set of messages sampled from           other agent to perform an action, to share an observation it has
+the agent’s communication policy, and evaluating the change in              made, or to reveal the sequence of actions it has taken in the past.
+behaviour over finite time horizon for agents in some neighbour-            New metrics need to be developed to evaluate these possibilities.
+hood of the speaking agent. We leave a detailed exploration of this         We recommend researchers evaluate the quantities that are rel-
+direction to future work.                                                   evant for their environment or task. The crucial point is that, if
+                                                                            these quantities are measured by observing the agent’s behaviour
+6.2    Recommendations                                                      without causal intervention, detecting positive listening is difficult,
+                                                                            as evidenced by our experiments in Section 5. If a relationship is
+Here we provide recommendations as to when the metrics pre-                 observed between an agent’s messages and some quantity in the
+sented in Section 3 might be used to either detect whether commu-           environment, we recommend researchers investigate the causal rela-
+nication is emerging, or measure the difference in communication            tionship between these variables, by intervening to change in turn
+quality between algorithms. We also propose some other tests that           the environmental quantity and the agent’s message, and observing
+could be used for this purpose. We summarize our insights in Table          the impact on the other quantity over a number of episodes [10].
+4. In general, no single metric or test will tell the whole story, and         One way to tell conclusively that there is no positive listening is
+we advise using several of them to illuminate the agents’ behaviour.        to look at the weight matrix of the first layer of the policy network
+                                                                            (W 1 ), specifically the part that comes from the message inputs of
+   Detecting emergent communication. If our goal is to detect whether       the other agents (Wm1 ). If the norm of this part of the weight matrix
+communication is emerging at all, showing that adding a communi-            (the message input norm, MIN) is 0, then clearly no positive listening
+cation channel to a given algorithm leads to improved reward is a           is present, as the messages from the other agents cannot affect a
+sufficient indicator. However, it may not be necessary; agents may          given agent’s behaviour. However, just because ||Wm1 || > 0, does
+obtain a similar reward by coordinating via learned convention              not mean positive listening is present; in our experiments on MCGs,
+[28], rather than communication. In other words, communication              we found that this norm was of similar magnitude to the norm of
+may act as an alternate pathway for optimization. Detecting useful          the weights from the payoff matrix.
+communication is not as simple as testing if removing the commu-
+nication channel at test time leads to a decrease in reward; neural
+networks are notoriously sensitive to their input distribution [41],
+                                                                               Measuring improvement in communication. How should we judge
+and a change in this distribution (e.g. setting the messages to 0)
+                                                                            the quality of a learned communication protocol in a multi-agent
+may cause them to fail, even if the messages contain no useful
+                                                                            environment? Of course, this depends on the environment and
+information. We recommend instead using CIC and other causal
+                                                                            the objectives of the researcher. Often, researchers may want to
+metrics, discussed below.
+                                                                            show that their algorithm exhibits a new kind of communication
+   The variant of SC explored here only measures the one-step
+                                                                            (e.g. verbal agreements, compositional language, or deception). In
+relationship between an agent’s message and subsequent action.
+                                                                            these cases, it makes sense to use metrics targeted at measuring the
+In general, communication could influence the actions of agents
+                                                                            phenomenon in question. If the goal is to develop compositional
+further in the future than a single time step, and the language used
+                                                                            communication, as has been the case for several recent emergent
+by the agents may be compositional and temporally extended. This
+                                                                            communication papers [4, 18, 31], then it is perhaps sufficient to
+should be taken into account as we move towards more complex
+                                                                            evaluate using metrics designed to measure compositionality, such
+environments. In general, we acknowledge that speaker consistency
+as context independence [4]. These metrics will have to be devel-                         [7] Edward Choi, Angeliki Lazaridou, and Nando de Freitas. 2018. Compositional
+oped on a case-by-case basis, depending on the type of communi-                               Obverter Communication Learning From Raw Visual Input. arXiv preprint
+                                                                                              arXiv:1804.02341 (2018).
+cation under investigation.                                                               [8] Paul F Christiano, Jan Leike, Tom Brown, Miljan Martic, Shane Legg, and Dario
+   There may also be cases where we simply want to show that                                  Amodei. 2017. Deep reinforcement learning from human preferences. In Advances
+                                                                                              in Neural Information Processing Systems. 4299–4307.
+the learned communication protocol for a proposed algorithm has                           [9] Abhishek Das, Satwik Kottur, José MF Moura, Stefan Lee, and Dhruv Batra. 2017.
+a larger effect on agent behaviour than for previous algorithms.                              Learning cooperative visual dialog agents with deep reinforcement learning.
+Here, a variant of CIC should be used that measures the impact of                             arXiv preprint arXiv:1703.06585 (2017).
+                                                                                         [10] Tom Everitt, Pedro A Ortega, Elizabeth Barnes, and Shane Legg. 2019. Under-
+communication on the long-term behaviour of the other agents.                                 standing Agent Incentives using Causal Influence Diagrams, Part I: Single Action
+Another test one could run is measuring the difference in reward                              Settings. arXiv preprint arXiv:1902.09980 (2019).
+for each algorithm with and without communication. This should                           [11] Katrina Evtimova, Andrew Drozdov, Douwe Kiela, and Kyunghyun Cho. 2017.
+                                                                                              Emergent Communication in a Multi-Modal, Multi-Step Referential Game. arXiv
+be done by training each algorithm from scratch with and without                              preprint arXiv:1705.10369 (2017).
+communication, rather than removing the communication channel                            [12] Joseph Farrell and Matthew Rabin. 1996. Cheap talk. Journal of Economic
+                                                                                              perspectives 10, 3 (1996), 103–118.
+at test time, to avoid the problems of distributional shift mentioned                    [13] Jakob Foerster, Francis Song, Edward Hughes, Neil Burch, Iain Dunning, Shimon
+earlier in this section. Of course, since these metrics may be ex-                            Whiteson, Matthew Botvinick, and Michael Bowling. 2018. Bayesian action decod-
+ploitable, it is important to benchmark against a range of metrics                            ing for deep multi-agent reinforcement learning. arXiv preprint arXiv:1811.01458
+                                                                                              (2018).
+and tests to avoid overfitting.                                                          [14] Jakob N. Foerster, Yannis M. Assael1, Nando de Freitas, and Shimon Whiteson.
+                                                                                              2016. Learning to Communicate to Solve Riddles with Deep Distributed Recurrent
+                                                                                              Q-Networks. (2016).
+7    CONCLUSION                                                                          [15] Jon Gauthier and Igor Mordatch. 2016. A paradigm for situated and goal-driven
+                                                                                              language learning. arXiv preprint arXiv:1610.03585 (2016).
+In this paper, we have highlighted some of the challenges of mea-                        [16] Herbert Gintis, Eric Alden Smith, and Samuel Bowles. 2001. Costly signaling and
+suring emergent communication, namely that existing metrics for                               cooperation. Journal of theoretical biology 213, 1 (2001), 103–119.
+detecting positive signaling do not necessarily indicate the pres-                       [17] Ian Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley,
+                                                                                              Sherjil Ozair, Aaron Courville, and Yoshua Bengio. 2014. Generative adversarial
+ence of positive listening. In addition to measuring the reward and                           nets. In Advances in neural information processing systems.
+studying agent behaviour qualitatively, we advocate for investi-                         [18] Serhii Havrylov and Ivan Titov. 2017. Emergence of language with multi-agent
+                                                                                              games: learning to communicate with sequences of symbols. In Advances in
+gating the causal relationship between the agents’ messages and                               Neural Information Processing Systems. 2149–2159.
+other variables in the environment by performing interventions.                          [19] Simon M Huttegger, Brian Skyrms, Rory Smead, and Kevin JS Zollman. 2010.
+This gives rise to a family of metrics, including the CIC described                           Evolutionary dynamics of Lewis signaling games: signaling systems vs. partial
+                                                                                              pooling. Synthese 172, 1 (2010), 177.
+here, which evaluates the impact of an agent’s message on another                        [20] Max Jaderberg, Volodymyr Mnih, Wojciech Marian Czarnecki, Tom Schaul, Joel Z
+agent’s next action. An open question is how our insights can be                              Leibo, David Silver, and Koray Kavukcuoglu. 2016. Reinforcement learning with
+applied to evaluating agent communication with humans. Indeed,                                unsupervised auxiliary tasks. arXiv preprint arXiv:1611.05397 (2016).
+                                                                                         [21] Natasha Jaques, Angeliki Lazaridou, Edward Hughes, Caglar Gulcehre, Pedro A
+while there have been some methods proposed for understanding                                 Ortega, DJ Strouse, Joel Z Leibo, and Nando de Freitas. 2018. Intrinsic Social Mo-
+agent communication by ‘translating’ it to human language [2],                                tivation via Causal Influence in Multi-Agent RL. arXiv preprint arXiv:1810.08647
+                                                                                              (2018).
+this remains an open problem, and we leave an examination of this                        [22] Diederik P Kingma and Jimmy Ba. 2014. Adam: A method for stochastic opti-
+direction to future work.                                                                     mization. arXiv preprint arXiv:1412.6980 (2014).
+                                                                                         [23] Satwik Kottur, José MF Moura, Stefan Lee, and Dhruv Batra. 2017. Natural
+                                                                                              Language Does Not Emerge’Naturally’in Multi-Agent Dialog. arXiv preprint
+ACKNOWLEDGEMENTS                                                                              arXiv:1706.08502 (2017).
+                                                                                         [24] Angeliki Lazaridou, Karl Moritz Hermann, Karl Tuyls, and Stephen Clark. 2018.
+The authors would like to thank Ethan Perez, Ari Morcos, Alex                                 Emergence of linguistic communication from referential games with symbolic
+Peysakhovitch, Jean Harb, Evgeny Naumov, Michael Noukhovitch,                                 and pixel input. arXiv preprint arXiv:1804.03984 (2018).
+                                                                                         [25] Angeliki Lazaridou, Alexander Peysakhovich, and Marco Baroni. 2016. Multi-
+Max Smith, and other researchers at FAIR and MILA for discus-                                 agent cooperation and the emergence of (natural) language. arXiv preprint
+sions related to the paper and comments on early drafts. We thank                             arXiv:1612.07182 (2016).
+Natasha Jaques for answering our questions regarding the calcu-                          [26] Yann LeCun, Yoshua Bengio, and Geoffrey Hinton. 2015. Deep learning. nature
+                                                                                              521, 7553 (2015), 436.
+lation of instantaneous coordination. We also thank the Pytorch                          [27] Jason Lee, Kyunghyun Cho, Jason Weston, and Douwe Kiela. 2017. Emergent
+development team [33]. R.L. is supported by a Vanier Scholarship.                             translation in multi-agent communication. arXiv preprint arXiv:1710.06922 (2017).
+                                                                                         [28] Adam Lerer and Alexander Peysakhovich. 2018. Learning Social Conventions in
+                                                                                              Markov Games. arXiv preprint arXiv:1806.10071 (2018).
+REFERENCES                                                                               [29] Michael L Littman. 1994. Markov games as a framework for multi-agent re-
+                                                                                              inforcement learning. In Proceedings of the eleventh international conference on
+ [1] Guillaume Alain and Yoshua Bengio. 2016. Understanding intermediate layers               machine learning, Vol. 157. 157–163.
+     using linear classifier probes. arXiv preprint arXiv:1610.01644 (2016).             [30] Volodymyr Mnih, Adria Puigdomenech Badia, Mehdi Mirza, Alex Graves, Timo-
+ [2] Jacob Andreas, Anca Dragan, and Dan Klein. 2017. Translating neuralese. arXiv            thy Lillicrap, Tim Harley, David Silver, and Koray Kavukcuoglu. 2016. Asynchro-
+     preprint arXiv:1704.06960 (2017).                                                        nous methods for deep reinforcement learning. In International Conference on
+ [3] Robert J Aumann. 1974. Subjectivity and correlation in randomized strategies.            Machine Learning. 1928–1937.
+     Journal of mathematical Economics 1, 1 (1974), 67–96.                               [31] Igor Mordatch and Pieter Abbeel. 2017. Emergence of Grounded Compositional
+ [4] Ben Bogin, Mor Geva, and Jonathan Berant. 2018. Emergence of communication               Language in Multi-Agent Populations. arXiv preprint arXiv:1703.04908 (2017).
+     in an interactive world with consistent speakers. arXiv preprint arXiv:1809.00549   [32] Martin A Nowak and David C Krakauer. 1999. The evolution of language. Pro-
+     (2018).                                                                                  ceedings of the National Academy of Sciences 96, 14 (1999), 8028–8033.
+ [5] Peter F Brown, Vincent J Della Pietra, Stephen A Della Pietra, and Robert L         [33] Adam Paszke, Sam Gross, Soumith Chintala, Gregory Chanan, Edward Yang,
+     Mercer. 1993. The mathematics of statistical machine translation: Parameter              Zachary DeVito, Zeming Lin, Alban Desmaison, Luca Antiga, and Adam Lerer.
+     estimation. Computational linguistics 19, 2 (1993), 263–311.                             2017. Automatic differentiation in pytorch. (2017).
+ [6] Kris Cao, Angeliki Lazaridou, Marc Lanctot, Joel Z Leibo, Karl Tuyls, and Stephen   [34] Judea Pearl, Madelyn Glymour, and Nicholas P Jewell. 2016. Causal inference in
+     Clark. 2018. Emergent Communication through Negotiation. arXiv preprint                  statistics: a primer. John Wiley & Sons.
+     arXiv:1804.03980 (2018).
+[35] Karl Pearson. 1901. Principal components analysis. The London, Edinburgh, and       Algorithm 3: Speaker consistency (SC).
+     Dublin Philosophical Magazine and Journal of Science 6, 2 (1901), 559.
+[36] David Sally. 1995. Conversation and cooperation in social dilemmas: A meta-          Data: Agent policy π 1 , other agent policy π 2 , possible
+     analysis of experiments from 1958 to 1992. Rationality and society 7, 1 (1995),               messages m̄ = (m 0 , ..., m M −1 ), number of test games T .
+     58–92.
+[37] John Schulman, Sergey Levine, Pieter Abbeel, Michael Jordan, and Philipp Moritz.
+                                                                                          SC1 = 0, SC2 = 0
+     2015. Trust region policy optimization. In International Conference on Machine       // Initialize matrices P for tracking (message,
+     Learning. 1889–1897.                                                                     action) co-occurrences.
+[38] John M Smith. 1991. Honest signalling: The Philip Sidney game. Animal Behaviour
+     (1991).                                                                              P 1 = 0 |m |×|a | , P2 = 0 |m |×|a |
+[39] Sainbayar Sukhbaatar, Rob Fergus, et al. 2016. Learning multiagent communica-        for i ∈ {0, ...,T − 1} do
+     tion with backpropagation. In Advances in Neural Information Processing Systems.
+     2244–2252.                                                                                Generate new state S, observations O, payoffs R.
+[40] Richard S Sutton, David A McAllester, Satinder P Singh, and Yishay Mansour. 2000.        // Get agents messages and actions.
+     Policy gradient methods for reinforcement learning with function approximation.           (m 1 , m 2 ), (a 1 , a 2 ), (r 1 , r 2 ) ← EnvStep(S, O, R)
+     In Advances in neural information processing systems.
+[41] Christian Szegedy, Wojciech Zaremba, Ilya Sutskever, Joan Bruna, Dumitru Erhan,          // Update co-occurrence matrices
+     Ian Goodfellow, and Rob Fergus. 2013. Intriguing properties of neural networks.          P 1 [m 1 , a 1 ] += 1
+     arXiv preprint arXiv:1312.6199 (2013).
+[42] Kyle Wagner, James A Reggia, Juan Uriagereka, and Gerald S Wilkinson. 2003.
+                                                                                              P 2 [m 2 , a 2 ] += 1
+     Progress in the simulation of emergent communication and language. Adaptive          end
+     Behavior 11, 1 (2003), 37–69.                                                        for j ∈ {1, 2} do
+[43] Ronald J Williams. 1992. Simple statistical gradient-following algorithms for
+     connectionist reinforcement learning. Machine learning 8, 3-4 (1992), 229–256.           // Calculate probabilities from co-occurrence
+[44] Ronald J Williams and Jing Peng. 1991. Function optimization using connectionist               matrix.
+     reinforcement learning algorithms. Connection Science 3, 3 (1991), 241–268.
+[45] Ludwig Wittgenstein. 1953. Philosophical investigations. (1953).
+                                                                                              p j (a, m) = P j /T
+                                                                                              p j (a) = m ∈Am P j (a, m)
+                                                                                                          Í
+[46] Amotz Zahavi. 1975. Mate selection—a selection for a handicap. Journal of
+     theoretical Biology 53, 1 (1975), 205–214.                                               p j (m) = a ∈A e P j (a, m)
+                                                                                                           Í
+                                                                                              // Calculate mutual information.
+A     ADDITIONAL ALGORITHMS                                                                                                                       p j (a,m)
+                                                                                               SCj = a ∈A e m ∈Am p j (a, m) log p (a)p
+                                                                                                        Í            Í
+                                                                                                                                        j    j           (m)
+For clarity, we provide three additional algorithms related to our                        end
+paper here. Algorithm 2 describes a single iteration of a matrix                          return SC1 , SC2
+communication game (MCG), described in Section 4.1. Algorithms
+3 and 4 describe the calculation of the speaker consistency (SC) and
+instantaneous coordination (IC), respectively, for both agents. The                      Algorithm 4: Instantaneous coordination (IC).
+difference between Algorithms 3 and 4 is how the joint probabilities                      Data: Agent policy π 1 , other agent policy π 2 , possible
+are calculated: for SC, p(a, m) refers to the probability that agent                               messages m̄ = (m 0 , ..., m M −1 ), number of test games T .
+1 sends message m and then takes action a, while for IC it refers                         IC1 = 0, IC2 = 0
+to the probability that agent 1 sends message m and then agent 2                          // Initialize matrices P for tracking (message,
+takes action a.                                                                               action) co-occurrences.
+                                                                                          P 1 = 0 |m |×|a | , P2 = 0 |m |×|a |
+                                                                                          for i ∈ {0, ...,T − 1} do
+                                                                                               Generate new state S, observations O, payoffs R.
+ Algorithm 2: EnvStep (A single round of an MCG with turn-
+                                                                                              // Get agents messages and actions.
+ based communication.)
+                                                                                               (m 1 , m 2 ), (a 1 , a 2 ), (r 1 , r 2 ) ← EnvStep(S, O, R)
+  Data: Agent policies π 1 and π 2 , state S, payoff matrices                                 // Update co-occurrence matrices. Difference
+        R = (R 1 , R 2 ) and observations O = (o 1 , o 2 ).                                         with SC is index of m, a.
+  // Randomly select agent j to go first, j ∈ {1, 2}.                                         P 1 [m 1 , a 2 ] += 1
+  j ∼ Bernoulli(0.5) + 1                                                                      P 2 [m 2 , a 1 ] += 1
+  // Agent j sends a message m j given observation o j .                                  end
+  m j ← π j (m|o j )                                                                      for j ∈ {1, 2} do
+  // Agent 1 − j sends a message m 1−j given                                                  // Calculate probabilities from co-occurrence
+      observation o 1−j and agent j’s message.                                                      matrix.
+  m 1−j ← π 1−j (m|o 1−j , m j )                                                              p j (a, m) = P j /T
+  // Both agents act simultaneously.                                                          p j (a) = m ∈Am P j (a, m)
+                                                                                                          Í
+  a 1 ← π 1 (a|o 1 , m 1 , m 2 ), a 2 ← π 2 (a|o 2 , m 1 , m 2 )                              p j (m) = a ∈A e P j (a, m)
+                                                                                                           Í
+  // Agents receive reward                                                                    // Calculate mutual information.
+  r 1 ← R 1 [a 1 , a 2 ], r 2 ← R 2 [a 1 , a 2 ]                                                                                                 p j (a,m)
+                                                                                               ICj = a ∈A e m ∈Am p j (a, m) log p (a)p
+                                                                                                       Í             Í
+  return (m 1 , m 2 ), (a 1 , a 2 ), (r 1 , r 2 )                                                                                      j    j           (m)
+                                                                                          end
+                                                                                          return IC1 , IC2
+B ADDITIONAL RESULTS                                                     For tables where the numbers are calculated on test games after
+                                                                         the policy has been trained, we test for 1000 games per seed, for
+B.1 Fixed matrix SC results
+                                                                         a total of 10,000 games. The exception for this is when measuring
+In Table 5, we show the results of measuring the speaker consistency     the causal influence in Table 1, where we use 5 random seeds.
+for various fixed matrices. We have observed that positive signaling
+does not emerge for fixed payoffs, even in games where it would          D    EXAMPLES OF MATRIX GAMES
+make sense as a coordination device (e.g. the Battle of the Sexes).
+                                                                         In Table 9, we provide three examples of popular matrix games.
+Since the agents are always playing the same payoff, they are able
+                                                                         Generally, agents playing this game will act simultaneously, and
+to adapt to the action of the opponent, and find a deterministic
+                                                                         receive a reward according to the payoff matrix. In general, the
+equilibrium (or cycle through actions for competitive games).
+                                                                         agents receive different rewards from each other. We augment
+                                                                         these games with a communication channel, where agents take
+          Experiment             Reward              SC                  turns sending discrete one-hot vectors to each other. For most of
+       Prisoner’s Dilemma      1.001 ± 0.000    0.000 ± 0.000            the experiments in our paper, the payoff matrices are randomly
+        Battle of the Sexes    1.500 ± 0.316    0.000 ± 0.000            generated according to a Gaussian distribution with mean 0 and
+        Matching Pennies       0.000 ± 0.512    0.011 ± 0.007            variance 3.
+       Random 2x2 payoff       1.286 ± 1.804    0.000 ± 0.000
+       Random 4x4 payoff       2.896 ± 1.721    0.001 ± 0.003
+       Random 8x8 payoff       3.997 ± 1.353    0.015 ± 0.025
+Table 5: Average reward and speaker consistency for some
+popular MCGs (see Table 9 for payoffs), as well as 20 differ-
+ent random fixed payoffs.
+
+
+
+
+B.2    Reward and SC results on iterated MCGs
+The results in our paper are not limited to the non-iterated case.
+To show this, we run experiments on an iterated version of our
+environment, using the A2C algorithm [30]. We keep the policy
+architectures the same, except we give each agent a memory of the
+previous 5 rounds (the actions and the messages of both agents),
+which is concatenated to the input at each round. We increase
+the value of the discount factor γ to 0.9, from 0. Changing our
+REINFORCE algorithm with a learned baseline to A2C requires
+changing the way Q π is estimated; instead of using the next reward,
+we use the n-step return, with n = 5 (see [30] for details). The
+results are shown in 5. We can see that the same general trend
+is present: there is positive SC in the randomized R setting, even
+when scrambling the messages c; however, the SC disappears when
+a different network is used to produce the messages.
+
+B.3    Full metric results for randomized R
+In Table 6, we show results for the speaker consistency, policy
+entropy, and context independence in the randomized R setting. In
+Table 7 we show the reward and speaker consistency evaluated over
+the last 10,000 games of training for the ablation studies performed
+in the paper.
+
+B.4    Result plots
+In Figure 6, we plot the SC for various matrix sizes in the randomized
+R setting.
+
+C     HYPERPARAMETER DETAILS
+We provide a table of the hyperparameter values below. For all
+the plots and tables in our paper, unless otherwise specified, we
+average across 10 random seeds, and plot twice the standard error.
+Figure 5: Results for the iterated setting using A2C. Plots of the reward (left) and speaker consistency (right), for the 2x2 (top),
+4x4 (middle), and 8x8 (bottom) sized payoff matrix.
+
+                                  2 × 2 payoffs                 4 × 4 payoffs                 8 × 8 payoffs
+                Metrics        Real c      Random c          Real c      Random c          Real c      Random c
+                 SC        0.187 ± 0.032 0.001 ± 0.001   0.476 ± 0.063 0.008 ± 0.001   0.541 ± 0.055 0.016 ± 0.001
+                H (π c )   1.116 ± 0.044 1.386 ± 0.001   0.934 ± 0.087 1.789 ± 0.001   0.855 ± 0.080 2.298 ± 0.001
+                  CI       0.408 ± 0.044 0.137 ± 0.001   0.369 ± 0.040 0.057 ± 0.001   0.182 ± 0.016 0.021 ± 0.001
+Table 6: Various metrics calculated in the random R setting described in Section 5.1. Results are calculated on 1000 test games
+over 10 random seeds. Averages are shown along with the standard error.
+                       Training                2x2 payoff                4x4 payoff                8x8 payoff
+                        setting           Reward         SC          Reward        SC          Reward        SC
+                      Scrambled c       1.42 ± 0.08 0.20 ± 0.08    1.60 ± 0.07 0.49 ± 0.11   1.13 ± 0.11 0.60 ± 0.19
+                     Separate c net     1.41 ± 0.08 0.03 ± 0.004   1.58 ± 0.12 0.12 ± 0.02   1.12 ± 0.13 0.02 ± 0.03
+                     No c training      1.39 ± 0.08 0.17 ± 0.07    1.65 ± 0.13 0.43 ± 0.05   1.07 ± 0.15 0.69 ± 0.10
+                        Default         1.43 ± 0.07 0.20 ± 0.08    1.63 ± 0.09 0.51 ± 0.19   1.12 ± 0.09 0.54 ± 0.18
+Table 7: The reward and speaker consistency values for different training settings across various matrix sizes. ‘Scrambled c’ is
+where the messages are replaced by a random message before being observed, ‘Separate c net’ is where the action and message
+networks have no shared parameters, and ‘No c training’ is where λcomm = 0. Error shown is twice the standard error.
+
+
+
+
+Figure 6: When given the ability to communicate, agents’ messages provide information about their subsequent action (from
+left to right: with 2x2, 4x4, and 8x8 payoff matrices). However, agents don’t do this if the message is randomly generated, as
+would be the case in a correlated equilibrium.
+
+                                  Hyperparameter                                      Value
+                                       λcomm                                            0.1
+                                        λent                                           0.01
+                                         λv                                             0.1
+                                    Learning rate                                     0.005
+                                     Batch size                                         64
+                                Reward discount (γ )                             0 (not iterated)
+                       Number of hidden units in policy network (40, 60, 100) for matrix sizes of (2x2, 4x4, 8x8)
+                                 Number of episodes                                  250,000
+                                     Optimizer                         ADAM [22] with default params
+                                                     Table 8: Hyperparameters
+
+
+                       Opera    Fight                              Stag    Rabbits                          Cooperate   Defect
+             Opera      2, 1     0, 0                    Stag      1, -1    -1, 1              Cooperate       3, 3      0, 4
+             Fight      0, 0     1, 2                   Rabbits    -1, 1    1, -1               Defect         4, 0      1, 1
+              (a) Battle of the sexes                     (b) Matching Pennies                      (c) Prisoner’s Dilemma
+
+Table 9: Three popular matrix games, to which we add a communication channel. The tuple of rewards (r 1 , r 2 ) indicates the
+rewards for agent 1 and agent 2, respectively.
+

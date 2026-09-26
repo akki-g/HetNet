@@ -1,0 +1,30 @@
+PROPOSAL ONLY — NOT APPLIED. Requires user approval after the failing gate is reviewed.
+
+This retains the legacy cached-gradient design and requests in-place zeroing
+explicitly at all three clear sites reached by the selected multiprocess
+HetNet per-class A2C path. It changes neither the loss, clipping, aggregation
+formula nor RMSprop. The policy-local Adam only clears gradients here.
+
+After approval and application, the deterministic probe must be extended to
+mirror the approved inner clearing behavior, and the actual HetNet training
+path must independently pass multiple-update named-gradient aggregation tests.
+Do not alter the diagnostic probe before recording its intact failure.
+
+--- a/multi_processing.py
++++ b/multi_processing.py
+@@
+-                self.trainer.optimizer.zero_grad()
++                self.trainer.optimizer.zero_grad(set_to_none=False)
+@@
+-        self.trainer.optimizer.zero_grad()
++        self.trainer.optimizer.zero_grad(set_to_none=False)
+--- a/hetgat/policy.py
++++ b/hetgat/policy.py
+@@ within A2CPolicy.batch_finish_per_class, immediately before total losses
+-        self.optimizer.zero_grad()
++        self.optimizer.zero_grad(set_to_none=False)
+
+These are review snippets, not an automatically applicable patch. The final
+approved commit must use the precise function context and record every changed
+site in DEVIATIONS.md. Fresh gradient transport each update is an alternative,
+but is a larger change to upstream multiprocessing and is not proposed here.

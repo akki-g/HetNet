@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "venv": "/Users/akshatguduru/Desktop/Thesis/HetNet/.venv-gate-a-clean",
+  "command": [
+    "/opt/homebrew/bin/uv",
+    "sync",
+    "--locked",
+    "--python",
+    "3.12"
+  ],
+  "uv_version": "uv 0.12.5 (Homebrew 2026-08-14 aarch64-apple-darwin)",
+  "cwd": "/Users/akshatguduru/Desktop/Thesis/HetNet",
+  "lock_sha256": "ba4a086080686baca8f7d490c01c63a4ad1a95619148b39d42412246341bd051",
+  "created_at": "20260926T035949Z",
+  "sync_exit_code": 0,
+  "imports_exit_code": 0,
+  "runtime": {
+    "cpu_tensor_device": "cpu",
+    "executable": "/Users/akshatguduru/Desktop/Thesis/HetNet/.venv-gate-a-clean/bin/python",
+    "machine": "arm64",
+    "platform": "macOS-26.2-arm64-arm-64bit",
+    "python": "3.12.13 (main, Jun 23 2026, 15:44:24) [Clang 22.1.3 ]",
+    "versions": {
+      "dgl": "2.1.0",
+      "gym": "0.26.2",
+      "numpy": "1.26.4",
+      "pytest": "8.3.5",
+      "torch": "2.2.1",
+      "torchdata": "0.7.1"
+    }
+  },
+  "passed": true,
+  "pyproject_sha256": "78eda3fa32ced842d4480d23aa63bccdd2378a2f135260f7fc53c6ee8e4d0080",
+  "logs": {
+    "uv_sync.log": "b9e4dc24b16baa1f6013870ed1b69d9fc4655dd9a25ee33d5bf32b7f96380128",
+    "imports.stdout.log": "9cf2c1f52645fb5c63ea328a6fe4a4739a6bc947b6e6972586b46bc735520634",
+    "imports.stderr.log": "ab717a501079520a864ac585c6819b605672bfe56923d21c94b1b0ab9aa7e56b"
+  }
+}

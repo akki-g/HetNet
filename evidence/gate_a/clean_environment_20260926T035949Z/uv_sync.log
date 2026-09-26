@@ -1,0 +1,50 @@
+Using CPython 3.12.13
+Creating virtual environment at: .venv-gate-a-clean
+Resolved 59 packages in 103ms
+Installed 46 packages in 886ms
+ + annotated-types==0.8.0
+ + bitarray==2.9.3
+ + bitstring==4.2.3
+ + certifi==2026.7.22
+ + charset-normalizer==3.5.1
+ + cloudpickle==3.1.2
+ + dgl==2.1.0
+ + filelock==4.0.3
+ + fsspec==2026.9.0
+ + gym==0.26.2
+ + gym-notices==0.1.0
+ + hetnet-reproduction==0.1.0 (from file:///Users/akshatguduru/Desktop/Thesis/HetNet)
+ + ic3net-envs==0.0.2 (from file:///Users/akshatguduru/Desktop/Thesis/HetNet/envs)
+ + idna==3.20
+ + iniconfig==2.3.0
+ + jinja2==3.1.6
+ + jsonpatch==1.33
+ + jsonpointer==3.1.1
+ + markupsafe==3.0.3
+ + mpmath==1.3.0
+ + networkx==3.7
+ + numpy==1.26.4
+ + packaging==26.3
+ + pandas==2.2.3
+ + pillow==12.3.0
+ + pluggy==1.6.0
+ + psutil==7.2.2
+ + pydantic==2.10.6
+ + pydantic-core==2.27.2
+ + pytest==8.3.5
+ + python-dateutil==2.9.0.post0
+ + pytz==2026.4
+ + pyyaml==6.0.2
+ + requests==2.34.2
+ + scipy==1.17.1
+ + six==1.17.0
+ + sympy==1.14.0
+ + torch==2.2.1
+ + torchdata==0.7.1
+ + tornado==6.5.10
+ + tqdm==4.70.1
+ + typing-extensions==4.16.0
+ + tzdata==2026.4
+ + urllib3==2.8.0
+ + visdom==0.2.4
+ + websocket-client==1.9.2

@@ -1,0 +1,7 @@
+{
+  "status": "INTENTIONALLY_INTERRUPTED",
+  "reason": "Two final gate-only edits raced the initial commit and launch; recorded source fingerprint differs from the final files. Interrupted before completing the first smoke. No architecture/learner failure inferred; attempt retained.",
+  "start_code_sha256": "d4f4d345ef1f7ebd286f1119564120d71f1ba1c3144182852c5a2d782aa4efdd",
+  "code_sha256_observed_after_interrupt": "5d23441e7c47457e31960d6e192cbb4e5eba8cc16b4ea5633492c2079cbb7d93",
+  "gate_passed": false
+}

@@ -6,7 +6,7 @@ Baseline: `upstream-bff9f7f` = `bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec`. Prese
 |---|---|---|---|
 | A | Python 3.12 inspect aliases; Gym 0.26 checker disabling; CPU CUDA-memory guards; one Torch thread/collector; pinned environment | `2fadecf` | Runtime compatibility; no architecture/learner change |
 | B | Seed Python/NumPy/Torch before construction; retain worker offsets | `7b334c1` | Makes initial parameters and trajectories reproducible |
-| C | JSONL metrics; correct external sample accounting; every-50/final checkpoints; provenance | Implemented; commit subject `record(C): log fresh epoch metrics and exact checkpoint signatures` | Measurement and artifact cadence; no forward/loss change |
+| C | JSONL metrics; correct external sample accounting; every-50/final checkpoints; provenance | `50d0c37`; added orchestration in `be2d223`, validation fixes in `2db8a62` | Measurement and artifact cadence; no forward/loss change |
 | D | Post-stack victim-only sensor-blinding hook, off by default | Planned for Phase B | Declared evaluation observation intervention; intact output preserved |
 | E | Reset from hashed distinct-cell evaluation banks | Planned for Phase B | Controlled, paired initial states |
 | F | Empty four agent-to-agent graph relations, off by default | Planned for Phase B | Declared message-removal evaluation intervention |

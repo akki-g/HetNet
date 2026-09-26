@@ -1,0 +1,136 @@
+{
+  "root": "runs/gate_a/full_20260926_01",
+  "purpose": "Preserved interrupted engineering attempt; not a passed gate or research result",
+  "files": [
+    {
+      "path": "actual_gradient_2P1A.json",
+      "bytes": 552969,
+      "sha256": "85afc40186a188af0505e9303b26de331c702ed0d9e2a3794b3ec93e164b15e2"
+    },
+    {
+      "path": "actual_gradient_2P1A.log",
+      "bytes": 2828,
+      "sha256": "7544de53024fd52ba0c358f2189c9e05e27b69b225d72ab152908e782c04fa53"
+    },
+    {
+      "path": "actual_gradient_2P1A_update1.npz",
+      "bytes": 5174420,
+      "sha256": "f328d669baaa61b277a2b6ad81223e64378a3e3044970a0398425fcb1c720391"
+    },
+    {
+      "path": "actual_gradient_2P1A_update2.npz",
+      "bytes": 5039666,
+      "sha256": "90275fe0e86b90169e63a6db86429dc115866329e3cdd896c762853febc67288"
+    },
+    {
+      "path": "actual_gradient_2P1A_update3.npz",
+      "bytes": 5092518,
+      "sha256": "374733c86dc78f605e0dcb63821ec92dcff41332ac710252e7c2f4ceb9d852f9"
+    },
+    {
+      "path": "actual_gradient_4P6A.json",
+      "bytes": 584789,
+      "sha256": "ec87f7d2cda2b62cb0702c873ffba3de581bee60c0f4a2cc41802d9c21c6053d"
+    },
+    {
+      "path": "actual_gradient_4P6A.log",
+      "bytes": 2828,
+      "sha256": "7996dc8f2fd16522acae30aa525ffb4ad5584cef36233dbbb3a28d98f62afba1"
+    },
+    {
+      "path": "actual_gradient_4P6A_update1.npz",
+      "bytes": 5953534,
+      "sha256": "c517897e3714331a0ade9c3f0e748a177335acc5b3575534bc33f584b6d4eaec"
+    },
+    {
+      "path": "actual_gradient_4P6A_update2.npz",
+      "bytes": 5950673,
+      "sha256": "5db58d88abf78205567e535e88d6fbc0eee6d50ff6d9e5fc14e87e87469ee760"
+    },
+    {
+      "path": "actual_gradient_4P6A_update3.npz",
+      "bytes": 5883448,
+      "sha256": "d4d7b563368d92cc42ec7fd8cfa929763f376c98d37e3dc9bb52262a623bfc06"
+    },
+    {
+      "path": "gate_a_report.json",
+      "bytes": 7782,
+      "sha256": "47fd6eb75373c751ce40c082ab143e5c7f6cfeceeb7814916cc1a83417d994b8"
+    },
+    {
+      "path": "gradient_probe.json",
+      "bytes": 13178,
+      "sha256": "6d7b89a9114cc63d5a3e4d6c26e25a648c5e5fbbe02cbf36b5821ba2c690fbf3"
+    },
+    {
+      "path": "gradient_probe.log",
+      "bytes": 738,
+      "sha256": "e530b1ea8c1ec3262f66c19d647cc0193885bf8554afe7af5c70d6ce77243548"
+    },
+    {
+      "path": "interruption_note.json",
+      "bytes": 512,
+      "sha256": "e0c41b3f8a8537dbfe624ddaf63e57d84aa6cfc3e3ffbbfcbd8bee47b8b0add9"
+    },
+    {
+      "path": "preflight.log",
+      "bytes": 612,
+      "sha256": "aa714308100523b975618fe4828fd2e56698c52529e9dfa4852f31063d78136b"
+    },
+    {
+      "path": "preflight.xml",
+      "bytes": 638,
+      "sha256": "de020c0f2469c2d6025c277ae3ad73d634c36adf31690f1770b6c74cb526bfe8"
+    },
+    {
+      "path": "smoke_manifest.json",
+      "bytes": 2435,
+      "sha256": "ed1dbc9599d048a34e0ef1ea9a6c0d58ad0649236c770a356e837fb6bc50a1b2"
+    },
+    {
+      "path": "smokes/2P1A_np1/epoch_signatures.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "smokes/2P1A_np1/initial_signature.json",
+      "bytes": 16739,
+      "sha256": "4716e3f3cc561c84cce227bfee55eb8b93cab85a02a4687766ce865fb1fcf3b7"
+    },
+    {
+      "path": "smokes/2P1A_np1/metrics.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "smokes/2P1A_np1/resolved_args.json",
+      "bytes": 1933,
+      "sha256": "f0536edc9e183390ae65e9075e813947f1e67175e6c1296813e34f4a2ca363dd"
+    },
+    {
+      "path": "smokes/2P1A_np1/stdout.log",
+      "bytes": 2754,
+      "sha256": "754a5e436bd7dd9ab72bff76febbbfe9b10db8a9ceb1c7609f9c11fd87c02a40"
+    },
+    {
+      "path": "unit_contracts.log",
+      "bytes": 523,
+      "sha256": "60c6f17d3ca311815465f7503d20e7a54e3981069e55b60f66be987443afe846"
+    },
+    {
+      "path": "unit_contracts.xml",
+      "bytes": 2206,
+      "sha256": "e18f88019689ade4086f0832c5f3babcd28c9e2f04f67d6508a6ad87f31e50d9"
+    },
+    {
+      "path": "upstream_diff.patch",
+      "bytes": 11931,
+      "sha256": "dd0d7052fe38f3b99e68a87e0faffb0680c997d696cb6fd8fffdceb6fc9f748a"
+    },
+    {
+      "path": "upstream_diff_inventory.json",
+      "bytes": 1693,
+      "sha256": "963c55a70e9d0d3ddcaac8930e4fe94a4a68939c4b12556d53aa5d7ad4187eb0"
+    }
+  ]
+}
