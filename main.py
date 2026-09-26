@@ -25,6 +25,7 @@ from trainer import Trainer
 from eval_trainer import EvalTrainer
 from utils import *
 from pathlib import Path
+from hetnet_ext.seeding import seed_everything
 
 if __name__ == "__main__":
     torch.multiprocessing.set_start_method('spawn')
@@ -166,8 +167,12 @@ parser.add_argument('--advantages_per_action', default=False, action='store_true
 parser.add_argument('--share_weights', default=False, action='store_true',
                     help='Share weights for hops')
 
+# Deviation B: even the environment used to register CLI arguments is constructed
+# after seeding. Worker run() subsequently retains its seed + id + 1 stream.
+resolved_seed = seed_everything(parser.parse_known_args()[0].seed)
 init_args_for_env(parser)
 args = parser.parse_args()
+args.seed = resolved_seed
 
 if args.comm_range_P == -1 or args.comm_range_A == -1:
     args.lossy_comm = False
@@ -221,9 +226,6 @@ if args.hetcomm:
     args.rnn_type = 'LSTM'
 
 parse_action_args(args)
-
-if args.seed == -1:
-    args.seed = np.random.randint(0, 10000)
 
 print(args)
 
@@ -332,9 +334,6 @@ if args.hetcomm:
     disp_trainer = Trainer(args, [policy_perception_net, policy_action_net], data.init(args.env_name, args, False))
 else:
     disp_trainer = Trainer(args, policy_net, data.init(args.env_name, args, False))
-
-torch.manual_seed(args.seed)
-np.random.seed(args.seed)
 
 disp_trainer.display = True
 

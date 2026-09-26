@@ -4,8 +4,8 @@ Baseline: `upstream-bff9f7f` = `bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec`. Prese
 
 | ID | Authorized scope | Status / commit | Scientific effect |
 |---|---|---|---|
-| A | Python 3.12 inspect aliases; Gym 0.26 checker disabling; CPU CUDA-memory guards; one Torch thread/collector; pinned environment | Implemented; commit subject `compat(A): pin Python 3.12 stack and preserve CPU execution` | Runtime compatibility; no architecture/learner change |
-| B | Seed Python/NumPy/Torch before construction; retain worker offsets | Planned | Makes initial parameters and trajectories reproducible |
+| A | Python 3.12 inspect aliases; Gym 0.26 checker disabling; CPU CUDA-memory guards; one Torch thread/collector; pinned environment | `2fadecf` | Runtime compatibility; no architecture/learner change |
+| B | Seed Python/NumPy/Torch before construction; retain worker offsets | Implemented; commit subject `repro(B): seed before model and environment construction` | Makes initial parameters and trajectories reproducible |
 | C | JSONL metrics; correct external sample accounting; every-50/final checkpoints; provenance | Planned | Measurement and artifact cadence; no forward/loss change |
 | D | Post-stack victim-only sensor-blinding hook, off by default | Planned for Phase B | Declared evaluation observation intervention; intact output preserved |
 | E | Reset from hashed distinct-cell evaluation banks | Planned for Phase B | Controlled, paired initial states |
