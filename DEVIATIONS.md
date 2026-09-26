@@ -11,6 +11,7 @@ Baseline: `upstream-bff9f7f` = `bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec`. Prese
 | E | Reset from hashed distinct-cell evaluation banks | Planned for Phase B | Controlled, paired initial states |
 | F | Empty four agent-to-agent graph relations, off by default | Planned for Phase B | Declared message-removal evaluation intervention |
 | G | Explicit in-place gradient clearing at exactly three selected-path sites | `0cfcea5`; user approved 26 September 2026 | Restores cached-gradient storage across updates; preserves clipping, fresh-gradient summation/division, RMSprop and architecture |
+| H | Local macOS setup and short endpoint calibration launcher, with hardware/provenance/resource evidence | User selected short pilots then measured-cost review on 26 September 2026; commit subject `local(H): prepare bounded Mac calibration pilots` | Execution platform and orchestration only; same per-epoch recipe, four collectors, CPU, original model and learner; no full-study scope reduction |
 
 The following are **not authorized repairs**: changing layers/heads, reward/termination, the original observation feature parser, blanket repair of intact observation slicing, new critic/loss/optimizer, singleton-P handling, or silently changing the recipe to fit a budget. The Torch-2.2 cached-gradient failure was diagnosed and explicitly approved for the narrow G repair below; no broader learner change is authorized.
 
@@ -31,3 +32,7 @@ The optional `--metrics_file` records each fresh `train_batch` statistic before 
 `resolved_args.json` includes hard-coded model critic/state choices in `resolved_model`; initial, every-epoch and checkpoint signatures cover names, shapes, dtypes, parameter values and buffers without consuming RNG. Checkpoint labels now mean completed epochs: 50, 100, …, 2000, with the final save performed once. Run evidence refuses overwrites. Resume has not been implemented; no claim of resumed-training reproducibility is made.
 
 Recorder tests verify exact fresh-batch accounting, copying against later mutation, hash detection of parameter/buffer changes, absence of RNG/state effects, and refusal to overwrite evidence. Full smoke/determinism/load checks are recorded separately in Gate A.
+
+## H: authorized Mac fallback for initial tests
+
+After reporting a Stokes issue, Akki explicitly selected **short pilots first, then review measured cost**, on a separate Mac available all day. This authorizes preparing local setup and the two 20-epoch endpoint calibrations before deciding longer computation. It does not authorize silently reducing the 21-run final study or treating partially trained policies as its final checkpoints. The Stokes-only launcher and original scientific sources remain unchanged; a separate local path replaces scheduler-specific orchestration with actual host evidence and bounded sequential execution. Fresh Gate A is required for the new source inventory. The proposed 300-epoch learning pilots remain a decision after calibration. See `MAC_RUNBOOK.md`.

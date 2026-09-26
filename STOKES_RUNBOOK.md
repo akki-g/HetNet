@@ -2,6 +2,8 @@
 
 This prepares original HetNet-Real/A2C PCP training. No cluster jobs have been submitted by this work. [Local Gate A passed](GATE_A_REPORT.md); calibration still requires verified live Stokes facts. Full Run 1 additionally requires Akki's confirmation of the measured budget. Run 2 is a later phase, with no submission script here.
 
+**Later Mac fallback:** Akki has selected short local pilots because Stokes is unavailable; use [MAC_RUNBOOK.md](MAC_RUNBOOK.md). The new Mac launcher/tests change the code inventory and require their own fresh Gate A. The original Stokes delivery snapshot is **`8e8c56e`**, with the archived matching pass. The instructions below describe that snapshot; a later checkout needs matching fresh gate evidence before Stokes use.
+
 Official sources, wheel evidence, and live unknowns are documented in [STOKES_SOURCE_AUDIT.md](research/STOKES_SOURCE_AUDIT.md). Public documentation establishes neither today's partition time cap nor this user's balance, account requirement, available concurrency, or compute connectivity. The existing Newton wrapper's resources are not Stokes measurements.
 
 ## 1. Freeze the scientific checkout

@@ -2,6 +2,8 @@
 
 **PASS**, completed 26 September 2026 at 04:45:33 UTC. The approved three-call gradient-storage repair is applied as deviation G (`0cfcea5`). All eleven required checks in the [machine-readable report](evidence/gate_a/full_20260926_02/gate_a_report.json) passed. Stokes calibration, full training, frozen evaluation, and Gate B have not run.
 
+This pass applies to the source inventory recorded below (delivery snapshot `8e8c56e`). Subsequent Mac fallback launcher/tests require a fresh Gate A on that revision and target. See [MAC_RUNBOOK.md](MAC_RUNBOOK.md); this historical report is not relabeled as validation of later source changes or M4 hardware.
+
 ## Scope and provenance
 
 This is engineering evidence for the original released HetNet-Real/A2C path with the separately recorded A/B/G/C deviations. It does not establish successful learning, frozen transfer, or an experimental result for the paper. The original architecture, class-wise attention, loss, clipping, and stepping RMSprop remain as recorded in the [reproduction ledger](REPRODUCTION_LEDGER.md).

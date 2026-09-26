@@ -1,0 +1,67 @@
+{
+  "recorded_at_utc": "2026-09-26T04:56:08.289891+00:00",
+  "purpose": "Identify current workspace host; not evidence about the proposed M4 Pro Mac mini",
+  "observations": {
+    "cpu_brand": {
+      "command": [
+        "sysctl",
+        "-n",
+        "machdep.cpu.brand_string"
+      ],
+      "stdout": "Apple M2"
+    },
+    "ram_bytes": {
+      "command": [
+        "sysctl",
+        "-n",
+        "hw.memsize"
+      ],
+      "stdout": "8589934592"
+    },
+    "physical_cores": {
+      "command": [
+        "sysctl",
+        "-n",
+        "hw.physicalcpu"
+      ],
+      "stdout": "8"
+    },
+    "logical_cores": {
+      "command": [
+        "sysctl",
+        "-n",
+        "hw.logicalcpu"
+      ],
+      "stdout": "8"
+    },
+    "performance_cores": {
+      "command": [
+        "sysctl",
+        "-n",
+        "hw.perflevel0.physicalcpu"
+      ],
+      "stdout": "4"
+    },
+    "efficiency_cores": {
+      "command": [
+        "sysctl",
+        "-n",
+        "hw.perflevel1.physicalcpu"
+      ],
+      "stdout": "4"
+    },
+    "os": {
+      "command": [
+        "sw_vers"
+      ],
+      "stdout": "ProductName:\t\tmacOS\nProductVersion:\t\t26.2\nBuildVersion:\t\t25C56"
+    },
+    "architecture": {
+      "command": [
+        "uname",
+        "-m"
+      ],
+      "stdout": "arm64"
+    }
+  }
+}
