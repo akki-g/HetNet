@@ -843,7 +843,7 @@ class A2CPolicy(object):
                     F.mse_loss(A_critic_list.double(), A_critic_target[i_b][:r_size].double()))
 
         # reset gradients
-        self.optimizer.zero_grad()
+        self.optimizer.zero_grad(set_to_none=False)
 
         # sum up over all batches
         total_policy_loss = torch.stack(batch_total_policy_loss).sum() / batch_size
