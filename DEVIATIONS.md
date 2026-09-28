@@ -36,3 +36,7 @@ Recorder tests verify exact fresh-batch accounting, copying against later mutati
 ## H: authorized Mac fallback for initial tests
 
 After reporting a Stokes issue, Akki explicitly selected **short pilots first, then review measured cost**, on a separate Mac available all day. This authorizes preparing local setup and the two 20-epoch endpoint calibrations before deciding longer computation. It does not authorize silently reducing the 21-run final study or treating partially trained policies as its final checkpoints. The Stokes-only launcher and original scientific sources remain unchanged; a separate local path replaces scheduler-specific orchestration with actual host evidence and bounded sequential execution. Fresh Gate A is required for the new source inventory. The proposed 300-epoch learning pilots remain a decision after calibration. See `MAC_RUNBOOK.md`.
+
+### C: Stokes restoration and read-only monitoring (28 September 2026)
+
+The user requested the full Stokes sweep with learning/progress metrics. Commit subject `infra(C): prepare Stokes sweep submission and progress monitoring` adds a stdlib submission driver, read-only progress snapshots/curves, their tests, and includes all delivered infrastructure tests in Gate A. The existing epoch recorder, original training sources, architecture, losses, stepping optimizer, observations, rewards and training recipe are unchanged. Current-source Gate A is rerun before delivery. The earlier Mac tooling remains available but is no longer the selected execution target.

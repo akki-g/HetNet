@@ -250,6 +250,8 @@ def main(argv=None):
         print("Gate A: checking recorder and infrastructure unit contracts", flush=True)
         unit_xml = output / "unit_contracts.xml"
         record = run_command([sys.executable, "-m", "pytest", "-q", "tests/test_recording.py", "tests/test_grid_slurm.py",
+                              "tests/test_local_setup.py", "tests/test_local_job.py",
+                              "tests/test_progress.py", "tests/test_submit_run1.py",
                               f"--junitxml={unit_xml}"], output / "unit_contracts.log", timeout=180, env=environment)
         record["name"] = "unit_contracts"
         report["check_records"].append(record)
