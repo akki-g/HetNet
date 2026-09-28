@@ -51,12 +51,25 @@ def checked_number(value: object, name: str, *, positive: bool = True) -> float:
     return float(value)
 
 
+def checked_partition_time_limit(value: object) -> float | str:
+    """Only a verified partition cap may use the exact JSON sentinel unlimited."""
+    if type(value) is str and value == "unlimited":
+        return value
+    return checked_number(value, "max_wall_time_seconds (positive finite number or 'unlimited')")
+
+
+def within_partition_time_limit(requested_seconds: object, maximum: object) -> bool:
+    requested = checked_number(requested_seconds, "finite job wall-time request")
+    limit = checked_partition_time_limit(maximum)
+    return limit == "unlimited" or requested <= limit
+
+
 def validate_preflight(data: dict) -> None:
     if data.get("schema_version") != 1 or data.get("verified") is not True:
         raise ValueError("Stokes preflight must be schema_version 1 with verified=true")
     if data.get("cluster", "").lower() != "stokes" or data.get("partition") != "normal":
         raise ValueError("Only Stokes / normal is authorized; do not switch clusters or queues")
-    checked_number(data.get("max_wall_time_seconds"), "max_wall_time_seconds")
+    checked_partition_time_limit(data.get("max_wall_time_seconds"))
     checked_number(data.get("remaining_core_hours"), "remaining_core_hours")
     for name in ("max_concurrent_jobs", "max_submit_jobs"):
         value = data.get(name)
@@ -153,7 +166,7 @@ def verify_allocation(preflight: dict, memory_gb: float, time_seconds: int,
     if int(fields.get("ArrayTaskThrottle", "0")) != array_concurrency:
         raise ValueError("Submit with an explicit --array=start-end%concurrency matching the declaration")
     actual_seconds = parse_slurm_time(fields.get("TimeLimit", "unknown"))
-    if actual_seconds != time_seconds or actual_seconds > preflight["max_wall_time_seconds"]:
+    if actual_seconds != time_seconds or not within_partition_time_limit(actual_seconds, preflight["max_wall_time_seconds"]):
         raise ValueError("Actual --time differs from declared resources or exceeds verified partition cap")
     actual_mb = int(os.environ.get("SLURM_MEM_PER_NODE", "0"))
     if actual_mb != math.ceil(memory_gb * 1024):

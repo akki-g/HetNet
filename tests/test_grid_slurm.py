@@ -89,6 +89,18 @@ class GridTests(unittest.TestCase):
 
 
 class GateTests(unittest.TestCase):
+    def test_partition_unlimited_is_explicit_and_job_requests_remain_finite(self):
+        data = {**preflight(), "max_wall_time_seconds": "unlimited"}
+        train_job.validate_preflight(data)
+        self.assertTrue(train_job.within_partition_time_limit(172800, "unlimited"))
+        self.assertFalse(train_job.within_partition_time_limit(172800, 86400))
+        for value in (None, True, 0, -1, "UNLIMITED", "infinite", "86400", "", float("inf"), float("nan")):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                train_job.validate_preflight({**data, "max_wall_time_seconds": value})
+        for value in ("unlimited", "UNLIMITED", float("inf"), float("nan"), 0):
+            with self.subTest(request=value), self.assertRaises(ValueError):
+                train_job.within_partition_time_limit(value, "unlimited")
+
     def test_unknown_cluster_limits_or_network_do_not_pass(self):
         train_job.validate_preflight(preflight())
         for key in ("max_wall_time_seconds", "remaining_core_hours", "max_concurrent_jobs",
@@ -126,6 +138,13 @@ class GateTests(unittest.TestCase):
                 return_value="NumCPUs=4 NumNodes=1 NumTasks=1 Partition=normal TimeLimit=01:00:00 ArrayTaskThrottle=2 Account=pi StdOut=/a StdErr=/b") as query:
             allocation = train_job.verify_allocation(preflight(), 4, 3600, 2)
             self.assertEqual(allocation["time_seconds"], 3600)
+            unlimited = {**preflight(), "max_wall_time_seconds": "unlimited"}
+            self.assertEqual(train_job.verify_allocation(unlimited, 4, 3600, 2)["time_seconds"], 3600)
+            finite_job = query.return_value
+            query.return_value = finite_job.replace("TimeLimit=01:00:00", "TimeLimit=UNLIMITED")
+            with self.assertRaises(ValueError):
+                train_job.verify_allocation(unlimited, 4, 3600, 2)
+            query.return_value = finite_job
             for mem, seconds, concurrency in ((8, 3600, 2), (4, 7200, 2), (4, 3600, 3)):
                 with self.assertRaises(ValueError):
                     train_job.verify_allocation(preflight(), mem, seconds, concurrency)
@@ -166,6 +185,18 @@ class GateTests(unittest.TestCase):
 
 
 class BudgetTests(unittest.TestCase):
+    def test_unlimited_partition_preserves_finite_measured_budget_requests(self):
+        data = {"p90_seconds_per_epoch": 100, "setup_seconds": 1, "checkpoint_save_seconds": 0,
+                "whole_job_peak_rss_gb": 2, "allocation_wall_seconds": 2001,
+                "residual_per_epoch_seconds": 0, "first_epoch_excess_seconds": 0}
+        projected = budget.project({"2P1A": data, "4P6A": data},
+                                   {**preflight(), "max_wall_time_seconds": "unlimited"},
+                                   evaluation_reserve=0, other_reserve=0)
+        self.assertTrue(projected["within_partition_cap"])
+        self.assertEqual(projected["max_wall_time_seconds"], "unlimited")
+        self.assertEqual(projected["array_uniform_time_seconds"], 260040)
+        self.assertEqual(projected["rows"][0]["estimated_wall_seconds"], 200001)
+
     def test_cost_counts_all_seeds_cores_saves_and_reserves(self):
         def endpoint(slope):
             return {"p90_seconds_per_epoch": slope, "setup_seconds": 10, "checkpoint_save_seconds": 2,

@@ -20,7 +20,8 @@ import subprocess
 import sys
 
 from .grid import ROOT, code_sha256, file_sha256, load_grid, run_directory
-from .train_job import read_json, utc_now, validate_approval, validate_gate, validate_preflight, write_json
+from .train_job import (read_json, utc_now, validate_approval, validate_gate, validate_preflight,
+                        within_partition_time_limit, write_json)
 
 
 def positive_integer(value, name: str) -> int:
@@ -64,7 +65,7 @@ def prepare(preflight_path: Path, gate_path: Path, approval_path: Path,
     seconds = positive_integer(budget.get("array_uniform_time_seconds"), "Approved uniform time")
     memory = positive_integer(budget.get("array_uniform_memory_gb"), "Approved uniform memory GiB")
     time_argument = slurm_time(seconds)
-    if seconds > preflight["max_wall_time_seconds"]:
+    if not within_partition_time_limit(seconds, preflight["max_wall_time_seconds"]):
         raise ValueError("Approved request exceeds the current verified partition time cap")
     counts = Counter(e.composition for e in entries)
     rows = budget.get("rows", [])

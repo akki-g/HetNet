@@ -110,6 +110,21 @@ class SubmissionTests(unittest.TestCase):
                 self.prepare()
             self.budget[field] = old
 
+    def test_unlimited_partition_still_submits_a_finite_calibrated_job_time(self):
+        self.preflight["max_wall_time_seconds"] = "unlimited"
+        self.budget["array_uniform_time_seconds"] = 172800
+        for row in self.budget["rows"]:
+            row["requested_wall_seconds"] = 172800
+        self.save_evidence()
+        plan = self.prepare()
+        self.assertIn("--time=2-00:00:00", plan["command"])
+        self.assertEqual(plan["environment"]["HETNET_TIME_SECONDS"], "172800")
+        for value in ("unlimited", float("inf"), float("nan")):
+            self.budget["array_uniform_time_seconds"] = value
+            self.save_evidence()
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                self.prepare()
+
     def test_partial_budget_missing_approval_and_stale_gate_are_rejected(self):
         original = deepcopy(self.budget)
         self.budget["rows"] = self.budget["rows"][:-1]

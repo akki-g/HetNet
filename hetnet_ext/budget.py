@@ -10,7 +10,7 @@ from pathlib import Path
 import statistics
 
 from .grid import DEFAULT_GRID, ROOT, code_sha256, file_sha256, load_grid
-from .train_job import checked_number, read_json, utc_now, validate_preflight
+from .train_job import checked_number, read_json, utc_now, validate_preflight, within_partition_time_limit
 
 
 ENDPOINTS = ("2P1A", "4P6A")
@@ -145,7 +145,7 @@ def project(calibrations: dict, preflight: dict, *, evaluation_reserve: float,
             "projected_total_core_hours": total, "remaining_core_hours": remaining,
             "percentage_of_remaining_balance": 100 * total / remaining,
             "threshold_exceeded": total > 4000 or total > 0.1 * remaining,
-            "within_partition_cap": all(r["requested_wall_seconds"] <= preflight["max_wall_time_seconds"] for r in rows),
+            "within_partition_cap": all(within_partition_time_limit(r["requested_wall_seconds"], preflight["max_wall_time_seconds"]) for r in rows),
             "max_wall_time_seconds": preflight["max_wall_time_seconds"],
             "array_uniform_time_seconds": max(r["requested_wall_seconds"] for r in rows),
             "array_uniform_memory_gb": max(r["memory_gb_with_50pct_margin"] for r in rows),
