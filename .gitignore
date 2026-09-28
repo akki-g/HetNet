@@ -13,3 +13,8 @@ saved/
 results/
 slurm-*.out
 slurm-*.err
+
+
+*.md
+!README.md
+research/
