@@ -12,16 +12,13 @@ No sensor degradation, capability-loss or within-episode membership experiment i
 
 ## First reproduction tranche
 
-The launcher covers the released HetNet recipes on three domains, with Real and release-default Binary-16 communication and seeds **0, 1, 2**: **18 separate training runs**. These test whether the original models learn their original tasks. This is **not yet the full paper reproduction** and does not test frozen transfer.
+The default array runs the authors' three README recipes with **Real** communication and seeds **0, 1, 2**: **nine separate training runs**. These test whether the original models learn their original tasks. This is **not yet the full paper reproduction** and does not test frozen transfer. Binary is available separately for the published PCP message-width experiments; the initial array does not add unreported PP/FC Binary comparisons.
 
 | Array indices | Task | Team | Map / episode cap | Epochs | Communication |
 |---|---|---|---|---:|---|
 | 0–2 | Predator–Prey (PP) | 3P, 0A | 5×5 / 80 | 2,000 | Real |
-| 3–5 | PP | 3P, 0A | 5×5 / 80 | 2,000 | Binary-16 |
-| 6–8 | Predator–Capture (PCP) | 2P, 1A | 5×5 / 80 | 2,000 | Real |
-| 9–11 | PCP | 2P, 1A | 5×5 / 80 | 2,000 | Binary-16 |
-| 12–14 | FireCommander (FC) | 2P, 1A | 5×5 / 300 | 1,400 | Real |
-| 15–17 | FC | 2P, 1A | 5×5 / 300 | 1,400 | Binary-16 |
+| 3–5 | Predator–Capture (PCP) | 2P, 1A | 5×5 / 80 | 2,000 | Real |
+| 6–8 | FireCommander (FC) | 2P, 1A | 5×5 / 300 | 1,400 | Real |
 
 P agents perceive; A agents capture prey or extinguish fire. PP requires all predators to reach prey. PCP additionally requires capture by A agents. FC requires extinguishing the spreading fire. Success, completion steps and returns measure whether these tasks are being learned.
 
@@ -77,16 +74,16 @@ mkdir -p logs
 sbatch slurm/reproduce.sbatch
 ```
 
-This submits 18 runs, at most six concurrently, on `normal`, account `cenyioha`, four CPUs/run, no GPU. The **16 GiB / 48-hour** defaults are starting requests, not measured requirements or runtime predictions. Override them with normal Slurm flags:
+This submits nine runs, at most three concurrently, on `normal`, account `cenyioha`, four CPUs/run, no GPU. The **16 GiB / 48-hour** defaults are starting requests, not measured requirements or runtime predictions. Override them with normal Slurm flags:
 
 ```bash
 # Just PCP Real seed 0; use the table to select other tasks.
-sbatch --array=6 --time=2-00:00:00 --mem=16G slurm/reproduce.sbatch
+sbatch --array=3 --time=2-00:00:00 --mem=16G slurm/reproduce.sbatch
 # Full tranche at a different concurrency:
-sbatch --array=0-17%3 slurm/reproduce.sbatch
+sbatch --array=0-8%9 slurm/reproduce.sbatch
 ```
 
-Do not submit overlapping arrays to the same output root. Keep the checkout and environment unchanged while jobs are queued or running: spawned workers import that source. Stokes has heterogeneous CPUs and no duration has been measured yet. If all 18 jobs consumed the full default request, the ceiling would be 18 × 4 × 48 = 3,456 allocated CPU-hours; actual charged elapsed time may be less. Inspect an initial run's speed/memory before a large batch. Automatic resume is not implemented.
+Do not submit overlapping arrays to the same output root. Keep the checkout and environment unchanged while jobs are queued or running: spawned workers import that source. Stokes has heterogeneous CPUs and no duration has been measured yet. If all nine jobs consumed the full default request, the ceiling would be 9 × 4 × 48 = 1,728 allocated CPU-hours; actual charged elapsed time may be less. Inspect an initial run's speed/memory before a large batch. Automatic resume is not implemented.
 
 ## Logs and progress
 

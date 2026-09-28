@@ -8,7 +8,7 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_slurm_array_covers_each_domain_variant_and_seed_once(tmp_path):
+def test_slurm_array_covers_each_author_readme_recipe_and_seed_once(tmp_path):
     tools = tmp_path / 'bin'
     tools.mkdir()
     srun = tools / 'srun'
@@ -17,7 +17,7 @@ def test_slurm_array_covers_each_domain_variant_and_seed_once(tmp_path):
     env = {**os.environ, 'PATH': str(tools) + os.pathsep + os.environ['PATH'],
            'SLURM_SUBMIT_DIR': str(ROOT), 'HETNET_RUN_ROOT': str(tmp_path / 'runs')}
     seen = Counter()
-    for index in range(18):
+    for index in range(9):
         env['SLURM_ARRAY_TASK_ID'] = str(index)
         result = subprocess.run(['bash', 'slurm/reproduce.sbatch', '--dry-run'],
                                 cwd=ROOT, env=env, text=True, capture_output=True, check=True)
@@ -30,8 +30,7 @@ def test_slurm_array_covers_each_domain_variant_and_seed_once(tmp_path):
         assert value('--num_epochs') == ('1400' if task == 'fc' else '2000')
         assert value('--max_steps') == ('300' if task == 'fc' else '80')
         assert value('--nfriendly_P') == ('3' if task == 'pp' else '2')
-    assert seen == Counter({(task, variant, seed): 1 for task in ('pp', 'pcp', 'fc')
-                           for variant in ('real', 'binary') for seed in range(3)})
+    assert seen == Counter({(task, 'real', seed): 1 for task in ('pp', 'pcp', 'fc') for seed in range(3)})
     assert not (tmp_path / 'runs').exists()
 
 
