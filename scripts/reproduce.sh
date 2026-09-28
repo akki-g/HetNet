@@ -35,7 +35,13 @@ command=("$python" -u main.py "${domain[@]}" --hetgat --hetgat_a2c
   --experiment_name "${task}_${variant}_seed${seed}" --save_dir "$run/checkpoints"
   --metrics_file "$run/metrics.jsonl")
 if $dry_run; then printf '%q ' "${command[@]}"; printf '\n'; exit 0; fi
-[[ -x $python ]] || { echo 'Python environment missing. Run uv sync --locked first.' >&2; exit 2; }
+if [[ ! -x $python ]]; then
+  printf 'Python environment missing or not executable: %s\n' "$python" >&2
+  echo 'On Stokes, first run: mkdir -p logs; sbatch slurm/setup.sbatch' >&2
+  echo 'Elsewhere with Python 3.12: bash scripts/setup_env.sh' >&2
+  echo 'An existing environment can be selected with HETNET_PYTHON=/absolute/path/bin/python.' >&2
+  exit 2
+fi
 mkdir -p "$(dirname "$run")"
 # Atomic creation prevents an accidental rerun from replacing previous evidence.
 mkdir "$run" || { echo "Run already exists: $run (choose a new HETNET_RUN_ROOT)" >&2; exit 2; }
@@ -48,9 +54,11 @@ printf '\n' >> "$run/command.txt"
   git rev-parse HEAD
   git status --short
   "$python" --version
+  "$python" -c 'import importlib.metadata as m; print("Installed packages:"); print("\n".join(sorted(d.metadata["Name"] + "==" + d.version for d in m.distributions())))'
   printf 'Slurm job: %s; array task: %s\n' "${SLURM_JOB_ID:-local}" "${SLURM_ARRAY_TASK_ID:-none}"
 } > "$run/environment.txt" 2>&1
 git diff --no-ext-diff HEAD > "$run/source.patch"
 cp uv.lock "$run/uv.lock"
+cp requirements.txt "$run/requirements.txt"
 export DGLBACKEND=pytorch PYTHONUNBUFFERED=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
 "${command[@]}" 2>&1 | tee "$run/stdout.log"

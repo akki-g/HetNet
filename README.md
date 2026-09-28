@@ -28,10 +28,10 @@ Every run uses four collectors, ten updates/epoch, batch target 500 **per collec
 
 ## Run
 
-Use Python 3.12 and the committed dependency lock:
+Use Python 3.12. The setup script creates `.venv` using standard `venv`/`pip` and installs the pinned packages in `requirements.txt`, exported from the committed `uv.lock`. It also installs the bundled environments. **No uv installation is needed.** For Stokes, use the compute-node setup job below.
 
 ```bash
-uv sync --locked --python 3.12
+bash scripts/setup_env.sh
 bash scripts/reproduce.sh pcp real 0 --dry-run
 bash scripts/reproduce.sh pcp real 0
 ```
@@ -53,26 +53,26 @@ Existing run directories are never overwritten. Use a new `HETNET_RUN_ROOT` for 
 
 ## UCF Stokes
 
-Create the environment once **on a compute node**, rather than in every array task. From the repository checkout:
+From the repository root on the submitting node:
 
 ```bash
-module load anaconda/anaconda-2024.10
-srun --account=cenyioha --partition=normal --nodes=1 --ntasks=1 \
-  --cpus-per-task=4 --mem=8G --time=00:30:00 --pty bash
-python -m pip install --user uv==0.12.5
-~/.local/bin/uv sync --locked --python 3.12
-# Run the short smoke above here, then leave the allocation.
-exit
+mkdir -p logs
+setup_job=$(sbatch --parsable slurm/setup.sbatch)
+sbatch --dependency=afterok:"$setup_job" slurm/reproduce.sbatch
 ```
 
-If uv is already available, use it directly. Setup requires package-download access. The pinned stack was tested locally; the compute-node smoke checks actual Linux imports and timing.
+The one-time setup job loads `anaconda/anaconda-2024.10`, checks for Python 3.12, and creates `.venv` **on a compute node**, following [ARCC's installation guidance](https://arcc.ist.ucf.edu/docs/software/anaconda/). It uses `pip`, checks dependency consistency, and tests imports and a CPU DGL operation. Training starts only after setup succeeds. Each training job loads the same module and reuses `.venv`; it does not reinstall packages. The setup job requests one hour, two CPUs and 8 GiB; these are installation limits, not training-time estimates.
 
-From the repository root on the submitting node:
+Setup output is in `logs/setup-JOB_ID.out` and `.err`. If setup fails, the dependent training array cannot start; inspect these logs, fix the cause, and submit again with a new setup job ID. Cancel the old waiting array with `scancel ARRAY_JOB_ID`. Package downloads require network access and disk space; the locked Linux PyTorch distribution includes CUDA libraries even though these runs use CPUs. Create the environment on Stokes; do not copy a Mac `.venv` there.
+
+Once setup has succeeded, later submissions need only:
 
 ```bash
 mkdir -p logs
 sbatch slurm/reproduce.sbatch
 ```
+
+To use an existing equivalent environment, export `HETNET_PYTHON=/absolute/path/to/bin/python` before submission; the array preserves this choice. `HETNET_BASE_PYTHON` selects Python 3.12 for environment creation if needed. Existing uv users may still run `uv sync --locked --python 3.12` instead of the pip setup. Do not run setup while training jobs use that environment.
 
 This submits nine runs, at most three concurrently, on `normal`, account `cenyioha`, four CPUs/run, no GPU. The **16 GiB / 48-hour** defaults are starting requests, not measured requirements or runtime predictions. Override them with normal Slurm flags:
 
@@ -91,7 +91,7 @@ Output lives in `runs/reproduction/<task>_<variant>/seed<seed>/`:
 
 | Artifact | Meaning |
 |---|---|
-| `command.txt`, `environment.txt`, `source.patch`, `uv.lock` | Exact command, Git revision/dirty state, local source diff and dependency lock. |
+| `command.txt`, `environment.txt`, `source.patch`, `uv.lock`, `requirements.txt` | Exact command, Git revision/dirty state, installed package versions, local source diff and dependency pins. |
 | `resolved_args.json` | Effective training/environment defaults and selected model. |
 | `metrics.jsonl` | Fresh epoch counts, success, episode length, per-agent returns, losses and epoch time. |
 | `stdout.log`, `exit_code.txt` | Training output and exit status. Missing status can mean running or interrupted. |
@@ -129,6 +129,8 @@ The [IC3Net source](https://github.com/IC3Net/IC3Net) supplies the original code
 
 - `main.py`, `trainer.py`, `multi_processing.py`, `hetgat/`, `envs/`: original learner, model and environments.
 - `scripts/reproduce.sh`: domain commands and output capture.
+- `scripts/setup_env.sh`, `requirements.txt`: Python 3.12 venv/pip setup with pinned runtime and build packages, including the bundled environments.
+- `slurm/setup.sbatch`: one-time Stokes compute-node installation and import check.
 - `slurm/reproduce.sbatch`: plain array mapping; no JSON prerequisites.
 - `hetnet_ext/seeding.py`, `recording.py`, `signatures.py`: early seeding, accurate counts and saved-state identity.
 - `hetnet_ext/progress.py`: read-only summaries.
@@ -139,7 +141,15 @@ Retained fixes cover Python/Gym/CPU compatibility, seeding before construction a
 Twelve tiny actual-training checks passed: three tasks × two communication variants × one/four processes, four updates each. They establish execution, finite metrics and saved/changed weights—not convergence. The Binary fix also preserved existing nonempty-A outputs/gradients exactly.
 
 ```bash
-uv run --locked pytest -q
+.venv/bin/python -m pip install pytest==8.3.5
+.venv/bin/python -m pytest -q
+```
+
+The test runner is optional for training. If maintaining dependencies, regenerate the pip export after changing the lock:
+
+```bash
+uv export --locked --no-emit-project --no-emit-local --no-dev \
+  --no-annotate --no-hashes --output-file requirements.txt
 ```
 
 The old launch framework, PCP-only grid, Mac wrappers and mandatory preflight/budget machinery are removed. Research/evidence files remain locally but are excluded from new checkouts; their full tracked history is preserved at commit `47b99bf`. Work continues on `main`; the merged `frozen-eval` branch is deleted.

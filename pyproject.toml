@@ -18,6 +18,7 @@ dependencies = [
     "pandas==2.2.3",
     "pyyaml==6.0.2",
     "pydantic==2.10.6",
+    "packaging==26.3", # DGL imports this but omits it from its package dependencies.
     "ic3net-envs==0.0.2",
 ]
 
