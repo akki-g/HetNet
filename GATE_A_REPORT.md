@@ -1,74 +1,49 @@
-# Gate A: local engineering validation
+# Gate A: current Stokes delivery validation
 
-**PASS**, completed 26 September 2026 at 04:45:33 UTC. The approved three-call gradient-storage repair is applied as deviation G (`0cfcea5`). All eleven required checks in the [machine-readable report](evidence/gate_a/full_20260926_02/gate_a_report.json) passed. Stokes calibration, full training, frozen evaluation, and Gate B have not run.
+**PASS**, completed 2026-09-28T18:17:22.881588+00:00. All eleven flags in the [machine-readable report](evidence/gate_a/full_20260928_stokes_02/gate_a_report.json) are true. This refresh validates the Stokes submission/progress tools, unlimited partition-cap handling and retained Mac tooling with the original reviewed A/B/G/C training changes. It is engineering evidence, not successful learning or a frozen-transfer result. No Stokes jobs have been submitted.
 
-This pass applies to the source inventory recorded below (delivery snapshot `8e8c56e`). Subsequent Mac fallback launcher/tests require a fresh Gate A on that revision and target. See [MAC_RUNBOOK.md](MAC_RUNBOOK.md); this historical report is not relabeled as validation of later source changes or M4 hardware.
+## Current source and environment
 
-## Scope and provenance
+- Scientific revision: `084302bc697a3498b914866369bcf2fceb16e989`.
+- Scientific code/config/test/script SHA-256: `bc4822dda32aa75a4e3f8c1cef389599224002d72327ba436d387a692cc407dd`, identical at start, finish and archival.
+- Dependency lock SHA-256: `ba4a086080686baca8f7d490c01c63a4ad1a95619148b39d42412246341bd051`.
+- Local environment: macOS ARM64, Python 3.12.13, Torch 2.2.1, DGL 2.1.0, torchdata 0.7.1, NumPy 1.26.4 and Gym 0.26.2, CPU only.
+- Raw attempt: `runs/gate_a/full_20260928_stokes_02/`, from 2026-09-28T17:35:13.211208+00:00 to 2026-09-28T18:17:22.881588+00:00 (approximately 42 minutes). The dirty flag records concurrent documentation/evidence work; the scientific source inventory stayed unchanged. Documentation-only delivery commits retain the same tested inventory.
+- Clean-environment evidence uses the preserved successful clean synchronization/import for the identical lock and pyproject. The current gate also rechecked installed versions. This is not a Stokes Linux installation test; bootstrap verifies those imports on the compute node before training.
 
-This is engineering evidence for the original released HetNet-Real/A2C path with the separately recorded A/B/G/C deviations. It does not establish successful learning, frozen transfer, or an experimental result for the paper. The original architecture, class-wise attention, loss, clipping, and stepping RMSprop remain as recorded in the [reproduction ledger](REPRODUCTION_LEDGER.md).
+## Checks and scope
 
-- Scientific source revision: `2db8a627b0ee0a0265caef389f47673c6b7bdcf2`.
-- Scientific code/config/test/script SHA-256: `ebd295d990637b9b6184dbf8bad846c8ec70621743aeadedba31379b41c96db4`, identical at gate start and finish and at evidence archival.
-- Lock SHA-256: `ba4a086080686baca8f7d490c01c63a4ad1a95619148b39d42412246341bd051`.
-- Environment: macOS ARM64, Python 3.12.13, Torch 2.2.1, DGL 2.1.0, torchdata 0.7.1, NumPy 1.26.4, Gym 0.26.2; CPU only.
-- Raw attempt: `runs/gate_a/full_20260926_02/`, 04:16:49–04:45:33 UTC. The recorded dirty flag is true because documentation/evidence work was in progress. The exact scientific inventory stayed unchanged; no uncommitted upstream file changes were present. Later documentation commits do not change that inventory.
+| Check | Evidence |
+|---|---|
+| Runtime, clean lock and baseline diff | Passed; original-file changes remain exactly the reviewed commits `2fadecf`, `7b334c1`, `0cfcea5`, `50d0c37` |
+| Infrastructure and scripts | 71 recorder/grid/local/submission/progress contracts plus 4 preflight contracts passed; scripts parse; singleton-P rejected |
+| Complete smoke matrix | Twelve runs: five compositions × one/four processes, plus source repeated/alternate seeds; 36 epochs, 360 updates, 32,548 actual joint transitions |
+| Metrics and saved states | All epoch metrics finite and counters consistent; all 36 checkpoint states match saved names/shapes/dtypes/value hashes and epoch signatures |
+| Multiprocessing gradients | Both actual-model endpoints passed three updates with current shared weights/storage and exactly zero fresh-gradient aggregation error |
+| Independent gradient audit | Six NPZ snapshots, 432 tensor reductions / 2,982,672 scalar entries independently reconstructed exactly; shared-weight signatures and clip-norm bounds checked |
+| Repeated seed | Source seed0 single-process initial/all three epoch signatures and all non-timing metrics match; alternate-seed initialization differs |
+| Cross-composition load | One source epoch3 checkpoint loads strictly with identical tensor names/shapes/dtypes/values into all five compositions |
+| Artifact tests | 3 passed; total selected pytest cases across the gate: **78**, with no skips |
 
-The complete invocation was:
+The independent audit is [preserved separately](evidence/gate_a/full_20260928_stokes_02/INDEPENDENT_GRADIENT_AUDIT.json). Actual-model snapshots contain already-clipped local gradients: they establish aggregation and post-clip norm bounds, not reconstruction of the original unclipped loss gradients. The analytic surrogate additionally checks its clipping calculation. No multiprocess or cross-platform bitwise determinism claim is made. The sole excluded repeated-run metric is wall time.
+
+The released mixed float64/float32 state, class-wise attention, model, observations, rewards, loss, clipping and stepping RMSprop are preserved. Strict loading is not a frozen-policy forward test or proof of transfer. No resume contract is claimed.
+
+## Reproduce and preserve
 
 ```bash
 DGLBACKEND=pytorch PYTHONUNBUFFERED=1 uv run --locked --python 3.12 \
   python -m hetnet_ext.gate_a \
-  --output runs/gate_a/full_20260926_02 --run-smokes \
+  --output runs/gate_a/NEW_UNIQUE_ATTEMPT --run-smokes \
   --clean-environment-evidence evidence/gate_a/clean_environment_20260926T035949Z/evidence.json \
   --allowed-upstream-commit 2fadecf --allowed-upstream-commit 7b334c1 \
   --allowed-upstream-commit 0cfcea5 --allowed-upstream-commit 50d0c37
 ```
 
-That output directory already exists and must not be reused. The [runbook](STOKES_RUNBOOK.md) gives the reproduction command with a new output directory.
+Choose a new output directory. The [current archive](evidence/gate_a/full_20260928_stokes_02/) preserves unchanged text evidence and a manifest of all 170 raw files. Raw checkpoint/gradient binaries remain in the ignored local attempt; their sizes and SHA-256 values are recorded. [ARCHIVE_SUMMARY.json](evidence/gate_a/full_20260928_stokes_02/ARCHIVE_SUMMARY.json) contains per-run counts and local timings. Small-batch Mac timing is not a Stokes cost calibration.
 
-## Checks and limits
+The [26 September pass](GATE_A_REPORT_20260926.md) remains historical evidence for its earlier inventory. The original gradient failure and narrowly approved G repair remain in [GATE_A_BLOCKER.md](GATE_A_BLOCKER.md). The first 28 September refresh was deliberately interrupted when supplied live Stokes facts required explicit unlimited-cap handling; its [incomplete evidence and reason](evidence/gate_a/full_20260928_stokes_01_interrupted/) are preserved. No algorithm failure is inferred from that interruption.
 
-| Requirement | Observed evidence | Scope |
-|---|---|---|
-| Clean locked environment | Separate clean synchronization and pinned imports passed; evidence hash is embedded in the gate report | Local macOS; Stokes installation/import still requires verification |
-| Baseline diff | Exact preserved patch and commit inventory contain only reviewed A/B/G/C changes to original files | Original baseline `bff9f7f`; separate experimental infrastructure is inventoried too |
-| Smoke matrix | Five compositions × one/four processes, plus seed-repeat and alternate-seed runs; all twelve completed three epochs | Ten updates/epoch, batch target 40/collector, horizon20; not the full training recipe |
-| Metrics/checkpoints | All 36 epoch records finite and complete; cumulative counts consistent; all 36 saved model states match their epoch signatures and checkpoint sidecars, including dtypes | 360 updates and 32,548 joint environment transitions across the twelve runs |
-| Shared weights | Main/worker post-step parameter hashes agree in both actual-model endpoint probes | Three updates each at 2P1A and 4P6A, four total processes |
-| Current gradient storage | Parent and worker cached gradients retain current storage across all probe updates | Verifies the specific approved G repair |
-| Fresh gradient aggregation | Actual-model endpoint probes match independently reconstructed clipped-gradient sums/division with maximum absolute error **0** at each update | Surrogate probe also passes within floating-point tolerance; preserved snapshots permit auditing |
-| Single-process determinism | Same seed gives identical initial and all three epoch signatures, plus identical non-timing metrics; alternate seed gives different initialization | `wall_time_seconds` is the sole excluded metric. Raw JSONL files differ in timing; multiprocess and cross-platform bitwise determinism are not claimed |
-| Cross-composition load | Final 2P1A single-process smoke checkpoint loads with `strict=True` into all five compositions; every name, shape, dtype and value matches | One source checkpoint tested across five targets; this check is loading, not a frozen forward/evaluation test |
-| Scripts/grid | Exactly 21 unique training tasks; calibration mapping and launcher contracts pass; singleton-P rejected; shell syntax passes | `shellcheck` was unavailable; no Slurm allocation or submission was performed |
-| Unit contracts | 4 preflight + 15 recorder/infrastructure + 3 artifact tests passed, without skips in the selected tests | Direct gradient probes run separately; resume is not implemented or claimed |
+## Next operational step
 
-All twelve resolved argument files were also checked to retain dimension5, vision2, observation width725, real-valued CPU execution, per-class critic, and two state nodes. The float64 defaults and explicitly float32 attention parameters remain as released; no whole-model dtype conversion was used for loading.
-
-### Local smoke timings
-
-Each cell lists the three epoch durations in seconds, rounded to one decimal. These are audit details from this Mac, with small batches and horizon20. They must not be used as Stokes budget measurements or as evidence that four processes improve throughput.
-
-| Composition, seed0 | One process | Four processes |
-|---|---|---|
-| 2P1A | 27.8, 31.2, 30.5 | 117.0, 68.7, 55.6 |
-| 3P3A | 32.8, 33.4, 35.2 | 54.8, 67.7, 64.7 |
-| 4P6A | 36.0, 34.8, 35.4 | 74.8, 67.3, 66.8 |
-| 3P1A | 28.3, 30.7, 28.7 | 56.4, 55.0, 51.7 |
-| 2P2A | 31.6, 31.9, 32.6 | 61.0, 61.1, 57.5 |
-
-The source seed0 repeat took 27.4/27.3/27.5 seconds per epoch; source seed1 took 27.5/28.3/28.3. Complete values and counts are in [ARCHIVE_SUMMARY.json](evidence/gate_a/full_20260926_02/ARCHIVE_SUMMARY.json).
-
-## Preserved attempts and evidence
-
-The [original gradient failure](GATE_A_BLOCKER.md) remains documented: shared weights passed, but cached gradient storage and fresh aggregation failed after update1. The user explicitly approved the exact three-call repair. Those failed measurements are retained separately from repaired probes and this full gate.
-
-The first full attempt, `full_20260926_01`, was deliberately interrupted because final gate-only edits raced its source fingerprint. Its [incomplete report and interruption record](evidence/gate_a/full_20260926_01_interrupted/) remain preserved. This is not a failed learning outcome and is not counted as a passed gate.
-
-The [archive](evidence/gate_a/full_20260926_02/) contains unchanged copies of every text artifact: reports, logs, metrics, resolved arguments, tensor signatures, test XML, and exact upstream diff. Its [raw manifest](evidence/gate_a/full_20260926_02/RAW_ARTIFACT_MANIFEST.json) records paths, sizes and SHA-256 for all 168 raw files. All 36 `.pt` checkpoints and six gradient `.npz` snapshots remain in the original ignored run directory; these binary files are manifested rather than duplicated in Git. The raw attempt is approximately 324 MB; archived text is approximately 2.9 MB. Absolute local paths inside evidence are intentionally preserved rather than rewritten.
-
-## Next gate
-
-Gate A now permits Stokes calibration **once live preflight facts are supplied and verified**. The already-requested partition cap, account requirements, available allocation, quota, concurrency, modules and cluster access remain unresolved. Follow [STOKES_RUNBOOK.md](STOKES_RUNBOOK.md) to run the two 20-epoch endpoint calibrations, measure allocation time/whole-job memory/checkpoint size, and present the resulting budget for Akki's confirmation before the 21-task array. No cluster costs have been measured or authorized by this local pass.
-
-The [analysis plan](ANALYSIS_PLAN.md) is preregistered before Run2 outcomes at `0f867292b498a637465cc110d4fe5520dcff6709` (initial commit `4b4c0a6`). Production Phase B remains scheduled for Run1, in a separate checkout. The relation-support limitation identified before outcomes is documented in [RELATION_SUPPORT_AUDIT.md](research/RELATION_SUPPORT_AUDIT.md); Gate A does not resolve it or establish a causal explanation for future transfer gaps.
+Use [STOKES_FULL_SWEEP.md](STOKES_FULL_SWEEP.md) and [STOKES_RUNBOOK.md](STOKES_RUNBOOK.md) to finish the remaining compute/storage/capacity preflight, run the two 20-epoch full-recipe calibrations, inspect the measured budget and submit the 21-task array. The supplied account has 80,000 CPU-hours remaining and user MaxJobs=250; those facts do not replace workload measurement. Frozen evaluation, Gate B and study results remain pending. The preregistered analysis at `0f867292b498a637465cc110d4fe5520dcff6709` is unchanged.

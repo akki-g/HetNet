@@ -1,0 +1,297 @@
+{"command": ["/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/bin/python3", "/Users/akshatguduru/Desktop/Thesis/HetNet/main.py", "--env_name", "predator_capture", "--nfriendly_P", "4", "--nfriendly_A", "6", "--nprocesses", "4", "--num_epochs", "3", "--hid_size", "128", "--detach_gap", "5", "--lrate", "0.0001", "--dim", "5", "--batch_size", "40", "--max_steps", "20", "--hetgat", "--hetgat_a2c", "--seed", "0", "--save_every", "1", "--save_dir", "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260928_stokes_02/smokes/4P6A_np4/checkpoints", "--experiment_name", "4P6A_np4", "--metrics_file", "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260928_stokes_02/smokes/4P6A_np4/metrics.jsonl"], "cwd": "/Users/akshatguduru/Desktop/Thesis/HetNet"}
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/torch/__init__.py:696: UserWarning: torch.set_default_tensor_type() is deprecated as of PyTorch 2.1, please use torch.set_default_dtype() and torch.set_default_device() as alternatives. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/torch/csrc/tensor/python_tensor.cpp:453.)
+  _C._set_default_tensor_type(t)
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment PredatorPrey-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment PredatorCapture-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment FireCommander-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment TrafficJunction-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+Namespace(experiment_name='4P6A_np4', save_dir='/Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260928_stokes_02/smokes/4P6A_np4/checkpoints', metrics_file='/Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260928_stokes_02/smokes/4P6A_np4/metrics.jsonl', num_epochs=3, epoch_size=10, batch_size=40, nprocesses=4, hid_size=128, recurrent=False, use_binary=False, msg_dim=16, gamma=1.0, tau=1.0, seed=0, normalize_rewards=False, lrate=0.0001, entr=0, value_coeff=0.01, env_name='predator_capture', max_steps=20, nactions='1', action_scale=1.0, comm_range_P=-1, comm_range_A=-1, lossy_comm=False, min_comm_loss=0.0, max_comm_loss=0.3, plot=False, plot_env='main', save='tst', save_every=1, load='', display=False, random=False, use_cuda=False, hetgat=True, lr_gamma=0.1, hetgat_a2c=True, eval=False, eval_string='', eval_config='', commnet=False, hetcomm=False, ic3net=False, nagents=10, comm_mode='avg', comm_passes=1, comm_mask_zero=False, mean_ratio=1.0, rnn_type='MLP', detach_gap=5, total_state_action_in_batch=500, comm_init='uniform', hard_attn=False, comm_action_one=False, advantages_per_action=False, share_weights=False, nenemies=1, dim=5, vision=2, moving_prey=False, no_stay=False, mode='mixed', enemy_comm=False, nfriendly_P=4, nfriendly_A=6, tensor_obs=False, second_reward_scheme=False, A_vision=-1, nfriendly=10, num_actions=[6], dim_actions=1, num_inputs=725, continuous=False, naction_heads=[6])
+====================================================================================================
+Model log:
+
+UAVNetA2CEasy(
+  (prepro_obs): Linear(in_features=100, out_features=100, bias=True)
+  (prepro_stat): Linear(in_features=625, out_features=625, bias=True)
+  (f_module_obs): LSTMCell(100, 4)
+  (f_module_stat): LSTMCell(625, 25)
+  (layer1): MultiHeteroGATLayerReal(
+    (gat_conv): HeteroGATLayerReal(
+      (fc): ModuleDict(
+        (P): Linear(in_features=29, out_features=64, bias=True)
+        (A): Linear(in_features=25, out_features=64, bias=True)
+        (p2p): Linear(in_features=29, out_features=64, bias=True)
+        (p2a): Linear(in_features=29, out_features=64, bias=True)
+        (a2p): Linear(in_features=25, out_features=64, bias=True)
+        (a2a): Linear(in_features=25, out_features=64, bias=True)
+        (p2s): Linear(in_features=29, out_features=64, bias=True)
+        (a2s): Linear(in_features=25, out_features=64, bias=True)
+        (in): Linear(in_features=4, out_features=64, bias=True)
+      )
+      (leaky_relu): LeakyReLU(negative_slope=0.2)
+      (relu): ReLU()
+    )
+  )
+  (layer2): MultiHeteroGATLayerReal(
+    (gat_conv): HeteroGATLayerReal(
+      (fc): ModuleDict(
+        (P): Linear(in_features=64, out_features=20, bias=True)
+        (A): Linear(in_features=64, out_features=24, bias=True)
+        (p2p): Linear(in_features=64, out_features=20, bias=True)
+        (p2a): Linear(in_features=64, out_features=24, bias=True)
+        (a2p): Linear(in_features=64, out_features=20, bias=True)
+        (a2a): Linear(in_features=64, out_features=24, bias=True)
+        (p2s): Linear(in_features=64, out_features=32, bias=True)
+        (a2s): Linear(in_features=64, out_features=32, bias=True)
+        (in): Linear(in_features=64, out_features=32, bias=True)
+      )
+      (leaky_relu): LeakyReLU(negative_slope=0.2)
+    )
+  )
+  (relu): ReLU()
+  (P_critic_head): Linear(in_features=8, out_features=1, bias=True)
+  (A_critic_head): Linear(in_features=8, out_features=1, bias=True)
+)
+====================================================================================================
+
+[Epoch] batch 0
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/torch/__init__.py:696: UserWarning: torch.set_default_tensor_type() is deprecated as of PyTorch 2.1, please use torch.set_default_dtype() and torch.set_default_device() as alternatives. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/torch/csrc/tensor/python_tensor.cpp:453.)
+  _C._set_default_tensor_type(t)
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/torch/__init__.py:696: UserWarning: torch.set_default_tensor_type() is deprecated as of PyTorch 2.1, please use torch.set_default_dtype() and torch.set_default_device() as alternatives. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/torch/csrc/tensor/python_tensor.cpp:453.)
+  _C._set_default_tensor_type(t)
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/torch/__init__.py:696: UserWarning: torch.set_default_tensor_type() is deprecated as of PyTorch 2.1, please use torch.set_default_dtype() and torch.set_default_device() as alternatives. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/torch/csrc/tensor/python_tensor.cpp:453.)
+  _C._set_default_tensor_type(t)
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment PredatorPrey-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment PredatorCapture-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment PredatorPrey-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment FireCommander-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment TrafficJunction-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment PredatorCapture-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment FireCommander-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment TrafficJunction-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment PredatorPrey-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment PredatorCapture-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment FireCommander-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment TrafficJunction-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+Namespace(experiment_name='4P6A_np4', save_dir='/Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260928_stokes_02/smokes/4P6A_np4/checkpoints', metrics_file='/Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260928_stokes_02/smokes/4P6A_np4/metrics.jsonl', num_epochs=3, epoch_size=10, batch_size=40, nprocesses=4, hid_size=128, recurrent=False, use_binary=False, msg_dim=16, gamma=1.0, tau=1.0, seed=0, normalize_rewards=False, lrate=0.0001, entr=0, value_coeff=0.01, env_name='predator_capture', max_steps=20, nactions='1', action_scale=1.0, comm_range_P=-1, comm_range_A=-1, lossy_comm=False, min_comm_loss=0.0, max_comm_loss=0.3, plot=False, plot_env='main', save='tst', save_every=1, load='', display=False, random=False, use_cuda=False, hetgat=True, lr_gamma=0.1, hetgat_a2c=True, eval=False, eval_string='', eval_config='', commnet=False, hetcomm=False, ic3net=False, nagents=10, comm_mode='avg', comm_passes=1, comm_mask_zero=False, mean_ratio=1.0, rnn_type='MLP', detach_gap=5, total_state_action_in_batch=500, comm_init='uniform', hard_attn=False, comm_action_one=False, advantages_per_action=False, share_weights=False, nenemies=1, dim=5, vision=2, moving_prey=False, no_stay=False, mode='mixed', enemy_comm=False, nfriendly_P=4, nfriendly_A=6, tensor_obs=False, second_reward_scheme=False, A_vision=-1, nfriendly=10, num_actions=[6], dim_actions=1, num_inputs=725, continuous=False, naction_heads=[6])
+Namespace(experiment_name='4P6A_np4', save_dir='/Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260928_stokes_02/smokes/4P6A_np4/checkpoints', metrics_file='/Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260928_stokes_02/smokes/4P6A_np4/metrics.jsonl', num_epochs=3, epoch_size=10, batch_size=40, nprocesses=4, hid_size=128, recurrent=False, use_binary=False, msg_dim=16, gamma=1.0, tau=1.0, seed=0, normalize_rewards=False, lrate=0.0001, entr=0, value_coeff=0.01, env_name='predator_capture', max_steps=20, nactions='1', action_scale=1.0, comm_range_P=-1, comm_range_A=-1, lossy_comm=False, min_comm_loss=0.0, max_comm_loss=0.3, plot=False, plot_env='main', save='tst', save_every=1, load='', display=False, random=False, use_cuda=False, hetgat=True, lr_gamma=0.1, hetgat_a2c=True, eval=False, eval_string='', eval_config='', commnet=False, hetcomm=False, ic3net=False, nagents=10, comm_mode='avg', comm_passes=1, comm_mask_zero=False, mean_ratio=1.0, rnn_type='MLP', detach_gap=5, total_state_action_in_batch=500, comm_init='uniform', hard_attn=False, comm_action_one=False, advantages_per_action=False, share_weights=False, nenemies=1, dim=5, vision=2, moving_prey=False, no_stay=False, mode='mixed', enemy_comm=False, nfriendly_P=4, nfriendly_A=6, tensor_obs=False, second_reward_scheme=False, A_vision=-1, nfriendly=10, num_actions=[6], dim_actions=1, num_inputs=725, continuous=False, naction_heads=[6])
+Namespace(experiment_name='4P6A_np4', save_dir='/Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260928_stokes_02/smokes/4P6A_np4/checkpoints', metrics_file='/Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260928_stokes_02/smokes/4P6A_np4/metrics.jsonl', num_epochs=3, epoch_size=10, batch_size=40, nprocesses=4, hid_size=128, recurrent=False, use_binary=False, msg_dim=16, gamma=1.0, tau=1.0, seed=0, normalize_rewards=False, lrate=0.0001, entr=0, value_coeff=0.01, env_name='predator_capture', max_steps=20, nactions='1', action_scale=1.0, comm_range_P=-1, comm_range_A=-1, lossy_comm=False, min_comm_loss=0.0, max_comm_loss=0.3, plot=False, plot_env='main', save='tst', save_every=1, load='', display=False, random=False, use_cuda=False, hetgat=True, lr_gamma=0.1, hetgat_a2c=True, eval=False, eval_string='', eval_config='', commnet=False, hetcomm=False, ic3net=False, nagents=10, comm_mode='avg', comm_passes=1, comm_mask_zero=False, mean_ratio=1.0, rnn_type='MLP', detach_gap=5, total_state_action_in_batch=500, comm_init='uniform', hard_attn=False, comm_action_one=False, advantages_per_action=False, share_weights=False, nenemies=1, dim=5, vision=2, moving_prey=False, no_stay=False, mode='mixed', enemy_comm=False, nfriendly_P=4, nfriendly_A=6, tensor_obs=False, second_reward_scheme=False, A_vision=-1, nfriendly=10, num_actions=[6], dim_actions=1, num_inputs=725, continuous=False, naction_heads=[6])
+====================================================================================================
+Model log:
+
+UAVNetA2CEasy(
+  (prepro_obs): Linear(in_features=100, out_features=100, bias=True)
+  (prepro_stat): Linear(in_features=625, out_features=625, bias=True)
+  (f_module_obs): LSTMCell(100, 4)
+  (f_module_stat): LSTMCell(625, 25)
+  (layer1): MultiHeteroGATLayerReal(
+    (gat_conv): HeteroGATLayerReal(
+      (fc): ModuleDict(
+        (P): Linear(in_features=29, out_features=64, bias=True)
+        (A): Linear(in_features=25, out_features=64, bias=True)
+        (p2p): Linear(in_features=29, out_features=64, bias=True)
+        (p2a): Linear(in_features=29, out_features=64, bias=True)
+        (a2p): Linear(in_features=25, out_features=64, bias=True)
+        (a2a): Linear(in_features=25, out_features=64, bias=True)
+        (p2s): Linear(in_features=29, out_features=64, bias=True)
+        (a2s): Linear(in_features=25, out_features=64, bias=True)
+        (in): Linear(in_features=4, out_features=64, bias=True)
+      )
+      (leaky_relu): LeakyReLU(negative_slope=0.2)
+      (relu): ReLU()
+    )
+  )
+  (layer2): MultiHeteroGATLayerReal(
+    (gat_conv): HeteroGATLayerReal(
+      (fc): ModuleDict(
+        (P): Linear(in_features=64, out_features=20, bias=True)
+        (A): Linear(in_features=64, out_features=24, bias=True)
+        (p2p): Linear(in_features=64, out_features=20, bias=True)
+        (p2a): Linear(in_features=64, out_features=24, bias=True)
+        (a2p): Linear(in_features=64, out_features=20, bias=True)
+        (a2a): Linear(in_features=64, out_features=24, bias=True)
+        (p2s): Linear(in_features=64, out_features=32, bias=True)
+        (a2s): Linear(in_features=64, out_features=32, bias=True)
+        (in): Linear(in_features=64, out_features=32, bias=True)
+      )
+      (leaky_relu): LeakyReLU(negative_slope=0.2)
+    )
+  )
+  (relu): ReLU()
+  (P_critic_head): Linear(in_features=8, out_features=1, bias=True)
+  (A_critic_head): Linear(in_features=8, out_features=1, bias=True)
+)
+====================================================================================================
+
+====================================================================================================
+Model log:
+
+====================================================================================================
+Model log:
+
+UAVNetA2CEasy(
+  (prepro_obs): Linear(in_features=100, out_features=100, bias=True)
+  (prepro_stat): Linear(in_features=625, out_features=625, bias=True)
+  (f_module_obs): LSTMCell(100, 4)
+  (f_module_stat): LSTMCell(625, 25)
+  (layer1): MultiHeteroGATLayerReal(
+    (gat_conv): HeteroGATLayerReal(
+      (fc): ModuleDict(
+        (P): Linear(in_features=29, out_features=64, bias=True)
+        (A): Linear(in_features=25, out_features=64, bias=True)
+        (p2p): Linear(in_features=29, out_features=64, bias=True)
+        (p2a): Linear(in_features=29, out_features=64, bias=True)
+        (a2p): Linear(in_features=25, out_features=64, bias=True)
+        (a2a): Linear(in_features=25, out_features=64, bias=True)
+        (p2s): Linear(in_features=29, out_features=64, bias=True)
+        (a2s): Linear(in_features=25, out_features=64, bias=True)
+        (in): Linear(in_features=4, out_features=64, bias=True)
+      )
+      (leaky_relu): LeakyReLU(negative_slope=0.2)
+      (relu): ReLU()
+    )
+  )
+  (layer2): MultiHeteroGATLayerReal(
+    (gat_conv): HeteroGATLayerReal(
+      (fc): ModuleDict(
+        (P): Linear(in_features=64, out_features=20, bias=True)
+        (A): Linear(in_features=64, out_features=24, bias=True)
+        (p2p): Linear(in_features=64, out_features=20, bias=True)
+        (p2a): Linear(in_features=64, out_features=24, bias=True)
+        (a2p): Linear(in_features=64, out_features=20, bias=True)
+        (a2a): Linear(in_features=64, out_features=24, bias=True)
+        (p2s): Linear(in_features=64, out_features=32, bias=True)
+        (a2s): Linear(in_features=64, out_features=32, bias=True)
+        (in): Linear(in_features=64, out_features=32, bias=True)
+      )
+      (leaky_relu): LeakyReLU(negative_slope=0.2)
+    )
+  )
+  (relu): ReLU()
+  (P_critic_head): Linear(in_features=8, out_features=1, bias=True)
+  (A_critic_head): Linear(in_features=8, out_features=1, bias=True)
+)
+====================================================================================================
+
+UAVNetA2CEasy(
+  (prepro_obs): Linear(in_features=100, out_features=100, bias=True)
+  (prepro_stat): Linear(in_features=625, out_features=625, bias=True)
+  (f_module_obs): LSTMCell(100, 4)
+  (f_module_stat): LSTMCell(625, 25)
+  (layer1): MultiHeteroGATLayerReal(
+    (gat_conv): HeteroGATLayerReal(
+      (fc): ModuleDict(
+        (P): Linear(in_features=29, out_features=64, bias=True)
+        (A): Linear(in_features=25, out_features=64, bias=True)
+        (p2p): Linear(in_features=29, out_features=64, bias=True)
+        (p2a): Linear(in_features=29, out_features=64, bias=True)
+        (a2p): Linear(in_features=25, out_features=64, bias=True)
+        (a2a): Linear(in_features=25, out_features=64, bias=True)
+        (p2s): Linear(in_features=29, out_features=64, bias=True)
+        (a2s): Linear(in_features=25, out_features=64, bias=True)
+        (in): Linear(in_features=4, out_features=64, bias=True)
+      )
+      (leaky_relu): LeakyReLU(negative_slope=0.2)
+      (relu): ReLU()
+    )
+  )
+  (layer2): MultiHeteroGATLayerReal(
+    (gat_conv): HeteroGATLayerReal(
+      (fc): ModuleDict(
+        (P): Linear(in_features=64, out_features=20, bias=True)
+        (A): Linear(in_features=64, out_features=24, bias=True)
+        (p2p): Linear(in_features=64, out_features=20, bias=True)
+        (p2a): Linear(in_features=64, out_features=24, bias=True)
+        (a2p): Linear(in_features=64, out_features=20, bias=True)
+        (a2a): Linear(in_features=64, out_features=24, bias=True)
+        (p2s): Linear(in_features=64, out_features=32, bias=True)
+        (a2s): Linear(in_features=64, out_features=32, bias=True)
+        (in): Linear(in_features=64, out_features=32, bias=True)
+      )
+      (leaky_relu): LeakyReLU(negative_slope=0.2)
+    )
+  )
+  (relu): ReLU()
+  (P_critic_head): Linear(in_features=8, out_features=1, bias=True)
+  (A_critic_head): Linear(in_features=8, out_features=1, bias=True)
+)
+====================================================================================================
+
+[Epoch] batch 1
+[Epoch] batch 2
+[Epoch] batch 3
+[Epoch] batch 4
+[Epoch] batch 5
+[Epoch] batch 6
+[Epoch] batch 7
+[Epoch] batch 8
+[Epoch] batch 9
+Epoch 1	Reward [-0.82 -0.81 -0.83 -0.76 -0.85 -0.9  -0.89 -0.92 -0.87 -0.9 ]	Time 59.44s, Episodes 440, Total Steps 8800, CPU Memory Peak [4.43 2.62 2.62 2.62]MB, GPU Memory Peak [0. 0. 0. 0.]MB
+Success: 0.00
+Steps-taken: 20.00
+1
+Global CPU Memory Peak [4.43 2.62 2.62 2.62]MB
+Global GPU Memory Peak [0. 0. 0. 0.]MB
+[Epoch] batch 0
+[Epoch] batch 1
+[Epoch] batch 2
+[Epoch] batch 3
+[Epoch] batch 4
+[Epoch] batch 5
+[Epoch] batch 6
+[Epoch] batch 7
+[Epoch] batch 8
+[Epoch] batch 9
+Epoch 2	Reward [-0.8  -0.83 -0.84 -0.82 -0.9  -0.89 -0.91 -0.91 -0.91 -0.95]	Time 63.57s, Episodes 880, Total Steps 17600, CPU Memory Peak [4.45 2.58 2.58 2.58]MB, GPU Memory Peak [0. 0. 0. 0.]MB
+Success: 0.00
+Steps-taken: 20.00
+2
+Global CPU Memory Peak [4.45 2.58 2.58 2.58]MB
+Global GPU Memory Peak [0. 0. 0. 0.]MB
+[Epoch] batch 0
+[Epoch] batch 1
+[Epoch] batch 2
+[Epoch] batch 3
+[Epoch] batch 4
+[Epoch] batch 5
+[Epoch] batch 6
+[Epoch] batch 7
+[Epoch] batch 8
+[Epoch] batch 9
+Epoch 3	Reward [-0.77 -0.79 -0.88 -0.86 -0.92 -0.89 -0.91 -0.88 -0.89 -0.93]	Time 63.23s, Episodes 1320, Total Steps 26400, CPU Memory Peak [4.45 2.58 2.59 2.58]MB, GPU Memory Peak [0. 0. 0. 0.]MB
+Success: 0.00
+Steps-taken: 20.00
+Global CPU Memory Peak [4.45 2.58 2.59 2.58]MB
+Global GPU Memory Peak [0. 0. 0. 0.]MB
+3

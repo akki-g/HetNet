@@ -1,0 +1,72 @@
+{
+  "scope": "Public official resource snapshot; no authenticated Stokes queries or jobs.",
+  "sources": [
+    {
+      "file": "stokesNodes.json",
+      "source_url": "https://arcc.ist.ucf.edu/status/stokesNodes.json",
+      "resolved_url": "https://arcc.ist.ucf.edu/status/stokesNodes.json",
+      "fetched_utc": "2026-09-28T17:26:32.972977+00:00",
+      "http_headers": {
+        "Date": "Mon, 28 Sep 2026 17:26:32 GMT",
+        "Server": "Apache/2.4.62 (Rocky Linux) OpenSSL/3.5.5 mod_fcgid/2.3.9 mod_wsgi/4.7.1 Python/3.9",
+        "Strict-Transport-Security": "max-age=63072000; includeSubDomains",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Last-Modified": "Mon, 28 Sep 2026 17:15:01 GMT",
+        "ETag": "\"b665-65c8e34d61294\"",
+        "Accept-Ranges": "bytes",
+        "Content-Length": "46693",
+        "Connection": "close",
+        "Content-Type": "application/json"
+      },
+      "bytes": 46693,
+      "sha256": "02f079fa4dbd526578ba5e678bf4143b8d1b88b0225a29fb29d4b321d5627444"
+    },
+    {
+      "file": "stokes_status.html",
+      "source_url": "https://arcc.ist.ucf.edu/status/stokes.html",
+      "resolved_url": "https://arcc.ist.ucf.edu/status/stokes.html",
+      "fetched_utc": "2026-09-28T17:26:33.069233+00:00",
+      "http_headers": {
+        "Date": "Mon, 28 Sep 2026 17:26:33 GMT",
+        "Server": "Apache/2.4.62 (Rocky Linux) OpenSSL/3.5.5 mod_fcgid/2.3.9 mod_wsgi/4.7.1 Python/3.9",
+        "Strict-Transport-Security": "max-age=63072000; includeSubDomains",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Last-Modified": "Tue, 12 May 2026 21:18:52 GMT",
+        "ETag": "\"3965-651a568ebc700\"",
+        "Accept-Ranges": "bytes",
+        "Content-Length": "14693",
+        "Connection": "close",
+        "Content-Type": "text/html; charset=UTF-8"
+      },
+      "bytes": 14693,
+      "sha256": "5eec8889461cff935adb63f95d395258e74d73396036b18d0d427ffb47f83ee7"
+    },
+    {
+      "file": "ARCC-and-Advanced-Research-Network-Updated-Jun11-2025.docx",
+      "source_url": "https://rci.research.ucf.edu/wp-content/uploads/sites/38/2025/06/ARCC-and-Advanced-Research-Network-Updated-Jun11-2025.docx",
+      "resolved_url": "https://rci.research.ucf.edu/wp-content/uploads/sites/38/2025/06/ARCC-and-Advanced-Research-Network-Updated-Jun11-2025.docx",
+      "fetched_utc": "2026-09-28T17:26:33.379471+00:00",
+      "http_headers": {
+        "Connection": "close",
+        "Content-Length": "18132",
+        "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "Etag": "\"6a879981-46d4\"",
+        "Last-Modified": "Fri, 21 Aug 2026 00:19:13 GMT",
+        "Server": "nginx",
+        "Strict-Transport-Security": "max-age=31622400",
+        "X-Pantheon-Styx-Hostname": "styx-us-a-58d475665b-9vsd8",
+        "X-Styx-Req-Id": "14164bda-bb61-11f1-b5b4-daa601674c96",
+        "Date": "Mon, 28 Sep 2026 17:26:33 GMT",
+        "X-Served-By": "cache-chi-kigq8000164-CHI, cache-mia-kfll1870047-MIA",
+        "X-Cache": "HIT, HIT",
+        "X-Cache-Hits": "1, 0",
+        "X-Timer": "S1790616393.151256,VS0,VE151",
+        "Age": "0",
+        "Accept-Ranges": "bytes",
+        "Via": "1.1 varnish, 1.1 varnish"
+      },
+      "bytes": 18132,
+      "sha256": "2496f7e414594441207cf3c18b8ba9daeb59c5286f1c578b690292bcc87cb9b6"
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "purpose": "engineering evidence only; not research outcomes",
+  "runs": [
+    {
+      "id": "2P1A_np1",
+      "nfriendly_P": 2,
+      "nfriendly_A": 1,
+      "nprocesses": 1,
+      "seed": 0,
+      "relative_dir": "smokes/2P1A_np1"
+    },
+    {
+      "id": "2P1A_np4",
+      "nfriendly_P": 2,
+      "nfriendly_A": 1,
+      "nprocesses": 4,
+      "seed": 0,
+      "relative_dir": "smokes/2P1A_np4"
+    },
+    {
+      "id": "3P3A_np1",
+      "nfriendly_P": 3,
+      "nfriendly_A": 3,
+      "nprocesses": 1,
+      "seed": 0,
+      "relative_dir": "smokes/3P3A_np1"
+    },
+    {
+      "id": "3P3A_np4",
+      "nfriendly_P": 3,
+      "nfriendly_A": 3,
+      "nprocesses": 4,
+      "seed": 0,
+      "relative_dir": "smokes/3P3A_np4"
+    },
+    {
+      "id": "4P6A_np1",
+      "nfriendly_P": 4,
+      "nfriendly_A": 6,
+      "nprocesses": 1,
+      "seed": 0,
+      "relative_dir": "smokes/4P6A_np1"
+    },
+    {
+      "id": "4P6A_np4",
+      "nfriendly_P": 4,
+      "nfriendly_A": 6,
+      "nprocesses": 4,
+      "seed": 0,
+      "relative_dir": "smokes/4P6A_np4"
+    },
+    {
+      "id": "3P1A_np1",
+      "nfriendly_P": 3,
+      "nfriendly_A": 1,
+      "nprocesses": 1,
+      "seed": 0,
+      "relative_dir": "smokes/3P1A_np1"
+    },
+    {
+      "id": "3P1A_np4",
+      "nfriendly_P": 3,
+      "nfriendly_A": 1,
+      "nprocesses": 4,
+      "seed": 0,
+      "relative_dir": "smokes/3P1A_np4"
+    },
+    {
+      "id": "2P2A_np1",
+      "nfriendly_P": 2,
+      "nfriendly_A": 2,
+      "nprocesses": 1,
+      "seed": 0,
+      "relative_dir": "smokes/2P2A_np1"
+    },
+    {
+      "id": "2P2A_np4",
+      "nfriendly_P": 2,
+      "nfriendly_A": 2,
+      "nprocesses": 4,
+      "seed": 0,
+      "relative_dir": "smokes/2P2A_np4"
+    },
+    {
+      "id": "2P1A_np1_repeat",
+      "nfriendly_P": 2,
+      "nfriendly_A": 1,
+      "nprocesses": 1,
+      "seed": 0,
+      "relative_dir": "smokes/2P1A_np1_repeat"
+    },
+    {
+      "id": "2P1A_np1_other_seed",
+      "nfriendly_P": 2,
+      "nfriendly_A": 1,
+      "nprocesses": 1,
+      "seed": 1,
+      "relative_dir": "smokes/2P1A_np1_other_seed"
+    }
+  ],
+  "epochs_per_run": 3,
+  "epoch_size": 10,
+  "batch_size": 40,
+  "max_steps": 20,
+  "maximum_concurrent_processes": 4,
+  "joint_environment_steps_bounds": [
+    32400,
+    47790
+  ],
+  "optimizer_update_calls": 360,
+  "runtime_note": "Wall time is unmeasured. Runs are sequential; no cluster job is submitted."
+}

@@ -1,0 +1,58 @@
+{
+  "source_file": "stokesNodes.json",
+  "source_sha256": "02f079fa4dbd526578ba5e678bf4143b8d1b88b0225a29fb29d4b321d5627444",
+  "source_time_as_written": "2026-09-28T13:15:01.559186",
+  "source_time_timezone": "not specified in JSON",
+  "node_count": 160,
+  "sum_cputot_slots": 7336,
+  "groups": [
+    {
+      "cputot_slots_per_node": 32,
+      "generation_feature_tag": "skylake",
+      "speed_feature_tag": "speed210",
+      "node_count": 26
+    },
+    {
+      "cputot_slots_per_node": 48,
+      "generation_feature_tag": "cascadelake",
+      "speed_feature_tag": "speed240",
+      "node_count": 36
+    },
+    {
+      "cputot_slots_per_node": 48,
+      "generation_feature_tag": "icelake",
+      "speed_feature_tag": "speed240",
+      "node_count": 55
+    },
+    {
+      "cputot_slots_per_node": 48,
+      "generation_feature_tag": "sapphirerapids",
+      "speed_feature_tag": "speed240",
+      "node_count": 40
+    },
+    {
+      "cputot_slots_per_node": 40,
+      "generation_feature_tag": "cascadelake",
+      "speed_feature_tag": "speed250",
+      "node_count": 1
+    },
+    {
+      "cputot_slots_per_node": 48,
+      "generation_feature_tag": "saphirerapids",
+      "speed_feature_tag": "speed180",
+      "node_count": 1
+    },
+    {
+      "cputot_slots_per_node": 128,
+      "generation_feature_tag": "saphirerapids",
+      "speed_feature_tag": "speed180",
+      "node_count": 1
+    }
+  ],
+  "caveats": [
+    "cputot is reported scheduler CPU capacity, not verified physical core count",
+    "No partition membership, CPU model SKU, topology or accessible allocation verified",
+    "Speed feature labels retained verbatim; units and clock semantics not verified",
+    "Misspelled generation tag and proc48/cputot128 mismatch retained, not silently corrected"
+  ]
+}

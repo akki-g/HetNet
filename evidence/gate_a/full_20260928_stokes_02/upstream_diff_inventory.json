@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "baseline": "bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec",
+  "allowed_commits": [
+    "0cfcea56acd14be3bfc7bd83524c2fba2b77bd4c",
+    "2fadecfa744e7ab152918d8b52b2e454e704b379",
+    "50d0c373f1063d87203d34d89f567e2070a0663e",
+    "7b334c1838d7a5af16dca8a77b944e0b98ea945e"
+  ],
+  "modifying_commits": [
+    {
+      "commit": "2fadecfa744e7ab152918d8b52b2e454e704b379",
+      "subject": "compat(A): pin Python 3.12 stack and preserve CPU execution",
+      "approved_by_cli_manifest": true,
+      "changed_original_files": [
+        ".gitignore",
+        "data.py",
+        "env_wrappers.py",
+        "eval_trainer.py",
+        "main.py",
+        "trainer.py",
+        "utils.py"
+      ]
+    },
+    {
+      "commit": "7b334c1838d7a5af16dca8a77b944e0b98ea945e",
+      "subject": "repro(B): seed before model and environment construction",
+      "approved_by_cli_manifest": true,
+      "changed_original_files": [
+        "main.py",
+        "multi_processing.py"
+      ]
+    },
+    {
+      "commit": "0cfcea56acd14be3bfc7bd83524c2fba2b77bd4c",
+      "subject": "fix(G): preserve shared gradient storage under Torch 2.2",
+      "approved_by_cli_manifest": true,
+      "changed_original_files": [
+        "hetgat/policy.py",
+        "multi_processing.py"
+      ]
+    },
+    {
+      "commit": "50d0c373f1063d87203d34d89f567e2070a0663e",
+      "subject": "record(C): log fresh epoch metrics and exact checkpoint signatures",
+      "approved_by_cli_manifest": true,
+      "changed_original_files": [
+        "main.py"
+      ]
+    }
+  ],
+  "uncommitted_original_files": [],
+  "patch_sha256": "dd0d7052fe38f3b99e68a87e0faffb0680c997d696cb6fd8fffdceb6fc9f748a",
+  "passed": true
+}

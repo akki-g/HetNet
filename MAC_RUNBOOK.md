@@ -1,5 +1,7 @@
 # Mac fallback for initial HetNet experiments
 
+**Historical fallback:** Stokes was restored on 28 September 2026. The current target is the full Stokes sweep in [STOKES_RUNBOOK.md](STOKES_RUNBOOK.md); these Mac pilot instructions are retained for reference.
+
 Status, 26 September 2026: Akki selected **short pilots first, followed by measured-cost review**, on a separate Mac mini available all day. The local setup/calibration tools are provided below. The combined tooling/regression validation passed 53 tests on the current M2, including bounded gradient probes; no calibration or study training was launched. The 21-run grid and preregistered final analysis are unchanged, and the existing Stokes launcher has not been relaxed. Target Gate A and calibration results remain pending.
 
 ## Target handoff and commands

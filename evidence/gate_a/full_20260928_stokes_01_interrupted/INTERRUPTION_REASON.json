@@ -1,0 +1,6 @@
+{
+  "status": "INCOMPLETE",
+  "reason": "Deliberately interrupted after user supplied live Stokes normal MaxTime=UNLIMITED. Existing numeric-only cap validation needs a source change; preserve this attempt and rerun on a frozen revision with explicit unlimited-cap support. No learner failure is inferred.",
+  "source_revision": "45cf138",
+  "submitted_cluster_jobs": 0
+}

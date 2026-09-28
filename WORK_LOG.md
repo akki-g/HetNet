@@ -32,7 +32,7 @@
 
 Full objective remains active; a prepared workflow or smoke pass is not completion of the cluster experiments.
 
-Current steering (28 September 2026): Stokes is working again and Akki requests the complete 21-task sweep with progress monitoring and a calibrated time estimate. The Mac pilot target is superseded. No actual Stokes calibration or study training has run; current-source Gate A is being refreshed.
+Current steering (28 September 2026): Stokes is working again and Akki requests the complete 21-task sweep with progress monitoring and a calibrated time estimate. The Mac pilot target is superseded. No actual Stokes calibration or study training has run; current-source Gate A passed; Stokes calibration and measured-budget confirmation remain pending.
 
 ## 26 September 2026 — local compatibility and scientific gate preparation
 
@@ -83,3 +83,13 @@ Current steering (28 September 2026): Stokes is working again and Akki requests 
 
 - During the refreshed gate, Akki supplied live Stokes terminal output: normal has 153 nodes/6,928 CPU slots, MaxTime=UNLIMITED, account cenyioha has 80,000 September CPU-hours remaining and the user MaxJobs is 250. Saved raw output and a deliberately incomplete preflight under `evidence/stokes/preflight_20260928/`; inherited QoS/account limits, current occupancy and setup prerequisites remain unresolved.
 - Deliberately interrupted `full_20260928_stokes_01` after the live facts exposed numeric-only partition-cap validation. The attempt and its interruption reason are preserved as INCOMPLETE, not an algorithm failure. Added exact `"unlimited"` partition-cap support across preflight, allocation, budget and submission; finite explicit job time remains mandatory. Twenty-six focused tests passed. Commit subject `infra(C): accept verified unlimited Stokes partition time` contains only this orchestration compatibility change and tests. Restart full Gate A from its frozen sources as `full_20260928_stokes_02`.
+
+
+## 28 September 2026 — refreshed Gate A passed; Stokes handoff complete
+
+- Full attempt `full_20260928_stokes_02` passed all eleven gates at 18:17:22 UTC. Seventy-eight selected pytest cases passed without skips; twelve smokes completed 36 epochs / 360 updates / 32,548 actual joint transitions, with 36 checkpoint states checked against signatures. Repeated source seed signatures and non-timing metrics matched; a different seed differed; one source checkpoint loaded strictly into all five compositions without dtype/value changes.
+- Independent gradient audit verified six NPZ hashes, 432 tensor reductions and 2,982,672 scalar entries, with zero actual-model aggregation error. Shared weight/storage/signature and post-clip norm checks passed. Actual snapshots are already clipped; unclipped loss-gradient reconstruction is not claimed.
+- Scientific revision `084302b`, hash `bc4822dda32aa75a4e3f8c1cef389599224002d72327ba436d387a692cc407dd`, stayed fixed throughout. The complete archive has manifests for 170 raw files; raw checkpoint/gradient binaries remain local and ignored. Historical failed/incomplete attempts remain preserved.
+- Wrote `STOKES_FULL_SWEEP.md`, updated `STOKES_RUNBOOK.md`, and archived current public hardware sources and user-supplied live scheduler/account facts. The known target is normal, 153 nodes/6,928 slots, unlimited partition wall time, cenyioha with 80,000 hours remaining and user/account MaxJobs=250; actual runtime, aggregate submission capacity, compute prerequisites and storage headroom still require the documented checks. No further user facts were guessed.
+- Added exact review/submission, compute-probe, calibration, progress/export and transfer commands. All documented Bash blocks parse. Recommended initial calibration allocations are explicit provisional ceilings (two tasks, four CPUs, 16GiB, two hours each), not measured sufficiency. The conditional 30/60/120 seconds-per-epoch scenarios are not Stokes benchmarks or confidence bounds.
+- No Stokes allocation, installation, calibration, full training, frozen evaluation, push or remote submission occurred. The overall experimental objective remains incomplete. Next: final preflight and two endpoint calibrations, measured budget review, then the complete 21-task array; develop Phase B in a separate checkout while Run1 proceeds.

@@ -1,0 +1,10 @@
+{
+  "excluded_metrics_fields": [
+    "wall_time_seconds"
+  ],
+  "same_seed_initial_and_all_epochs_equal": true,
+  "different_seed_initial_differs": true,
+  "first_file_sha256": "eece077db6209a6774f44b7fef07785079736319684386b7f73d00a15aba90eb",
+  "repeat_file_sha256": "6e3d3a83a6e0f5b6223e6806d5d11d4dde719914e3d861c0245dd0ccea25c719",
+  "projection_sha256": "e346be8dca3fc09f6d5092e12dbaab545fdf62440c77e19341a7ed914c5cb4b4"
+}
