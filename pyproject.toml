@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "hetnet-reproduction"
 version = "0.1.0"
-description = "Original HetNet PCP reproduction and frozen-policy experiment tooling"
+description = "Reproducible training with the original HetNet release"
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "torch==2.2.1",

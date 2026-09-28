@@ -1,4 +1,0 @@
-{"command": ["/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/bin/python3", "-m", "pytest", "-q", "tests/test_gate_a_contracts.py", "-k", "smoke_artifacts or determinism or cross_composition", "--junitxml=/Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260928_stokes_02/artifact_contracts.xml"], "cwd": "/Users/akshatguduru/Desktop/Thesis/HetNet"}
-...                                                                      [100%]
-- generated xml file: /Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260928_stokes_02/artifact_contracts.xml -
-3 passed, 4 deselected in 3.26s

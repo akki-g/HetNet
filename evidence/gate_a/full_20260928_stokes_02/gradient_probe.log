@@ -1,5 +1,0 @@
-{"command": ["/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/bin/python3", "tests/helpers/shared_gradient_probe.py", "--output", "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260928_stokes_02/gradient_probe.json", "--updates", "3"], "cwd": "/Users/akshatguduru/Desktop/Thesis/HetNet"}
-Gradient contract: PASS (evidence: /Users/akshatguduru/Desktop/Thesis/HetNet/runs/gate_a/full_20260928_stokes_02/gradient_probe.json)
-  update 1: shared_weights=True current_storage=True fresh_aggregation=True max_gradient_error=1.73472348e-18
-  update 2: shared_weights=True current_storage=True fresh_aggregation=True max_gradient_error=6.9388939e-18
-  update 3: shared_weights=True current_storage=True fresh_aggregation=True max_gradient_error=0

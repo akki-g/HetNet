@@ -1,118 +1,143 @@
-"""Contracts for reading concurrently-written scientific evidence without changing it."""
+"""Progress summaries preserve task-specific horizons and recorder denominators."""
+import csv
 import json
 import math
-from pathlib import Path
-import xml.etree.ElementTree as ET
 
 import pytest
 
-from hetnet_ext.grid import load_grid
-from hetnet_ext.progress import curves_svg, main, read_jsonl, snapshot, window_metrics
+from hetnet_ext.progress import main, read_jsonl, render_table, snapshot, window_metrics
 
 
-def metric(epoch, success=.1, episodes=10):
-    return dict(epoch=epoch, steps=100, episodes=episodes, total_steps=100 * epoch,
-                total_episodes=episodes * epoch, success_rate=success, steps_taken=75,
-                reward_per_agent=[-1, -3, 2], policy_loss=-.2, value_loss=1.4,
-                wall_time_seconds=60)
+def metric(epoch=1, success=.1, episodes=10, **changes):
+    row = dict(epoch=epoch, steps=100, episodes=episodes, total_steps=100 * epoch,
+               total_episodes=episodes * epoch, success_rate=success, steps_taken=75,
+               reward_per_agent=[-1, -3, 2], policy_loss=-.2, value_loss=1.4,
+               wall_time_seconds=60)
+    row.update(changes)
+    return row
 
 
-def run(tmp_path, rows, status="starting"):
-    directory = tmp_path / "2P1A/seed0"
+def make_run(root, rows, name="pcp_real/seed0", exit_code=None, **arguments):
+    directory = root / name
     directory.mkdir(parents=True)
     (directory / "metrics.jsonl").write_text("".join(json.dumps(row) + "\n" for row in rows))
-    (directory / "config.json").write_text(json.dumps(dict(entry=load_grid()[0].as_dict(), mode="train", num_epochs=2000)))
-    (directory / "provenance.json").write_text(json.dumps(dict(status=status)))
+    args = dict(nfriendly_P=2, nfriendly_A=1, num_epochs=2, max_steps=80)
+    args.update(arguments)
+    (directory / "resolved_args.json").write_text(json.dumps(args))
+    if exit_code is not None:
+        (directory / "exit_code.txt").write_text(f"{exit_code}\n")
     return directory
 
 
-def test_weighted_window_not_mean_of_epoch_means():
-    rows = [metric(1, 0, 1), metric(2, 1, 9)]
+def test_unequal_episode_and_step_denominators():
+    rows = [metric(success=0, episodes=1, policy_loss=2),
+            metric(2, success=1, episodes=9, steps=300, policy_loss=6,
+                   reward_per_agent=[3, 5, 10], steps_taken=25)]
     actual = window_metrics(rows, 2)
     assert actual["success_rate"] == .9
-    assert actual["reward_P"] == -2
-    assert actual["reward_A"] == 2
+    assert actual["steps_taken"] == 30
+    assert actual["reward_P"] == pytest.approx(3.4)
+    assert actual["reward_A"] == pytest.approx(9.2)
+    assert actual["policy_loss"] == 5  # joint-step weighting, not episode weighting
 
 
-def test_live_partial_line_ignored_but_committed_corruption_rejected(tmp_path):
-    path = tmp_path / "metrics.jsonl"
-    path.write_text(json.dumps(metric(1)) + '\n{"epoch":2')
-    rows, warnings = read_jsonl(path)
-    assert len(rows) == 1 and warnings
-    path.write_text('{"epoch":broken}\n')
-    with pytest.raises(json.JSONDecodeError):
-        read_jsonl(path)
-
-
-def test_expected_grid_eta_counters_and_read_only(tmp_path):
-    directory = run(tmp_path, [metric(1), metric(2)])
-    (directory / "checkpoint_records.jsonl").write_text('{"epoch":1,"wall_time_seconds":2}\n')
+def test_discovery_pp_no_a_and_read_only(tmp_path):
+    directory = make_run(tmp_path, [metric(reward_per_agent=[-1, -3])],
+                         name="pp_real/seed8", nfriendly_A=0)
     before = {p: p.read_bytes() for p in directory.iterdir()}
-    report, _ = snapshot(tmp_path)
-    assert len(report["runs"]) == 21
-    assert sum(r["status"] == "not_seen" for r in report["runs"]) == 20
-    row = report["runs"][0]
-    assert row["status"] == "incomplete_check_slurm"
-    assert row["total_steps"] == 200 and row["total_episodes"] == 20
-    assert row["eta_hours"] == pytest.approx((1998 * 60 + 40 * 2) / 3600)
+    report = snapshot(tmp_path)
+    assert len(report["runs"]) == 1
+    run = report["runs"][0]
+    assert run["run"] == "pp_real/seed8"
+    assert run["recent"]["reward_A"] is None
+    assert run["recent"]["reward_P"] == -2
+    assert run["total_steps"] == 100 and run["total_episodes"] == 10
+    assert run["status"] == "running_or_interrupted"
+    assert "-" in render_table(report)
     assert {p: p.read_bytes() for p in directory.iterdir()} == before
 
 
-@pytest.mark.parametrize("change", [dict(epoch=3), dict(success_rate=math.nan), dict(reward_per_agent=[0]), dict(total_steps=900), dict(steps_taken=81)])
-def test_corrupt_metrics_are_reported_without_hiding_other_runs(tmp_path, change):
-    row = metric(1)
-    row.update(change)
-    run(tmp_path, [row])
-    report, series = snapshot(tmp_path)
-    assert report["runs"][0]["status"] == "invalid_evidence"
-    assert len(report["runs"]) == 21
-    assert series[0][1] == []
+def test_fc_horizon_and_recent_window(tmp_path):
+    make_run(tmp_path, [metric(steps_taken=300), metric(2, steps_taken=200, wall_time_seconds=20)],
+             name="fc_binary/seed1", max_steps=300, num_epochs=10000)
+    run = snapshot(tmp_path, window=1)["runs"][0]
+    assert run["target_epochs"] == 10000
+    assert run["recent"]["steps_taken"] == 200
+    assert run["seconds_per_epoch"] == 20
+    assert run["status"] != "invalid"
 
 
-def test_failed_and_false_complete_are_not_success(tmp_path):
-    directory = run(tmp_path, [metric(1)], status="failed")
-    report, _ = snapshot(tmp_path)
-    assert report["runs"][0]["eta_hours"] is None
-    assert report["runs"][0]["status"] == "failed"
-    (directory / "provenance.json").write_text('{"status":"complete"}')
-    report, _ = snapshot(tmp_path)
-    assert report["runs"][0]["status"] == "invalid_evidence"
-    assert report["complete_runs"] == 0
+def test_unfinished_line_ignored_but_committed_corruption_isolated(tmp_path):
+    bad = make_run(tmp_path, [metric()])
+    good = make_run(tmp_path, [metric()], name="fc_real/seed0", exit_code=0, num_epochs=1)
+    metrics = bad / "metrics.jsonl"
+    complete = metrics.read_text()
+    metrics.write_text(complete + '{"epoch":2')
+    rows, warnings = read_jsonl(metrics)
+    assert len(rows) == 1 and warnings
+    report = snapshot(tmp_path)
+    assert report["complete_runs"] == 1
+    assert report["runs"][1]["epoch"] == 1
+    metrics.write_text(complete + '{"epoch":broken}\n')
+    report = snapshot(tmp_path)
+    assert report["complete_runs"] == 1
+    assert report["runs"][0]["path"] == str(good)
+    assert report["runs"][1]["status"] == "invalid"
+    assert main(["--runs", str(tmp_path)]) == 1
 
 
-def test_fixed_review_windows_and_export(tmp_path):
-    root = tmp_path / "runs"
-    run(root, [metric(e, .1 if e <= 50 else .7) for e in range(1, 301)])
-    report, series = snapshot(root, window=10)
-    review = report["runs"][0]["early_review"]
-    assert review["success_change"] == pytest.approx(.6)
-    assert not review["no_success_increase"]
-    assert report["source_seeds_at_review"] == 1
-    assert not report["source_review_due"]
-    ET.fromstring(curves_svg(series, 50))
-    output = tmp_path / "snapshot"
-    assert main(["--runs", str(root), "--out", str(output)]) == 0
-    assert {p.name for p in output.iterdir()} == {"report.json", "progress.txt", "summary.csv", "learning_curves.svg"}
-    assert len((output / "summary.csv").read_text().splitlines()) == 22
-    with pytest.raises(FileExistsError):
-        main(["--runs", str(root), "--out", str(output)])
+@pytest.mark.parametrize("exit_code,epochs,expected", [(0, 2, "complete"), (0, 3, "incomplete"),
+                                                       (7, 2, "failed"), (None, 2, "running_or_interrupted")])
+def test_completion_requires_exit_zero_and_all_epochs(tmp_path, exit_code, epochs, expected):
+    make_run(tmp_path, [metric(), metric(2)], exit_code=exit_code, num_epochs=epochs)
+    report = snapshot(tmp_path)
+    assert report["runs"][0]["status"] == expected
+    assert report["complete_runs"] == int(expected == "complete")
 
 
-def test_identity_and_stale_metrics(tmp_path):
-    directory = run(tmp_path, [metric(1)])
-    report, _ = snapshot(tmp_path, now=(directory / "metrics.jsonl").stat().st_mtime + 1000)
-    assert any("stale" in w for w in report["runs"][0]["warnings"])
-    wrong = json.loads((directory / "config.json").read_text())
-    wrong["entry"]["seed"] = 9
-    (directory / "config.json").write_text(json.dumps(wrong))
-    report, _ = snapshot(tmp_path)
-    assert report["runs"][0]["status"] == "invalid_evidence"
+@pytest.mark.parametrize("change", [dict(epoch=3), dict(success_rate=math.nan), dict(reward_per_agent=[0]),
+                                    dict(total_steps=900), dict(steps_taken=301)])
+def test_invalid_metrics(tmp_path, change):
+    make_run(tmp_path, [metric(**change)], max_steps=300)
+    assert snapshot(tmp_path)["runs"][0]["status"] == "invalid"
 
 
-@pytest.mark.parametrize("filename", ["metrics.jsonl", "provenance.json", "config.json", "checkpoint_records.jsonl"])
-def test_wrong_json_type_is_isolated_to_one_run(tmp_path, filename):
-    directory = run(tmp_path, [metric(1)])
+@pytest.mark.parametrize("filename", ["metrics.jsonl", "resolved_args.json"])
+def test_wrong_json_type(tmp_path, filename):
+    directory = make_run(tmp_path, [metric()])
     (directory / filename).write_text("null\n")
-    report, _ = snapshot(tmp_path)
-    assert report["runs"][0]["status"] == "invalid_evidence"
-    assert len(report["runs"]) == 21
+    assert snapshot(tmp_path)["runs"][0]["status"] == "invalid"
+
+
+def test_csv_and_json_output(tmp_path, capsys):
+    root = tmp_path / "runs"
+    make_run(root, [metric(reward_per_agent=[-1, -3])], name="pp_binary/seed2",
+             nfriendly_A=0, num_epochs=1, exit_code=0)
+    out = tmp_path / "report"
+    assert main(["--runs", str(root), "--json", "--out", str(out)]) == 0
+    assert json.loads(capsys.readouterr().out)["complete_runs"] == 1
+    with (out / "summary.csv").open() as stream:
+        rows = list(csv.DictReader(stream))
+    assert len(rows) == 1 and rows[0]["reward_A"] == ""
+    assert rows[0]["status"] == "complete" and rows[0]["total_steps"] == "100"
+
+
+def test_empty_root_and_invalid_window(tmp_path):
+    assert snapshot(tmp_path)["runs"] == []
+    with pytest.raises(ValueError, match="positive"):
+        snapshot(tmp_path, window=0)
+
+
+def test_startup_failure_is_visible_without_metrics_or_arguments(tmp_path):
+    for name, code in (("pp_real/seed0", 1), ("pp_real/seed1", None), ("pp_real/seed2", 0)):
+        directory = tmp_path / name
+        directory.mkdir(parents=True)
+        (directory / "command.txt").write_text("python main.py ...\n")
+        if code is not None:
+            (directory / "exit_code.txt").write_text(f"{code}\n")
+    report = snapshot(tmp_path)
+    assert [r["status"] for r in report["runs"]] == ["failed", "running_or_interrupted", "incomplete"]
+    assert report["complete_runs"] == 0
+    assert report["runs"][0]["exit_code"] == 1
+    assert "stdout.log" in report["runs"][0]["warnings"][0]
+    assert "checkpoints are not verified" in render_table(report)

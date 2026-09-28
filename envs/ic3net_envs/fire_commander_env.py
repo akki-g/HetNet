@@ -332,7 +332,7 @@ class FireCommanderEnv(gym.Env):
                 if fire[0] >= p[0] - self.vision and fire[0] <= p[0] + self.vision and fire[1] >= p[1] - self.vision and fire[1] <= p[1] + self.vision:
                     self.discovered_fire.append(fire)
 
-                    if fire in self.ign_points_all[:, :2].astype(np.int):
+                    if fire in self.ign_points_all[:, :2].astype(int):
                         self.just_discovered_source[i] = 1
                     else:
                         self.just_discovered_nonsource[i] = 1
@@ -398,7 +398,7 @@ class FireCommanderEnv(gym.Env):
                 # put out fire
                 pred_cap_loc = self.predator_capture_loc[idx - self.npredator]
                 fire_loc_idx = np.argwhere(np.all(self.fire_loc == pred_cap_loc, axis=1))
-                ign_point_idx = np.argwhere(np.all(self.ign_points_all[:,:2].astype(np.int) == pred_cap_loc, axis=1))
+                ign_point_idx = np.argwhere(np.all(self.ign_points_all[:,:2].astype(int) == pred_cap_loc, axis=1))
                 self.extinguishing[idx - self.npredator] = 1
 
                 if len(fire_loc_idx) + len(ign_point_idx) == 0:
@@ -545,7 +545,7 @@ class FireCommanderEnv(gym.Env):
         self.stdscr.clear()
 
         for p in self.fire_loc:
-            render_char = 'F' if np.all(self.ign_points_all[:,:2].astype(np.int) == p, axis=1) else 'f'
+            render_char = 'F' if np.all(self.ign_points_all[:,:2].astype(int) == p, axis=1) else 'f'
 
             if grid[p[0]][p[1]] != 0:
                 grid[p[0]][p[1]] = str(grid[p[0]][p[1]]) + render_char

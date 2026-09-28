@@ -134,6 +134,11 @@ class HeteroGATLayerBinary(nn.Module):
         nn.init.xavier_normal_(self.a2s_dst, gain=gain)
 
     def forward(self, g, feat_dict):
+        # Predator-Prey has no action agents. Keep its A tensors empty so the
+        # existing transforms and empty relations contribute no messages.
+        if 'A' not in feat_dict and g.num_nodes('A') == 0:
+            feat_dict = dict(feat_dict)
+            feat_dict['A'] = feat_dict['P'].new_empty((0, self._in_dim['A']))
         '''
         From hi to Whi
         '''

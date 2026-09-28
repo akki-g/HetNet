@@ -1,43 +1,155 @@
-# HetNet
-Public implementation of Heterogeneous Policy Networks (HetNet) from AAMAS'22
+# HetNet reproduction
 
-**Paper Title:** Learning Efficient Diverse Communication for Cooperative Heterogeneous Teaming
+Implementation of **Learning Efficient Diverse Communication for Cooperative Heterogeneous Teaming** (Seraj et al., AAMAS 2022): [paper](https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf), [author repository](https://github.com/CORE-Robotics-Lab/HetNet), and the included [supplement](AAMAS_22___HetNet_Supplementary.pdf).
 
-**Authors:** Esmaeil Seraj*, Zheyuan Wang*, Rohan Paleja*, Daniel Martin, Matthew Sklar, Anirudh Patel, Matthew Gombolay
+Our order of work is:
 
-**Paper Link:** https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf
+1. Reproduce the original study, including its domains, comparisons and ablations.
+2. Freeze reproduced policies and change only the number/composition of agents on the **same task**, keeping map, sensing, physical capabilities, rewards and rules fixed.
+3. Use those results to guide SoftRole development.
 
+No sensor degradation, capability-loss or within-episode membership experiment is in the current plan. The old 21-run PCP transfer-preparation sweep is retired. No full training or frozen evaluation has been completed yet.
 
+## First reproduction tranche
 
-## Installation
+The launcher covers the released HetNet recipes on three domains, with Real and release-default Binary-16 communication and seeds **0, 1, 2**: **18 separate training runs**. These test whether the original models learn their original tasks. This is **not yet the full paper reproduction** and does not test frozen transfer.
 
+| Array indices | Task | Team | Map / episode cap | Epochs | Communication |
+|---|---|---|---|---:|---|
+| 0–2 | Predator–Prey (PP) | 3P, 0A | 5×5 / 80 | 2,000 | Real |
+| 3–5 | PP | 3P, 0A | 5×5 / 80 | 2,000 | Binary-16 |
+| 6–8 | Predator–Capture (PCP) | 2P, 1A | 5×5 / 80 | 2,000 | Real |
+| 9–11 | PCP | 2P, 1A | 5×5 / 80 | 2,000 | Binary-16 |
+| 12–14 | FireCommander (FC) | 2P, 1A | 5×5 / 300 | 1,400 | Real |
+| 15–17 | FC | 2P, 1A | 5×5 / 300 | 1,400 | Binary-16 |
+
+P agents perceive; A agents capture prey or extinguish fire. PP requires all predators to reach prey. PCP additionally requires capture by A agents. FC requires extinguishing the spreading fire. Success, completion steps and returns measure whether these tasks are being learned.
+
+Every run uses four collectors, ten updates/epoch, batch target 500 **per collector**, the released two-layer network/per-class critic, and stepping RMSprop at learning rate 0.0001. A joint step advances the whole environment, not one agent. Complete episodes can overshoot the batch target; use logged counts. Save checkpoints every 50 completed epochs and at the final epoch.
+
+**Release versus paper:** the supplement describes three layers and Adam at 0.001. The active author release has two layers and stepping RMSprop; its policy-local Adam does not step. FC's released action/reward conventions also differ from the supplement. These runs reproduce the released code/README recipe, not a silently reconstructed paper recipe. Binary-16 is the release default; the paper also reports other widths, including Binary-64.
+
+## Run
+
+Use Python 3.12 and the committed dependency lock:
+
+```bash
+uv sync --locked --python 3.12
+bash scripts/reproduce.sh pcp real 0 --dry-run
+bash scripts/reproduce.sh pcp real 0
 ```
-git clone https://github.com/CORE-Robotics-Lab/HetNet
-cd HetNet/envs
-python setup.py develop
+
+The short launcher calls the original `main.py`. There is no preflight JSON, budget approval file, calibration gate or separate submission service. Extra arguments are ordinary `main.py` options, recorded verbatim. A quick engineering smoke, **not a research run**:
+
+```bash
+HETNET_RUN_ROOT=runs/smoke bash scripts/reproduce.sh pcp real 0 \
+  --num_epochs 2 --epoch_size 2 --batch_size 4 --max_steps 4
 ```
 
-We **note** this repo and several files maintained are pulled/modified from https://github.com/IC3Net/IC3Net.
+Choose `pp`, `pcp` or `fc`, and `real` or `binary`. A separate message-width run is explicit:
 
-## Sample Run Command for HetNet  
-- Predator-Prey: ``python main.py --env_name predator_capture --nfriendly_P 3 --nfriendly_A 0 --nprocesses 4 --num_epochs 2000 --hid_size 128 --detach_gap 5 --lrate 0.0001 --dim 5 --batch_size 500 --max_steps 80 --hetgat --hetgat_a2c --seed 5``
-- Predator-Capture: ``python main.py --env_name predator_capture --nfriendly_P 2 --nfriendly_A 1 --nprocesses 4 --num_epochs 2000 --hid_size 128 --detach_gap 5 --lrate 0.0001 --dim 5 --batch_size 500 --max_steps 80 --hetgat --hetgat_a2c --seed 5``
-- Fire-Commander: ``python main.py --env_name fire_commander --nfriendly_P 2 --nfriendly_A 1 --nprocesses 4 --num_epochs 1400 --hid_size 128 --detach_gap 5 --lrate 0.0001 --dim 5 --max_steps 300 --hetgat --hetgat_a2c --vision 1 --nfires 1 --reward_type 3``
-
-#### Important Notes/Arguments
-- When the number of Action agents (--nfriendly_A) is set to 0, the predator_capture environment defaults to Predator_Prey.
-- Seed (--seed) should be varied to gain a robust understanding over baselines and our model. 
-- The number of processes (--nprocesses) is directly related to the amount of data used in update steps. We typically utilize 4 processes
-but our code can readily support any number of threads (including single process)
-
-## Sample Run Commands for Baselines
-This is currently a work in progress. Baselines that are supported are MAGIC, IC3Net, CommNet, and TarMAC. We are doing some large refactoring. Please email us with any urgent concerns!
-
-
-## Citation
-If you use this work and/or this codebase in your research, we ask you to please cite the original AAMAS'22 paper as shown below:
-
+```bash
+HETNET_RUN_ROOT=runs/binary64 bash scripts/reproduce.sh pcp binary 0 --msg_dim 64
 ```
+
+Existing run directories are never overwritten. Use a new `HETNET_RUN_ROOT` for retries or changed settings. The wrapper fixes output paths and otherwise passes training options through; inspect `command.txt` and `resolved_args.json` before comparing runs. Overriding seed/task/method flags can make directory labels differ from the effective settings. `HETNET_PYTHON` can select another equivalent locked environment.
+
+## UCF Stokes
+
+Create the environment once **on a compute node**, rather than in every array task. From the repository checkout:
+
+```bash
+module load anaconda/anaconda-2024.10
+srun --account=cenyioha --partition=normal --nodes=1 --ntasks=1 \
+  --cpus-per-task=4 --mem=8G --time=00:30:00 --pty bash
+python -m pip install --user uv==0.12.5
+~/.local/bin/uv sync --locked --python 3.12
+# Run the short smoke above here, then leave the allocation.
+exit
+```
+
+If uv is already available, use it directly. Setup requires package-download access. The pinned stack was tested locally; the compute-node smoke checks actual Linux imports and timing.
+
+From the repository root on the submitting node:
+
+```bash
+mkdir -p logs
+sbatch slurm/reproduce.sbatch
+```
+
+This submits 18 runs, at most six concurrently, on `normal`, account `cenyioha`, four CPUs/run, no GPU. The **16 GiB / 48-hour** defaults are starting requests, not measured requirements or runtime predictions. Override them with normal Slurm flags:
+
+```bash
+# Just PCP Real seed 0; use the table to select other tasks.
+sbatch --array=6 --time=2-00:00:00 --mem=16G slurm/reproduce.sbatch
+# Full tranche at a different concurrency:
+sbatch --array=0-17%3 slurm/reproduce.sbatch
+```
+
+Do not submit overlapping arrays to the same output root. Keep the checkout and environment unchanged while jobs are queued or running: spawned workers import that source. Stokes has heterogeneous CPUs and no duration has been measured yet. If all 18 jobs consumed the full default request, the ceiling would be 18 × 4 × 48 = 3,456 allocated CPU-hours; actual charged elapsed time may be less. Inspect an initial run's speed/memory before a large batch. Automatic resume is not implemented.
+
+## Logs and progress
+
+Output lives in `runs/reproduction/<task>_<variant>/seed<seed>/`:
+
+| Artifact | Meaning |
+|---|---|
+| `command.txt`, `environment.txt`, `source.patch`, `uv.lock` | Exact command, Git revision/dirty state, local source diff and dependency lock. |
+| `resolved_args.json` | Effective training/environment defaults and selected model. |
+| `metrics.jsonl` | Fresh epoch counts, success, episode length, per-agent returns, losses and epoch time. |
+| `stdout.log`, `exit_code.txt` | Training output and exit status. Missing status can mean running or interrupted. |
+| `checkpoints/`, `checkpoint_records.jsonl` | Saved models, serialization time and sizes. |
+| Initial/epoch/checkpoint signatures | Parameter/buffer identity retained for reproducibility and later frozen evaluation. |
+
+```bash
+python -m hetnet_ext.progress --runs runs/reproduction
+python -m hetnet_ext.progress --runs runs/reproduction --out runs/progress
+squeue -u "$USER"
+# Replace JOB_ID with the actual job/array ID.
+sacct -j JOB_ID --format=JobID,State,Elapsed,AllocCPUS,MaxRSS
+```
+
+The standard-library-only monitor discovers runs, exports `summary.csv` or prints `--json`, and summarizes the last 50 epochs (`--window` changes this). Success, steps and P/A returns are episode-weighted; losses retain the joint-step reporting denominator. PP has no A return. The monitor does not load or certify checkpoints.
+
+Look for improving success, shorter episodes and coherent returns **across seeds**. Finite/decreasing loss alone does not establish learning. Use `metrics.jsonl` for counts: original stdout overcounts cumulative samples. Epoch timing omits checkpoints and some logging overhead. Training curves do not replace final policy evaluation.
+
+## Full original-study coverage still required
+
+| Paper result | Required experiment | Remaining work |
+|---|---|---|
+| Table 1; Fig. 3 | PP/PCP/FC quality and PP/PCP learning versus CommNet, IC3Net, TarMAC and MAGIC | Matched baseline recipes and final evaluation. CommNet/IC3Net paths exist; TarMAC/MAGIC implementations are absent from this release despite its original README. |
+| Fig. 4; Fig. 5b | PCP communication cost; Real, Binary 4/8/16/32/64, no communication | Explicit width runs and bits/round versus bits/step accounting. Zero-width messages are not necessarily no communication. |
+| Fig. 5a | Full/half/no communication range | Resolve numerical “half” setting and no-message construction. Range zero still permits co-located senders. |
+| Fig. 5c | Binary training at 2P1A, 3P3A and 4P6A | Establish matching map/horizon. This is separately trained scalability, not frozen transfer. |
+| Fig. 6 | Real centralized/per-class/per-agent critics | Expose and validate existing alternate branches; release selects per-class. |
+| Supplement Fig. 1 | STE versus Gumbel at 8/16 bits | Wire estimator selector and resolve unspecified task/composition. |
+
+The paper reports seeds 0/1/2 and 50 evaluation trials. The released HetNet evaluator instead hardcodes 100 episodes and has author-specific paths/reset assumptions. It is not a validated Table 1 evaluator. Resolve these issues before final evaluation; do not invent missing settings or claim absent baselines were reproduced. A paper-recipe reconstruction must be labeled separately from the released-code runs above.
+
+The [IC3Net source](https://github.com/IC3Net/IC3Net) supplies the original code lineage; the [FireCommander project](https://github.com/EsiSeraj/FireCommander2020) provides domain background.
+
+## Code and checks
+
+- `main.py`, `trainer.py`, `multi_processing.py`, `hetgat/`, `envs/`: original learner, model and environments.
+- `scripts/reproduce.sh`: domain commands and output capture.
+- `slurm/reproduce.sbatch`: plain array mapping; no JSON prerequisites.
+- `hetnet_ext/seeding.py`, `recording.py`, `signatures.py`: early seeding, accurate counts and saved-state identity.
+- `hetnet_ext/progress.py`: read-only summaries.
+- `tests/`: accounting, launch/progress and gradient regressions.
+
+Retained fixes cover Python/Gym/CPU compatibility, seeding before construction and in-place gradient clearing at the three previously repaired sites. Additional narrow repairs replace removed NumPy integer aliases in FC and handle Binary PP's empty A class without adding agents/messages. They preserve layer count, optimizer, rewards and physical rules.
+
+Twelve tiny actual-training checks passed: three tasks × two communication variants × one/four processes, four updates each. They establish execution, finite metrics and saved/changed weights—not convergence. The Binary fix also preserved existing nonempty-A outputs/gradients exactly.
+
+```bash
+uv run --locked pytest -q
+```
+
+The old launch framework, PCP-only grid, Mac wrappers and mandatory preflight/budget machinery are removed. Research/evidence files remain locally but are excluded from new checkouts; their full tracked history is preserved at commit `47b99bf`. Work continues on `main`; the merged `frozen-eval` branch is deleted.
+
+## Citation and license
+
+```bibtex
 @inproceedings{seraj2022learning,
   title={Learning efficient diverse communication for cooperative heterogeneous teaming},
   author={Seraj, Esmaeil and Wang, Zheyuan and Paleja, Rohan and Martin, Daniel and Sklar, Matthew and Patel, Anirudh and Gombolay, Matthew},
@@ -47,18 +159,4 @@ If you use this work and/or this codebase in your research, we ask you to please
 }
 ```
 
-
-
-## License
-Code is available under MIT license.
-
-## Appendix: The FireCommander Domain
-A detailed description of the heterogeneous multi-agent domain that we created for our experiments, the FireCommander environment,can be accessed through the following links:
-
-**FireCommander arXiv Paper:** FireCommander: An Interactive, Probabilistic Multi-agent Environment for Heterogeneous Robot Teams
-
-**FireCommander Paper Link:** https://arxiv.org/abs/2011.00165
-
-**FireCommander Codebase:** https://github.com/EsiSeraj/FireCommander2020
-
-
+The tracked [LICENSE](LICENSE) is GPLv3; the original README's MIT claim was inconsistent with that file.

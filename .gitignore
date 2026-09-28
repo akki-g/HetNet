@@ -18,3 +18,5 @@ slurm-*.err
 *.md
 !README.md
 research/
+evidence/
+logs/

@@ -1,6 +1,0 @@
-/Users/akshatguduru/Desktop/Thesis/HetNet/.venv-gate-a-clean/lib/python3.12/site-packages/dgl/backend/backend.py:1845: SyntaxWarning: invalid escape sequence '\P'
-  y_i = \Phi_{j=\mathrm{offsets}_i}^{\mathrm{offsets}_{i+1}-1} x_j
-Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
-Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
-Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
-See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
