@@ -45,6 +45,9 @@ class PredatorCaptureEnv(gym.Env):
         self.ON_PREY_BUT_NOT_CAPTURE_REWARD = -0.025
         self.episode_over = False
         self.action_blind = True
+        # Opt-in for the standalone capability-conditioned learner. The release
+        # default retains its original shared-view observation behavior.
+        self.independent_observations = False
         self.episode_eval_counter = 0
 
 
@@ -277,12 +280,14 @@ class PredatorCaptureEnv(gym.Env):
         for p in self.predator_loc:
             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
-            obs.append(self.bool_base_grid[slice_y, slice_x])
+            window = self.bool_base_grid[slice_y, slice_x]
+            obs.append(window.copy() if self.independent_observations else window)
 
         for p in self.predator_capture_loc:
             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
-            obs.append(self.bool_base_grid[slice_y, slice_x])
+            window = self.bool_base_grid[slice_y, slice_x]
+            obs.append(window.copy() if self.independent_observations else window)
             # x,y,z = self.bool_base_grid[slice_y, slice_x].shape
             # obs.append(np.arange(x*y*z).reshape(x,y,z))
 

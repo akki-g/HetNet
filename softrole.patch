@@ -1,0 +1,1160 @@
+From 26ed00a6dc2f13bce4c4430fa37514ffda88819e Mon Sep 17 00:00:00 2001
+From: Akshat Guduru <akshat.guduru@gmail.com>
+Date: Mon, 28 Sep 2026 22:48:03 -0400
+Subject: [PATCH] Add SoftRole-HetNet behind --softrole (additive; HetNet path
+ unchanged)
+
+New package softrole/ (graph, weight bank, communication round, network,
+policy, trainer, environment helpers, flags, frozen-policy evaluation),
+14 unit tests (18 cases) and a SoftRole variant of the gradient-contract
+probe. main.py registers the flags and dispatches; hetnet_ext/recording.py
+also records sr_* diagnostics. Nothing under hetgat/, trainer.py,
+multi_processing.py or envs/ changes.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01JGLvr7sAjRoPaTFCfkAWi4
+---
+ hetnet_ext/recording.py                  |   5 +
+ main.py                                  |  15 +-
+ softrole/__init__.py                     |   5 +
+ softrole/args.py                         |  32 +++
+ softrole/bank.py                         |  38 +++
+ softrole/env.py                          |  46 ++++
+ softrole/evaluate.py                     |  64 ++++++
+ softrole/graph.py                        |  39 ++++
+ softrole/layers.py                       | 105 +++++++++
+ softrole/net.py                          | 123 ++++++++++
+ softrole/policy.py                       |  91 ++++++++
+ softrole/trainer.py                      |  85 +++++++
+ tests/helpers/softrole_gradient_probe.py |  43 ++++
+ tests/test_softrole.py                   | 279 +++++++++++++++++++++++
+ 14 files changed, 968 insertions(+), 2 deletions(-)
+ create mode 100644 softrole/__init__.py
+ create mode 100644 softrole/args.py
+ create mode 100644 softrole/bank.py
+ create mode 100644 softrole/env.py
+ create mode 100644 softrole/evaluate.py
+ create mode 100644 softrole/graph.py
+ create mode 100644 softrole/layers.py
+ create mode 100644 softrole/net.py
+ create mode 100644 softrole/policy.py
+ create mode 100644 softrole/trainer.py
+ create mode 100644 tests/helpers/softrole_gradient_probe.py
+ create mode 100644 tests/test_softrole.py
+
+diff --git a/hetnet_ext/recording.py b/hetnet_ext/recording.py
+index 3943141..282a47c 100644
+--- a/hetnet_ext/recording.py
++++ b/hetnet_ext/recording.py
+@@ -72,6 +72,7 @@ class TrainingRecorder:
+         self.reward = None
+         self.policy_loss = 0.0
+         self.value_loss = 0.0
++        self.extras = {}  # SoftRole diagnostics: per-episode means, keys prefixed sr_
+ 
+     def add_batch(self, fresh):
+         steps, episodes = int(fresh["num_steps"]), int(fresh["num_episodes"])
+@@ -87,6 +88,9 @@ class TrainingRecorder:
+         self.reward = reward if self.reward is None else self.reward + reward
+         self.policy_loss += float(fresh["action_loss"])
+         self.value_loss += float(fresh["value_loss"])
++        for key, value in fresh.items():
++            if key.startswith("sr_"):
++                self.extras[key] = self.extras.get(key, 0.0) + float(value)
+ 
+     def finish_epoch(self, epoch: int, wall_time_seconds: float, model):
+         if epoch != self.last_epoch + 1 or self.episodes <= 0 or self.steps <= 0:
+@@ -103,6 +107,7 @@ class TrainingRecorder:
+             "policy_loss": self.policy_loss / self.steps,
+             "value_loss": self.value_loss / self.steps,
+         }
++        metrics.update({key: value / self.episodes for key, value in self.extras.items()})
+         numeric = [v for k, v in metrics.items() if k != "reward_per_agent"] + metrics["reward_per_agent"]
+         if not all(math.isfinite(value) for value in numeric):
+             raise ValueError(f"Non-finite training metrics at epoch {epoch}: {metrics}")
+diff --git a/main.py b/main.py
+index bfa0cb4..05b2857 100644
+--- a/main.py
++++ b/main.py
+@@ -27,6 +27,9 @@ from utils import *
+ from pathlib import Path
+ from hetnet_ext.seeding import seed_everything
+ from hetnet_ext.recording import TrainingRecorder, write_checkpoint_signature, record_checkpoint
++from softrole.args import add_softrole_args, resolve_softrole_args
++from softrole.policy import SoftRolePolicy
++from softrole.trainer import SoftRoleTrainer
+ 
+ if __name__ == "__main__":
+     torch.multiprocessing.set_start_method('spawn')
+@@ -172,6 +175,7 @@ parser.add_argument('--share_weights', default=False, action='store_true',
+ 
+ # Deviation B: even the environment used to register CLI arguments is constructed
+ # after seeding. Worker run() subsequently retains its seed + id + 1 stream.
++add_softrole_args(parser)
+ resolved_seed = seed_everything(parser.parse_known_args()[0].seed)
+ init_args_for_env(parser)
+ args = parser.parse_args()
+@@ -195,6 +199,8 @@ if not hasattr(args, 'nfriendly_P') and not hasattr(args, 'nfriendly_A'):
+     args.nfriendly_P = args.nagents - args.nfriendly_A
+ 
+ args.nfriendly = args.nfriendly_P + args.nfriendly_A
++if args.softrole:
++    resolve_softrole_args(args)
+ 
+ # Enemy comm
+ if hasattr(args, 'enemy_comm') and args.enemy_comm:
+@@ -235,6 +241,9 @@ print(args)
+ if args.commnet:
+     policy_net = CommNetMLP(args, num_inputs, 4)
+     print(policy_net)
++elif args.softrole:
++    policy = SoftRolePolicy.from_args(args)
++    policy_net = policy.model
+ elif args.hetgat:
+     pos_len = args.dim ** 2
+     SSN_state_len = 4
+@@ -310,7 +319,8 @@ if args.nprocesses > 1:
+     if args.hetgat:
+         if __name__ == '__main__':
+             trainer = MultiProcessTrainer(args,
+-                                          lambda: Trainer(args, policy_net, data.init(args.env_name, args), policy))
++                                          lambda: (SoftRoleTrainer if args.softrole else Trainer)(
++                                              args, policy_net, data.init(args.env_name, args), policy))
+     else:
+         if __name__ == '__main__':
+             trainer = MultiProcessTrainer(args, lambda: Trainer(args, policy_net, data.init(args.env_name, args)))
+@@ -325,7 +335,8 @@ else:
+             
+             
+         else:
+-            trainer = Trainer(args, policy_net, data.init(args.env_name, args), policy)
++            trainer = (SoftRoleTrainer if args.softrole else Trainer)(
++                args, policy_net, data.init(args.env_name, args), policy)
+     elif args.hetcomm:
+         trainer = Trainer(args, [policy_perception_net, policy_action_net], data.init(args.env_name, args))
+     else:
+diff --git a/softrole/__init__.py b/softrole/__init__.py
+new file mode 100644
+index 0000000..e70bc7a
+--- /dev/null
++++ b/softrole/__init__.py
+@@ -0,0 +1,5 @@
++"""SoftRole-HetNet: capability-aware learned roles on HetNet's binary channel.
++
++Additive package. Nothing in hetgat/ is modified, so the HetNet baseline path
++stays bit-identical. Enabled from main.py with --softrole.
++"""
+diff --git a/softrole/args.py b/softrole/args.py
+new file mode 100644
+index 0000000..7fb4540
+--- /dev/null
++++ b/softrole/args.py
+@@ -0,0 +1,32 @@
++"""--softrole flags. Registered on main.py's parser; HetNet runs ignore them."""
++
++
++def add_softrole_args(parser):
++    sr = parser.add_argument_group('SoftRole-HetNet')
++    sr.add_argument('--softrole', action='store_true', default=False, help='train SoftRole-HetNet instead of HetNet')
++    sr.add_argument('--sr_role', default='stochastic',
++                    choices=['stochastic', 'deterministic', 'constant', 'capability'],
++                    help='full model | direct conditioning g(H,kappa) | rho = 0 | g(kappa) only')
++    sr.add_argument('--sr_experts', type=int, default=4, help='K, weight sets per bank')
++    sr.add_argument('--sr_role_dim', type=int, default=3, help='role dimension, K - 1')
++    sr.add_argument('--sr_beta', type=float, default=0.0, help='beta, weight of the rate term')
++    sr.add_argument('--sr_lambda_rho', type=float, default=0.9, help='lambda_rho, prior persistence')
++    sr.add_argument('--sr_var_floor', type=float, default=0.01, help='sigma^2_min')
++    sr.add_argument('--sr_pre_dim', type=int, default=128, help='observation encoder width')
++    sr.add_argument('--sr_hid_dim', type=int, default=64, help='LSTM width')
++    sr.add_argument('--sr_comm_range', type=float, default=-1.0, help='Euclidean range; -1 = all pairs')
++    sr.add_argument('--sr_p_range', type=int, nargs=2, default=None, help='min max predators per episode')
++    sr.add_argument('--sr_a_range', type=int, nargs=2, default=None, help='min max capture agents per episode')
++    sr.add_argument('--sr_sensor_loss_step', type=int, default=-1, help='step at which one predator goes blind')
++    return parser
++
++
++def resolve_softrole_args(args):
++    """Default team ranges collapse to the fixed HetNet composition (phase 0)."""
++    if args.sr_p_range is None:
++        args.sr_p_range = [args.nfriendly_P, args.nfriendly_P]
++    if args.sr_a_range is None:
++        args.sr_a_range = [args.nfriendly_A, args.nfriendly_A]
++    assert args.sr_role_dim == args.sr_experts - 1, 'd_rho = K - 1 (softmax shift invariance)'
++    args.hetgat = args.hetgat_a2c = True      # reuse the HetNet run_batch / train_batch plumbing
++    return args
+diff --git a/softrole/bank.py b/softrole/bank.py
+new file mode 100644
+index 0000000..238cac6
+--- /dev/null
++++ b/softrole/bank.py
+@@ -0,0 +1,38 @@
++"""A bank of K affine maps mixed by a gate on the simplex: W(g) = sum_c g_c W_c."""
++import torch
++import torch.nn as nn
++
++
++class Bank(nn.Module):
++    def __init__(self, K, d_in, d_out):
++        super().__init__()
++        self.weight = nn.Parameter(torch.empty(K, d_out, d_in))
++        self.bias = nn.Parameter(torch.zeros(K, d_out))
++        for c in range(K):
++            # Independent draws per expert. Identical experts give dL/dg_c equal for
++            # every c, and the softmax Jacobian maps that constant vector to zero.
++            nn.init.xavier_uniform_(self.weight[c])
++
++    def experts(self, x):
++        """Every expert's output: (N, d_in) -> (N, K, d_out)."""
++        return torch.einsum('ni,koi->nko', x, self.weight) + self.bias
++
++    def forward(self, x, g):
++        """Mix with each row's own gate: W(g_n) x_n + b(g_n). Mixing outputs equals
++        mixing weights for affine maps, so no per-agent matrix is ever built."""
++        return torch.einsum('nk,nko->no', g, self.experts(x))
++
++
++class HeadBank(nn.Module):
++    """K affine maps per attention head: input (E, H, d_in) -> experts (E, K, H, d_out)."""
++
++    def __init__(self, K, H, d_in, d_out):
++        super().__init__()
++        self.weight = nn.Parameter(torch.empty(K, H, d_out, d_in))
++        self.bias = nn.Parameter(torch.zeros(K, H, d_out))
++        for c in range(K):
++            for h in range(H):
++                nn.init.xavier_uniform_(self.weight[c, h])
++
++    def experts(self, x):
++        return torch.einsum('ehi,khoi->ekho', x, self.weight) + self.bias
+diff --git a/softrole/env.py b/softrole/env.py
+new file mode 100644
+index 0000000..aed38c0
+--- /dev/null
++++ b/softrole/env.py
+@@ -0,0 +1,46 @@
++"""Environment helpers for SoftRole on predator-capture (PCP). The env class is untouched."""
++import numpy as np
++
++
++def raw_env(wrapper):
++    """GymWrapper -> gym wrappers -> PredatorCaptureEnv. Attributes must be SET on
++    the unwrapped env; setattr on a gym wrapper would not reach it."""
++    return wrapper.env.unwrapped
++
++
++def set_composition(env, n_p, n_a):
++    """Change team counts before reset(). Every attribute the env derives from the
++    counts at init is updated, including nfriendly_P, which _get_reward indexes with."""
++    env.npredator, env.npredator_capture = n_p, n_a
++    env.nfriendly_P, env.nfriendly_A = n_p, n_a
++    env.predator_capture_index = n_p
++    env.captured_prey_index = n_p + n_a
++
++
++def sample_composition(p_range, a_range):
++    """Uses numpy's global stream, which MultiProcessWorker.run re-seeds per worker
++    (seed + id + 1). A generator created in __init__ would be copied into every
++    worker, and all of them would draw the same team sequence."""
++    return (int(np.random.randint(p_range[0], p_range[1] + 1)),
++            int(np.random.randint(a_range[0], a_range[1] + 1)))
++
++
++def capabilities(env):
++    """kappa = [sense, cap]: predators (1, 0), capture agents (0, 1), since the env
++    makes capture agents blind (action_blind)."""
++    n_p, n_a = env.npredator, env.npredator_capture
++    return np.array([[1.0, 0.0]] * n_p + [[0.0, 1.0]] * n_a)
++
++
++def positions(env):
++    """True grid positions in agent order (predators, then capture agents)."""
++    return np.vstack([env.predator_loc, env.predator_capture_loc])
++
++
++def apply_sensor_mask(obs, kappa, base, n_squares, n_channels=4):
++    """Observation of an agent without a sensor: the env's own convention, a -1 fill
++    of the class channels. Applied to agents whose sense flag was switched off."""
++    obs = obs.copy()
++    cells = obs.reshape(obs.shape[0], n_squares, base + n_channels)
++    cells[kappa[:, 0] == 0, :, base:] = -1.0
++    return cells.reshape(obs.shape)
+diff --git a/softrole/evaluate.py b/softrole/evaluate.py
+new file mode 100644
+index 0000000..bda58a3
+--- /dev/null
++++ b/softrole/evaluate.py
+@@ -0,0 +1,64 @@
++"""Frozen-policy evaluation with in-episode events and interventions (no parameter updates).
++
++interventions:
++  none         the trained model as is
++  freeze_role  from the event on, the affected agent's role is pinned to its value just
++               before the event (kappa, masks and memory still update)
++  comm_off     alpha_null = 1 for every receiver, every step: no message reaches anyone
++  role_mean    rho = mu (no role noise)
++"""
++import numpy as np
++import torch
++from torch.distributions import Categorical
++
++from softrole import env as sr_env
++from softrole.graph import build_role_graph
++
++
++@torch.no_grad()
++def evaluate(model, gym_env, args, episodes, n_p, n_a, event_step=-1, intervention='none', seed=0):
++    rng = np.random.default_rng(seed)
++    raw = sr_env.raw_env(gym_env)
++    n_sq, base = (2 * args.vision + 1) ** 2, args.dim ** 2
++    results = []
++    for _ in range(episodes):
++        sr_env.set_composition(raw, n_p, n_a)
++        state = gym_env.reset(0)
++        n = n_p + n_a
++        kappa = sr_env.capabilities(raw)
++        active = torch.ones(n, dtype=torch.bool)
++        mem = model.init_memory(n)
++        victim = int(rng.integers(n_p)) if (event_step >= 0 and n_p > 0) else -1
++        pinned = None
++        success, steps = 0, args.max_steps
++        trace = {'kl': [], 'gate': [], 'alpha_null': []}     # per step, per agent
++        for t in range(args.max_steps):
++            if t == event_step and victim >= 0:
++                kappa = kappa.copy()
++                kappa[victim, 0] = 0.0
++                pinned = mem['rho_prev'][victim].clone()
++            override = None
++            if intervention == 'freeze_role' and pinned is not None:
++                mask = torch.zeros(n, dtype=torch.bool)
++                mask[victim] = True
++                override = {'mask': mask, 'rho': pinned.expand(n, -1)}
++            obs = sr_env.apply_sensor_mask(state[0].numpy(), kappa, base, n_sq)
++            g = build_role_graph(sr_env.positions(raw), active.numpy(), args.sr_comm_range)
++            eps = torch.zeros(n, model.d_role) if intervention == 'role_mean' else None
++            out = model(torch.as_tensor(obs), torch.as_tensor(kappa), mem, active, g, args.dim,
++                        noise={'eps': eps} if eps is not None else None,
++                        comm_off=(intervention == 'comm_off'), rho_override=override)
++            a = Categorical(logits=out['logits']).sample()
++            trace['kl'].append(out['kl'].tolist())
++            trace['gate'].append(out['diag']['gate'].tolist())
++            trace['alpha_null'].append(torch.stack(out['diag']['alpha_null']).mean(0).tolist())
++            state, reward, done, _ = gym_env.step([a.numpy()])
++            mem = dict(out['memory'], a_prev=a)
++            if done:
++                success, steps = 1, t + 1
++                break
++        results.append({'success': success, 'steps': steps, 'victim': victim, 'trace': trace,
++                        'steps_after_event': steps - event_step if (success and event_step >= 0) else None})
++    succ = np.array([r['success'] for r in results])
++    return {'success_rate': float(succ.mean()), 'episodes': episodes, 'intervention': intervention,
++            'mean_steps': float(np.mean([r['steps'] for r in results])), 'per_episode': results}
+diff --git a/softrole/graph.py b/softrole/graph.py
+new file mode 100644
+index 0000000..e497d74
+--- /dev/null
++++ b/softrole/graph.py
+@@ -0,0 +1,39 @@
++"""Communication graph for SoftRole: one agent type, one relation, a null source, one SEN."""
++import dgl
++import numpy as np
++import torch
++
++
++def build_role_graph(pos, active, comm_range=-1.0):
++    """Build the per-step graph from TRUE positions (not decoded observations).
++
++    pos:        (N, 2) integer grid coordinates of every rostered agent.
++    active:     (N,) bool, the members of N_t. Inactive agents get no edges.
++    comm_range: Euclidean range; -1 means fully connected (HetNet's default).
++
++    Node type 'agent' has N + 1 nodes. Node N is the NULL SOURCE: it has one
++    edge into every active agent, carries a zero message and a learned score,
++    and is never a receiver. Edges run sender k -> receiver j.
++    """
++    pos = np.asarray(pos, dtype=np.float64)
++    active = np.asarray(active, dtype=bool)
++    n = len(pos)
++    members = np.flatnonzero(active)
++    src, dst = [], []
++    for j in members:
++        for k in members:
++            if k == j:
++                continue
++            if comm_range < 0 or np.linalg.norm(pos[k] - pos[j]) <= comm_range:
++                src.append(k)
++                dst.append(j)
++    n_real = len(src)
++    src += [n] * len(members)           # null slot: one edge N -> j per active receiver
++    dst += members.tolist()
++    g = dgl.heterograph({
++        ('agent', 'comm', 'agent'): (torch.tensor(src, dtype=torch.int64), torch.tensor(dst, dtype=torch.int64)),
++        ('agent', 'a2s', 'state'): (torch.tensor(members, dtype=torch.int64),
++                                    torch.zeros(len(members), dtype=torch.int64)),
++    }, num_nodes_dict={'agent': n + 1, 'state': 1})
++    g.edges['comm'].data['null'] = torch.arange(len(src)) >= n_real
++    return g
+diff --git a/softrole/layers.py b/softrole/layers.py
+new file mode 100644
+index 0000000..7dfec1a
+--- /dev/null
++++ b/softrole/layers.py
+@@ -0,0 +1,105 @@
++"""One SoftRole communication round (replaces hetgat.graph.fastbinary.HeteroGATLayerBinary)."""
++import torch
++import torch.nn as nn
++import torch.nn.functional as F
++from dgl.ops import copy_e_sum, edge_softmax
++
++from softrole.bank import Bank, HeadBank
++
++
++def logistic_noise(shape, like):
++    """nu ~ Logistic(0, 1) by inverse CDF: log U - log(1 - U)."""
++    u = torch.rand(shape, dtype=like.dtype, device=like.device).clamp(1e-12, 1 - 1e-12)
++    return torch.log(u) - torch.log1p(-u)
++
++
++def straight_through_bits(u, nu, temperature=1.0):
++    """b_r = 1[u_r + nu_r > 0], so P(b_r = 1) = sigmoid(u_r) exactly.
++    Backward uses d/du sigmoid((u + nu) / T), the relaxed sample's derivative."""
++    soft = torch.sigmoid((u + nu) / temperature)
++    hard = (u + nu > 0).to(u.dtype)
++    return hard + (soft - soft.detach())      # forward: exactly hard; backward: d soft / du
++
++
++class RoleGATLayer(nn.Module):
++    """Round l: self transform, n-bit channel, receiver decoding, GATv2 + null slot.
++
++    Banks and the gate that selects them:
++        self, enc              own gate (the sender's, for enc)
++        dec, att, a, null      receiver's gate
++    The state node (SEN) is updated from the same input features; nothing flows
++    from the SEN back into any agent.
++    """
++
++    def __init__(self, d_in, d_head, heads, K, n_bits, merge, d_sen_in, d_sen_head,
++                 d_role=3, d_kappa=2, negative_slope=0.2, temperature=1.0):
++        super().__init__()
++        assert merge in ('cat', 'avg')
++        self.H, self.d, self.K, self.n = heads, d_head, K, n_bits
++        self.merge, self.slope, self.T = merge, negative_slope, temperature
++        self.self_bank = Bank(K, d_in, heads * d_head)
++        self.enc = Bank(K, d_in, n_bits)
++        self.dec = Bank(K, n_bits, heads * d_head)
++        self.att = HeadBank(K, heads, 2 * d_head, d_head)
++        self.a = nn.Parameter(torch.empty(K, heads, d_head))
++        self.null = nn.Parameter(torch.zeros(K, heads))
++        gain = nn.init.calculate_gain('relu')
++        for c in range(K):
++            nn.init.xavier_normal_(self.a[c], gain=gain)
++        # State summary node (training only), HetNet's additive attention form.
++        self.sen_self = nn.Linear(d_sen_in, heads * d_sen_head)
++        self.sen_in = nn.Linear(d_in + d_role + d_kappa, heads * d_sen_head)
++        self.sen_src = nn.Parameter(torch.empty(1, heads, d_sen_head))
++        self.sen_dst = nn.Parameter(torch.empty(1, heads, d_sen_head))
++        nn.init.xavier_normal_(self.sen_src, gain=gain)
++        nn.init.xavier_normal_(self.sen_dst, gain=gain)
++        self.d_sen = d_sen_head
++
++    def forward(self, g, h, gate, nu=None, comm_off=False):
++        """g: role graph; h: (N, d_in) round input; gate: (N, K). Returns the agents'
++        round output, the bits sent, alpha_null per receiver, and the edge weights."""
++        N, H, d = h.shape[0], self.H, self.d
++        z = self.self_bank(h, gate).view(N, H, d)                   # own gate
++        u = self.enc(h, gate)                                        # sender's own gate
++        if nu is None:
++            nu = logistic_noise(u.shape, u)
++        b = straight_through_bits(u, nu, self.T)                     # (N, n) in {0, 1}
++
++        src, dst = g.edges(etype='comm')
++        is_null = g.edges['comm'].data['null']
++        real = (~is_null).to(h.dtype)[:, None, None]
++        gd = gate[dst]                                               # receiver's gate per edge
++        dec_all = self.dec.experts(b).view(N, self.K, H, d)          # every expert decodes every sender
++        m = torch.einsum('ek,ekhd->ehd', gd, dec_all[src.clamp(max=N - 1)]) * real
++
++        pre = torch.einsum('ek,ekhd->ehd', gd, self.att.experts(torch.cat([z[dst], m], dim=-1)))
++        a = torch.einsum('ek,khd->ehd', gd, self.a)
++        e = (a * F.leaky_relu(pre, self.slope)).sum(-1)              # GATv2 score (E, H)
++        e_null = torch.einsum('ek,kh->eh', gd, self.null)            # receiver-only null score
++        e = torch.where(is_null[:, None], e_null, e)
++        alpha = edge_softmax(g['comm'], e)                           # one softmax incl. the null slot
++        if comm_off:                                                 # intervention: alpha_null = 1
++            alpha = is_null[:, None].to(h.dtype).expand_as(alpha)
++        M = copy_e_sum(g['comm'], alpha[..., None] * m)[:N]          # null edges carry m = 0
++
++        out = z + M
++        if self.merge == 'cat':
++            out = F.relu(out).flatten(1)
++        else:
++            out = out.mean(1)                                        # last round: average heads, no ReLU
++        alpha_null = torch.zeros(N, H, dtype=h.dtype)
++        alpha_null[dst[is_null]] = alpha[is_null].detach()
++        return out, b, alpha_null.mean(1), alpha
++
++    def forward_sen(self, g, h, hs, rho, kappa):
++        """SEN update: hs <- ReLU(W_s hs + sum_j beta_sj W_2s [h_j; sg(rho_j); kappa_j])."""
++        N, H, d = h.shape[0], self.H, self.d_sen
++        x = torch.cat([h, rho.detach(), kappa], dim=-1)
++        w_in = self.sen_in(x).view(N, H, d)
++        w_s = self.sen_self(hs).view(1, H, d)
++        src, _ = g.edges(etype='a2s')
++        score = F.leaky_relu((w_in[src] * self.sen_src).sum(-1) + (w_s * self.sen_dst).sum(-1), self.slope)
++        beta = edge_softmax(g['a2s'], score)                         # softmax over active agents
++        agg = copy_e_sum(g['a2s'], beta[..., None] * w_in[src])      # (1, H, d)
++        out = F.relu(w_s + agg)
++        return out.flatten(1) if self.merge == 'cat' else out.mean(1)
+diff --git a/softrole/net.py b/softrole/net.py
+new file mode 100644
+index 0000000..0480ca5
+--- /dev/null
++++ b/softrole/net.py
+@@ -0,0 +1,123 @@
++"""SoftRoleNet (replaces hetgat.uavnet.UAVNetA2CEasy)."""
++import math
++
++import torch
++import torch.nn as nn
++import torch.nn.functional as F
++
++from softrole.layers import RoleGATLayer
++
++STAY, CAPTURE = 4, 5
++ROLE_MODES = ('stochastic', 'deterministic', 'constant', 'capability')
++
++
++def kappa_index(kappa):
++    """Index of a capability vector [sense, cap] in {0, 1}^2 for the eta table."""
++    return (kappa[:, 0] + 2 * kappa[:, 1]).long()
++
++
++class SoftRoleNet(nn.Module):
++    def __init__(self, n_squares, base, n_channels=4, n_actions=6, d_pre=128, d_h=64,
++                 K=4, d_role=3, heads=4, d_head=16, n_bits=16, d_sen=16, d_critic=32,
++                 var_floor=0.01, lambda_rho=0.9, role_mode='stochastic', temperature=1.0):
++        super().__init__()
++        assert role_mode in ROLE_MODES
++        self.S, self.B, self.C = n_squares, base, n_channels
++        self.n_actions, self.d_h, self.d_head, self.d_role = n_actions, d_h, d_head, d_role
++        self.var_floor, self.lambda_rho, self.role_mode = var_floor, lambda_rho, role_mode
++        d_obs = n_squares * (base + n_channels) + 1
++        self.pre = nn.Linear(d_obs, d_pre)
++        self.lstm = nn.LSTMCell(d_pre + 2 + d_head + n_actions, d_h)
++        # Role parameters: the only parameters the critic's gradient is kept off.
++        self.role_enc = nn.Sequential(nn.Linear(d_h + 2, 32), nn.ReLU(), nn.Linear(32, 2 * d_role))
++        self.gate = nn.Linear(d_role, K)                   # g = softmax(G rho + g0)
++        self.eta = nn.Embedding(4, d_role)                 # prior default role per capability vector
++        nn.init.zeros_(self.eta.weight)
++        self.rounds = nn.ModuleList([
++            RoleGATLayer(d_h, d_head, heads, K, n_bits, 'cat', d_sen_in=4, d_sen_head=d_sen,
++                         d_role=d_role, temperature=temperature),
++            RoleGATLayer(heads * d_head, d_head, heads, K, n_bits, 'avg', d_sen_in=heads * d_sen,
++                         d_sen_head=d_sen, d_role=d_role, temperature=temperature)])
++        self.policy_head = nn.Linear(d_head, n_actions)    # shared over agents, then masked
++        self.critic = nn.Sequential(nn.Linear(d_sen + d_role + 2, d_critic), nn.ReLU(), nn.Linear(d_critic, 1))
++
++    # ---- bookkeeping -------------------------------------------------------------
++    def role_parameters(self):
++        return list(self.role_enc.parameters()) + list(self.gate.parameters())
++
++    def init_memory(self, n):
++        """Zero state for n rostered agents: H = C = u_bar = 0, previous action 'stay'."""
++        z = lambda d: torch.zeros(n, d)
++        return {'H': z(self.d_h), 'C': z(self.d_h), 'u_bar': z(self.d_head),
++                'a_prev': torch.full((n,), STAY, dtype=torch.long), 'rho_prev': z(self.d_role),
++                'kappa_prev': torch.zeros(n, 2), 'alive_prev': torch.zeros(n, dtype=torch.bool)}
++
++    @staticmethod
++    def detach_memory(mem):
++        """Truncated BPTT boundary: cut H, C, u_bar and the prior's rho_{t-1} together."""
++        return {k: (v.detach() if torch.is_tensor(v) and v.is_floating_point() else v) for k, v in mem.items()}
++
++    def encode_obs(self, obs, kappa):
++        """x = [cell-index one-hots ; channels * sense ; sense]. The env marks blind
++        agents with a -1 fill; multiplying by the sense flag maps that to 0 and the
++        trailing flag keeps 'no sensor' distinct from 'nothing seen'."""
++        n = obs.shape[0]
++        cells = obs.view(n, self.S, self.B + self.C)
++        sense = kappa[:, :1]
++        loc, ch = cells[..., :self.B], cells[..., self.B:] * sense[:, :, None]
++        return torch.cat([loc.flatten(1), ch.flatten(1), sense], dim=1)
++
++    # ---- one environment step ----------------------------------------------------
++    def forward(self, obs, kappa, mem, active, g, grid_side, noise=None, comm_off=False, rho_override=None):
++        noise = noise or {}
++        act = active.to(obs.dtype)[:, None]
++        x = F.relu(self.pre(self.encode_obs(obs, kappa)))
++        inp = torch.cat([x, kappa, mem['u_bar'], F.one_hot(mem['a_prev'], self.n_actions).to(obs.dtype)], 1)
++        H, C = self.lstm(inp, (mem['H'], mem['C']))
++        H, C = H * act, C * act                                     # agents not in N_t keep zero state
++
++        # Role: q(rho | H, kappa) = N(mu, diag sigma^2), one reparameterized sample per step.
++        role_in = torch.cat([H if self.role_mode != 'capability' else torch.zeros_like(H), kappa], 1)
++        mu, s = self.role_enc(role_in).chunk(2, dim=-1)
++        var = self.var_floor + F.softplus(s)
++        eps = noise.get('eps', torch.randn_like(mu))
++        if self.role_mode == 'stochastic':
++            rho = mu + var.sqrt() * eps
++        elif self.role_mode == 'constant':
++            rho = torch.zeros_like(mu)                              # shared weights + kappa baseline
++        else:
++            rho = mu                                                # deterministic / capability-only
++        if rho_override is not None:                                # interventions: freeze or pin
++            rho = torch.where(rho_override['mask'][:, None], rho_override['rho'], rho)
++        gate = torch.softmax(self.gate(rho), dim=-1)
++
++        # Persistence prior p(rho_t | rho_{t-1}, kappa_t); lambda = 0 on spawn or capability change.
++        same = mem['alive_prev'] & (kappa == mem['kappa_prev']).all(1)
++        lam = torch.where(same, torch.full_like(mu[:, 0], self.lambda_rho), torch.zeros_like(mu[:, 0]))[:, None]
++        prior_mean = lam * mem['rho_prev'] + (1 - lam) * self.eta(kappa_index(kappa))
++        prior_var = 1 - lam ** 2
++        kl = 0.5 * ((var + (mu - prior_mean) ** 2) / prior_var - 1 + torch.log(prior_var / var)).sum(-1)
++        if self.role_mode != 'stochastic':
++            kl = torch.zeros_like(kl)
++
++        # Communication rounds; the SEN reads each round's input features (training only).
++        n_act = active.sum().to(obs.dtype)
++        hs = torch.stack([n_act, (kappa[:, 0] * act[:, 0]).sum(), (kappa[:, 1] * act[:, 0]).sum(),
++                          torch.tensor(float(grid_side), dtype=obs.dtype)])[None]
++        h, bits, a_null = H, [], []
++        for l, layer in enumerate(self.rounds):
++            hs = layer.forward_sen(g, h, hs, rho, kappa)
++            h, b, an, _ = layer(g, h, gate, nu=noise.get(f'nu{l}'), comm_off=comm_off)
++            bits.append(b)
++            a_null.append(an)
++
++        logits = self.policy_head(h)
++        logits = logits.masked_fill((kappa[:, 1] == 0)[:, None] & (torch.arange(self.n_actions) == CAPTURE)[None],
++                                    float('-inf'))                  # log 1[a in A(kappa)]
++        value = self.critic(torch.cat([hs.expand(obs.shape[0], -1), rho.detach(), kappa], 1)).squeeze(-1)
++
++        new_mem = {'H': H, 'C': C, 'u_bar': h * act, 'a_prev': mem['a_prev'], 'rho_prev': rho,
++                   'kappa_prev': kappa.clone(), 'alive_prev': active.clone()}
++        diag = {'rho': rho.detach(), 'mu': mu.detach(), 'var': var.detach(), 'gate': gate.detach(),
++                'bits': [b.detach() for b in bits], 'alpha_null': a_null}
++        return {'logits': logits, 'value': value, 'kl': kl, 'memory': new_mem, 'diag': diag}
+diff --git a/softrole/policy.py b/softrole/policy.py
+new file mode 100644
+index 0000000..0043205
+--- /dev/null
++++ b/softrole/policy.py
+@@ -0,0 +1,91 @@
++"""SoftRolePolicy (replaces A2CPolicy.batch_finish_per_class for --softrole)."""
++import numpy as np
++import torch
++import torch.nn as nn
++
++from softrole.net import SoftRoleNet
++
++
++class SoftRolePolicy:
++    def __init__(self, model, gamma=1.0, lmbda=0.95, beta=0.0, c_pi=50.0, max_grad_norm=0.75, device='cpu'):
++        self.model = model
++        self.gamma, self.lmbda, self.beta, self.c_pi = gamma, lmbda, beta, c_pi
++        self.max_grad_norm, self.device = max_grad_norm, device
++        role = {id(p) for p in model.role_parameters()}
++        self.non_role_params = [p for p in model.parameters() if id(p) not in role]
++        self.episodes = []
++
++    @classmethod
++    def from_args(cls, args):
++        model = SoftRoleNet(n_squares=(2 * args.vision + 1) ** 2, base=args.dim ** 2,
++                            d_pre=args.sr_pre_dim, d_h=args.sr_hid_dim, K=args.sr_experts,
++                            d_role=args.sr_role_dim, n_bits=args.msg_dim, var_floor=args.sr_var_floor,
++                            lambda_rho=args.sr_lambda_rho, role_mode=args.sr_role)
++        return cls(model, gamma=args.gamma, beta=args.sr_beta)
++
++    # ---- rollout buffers ---------------------------------------------------------
++    def begin_episode(self, cap_flags):
++        self.episodes.append({'logp': [], 'value': [], 'kl': [], 'reward': [], 'active': [],
++                              'cap': torch.as_tensor(cap_flags, dtype=torch.bool)})
++
++    def record(self, logp, value, kl, reward, active):
++        ep = self.episodes[-1]
++        ep['logp'].append(logp)
++        ep['value'].append(value)
++        ep['kl'].append(kl)
++        ep['reward'].append(torch.as_tensor(np.asarray(reward), dtype=value.dtype))
++        ep['active'].append(active.clone())
++
++    # ---- update ------------------------------------------------------------------
++    def gae(self, rewards, values):
++        """Per-agent GAE. The last recorded step bootstraps with 0, as in HetNet
++        (a truncation at max_steps is treated as terminal)."""
++        T = rewards.shape[0]
++        adv = torch.zeros_like(rewards)
++        running = torch.zeros_like(rewards[0])
++        for t in reversed(range(T)):
++            next_v = values[t + 1] if t + 1 < T else torch.zeros_like(values[t])
++            delta = rewards[t] + self.gamma * next_v - values[t]
++            running = delta + self.gamma * self.lmbda * running
++            adv[t] = running
++        return adv
++
++    def finish_batch(self):
++        E = len(self.episodes)
++        per_ep = []
++        for ep in self.episodes:
++            V = torch.stack(ep['value'])                              # (T, N)
++            A = self.gae(torch.stack(ep['reward']), V.detach())
++            per_ep.append((ep, V, A, A + V.detach(), torch.stack(ep['active'])))
++        # Normalize advantages within each capture-capability group, over valid entries only.
++        eps = np.finfo(np.float32).eps.item()
++        norm = {}
++        for flag in (False, True):
++            vals = torch.cat([A[m & (ep['cap'] == flag)[None]] for ep, _, A, _, m in per_ep])
++            norm[flag] = (vals.mean(), vals.std()) if vals.numel() > 1 else (0.0, 1.0)
++        l_pi = l_rate = l_v = 0.0
++        for ep, V, A, R, m in per_ep:
++            mean = torch.where(ep['cap'], torch.as_tensor(norm[True][0]), torch.as_tensor(norm[False][0]))
++            std = torch.where(ep['cap'], torch.as_tensor(norm[True][1]), torch.as_tensor(norm[False][1]))
++            A_n = (A - mean) / (std + eps)
++            mf = m.to(V.dtype)
++            l_pi = l_pi - (torch.stack(ep['logp']) * A_n * mf).sum()
++            l_rate = l_rate + (torch.stack(ep['kl']) * mf).sum()
++            l_v = l_v + (((V - R) ** 2 * mf).sum(0) / mf.sum(0).clamp(min=1)).sum()  # sum_j mean_t
++        l_pi, l_rate, l_v = l_pi / E, l_rate / E, l_v / E
++
++        for p in self.model.parameters():
++            # MultiProcessTrainer caches .grad storage by position after the first
++            # update, so every gradient is allocated once (spawned workers unpickle
++            # parameters without .grad) and afterwards only ever zeroed in place.
++            if p.grad is None:
++                p.grad = torch.zeros_like(p)
++            p.grad.zero_()
++        actor = self.c_pi * (l_pi + self.beta * l_rate)
++        actor.backward(retain_graph=True)
++        l_v.backward(inputs=self.non_role_params)                     # critic gradient kept off role params
++        nn.utils.clip_grad_norm_(self.model.parameters(), self.max_grad_norm)
++        self.episodes = []
++        n_agent_steps = float(sum(m.sum() for *_, m in per_ep))
++        return {'policy': float(l_pi), 'critic': float(l_v), 'rate': float(l_rate),
++                'rate_per_agent_step': float(l_rate) * E / max(n_agent_steps, 1.0)}
+diff --git a/softrole/trainer.py b/softrole/trainer.py
+new file mode 100644
+index 0000000..1ee70a9
+--- /dev/null
++++ b/softrole/trainer.py
+@@ -0,0 +1,85 @@
++"""SoftRoleTrainer: HetNet's Trainer with the rollout and the update replaced.
++
++run_batch, train_batch (grad /= num_steps, RMSprop step) and MultiProcessTrainer
++are inherited unchanged, so the optimizer pipeline is identical to the baseline.
++"""
++import numpy as np
++import torch
++from torch.distributions import Categorical
++
++from trainer import Trainer, Transition
++from utils import merge_stat
++from softrole import env as sr_env
++from softrole.graph import build_role_graph
++
++
++class SoftRoleTrainer(Trainer):
++    def __init__(self, args, policy_net, env, policy):
++        super().__init__(args, policy_net, env, policy)
++        self.n_max = args.sr_p_range[1] + args.sr_a_range[1]
++
++    def _event(self, t, kappa, n_p):
++        """Phase-4 event: one predator loses its sensor at step sr_sensor_loss_step."""
++        if self.args.sr_sensor_loss_step >= 0 and t == self.args.sr_sensor_loss_step and n_p > 0:
++            kappa = kappa.copy()
++            kappa[np.random.randint(n_p), 0] = 0.0      # global stream: per-worker seed
++        return kappa
++
++    def get_episode(self, epoch):
++        args, model, env = self.args, self.policy.model, sr_env.raw_env(self.env)
++        n_p, n_a = sr_env.sample_composition(args.sr_p_range, args.sr_a_range)
++        sr_env.set_composition(env, n_p, n_a)
++        state = self.env.reset(epoch)
++        n = n_p + n_a
++        kappa = sr_env.capabilities(env)
++        n_sq, base = (2 * args.vision + 1) ** 2, args.dim ** 2
++        active = torch.ones(n, dtype=torch.bool)
++        mem = model.init_memory(n)
++        self.policy.begin_episode(kappa[:, 1] > 0)
++        episode, stat = [], {}
++        diag_sum = {'sr_gate_entropy': 0.0, 'sr_alpha_null': 0.0, 'sr_rate': 0.0, 'sr_bits': 0.0}
++        for t in range(args.max_steps):
++            kappa = self._event(t, kappa, n_p)
++            obs = sr_env.apply_sensor_mask(state[0].numpy(), kappa, base, n_sq)
++            g = build_role_graph(sr_env.positions(env), active.numpy(), args.sr_comm_range)
++            out = model(torch.as_tensor(obs), torch.as_tensor(kappa), mem, active, g, grid_side=args.dim)
++            dist = Categorical(logits=out['logits'])
++            a = dist.sample()
++            next_state, reward, done, info = self.env.step([a.numpy()])
++            self.policy.record(dist.log_prob(a), out['value'], out['kl'], reward, active)
++
++            mem = out['memory']
++            mem['a_prev'] = a
++            if (t + 1) % args.detach_gap == 0:
++                mem = model.detach_memory(mem)
++
++            gate = out['diag']['gate']
++            diag_sum['sr_gate_entropy'] += float(-(gate * gate.clamp_min(1e-12).log()).sum())
++            for c in range(gate.shape[1]):     # expert load E[g_c]; collapse = one load near 1
++                diag_sum[f'sr_load_{c}'] = diag_sum.get(f'sr_load_{c}', 0.0) + float(gate[:, c].sum())
++            a_null = out['diag']['alpha_null']
++            diag_sum['sr_alpha_null'] += float(sum(x.sum() for x in a_null)) / len(a_null)  # mean over rounds
++            diag_sum['sr_rate'] += float(out['kl'].detach().sum())
++            diag_sum['sr_bits'] += float(sum(b.shape[1] for b in out['diag']['bits']) * int(active.sum()))  # L n |N_t|
++            padded = np.zeros(self.n_max)
++            padded[:n] = reward
++            stat['reward'] = stat.get('reward', 0) + padded
++            done = done or t == args.max_steps - 1
++            episode.append(Transition(state, a, None, None, None, None, next_state, reward, {}))
++            state = next_state
++            if done:
++                break
++        stat['num_steps'] = stat['steps_taken'] = t + 1
++        for k, v in diag_sum.items():          # per agent-step, except bits: per step for the team
++            stat[k] = v / (t + 1) if k == 'sr_bits' else v / ((t + 1) * n)
++        ep_return = np.asarray(stat['reward'][:n])
++        cap = kappa[:, 1] > 0
++        for flag, name in ((False, 'sr_return_nocap'), (True, 'sr_return_cap')):
++            stat[name] = float(ep_return[cap == flag].mean()) if (cap == flag).any() else 0.0
++        stat['sr_team_size'] = float(n)
++        merge_stat(self.env.get_stat(), stat)
++        return episode, stat
++
++    def compute_grad(self, batch):
++        loss = self.policy.finish_batch()
++        return {'action_loss': loss['policy'], 'value_loss': loss['critic'], 'rate_loss': loss['rate']}
+diff --git a/tests/helpers/softrole_gradient_probe.py b/tests/helpers/softrole_gradient_probe.py
+new file mode 100644
+index 0000000..0dc2331
+--- /dev/null
++++ b/tests/helpers/softrole_gradient_probe.py
+@@ -0,0 +1,43 @@
++"""Run the fork's multiprocess gradient-contract probe on SoftRole instead of HetNet.
++
++Reuses hetnet_gradient_probe.run unchanged; only the policy factory and the
++observed trainer's base class are swapped. Same gates: shared weights, fresh
++gradient sum / num_steps, stable gradient storage.
++"""
++import argparse
++import json
++import sys
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[2]
++sys.path.insert(0, str(ROOT))
++sys.path.insert(0, str(Path(__file__).resolve().parent))
++
++import hetnet_gradient_probe as probe
++from softrole.args import add_softrole_args, resolve_softrole_args
++from softrole.policy import SoftRolePolicy
++from softrole.trainer import SoftRoleTrainer
++
++_make_args = probe.make_args
++
++
++def make_args(seed, batch_size, horizon, num_p, num_a):
++    config = _make_args(seed, batch_size, horizon, num_p, num_a)
++    defaults = add_softrole_args(argparse.ArgumentParser()).parse_args([])
++    for key, value in vars(defaults).items():
++        setattr(config, key, value)
++    config.softrole, config.msg_dim, config.sr_beta = True, 16, 0.01
++    return resolve_softrole_args(config)
++
++
++class ObservedSoftRoleTrainer(probe.ObservedTrainer, SoftRoleTrainer):
++    """MRO: instrumentation -> SoftRoleTrainer -> Trainer. No learner code is replaced."""
++
++
++probe.make_args = make_args
++probe.make_policy = SoftRolePolicy.from_args
++probe.ObservedTrainer = ObservedSoftRoleTrainer
++probe.SOURCES = probe.SOURCES + ["softrole/net.py", "softrole/layers.py", "softrole/policy.py", "softrole/trainer.py"]
++
++if __name__ == "__main__":
++    probe.main()
+diff --git a/tests/test_softrole.py b/tests/test_softrole.py
+new file mode 100644
+index 0000000..1f9972e
+--- /dev/null
++++ b/tests/test_softrole.py
+@@ -0,0 +1,279 @@
++"""Unit tests for SoftRole-HetNet. Each test checks one property stated in the architecture guide."""
++import math
++
++import numpy as np
++import pytest
++import torch
++import torch.nn as nn
++import torch.nn.functional as F
++from torch.distributions import Categorical
++
++torch.set_default_dtype(torch.float64)
++
++from softrole.bank import Bank, HeadBank
++from softrole.graph import build_role_graph
++from softrole.layers import logistic_noise, straight_through_bits
++from softrole.net import CAPTURE, SoftRoleNet
++from softrole.policy import SoftRolePolicy
++
++DIM, VISION = 5, 2
++S, B = (2 * VISION + 1) ** 2, DIM ** 2
++
++
++def make_net(**kw):
++    torch.manual_seed(0)
++    return SoftRoleNet(n_squares=S, base=B, **kw)
++
++
++def team(n_p, n_a, seed=0):
++    rng = np.random.default_rng(seed)
++    n = n_p + n_a
++    obs = torch.as_tensor(rng.integers(0, 2, size=(n, S * (B + 4))).astype(float))
++    kappa = torch.tensor([[1.0, 0.0]] * n_p + [[0.0, 1.0]] * n_a)
++    pos = rng.integers(0, DIM, size=(n, 2))
++    return obs, kappa, pos
++
++
++def noise(net, n, seed=1):
++    gen = torch.Generator().manual_seed(seed)
++    out = {'eps': torch.randn(n, 3, generator=gen)}
++    for l, layer in enumerate(net.rounds):
++        u = torch.rand(n, layer.n, generator=gen)
++        out[f'nu{l}'] = torch.log(u) - torch.log1p(-u)
++    return out
++
++
++def step(net, obs, kappa, pos, rng_noise, comm_range=-1.0, **kw):
++    n = obs.shape[0]
++    active = torch.ones(n, dtype=torch.bool)
++    g = build_role_graph(pos, active.numpy(), comm_range)
++    return net(obs, kappa, net.init_memory(n), active, g, grid_side=DIM, noise=rng_noise, **kw)
++
++
++# ---- the binary channel ------------------------------------------------------------
++def test_bits_are_bernoulli_of_sigmoid():
++    torch.manual_seed(0)
++    u = torch.tensor([-2.0, -0.5, 0.0, 0.7, 3.0])
++    draws = 200_000
++    nu = logistic_noise((draws, 5), u)
++    b = straight_through_bits(u.expand(draws, 5), nu)
++    assert set(torch.unique(b.detach()).tolist()) <= {0.0, 1.0}
++    p_hat, p = b.detach().mean(0), torch.sigmoid(u)
++    assert torch.all((p_hat - p).abs() < 4 * torch.sqrt(p * (1 - p) / draws))
++
++
++def test_hetnet_gumbel_binarizer_is_the_same_channel():
++    """HetNet: gumbel_softmax(Linear(1,2)(z), hard=True) @ [0,1]. With the same Gumbel draws it
++    equals 1[k z + k0 + nu > 0] with k = w1 - w0, k0 = b1 - b0, nu = G1 - G0 ~ Logistic,
++    and its straight-through gradient equals d/dz sigmoid(k z + k0 + nu)."""
++    torch.manual_seed(3)
++    binarize = nn.Linear(1, 2)
++    z = torch.randn(64, 16, requires_grad=True)
++    torch.manual_seed(11)
++    hetnet = F.gumbel_softmax(binarize(z.unsqueeze(-1)), tau=1, hard=True) @ torch.tensor([0.0, 1.0])
++    (g_h,) = torch.autograd.grad(hetnet.sum(), z)
++    torch.manual_seed(11)                                     # replay the same Gumbel draws
++    gumbels = -torch.empty(64, 16, 2).exponential_().log()
++    k = binarize.weight[1, 0] - binarize.weight[0, 0]
++    k0 = binarize.bias[1] - binarize.bias[0]
++    ours = straight_through_bits(k * z + k0, gumbels[..., 1] - gumbels[..., 0])
++    (g_o,) = torch.autograd.grad(ours.sum(), z)
++    assert torch.equal(ours.detach(), (k * z + k0 + gumbels[..., 1] - gumbels[..., 0] > 0).double())
++    assert torch.equal(hetnet.detach(), ours.detach())
++    assert torch.allclose(g_h, g_o, atol=1e-12)
++
++
++# ---- structure -----------------------------------------------------------------------
++def test_permutation_equivariance():
++    net = make_net()
++    obs, kappa, pos = team(3, 2)
++    nz = noise(net, 5)
++    out = step(net, obs, kappa, pos, nz, comm_range=2.5)
++    perm = torch.tensor([3, 0, 4, 2, 1])
++    nz_p = {k: v[perm] for k, v in nz.items()}
++    out_p = step(net, obs[perm], kappa[perm], pos[perm.numpy()], nz_p, comm_range=2.5)
++    for key in ('logits', 'value', 'kl'):
++        a, b = out[key][perm], out_p[key]
++        assert torch.allclose(torch.nan_to_num(a, neginf=-1e9), torch.nan_to_num(b, neginf=-1e9), atol=1e-10)
++
++
++@pytest.mark.parametrize('n_p,n_a', [(1, 0), (0, 1), (2, 1), (4, 2)])
++def test_any_team_size_with_the_same_parameters(n_p, n_a):
++    net = make_net()
++    obs, kappa, pos = team(n_p, n_a)
++    out = step(net, obs, kappa, pos, noise(net, n_p + n_a))
++    assert out['logits'].shape == (n_p + n_a, 6)
++    feasible = torch.ones(n_p + n_a, 6, dtype=torch.bool)
++    feasible[:n_p, CAPTURE] = False
++    assert torch.isfinite(out['logits'][feasible]).all()
++    assert torch.isfinite(out['value']).all() and torch.isfinite(out['kl']).all()
++
++
++def test_null_slot_isolated_agent_and_comm_off():
++    net = make_net()
++    obs, kappa, pos = team(3, 1)
++    nz = noise(net, 4)
++    isolated = step(net, obs, kappa, pos, nz, comm_range=0.0)       # no edges: only null slots
++    for a_null in isolated['diag']['alpha_null']:
++        assert torch.allclose(a_null, torch.ones(4))
++    off = step(net, obs, kappa, pos, nz, comm_off=True)              # full graph, alpha_null forced to 1
++    assert torch.allclose(off['logits'], isolated['logits'], atol=1e-12)
++    on = step(net, obs, kappa, pos, nz)
++    assert not torch.allclose(on['logits'], off['logits'])
++    assert all((a < 1).all() for a in on['diag']['alpha_null'])     # some weight on real messages
++
++
++def test_feasibility_mask():
++    net = make_net()
++    obs, kappa, pos = team(3, 1)
++    logits = step(net, obs, kappa, pos, noise(net, 4))['logits']
++    assert torch.isneginf(logits[:3, CAPTURE]).all() and torch.isfinite(logits[3]).all()
++    assert (Categorical(logits=logits).sample((5000,))[:, :3] != CAPTURE).all()
++
++
++def test_no_path_from_sen_or_critic_into_actors():
++    net = make_net()
++    obs, kappa, pos = team(2, 1)
++    out = step(net, obs, kappa, pos, noise(net, 3))
++    trainer_only = [p for n, p in net.named_parameters() if n.startswith('critic') or '.sen_' in n]
++    grads = torch.autograd.grad(out['logits'][torch.isfinite(out['logits'])].sum(), trainer_only, allow_unused=True)
++    assert all(g is None or torch.count_nonzero(g) == 0 for g in grads)
++
++
++def test_role_is_learned_pathwise():
++    net = make_net()
++    obs, kappa, pos = team(2, 1)
++    out = step(net, obs, kappa, pos, noise(net, 3))
++    logp = Categorical(logits=out['logits']).log_prob(torch.tensor([0, 1, 5])).sum()
++    g_enc = torch.autograd.grad(logp, list(net.role_enc.parameters()), retain_graph=True)
++    (g_G,) = torch.autograd.grad(logp, [net.gate.weight])
++    assert sum(float(g.abs().sum()) for g in g_enc) > 0 and float(g_G.abs().sum()) > 0
++
++
++def tie_experts(net):
++    with torch.no_grad():
++        for m in net.modules():
++            if isinstance(m, (Bank, HeadBank)):
++                m.weight[:] = m.weight[:1].clone()
++                m.bias[:] = m.bias[:1].clone()
++        for layer in net.rounds:
++            layer.a[:] = layer.a[:1].clone()
++            layer.null[:] = layer.null[:1].clone()
++
++
++def test_identical_experts_block_all_gate_gradient():
++    obs, kappa, pos = team(2, 1)
++    for tied in (True, False):
++        net = make_net()
++        if tied:
++            tie_experts(net)
++        out = step(net, obs, kappa, pos, noise(net, 3))
++        loss = Categorical(logits=out['logits']).log_prob(torch.tensor([0, 1, 5])).sum()
++        (g,) = torch.autograd.grad(loss, [net.gate.weight])
++        assert (g.abs().max() < 1e-12) == tied
++
++
++# ---- the role prior and the rate ------------------------------------------------------
++@pytest.mark.parametrize('persist', [False, True])
++def test_model_kl_matches_monte_carlo(persist):
++    """The rate the model returns equals E_q[log q - log p] under its own prior (lambda = 0 or 0.9)."""
++    net = make_net(lambda_rho=0.9)
++    with torch.no_grad():
++        net.eta.weight.normal_()                                 # non-zero defaults per kappa
++    obs, kappa, pos = team(2, 1)
++    n = 3
++    mem = net.init_memory(n)
++    rho_prev = torch.randn(n, 3)
++    if persist:
++        mem.update(alive_prev=torch.ones(n, dtype=torch.bool), kappa_prev=kappa.clone(), rho_prev=rho_prev)
++    out = net(obs, kappa, mem, torch.ones(n, dtype=torch.bool), build_role_graph(pos, np.ones(n, bool)), DIM,
++              noise=noise(net, n))
++    lam = 0.9 if persist else 0.0
++    m = lam * rho_prev + (1 - lam) * net.eta(torch.tensor([1, 1, 2])).detach()   # (1,0),(1,0),(0,1)
++    q = torch.distributions.Normal(out['diag']['mu'], out['diag']['var'].sqrt())
++    p = torch.distributions.Normal(m, math.sqrt(1 - lam ** 2))
++    x = q.sample((200_000,))
++    mc = (q.log_prob(x) - p.log_prob(x)).sum(-1)                 # (draws, n)
++    se = mc.std(0) / math.sqrt(mc.shape[0])
++    assert torch.all((mc.mean(0) - out['kl'].detach()).abs() < 4 * se)
++
++
++def test_prior_resets_when_capability_changes():
++    net = make_net(lambda_rho=0.9)
++    with torch.no_grad():
++        net.eta.weight.normal_()
++    obs, kappa, pos = team(2, 1)
++    n = 3
++    g = build_role_graph(pos, np.ones(n, bool))
++    mem = net.init_memory(n)
++    mem.update(alive_prev=torch.ones(n, dtype=torch.bool), kappa_prev=kappa.clone(), rho_prev=torch.full((n, 3), 5.0))
++    k2 = kappa.clone()
++    k2[0, 0] = 0.0                                                   # predator 0 loses its sensor
++    out = net(obs, k2, mem, torch.ones(n, dtype=torch.bool), g, DIM, noise=noise(net, n))
++    mu, var = out['diag']['mu'], out['diag']['var']
++    eta = net.eta(torch.tensor([0, 1, 2]))                            # kappa indices (0,0),(1,0),(0,1)
++    reset = 0.5 * (var + (mu - eta) ** 2 - 1 - torch.log(var)).sum(-1)
++    assert torch.allclose(out['kl'][0], reset[0])                    # lambda = 0: prior N(eta(kappa), I)
++    assert not torch.allclose(out['kl'][1], reset[1])                # unchanged agents keep lambda_rho
++
++
++# ---- the update -------------------------------------------------------------------------
++def rollout(policy, steps=6, n_p=2, n_a=1, seed=0):
++    net = policy.model
++    obs, kappa, pos = team(n_p, n_a, seed)
++    n = n_p + n_a
++    active = torch.ones(n, dtype=torch.bool)
++    g = build_role_graph(pos, active.numpy())
++    mem = net.init_memory(n)
++    policy.begin_episode(kappa[:, 1] > 0)
++    for t in range(steps):
++        out = net(obs, kappa, mem, active, g, DIM)
++        d = Categorical(logits=out['logits'])
++        a = d.sample()
++        policy.record(d.log_prob(a), out['value'], out['kl'], np.full(n, -0.05), active)
++        mem = dict(out['memory'], a_prev=a)
++
++
++def test_critic_gradient_never_reaches_role_parameters_and_storage_is_stable():
++    net = make_net()
++    policy = SoftRolePolicy(net, beta=0.1)
++    policy.c_pi = 0.0                                                # only the critic loss remains
++    rollout(policy)
++    policy.finish_batch()
++    role = {id(p) for p in net.role_parameters()}
++    assert all(torch.count_nonzero(p.grad) == 0 for p in net.parameters() if id(p) in role)
++    assert torch.count_nonzero(net.critic[0].weight.grad) > 0
++    assert torch.count_nonzero(net.lstm.weight_hh.grad) > 0
++    pointers = [p.grad.data_ptr() for p in net.parameters()]
++    policy.c_pi = 50.0
++    rollout(policy, seed=1)
++    policy.finish_batch()
++    assert pointers == [p.grad.data_ptr() for p in net.parameters()]  # accumulated in place
++    assert any(torch.count_nonzero(p.grad) > 0 for p in net.role_parameters())
++
++
++def test_detach_cuts_every_recurrent_tensor():
++    net = make_net()
++    obs, kappa, pos = team(2, 1)
++    out = step(net, obs, kappa, pos, noise(net, 3))
++    mem = net.detach_memory(out['memory'])
++    assert all(v.grad_fn is None for v in mem.values() if torch.is_tensor(v))
++
++
++def test_inactive_agent_is_invisible_to_the_team():
++    """An agent outside N_t must not change anything any active agent computes."""
++    net = make_net()
++    obs, kappa, pos = team(3, 2)
++    nz = noise(net, 5)
++    active = torch.tensor([True, True, False, True, True])
++    g = build_role_graph(pos, active.numpy())
++    full = net(obs, kappa, net.init_memory(5), active, g, DIM, noise=nz)
++    keep = torch.tensor([0, 1, 3, 4])
++    g4 = build_role_graph(pos[keep.numpy()], np.ones(4, bool))
++    small = net(obs[keep], kappa[keep], net.init_memory(4), torch.ones(4, dtype=torch.bool), g4, DIM,
++                noise={k: v[keep] for k, v in nz.items()})
++    for key in ('logits', 'value', 'kl'):
++        a = torch.nan_to_num(full[key][keep], neginf=-1e9)
++        b = torch.nan_to_num(small[key], neginf=-1e9)
++        assert torch.allclose(a, b, atol=1e-10)
++    assert torch.count_nonzero(full['memory']['H'][2]) == 0
+-- 
+2.43.0
+

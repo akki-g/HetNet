@@ -1,0 +1,92 @@
+"""Frozen checkpoint evaluation on explicit, reusable scenario records."""
+import hashlib
+import json
+from dataclasses import asdict
+from pathlib import Path
+
+import torch
+
+from softrole.rollout import run_episode, validate_scenario
+
+
+def model_signature(model):
+    digest = hashlib.sha256()
+    for name, value in sorted(model.state_dict().items()):
+        digest.update(name.encode())
+        digest.update(str((value.dtype, tuple(value.shape))).encode())
+        digest.update(value.detach().cpu().contiguous().numpy().tobytes())
+    return digest.hexdigest()
+
+
+def evaluate_checkpoint(checkpoint, scenarios, output, intervention="none",
+                        intervention_step=None, trace=False, sham=False):
+    from softrole.config import Config
+    from softrole.env import make_env
+    from softrole.model import SoftRoleNet
+    from softrole import CHECKPOINT_VERSION
+
+    destination = Path(output)
+    if destination.exists():
+        raise FileExistsError(f"Evaluation output already exists: {destination}")
+    torch.set_num_threads(1)
+    saved = torch.load(checkpoint, map_location="cpu", weights_only=False)
+    if saved.get("format_version") != CHECKPOINT_VERSION:
+        raise ValueError("Unsupported checkpoint format")
+    config = Config(**saved["config"])
+    if saved["model_config"] != config.model_kwargs():
+        raise ValueError("Checkpoint model layout disagrees with its saved configuration")
+    scenarios = list(scenarios)
+    if not scenarios:
+        raise ValueError("Evaluation requires at least one scenario")
+    ids = [str(scenario.scenario_id) for scenario in scenarios]
+    if len(ids) != len(set(ids)):
+        raise ValueError("Evaluation scenario IDs must be unique")
+    for scenario in scenarios:
+        config.validate_composition((scenario.num_p, scenario.num_a))
+        validate_scenario(config, scenario, intervention, intervention_step, sham)
+    adapter = make_env(config)
+    if saved.get("environment_version") != adapter.environment_version:
+        raise ValueError("Checkpoint environment version differs from the evaluation adapter")
+    model = SoftRoleNet(**saved["model_config"]).double()
+    model.load_state_dict(saved["model_state"])
+    model.eval()
+    before = model_signature(model)
+    episodes = []
+    with torch.no_grad():
+        for scenario in scenarios:
+            episode = run_episode(model, adapter, config, scenario, training=False,
+                                  intervention=intervention, intervention_step=intervention_step,
+                                  trace=trace, sham=sham)
+            record = dict(episode.metrics)
+            if trace:
+                record["trace"] = episode.traces
+            episodes.append(record)
+    after = model_signature(model)
+    if before != after:
+        raise RuntimeError("Frozen evaluation changed model parameters or buffers")
+    exposed = [episode for episode in episodes if episode["event_exposed"]]
+    scheduled = [episode for episode in episodes if episode["scheduled_event_exposed"]]
+    report = {
+        "checkpoint": str(Path(checkpoint)), "model_signature": before,
+        "checkpoint_sha256": hashlib.sha256(Path(checkpoint).read_bytes()).hexdigest(),
+        "format_version": CHECKPOINT_VERSION, "training_seed": config.seed,
+        "config": config.to_dict(), "model_config": saved["model_config"],
+        "environment_version": adapter.environment_version,
+        "source_sha256": saved.get("source_sha256"),
+        "checkpoint_progress": {key: saved.get(key) for key in
+                                ("epoch", "updates", "total_steps", "total_episodes")},
+        "scenarios": [asdict(scenario) for scenario in scenarios],
+        "intervention": intervention, "sham": bool(sham), "episodes": len(episodes),
+        "success_rate": sum(episode["success"] for episode in episodes) / len(episodes),
+        "mean_team_return": sum(episode["team_return"] for episode in episodes) / len(episodes),
+        "event_exposed_episodes": len(exposed),
+        "post_event_success_rate": sum(episode["success"] for episode in exposed) / len(exposed) if exposed else None,
+        "scheduled_event_exposed_episodes": len(scheduled),
+        "post_schedule_success_rate": sum(episode["success"] for episode in scheduled) / len(scheduled) if scheduled else None,
+        "per_episode": episodes,
+    }
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with destination.open("x") as stream:
+        json.dump(report, stream, indent=2, allow_nan=False)
+        stream.write("\n")
+    return report

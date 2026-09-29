@@ -32,7 +32,7 @@ ic3net-envs = { path = "envs", editable = true }
 build-constraint-dependencies = ["setuptools==75.8.0"]
 
 [tool.setuptools.packages.find]
-include = ["hetnet_ext*"]
+include = ["hetnet_ext*", "softrole*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

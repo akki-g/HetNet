@@ -49,6 +49,9 @@ class FireCommanderEnv(gym.Env):
         self.DISCOVER_NONSOURCE_REWARD = 0
         self.episode_over = False
         self.action_blind = True
+        # Legacy reproduction keeps the original shared-view behavior unless
+        # the standalone learner explicitly requests independent observations.
+        self.independent_observations = False
 
     def init_curses(self):
         pass
@@ -323,7 +326,8 @@ class FireCommanderEnv(gym.Env):
         for i, p in enumerate(self.predator_loc):
             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
-            obs.append(self.bool_base_grid[slice_y, slice_x])
+            window = self.bool_base_grid[slice_y, slice_x]
+            obs.append(window.copy() if self.independent_observations else window)
 
             for fire in self.fire_loc:
                 if any(np.array_equal(fire, discovered) for discovered in self.discovered_fire):
@@ -342,7 +346,8 @@ class FireCommanderEnv(gym.Env):
         for p in self.predator_capture_loc:
             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
-            obs.append(self.bool_base_grid[slice_y, slice_x])
+            window = self.bool_base_grid[slice_y, slice_x]
+            obs.append(window.copy() if self.independent_observations else window)
 
             if self.action_blind:
                 import copy

@@ -17,6 +17,8 @@ slurm-*.err
 
 *.md
 !README.md
+!AGENTS.md
+!softrole/RESEARCH.md
 research/
 evidence/
 logs/
