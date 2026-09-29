@@ -11,7 +11,7 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
 #SBATCH --time=2-00:00:00
-#SBATCH --array=0-8%3
+#SBATCH --array=0-8
 #SBATCH --output=logs/reproduce-%A_%a.out
 #SBATCH --error=logs/reproduce-%A_%a.err
 
