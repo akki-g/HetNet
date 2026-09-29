@@ -110,6 +110,48 @@ The standard-library-only monitor discovers runs, exports `summary.csv` or print
 
 Look for improving success, shorter episodes and coherent returns **across seeds**. Finite/decreasing loss alone does not establish learning. Use `metrics.jsonl` for counts: original stdout overcounts cumulative samples. Epoch timing omits checkpoints and some logging overhead. Training curves do not replace final policy evaluation.
 
+### Training speed
+
+Python allocation tracing (`tracemalloc`) is now off by default. The released code
+enabled it throughout collection and backpropagation; this is expensive for the
+many small Python/DGL operations per step. Add `--profile_memory` to restore that
+diagnostic. The flag is recorded in `resolved_args.json`; it does not change the
+training recipe. The stdout allocation peak is labeled `disabled` when tracing is
+off. When enabled, it measures traced Python allocations, not total process RAM;
+use Slurm's `MaxRSS` for process memory.
+
+An initial local CPU check (Apple M4 Pro, locked environment, PCP Real, one
+collector, three updates, batch target 160, horizon 80) took 16.53 seconds with
+tracing and 4.17 seconds without it. Each update produced identical rewards,
+losses and parameter hashes. A second check used the actual launcher with four
+collectors, batch target 500 and horizon 80, shortened to two epochs of two updates:
+75.37 seconds with tracing versus 21.05 without (3.6x). Both epochs had identical
+model hashes and all non-timing metrics. These are local measurements, not Stokes
+runtime predictions. Benchmark a short run on the target node before choosing a
+full-run time limit. For example, from an updated checkout:
+
+```bash
+# Original PCP recipe, with only the number of epochs shortened for timing.
+HETNET_RUN_ROOT=runs/timing-no-tracing \
+  sbatch --array=3 --time=01:00:00 slurm/reproduce.sbatch --num_epochs 3
+# Optional comparison with the original tracing behavior, in a separate run.
+HETNET_RUN_ROOT=runs/timing-with-tracing \
+  sbatch --array=3 --time=01:00:00 slurm/reproduce.sbatch --num_epochs 3 --profile_memory
+```
+
+Compare epoch times after startup on the same CPU model. Each epoch still collects
+at least 20,000 joint steps (4 collectors × 500 steps × 10 updates), so PP/PCP
+require at least 40 million steps per seed. Increasing `--cpus-per-task` alone
+does not add collectors, and increasing `--nprocesses` with the same batch target
+changes the data per update. Reducing epochs or batch size changes the reproduction
+budget. A GPU is not a validated shortcut for the current per-step DGL and shared
+CPU parameter path.
+
+Already running jobs retain their loaded code. Use a separate checkout for timing
+while existing jobs use the old source, and preserve their output directories.
+The 48-hour Slurm default is not sufficient if measured epoch time projects beyond
+it; automatic resume is still not implemented.
+
 ## Full original-study coverage still required
 
 | Paper result | Required experiment | Remaining work |

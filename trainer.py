@@ -57,7 +57,8 @@ class Trainer(object):
             self.params = [p for p in self.policy_net.parameters()]
         self.episode_counter = 0
 
-        tracemalloc.start()
+        # Allocation tracing is diagnostic only and expensive in the DGL hot path.
+        self.profile_memory = getattr(args, 'profile_memory', False)
         self.reset_memory_peak()
 
 
@@ -622,8 +623,9 @@ class Trainer(object):
         self.optimizer.load_state_dict(state)
 
     def reset_memory_peak(self):
-        tracemalloc.stop()
-        tracemalloc.start()
+        if self.profile_memory:
+            tracemalloc.stop()
+            tracemalloc.start()
         if torch.cuda.is_available():
             torch.cuda.reset_peak_memory_stats()
 
@@ -639,7 +641,8 @@ class Trainer(object):
             self.gpu_memory_peak = gpu_mem
 
     def get_memory_peak(self):
-        self.set_cpu_memory_peak(tracemalloc.get_traced_memory()[1])
+        if self.profile_memory:
+            self.set_cpu_memory_peak(tracemalloc.get_traced_memory()[1])
         if torch.cuda.is_available():
             self.set_gpu_memory_peak(torch.cuda.max_memory_allocated(device=torch.device('cuda')))
 

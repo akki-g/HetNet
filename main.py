@@ -45,6 +45,8 @@ parser.add_argument('--experiment_name', default='experiment', type=str,
 parser.add_argument('--save_dir', default='./saved', type=str, help='directory to save models')
 parser.add_argument('--metrics_file', default='', type=str,
                     help='append epoch JSONL and signatures to a fresh run directory')
+parser.add_argument('--profile_memory', action='store_true', default=False,
+                    help='trace Python allocations for memory diagnostics (slows training)')
 
 
 parser.add_argument('--num_epochs', default=100, type=int,
@@ -391,7 +393,8 @@ def run(num_epochs):
     global_gpu_mem_peak = np.zeros((args.nprocesses,))
 
     for ep in range(num_epochs):
-        tracemalloc.start()
+        if args.profile_memory:
+            tracemalloc.start()
         epoch_cpu_mem_peak = np.zeros((args.nprocesses,))
         epoch_gpu_mem_peak = np.zeros((args.nprocesses,))
 
@@ -429,7 +432,8 @@ def run(num_epochs):
                     stat[k] = stat[k] / stat[v.divide_by]
                 v.data.append(stat.get(k, 0))
 
-        epoch_cpu_mem_peak[0] = tracemalloc.get_traced_memory()[1]
+        if args.profile_memory:
+            epoch_cpu_mem_peak[0] = tracemalloc.get_traced_memory()[1]
         if torch.cuda.is_available():
             epoch_gpu_mem_peak[0] = torch.cuda.max_memory_allocated(device=torch.device('cuda'))
 
@@ -437,8 +441,9 @@ def run(num_epochs):
         global_gpu_mem_peak = np.maximum(epoch_gpu_mem_peak, global_gpu_mem_peak)
 
         np.set_printoptions(precision=2)
-        print('Epoch {}\tReward {}\tTime {:.2f}s, Episodes {}, Total Steps {}, CPU Memory Peak {}MB, GPU Memory Peak {}MB'.format(
-            epoch, stat['reward'], epoch_time, num_episodes, num_steps, epoch_cpu_mem_peak / 10 ** 6, epoch_gpu_mem_peak / 10 ** 6
+        cpu_memory = '{}MB'.format(epoch_cpu_mem_peak / 10 ** 6) if args.profile_memory else 'disabled'
+        print('Epoch {}\tReward {}\tTime {:.2f}s, Episodes {}, Total Steps {}, Python Allocation Peak {}, GPU Memory Peak {}MB'.format(
+            epoch, stat['reward'], epoch_time, num_episodes, num_steps, cpu_memory, epoch_gpu_mem_peak / 10 ** 6
         ))
 
         if 'enemy_reward' in stat.keys():
@@ -468,8 +473,9 @@ def run(num_epochs):
         # if args.save != '':
         #     save(args.save + '_' + str(ep))
 
-        print('Global CPU Memory Peak {}MB\nGlobal GPU Memory Peak {}MB'.format(
-            epoch_cpu_mem_peak / 10 ** 6, epoch_gpu_mem_peak / 10 ** 6
+        global_cpu_memory = '{}MB'.format(global_cpu_mem_peak / 10 ** 6) if args.profile_memory else 'disabled'
+        print('Global Python Allocation Peak {}\nGlobal GPU Memory Peak {}MB'.format(
+            global_cpu_memory, global_gpu_mem_peak / 10 ** 6
         ))
 
 
