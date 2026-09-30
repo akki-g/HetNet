@@ -8,7 +8,7 @@ Our order of work is:
 2. Freeze reproduced policies and change only the number/composition of agents on the **same task**, keeping map, sensing, physical capabilities, rewards and rules fixed.
 3. Use those results to guide SoftRole development.
 
-No sensor degradation, capability-loss or within-episode membership experiment is in the current plan. The old 21-run PCP transfer-preparation sweep is retired. No full training or frozen evaluation has been completed yet.
+The original reproduction tranche excludes sensor degradation, capability loss and within-episode membership experiments. The separate [SoftRole reformulation](softrole/RESEARCH.md) adds a PCP sensor-loss study. The old 21-run PCP transfer-preparation sweep is retired. Full research training and evaluation remain separate from the recorded engineering checks.
 
 ## First reproduction tranche
 
@@ -195,6 +195,46 @@ uv export --locked --no-emit-project --no-emit-local --no-dev \
 ```
 
 The old launch framework, PCP-only grid, Mac wrappers and mandatory preflight/budget machinery are removed. Research/evidence files remain locally but are excluded from new checkouts; their full tracked history is preserved at commit `47b99bf`. Work continues on `main`; the merged `frozen-eval` branch is deleted.
+
+## SoftRole reformulation (`softrole` branch)
+
+The standalone `softrole` package implements the revised deterministic,
+capability-conditioned architecture. It removes explicit actor class labels and
+typed occupancy channels, uses two 16-bit broadcast rounds, and trains with one
+team advantage. See [the mathematical plan and experiment protocol](softrole/RESEARCH.md)
+and [the implementation record](AGENTS.md). The [architecture comparison](softrole/ARCHITECTURE_COMPARISON.md)
+explains what was retained from the supplied proposal, what changed, the
+mathematical reasons, differences from original HetNet, and defensible contribution claims.
+
+```bash
+# Inspect the original-domain recipe; no run directory is created.
+bash scripts/softrole.sh pcp banked 0 --dry-run
+
+# Small execution check (use a fresh output path).
+.venv/bin/python -m softrole train --task pcp --model banked \
+  --epochs 1 --updates-per-epoch 2 --batch-steps 4 --max-steps 4 \
+  --nprocesses 4 --output runs/softrole_smoke
+
+# Full domain recipe: substitute pp / pcp / fc and shared / banked.
+bash scripts/softrole.sh pcp banked 0
+
+# Primary composition or sensor-failure study, isolated from fixed-team runs.
+SOFTROLE_RUN_ROOT=runs/softrole_failure \
+  bash scripts/softrole.sh pcp banked 0 --study failure
+```
+
+The package also provides `evaluate`, `evaluate-hetnet` and `summarize` commands.
+Frozen evaluation supports held-out compositions, event-timed gate/communication
+interventions, matched no-failure `--sham` controls and independent random streams.
+Summaries use independent training seeds as the uncertainty unit. Detailed commands,
+splits, ablations and interpretation limits are in the research document.
+
+`slurm/softrole.sbatch` is an optional 18-job screening array (three domains × two
+models × three seeds). No jobs are submitted by training setup. Runs archive source,
+configuration, metrics and optimizer checkpoints; resume requires a fresh output
+directory. PP/PCP/FC defaults match the repository's domain recipes, but the new
+actor, learner and corrected observations constitute a separate experiment.
+Original reproduction commands retain their default behavior.
 
 ## Citation and license
 
