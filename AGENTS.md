@@ -178,6 +178,28 @@ one Torch thread. These are implementation checks, not estimates of task quality
   Final independent mathematical review found no substantive blocker; clarified
   fresh-noise conditioning, terminal V_tau and report grouping limitations.
 
+### 2026-09-29 — architecture comparison document
+
+- Re-read the three supplied PDFs, the original patch, the historical plan,
+  current implementation and original HetNet source for the requested comparison.
+  Distinguished the 37-page and 39-page implementation guides and credited
+  retained proposal mechanisms rather than presenting them as new corrections.
+- Added [ARCHITECTURE_COMPARISON.md](softrole/ARCHITECTURE_COMPARISON.md), covering
+  a three-way architecture comparison, exact tensor dimensions, deterministic
+  gate promotion, observation changes, team credit/critic/aggregation, proofs
+  and counterexamples, primary research evidence, and defensible contributions.
+- Verified cited primary research on HetNet, capability-aware teaming, CASH,
+  ROMA, GATv2, stochastic computation graphs, GAE, Deep Sets and RL evaluation.
+  Explicitly separated research precedents from evidence about this implementation.
+- Independent reviews checked proposal attribution and original HetNet behavior.
+  Corrected the draft to acknowledge that held-out (3,2) combines composition
+  and size transfer, and that single-sensor loss has different fractional
+  severity across compositions. No experimental result or runtime code changed.
+- Added a README link and ignore exception for the document; clarified that the
+  original reproduction tranche and the separate SoftRole failure study have
+  different scopes. Checked local link targets, math delimiters and whitespace.
+  No training or test suite was rerun for these documentation-only changes.
+
 ## Remaining research work and boundaries
 
 Run the locked research protocol and assess actual learning across independent

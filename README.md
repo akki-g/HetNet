@@ -8,7 +8,7 @@ Our order of work is:
 2. Freeze reproduced policies and change only the number/composition of agents on the **same task**, keeping map, sensing, physical capabilities, rewards and rules fixed.
 3. Use those results to guide SoftRole development.
 
-No sensor degradation, capability-loss or within-episode membership experiment is in the current plan. The old 21-run PCP transfer-preparation sweep is retired. No full training or frozen evaluation has been completed yet.
+The original reproduction tranche excludes sensor degradation, capability loss and within-episode membership experiments. The separate [SoftRole reformulation](softrole/RESEARCH.md) adds a PCP sensor-loss study. The old 21-run PCP transfer-preparation sweep is retired. Full research training and evaluation remain separate from the recorded engineering checks.
 
 ## First reproduction tranche
 
@@ -160,7 +160,9 @@ The standalone `softrole` package implements the revised deterministic,
 capability-conditioned architecture. It removes explicit actor class labels and
 typed occupancy channels, uses two 16-bit broadcast rounds, and trains with one
 team advantage. See [the mathematical plan and experiment protocol](softrole/RESEARCH.md)
-and [the implementation record](AGENTS.md).
+and [the implementation record](AGENTS.md). The [architecture comparison](softrole/ARCHITECTURE_COMPARISON.md)
+explains what was retained from the supplied proposal, what changed, the
+mathematical reasons, differences from original HetNet, and defensible contribution claims.
 
 ```bash
 # Inspect the original-domain recipe; no run directory is created.
