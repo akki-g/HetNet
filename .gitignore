@@ -14,7 +14,7 @@ results/
 slurm-*.out
 slurm-*.err
 
-
+*.pdf
 *.md
 !README.md
 research/

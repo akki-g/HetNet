@@ -9,8 +9,8 @@
 #SBATCH --mem=16G
 #SBATCH --time=2-00:00:00
 #SBATCH --array=0-17%3
-#SBATCH --output=logs/softrole-%A_%a.out
-#SBATCH --error=logs/softrole-%A_%a.err
+#SBATCH --output=logs_sr/softrole-%A_%a.out
+#SBATCH --error=logs_sr/softrole-%A_%a.err
 set -euo pipefail
 cd "${SLURM_SUBMIT_DIR:?Submit from the repository root}"
 module load anaconda/anaconda-2024.10
