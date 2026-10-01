@@ -52,7 +52,8 @@ def test_compositions_and_scheduled_failures_are_separate_strata(tmp_path):
     assert sum(group["episodes"] for group in result["groups"]) == 3
 
 
-@pytest.mark.parametrize("change", ["horizon", "environment", "checkpoint", "source", "model"])
+@pytest.mark.parametrize("change", ["horizon", "environment", "checkpoint", "source", "model",
+                                    "evaluator", "evaluation_version"])
 def test_incompatible_experiments_are_not_pooled(tmp_path, change):
     first = report_file(tmp_path, 0, [episode(0, True)])
     overrides = {}
@@ -66,6 +67,10 @@ def test_incompatible_experiments_are_not_pooled(tmp_path, change):
         overrides["source_sha256"] = "source2"
     elif change == "model":
         overrides["config"] = {"seed": 1, "model": "shared", "task": "pcp", "max_steps": 80}
+    elif change == "evaluator":
+        overrides["evaluator"] = {"source": {"sha256": "new-evaluator"}}
+    elif change == "evaluation_version":
+        overrides["evaluation_version"] = 2
     second = report_file(tmp_path, 1, [episode(0, False)], **overrides)
     assert len(summarize_reports([first, second], bootstrap_samples=100)["groups"]) == 2
 

@@ -1,0 +1,39 @@
+{
+  "snapshot": "2026-09-30",
+  "compiler": "Tectonic 0.17.0",
+  "checks": {
+    "advisor_sync_slides": {
+      "pages": 18,
+      "bytes": 110164,
+      "sha256": "9b6e8b07cd8be5da7a66ae9d549df07b65273ae7ca12975517798e33d80d888e",
+      "fonts_embedded": true,
+      "tex_box_warnings": false,
+      "all_pages_visually_reviewed": true
+    },
+    "advisor_sync_guide": {
+      "pages": 18,
+      "bytes": 130358,
+      "sha256": "bdde048d78a2f9710034a71f4e3bb946100e8f0e54b307fe93e472a24242ea93",
+      "fonts_embedded": true,
+      "tex_box_warnings": false,
+      "all_pages_visually_reviewed": true
+    }
+  },
+  "files": {
+    "FACT_CHECK.md": "8c8a8195e3e52d44f9032c497c4cbd416827ac8992b4be231fece5fb13e68b81",
+    "README.md": "4110bbefe9ebaa92d34c0a3acd95cce078a16a033bb61848796b5d2443e680c1",
+    "advisor_sync_guide.pdf": "bdde048d78a2f9710034a71f4e3bb946100e8f0e54b307fe93e472a24242ea93",
+    "advisor_sync_guide.tex": "003f4054edb28b358fc6c93dcd841ce744272c083b1b8f04d9ee4f2df4e625ce",
+    "advisor_sync_slides.pdf": "9b6e8b07cd8be5da7a66ae9d549df07b65273ae7ca12975517798e33d80d888e",
+    "advisor_sync_slides.tex": "701487faf0c675941066a3ea1181b6ca5e5ed264b8f7d0c0f6ae8bfb2534f62e",
+    "common.tex": "122c65b4cf17867abb6644bd3285722b569edbc10de63be17f67d177ae59089d",
+    "content.tex": "410730e3b06fd3a4758e9116e23c13d51465957c9b19ae0b695b72aa3d2d7377",
+    "exposure_rows.tex": "77a7cca1d3ba8cb00f8f63998e1e97abc834452d39dad7ac3f1a21a6d5f687b0",
+    "pcp_progress.pdf": "08f3f150aa5767314bcfde649fc038d1b511df4e574cbcfdffe271789f3b62f9",
+    "pilot_rows.tex": "304e58946fe103c0fa4a9071efe362e7d716becff8e2126c1a595842daf953f7",
+    "prepare.py": "d07a70b3e15959b8ae51410837eb728c68a4a37c1e9d9bbf8777f9d9aea9ff00",
+    "result_rows.tex": "9b0d53103b75ddb85e0558ea8fabd2af54154522d74be49b4548e52aefa26ac7",
+    "success_by_budget.pdf": "4ba0c453428bec025a44a34652679044bfe1aa9ed898f6e3768b341b695bde36",
+    "verified_facts.json": "2b26c2fae7efe14e4efb793a34003998f14c64efba116d3e89f195a7721061fc"
+  }
+}

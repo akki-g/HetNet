@@ -1,0 +1,4707 @@
+{
+  "common_reproduction_epoch": 846,
+  "common_softrole_budget": 22500000,
+  "independent_summary_field_cross_checks": 180,
+  "inputs": {
+    "analysis/training_2026-09-30_resync/summary.json": {
+      "bytes": 85192,
+      "sha256": "12a425376a380a83b69448a5d4c6cb2058949ce1b009f1c655c20810682e2849"
+    },
+    "logs_1/reproduce-896848_6.out": {
+      "bytes": 428545,
+      "sha256": "8b3c565ace1fdf264bd8e269c37d59768e94a09a197068a4a928f6e87d6d123d"
+    },
+    "logs_1/reproduce-896848_7.out": {
+      "bytes": 418559,
+      "sha256": "3c534194c72c9831ec4b0a03c431c75859cd52badbc4bc6799b780a6a8f3846d"
+    },
+    "logs_1/reproduce-896848_8.out": {
+      "bytes": 461949,
+      "sha256": "4399b23a006bcb7426cb4527e480fe405c9d492c249a738b82032cb344a1c2fe"
+    },
+    "logs_sr/softrole-898824_12.out": {
+      "bytes": 581991,
+      "sha256": "dffbcb9ae4c9821a0bdcf0f7fc05550505399b99718c05f933f8cb8687494e91"
+    },
+    "logs_sr/softrole-898824_13.out": {
+      "bytes": 507487,
+      "sha256": "d90bdf02516273b366a55f68d6163399b14fee22a9e0490282d73b49ee04dc10"
+    },
+    "logs_sr/softrole-898824_14.out": {
+      "bytes": 580992,
+      "sha256": "c2e3dad22cc2f79a7867e59ff6f5bffcdbb266dec4166b77e462cc74928ad31a"
+    },
+    "logs_sr/softrole-898824_15.out": {
+      "bytes": 537917,
+      "sha256": "9ec075046fe19a5df926e009293b16585e2d42fdacd7971d3a191e25741fad82"
+    },
+    "logs_sr/softrole-898824_16.out": {
+      "bytes": 541680,
+      "sha256": "5b1b9dfeed732e6cc54af4cd2899e764f4bae7ed17678ef0680d48d91bf991da"
+    },
+    "logs_sr/softrole-898824_17.out": {
+      "bytes": 508352,
+      "sha256": "0cfe7736806e51627cae05874096b45bf8f504e563f7d8e39aadd268fe63dd4b"
+    },
+    "stokes_runs/runs/reproduction-fast/fc_real/seed0/resolved_args.json": {
+      "bytes": 1887,
+      "sha256": "245fc662c9b46186d6595e4a2b14f482dfbf0860b8b3978b7daa96803d747899"
+    },
+    "stokes_runs/runs/reproduction-fast/fc_real/seed1/resolved_args.json": {
+      "bytes": 1887,
+      "sha256": "64e0a3341f12e08607300bdf374f7d22a36af41a6cff19c8f4b44aa672d05110"
+    },
+    "stokes_runs/runs/reproduction-fast/fc_real/seed2/resolved_args.json": {
+      "bytes": 1887,
+      "sha256": "7bad8858abd1de7b1f1cfdb005344321deeb086c39e1c68c6ebe40ea890129dd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/config.json": {
+      "bytes": 685,
+      "sha256": "01cbe7b8c3fc3c189fb81abe305e91988b9377e36536befd2ba293ab2af61033"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/metrics.jsonl": {
+      "bytes": 179383,
+      "sha256": "e042c1fa2b0a51fc935b7c9f5d1fff3dab65d5df97c6817f5f332c2dbbb99fd0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/run.json": {
+      "bytes": 461,
+      "sha256": "8e76e34c1f1c9dc91e8e279f7f586c48e3d15c56cee76e9e9327b9f53b3b9ede"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/AGENTS.md": {
+      "bytes": 15485,
+      "sha256": "af6767eb0a0070e69e975f5139fa6780045c504bba64903aadfd501e584a5062"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/WildFire_Simulate_Original.py": {
+      "bytes": 14214,
+      "sha256": "1d092e0a9cd3bafd0f96fd8f28212567c6c4a8212d4f137c0eedf3d6eba63406"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/action_utils.py": {
+      "bytes": 3579,
+      "sha256": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/comm.py": {
+      "bytes": 12541,
+      "sha256": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/data.py": {
+      "bytes": 1689,
+      "sha256": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/env_wrappers.py": {
+      "bytes": 3539,
+      "sha256": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/envs/examples/random_agent.py": {
+      "bytes": 1440,
+      "sha256": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/envs/ic3net_envs/__init__.py": {
+      "bytes": 480,
+      "sha256": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/envs/ic3net_envs/fire_commander_env.py": {
+      "bytes": 26070,
+      "sha256": "c2a4df6e2a385fe407889e299122946fbaab330b332a4928e1e50dfefb41f75e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/envs/ic3net_envs/predator_capture_env.py": {
+      "bytes": 26200,
+      "sha256": "935875ac665877965f86a2e12f5ef52669065d3a2a01ba11b0ed065bfac59583"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/envs/ic3net_envs/predator_prey_env.py": {
+      "bytes": 13262,
+      "sha256": "cfb96417c3c2200471ae02a159809a0092f36df6e97b66e1cb4cf74898de516e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/envs/ic3net_envs/traffic_helper.py": {
+      "bytes": 6997,
+      "sha256": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/envs/ic3net_envs/traffic_junction_env.py": {
+      "bytes": 21785,
+      "sha256": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/envs/setup.py": {
+      "bytes": 160,
+      "sha256": "513833deab549cfdfc475749faf6a9955665799c3139e5039374056be9beb38e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/eval_trainer.py": {
+      "bytes": 25640,
+      "sha256": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/hetgat/graph/fastbinary.py": {
+      "bytes": 28666,
+      "sha256": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/hetgat/graph/fastreal.py": {
+      "bytes": 38810,
+      "sha256": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/hetgat/graph/hetgat.py": {
+      "bytes": 16483,
+      "sha256": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/hetgat/graph/hetgata2c.py": {
+      "bytes": 11456,
+      "sha256": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/hetgat/graph/hetgatreal.py": {
+      "bytes": 20637,
+      "sha256": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/hetgat/policy.py": {
+      "bytes": 42575,
+      "sha256": "3b4a16a2bb2673139e6d67e6b0617dfde95e4d8537e2059a5ba87950bb6311e6"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/hetgat/policy_entropy.py": {
+      "bytes": 44176,
+      "sha256": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/hetgat/uavnet.py": {
+      "bytes": 23755,
+      "sha256": "343e1df3337723d1323d687e4c94d48b31011ab8890fbd8f196d948d02ff5f55"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/hetgat/utils.py": {
+      "bytes": 7126,
+      "sha256": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/hetnet_ext/__init__.py": {
+      "bytes": 77,
+      "sha256": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/hetnet_ext/progress.py": {
+      "bytes": 8779,
+      "sha256": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/hetnet_ext/recording.py": {
+      "bytes": 5315,
+      "sha256": "893265d85b7de7fc572a5faf32c2a0c5778bd14d59b3e8e400241c4c36c61561"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/hetnet_ext/seeding.py": {
+      "bytes": 468,
+      "sha256": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/hetnet_ext/signatures.py": {
+      "bytes": 1138,
+      "sha256": "4f92b26e2cf4d4ad7fa6af8990adfed39b4293cc7ef91e0b258376d48cd7cf4a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/main.py": {
+      "bytes": 21577,
+      "sha256": "18dd0c445fe8c596898334751a5a8884803e3c85c521eee74c2b89b25aa1bb7b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/models.py": {
+      "bytes": 3578,
+      "sha256": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/multi_processing.py": {
+      "bytes": 4441,
+      "sha256": "16f90c3c9c5a5141aeb27716c02e819875a0284b0fd4cfa60d320548e0157474"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/print_plot_eval.py": {
+      "bytes": 1247,
+      "sha256": "7c95155bf39b5bfd81c466cd2d0286b3c46df1fada2d6808900306b1722f5d52"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/pyproject.toml": {
+      "bytes": 914,
+      "sha256": "8de36bc7ee1eb6de2f71f5c26733182c3a5dd08de6b1758195ae25d676cb1b4b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/requirements.txt": {
+      "bytes": 1983,
+      "sha256": "3f4f980638f15c9244e8fa9c7d793c98cbf227823562c65b189bef5e12debd46"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/scripts/reproduce.sh": {
+      "bytes": 3078,
+      "sha256": "4a236421389278d85921a6fce9df7e96b92f0f1d435ec39d411c76f517904610"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/scripts/setup_env.sh": {
+      "bytes": 1345,
+      "sha256": "aab03a08a59a1fdba37db7764e52eb53b43d3e1986d2300ad7f0a05d4a4a956d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/scripts/softrole.sh": {
+      "bytes": 918,
+      "sha256": "f996dc9b404b9e76fd936ca01b81c651b3de08d316eaffb083a3e91bbe69bba4"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/scripts_eval/hetnet_a2c_fc_5x5_2p1a.sh": {
+      "bytes": 579,
+      "sha256": "530974f015db6282145c237411c2716833936953549732691210a50c4a609267"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/slurm/reproduce.sbatch": {
+      "bytes": 1098,
+      "sha256": "7df9b17ba57765d501f38ec31b468688b2797241b7971b36e0238cb850e5e841"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/slurm/setup.sbatch": {
+      "bytes": 502,
+      "sha256": "a2afde0347063718a526a81cf1c789e8c0b0f768bb441a90194c5fbcbe5f827f"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/slurm/softrole.sbatch": {
+      "bytes": 903,
+      "sha256": "806817688e01edffc724d2da2de0ec19227395d04073b9d333c487483b3602f5"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/RESEARCH.md": {
+      "bytes": 27709,
+      "sha256": "91fb34af6956b7617c9e5b7c62025ee0b387430e59856cc8ec7c1e1fce146e37"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/__init__.py": {
+      "bytes": 151,
+      "sha256": "5917482d92a5a738d3f93a427f868991b95594a472edc53585b73c896e674873"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/__main__.py": {
+      "bytes": 8932,
+      "sha256": "f965d63e3bb43a871bc0eaf0badcef0bcd66f8c082be2f0a8aebc9b6cdc9eada"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/evaluate.py": {
+      "bytes": 4563,
+      "sha256": "59d14e98882c01dd6552a345dc8e3a9fc6c14cfe0b9e541c81cef8a882e7f6b9"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/hetnet.py": {
+      "bytes": 10944,
+      "sha256": "46e66ea26457b6b77b0f2e27bf8f37c8d442be223d45c1524b2e5681a151d6aa"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/report.py": {
+      "bytes": 7591,
+      "sha256": "089bbf75f4c472e31d88fcf3090031507e986830f3de4f7c34cea18d411c234a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/scenarios.py": {
+      "bytes": 3420,
+      "sha256": "c9f68a1cf7e4f9b4d2194478a783c0789fc2bd7741819613bbde6335d82cc503"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/test_config/evaluation_conditions.py": {
+      "bytes": 1312,
+      "sha256": "2c8dca167297fa2b3c7bd6123fe5b94c8497fc1b1c27779b04b6585705073873"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/tests/helpers/hetnet_gradient_probe.py": {
+      "bytes": 16985,
+      "sha256": "6d09b6bd4691de487e7902bf412d57f924b8daaae2e87f8f4785c05bbc50aa5a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/tests/helpers/shared_gradient_probe.py": {
+      "bytes": 12939,
+      "sha256": "c1c3f8528a1e30e7298a132f247124c78c4acf3c88cf7890058786c531b4f58b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/tests/test_gradient_contract.py": {
+      "bytes": 2410,
+      "sha256": "430320714ce222e7d5ffad4a4c2099eb5a2773e96061aa467a1c566385ae28ae"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/tests/test_hetnet_gradient_contract.py": {
+      "bytes": 2532,
+      "sha256": "751f6016c6854bbad134a10474728616331131269278fce96f7998b94eb02715"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/tests/test_progress.py": {
+      "bytes": 6372,
+      "sha256": "489e71f66f30b2aaedd90abd62dd4eceb202b9c2790d8f7078166dfff6e80b71"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/tests/test_recording.py": {
+      "bytes": 3014,
+      "sha256": "33b20945379233b07dcb8dc9289980473cb1bd493e77a6b40bfb40aec867167e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/tests/test_reproduction_launch.py": {
+      "bytes": 3706,
+      "sha256": "d759c36a51fe22d09f9c2b1e80f59ade3e57b4c0672d6272cf4522d24ed4e7e2"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/tests/test_softrole_env.py": {
+      "bytes": 10173,
+      "sha256": "47bff52438d1e31cd605b46119aa7fcc3273fa98f2caf5dc909520f2f30721c0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/tests/test_softrole_evaluation.py": {
+      "bytes": 11011,
+      "sha256": "f2d69659734c772dbeceaea67993fba673f8d8d2beeb6a3933b656179f7f4f6e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/tests/test_softrole_hetnet.py": {
+      "bytes": 6858,
+      "sha256": "4ba69eb479b8bad41f453b28810f1ace7db0d0ce6bfccb3bcd199cb5e1968f47"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/tests/test_softrole_learning.py": {
+      "bytes": 4492,
+      "sha256": "a792f9773cba744d2cf51dfba90edfa7274c5a3f2e3243806d91e1cc50057154"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/tests/test_softrole_model.py": {
+      "bytes": 11462,
+      "sha256": "e49f1afb47c6232d9ff0f3f041474bd5ab86cd2a4663df49ead6ef1afdd87441"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/tests/test_softrole_report.py": {
+      "bytes": 5984,
+      "sha256": "aae90cd5e79e7c610d85538f8cafa637a027cbba8d51e21e02be87d679146a18"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/tests/test_softrole_training.py": {
+      "bytes": 5578,
+      "sha256": "7ea7afb0b63a96b575931eb7011404cc2ccc06d57ed0800ec024dabb99de646d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/trainer.py": {
+      "bytes": 28425,
+      "sha256": "ca98a4dfc928c637aa57fe88e4779753837f4982bd93370307cb51171cebf557"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/utils.py": {
+      "bytes": 6417,
+      "sha256": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/uv.lock": {
+      "bytes": 82168,
+      "sha256": "f99af776e743cadb7fe8d648c431f92f200b6710f7417490844b1ff1183a6c4b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/config.json": {
+      "bytes": 685,
+      "sha256": "3c5415556bc6139439ac79c5526fbb153882cd6293c63c50928ab88ff811b4fc"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/metrics.jsonl": {
+      "bytes": 184070,
+      "sha256": "07cc5334ccde9b6c4c4b4d580471979dcb0834ba5a5769e7a11182edf81b1115"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/run.json": {
+      "bytes": 461,
+      "sha256": "8e76e34c1f1c9dc91e8e279f7f586c48e3d15c56cee76e9e9327b9f53b3b9ede"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/AGENTS.md": {
+      "bytes": 15485,
+      "sha256": "af6767eb0a0070e69e975f5139fa6780045c504bba64903aadfd501e584a5062"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/WildFire_Simulate_Original.py": {
+      "bytes": 14214,
+      "sha256": "1d092e0a9cd3bafd0f96fd8f28212567c6c4a8212d4f137c0eedf3d6eba63406"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/action_utils.py": {
+      "bytes": 3579,
+      "sha256": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/comm.py": {
+      "bytes": 12541,
+      "sha256": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/data.py": {
+      "bytes": 1689,
+      "sha256": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/env_wrappers.py": {
+      "bytes": 3539,
+      "sha256": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/envs/examples/random_agent.py": {
+      "bytes": 1440,
+      "sha256": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/envs/ic3net_envs/__init__.py": {
+      "bytes": 480,
+      "sha256": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/envs/ic3net_envs/fire_commander_env.py": {
+      "bytes": 26070,
+      "sha256": "c2a4df6e2a385fe407889e299122946fbaab330b332a4928e1e50dfefb41f75e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/envs/ic3net_envs/predator_capture_env.py": {
+      "bytes": 26200,
+      "sha256": "935875ac665877965f86a2e12f5ef52669065d3a2a01ba11b0ed065bfac59583"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/envs/ic3net_envs/predator_prey_env.py": {
+      "bytes": 13262,
+      "sha256": "cfb96417c3c2200471ae02a159809a0092f36df6e97b66e1cb4cf74898de516e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/envs/ic3net_envs/traffic_helper.py": {
+      "bytes": 6997,
+      "sha256": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/envs/ic3net_envs/traffic_junction_env.py": {
+      "bytes": 21785,
+      "sha256": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/envs/setup.py": {
+      "bytes": 160,
+      "sha256": "513833deab549cfdfc475749faf6a9955665799c3139e5039374056be9beb38e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/eval_trainer.py": {
+      "bytes": 25640,
+      "sha256": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/hetgat/graph/fastbinary.py": {
+      "bytes": 28666,
+      "sha256": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/hetgat/graph/fastreal.py": {
+      "bytes": 38810,
+      "sha256": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/hetgat/graph/hetgat.py": {
+      "bytes": 16483,
+      "sha256": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/hetgat/graph/hetgata2c.py": {
+      "bytes": 11456,
+      "sha256": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/hetgat/graph/hetgatreal.py": {
+      "bytes": 20637,
+      "sha256": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/hetgat/policy.py": {
+      "bytes": 42575,
+      "sha256": "3b4a16a2bb2673139e6d67e6b0617dfde95e4d8537e2059a5ba87950bb6311e6"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/hetgat/policy_entropy.py": {
+      "bytes": 44176,
+      "sha256": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/hetgat/uavnet.py": {
+      "bytes": 23755,
+      "sha256": "343e1df3337723d1323d687e4c94d48b31011ab8890fbd8f196d948d02ff5f55"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/hetgat/utils.py": {
+      "bytes": 7126,
+      "sha256": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/hetnet_ext/__init__.py": {
+      "bytes": 77,
+      "sha256": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/hetnet_ext/progress.py": {
+      "bytes": 8779,
+      "sha256": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/hetnet_ext/recording.py": {
+      "bytes": 5315,
+      "sha256": "893265d85b7de7fc572a5faf32c2a0c5778bd14d59b3e8e400241c4c36c61561"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/hetnet_ext/seeding.py": {
+      "bytes": 468,
+      "sha256": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/hetnet_ext/signatures.py": {
+      "bytes": 1138,
+      "sha256": "4f92b26e2cf4d4ad7fa6af8990adfed39b4293cc7ef91e0b258376d48cd7cf4a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/main.py": {
+      "bytes": 21577,
+      "sha256": "18dd0c445fe8c596898334751a5a8884803e3c85c521eee74c2b89b25aa1bb7b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/models.py": {
+      "bytes": 3578,
+      "sha256": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/multi_processing.py": {
+      "bytes": 4441,
+      "sha256": "16f90c3c9c5a5141aeb27716c02e819875a0284b0fd4cfa60d320548e0157474"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/print_plot_eval.py": {
+      "bytes": 1247,
+      "sha256": "7c95155bf39b5bfd81c466cd2d0286b3c46df1fada2d6808900306b1722f5d52"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/pyproject.toml": {
+      "bytes": 914,
+      "sha256": "8de36bc7ee1eb6de2f71f5c26733182c3a5dd08de6b1758195ae25d676cb1b4b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/requirements.txt": {
+      "bytes": 1983,
+      "sha256": "3f4f980638f15c9244e8fa9c7d793c98cbf227823562c65b189bef5e12debd46"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/scripts/reproduce.sh": {
+      "bytes": 3078,
+      "sha256": "4a236421389278d85921a6fce9df7e96b92f0f1d435ec39d411c76f517904610"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/scripts/setup_env.sh": {
+      "bytes": 1345,
+      "sha256": "aab03a08a59a1fdba37db7764e52eb53b43d3e1986d2300ad7f0a05d4a4a956d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/scripts/softrole.sh": {
+      "bytes": 918,
+      "sha256": "f996dc9b404b9e76fd936ca01b81c651b3de08d316eaffb083a3e91bbe69bba4"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/scripts_eval/hetnet_a2c_fc_5x5_2p1a.sh": {
+      "bytes": 579,
+      "sha256": "530974f015db6282145c237411c2716833936953549732691210a50c4a609267"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/slurm/reproduce.sbatch": {
+      "bytes": 1098,
+      "sha256": "7df9b17ba57765d501f38ec31b468688b2797241b7971b36e0238cb850e5e841"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/slurm/setup.sbatch": {
+      "bytes": 502,
+      "sha256": "a2afde0347063718a526a81cf1c789e8c0b0f768bb441a90194c5fbcbe5f827f"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/slurm/softrole.sbatch": {
+      "bytes": 903,
+      "sha256": "806817688e01edffc724d2da2de0ec19227395d04073b9d333c487483b3602f5"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/RESEARCH.md": {
+      "bytes": 27709,
+      "sha256": "91fb34af6956b7617c9e5b7c62025ee0b387430e59856cc8ec7c1e1fce146e37"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/__init__.py": {
+      "bytes": 151,
+      "sha256": "5917482d92a5a738d3f93a427f868991b95594a472edc53585b73c896e674873"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/__main__.py": {
+      "bytes": 8932,
+      "sha256": "f965d63e3bb43a871bc0eaf0badcef0bcd66f8c082be2f0a8aebc9b6cdc9eada"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/evaluate.py": {
+      "bytes": 4563,
+      "sha256": "59d14e98882c01dd6552a345dc8e3a9fc6c14cfe0b9e541c81cef8a882e7f6b9"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/hetnet.py": {
+      "bytes": 10944,
+      "sha256": "46e66ea26457b6b77b0f2e27bf8f37c8d442be223d45c1524b2e5681a151d6aa"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/report.py": {
+      "bytes": 7591,
+      "sha256": "089bbf75f4c472e31d88fcf3090031507e986830f3de4f7c34cea18d411c234a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/scenarios.py": {
+      "bytes": 3420,
+      "sha256": "c9f68a1cf7e4f9b4d2194478a783c0789fc2bd7741819613bbde6335d82cc503"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/test_config/evaluation_conditions.py": {
+      "bytes": 1312,
+      "sha256": "2c8dca167297fa2b3c7bd6123fe5b94c8497fc1b1c27779b04b6585705073873"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/tests/helpers/hetnet_gradient_probe.py": {
+      "bytes": 16985,
+      "sha256": "6d09b6bd4691de487e7902bf412d57f924b8daaae2e87f8f4785c05bbc50aa5a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/tests/helpers/shared_gradient_probe.py": {
+      "bytes": 12939,
+      "sha256": "c1c3f8528a1e30e7298a132f247124c78c4acf3c88cf7890058786c531b4f58b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/tests/test_gradient_contract.py": {
+      "bytes": 2410,
+      "sha256": "430320714ce222e7d5ffad4a4c2099eb5a2773e96061aa467a1c566385ae28ae"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/tests/test_hetnet_gradient_contract.py": {
+      "bytes": 2532,
+      "sha256": "751f6016c6854bbad134a10474728616331131269278fce96f7998b94eb02715"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/tests/test_progress.py": {
+      "bytes": 6372,
+      "sha256": "489e71f66f30b2aaedd90abd62dd4eceb202b9c2790d8f7078166dfff6e80b71"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/tests/test_recording.py": {
+      "bytes": 3014,
+      "sha256": "33b20945379233b07dcb8dc9289980473cb1bd493e77a6b40bfb40aec867167e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/tests/test_reproduction_launch.py": {
+      "bytes": 3706,
+      "sha256": "d759c36a51fe22d09f9c2b1e80f59ade3e57b4c0672d6272cf4522d24ed4e7e2"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/tests/test_softrole_env.py": {
+      "bytes": 10173,
+      "sha256": "47bff52438d1e31cd605b46119aa7fcc3273fa98f2caf5dc909520f2f30721c0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/tests/test_softrole_evaluation.py": {
+      "bytes": 11011,
+      "sha256": "f2d69659734c772dbeceaea67993fba673f8d8d2beeb6a3933b656179f7f4f6e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/tests/test_softrole_hetnet.py": {
+      "bytes": 6858,
+      "sha256": "4ba69eb479b8bad41f453b28810f1ace7db0d0ce6bfccb3bcd199cb5e1968f47"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/tests/test_softrole_learning.py": {
+      "bytes": 4492,
+      "sha256": "a792f9773cba744d2cf51dfba90edfa7274c5a3f2e3243806d91e1cc50057154"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/tests/test_softrole_model.py": {
+      "bytes": 11462,
+      "sha256": "e49f1afb47c6232d9ff0f3f041474bd5ab86cd2a4663df49ead6ef1afdd87441"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/tests/test_softrole_report.py": {
+      "bytes": 5984,
+      "sha256": "aae90cd5e79e7c610d85538f8cafa637a027cbba8d51e21e02be87d679146a18"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/tests/test_softrole_training.py": {
+      "bytes": 5578,
+      "sha256": "7ea7afb0b63a96b575931eb7011404cc2ccc06d57ed0800ec024dabb99de646d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/trainer.py": {
+      "bytes": 28425,
+      "sha256": "ca98a4dfc928c637aa57fe88e4779753837f4982bd93370307cb51171cebf557"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/utils.py": {
+      "bytes": 6417,
+      "sha256": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/uv.lock": {
+      "bytes": 82168,
+      "sha256": "f99af776e743cadb7fe8d648c431f92f200b6710f7417490844b1ff1183a6c4b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/config.json": {
+      "bytes": 685,
+      "sha256": "7d1507d5ec658182942058aa66f05c8920bf33c2dc3ff7d46db78731450d765b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/metrics.jsonl": {
+      "bytes": 131197,
+      "sha256": "1b17381ea00d56877d14fe250e3eacf14f6a3d600a2dd65760f1806a3185b051"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/run.json": {
+      "bytes": 461,
+      "sha256": "8e76e34c1f1c9dc91e8e279f7f586c48e3d15c56cee76e9e9327b9f53b3b9ede"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/AGENTS.md": {
+      "bytes": 15485,
+      "sha256": "af6767eb0a0070e69e975f5139fa6780045c504bba64903aadfd501e584a5062"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/WildFire_Simulate_Original.py": {
+      "bytes": 14214,
+      "sha256": "1d092e0a9cd3bafd0f96fd8f28212567c6c4a8212d4f137c0eedf3d6eba63406"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/action_utils.py": {
+      "bytes": 3579,
+      "sha256": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/comm.py": {
+      "bytes": 12541,
+      "sha256": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/data.py": {
+      "bytes": 1689,
+      "sha256": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/env_wrappers.py": {
+      "bytes": 3539,
+      "sha256": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/envs/examples/random_agent.py": {
+      "bytes": 1440,
+      "sha256": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/envs/ic3net_envs/__init__.py": {
+      "bytes": 480,
+      "sha256": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/envs/ic3net_envs/fire_commander_env.py": {
+      "bytes": 26070,
+      "sha256": "c2a4df6e2a385fe407889e299122946fbaab330b332a4928e1e50dfefb41f75e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/envs/ic3net_envs/predator_capture_env.py": {
+      "bytes": 26200,
+      "sha256": "935875ac665877965f86a2e12f5ef52669065d3a2a01ba11b0ed065bfac59583"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/envs/ic3net_envs/predator_prey_env.py": {
+      "bytes": 13262,
+      "sha256": "cfb96417c3c2200471ae02a159809a0092f36df6e97b66e1cb4cf74898de516e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/envs/ic3net_envs/traffic_helper.py": {
+      "bytes": 6997,
+      "sha256": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/envs/ic3net_envs/traffic_junction_env.py": {
+      "bytes": 21785,
+      "sha256": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/envs/setup.py": {
+      "bytes": 160,
+      "sha256": "513833deab549cfdfc475749faf6a9955665799c3139e5039374056be9beb38e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/eval_trainer.py": {
+      "bytes": 25640,
+      "sha256": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/hetgat/graph/fastbinary.py": {
+      "bytes": 28666,
+      "sha256": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/hetgat/graph/fastreal.py": {
+      "bytes": 38810,
+      "sha256": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/hetgat/graph/hetgat.py": {
+      "bytes": 16483,
+      "sha256": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/hetgat/graph/hetgata2c.py": {
+      "bytes": 11456,
+      "sha256": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/hetgat/graph/hetgatreal.py": {
+      "bytes": 20637,
+      "sha256": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/hetgat/policy.py": {
+      "bytes": 42575,
+      "sha256": "3b4a16a2bb2673139e6d67e6b0617dfde95e4d8537e2059a5ba87950bb6311e6"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/hetgat/policy_entropy.py": {
+      "bytes": 44176,
+      "sha256": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/hetgat/uavnet.py": {
+      "bytes": 23755,
+      "sha256": "343e1df3337723d1323d687e4c94d48b31011ab8890fbd8f196d948d02ff5f55"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/hetgat/utils.py": {
+      "bytes": 7126,
+      "sha256": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/hetnet_ext/__init__.py": {
+      "bytes": 77,
+      "sha256": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/hetnet_ext/progress.py": {
+      "bytes": 8779,
+      "sha256": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/hetnet_ext/recording.py": {
+      "bytes": 5315,
+      "sha256": "893265d85b7de7fc572a5faf32c2a0c5778bd14d59b3e8e400241c4c36c61561"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/hetnet_ext/seeding.py": {
+      "bytes": 468,
+      "sha256": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/hetnet_ext/signatures.py": {
+      "bytes": 1138,
+      "sha256": "4f92b26e2cf4d4ad7fa6af8990adfed39b4293cc7ef91e0b258376d48cd7cf4a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/main.py": {
+      "bytes": 21577,
+      "sha256": "18dd0c445fe8c596898334751a5a8884803e3c85c521eee74c2b89b25aa1bb7b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/models.py": {
+      "bytes": 3578,
+      "sha256": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/multi_processing.py": {
+      "bytes": 4441,
+      "sha256": "16f90c3c9c5a5141aeb27716c02e819875a0284b0fd4cfa60d320548e0157474"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/print_plot_eval.py": {
+      "bytes": 1247,
+      "sha256": "7c95155bf39b5bfd81c466cd2d0286b3c46df1fada2d6808900306b1722f5d52"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/pyproject.toml": {
+      "bytes": 914,
+      "sha256": "8de36bc7ee1eb6de2f71f5c26733182c3a5dd08de6b1758195ae25d676cb1b4b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/requirements.txt": {
+      "bytes": 1983,
+      "sha256": "3f4f980638f15c9244e8fa9c7d793c98cbf227823562c65b189bef5e12debd46"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/scripts/reproduce.sh": {
+      "bytes": 3078,
+      "sha256": "4a236421389278d85921a6fce9df7e96b92f0f1d435ec39d411c76f517904610"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/scripts/setup_env.sh": {
+      "bytes": 1345,
+      "sha256": "aab03a08a59a1fdba37db7764e52eb53b43d3e1986d2300ad7f0a05d4a4a956d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/scripts/softrole.sh": {
+      "bytes": 918,
+      "sha256": "f996dc9b404b9e76fd936ca01b81c651b3de08d316eaffb083a3e91bbe69bba4"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/scripts_eval/hetnet_a2c_fc_5x5_2p1a.sh": {
+      "bytes": 579,
+      "sha256": "530974f015db6282145c237411c2716833936953549732691210a50c4a609267"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/slurm/reproduce.sbatch": {
+      "bytes": 1098,
+      "sha256": "7df9b17ba57765d501f38ec31b468688b2797241b7971b36e0238cb850e5e841"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/slurm/setup.sbatch": {
+      "bytes": 502,
+      "sha256": "a2afde0347063718a526a81cf1c789e8c0b0f768bb441a90194c5fbcbe5f827f"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/slurm/softrole.sbatch": {
+      "bytes": 903,
+      "sha256": "806817688e01edffc724d2da2de0ec19227395d04073b9d333c487483b3602f5"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/RESEARCH.md": {
+      "bytes": 27709,
+      "sha256": "91fb34af6956b7617c9e5b7c62025ee0b387430e59856cc8ec7c1e1fce146e37"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/__init__.py": {
+      "bytes": 151,
+      "sha256": "5917482d92a5a738d3f93a427f868991b95594a472edc53585b73c896e674873"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/__main__.py": {
+      "bytes": 8932,
+      "sha256": "f965d63e3bb43a871bc0eaf0badcef0bcd66f8c082be2f0a8aebc9b6cdc9eada"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/evaluate.py": {
+      "bytes": 4563,
+      "sha256": "59d14e98882c01dd6552a345dc8e3a9fc6c14cfe0b9e541c81cef8a882e7f6b9"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/hetnet.py": {
+      "bytes": 10944,
+      "sha256": "46e66ea26457b6b77b0f2e27bf8f37c8d442be223d45c1524b2e5681a151d6aa"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/report.py": {
+      "bytes": 7591,
+      "sha256": "089bbf75f4c472e31d88fcf3090031507e986830f3de4f7c34cea18d411c234a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/scenarios.py": {
+      "bytes": 3420,
+      "sha256": "c9f68a1cf7e4f9b4d2194478a783c0789fc2bd7741819613bbde6335d82cc503"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/test_config/evaluation_conditions.py": {
+      "bytes": 1312,
+      "sha256": "2c8dca167297fa2b3c7bd6123fe5b94c8497fc1b1c27779b04b6585705073873"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/tests/helpers/hetnet_gradient_probe.py": {
+      "bytes": 16985,
+      "sha256": "6d09b6bd4691de487e7902bf412d57f924b8daaae2e87f8f4785c05bbc50aa5a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/tests/helpers/shared_gradient_probe.py": {
+      "bytes": 12939,
+      "sha256": "c1c3f8528a1e30e7298a132f247124c78c4acf3c88cf7890058786c531b4f58b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/tests/test_gradient_contract.py": {
+      "bytes": 2410,
+      "sha256": "430320714ce222e7d5ffad4a4c2099eb5a2773e96061aa467a1c566385ae28ae"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/tests/test_hetnet_gradient_contract.py": {
+      "bytes": 2532,
+      "sha256": "751f6016c6854bbad134a10474728616331131269278fce96f7998b94eb02715"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/tests/test_progress.py": {
+      "bytes": 6372,
+      "sha256": "489e71f66f30b2aaedd90abd62dd4eceb202b9c2790d8f7078166dfff6e80b71"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/tests/test_recording.py": {
+      "bytes": 3014,
+      "sha256": "33b20945379233b07dcb8dc9289980473cb1bd493e77a6b40bfb40aec867167e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/tests/test_reproduction_launch.py": {
+      "bytes": 3706,
+      "sha256": "d759c36a51fe22d09f9c2b1e80f59ade3e57b4c0672d6272cf4522d24ed4e7e2"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/tests/test_softrole_env.py": {
+      "bytes": 10173,
+      "sha256": "47bff52438d1e31cd605b46119aa7fcc3273fa98f2caf5dc909520f2f30721c0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/tests/test_softrole_evaluation.py": {
+      "bytes": 11011,
+      "sha256": "f2d69659734c772dbeceaea67993fba673f8d8d2beeb6a3933b656179f7f4f6e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/tests/test_softrole_hetnet.py": {
+      "bytes": 6858,
+      "sha256": "4ba69eb479b8bad41f453b28810f1ace7db0d0ce6bfccb3bcd199cb5e1968f47"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/tests/test_softrole_learning.py": {
+      "bytes": 4492,
+      "sha256": "a792f9773cba744d2cf51dfba90edfa7274c5a3f2e3243806d91e1cc50057154"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/tests/test_softrole_model.py": {
+      "bytes": 11462,
+      "sha256": "e49f1afb47c6232d9ff0f3f041474bd5ab86cd2a4663df49ead6ef1afdd87441"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/tests/test_softrole_report.py": {
+      "bytes": 5984,
+      "sha256": "aae90cd5e79e7c610d85538f8cafa637a027cbba8d51e21e02be87d679146a18"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/tests/test_softrole_training.py": {
+      "bytes": 5578,
+      "sha256": "7ea7afb0b63a96b575931eb7011404cc2ccc06d57ed0800ec024dabb99de646d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/trainer.py": {
+      "bytes": 28425,
+      "sha256": "ca98a4dfc928c637aa57fe88e4779753837f4982bd93370307cb51171cebf557"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/utils.py": {
+      "bytes": 6417,
+      "sha256": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/uv.lock": {
+      "bytes": 82168,
+      "sha256": "f99af776e743cadb7fe8d648c431f92f200b6710f7417490844b1ff1183a6c4b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/config.json": {
+      "bytes": 685,
+      "sha256": "c5c4634c415cb2a3f55d901464c1e2a76a7e894177ded159b62fec334fbe23da"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/metrics.jsonl": {
+      "bytes": 179895,
+      "sha256": "61e6923e32ffe487d4aa1feb30aed2e9e7fd7ae311cc5c87f03f38186c626e68"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/run.json": {
+      "bytes": 461,
+      "sha256": "9bdd735ec208cdef5ec7c8e265d828d8cc081b71695f5de7c59c612ee8dd4326"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/AGENTS.md": {
+      "bytes": 15485,
+      "sha256": "af6767eb0a0070e69e975f5139fa6780045c504bba64903aadfd501e584a5062"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/WildFire_Simulate_Original.py": {
+      "bytes": 14214,
+      "sha256": "1d092e0a9cd3bafd0f96fd8f28212567c6c4a8212d4f137c0eedf3d6eba63406"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/action_utils.py": {
+      "bytes": 3579,
+      "sha256": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/comm.py": {
+      "bytes": 12541,
+      "sha256": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/data.py": {
+      "bytes": 1689,
+      "sha256": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/env_wrappers.py": {
+      "bytes": 3539,
+      "sha256": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/envs/examples/random_agent.py": {
+      "bytes": 1440,
+      "sha256": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/envs/ic3net_envs/__init__.py": {
+      "bytes": 480,
+      "sha256": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/envs/ic3net_envs/fire_commander_env.py": {
+      "bytes": 26070,
+      "sha256": "c2a4df6e2a385fe407889e299122946fbaab330b332a4928e1e50dfefb41f75e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/envs/ic3net_envs/predator_capture_env.py": {
+      "bytes": 26200,
+      "sha256": "935875ac665877965f86a2e12f5ef52669065d3a2a01ba11b0ed065bfac59583"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/envs/ic3net_envs/predator_prey_env.py": {
+      "bytes": 13262,
+      "sha256": "cfb96417c3c2200471ae02a159809a0092f36df6e97b66e1cb4cf74898de516e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/envs/ic3net_envs/traffic_helper.py": {
+      "bytes": 6997,
+      "sha256": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/envs/ic3net_envs/traffic_junction_env.py": {
+      "bytes": 21785,
+      "sha256": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/envs/setup.py": {
+      "bytes": 160,
+      "sha256": "513833deab549cfdfc475749faf6a9955665799c3139e5039374056be9beb38e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/eval_trainer.py": {
+      "bytes": 25640,
+      "sha256": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/hetgat/graph/fastbinary.py": {
+      "bytes": 28666,
+      "sha256": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/hetgat/graph/fastreal.py": {
+      "bytes": 38810,
+      "sha256": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/hetgat/graph/hetgat.py": {
+      "bytes": 16483,
+      "sha256": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/hetgat/graph/hetgata2c.py": {
+      "bytes": 11456,
+      "sha256": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/hetgat/graph/hetgatreal.py": {
+      "bytes": 20637,
+      "sha256": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/hetgat/policy.py": {
+      "bytes": 42575,
+      "sha256": "3b4a16a2bb2673139e6d67e6b0617dfde95e4d8537e2059a5ba87950bb6311e6"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/hetgat/policy_entropy.py": {
+      "bytes": 44176,
+      "sha256": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/hetgat/uavnet.py": {
+      "bytes": 23755,
+      "sha256": "343e1df3337723d1323d687e4c94d48b31011ab8890fbd8f196d948d02ff5f55"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/hetgat/utils.py": {
+      "bytes": 7126,
+      "sha256": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/hetnet_ext/__init__.py": {
+      "bytes": 77,
+      "sha256": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/hetnet_ext/progress.py": {
+      "bytes": 8779,
+      "sha256": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/hetnet_ext/recording.py": {
+      "bytes": 5315,
+      "sha256": "893265d85b7de7fc572a5faf32c2a0c5778bd14d59b3e8e400241c4c36c61561"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/hetnet_ext/seeding.py": {
+      "bytes": 468,
+      "sha256": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/hetnet_ext/signatures.py": {
+      "bytes": 1138,
+      "sha256": "4f92b26e2cf4d4ad7fa6af8990adfed39b4293cc7ef91e0b258376d48cd7cf4a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/main.py": {
+      "bytes": 21577,
+      "sha256": "18dd0c445fe8c596898334751a5a8884803e3c85c521eee74c2b89b25aa1bb7b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/models.py": {
+      "bytes": 3578,
+      "sha256": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/multi_processing.py": {
+      "bytes": 4441,
+      "sha256": "16f90c3c9c5a5141aeb27716c02e819875a0284b0fd4cfa60d320548e0157474"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/print_plot_eval.py": {
+      "bytes": 1247,
+      "sha256": "7c95155bf39b5bfd81c466cd2d0286b3c46df1fada2d6808900306b1722f5d52"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/pyproject.toml": {
+      "bytes": 914,
+      "sha256": "8de36bc7ee1eb6de2f71f5c26733182c3a5dd08de6b1758195ae25d676cb1b4b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/requirements.txt": {
+      "bytes": 1983,
+      "sha256": "3f4f980638f15c9244e8fa9c7d793c98cbf227823562c65b189bef5e12debd46"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/scripts/reproduce.sh": {
+      "bytes": 3078,
+      "sha256": "4a236421389278d85921a6fce9df7e96b92f0f1d435ec39d411c76f517904610"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/scripts/setup_env.sh": {
+      "bytes": 1345,
+      "sha256": "aab03a08a59a1fdba37db7764e52eb53b43d3e1986d2300ad7f0a05d4a4a956d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/scripts/softrole.sh": {
+      "bytes": 918,
+      "sha256": "f996dc9b404b9e76fd936ca01b81c651b3de08d316eaffb083a3e91bbe69bba4"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/scripts_eval/hetnet_a2c_fc_5x5_2p1a.sh": {
+      "bytes": 579,
+      "sha256": "530974f015db6282145c237411c2716833936953549732691210a50c4a609267"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/slurm/reproduce.sbatch": {
+      "bytes": 1098,
+      "sha256": "7df9b17ba57765d501f38ec31b468688b2797241b7971b36e0238cb850e5e841"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/slurm/setup.sbatch": {
+      "bytes": 502,
+      "sha256": "a2afde0347063718a526a81cf1c789e8c0b0f768bb441a90194c5fbcbe5f827f"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/slurm/softrole.sbatch": {
+      "bytes": 903,
+      "sha256": "806817688e01edffc724d2da2de0ec19227395d04073b9d333c487483b3602f5"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/RESEARCH.md": {
+      "bytes": 27709,
+      "sha256": "91fb34af6956b7617c9e5b7c62025ee0b387430e59856cc8ec7c1e1fce146e37"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/__init__.py": {
+      "bytes": 151,
+      "sha256": "5917482d92a5a738d3f93a427f868991b95594a472edc53585b73c896e674873"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/__main__.py": {
+      "bytes": 8932,
+      "sha256": "f965d63e3bb43a871bc0eaf0badcef0bcd66f8c082be2f0a8aebc9b6cdc9eada"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/evaluate.py": {
+      "bytes": 4563,
+      "sha256": "59d14e98882c01dd6552a345dc8e3a9fc6c14cfe0b9e541c81cef8a882e7f6b9"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/hetnet.py": {
+      "bytes": 10944,
+      "sha256": "46e66ea26457b6b77b0f2e27bf8f37c8d442be223d45c1524b2e5681a151d6aa"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/report.py": {
+      "bytes": 7591,
+      "sha256": "089bbf75f4c472e31d88fcf3090031507e986830f3de4f7c34cea18d411c234a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/scenarios.py": {
+      "bytes": 3420,
+      "sha256": "c9f68a1cf7e4f9b4d2194478a783c0789fc2bd7741819613bbde6335d82cc503"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/test_config/evaluation_conditions.py": {
+      "bytes": 1312,
+      "sha256": "2c8dca167297fa2b3c7bd6123fe5b94c8497fc1b1c27779b04b6585705073873"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/tests/helpers/hetnet_gradient_probe.py": {
+      "bytes": 16985,
+      "sha256": "6d09b6bd4691de487e7902bf412d57f924b8daaae2e87f8f4785c05bbc50aa5a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/tests/helpers/shared_gradient_probe.py": {
+      "bytes": 12939,
+      "sha256": "c1c3f8528a1e30e7298a132f247124c78c4acf3c88cf7890058786c531b4f58b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/tests/test_gradient_contract.py": {
+      "bytes": 2410,
+      "sha256": "430320714ce222e7d5ffad4a4c2099eb5a2773e96061aa467a1c566385ae28ae"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/tests/test_hetnet_gradient_contract.py": {
+      "bytes": 2532,
+      "sha256": "751f6016c6854bbad134a10474728616331131269278fce96f7998b94eb02715"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/tests/test_progress.py": {
+      "bytes": 6372,
+      "sha256": "489e71f66f30b2aaedd90abd62dd4eceb202b9c2790d8f7078166dfff6e80b71"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/tests/test_recording.py": {
+      "bytes": 3014,
+      "sha256": "33b20945379233b07dcb8dc9289980473cb1bd493e77a6b40bfb40aec867167e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/tests/test_reproduction_launch.py": {
+      "bytes": 3706,
+      "sha256": "d759c36a51fe22d09f9c2b1e80f59ade3e57b4c0672d6272cf4522d24ed4e7e2"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/tests/test_softrole_env.py": {
+      "bytes": 10173,
+      "sha256": "47bff52438d1e31cd605b46119aa7fcc3273fa98f2caf5dc909520f2f30721c0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/tests/test_softrole_evaluation.py": {
+      "bytes": 11011,
+      "sha256": "f2d69659734c772dbeceaea67993fba673f8d8d2beeb6a3933b656179f7f4f6e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/tests/test_softrole_hetnet.py": {
+      "bytes": 6858,
+      "sha256": "4ba69eb479b8bad41f453b28810f1ace7db0d0ce6bfccb3bcd199cb5e1968f47"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/tests/test_softrole_learning.py": {
+      "bytes": 4492,
+      "sha256": "a792f9773cba744d2cf51dfba90edfa7274c5a3f2e3243806d91e1cc50057154"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/tests/test_softrole_model.py": {
+      "bytes": 11462,
+      "sha256": "e49f1afb47c6232d9ff0f3f041474bd5ab86cd2a4663df49ead6ef1afdd87441"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/tests/test_softrole_report.py": {
+      "bytes": 5984,
+      "sha256": "aae90cd5e79e7c610d85538f8cafa637a027cbba8d51e21e02be87d679146a18"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/tests/test_softrole_training.py": {
+      "bytes": 5578,
+      "sha256": "7ea7afb0b63a96b575931eb7011404cc2ccc06d57ed0800ec024dabb99de646d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/trainer.py": {
+      "bytes": 28425,
+      "sha256": "ca98a4dfc928c637aa57fe88e4779753837f4982bd93370307cb51171cebf557"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/utils.py": {
+      "bytes": 6417,
+      "sha256": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/uv.lock": {
+      "bytes": 82168,
+      "sha256": "f99af776e743cadb7fe8d648c431f92f200b6710f7417490844b1ff1183a6c4b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/config.json": {
+      "bytes": 685,
+      "sha256": "5c546e56146288929c19cfd6b7b8ae7bb70387116941bfb4080555f118ddce90"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/metrics.jsonl": {
+      "bytes": 173520,
+      "sha256": "a179e260416c8d7a6c85f246303e322dbeccfa1ab1b923ab5d905b56f6a5d9e2"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/run.json": {
+      "bytes": 461,
+      "sha256": "9bdd735ec208cdef5ec7c8e265d828d8cc081b71695f5de7c59c612ee8dd4326"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/AGENTS.md": {
+      "bytes": 15485,
+      "sha256": "af6767eb0a0070e69e975f5139fa6780045c504bba64903aadfd501e584a5062"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/WildFire_Simulate_Original.py": {
+      "bytes": 14214,
+      "sha256": "1d092e0a9cd3bafd0f96fd8f28212567c6c4a8212d4f137c0eedf3d6eba63406"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/action_utils.py": {
+      "bytes": 3579,
+      "sha256": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/comm.py": {
+      "bytes": 12541,
+      "sha256": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/data.py": {
+      "bytes": 1689,
+      "sha256": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/env_wrappers.py": {
+      "bytes": 3539,
+      "sha256": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/envs/examples/random_agent.py": {
+      "bytes": 1440,
+      "sha256": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/envs/ic3net_envs/__init__.py": {
+      "bytes": 480,
+      "sha256": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/envs/ic3net_envs/fire_commander_env.py": {
+      "bytes": 26070,
+      "sha256": "c2a4df6e2a385fe407889e299122946fbaab330b332a4928e1e50dfefb41f75e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/envs/ic3net_envs/predator_capture_env.py": {
+      "bytes": 26200,
+      "sha256": "935875ac665877965f86a2e12f5ef52669065d3a2a01ba11b0ed065bfac59583"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/envs/ic3net_envs/predator_prey_env.py": {
+      "bytes": 13262,
+      "sha256": "cfb96417c3c2200471ae02a159809a0092f36df6e97b66e1cb4cf74898de516e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/envs/ic3net_envs/traffic_helper.py": {
+      "bytes": 6997,
+      "sha256": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/envs/ic3net_envs/traffic_junction_env.py": {
+      "bytes": 21785,
+      "sha256": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/envs/setup.py": {
+      "bytes": 160,
+      "sha256": "513833deab549cfdfc475749faf6a9955665799c3139e5039374056be9beb38e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/eval_trainer.py": {
+      "bytes": 25640,
+      "sha256": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/hetgat/graph/fastbinary.py": {
+      "bytes": 28666,
+      "sha256": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/hetgat/graph/fastreal.py": {
+      "bytes": 38810,
+      "sha256": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/hetgat/graph/hetgat.py": {
+      "bytes": 16483,
+      "sha256": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/hetgat/graph/hetgata2c.py": {
+      "bytes": 11456,
+      "sha256": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/hetgat/graph/hetgatreal.py": {
+      "bytes": 20637,
+      "sha256": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/hetgat/policy.py": {
+      "bytes": 42575,
+      "sha256": "3b4a16a2bb2673139e6d67e6b0617dfde95e4d8537e2059a5ba87950bb6311e6"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/hetgat/policy_entropy.py": {
+      "bytes": 44176,
+      "sha256": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/hetgat/uavnet.py": {
+      "bytes": 23755,
+      "sha256": "343e1df3337723d1323d687e4c94d48b31011ab8890fbd8f196d948d02ff5f55"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/hetgat/utils.py": {
+      "bytes": 7126,
+      "sha256": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/hetnet_ext/__init__.py": {
+      "bytes": 77,
+      "sha256": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/hetnet_ext/progress.py": {
+      "bytes": 8779,
+      "sha256": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/hetnet_ext/recording.py": {
+      "bytes": 5315,
+      "sha256": "893265d85b7de7fc572a5faf32c2a0c5778bd14d59b3e8e400241c4c36c61561"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/hetnet_ext/seeding.py": {
+      "bytes": 468,
+      "sha256": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/hetnet_ext/signatures.py": {
+      "bytes": 1138,
+      "sha256": "4f92b26e2cf4d4ad7fa6af8990adfed39b4293cc7ef91e0b258376d48cd7cf4a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/main.py": {
+      "bytes": 21577,
+      "sha256": "18dd0c445fe8c596898334751a5a8884803e3c85c521eee74c2b89b25aa1bb7b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/models.py": {
+      "bytes": 3578,
+      "sha256": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/multi_processing.py": {
+      "bytes": 4441,
+      "sha256": "16f90c3c9c5a5141aeb27716c02e819875a0284b0fd4cfa60d320548e0157474"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/print_plot_eval.py": {
+      "bytes": 1247,
+      "sha256": "7c95155bf39b5bfd81c466cd2d0286b3c46df1fada2d6808900306b1722f5d52"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/pyproject.toml": {
+      "bytes": 914,
+      "sha256": "8de36bc7ee1eb6de2f71f5c26733182c3a5dd08de6b1758195ae25d676cb1b4b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/requirements.txt": {
+      "bytes": 1983,
+      "sha256": "3f4f980638f15c9244e8fa9c7d793c98cbf227823562c65b189bef5e12debd46"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/scripts/reproduce.sh": {
+      "bytes": 3078,
+      "sha256": "4a236421389278d85921a6fce9df7e96b92f0f1d435ec39d411c76f517904610"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/scripts/setup_env.sh": {
+      "bytes": 1345,
+      "sha256": "aab03a08a59a1fdba37db7764e52eb53b43d3e1986d2300ad7f0a05d4a4a956d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/scripts/softrole.sh": {
+      "bytes": 918,
+      "sha256": "f996dc9b404b9e76fd936ca01b81c651b3de08d316eaffb083a3e91bbe69bba4"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/scripts_eval/hetnet_a2c_fc_5x5_2p1a.sh": {
+      "bytes": 579,
+      "sha256": "530974f015db6282145c237411c2716833936953549732691210a50c4a609267"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/slurm/reproduce.sbatch": {
+      "bytes": 1098,
+      "sha256": "7df9b17ba57765d501f38ec31b468688b2797241b7971b36e0238cb850e5e841"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/slurm/setup.sbatch": {
+      "bytes": 502,
+      "sha256": "a2afde0347063718a526a81cf1c789e8c0b0f768bb441a90194c5fbcbe5f827f"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/slurm/softrole.sbatch": {
+      "bytes": 903,
+      "sha256": "806817688e01edffc724d2da2de0ec19227395d04073b9d333c487483b3602f5"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/RESEARCH.md": {
+      "bytes": 27709,
+      "sha256": "91fb34af6956b7617c9e5b7c62025ee0b387430e59856cc8ec7c1e1fce146e37"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/__init__.py": {
+      "bytes": 151,
+      "sha256": "5917482d92a5a738d3f93a427f868991b95594a472edc53585b73c896e674873"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/__main__.py": {
+      "bytes": 8932,
+      "sha256": "f965d63e3bb43a871bc0eaf0badcef0bcd66f8c082be2f0a8aebc9b6cdc9eada"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/evaluate.py": {
+      "bytes": 4563,
+      "sha256": "59d14e98882c01dd6552a345dc8e3a9fc6c14cfe0b9e541c81cef8a882e7f6b9"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/hetnet.py": {
+      "bytes": 10944,
+      "sha256": "46e66ea26457b6b77b0f2e27bf8f37c8d442be223d45c1524b2e5681a151d6aa"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/report.py": {
+      "bytes": 7591,
+      "sha256": "089bbf75f4c472e31d88fcf3090031507e986830f3de4f7c34cea18d411c234a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/scenarios.py": {
+      "bytes": 3420,
+      "sha256": "c9f68a1cf7e4f9b4d2194478a783c0789fc2bd7741819613bbde6335d82cc503"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/test_config/evaluation_conditions.py": {
+      "bytes": 1312,
+      "sha256": "2c8dca167297fa2b3c7bd6123fe5b94c8497fc1b1c27779b04b6585705073873"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/tests/helpers/hetnet_gradient_probe.py": {
+      "bytes": 16985,
+      "sha256": "6d09b6bd4691de487e7902bf412d57f924b8daaae2e87f8f4785c05bbc50aa5a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/tests/helpers/shared_gradient_probe.py": {
+      "bytes": 12939,
+      "sha256": "c1c3f8528a1e30e7298a132f247124c78c4acf3c88cf7890058786c531b4f58b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/tests/test_gradient_contract.py": {
+      "bytes": 2410,
+      "sha256": "430320714ce222e7d5ffad4a4c2099eb5a2773e96061aa467a1c566385ae28ae"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/tests/test_hetnet_gradient_contract.py": {
+      "bytes": 2532,
+      "sha256": "751f6016c6854bbad134a10474728616331131269278fce96f7998b94eb02715"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/tests/test_progress.py": {
+      "bytes": 6372,
+      "sha256": "489e71f66f30b2aaedd90abd62dd4eceb202b9c2790d8f7078166dfff6e80b71"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/tests/test_recording.py": {
+      "bytes": 3014,
+      "sha256": "33b20945379233b07dcb8dc9289980473cb1bd493e77a6b40bfb40aec867167e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/tests/test_reproduction_launch.py": {
+      "bytes": 3706,
+      "sha256": "d759c36a51fe22d09f9c2b1e80f59ade3e57b4c0672d6272cf4522d24ed4e7e2"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/tests/test_softrole_env.py": {
+      "bytes": 10173,
+      "sha256": "47bff52438d1e31cd605b46119aa7fcc3273fa98f2caf5dc909520f2f30721c0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/tests/test_softrole_evaluation.py": {
+      "bytes": 11011,
+      "sha256": "f2d69659734c772dbeceaea67993fba673f8d8d2beeb6a3933b656179f7f4f6e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/tests/test_softrole_hetnet.py": {
+      "bytes": 6858,
+      "sha256": "4ba69eb479b8bad41f453b28810f1ace7db0d0ce6bfccb3bcd199cb5e1968f47"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/tests/test_softrole_learning.py": {
+      "bytes": 4492,
+      "sha256": "a792f9773cba744d2cf51dfba90edfa7274c5a3f2e3243806d91e1cc50057154"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/tests/test_softrole_model.py": {
+      "bytes": 11462,
+      "sha256": "e49f1afb47c6232d9ff0f3f041474bd5ab86cd2a4663df49ead6ef1afdd87441"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/tests/test_softrole_report.py": {
+      "bytes": 5984,
+      "sha256": "aae90cd5e79e7c610d85538f8cafa637a027cbba8d51e21e02be87d679146a18"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/tests/test_softrole_training.py": {
+      "bytes": 5578,
+      "sha256": "7ea7afb0b63a96b575931eb7011404cc2ccc06d57ed0800ec024dabb99de646d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/trainer.py": {
+      "bytes": 28425,
+      "sha256": "ca98a4dfc928c637aa57fe88e4779753837f4982bd93370307cb51171cebf557"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/utils.py": {
+      "bytes": 6417,
+      "sha256": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/uv.lock": {
+      "bytes": 82168,
+      "sha256": "f99af776e743cadb7fe8d648c431f92f200b6710f7417490844b1ff1183a6c4b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/config.json": {
+      "bytes": 685,
+      "sha256": "05e9d0f6629c518ce16aa7b2b3993d08e105e2c97e7132e8d28566c9d7183019"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/metrics.jsonl": {
+      "bytes": 197892,
+      "sha256": "22fe74d49f27d35c185c8ff39c2c2a9e08fa04e59f9fcb45aafc59075822ee16"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/run.json": {
+      "bytes": 461,
+      "sha256": "9bdd735ec208cdef5ec7c8e265d828d8cc081b71695f5de7c59c612ee8dd4326"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/AGENTS.md": {
+      "bytes": 15485,
+      "sha256": "af6767eb0a0070e69e975f5139fa6780045c504bba64903aadfd501e584a5062"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/WildFire_Simulate_Original.py": {
+      "bytes": 14214,
+      "sha256": "1d092e0a9cd3bafd0f96fd8f28212567c6c4a8212d4f137c0eedf3d6eba63406"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/action_utils.py": {
+      "bytes": 3579,
+      "sha256": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/comm.py": {
+      "bytes": 12541,
+      "sha256": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/data.py": {
+      "bytes": 1689,
+      "sha256": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/env_wrappers.py": {
+      "bytes": 3539,
+      "sha256": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/envs/examples/random_agent.py": {
+      "bytes": 1440,
+      "sha256": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/envs/ic3net_envs/__init__.py": {
+      "bytes": 480,
+      "sha256": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/envs/ic3net_envs/fire_commander_env.py": {
+      "bytes": 26070,
+      "sha256": "c2a4df6e2a385fe407889e299122946fbaab330b332a4928e1e50dfefb41f75e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/envs/ic3net_envs/predator_capture_env.py": {
+      "bytes": 26200,
+      "sha256": "935875ac665877965f86a2e12f5ef52669065d3a2a01ba11b0ed065bfac59583"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/envs/ic3net_envs/predator_prey_env.py": {
+      "bytes": 13262,
+      "sha256": "cfb96417c3c2200471ae02a159809a0092f36df6e97b66e1cb4cf74898de516e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/envs/ic3net_envs/traffic_helper.py": {
+      "bytes": 6997,
+      "sha256": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/envs/ic3net_envs/traffic_junction_env.py": {
+      "bytes": 21785,
+      "sha256": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/envs/setup.py": {
+      "bytes": 160,
+      "sha256": "513833deab549cfdfc475749faf6a9955665799c3139e5039374056be9beb38e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/eval_trainer.py": {
+      "bytes": 25640,
+      "sha256": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/hetgat/graph/fastbinary.py": {
+      "bytes": 28666,
+      "sha256": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/hetgat/graph/fastreal.py": {
+      "bytes": 38810,
+      "sha256": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/hetgat/graph/hetgat.py": {
+      "bytes": 16483,
+      "sha256": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/hetgat/graph/hetgata2c.py": {
+      "bytes": 11456,
+      "sha256": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/hetgat/graph/hetgatreal.py": {
+      "bytes": 20637,
+      "sha256": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/hetgat/policy.py": {
+      "bytes": 42575,
+      "sha256": "3b4a16a2bb2673139e6d67e6b0617dfde95e4d8537e2059a5ba87950bb6311e6"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/hetgat/policy_entropy.py": {
+      "bytes": 44176,
+      "sha256": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/hetgat/uavnet.py": {
+      "bytes": 23755,
+      "sha256": "343e1df3337723d1323d687e4c94d48b31011ab8890fbd8f196d948d02ff5f55"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/hetgat/utils.py": {
+      "bytes": 7126,
+      "sha256": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/hetnet_ext/__init__.py": {
+      "bytes": 77,
+      "sha256": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/hetnet_ext/progress.py": {
+      "bytes": 8779,
+      "sha256": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/hetnet_ext/recording.py": {
+      "bytes": 5315,
+      "sha256": "893265d85b7de7fc572a5faf32c2a0c5778bd14d59b3e8e400241c4c36c61561"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/hetnet_ext/seeding.py": {
+      "bytes": 468,
+      "sha256": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/hetnet_ext/signatures.py": {
+      "bytes": 1138,
+      "sha256": "4f92b26e2cf4d4ad7fa6af8990adfed39b4293cc7ef91e0b258376d48cd7cf4a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/main.py": {
+      "bytes": 21577,
+      "sha256": "18dd0c445fe8c596898334751a5a8884803e3c85c521eee74c2b89b25aa1bb7b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/models.py": {
+      "bytes": 3578,
+      "sha256": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/multi_processing.py": {
+      "bytes": 4441,
+      "sha256": "16f90c3c9c5a5141aeb27716c02e819875a0284b0fd4cfa60d320548e0157474"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/print_plot_eval.py": {
+      "bytes": 1247,
+      "sha256": "7c95155bf39b5bfd81c466cd2d0286b3c46df1fada2d6808900306b1722f5d52"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/pyproject.toml": {
+      "bytes": 914,
+      "sha256": "8de36bc7ee1eb6de2f71f5c26733182c3a5dd08de6b1758195ae25d676cb1b4b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/requirements.txt": {
+      "bytes": 1983,
+      "sha256": "3f4f980638f15c9244e8fa9c7d793c98cbf227823562c65b189bef5e12debd46"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/scripts/reproduce.sh": {
+      "bytes": 3078,
+      "sha256": "4a236421389278d85921a6fce9df7e96b92f0f1d435ec39d411c76f517904610"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/scripts/setup_env.sh": {
+      "bytes": 1345,
+      "sha256": "aab03a08a59a1fdba37db7764e52eb53b43d3e1986d2300ad7f0a05d4a4a956d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/scripts/softrole.sh": {
+      "bytes": 918,
+      "sha256": "f996dc9b404b9e76fd936ca01b81c651b3de08d316eaffb083a3e91bbe69bba4"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/scripts_eval/hetnet_a2c_fc_5x5_2p1a.sh": {
+      "bytes": 579,
+      "sha256": "530974f015db6282145c237411c2716833936953549732691210a50c4a609267"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/slurm/reproduce.sbatch": {
+      "bytes": 1098,
+      "sha256": "7df9b17ba57765d501f38ec31b468688b2797241b7971b36e0238cb850e5e841"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/slurm/setup.sbatch": {
+      "bytes": 502,
+      "sha256": "a2afde0347063718a526a81cf1c789e8c0b0f768bb441a90194c5fbcbe5f827f"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/slurm/softrole.sbatch": {
+      "bytes": 903,
+      "sha256": "806817688e01edffc724d2da2de0ec19227395d04073b9d333c487483b3602f5"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/RESEARCH.md": {
+      "bytes": 27709,
+      "sha256": "91fb34af6956b7617c9e5b7c62025ee0b387430e59856cc8ec7c1e1fce146e37"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/__init__.py": {
+      "bytes": 151,
+      "sha256": "5917482d92a5a738d3f93a427f868991b95594a472edc53585b73c896e674873"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/__main__.py": {
+      "bytes": 8932,
+      "sha256": "f965d63e3bb43a871bc0eaf0badcef0bcd66f8c082be2f0a8aebc9b6cdc9eada"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/evaluate.py": {
+      "bytes": 4563,
+      "sha256": "59d14e98882c01dd6552a345dc8e3a9fc6c14cfe0b9e541c81cef8a882e7f6b9"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/hetnet.py": {
+      "bytes": 10944,
+      "sha256": "46e66ea26457b6b77b0f2e27bf8f37c8d442be223d45c1524b2e5681a151d6aa"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/report.py": {
+      "bytes": 7591,
+      "sha256": "089bbf75f4c472e31d88fcf3090031507e986830f3de4f7c34cea18d411c234a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/scenarios.py": {
+      "bytes": 3420,
+      "sha256": "c9f68a1cf7e4f9b4d2194478a783c0789fc2bd7741819613bbde6335d82cc503"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/test_config/evaluation_conditions.py": {
+      "bytes": 1312,
+      "sha256": "2c8dca167297fa2b3c7bd6123fe5b94c8497fc1b1c27779b04b6585705073873"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/tests/helpers/hetnet_gradient_probe.py": {
+      "bytes": 16985,
+      "sha256": "6d09b6bd4691de487e7902bf412d57f924b8daaae2e87f8f4785c05bbc50aa5a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/tests/helpers/shared_gradient_probe.py": {
+      "bytes": 12939,
+      "sha256": "c1c3f8528a1e30e7298a132f247124c78c4acf3c88cf7890058786c531b4f58b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/tests/test_gradient_contract.py": {
+      "bytes": 2410,
+      "sha256": "430320714ce222e7d5ffad4a4c2099eb5a2773e96061aa467a1c566385ae28ae"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/tests/test_hetnet_gradient_contract.py": {
+      "bytes": 2532,
+      "sha256": "751f6016c6854bbad134a10474728616331131269278fce96f7998b94eb02715"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/tests/test_progress.py": {
+      "bytes": 6372,
+      "sha256": "489e71f66f30b2aaedd90abd62dd4eceb202b9c2790d8f7078166dfff6e80b71"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/tests/test_recording.py": {
+      "bytes": 3014,
+      "sha256": "33b20945379233b07dcb8dc9289980473cb1bd493e77a6b40bfb40aec867167e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/tests/test_reproduction_launch.py": {
+      "bytes": 3706,
+      "sha256": "d759c36a51fe22d09f9c2b1e80f59ade3e57b4c0672d6272cf4522d24ed4e7e2"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/tests/test_softrole_env.py": {
+      "bytes": 10173,
+      "sha256": "47bff52438d1e31cd605b46119aa7fcc3273fa98f2caf5dc909520f2f30721c0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/tests/test_softrole_evaluation.py": {
+      "bytes": 11011,
+      "sha256": "f2d69659734c772dbeceaea67993fba673f8d8d2beeb6a3933b656179f7f4f6e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/tests/test_softrole_hetnet.py": {
+      "bytes": 6858,
+      "sha256": "4ba69eb479b8bad41f453b28810f1ace7db0d0ce6bfccb3bcd199cb5e1968f47"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/tests/test_softrole_learning.py": {
+      "bytes": 4492,
+      "sha256": "a792f9773cba744d2cf51dfba90edfa7274c5a3f2e3243806d91e1cc50057154"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/tests/test_softrole_model.py": {
+      "bytes": 11462,
+      "sha256": "e49f1afb47c6232d9ff0f3f041474bd5ab86cd2a4663df49ead6ef1afdd87441"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/tests/test_softrole_report.py": {
+      "bytes": 5984,
+      "sha256": "aae90cd5e79e7c610d85538f8cafa637a027cbba8d51e21e02be87d679146a18"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/tests/test_softrole_training.py": {
+      "bytes": 5578,
+      "sha256": "7ea7afb0b63a96b575931eb7011404cc2ccc06d57ed0800ec024dabb99de646d"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/trainer.py": {
+      "bytes": 28425,
+      "sha256": "ca98a4dfc928c637aa57fe88e4779753837f4982bd93370307cb51171cebf557"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/utils.py": {
+      "bytes": 6417,
+      "sha256": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/uv.lock": {
+      "bytes": 82168,
+      "sha256": "f99af776e743cadb7fe8d648c431f92f200b6710f7417490844b1ff1183a6c4b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    }
+  },
+  "limitations": [
+    "Source/config/checkpoints are verified for archived prefixes only; appended stdout has no refreshed source archive.",
+    "SoftRole windows pool episodes within seed; comparison between seeds does not make episodes independent training runs.",
+    "Reproduction windows weight epochs equally because printed cumulative counters overcount true samples.",
+    "Gate entropy is mixture-gate entropy, not policy/action entropy; shared has a single gate and zero gate entropy by construction.",
+    "Null attention and value MSE changes are temporal associations and cannot identify why the policy regressed.",
+    "Latest windows end at unequal environment sample counts; use the common-budget windows for descriptive comparison."
+  ],
+  "producer": {
+    "script": "analysis/fc_audit_2026-09-30/log_probe.py",
+    "sha256": "f6f0fd0fa419c1e5112ed89b4fa36fa08f9d7515055a0b7261a9dfd3ccee4606"
+  },
+  "reproduction": [
+    {
+      "common_epoch50": {
+        "average_enemy_count": 3.4691373913717984,
+        "first_epoch": 797,
+        "last_epoch": 846,
+        "steps_taken": 223.3302,
+        "success_rate": 0.3858,
+        "team_return": -229.14880000000002,
+        "weighting": "equal epochs"
+      },
+      "completed_epochs": 866,
+      "latest50": {
+        "average_enemy_count": 3.505692006379511,
+        "first_epoch": 817,
+        "last_epoch": 866,
+        "steps_taken": 222.8556,
+        "success_rate": 0.38839999999999997,
+        "team_return": -231.19,
+        "weighting": "equal epochs"
+      },
+      "seed": 0,
+      "source_log": "logs_1/reproduce-896848_6.out"
+    },
+    {
+      "common_epoch50": {
+        "average_enemy_count": 3.435819025043419,
+        "first_epoch": 797,
+        "last_epoch": 846,
+        "steps_taken": 221.8564,
+        "success_rate": 0.40340000000000004,
+        "team_return": -225.035,
+        "weighting": "equal epochs"
+      },
+      "completed_epochs": 846,
+      "latest50": {
+        "average_enemy_count": 3.435819025043419,
+        "first_epoch": 797,
+        "last_epoch": 846,
+        "steps_taken": 221.8564,
+        "success_rate": 0.40340000000000004,
+        "team_return": -225.035,
+        "weighting": "equal epochs"
+      },
+      "seed": 1,
+      "source_log": "logs_1/reproduce-896848_7.out"
+    },
+    {
+      "common_epoch50": {
+        "average_enemy_count": 3.4265494625997768,
+        "first_epoch": 797,
+        "last_epoch": 846,
+        "steps_taken": 222.1112,
+        "success_rate": 0.389,
+        "team_return": -225.1898,
+        "weighting": "equal epochs"
+      },
+      "completed_epochs": 938,
+      "latest50": {
+        "average_enemy_count": 3.502801826133248,
+        "first_epoch": 889,
+        "last_epoch": 938,
+        "steps_taken": 216.4254,
+        "success_rate": 0.4144,
+        "team_return": -224.1968,
+        "weighting": "equal epochs"
+      },
+      "seed": 2,
+      "source_log": "logs_1/reproduce-896848_8.out"
+    }
+  ],
+  "reproduction_config_differences": {
+    "experiment_name": [
+      "fc_real_seed0",
+      "fc_real_seed1",
+      "fc_real_seed2"
+    ],
+    "metrics_file": [
+      "runs/reproduction-fast/fc_real/seed0/metrics.jsonl",
+      "runs/reproduction-fast/fc_real/seed1/metrics.jsonl",
+      "runs/reproduction-fast/fc_real/seed2/metrics.jsonl"
+    ],
+    "save_dir": [
+      "runs/reproduction-fast/fc_real/seed0/checkpoints",
+      "runs/reproduction-fast/fc_real/seed1/checkpoints",
+      "runs/reproduction-fast/fc_real/seed2/checkpoints"
+    ],
+    "seed": [
+      0,
+      1,
+      2
+    ]
+  },
+  "scope": "Descriptive FC training logs; no frozen-policy evaluation or causal inference.",
+  "softrole": [
+    {
+      "archive_epochs": 328,
+      "archived_source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "common_budget50": {
+        "alpha_null": 0.3327966145182821,
+        "episodes": 6648,
+        "first_epoch": 849,
+        "gate_entropy": 0.0,
+        "last_epoch": 898,
+        "policy_loss_per_episode": -2745.4215938579646,
+        "return_cap": -43.72524067388692,
+        "return_nocap": -46.00676895306864,
+        "steps_end": 22490496,
+        "steps_start": 21248164,
+        "steps_taken": 186.87304452466907,
+        "success_rate": 0.6728339350180506,
+        "successes": 4473,
+        "team_return": -135.7387785800242,
+        "value_loss_per_episode": 583.0928385070368,
+        "weighting": "episodes"
+      },
+      "completed_epochs": 1060,
+      "config": {
+        "actor_coeff": 50.0,
+        "batch_steps": 500,
+        "comm_range": -1.0,
+        "compositions": [],
+        "detach_gap": 5,
+        "dim": 5,
+        "epochs": 1400,
+        "experts": 4,
+        "failure_prob": 0.0,
+        "failure_window": [
+          10,
+          30
+        ],
+        "feedback": true,
+        "gae_lambda": 0.95,
+        "gamma": 1.0,
+        "head_dim": 16,
+        "heads": 4,
+        "held_out": [],
+        "hidden_dim": 64,
+        "lr": 0.0001,
+        "max_grad_norm": 0.75,
+        "max_steps": 300,
+        "model": "shared",
+        "msg_dim": 16,
+        "nfires": 1,
+        "nprocesses": 4,
+        "num_a": 1,
+        "num_p": 2,
+        "pre_dim": 128,
+        "reward_type": 3,
+        "save_every": 50,
+        "seed": 0,
+        "task": "fc",
+        "total_steps": null,
+        "updates_per_epoch": 10,
+        "value_coeff": 1.0,
+        "vision": 1
+      },
+      "last150_ten_epoch_blocks": [
+        {
+          "alpha_null": 0.32802712799748807,
+          "episodes": 1436,
+          "first_epoch": 911,
+          "gate_entropy": 0.0,
+          "last_epoch": 920,
+          "policy_loss_per_episode": -2207.482427693227,
+          "return_cap": -37.041225626740975,
+          "return_nocap": -40.73015320334266,
+          "steps_end": 23033281,
+          "steps_start": 22786412,
+          "steps_taken": 171.91434540389972,
+          "success_rate": 0.729108635097493,
+          "successes": 1047,
+          "team_return": -118.50153203342629,
+          "value_loss_per_episode": 492.95667195404116,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.3235283168106163,
+          "episodes": 1426,
+          "first_epoch": 921,
+          "gate_entropy": 0.0,
+          "last_epoch": 930,
+          "policy_loss_per_episode": -3051.2331283476556,
+          "return_cap": -38.31900420757366,
+          "return_nocap": -41.73772791023846,
+          "steps_end": 23278973,
+          "steps_start": 23033281,
+          "steps_taken": 172.2945301542777,
+          "success_rate": 0.7426367461430575,
+          "successes": 1059,
+          "team_return": -121.7944600280506,
+          "value_loss_per_episode": 467.79454831662406,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.323839483230583,
+          "episodes": 1389,
+          "first_epoch": 931,
+          "gate_entropy": 0.0,
+          "last_epoch": 940,
+          "policy_loss_per_episode": -3665.253412138282,
+          "return_cap": -39.92908567314618,
+          "return_nocap": -42.45680345572357,
+          "steps_end": 23526077,
+          "steps_start": 23278973,
+          "steps_taken": 177.90064794816413,
+          "success_rate": 0.720662347012239,
+          "successes": 1001,
+          "team_return": -124.84269258459334,
+          "value_loss_per_episode": 449.9891121785606,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.320874968163268,
+          "episodes": 1482,
+          "first_epoch": 941,
+          "gate_entropy": 0.0,
+          "last_epoch": 950,
+          "policy_loss_per_episode": -2720.424032021099,
+          "return_cap": -35.49790823211878,
+          "return_nocap": -38.80418353576252,
+          "steps_end": 23771907,
+          "steps_start": 23526077,
+          "steps_taken": 165.87719298245614,
+          "success_rate": 0.747638326585695,
+          "successes": 1108,
+          "team_return": -113.10627530364383,
+          "value_loss_per_episode": 491.1067328897197,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.3216064100446729,
+          "episodes": 1453,
+          "first_epoch": 951,
+          "gate_entropy": 0.0,
+          "last_epoch": 960,
+          "policy_loss_per_episode": -3262.123288501985,
+          "return_cap": -34.399174122505194,
+          "return_nocap": -37.8939435650379,
+          "steps_end": 24018634,
+          "steps_start": 23771907,
+          "steps_taken": 169.8052305574673,
+          "success_rate": 0.7309015829318651,
+          "successes": 1062,
+          "team_return": -110.187061252581,
+          "value_loss_per_episode": 346.0736101834184,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.3141811058104146,
+          "episodes": 1443,
+          "first_epoch": 961,
+          "gate_entropy": 0.0,
+          "last_epoch": 970,
+          "policy_loss_per_episode": -2898.698833676525,
+          "return_cap": -36.124948024948054,
+          "return_nocap": -38.96569646569651,
+          "steps_end": 24264641,
+          "steps_start": 24018634,
+          "steps_taken": 170.48302148302147,
+          "success_rate": 0.7449757449757449,
+          "successes": 1075,
+          "team_return": -114.05634095634107,
+          "value_loss_per_episode": 412.60332752210826,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.3119408590360209,
+          "episodes": 1349,
+          "first_epoch": 971,
+          "gate_entropy": 0.0,
+          "last_epoch": 980,
+          "policy_loss_per_episode": -3326.799829925288,
+          "return_cap": -40.41808747220167,
+          "return_nocap": -42.69006671608604,
+          "steps_end": 24511695,
+          "steps_start": 24264641,
+          "steps_taken": 183.13862120088956,
+          "success_rate": 0.6767976278724982,
+          "successes": 913,
+          "team_return": -125.79822090437375,
+          "value_loss_per_episode": 415.0942788748471,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.3072324977911532,
+          "episodes": 1394,
+          "first_epoch": 981,
+          "gate_entropy": 0.0,
+          "last_epoch": 990,
+          "policy_loss_per_episode": -3299.8762899490075,
+          "return_cap": -40.922453371592574,
+          "return_nocap": -42.89483500717363,
+          "steps_end": 24758591,
+          "steps_start": 24511695,
+          "steps_taken": 177.11334289813487,
+          "success_rate": 0.6800573888091822,
+          "successes": 948,
+          "team_return": -126.71212338593986,
+          "value_loss_per_episode": 409.12684130611433,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.30213192077754547,
+          "episodes": 1361,
+          "first_epoch": 991,
+          "gate_entropy": 0.0,
+          "last_epoch": 1000,
+          "policy_loss_per_episode": -3249.9006359126906,
+          "return_cap": -42.73240264511393,
+          "return_nocap": -44.518221895665,
+          "steps_end": 25004405,
+          "steps_start": 24758591,
+          "steps_taken": 180.61278471711975,
+          "success_rate": 0.6811168258633358,
+          "successes": 927,
+          "team_return": -131.76884643644394,
+          "value_loss_per_episode": 445.46394277983575,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.29511404116127343,
+          "episodes": 1499,
+          "first_epoch": 1001,
+          "gate_entropy": 0.0,
+          "last_epoch": 1010,
+          "policy_loss_per_episode": -2223.25089530964,
+          "return_cap": -35.79919946631091,
+          "return_nocap": -39.09553035356909,
+          "steps_end": 25251058,
+          "steps_start": 25004405,
+          "steps_taken": 164.54503002001334,
+          "success_rate": 0.7578385590393596,
+          "successes": 1136,
+          "team_return": -113.99026017344907,
+          "value_loss_per_episode": 440.8705381472683,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2855169640060168,
+          "episodes": 1504,
+          "first_epoch": 1011,
+          "gate_entropy": 0.0,
+          "last_epoch": 1020,
+          "policy_loss_per_episode": -2264.483018333268,
+          "return_cap": -35.12659574468087,
+          "return_nocap": -37.91456117021279,
+          "steps_end": 25495056,
+          "steps_start": 25251058,
+          "steps_taken": 162.23271276595744,
+          "success_rate": 0.7652925531914894,
+          "successes": 1151,
+          "team_return": -110.95571808510645,
+          "value_loss_per_episode": 387.48725834063595,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2755266959740557,
+          "episodes": 1547,
+          "first_epoch": 1021,
+          "gate_entropy": 0.0,
+          "last_epoch": 1030,
+          "policy_loss_per_episode": -2060.1680962141822,
+          "return_cap": -33.137168713639326,
+          "return_nocap": -36.1228183581125,
+          "steps_end": 25741321,
+          "steps_start": 25495056,
+          "steps_taken": 159.18875242404656,
+          "success_rate": 0.7808661926308985,
+          "successes": 1208,
+          "team_return": -105.38280542986433,
+          "value_loss_per_episode": 397.8525447921744,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.26254116005489897,
+          "episodes": 1531,
+          "first_epoch": 1031,
+          "gate_entropy": 0.0,
+          "last_epoch": 1040,
+          "policy_loss_per_episode": -2298.527598703349,
+          "return_cap": -33.628020901371684,
+          "return_nocap": -37.34474199869369,
+          "steps_end": 25988253,
+          "steps_start": 25741321,
+          "steps_taken": 161.28804702808623,
+          "success_rate": 0.7818419333768779,
+          "successes": 1197,
+          "team_return": -108.31750489875908,
+          "value_loss_per_episode": 403.11637228976673,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.277128126669936,
+          "episodes": 1549,
+          "first_epoch": 1041,
+          "gate_entropy": 0.0,
+          "last_epoch": 1050,
+          "policy_loss_per_episode": -2376.493559534553,
+          "return_cap": -31.95577792123954,
+          "return_nocap": -35.49038089089739,
+          "steps_end": 26230654,
+          "steps_start": 25988253,
+          "steps_taken": 156.48870238863782,
+          "success_rate": 0.8056810845706908,
+          "successes": 1248,
+          "team_return": -102.93653970303431,
+          "value_loss_per_episode": 293.2516385343843,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2854918692029017,
+          "episodes": 1586,
+          "first_epoch": 1051,
+          "gate_entropy": 0.0,
+          "last_epoch": 1060,
+          "policy_loss_per_episode": -1986.2035480465506,
+          "return_cap": -30.234174022698635,
+          "return_nocap": -34.327112232030295,
+          "steps_end": 26475695,
+          "steps_start": 26230654,
+          "steps_taken": 154.50252206809583,
+          "success_rate": 0.8190416141235813,
+          "successes": 1299,
+          "team_return": -98.88839848675921,
+          "value_loss_per_episode": 293.8056040168527,
+          "weighting": "episodes"
+        }
+      ],
+      "latest50": {
+        "alpha_null": 0.27726699512096625,
+        "episodes": 7717,
+        "first_epoch": 1011,
+        "gate_entropy": 0.0,
+        "last_epoch": 1060,
+        "policy_loss_per_episode": -2195.5702486655764,
+        "return_cap": -32.788518854477154,
+        "return_nocap": -36.218439808215656,
+        "steps_end": 26475695,
+        "steps_start": 25251058,
+        "steps_taken": 158.69340417260594,
+        "success_rate": 0.7908513671115719,
+        "successes": 6103,
+        "team_return": -105.22539847090846,
+        "value_loss_per_episode": 354.49687253776506,
+        "weighting": "episodes"
+      },
+      "model": "shared",
+      "seed": 0,
+      "source_log": "logs_sr/softrole-898824_12.out",
+      "total_episodes": 130155,
+      "total_steps": 26475695,
+      "verified_archived_source_files": 73
+    },
+    {
+      "archive_epochs": 317,
+      "archived_source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "common_budget50": {
+        "alpha_null": 0.4279899158162381,
+        "episodes": 6227,
+        "first_epoch": 850,
+        "gate_entropy": 0.0,
+        "last_epoch": 899,
+        "policy_loss_per_episode": -4137.669151308142,
+        "return_cap": -50.55187088485631,
+        "return_nocap": -50.22090894491735,
+        "steps_end": 22478315,
+        "steps_start": 21241928,
+        "steps_taken": 198.55259354424282,
+        "success_rate": 0.5925806969648306,
+        "successes": 3690,
+        "team_return": -150.993688774691,
+        "value_loss_per_episode": 622.2909345732525,
+        "weighting": "episodes"
+      },
+      "completed_epochs": 926,
+      "config": {
+        "actor_coeff": 50.0,
+        "batch_steps": 500,
+        "comm_range": -1.0,
+        "compositions": [],
+        "detach_gap": 5,
+        "dim": 5,
+        "epochs": 1400,
+        "experts": 4,
+        "failure_prob": 0.0,
+        "failure_window": [
+          10,
+          30
+        ],
+        "feedback": true,
+        "gae_lambda": 0.95,
+        "gamma": 1.0,
+        "head_dim": 16,
+        "heads": 4,
+        "held_out": [],
+        "hidden_dim": 64,
+        "lr": 0.0001,
+        "max_grad_norm": 0.75,
+        "max_steps": 300,
+        "model": "shared",
+        "msg_dim": 16,
+        "nfires": 1,
+        "nprocesses": 4,
+        "num_a": 1,
+        "num_p": 2,
+        "pre_dim": 128,
+        "reward_type": 3,
+        "save_every": 50,
+        "seed": 1,
+        "task": "fc",
+        "total_steps": null,
+        "updates_per_epoch": 10,
+        "value_coeff": 1.0,
+        "vision": 1
+      },
+      "last150_ten_epoch_blocks": [
+        {
+          "alpha_null": 0.38046327253803164,
+          "episodes": 1262,
+          "first_epoch": 777,
+          "gate_entropy": 0.0,
+          "last_epoch": 786,
+          "policy_loss_per_episode": -6189.414196552679,
+          "return_cap": -47.90752773375598,
+          "return_nocap": -49.70839936608564,
+          "steps_end": 19684432,
+          "steps_start": 19437462,
+          "steps_taken": 195.6973058637084,
+          "success_rate": 0.618066561014263,
+          "successes": 780,
+          "team_return": -147.32432646592724,
+          "value_loss_per_episode": 560.0474174751477,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.3586774668912891,
+          "episodes": 1370,
+          "first_epoch": 787,
+          "gate_entropy": 0.0,
+          "last_epoch": 796,
+          "policy_loss_per_episode": -6335.029449697045,
+          "return_cap": -45.58102189781026,
+          "return_nocap": -48.3581751824818,
+          "steps_end": 19931792,
+          "steps_start": 19684432,
+          "steps_taken": 180.55474452554745,
+          "success_rate": 0.6532846715328468,
+          "successes": 895,
+          "team_return": -142.29737226277385,
+          "value_loss_per_episode": 613.5075927018545,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.3713421585774376,
+          "episodes": 1389,
+          "first_epoch": 797,
+          "gate_entropy": 0.0,
+          "last_epoch": 806,
+          "policy_loss_per_episode": -5537.975579627298,
+          "return_cap": -41.001079913606944,
+          "return_nocap": -44.31655867530601,
+          "steps_end": 20178837,
+          "steps_start": 19931792,
+          "steps_taken": 177.8581713462923,
+          "success_rate": 0.6839452843772498,
+          "successes": 950,
+          "team_return": -129.63419726421895,
+          "value_loss_per_episode": 529.8067034283558,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.390904489548027,
+          "episodes": 1302,
+          "first_epoch": 807,
+          "gate_entropy": 0.0,
+          "last_epoch": 816,
+          "policy_loss_per_episode": -6121.359962292576,
+          "return_cap": -46.061443932411706,
+          "return_nocap": -48.07419354838712,
+          "steps_end": 20424967,
+          "steps_start": 20178837,
+          "steps_taken": 189.0399385560676,
+          "success_rate": 0.6536098310291859,
+          "successes": 851,
+          "team_return": -142.20983102918595,
+          "value_loss_per_episode": 505.44216580731216,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.3850133008218432,
+          "episodes": 1319,
+          "first_epoch": 817,
+          "gate_entropy": 0.0,
+          "last_epoch": 826,
+          "policy_loss_per_episode": -6020.717878581457,
+          "return_cap": -46.309476876421556,
+          "return_nocap": -48.28301743745264,
+          "steps_end": 20671257,
+          "steps_start": 20424967,
+          "steps_taken": 186.72479150871874,
+          "success_rate": 0.6641394996209249,
+          "successes": 876,
+          "team_return": -142.87551175132685,
+          "value_loss_per_episode": 539.6321060455813,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.39638328784316806,
+          "episodes": 1362,
+          "first_epoch": 827,
+          "gate_entropy": 0.0,
+          "last_epoch": 836,
+          "policy_loss_per_episode": -5351.343059991123,
+          "return_cap": -43.50748898678417,
+          "return_nocap": -45.88810572687228,
+          "steps_end": 20917221,
+          "steps_start": 20671257,
+          "steps_taken": 180.59030837004406,
+          "success_rate": 0.6857562408223201,
+          "successes": 934,
+          "team_return": -135.28370044052875,
+          "value_loss_per_episode": 550.0781055186201,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.40151939324518077,
+          "episodes": 1347,
+          "first_epoch": 837,
+          "gate_entropy": 0.0,
+          "last_epoch": 846,
+          "policy_loss_per_episode": -5428.619003927253,
+          "return_cap": -43.58604305864888,
+          "return_nocap": -44.75285820341503,
+          "steps_end": 21167316,
+          "steps_start": 20917221,
+          "steps_taken": 185.66815144766147,
+          "success_rate": 0.6755753526354863,
+          "successes": 910,
+          "team_return": -133.09175946547893,
+          "value_loss_per_episode": 464.00491462601633,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.4097760707843048,
+          "episodes": 1319,
+          "first_epoch": 847,
+          "gate_entropy": 0.0,
+          "last_epoch": 856,
+          "policy_loss_per_episode": -5122.5699238034995,
+          "return_cap": -45.17391963608798,
+          "return_nocap": -45.80727824109179,
+          "steps_end": 21415807,
+          "steps_start": 21167316,
+          "steps_taken": 188.39347990902198,
+          "success_rate": 0.640636846095527,
+          "successes": 845,
+          "team_return": -136.78847611827155,
+          "value_loss_per_episode": 541.5984669543751,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.412739790850901,
+          "episodes": 1326,
+          "first_epoch": 857,
+          "gate_entropy": 0.0,
+          "last_epoch": 866,
+          "policy_loss_per_episode": -4573.722338112027,
+          "return_cap": -44.14713423831075,
+          "return_nocap": -45.67149321266971,
+          "steps_end": 21663191,
+          "steps_start": 21415807,
+          "steps_taken": 186.56410256410257,
+          "success_rate": 0.669683257918552,
+          "successes": 888,
+          "team_return": -135.49012066365017,
+          "value_loss_per_episode": 535.5477921450707,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.4230000690816243,
+          "episodes": 1279,
+          "first_epoch": 867,
+          "gate_entropy": 0.0,
+          "last_epoch": 876,
+          "policy_loss_per_episode": -3983.06327080521,
+          "return_cap": -45.91118060985149,
+          "return_nocap": -46.4221266614543,
+          "steps_end": 21909530,
+          "steps_start": 21663191,
+          "steps_taken": 192.6028146989836,
+          "success_rate": 0.6450351837372947,
+          "successes": 825,
+          "team_return": -138.7554339327601,
+          "value_loss_per_episode": 560.5879210504914,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.42937782943918174,
+          "episodes": 1315,
+          "first_epoch": 877,
+          "gate_entropy": 0.0,
+          "last_epoch": 886,
+          "policy_loss_per_episode": -3460.38696548727,
+          "return_cap": -49.05634980988597,
+          "return_nocap": -49.37193916349816,
+          "steps_end": 22159307,
+          "steps_start": 21909530,
+          "steps_taken": 189.9444866920152,
+          "success_rate": 0.6334600760456274,
+          "successes": 833,
+          "team_return": -147.80022813688228,
+          "value_loss_per_episode": 681.5250498192664,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.4568486006588542,
+          "episodes": 1046,
+          "first_epoch": 887,
+          "gate_entropy": 0.0,
+          "last_epoch": 896,
+          "policy_loss_per_episode": -4168.366459376048,
+          "return_cap": -66.70516252390063,
+          "return_nocap": -62.429732313575606,
+          "steps_end": 22403827,
+          "steps_start": 22159307,
+          "steps_taken": 233.76673040152963,
+          "success_rate": 0.3776290630975143,
+          "successes": 395,
+          "team_return": -191.56462715105187,
+          "value_loss_per_episode": 699.5659404440814,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.4489462009415125,
+          "episodes": 1215,
+          "first_epoch": 897,
+          "gate_entropy": 0.0,
+          "last_epoch": 906,
+          "policy_loss_per_episode": -2575.6646616677936,
+          "return_cap": -56.07744855967082,
+          "return_nocap": -54.074979423868356,
+          "steps_end": 22651579,
+          "steps_start": 22403827,
+          "steps_taken": 203.9111111111111,
+          "success_rate": 0.5563786008230452,
+          "successes": 676,
+          "team_return": -164.22740740740753,
+          "value_loss_per_episode": 872.1688717602766,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.44441664128150354,
+          "episodes": 1252,
+          "first_epoch": 907,
+          "gate_entropy": 0.0,
+          "last_epoch": 916,
+          "policy_loss_per_episode": -2488.867348557768,
+          "return_cap": -53.22939297124605,
+          "return_nocap": -51.25830670926523,
+          "steps_end": 22900554,
+          "steps_start": 22651579,
+          "steps_taken": 198.86182108626198,
+          "success_rate": 0.5854632587859425,
+          "successes": 733,
+          "team_return": -155.7460063897765,
+          "value_loss_per_episode": 715.7127869894651,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.44797716665846177,
+          "episodes": 1387,
+          "first_epoch": 917,
+          "gate_entropy": 0.0,
+          "last_epoch": 926,
+          "policy_loss_per_episode": -2422.6631950756896,
+          "return_cap": -44.49812545061287,
+          "return_nocap": -45.73886085075707,
+          "steps_end": 23147857,
+          "steps_start": 22900554,
+          "steps_taken": 178.30064888248017,
+          "success_rate": 0.6899783705839942,
+          "successes": 957,
+          "team_return": -135.975847152127,
+          "value_loss_per_episode": 574.5166858793647,
+          "weighting": "episodes"
+        }
+      ],
+      "latest50": {
+        "alpha_null": 0.44500709270882577,
+        "episodes": 6215,
+        "first_epoch": 877,
+        "gate_entropy": 0.0,
+        "last_epoch": 926,
+        "policy_loss_per_episode": -2979.2837509273986,
+        "return_cap": -53.22267095736127,
+        "return_nocap": -52.05823008849563,
+        "steps_end": 23147857,
+        "steps_start": 21909530,
+        "steps_taken": 199.2481094127112,
+        "success_rate": 0.5782783588093323,
+        "successes": 3594,
+        "team_return": -157.33913113435253,
+        "value_loss_per_episode": 704.8372720886676,
+        "weighting": "episodes"
+      },
+      "model": "shared",
+      "seed": 1,
+      "source_log": "logs_sr/softrole-898824_13.out",
+      "total_episodes": 113687,
+      "total_steps": 23147857,
+      "verified_archived_source_files": 73
+    },
+    {
+      "archive_epochs": 361,
+      "archived_source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "common_budget50": {
+        "alpha_null": 0.27169148850630054,
+        "episodes": 7042,
+        "first_epoch": 850,
+        "gate_entropy": 0.0,
+        "last_epoch": 899,
+        "policy_loss_per_episode": -1943.3797871621964,
+        "return_cap": -39.14023004828177,
+        "return_nocap": -41.68922181198526,
+        "steps_end": 22497988,
+        "steps_start": 21264225,
+        "steps_taken": 175.20065322351604,
+        "success_rate": 0.7405566600397614,
+        "successes": 5215,
+        "team_return": -122.5186736722523,
+        "value_loss_per_episode": 462.3613927193597,
+        "weighting": "episodes"
+      },
+      "completed_epochs": 1057,
+      "config": {
+        "actor_coeff": 50.0,
+        "batch_steps": 500,
+        "comm_range": -1.0,
+        "compositions": [],
+        "detach_gap": 5,
+        "dim": 5,
+        "epochs": 1400,
+        "experts": 4,
+        "failure_prob": 0.0,
+        "failure_window": [
+          10,
+          30
+        ],
+        "feedback": true,
+        "gae_lambda": 0.95,
+        "gamma": 1.0,
+        "head_dim": 16,
+        "heads": 4,
+        "held_out": [],
+        "hidden_dim": 64,
+        "lr": 0.0001,
+        "max_grad_norm": 0.75,
+        "max_steps": 300,
+        "model": "shared",
+        "msg_dim": 16,
+        "nfires": 1,
+        "nprocesses": 4,
+        "num_a": 1,
+        "num_p": 2,
+        "pre_dim": 128,
+        "reward_type": 3,
+        "save_every": 50,
+        "seed": 2,
+        "task": "fc",
+        "total_steps": null,
+        "updates_per_epoch": 10,
+        "value_coeff": 1.0,
+        "vision": 1
+      },
+      "last150_ten_epoch_blocks": [
+        {
+          "alpha_null": 0.27196034097807426,
+          "episodes": 1410,
+          "first_epoch": 908,
+          "gate_entropy": 0.0,
+          "last_epoch": 917,
+          "policy_loss_per_episode": -2006.0466923808026,
+          "return_cap": -40.21085106382982,
+          "return_nocap": -41.80744680851067,
+          "steps_end": 22942796,
+          "steps_start": 22696206,
+          "steps_taken": 174.88652482269504,
+          "success_rate": 0.724113475177305,
+          "successes": 1021,
+          "team_return": -123.82574468085116,
+          "value_loss_per_episode": 394.7926617022054,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2703829698556831,
+          "episodes": 1432,
+          "first_epoch": 918,
+          "gate_entropy": 0.0,
+          "last_epoch": 927,
+          "policy_loss_per_episode": -1964.5228290981438,
+          "return_cap": -38.24315642458103,
+          "return_nocap": -40.76298882681567,
+          "steps_end": 23189236,
+          "steps_start": 22942796,
+          "steps_taken": 172.0949720670391,
+          "success_rate": 0.7437150837988827,
+          "successes": 1065,
+          "team_return": -119.76913407821237,
+          "value_loss_per_episode": 342.2062276064331,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.26804942553342725,
+          "episodes": 1400,
+          "first_epoch": 928,
+          "gate_entropy": 0.0,
+          "last_epoch": 937,
+          "policy_loss_per_episode": -1783.2468133529123,
+          "return_cap": -39.73357142857146,
+          "return_nocap": -41.96435714285719,
+          "steps_end": 23435010,
+          "steps_start": 23189236,
+          "steps_taken": 175.55285714285714,
+          "success_rate": 0.7507142857142857,
+          "successes": 1051,
+          "team_return": -123.66228571428583,
+          "value_loss_per_episode": 426.97699159297366,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2700716942960652,
+          "episodes": 1445,
+          "first_epoch": 938,
+          "gate_entropy": 0.0,
+          "last_epoch": 947,
+          "policy_loss_per_episode": -1619.0801412716592,
+          "return_cap": -35.92110726643602,
+          "return_nocap": -38.77425605536335,
+          "steps_end": 23677526,
+          "steps_start": 23435010,
+          "steps_taken": 167.8311418685121,
+          "success_rate": 0.8048442906574395,
+          "successes": 1163,
+          "team_return": -113.46961937716272,
+          "value_loss_per_episode": 383.6688286151934,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2746129425808783,
+          "episodes": 1481,
+          "first_epoch": 948,
+          "gate_entropy": 0.0,
+          "last_epoch": 957,
+          "policy_loss_per_episode": -1611.3753886435657,
+          "return_cap": -36.7672518568535,
+          "return_nocap": -39.43099257258611,
+          "steps_end": 23922773,
+          "steps_start": 23677526,
+          "steps_taken": 165.5955435516543,
+          "success_rate": 0.7879810938555031,
+          "successes": 1167,
+          "team_return": -115.62923700202573,
+          "value_loss_per_episode": 449.5873492945583,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.27872399859016894,
+          "episodes": 1494,
+          "first_epoch": 958,
+          "gate_entropy": 0.0,
+          "last_epoch": 967,
+          "policy_loss_per_episode": -1680.95511202861,
+          "return_cap": -36.40716198125839,
+          "return_nocap": -38.965327978581016,
+          "steps_end": 24166730,
+          "steps_start": 23922773,
+          "steps_taken": 163.29116465863453,
+          "success_rate": 0.8105756358768407,
+          "successes": 1211,
+          "team_return": -114.33781793842041,
+          "value_loss_per_episode": 384.4773225486837,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.276494701707856,
+          "episodes": 1467,
+          "first_epoch": 968,
+          "gate_entropy": 0.0,
+          "last_epoch": 977,
+          "policy_loss_per_episode": -1607.9611191567153,
+          "return_cap": -36.3231083844581,
+          "return_nocap": -38.59522835719157,
+          "steps_end": 24410674,
+          "steps_start": 24166730,
+          "steps_taken": 166.28766189502386,
+          "success_rate": 0.7955010224948875,
+          "successes": 1167,
+          "team_return": -113.51356509884124,
+          "value_loss_per_episode": 371.15004660736946,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2769555925812652,
+          "episodes": 1553,
+          "first_epoch": 978,
+          "gate_entropy": 0.0,
+          "last_epoch": 987,
+          "policy_loss_per_episode": -1386.2005407631202,
+          "return_cap": -33.21867353509339,
+          "return_nocap": -35.95466838377337,
+          "steps_end": 24654620,
+          "steps_start": 24410674,
+          "steps_taken": 157.08048937540244,
+          "success_rate": 0.8525434642627173,
+          "successes": 1324,
+          "team_return": -105.12801030264012,
+          "value_loss_per_episode": 316.5347781569169,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2744362214783833,
+          "episodes": 1343,
+          "first_epoch": 988,
+          "gate_entropy": 0.0,
+          "last_epoch": 997,
+          "policy_loss_per_episode": -1866.5175316416626,
+          "return_cap": -43.30007446016384,
+          "return_nocap": -43.61042442293377,
+          "steps_end": 24897987,
+          "steps_start": 24654620,
+          "steps_taken": 181.2114668652271,
+          "success_rate": 0.7334326135517498,
+          "successes": 985,
+          "team_return": -130.52092330603136,
+          "value_loss_per_episode": 391.6094538082978,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.30407465015087043,
+          "episodes": 845,
+          "first_epoch": 998,
+          "gate_entropy": 0.0,
+          "last_epoch": 1007,
+          "policy_loss_per_episode": -6176.109324912464,
+          "return_cap": -101.67526627218939,
+          "return_nocap": -90.119053254438,
+          "steps_end": 25141073,
+          "steps_start": 24897987,
+          "steps_taken": 287.6757396449704,
+          "success_rate": 0.07455621301775148,
+          "successes": 63,
+          "team_return": -281.9133727810654,
+          "value_loss_per_episode": 1164.8181565841085,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.3714644153143181,
+          "episodes": 883,
+          "first_epoch": 1008,
+          "gate_entropy": 0.0,
+          "last_epoch": 1017,
+          "policy_loss_per_episode": -5902.149944662724,
+          "return_cap": -96.34722536806345,
+          "return_nocap": -81.96194790486989,
+          "steps_end": 25387050,
+          "steps_start": 25141073,
+          "steps_taken": 278.5696489241223,
+          "success_rate": 0.12570781426953567,
+          "successes": 111,
+          "team_return": -260.2711211778032,
+          "value_loss_per_episode": 1540.576713718474,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.34704654052001294,
+          "episodes": 837,
+          "first_epoch": 1018,
+          "gate_entropy": 0.0,
+          "last_epoch": 1027,
+          "policy_loss_per_episode": -5716.145359513007,
+          "return_cap": -108.33608124253286,
+          "return_nocap": -94.2180406212665,
+          "steps_end": 25628702,
+          "steps_start": 25387050,
+          "steps_taken": 288.7120669056153,
+          "success_rate": 0.06093189964157706,
+          "successes": 51,
+          "team_return": -296.77216248506585,
+          "value_loss_per_episode": 1983.675871841756,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.37129349898803926,
+          "episodes": 861,
+          "first_epoch": 1028,
+          "gate_entropy": 0.0,
+          "last_epoch": 1037,
+          "policy_loss_per_episode": -3820.1994151188705,
+          "return_cap": -99.75783972125437,
+          "return_nocap": -84.85087108013948,
+          "steps_end": 25871013,
+          "steps_start": 25628702,
+          "steps_taken": 281.42973286875724,
+          "success_rate": 0.09523809523809523,
+          "successes": 82,
+          "team_return": -269.4595818815333,
+          "value_loss_per_episode": 2410.1795649023643,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.38139361865898047,
+          "episodes": 873,
+          "first_epoch": 1038,
+          "gate_entropy": 0.0,
+          "last_epoch": 1047,
+          "policy_loss_per_episode": -2852.8438568213232,
+          "return_cap": -90.98281786941585,
+          "return_nocap": -77.5610538373426,
+          "steps_end": 26115068,
+          "steps_start": 25871013,
+          "steps_taken": 279.5589919816724,
+          "success_rate": 0.12027491408934708,
+          "successes": 105,
+          "team_return": -246.10492554410104,
+          "value_loss_per_episode": 2186.6982279958656,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.3827702084660074,
+          "episodes": 1190,
+          "first_epoch": 1048,
+          "gate_entropy": 0.0,
+          "last_epoch": 1057,
+          "policy_loss_per_episode": -978.5817176445524,
+          "return_cap": -57.75243697478995,
+          "return_nocap": -55.634453781512676,
+          "steps_end": 26363701,
+          "steps_start": 26115068,
+          "steps_taken": 208.93529411764706,
+          "success_rate": 0.5134453781512605,
+          "successes": 611,
+          "team_return": -169.0213445378153,
+          "value_loss_per_episode": 2222.924251653718,
+          "weighting": "episodes"
+        }
+      ],
+      "latest50": {
+        "alpha_null": 0.3717954162210022,
+        "episodes": 4644,
+        "first_epoch": 1008,
+        "gate_entropy": 0.0,
+        "last_epoch": 1057,
+        "policy_loss_per_episode": -3647.771036707354,
+        "return_cap": -88.24220499569338,
+        "return_nocap": -77.13292420327312,
+        "steps_end": 26363701,
+        "steps_start": 25141073,
+        "steps_taken": 263.27045650301466,
+        "success_rate": 0.20671834625322996,
+        "successes": 960,
+        "team_return": -242.50805340223968,
+        "value_loss_per_episode": 2077.9711371305366,
+        "weighting": "episodes"
+      },
+      "model": "shared",
+      "regression_latest10": {
+        "alpha_null": 0.3827702084660074,
+        "episodes": 1190,
+        "first_epoch": 1048,
+        "gate_entropy": 0.0,
+        "last_epoch": 1057,
+        "policy_loss_per_episode": -978.5817176445524,
+        "return_cap": -57.75243697478995,
+        "return_nocap": -55.634453781512676,
+        "steps_end": 26363701,
+        "steps_start": 26115068,
+        "steps_taken": 208.93529411764706,
+        "success_rate": 0.5134453781512605,
+        "successes": 611,
+        "team_return": -169.0213445378153,
+        "value_loss_per_episode": 2222.924251653718,
+        "weighting": "episodes"
+      },
+      "regression_latest50": {
+        "alpha_null": 0.3717954162210022,
+        "episodes": 4644,
+        "first_epoch": 1008,
+        "gate_entropy": 0.0,
+        "last_epoch": 1057,
+        "policy_loss_per_episode": -3647.771036707354,
+        "return_cap": -88.24220499569338,
+        "return_nocap": -77.13292420327312,
+        "steps_end": 26363701,
+        "steps_start": 25141073,
+        "steps_taken": 263.27045650301466,
+        "success_rate": 0.20671834625322996,
+        "successes": 960,
+        "team_return": -242.50805340223968,
+        "value_loss_per_episode": 2077.9711371305366,
+        "weighting": "episodes"
+      },
+      "regression_onset_epochs_986_1007": [
+        {
+          "alpha_null": 0.2754294817565379,
+          "episodes": 144,
+          "epoch": 986,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -1535.9997445242404,
+          "return_cap": -36.47291666666669,
+          "return_nocap": -38.56180555555559,
+          "steps": 24318,
+          "steps_taken": 168.875,
+          "success_rate": 0.8263888888888888,
+          "team_return": -113.59652777777787,
+          "total_episodes": 120089,
+          "total_steps": 24629786,
+          "updates": 9860,
+          "value_loss_per_episode": 264.10481502245415,
+          "wall_time_seconds": 56.558614848181605
+        },
+        {
+          "alpha_null": 0.2759928755182555,
+          "episodes": 151,
+          "epoch": 987,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -1605.703929716456,
+          "return_cap": -37.64966887417221,
+          "return_nocap": -39.72847682119209,
+          "steps": 24834,
+          "steps_taken": 164.46357615894038,
+          "success_rate": 0.8145695364238411,
+          "team_return": -117.10662251655638,
+          "total_episodes": 120240,
+          "total_steps": 24654620,
+          "updates": 9870,
+          "value_loss_per_episode": 331.36236303968815,
+          "wall_time_seconds": 57.39972790516913
+        },
+        {
+          "alpha_null": 0.2741115524727643,
+          "episodes": 136,
+          "epoch": 988,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -1417.8358889845244,
+          "return_cap": -36.45588235294121,
+          "return_nocap": -37.81985294117651,
+          "steps": 23328,
+          "steps_taken": 171.52941176470588,
+          "success_rate": 0.7941176470588235,
+          "team_return": -112.09558823529423,
+          "total_episodes": 120376,
+          "total_steps": 24677948,
+          "updates": 9880,
+          "value_loss_per_episode": 263.0075991691646,
+          "wall_time_seconds": 56.39436782896519
+        },
+        {
+          "alpha_null": 0.27122612711888466,
+          "episodes": 111,
+          "epoch": 989,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -2397.9538332899647,
+          "return_cap": -55.96126126126132,
+          "return_nocap": -52.35135135135142,
+          "steps": 24477,
+          "steps_taken": 220.51351351351352,
+          "success_rate": 0.5675675675675675,
+          "team_return": -160.66396396396416,
+          "total_episodes": 120487,
+          "total_steps": 24702425,
+          "updates": 9890,
+          "value_loss_per_episode": 379.6549479395866,
+          "wall_time_seconds": 59.02893560938537
+        },
+        {
+          "alpha_null": 0.2708487578654765,
+          "episodes": 123,
+          "epoch": 990,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -2541.944347678135,
+          "return_cap": -55.46504065040653,
+          "return_nocap": -52.452032520325204,
+          "steps": 25325,
+          "steps_taken": 205.89430894308944,
+          "success_rate": 0.6097560975609756,
+          "team_return": -160.36910569105694,
+          "total_episodes": 120610,
+          "total_steps": 24727750,
+          "updates": 9900,
+          "value_loss_per_episode": 403.29162566651036,
+          "wall_time_seconds": 61.31483747251332
+        },
+        {
+          "alpha_null": 0.27365060644223527,
+          "episodes": 136,
+          "epoch": 991,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -1694.5477427872484,
+          "return_cap": -41.3323529411765,
+          "return_nocap": -42.05735294117652,
+          "steps": 24054,
+          "steps_taken": 176.86764705882354,
+          "success_rate": 0.75,
+          "team_return": -125.44705882352955,
+          "total_episodes": 120746,
+          "total_steps": 24751804,
+          "updates": 9910,
+          "value_loss_per_episode": 453.8764763355941,
+          "wall_time_seconds": 57.52515110746026
+        },
+        {
+          "alpha_null": 0.27816202745422675,
+          "episodes": 156,
+          "epoch": 992,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -1379.8909034854073,
+          "return_cap": -36.80576923076924,
+          "return_nocap": -39.198717948717935,
+          "steps": 23515,
+          "steps_taken": 150.73717948717947,
+          "success_rate": 0.8333333333333334,
+          "team_return": -115.20320512820511,
+          "total_episodes": 120902,
+          "total_steps": 24775319,
+          "updates": 9920,
+          "value_loss_per_episode": 473.4518956389614,
+          "wall_time_seconds": 56.200689228251576
+        },
+        {
+          "alpha_null": 0.27700316214006293,
+          "episodes": 160,
+          "epoch": 993,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -1323.9346022019486,
+          "return_cap": -33.409375000000026,
+          "return_nocap": -36.36437500000001,
+          "steps": 24192,
+          "steps_taken": 151.2,
+          "success_rate": 0.825,
+          "team_return": -106.13812500000002,
+          "total_episodes": 121062,
+          "total_steps": 24799511,
+          "updates": 9930,
+          "value_loss_per_episode": 405.9258240882084,
+          "wall_time_seconds": 58.5268675070256
+        },
+        {
+          "alpha_null": 0.2759436095427694,
+          "episodes": 145,
+          "epoch": 994,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -1435.4781176622055,
+          "return_cap": -35.854482758620726,
+          "return_nocap": -37.93724137931038,
+          "steps": 24025,
+          "steps_taken": 165.68965517241378,
+          "success_rate": 0.8275862068965517,
+          "team_return": -111.72896551724149,
+          "total_episodes": 121207,
+          "total_steps": 24823536,
+          "updates": 9940,
+          "value_loss_per_episode": 331.7257097480142,
+          "wall_time_seconds": 56.72804099135101
+        },
+        {
+          "alpha_null": 0.27429782121063423,
+          "episodes": 131,
+          "epoch": 995,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -1857.4251548061807,
+          "return_cap": -43.9137404580153,
+          "return_nocap": -43.48778625954204,
+          "steps": 25041,
+          "steps_taken": 191.15267175572518,
+          "success_rate": 0.6946564885496184,
+          "team_return": -130.8893129770994,
+          "total_episodes": 121338,
+          "total_steps": 24848577,
+          "updates": 9950,
+          "value_loss_per_episode": 353.41560268764135,
+          "wall_time_seconds": 59.37745461426675
+        },
+        {
+          "alpha_null": 0.2762305977080709,
+          "episodes": 135,
+          "epoch": 996,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -1853.3607045497808,
+          "return_cap": -39.79111111111116,
+          "return_nocap": -41.205925925925996,
+          "steps": 24337,
+          "steps_taken": 180.27407407407406,
+          "success_rate": 0.8074074074074075,
+          "team_return": -122.20296296296314,
+          "total_episodes": 121473,
+          "total_steps": 24872914,
+          "updates": 9960,
+          "value_loss_per_episode": 397.2510620624603,
+          "wall_time_seconds": 56.6493205986917
+        },
+        {
+          "alpha_null": 0.2700176693384125,
+          "episodes": 110,
+          "epoch": 997,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -3416.8509642119093,
+          "return_cap": -64.80272727272728,
+          "return_nocap": -61.35454545454548,
+          "steps": 25073,
+          "steps_taken": 227.93636363636364,
+          "success_rate": 0.5,
+          "team_return": -187.51181818181823,
+          "total_episodes": 121583,
+          "total_steps": 24897987,
+          "updates": 9970,
+          "value_loss_per_episode": 453.2318199986858,
+          "wall_time_seconds": 59.32475702650845
+        },
+        {
+          "alpha_null": 0.26560213939745364,
+          "episodes": 88,
+          "epoch": 998,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -5123.389318831602,
+          "return_cap": -97.08068181818184,
+          "return_nocap": -86.97840909090918,
+          "steps": 24932,
+          "steps_taken": 283.3181818181818,
+          "success_rate": 0.1590909090909091,
+          "team_return": -271.0375000000002,
+          "total_episodes": 121671,
+          "total_steps": 24922919,
+          "updates": 9980,
+          "value_loss_per_episode": 574.2677507207172,
+          "wall_time_seconds": 56.80133701488376
+        },
+        {
+          "alpha_null": 0.26046958351560556,
+          "episodes": 82,
+          "epoch": 999,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -5940.876631576184,
+          "return_cap": -114.51829268292687,
+          "return_nocap": -101.87560975609769,
+          "steps": 23908,
+          "steps_taken": 291.5609756097561,
+          "success_rate": 0.04878048780487805,
+          "team_return": -318.2695121951222,
+          "total_episodes": 121753,
+          "total_steps": 24946827,
+          "updates": 9990,
+          "value_loss_per_episode": 812.4452384308757,
+          "wall_time_seconds": 50.85204176232219
+        },
+        {
+          "alpha_null": 0.2542334094415783,
+          "episodes": 81,
+          "epoch": 1000,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -6300.954461081763,
+          "return_cap": -119.546913580247,
+          "return_nocap": -107.26296296296323,
+          "steps": 24023,
+          "steps_taken": 296.58024691358025,
+          "success_rate": 0.012345679012345678,
+          "team_return": -334.0728395061734,
+          "total_episodes": 121834,
+          "total_steps": 24970850,
+          "updates": 10000,
+          "value_loss_per_episode": 1111.2612499188065,
+          "wall_time_seconds": 50.46652419492602
+        },
+        {
+          "alpha_null": 0.26049477830862194,
+          "episodes": 81,
+          "epoch": 1001,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -4991.418057848774,
+          "return_cap": -101.25555555555563,
+          "return_nocap": -92.76790123456813,
+          "steps": 23944,
+          "steps_taken": 295.60493827160496,
+          "success_rate": 0.024691358024691357,
+          "team_return": -286.79135802469193,
+          "total_episodes": 121915,
+          "total_steps": 24994794,
+          "updates": 10010,
+          "value_loss_per_episode": 1197.4619847817673,
+          "wall_time_seconds": 50.34037711843848
+        },
+        {
+          "alpha_null": 0.274191682338721,
+          "episodes": 83,
+          "epoch": 1002,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -5738.815832667305,
+          "return_cap": -105.31084337349394,
+          "return_nocap": -95.89999999999998,
+          "steps": 24076,
+          "steps_taken": 290.0722891566265,
+          "success_rate": 0.03614457831325301,
+          "team_return": -297.1108433734939,
+          "total_episodes": 121998,
+          "total_steps": 25018870,
+          "updates": 10020,
+          "value_loss_per_episode": 1386.1159628313924,
+          "wall_time_seconds": 50.895823169499636
+        },
+        {
+          "alpha_null": 0.2925073222787327,
+          "episodes": 82,
+          "epoch": 1003,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -7751.181912325341,
+          "return_cap": -113.23536585365858,
+          "return_nocap": -102.25975609756117,
+          "steps": 24129,
+          "steps_taken": 294.2560975609756,
+          "success_rate": 0.024390243902439025,
+          "team_return": -317.7548780487809,
+          "total_episodes": 122080,
+          "total_steps": 25042999,
+          "updates": 10030,
+          "value_loss_per_episode": 1362.9159947433243,
+          "wall_time_seconds": 51.68836169689894
+        },
+        {
+          "alpha_null": 0.31249218993754,
+          "episodes": 87,
+          "epoch": 1004,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -5176.784546709224,
+          "return_cap": -87.62068965517243,
+          "return_nocap": -75.53678160919544,
+          "steps": 24303,
+          "steps_taken": 279.3448275862069,
+          "success_rate": 0.10344827586206896,
+          "team_return": -238.69425287356336,
+          "total_episodes": 122167,
+          "total_steps": 25067302,
+          "updates": 10040,
+          "value_loss_per_episode": 1308.534302723965,
+          "wall_time_seconds": 53.21728506684303
+        },
+        {
+          "alpha_null": 0.354079259307759,
+          "episodes": 86,
+          "epoch": 1005,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -6871.386162181401,
+          "return_cap": -95.18604651162796,
+          "return_nocap": -81.37674418604668,
+          "steps": 24533,
+          "steps_taken": 285.2674418604651,
+          "success_rate": 0.11627906976744186,
+          "team_return": -257.93953488372136,
+          "total_episodes": 122253,
+          "total_steps": 25091835,
+          "updates": 10050,
+          "value_loss_per_episode": 1258.4385383136716,
+          "wall_time_seconds": 55.44909110665321
+        },
+        {
+          "alpha_null": 0.37328406160117944,
+          "episodes": 86,
+          "epoch": 1006,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -7177.580978609689,
+          "return_cap": -96.33139534883725,
+          "return_nocap": -83.26279069767453,
+          "steps": 24571,
+          "steps_taken": 285.7093023255814,
+          "success_rate": 0.09302325581395349,
+          "team_return": -262.85697674418634,
+          "total_episodes": 122339,
+          "total_steps": 25116406,
+          "updates": 10060,
+          "value_loss_per_episode": 1208.6822373116665,
+          "wall_time_seconds": 54.96797786839306
+        },
+        {
+          "alpha_null": 0.3824160210197652,
+          "episodes": 89,
+          "epoch": 1007,
+          "event_exposed_episodes": 0,
+          "gate_entropy": 0.0,
+          "num_agents": 3.0,
+          "partial_epoch": false,
+          "policy_loss_per_episode": -6692.247203117196,
+          "return_cap": -89.63370786516856,
+          "return_nocap": -77.12921348314615,
+          "steps": 24667,
+          "steps_taken": 277.1573033707865,
+          "success_rate": 0.11235955056179775,
+          "team_return": -243.89213483146085,
+          "total_episodes": 122428,
+          "total_steps": 25141073,
+          "updates": 10070,
+          "value_loss_per_episode": 1430.1919231836873,
+          "wall_time_seconds": 55.260620737448335
+        }
+      ],
+      "regression_previous50": {
+        "alpha_null": 0.2801632857954038,
+        "episodes": 6702,
+        "first_epoch": 958,
+        "gate_entropy": 0.0,
+        "last_epoch": 1007,
+        "policy_loss_per_episode": -2200.6178399768064,
+        "return_cap": -45.260295434198774,
+        "return_nocap": -45.56705461056405,
+        "steps_end": 25141073,
+        "steps_start": 23922773,
+        "steps_taken": 181.78155774395702,
+        "success_rate": 0.7087436586093704,
+        "successes": 4750,
+        "team_return": -136.39440465532687,
+        "value_loss_per_episode": 465.6322870063492,
+        "weighting": "episodes"
+      },
+      "seed": 2,
+      "source_log": "logs_sr/softrole-898824_14.out",
+      "total_episodes": 127072,
+      "total_steps": 26363701,
+      "verified_archived_source_files": 73
+    },
+    {
+      "archive_epochs": 319,
+      "archived_source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "common_budget50": {
+        "alpha_null": 0.2994760478842752,
+        "episodes": 6713,
+        "first_epoch": 851,
+        "gate_entropy": 0.6881659850179274,
+        "last_epoch": 900,
+        "policy_loss_per_episode": -4100.439138346022,
+        "return_cap": -45.51793534932225,
+        "return_nocap": -47.616818114107005,
+        "steps_end": 22491668,
+        "steps_start": 21251970,
+        "steps_taken": 184.6712349173246,
+        "success_rate": 0.6532101891851632,
+        "successes": 4385,
+        "team_return": -140.75157157753623,
+        "value_loss_per_episode": 534.3112310281718,
+        "weighting": "episodes"
+      },
+      "completed_epochs": 955,
+      "config": {
+        "actor_coeff": 50.0,
+        "batch_steps": 500,
+        "comm_range": -1.0,
+        "compositions": [],
+        "detach_gap": 5,
+        "dim": 5,
+        "epochs": 1400,
+        "experts": 4,
+        "failure_prob": 0.0,
+        "failure_window": [
+          10,
+          30
+        ],
+        "feedback": true,
+        "gae_lambda": 0.95,
+        "gamma": 1.0,
+        "head_dim": 16,
+        "heads": 4,
+        "held_out": [],
+        "hidden_dim": 64,
+        "lr": 0.0001,
+        "max_grad_norm": 0.75,
+        "max_steps": 300,
+        "model": "banked",
+        "msg_dim": 16,
+        "nfires": 1,
+        "nprocesses": 4,
+        "num_a": 1,
+        "num_p": 2,
+        "pre_dim": 128,
+        "reward_type": 3,
+        "save_every": 50,
+        "seed": 0,
+        "task": "fc",
+        "total_steps": null,
+        "updates_per_epoch": 10,
+        "value_coeff": 1.0,
+        "vision": 1
+      },
+      "last150_ten_epoch_blocks": [
+        {
+          "alpha_null": 0.3021452905992738,
+          "episodes": 1331,
+          "first_epoch": 806,
+          "gate_entropy": 0.6934477360660469,
+          "last_epoch": 815,
+          "policy_loss_per_episode": -4271.907477047934,
+          "return_cap": -43.23253193087907,
+          "return_nocap": -45.828399699474126,
+          "steps_end": 20385400,
+          "steps_start": 20137362,
+          "steps_taken": 186.35462058602553,
+          "success_rate": 0.681442524417731,
+          "successes": 907,
+          "team_return": -134.88933132982731,
+          "value_loss_per_episode": 502.76227245616207,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.30292434785574884,
+          "episodes": 1314,
+          "first_epoch": 816,
+          "gate_entropy": 0.7397381500697073,
+          "last_epoch": 825,
+          "policy_loss_per_episode": -5123.009685007579,
+          "return_cap": -44.714383561643864,
+          "return_nocap": -48.29360730593612,
+          "steps_end": 20632084,
+          "steps_start": 20385400,
+          "steps_taken": 187.7351598173516,
+          "success_rate": 0.6484018264840182,
+          "successes": 852,
+          "team_return": -141.3015981735161,
+          "value_loss_per_episode": 519.0029407327775,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.31116882515822936,
+          "episodes": 1283,
+          "first_epoch": 826,
+          "gate_entropy": 0.6953859820202218,
+          "last_epoch": 835,
+          "policy_loss_per_episode": -4260.6344683332,
+          "return_cap": -43.49080280592365,
+          "return_nocap": -46.44645362431804,
+          "steps_end": 20879459,
+          "steps_start": 20632084,
+          "steps_taken": 192.80982073265784,
+          "success_rate": 0.6500389711613406,
+          "successes": 834,
+          "team_return": -136.38371005455974,
+          "value_loss_per_episode": 492.99950362111815,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.30296165516241946,
+          "episodes": 1318,
+          "first_epoch": 836,
+          "gate_entropy": 0.7376656777401134,
+          "last_epoch": 845,
+          "policy_loss_per_episode": -4606.18180149222,
+          "return_cap": -44.41160849772386,
+          "return_nocap": -47.115477996965126,
+          "steps_end": 21127835,
+          "steps_start": 20879459,
+          "steps_taken": 188.44916540212444,
+          "success_rate": 0.6464339908952959,
+          "successes": 852,
+          "team_return": -138.6425644916541,
+          "value_loss_per_episode": 532.6905523259591,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.30741995289634666,
+          "episodes": 1358,
+          "first_epoch": 846,
+          "gate_entropy": 0.7137349410720456,
+          "last_epoch": 855,
+          "policy_loss_per_episode": -4136.311085092053,
+          "return_cap": -43.37849779086896,
+          "return_nocap": -46.05213549337265,
+          "steps_end": 21374610,
+          "steps_start": 21127835,
+          "steps_taken": 181.71944035346098,
+          "success_rate": 0.6818851251840943,
+          "successes": 926,
+          "team_return": -135.48276877761427,
+          "value_loss_per_episode": 569.4005657151283,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.3082722648609114,
+          "episodes": 1319,
+          "first_epoch": 856,
+          "gate_entropy": 0.7068364384910308,
+          "last_epoch": 865,
+          "policy_loss_per_episode": -4339.861444399246,
+          "return_cap": -46.054814253222176,
+          "return_nocap": -47.59962092494318,
+          "steps_end": 21623579,
+          "steps_start": 21374610,
+          "steps_taken": 188.75587566338135,
+          "success_rate": 0.6542835481425322,
+          "successes": 863,
+          "team_return": -141.25405610310852,
+          "value_loss_per_episode": 554.9486847859596,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.30413701574876145,
+          "episodes": 1319,
+          "first_epoch": 866,
+          "gate_entropy": 0.7077063806932145,
+          "last_epoch": 875,
+          "policy_loss_per_episode": -4666.865801585442,
+          "return_cap": -47.49158453373772,
+          "return_nocap": -49.272175890826425,
+          "steps_end": 21872365,
+          "steps_start": 21623579,
+          "steps_taken": 188.61713419257012,
+          "success_rate": 0.6376042456406369,
+          "successes": 841,
+          "team_return": -146.0359363153906,
+          "value_loss_per_episode": 529.1571944119312,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.29790395466272496,
+          "episodes": 1321,
+          "first_epoch": 876,
+          "gate_entropy": 0.6769851418985239,
+          "last_epoch": 885,
+          "policy_loss_per_episode": -4096.61485115353,
+          "return_cap": -45.20726722180171,
+          "return_nocap": -47.192354277062876,
+          "steps_end": 22119342,
+          "steps_start": 21872365,
+          "steps_taken": 186.96214988644965,
+          "success_rate": 0.6260408781226343,
+          "successes": 827,
+          "team_return": -139.59197577592747,
+          "value_loss_per_episode": 519.1478059548391,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.29032349837855265,
+          "episodes": 1346,
+          "first_epoch": 886,
+          "gate_entropy": 0.6493735466200061,
+          "last_epoch": 895,
+          "policy_loss_per_episode": -3791.5712770623345,
+          "return_cap": -46.66679049034179,
+          "return_nocap": -49.00118870728086,
+          "steps_end": 22367289,
+          "steps_start": 22119342,
+          "steps_taken": 184.21025260029717,
+          "success_rate": 0.6582466567607727,
+          "successes": 886,
+          "team_return": -144.6691679049035,
+          "value_loss_per_episode": 511.0495307155274,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2937931097513404,
+          "episodes": 1325,
+          "first_epoch": 896,
+          "gate_entropy": 0.6513909213391859,
+          "last_epoch": 905,
+          "policy_loss_per_episode": -3470.787701279077,
+          "return_cap": -45.63260377358495,
+          "return_nocap": -48.04173584905666,
+          "steps_end": 22617066,
+          "steps_start": 22367289,
+          "steps_taken": 188.51094339622642,
+          "success_rate": 0.6347169811320754,
+          "successes": 841,
+          "team_return": -141.71607547169825,
+          "value_loss_per_episode": 496.2609035171814,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.29620345375900725,
+          "episodes": 1442,
+          "first_epoch": 906,
+          "gate_entropy": 0.5956857733713239,
+          "last_epoch": 915,
+          "policy_loss_per_episode": -2207.7326722941257,
+          "return_cap": -37.262205270457734,
+          "return_nocap": -40.494105409153995,
+          "steps_end": 22866112,
+          "steps_start": 22617066,
+          "steps_taken": 172.70873786407768,
+          "success_rate": 0.7108183079056866,
+          "successes": 1025,
+          "team_return": -118.25041608876573,
+          "value_loss_per_episode": 533.0477101222829,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2854844874258848,
+          "episodes": 1362,
+          "first_epoch": 916,
+          "gate_entropy": 0.5851267962264715,
+          "last_epoch": 925,
+          "policy_loss_per_episode": -2809.4781223964223,
+          "return_cap": -43.61299559471368,
+          "return_nocap": -46.2703377386197,
+          "steps_end": 23111286,
+          "steps_start": 22866112,
+          "steps_taken": 180.01027900146843,
+          "success_rate": 0.6872246696035242,
+          "successes": 936,
+          "team_return": -136.15367107195308,
+          "value_loss_per_episode": 515.1855722201863,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2831188358585383,
+          "episodes": 1393,
+          "first_epoch": 926,
+          "gate_entropy": 0.5980748860644707,
+          "last_epoch": 935,
+          "policy_loss_per_episode": -2631.553462455868,
+          "return_cap": -39.889590811198886,
+          "return_nocap": -42.28628858578612,
+          "steps_end": 23356357,
+          "steps_start": 23111286,
+          "steps_taken": 175.93036611629577,
+          "success_rate": 0.7092605886575736,
+          "successes": 988,
+          "team_return": -124.46216798277112,
+          "value_loss_per_episode": 461.94825378889715,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.28271186948621807,
+          "episodes": 1381,
+          "first_epoch": 936,
+          "gate_entropy": 0.5878339221286337,
+          "last_epoch": 945,
+          "policy_loss_per_episode": -2954.488442313396,
+          "return_cap": -41.87509051412024,
+          "return_nocap": -44.69688631426507,
+          "steps_end": 23604928,
+          "steps_start": 23356357,
+          "steps_taken": 179.99348298334542,
+          "success_rate": 0.6864590876176684,
+          "successes": 948,
+          "team_return": -131.26886314265036,
+          "value_loss_per_episode": 458.49808067464807,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2802194970864542,
+          "episodes": 1444,
+          "first_epoch": 946,
+          "gate_entropy": 0.5858980935556609,
+          "last_epoch": 955,
+          "policy_loss_per_episode": -2553.493533036287,
+          "return_cap": -37.90789473684214,
+          "return_nocap": -41.12465373961222,
+          "steps_end": 23851134,
+          "steps_start": 23604928,
+          "steps_taken": 170.5027700831025,
+          "success_rate": 0.7153739612188366,
+          "successes": 1033,
+          "team_return": -120.15720221606658,
+          "value_loss_per_episode": 438.9581705019929,
+          "weighting": "episodes"
+        }
+      ],
+      "latest50": {
+        "alpha_null": 0.28558841300182203,
+        "episodes": 7022,
+        "first_epoch": 906,
+        "gate_entropy": 0.5905547410287281,
+        "last_epoch": 955,
+        "policy_loss_per_episode": -2626.489161192292,
+        "return_cap": -40.05521219025922,
+        "return_nocap": -42.92621760182288,
+        "steps_end": 23851134,
+        "steps_start": 22617066,
+        "steps_taken": 175.74309313585874,
+        "success_rate": 0.7020791797208772,
+        "successes": 4930,
+        "team_return": -125.90764739390497,
+        "value_loss_per_episode": 481.4686574344526,
+        "weighting": "episodes"
+      },
+      "model": "banked",
+      "seed": 0,
+      "source_log": "logs_sr/softrole-898824_15.out",
+      "total_episodes": 117034,
+      "total_steps": 23851134,
+      "verified_archived_source_files": 73
+    },
+    {
+      "archive_epochs": 327,
+      "archived_source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "common_budget50": {
+        "alpha_null": 0.26851766313632525,
+        "episodes": 5835,
+        "first_epoch": 847,
+        "gate_entropy": 1.163813722263421,
+        "last_epoch": 896,
+        "policy_loss_per_episode": -7618.175778068176,
+        "return_cap": -63.58733504712943,
+        "return_nocap": -68.19698371893752,
+        "steps_end": 22475172,
+        "steps_start": 21219589,
+        "steps_taken": 215.18131962296488,
+        "success_rate": 0.4772922022279349,
+        "successes": 2785,
+        "team_return": -199.98130248500442,
+        "value_loss_per_episode": 1136.6504646733572,
+        "weighting": "episodes"
+      },
+      "completed_epochs": 962,
+      "config": {
+        "actor_coeff": 50.0,
+        "batch_steps": 500,
+        "comm_range": -1.0,
+        "compositions": [],
+        "detach_gap": 5,
+        "dim": 5,
+        "epochs": 1400,
+        "experts": 4,
+        "failure_prob": 0.0,
+        "failure_window": [
+          10,
+          30
+        ],
+        "feedback": true,
+        "gae_lambda": 0.95,
+        "gamma": 1.0,
+        "head_dim": 16,
+        "heads": 4,
+        "held_out": [],
+        "hidden_dim": 64,
+        "lr": 0.0001,
+        "max_grad_norm": 0.75,
+        "max_steps": 300,
+        "model": "banked",
+        "msg_dim": 16,
+        "nfires": 1,
+        "nprocesses": 4,
+        "num_a": 1,
+        "num_p": 2,
+        "pre_dim": 128,
+        "reward_type": 3,
+        "save_every": 50,
+        "seed": 1,
+        "task": "fc",
+        "total_steps": null,
+        "updates_per_epoch": 10,
+        "value_coeff": 1.0,
+        "vision": 1
+      },
+      "last150_ten_epoch_blocks": [
+        {
+          "alpha_null": 0.26943975546839294,
+          "episodes": 1104,
+          "first_epoch": 813,
+          "gate_entropy": 1.1737153110618417,
+          "last_epoch": 822,
+          "policy_loss_per_episode": -8936.580033163742,
+          "return_cap": -69.48713768115947,
+          "return_nocap": -73.52500000000008,
+          "steps_end": 20618958,
+          "steps_start": 20371516,
+          "steps_taken": 224.1322463768116,
+          "success_rate": 0.411231884057971,
+          "successes": 454,
+          "team_return": -216.5371376811596,
+          "value_loss_per_episode": 1071.0003963712443,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2752711109069837,
+          "episodes": 1174,
+          "first_epoch": 823,
+          "gate_entropy": 1.1657520742778502,
+          "last_epoch": 832,
+          "policy_loss_per_episode": -7935.119062964603,
+          "return_cap": -63.20425894378197,
+          "return_nocap": -67.8031516183987,
+          "steps_end": 20869463,
+          "steps_start": 20618958,
+          "steps_taken": 213.37734241908007,
+          "success_rate": 0.4855195911413969,
+          "successes": 570,
+          "team_return": -198.81056218057935,
+          "value_loss_per_episode": 1009.1213892825064,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2851052222307303,
+          "episodes": 1168,
+          "first_epoch": 833,
+          "gate_entropy": 1.185215742831302,
+          "last_epoch": 842,
+          "policy_loss_per_episode": -6662.703260868313,
+          "return_cap": -53.410017123287716,
+          "return_nocap": -58.12585616438363,
+          "steps_end": 21119929,
+          "steps_start": 20869463,
+          "steps_taken": 214.44006849315068,
+          "success_rate": 0.5539383561643836,
+          "successes": 647,
+          "team_return": -169.66172945205497,
+          "value_loss_per_episode": 710.4374854981141,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2742570798701052,
+          "episodes": 1151,
+          "first_epoch": 843,
+          "gate_entropy": 1.178428782254825,
+          "last_epoch": 852,
+          "policy_loss_per_episode": -7124.85154230259,
+          "return_cap": -60.572024326672505,
+          "return_nocap": -65.63231972198095,
+          "steps_end": 21368704,
+          "steps_start": 21119929,
+          "steps_taken": 216.13814074717638,
+          "success_rate": 0.5013032145960035,
+          "successes": 577,
+          "team_return": -191.8366637706344,
+          "value_loss_per_episode": 931.5168668097116,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2790089956777714,
+          "episodes": 1188,
+          "first_epoch": 853,
+          "gate_entropy": 1.1818381504363054,
+          "last_epoch": 862,
+          "policy_loss_per_episode": -6253.930227752064,
+          "return_cap": -57.35614478114481,
+          "return_nocap": -62.274663299663366,
+          "steps_end": 21621334,
+          "steps_start": 21368704,
+          "steps_taken": 212.65151515151516,
+          "success_rate": 0.5202020202020202,
+          "successes": 618,
+          "team_return": -181.90547138047154,
+          "value_loss_per_episode": 991.666421344393,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.27026513811707087,
+          "episodes": 1211,
+          "first_epoch": 863,
+          "gate_entropy": 1.1836456327225715,
+          "last_epoch": 872,
+          "policy_loss_per_episode": -6202.664585993433,
+          "return_cap": -57.38546655656487,
+          "return_nocap": -62.01618497109834,
+          "steps_end": 21871680,
+          "steps_start": 21621334,
+          "steps_taken": 206.72667217175888,
+          "success_rate": 0.5359207266721717,
+          "successes": 649,
+          "team_return": -181.41783649876157,
+          "value_loss_per_episode": 1098.8511909662009,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2643821740302341,
+          "episodes": 1162,
+          "first_epoch": 873,
+          "gate_entropy": 1.1590584230504228,
+          "last_epoch": 882,
+          "policy_loss_per_episode": -9148.205038738346,
+          "return_cap": -69.66118760757317,
+          "return_nocap": -73.84500860585202,
+          "steps_end": 22123938,
+          "steps_start": 21871680,
+          "steps_taken": 217.0895008605852,
+          "success_rate": 0.45266781411359724,
+          "successes": 526,
+          "team_return": -217.3512048192772,
+          "value_loss_per_episode": 1199.572877103665,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2592598317624015,
+          "episodes": 1131,
+          "first_epoch": 883,
+          "gate_entropy": 1.1294197664285741,
+          "last_epoch": 892,
+          "policy_loss_per_episode": -8491.64614644281,
+          "return_cap": -68.18983200707342,
+          "return_nocap": -72.53784261715303,
+          "steps_end": 22374720,
+          "steps_start": 22123938,
+          "steps_taken": 221.73474801061008,
+          "success_rate": 0.4155614500442087,
+          "successes": 470,
+          "team_return": -213.26551724137948,
+          "value_loss_per_episode": 1282.4599264674923,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2718856443467264,
+          "episodes": 1167,
+          "first_epoch": 893,
+          "gate_entropy": 1.1622198090567135,
+          "last_epoch": 902,
+          "policy_loss_per_episode": -8625.08762156889,
+          "return_cap": -65.92467866323912,
+          "return_nocap": -71.11859468723229,
+          "steps_end": 22626697,
+          "steps_start": 22374720,
+          "steps_taken": 215.91859468723223,
+          "success_rate": 0.45158526135389887,
+          "successes": 527,
+          "team_return": -208.16186803770367,
+          "value_loss_per_episode": 1144.8985981331873,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2744243840077555,
+          "episodes": 1180,
+          "first_epoch": 903,
+          "gate_entropy": 1.1667034996308443,
+          "last_epoch": 912,
+          "policy_loss_per_episode": -8968.088180389657,
+          "return_cap": -67.56991525423734,
+          "return_nocap": -73.07932203389838,
+          "steps_end": 22877317,
+          "steps_start": 22626697,
+          "steps_taken": 212.38983050847457,
+          "success_rate": 0.44745762711864406,
+          "successes": 528,
+          "team_return": -213.7285593220341,
+          "value_loss_per_episode": 1277.6272298077101,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2824961984921861,
+          "episodes": 1140,
+          "first_epoch": 913,
+          "gate_entropy": 1.1957556851104814,
+          "last_epoch": 922,
+          "policy_loss_per_episode": -9867.9562388343,
+          "return_cap": -70.05526315789477,
+          "return_nocap": -75.84605263157903,
+          "steps_end": 23129159,
+          "steps_start": 22877317,
+          "steps_taken": 220.9140350877193,
+          "success_rate": 0.4166666666666667,
+          "successes": 475,
+          "team_return": -221.7473684210528,
+          "value_loss_per_episode": 1250.54514356378,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.28525315576727045,
+          "episodes": 1093,
+          "first_epoch": 923,
+          "gate_entropy": 1.216877209124774,
+          "last_epoch": 932,
+          "policy_loss_per_episode": -10027.158617186904,
+          "return_cap": -74.17118023787744,
+          "return_nocap": -79.62891125343099,
+          "steps_end": 23381653,
+          "steps_start": 23129159,
+          "steps_taken": 231.01006404391583,
+          "success_rate": 0.35224153705397987,
+          "successes": 385,
+          "team_return": -233.4290027447394,
+          "value_loss_per_episode": 1377.2071004783302,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2904124527822234,
+          "episodes": 1102,
+          "first_epoch": 933,
+          "gate_entropy": 1.220546682808172,
+          "last_epoch": 942,
+          "policy_loss_per_episode": -8451.458683901292,
+          "return_cap": -70.5971869328494,
+          "return_nocap": -75.78303085299461,
+          "steps_end": 23633670,
+          "steps_start": 23381653,
+          "steps_taken": 228.69056261343013,
+          "success_rate": 0.37568058076225047,
+          "successes": 414,
+          "team_return": -222.16324863883867,
+          "value_loss_per_episode": 1563.2831753516311,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2982297489738573,
+          "episodes": 1161,
+          "first_epoch": 943,
+          "gate_entropy": 1.2419926170211997,
+          "last_epoch": 952,
+          "policy_loss_per_episode": -7117.314318105669,
+          "return_cap": -63.00792420327308,
+          "return_nocap": -67.35719207579679,
+          "steps_end": 23882920,
+          "steps_start": 23633670,
+          "steps_taken": 214.68561584840654,
+          "success_rate": 0.4806201550387597,
+          "successes": 558,
+          "team_return": -197.72230835486664,
+          "value_loss_per_episode": 1261.6145396238737,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.29713207515751877,
+          "episodes": 1171,
+          "first_epoch": 953,
+          "gate_entropy": 1.254526954674154,
+          "last_epoch": 962,
+          "policy_loss_per_episode": -6676.201770705213,
+          "return_cap": -58.33774551665247,
+          "return_nocap": -61.65781383432967,
+          "steps_end": 24134145,
+          "steps_start": 23882920,
+          "steps_taken": 214.5388556789069,
+          "success_rate": 0.5209222886421861,
+          "successes": 610,
+          "team_return": -181.65337318531184,
+          "value_loss_per_episode": 1053.154251401874,
+          "weighting": "episodes"
+        }
+      ],
+      "latest50": {
+        "alpha_null": 0.2908149438977998,
+        "episodes": 5667,
+        "first_epoch": 913,
+        "gate_entropy": 1.226267020882121,
+        "last_epoch": 962,
+        "policy_loss_per_episode": -8400.158134344822,
+        "return_cap": -67.0894476795483,
+        "return_nocap": -71.89250044115057,
+        "steps_end": 24134145,
+        "steps_start": 22877317,
+        "steps_taken": 221.78013058055407,
+        "success_rate": 0.4309158284806776,
+        "successes": 2442,
+        "team_return": -210.87444856184948,
+        "value_loss_per_episode": 1297.2692769751075,
+        "weighting": "episodes"
+      },
+      "model": "banked",
+      "seed": 1,
+      "source_log": "logs_sr/softrole-898824_16.out",
+      "total_episodes": 112802,
+      "total_steps": 24134145,
+      "verified_archived_source_files": 73
+    },
+    {
+      "archive_epochs": 234,
+      "archived_source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "common_budget50": {
+        "alpha_null": 0.20450830968852268,
+        "episodes": 5997,
+        "first_epoch": 849,
+        "gate_entropy": 1.0715614960206288,
+        "last_epoch": 898,
+        "policy_loss_per_episode": -5314.299620783084,
+        "return_cap": -57.513673503418424,
+        "return_nocap": -60.70255127563788,
+        "steps_end": 22480015,
+        "steps_start": 21230557,
+        "steps_taken": 208.3471735867934,
+        "success_rate": 0.5220943805235951,
+        "successes": 3131,
+        "team_return": -178.9187760546942,
+        "value_loss_per_episode": 862.8099815483245,
+        "weighting": "episodes"
+      },
+      "completed_epochs": 903,
+      "config": {
+        "actor_coeff": 50.0,
+        "batch_steps": 500,
+        "comm_range": -1.0,
+        "compositions": [],
+        "detach_gap": 5,
+        "dim": 5,
+        "epochs": 1400,
+        "experts": 4,
+        "failure_prob": 0.0,
+        "failure_window": [
+          10,
+          30
+        ],
+        "feedback": true,
+        "gae_lambda": 0.95,
+        "gamma": 1.0,
+        "head_dim": 16,
+        "heads": 4,
+        "held_out": [],
+        "hidden_dim": 64,
+        "lr": 0.0001,
+        "max_grad_norm": 0.75,
+        "max_steps": 300,
+        "model": "banked",
+        "msg_dim": 16,
+        "nfires": 1,
+        "nprocesses": 4,
+        "num_a": 1,
+        "num_p": 2,
+        "pre_dim": 128,
+        "reward_type": 3,
+        "save_every": 50,
+        "seed": 2,
+        "task": "fc",
+        "total_steps": null,
+        "updates_per_epoch": 10,
+        "value_coeff": 1.0,
+        "vision": 1
+      },
+      "last150_ten_epoch_blocks": [
+        {
+          "alpha_null": 0.2568138444586856,
+          "episodes": 1255,
+          "first_epoch": 754,
+          "gate_entropy": 1.1661676420136207,
+          "last_epoch": 763,
+          "policy_loss_per_episode": -5858.579230646132,
+          "return_cap": -49.32486055776896,
+          "return_nocap": -52.12470119521917,
+          "steps_end": 19108734,
+          "steps_start": 18862170,
+          "steps_taken": 196.4653386454183,
+          "success_rate": 0.6286852589641434,
+          "successes": 789,
+          "team_return": -153.57426294820726,
+          "value_loss_per_episode": 556.4071926513619,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.25795249361050687,
+          "episodes": 1321,
+          "first_epoch": 764,
+          "gate_entropy": 1.1593933553429154,
+          "last_epoch": 773,
+          "policy_loss_per_episode": -4830.861499122524,
+          "return_cap": -45.477062831188526,
+          "return_nocap": -48.22823618470858,
+          "steps_end": 19357295,
+          "steps_start": 19108734,
+          "steps_taken": 188.16124148372444,
+          "success_rate": 0.6714610143830432,
+          "successes": 887,
+          "team_return": -141.9335352006057,
+          "value_loss_per_episode": 558.8547637584976,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.25253760297814687,
+          "episodes": 1229,
+          "first_epoch": 774,
+          "gate_entropy": 1.1370505350608247,
+          "last_epoch": 783,
+          "policy_loss_per_episode": -5247.60397748961,
+          "return_cap": -49.262408462164395,
+          "return_nocap": -51.976403580146496,
+          "steps_end": 19607001,
+          "steps_start": 19357295,
+          "steps_taken": 203.17819365337672,
+          "success_rate": 0.613506916192026,
+          "successes": 754,
+          "team_return": -153.2152156224574,
+          "value_loss_per_episode": 566.2597509919301,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.24892956130733637,
+          "episodes": 1192,
+          "first_epoch": 784,
+          "gate_entropy": 1.1141443835645852,
+          "last_epoch": 793,
+          "policy_loss_per_episode": -5102.200291211735,
+          "return_cap": -53.561996644295334,
+          "return_nocap": -55.93187919463092,
+          "steps_end": 19857430,
+          "steps_start": 19607001,
+          "steps_taken": 210.09144295302013,
+          "success_rate": 0.552013422818792,
+          "successes": 658,
+          "team_return": -165.42575503355718,
+          "value_loss_per_episode": 755.4673002185101,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.23842803277585506,
+          "episodes": 1281,
+          "first_epoch": 794,
+          "gate_entropy": 1.084853205742991,
+          "last_epoch": 803,
+          "policy_loss_per_episode": -4651.425394887692,
+          "return_cap": -49.80499609679941,
+          "return_nocap": -53.45573770491807,
+          "steps_end": 20107558,
+          "steps_start": 19857430,
+          "steps_taken": 195.2599531615925,
+          "success_rate": 0.5909445745511319,
+          "successes": 757,
+          "team_return": -156.71647150663554,
+          "value_loss_per_episode": 844.2851748805848,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.21884821114473293,
+          "episodes": 1278,
+          "first_epoch": 804,
+          "gate_entropy": 1.0488743651256789,
+          "last_epoch": 813,
+          "policy_loss_per_episode": -4043.2505851556816,
+          "return_cap": -48.34201877934276,
+          "return_nocap": -51.615101721439814,
+          "steps_end": 20357011,
+          "steps_start": 20107558,
+          "steps_taken": 195.19014084507043,
+          "success_rate": 0.6017214397496088,
+          "successes": 769,
+          "team_return": -151.57222222222236,
+          "value_loss_per_episode": 763.969483981209,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2124797478722154,
+          "episodes": 1220,
+          "first_epoch": 814,
+          "gate_entropy": 1.0549080420213368,
+          "last_epoch": 823,
+          "policy_loss_per_episode": -4457.311252023802,
+          "return_cap": -51.742213114754136,
+          "return_nocap": -54.47819672131152,
+          "steps_end": 20606839,
+          "steps_start": 20357011,
+          "steps_taken": 204.77704918032788,
+          "success_rate": 0.5401639344262295,
+          "successes": 659,
+          "team_return": -160.6986065573772,
+          "value_loss_per_episode": 742.2461987439307,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2111607712256005,
+          "episodes": 1239,
+          "first_epoch": 824,
+          "gate_entropy": 1.0696920618542496,
+          "last_epoch": 833,
+          "policy_loss_per_episode": -4686.967320552545,
+          "return_cap": -52.88361581920906,
+          "return_nocap": -55.76513317191286,
+          "steps_end": 20854505,
+          "steps_start": 20606839,
+          "steps_taken": 199.89184826472962,
+          "success_rate": 0.5875706214689266,
+          "successes": 728,
+          "team_return": -164.4138821630348,
+          "value_loss_per_episode": 814.2110761797123,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.21292382333325613,
+          "episodes": 1291,
+          "first_epoch": 834,
+          "gate_entropy": 1.0887827863003714,
+          "last_epoch": 843,
+          "policy_loss_per_episode": -4988.71811012736,
+          "return_cap": -52.47257939581722,
+          "return_nocap": -55.18597986057324,
+          "steps_end": 21106360,
+          "steps_start": 20854505,
+          "steps_taken": 195.0852052672347,
+          "success_rate": 0.5910147172734315,
+          "successes": 763,
+          "team_return": -162.8445391169637,
+          "value_loss_per_episode": 790.0111301021325,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.21368868660236515,
+          "episodes": 1277,
+          "first_epoch": 844,
+          "gate_entropy": 1.0839862033099465,
+          "last_epoch": 853,
+          "policy_loss_per_episode": -4662.488354917436,
+          "return_cap": -50.65223179326549,
+          "return_nocap": -53.47548942834772,
+          "steps_end": 21354617,
+          "steps_start": 21106360,
+          "steps_taken": 194.4064212999217,
+          "success_rate": 0.6123727486296007,
+          "successes": 782,
+          "team_return": -157.60321064996094,
+          "value_loss_per_episode": 783.9021556946273,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.21026157317606972,
+          "episodes": 1218,
+          "first_epoch": 854,
+          "gate_entropy": 1.0846337503479233,
+          "last_epoch": 863,
+          "policy_loss_per_episode": -4880.154594784671,
+          "return_cap": -52.335467980295604,
+          "return_nocap": -55.198029556650305,
+          "steps_end": 21603588,
+          "steps_start": 21354617,
+          "steps_taken": 204.40968801313628,
+          "success_rate": 0.5558292282430214,
+          "successes": 677,
+          "team_return": -162.7315270935962,
+          "value_loss_per_episode": 735.8512951021922,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.2033011790477683,
+          "episodes": 1223,
+          "first_epoch": 864,
+          "gate_entropy": 1.086293749297097,
+          "last_epoch": 873,
+          "policy_loss_per_episode": -5698.1854141388,
+          "return_cap": -57.03368765331156,
+          "return_nocap": -60.307686017988615,
+          "steps_end": 21853540,
+          "steps_start": 21603588,
+          "steps_taken": 204.3761242845462,
+          "success_rate": 0.5363859362224039,
+          "successes": 656,
+          "team_return": -177.6490596892888,
+          "value_loss_per_episode": 727.8925029375184,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.19234898384774177,
+          "episodes": 1125,
+          "first_epoch": 874,
+          "gate_entropy": 1.0505776277583234,
+          "last_epoch": 883,
+          "policy_loss_per_episode": -5163.352573772529,
+          "return_cap": -62.76240000000005,
+          "return_nocap": -65.4911111111112,
+          "steps_end": 22102848,
+          "steps_start": 21853540,
+          "steps_taken": 221.60711111111112,
+          "success_rate": 0.44177777777777777,
+          "successes": 497,
+          "team_return": -193.74462222222243,
+          "value_loss_per_episode": 1047.8134230888259,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.20045090386905848,
+          "episodes": 1196,
+          "first_epoch": 884,
+          "gate_entropy": 1.057384090803226,
+          "last_epoch": 893,
+          "policy_loss_per_episode": -5171.265448093645,
+          "return_cap": -59.3513377926422,
+          "return_nocap": -62.99790969899674,
+          "steps_end": 22354962,
+          "steps_start": 22102848,
+          "steps_taken": 210.79765886287626,
+          "success_rate": 0.5100334448160535,
+          "successes": 610,
+          "team_return": -185.34715719063567,
+          "value_loss_per_episode": 920.7007579908749,
+          "weighting": "episodes"
+        },
+        {
+          "alpha_null": 0.21550664943244485,
+          "episodes": 1138,
+          "first_epoch": 894,
+          "gate_entropy": 1.0729761349414106,
+          "last_epoch": 903,
+          "policy_loss_per_episode": -6137.568908565755,
+          "return_cap": -61.15087873462219,
+          "return_nocap": -63.542355008787396,
+          "steps_end": 22604564,
+          "steps_start": 22354962,
+          "steps_taken": 219.33391915641477,
+          "success_rate": 0.45430579964850615,
+          "successes": 517,
+          "team_return": -188.235588752197,
+          "value_loss_per_episode": 947.644407640216,
+          "weighting": "episodes"
+        }
+      ],
+      "latest50": {
+        "alpha_null": 0.20442616830747445,
+        "episodes": 5900,
+        "first_epoch": 854,
+        "gate_entropy": 1.0707117302891895,
+        "last_epoch": 903,
+        "policy_loss_per_episode": -5405.265694457865,
+        "return_cap": -58.42006779661021,
+        "return_nocap": -61.41045762711872,
+        "steps_end": 22604564,
+        "steps_start": 21354617,
+        "steps_taken": 211.85542372881355,
+        "success_rate": 0.5011864406779661,
+        "successes": 2957,
+        "team_return": -181.24098305084763,
+        "value_loss_per_episode": 872.0079579582434,
+        "weighting": "episodes"
+      },
+      "model": "banked",
+      "seed": 2,
+      "source_log": "logs_sr/softrole-898824_17.out",
+      "total_episodes": 107074,
+      "total_steps": 22604564,
+      "verified_archived_source_files": 73
+    }
+  ],
+  "softrole_archived_file_hash_maps_identical": true,
+  "softrole_archived_sources_identical": true,
+  "softrole_config_differences": {
+    "model": [
+      "shared",
+      "shared",
+      "shared",
+      "banked",
+      "banked",
+      "banked"
+    ],
+    "seed": [
+      0,
+      1,
+      2,
+      0,
+      1,
+      2
+    ]
+  }
+}

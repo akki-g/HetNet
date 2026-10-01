@@ -1,0 +1,29 @@
+{
+  "files": {
+    ".gitignore": "7ac96c5d87e03ed02b4cbbefafbe549c1b99a42846f2bfb0323c408de53511c7",
+    "learner_findings.json": "3557b6ca493ca3720be0bc1f5e6d252d3f279d3334a73ff1cf0b4fe14e67f1b4",
+    "learner_probe.py": "f609917398a47b0fa121793139bc154622864e1a29cb593337ee56480483df40",
+    "log_findings.json": "7e56a687a7bf6941bd59ae33590e18a989ebe45c06911c989981e17e7b0b04ce",
+    "log_probe.py": "f6f0fd0fa419c1e5112ed89b4fa36fa08f9d7515055a0b7261a9dfd3ccee4606",
+    "policy_panel/banked_seed0.json": "f4ce8e0f2827c1fce09bb8800f2eeeb35189d5fccc6c3b6ad3afe1bf51679301",
+    "policy_panel/banked_seed0_traces.jsonl": "82aebcd4b923e44cf7428d865ad33b420767b3303f2ebf168bd95be82f193504",
+    "policy_panel/banked_seed1.json": "d2b5af1d5900305bd7a64e813e070af36f174e9780be39ce78429b549b990406",
+    "policy_panel/banked_seed1_traces.jsonl": "049fc59ec8b5d6936c5dd266e6af0be0e6cafa1ec776513f24fffef8d34ca94f",
+    "policy_panel/banked_seed2.json": "27eb24273a0ab90a304cfaef98709fc16cfca09494f6fe55dba7e4d03ae83d34",
+    "policy_panel/banked_seed2_traces.jsonl": "98daabbc7e4b54403a1290b6f145a35967b97192705b011986b32196b1d45740",
+    "policy_panel/panel.json": "86a40258b6376ecdd380505ada78d950ee33b933d1e00069de30b43f264a78eb",
+    "policy_panel/shared_seed0.json": "bac116b216550b9124e0b2fe23e55394a72320f44c4b31a40874c26ba5f6bdbc",
+    "policy_panel/shared_seed0_traces.jsonl": "f6f9304390f2c313dcecafd352343fb46958825b3e9ddbb96ee8fb9994bdaf25",
+    "policy_panel/shared_seed1.json": "c84570a2d55d83aed74c9f5ab7cc114fc785afaca04dee94a6ec3d4076f42b37",
+    "policy_panel/shared_seed1_traces.jsonl": "0a82122334f5cd57e2681d72a968f008d91ecd700771fe37e20a8efe924732cb",
+    "policy_panel/shared_seed2.json": "4ad6107df2b228edabf3ebc40e250cdd5ae696833089620d2ade64ef1849f431",
+    "policy_panel/shared_seed2_traces.jsonl": "d3a9e03d94cf00275528a05e24895e7b0371b0417d28cf0bf2c1f1c30eb8891d",
+    "policy_panel/summary.json": "1bf5bdfb88f5eee58d54a39ee88ed75bd1ec88777f0a1855b24adb7f7983210d",
+    "policy_probe.py": "05c13aadc784f5ad8462f52c5a3e2ac3f3c4e32b1947012718639b3d93789847",
+    "report.md": "00c38cf35eac1065c94e2df9c6d86781a0a6c7a1948da464da89d7a2a86c2c5a",
+    "simulator_probe.json": "6ca297a593673bb20772cd33be29f2f3500ab95f3c4581c5c43ad7b2ad917fe4",
+    "simulator_probe.py": "28aaaecce705d07b28ccf41251f8588db9b126cb410326b07c9bfb210b833f0f",
+    "validation.json": "52f90fbcc29060aabd132455b617e56f3bdbddeb59621adc00624efe127e5f6f"
+  },
+  "scope": "All audit files excluding this manifest and transient bytecode caches"
+}

@@ -1,0 +1,8 @@
+# Retain the report and figure export despite repository document exclusions.
+!report.md
+!training_plots.pdf
+!training_report.pdf
+!stdout_snapshot.md
+/training_report.aux
+/training_report.log
+/training_report.toc

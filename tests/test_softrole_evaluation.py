@@ -1,5 +1,6 @@
 """Replayable domain rollouts, frozen checkpoints, and event censoring."""
 from dataclasses import replace
+import random
 from types import SimpleNamespace
 
 import numpy as np
@@ -182,6 +183,11 @@ def test_checkpoint_evaluation_replays_and_never_overwrites(tmp_path):
     first = evaluate_checkpoint(checkpoint, scenarios, tmp_path / "first.json", trace=True)
     second = evaluate_checkpoint(checkpoint, scenarios, tmp_path / "second.json", trace=True)
     assert first == second
+    assert first["evaluation_version"] == 2
+    assert first["source_sha256"] is None  # Do not invent missing training identity.
+    assert first["evaluator"]["source"]["files"]["softrole/evaluate.py"]
+    assert first["evaluator"]["runtime"]["packages"]["torch"] == torch.__version__
+    assert first["evaluator"]["runtime"]["torch_threads"] == 1
     assert first["model_signature"] == model_signature(model)
     with pytest.raises(FileExistsError):
         evaluate_checkpoint(checkpoint, scenarios, tmp_path / "first.json")
@@ -197,6 +203,8 @@ def test_checkpoint_evaluation_replays_and_never_overwrites(tmp_path):
     assert sham_report["sham"] and sham_report["event_exposed_episodes"] == 0
     assert sham_report["scheduled_event_exposed_episodes"] == 2
     assert all(record["event_step"] == 1 for record in sham_report["scenarios"])
+    assert all(row["pre_event_victim_target_seen"] is not None
+               for row in sham_report["per_episode"])
 
 
 def test_unsupported_event_rejected_before_environment_reset():
@@ -204,3 +212,156 @@ def test_unsupported_event_rejected_before_environment_reset():
     scenario = Scenario("unsupported", 11, 12, 13, 3, 0, event_step=2, victim=0)
     with pytest.raises(ValueError, match="only for PCP"):
         run_episode(ToyModel(), None, config, scenario, training=False)
+
+
+@pytest.mark.parametrize("changed", ["checkpoint", "evaluator"])
+def test_evaluation_rejects_provenance_changes_during_rollout(tmp_path, monkeypatch, changed):
+    config = recipe("pcp", max_steps=1, pre_dim=8, hidden_dim=8, heads=1, head_dim=4, msg_dim=3)
+    model = SoftRoleNet(**config.model_kwargs()).double()
+    checkpoint = tmp_path / "checkpoint.pt"
+    torch.save({"config": config.to_dict(), "model_config": config.model_kwargs(),
+                "model_state": model.state_dict(), "format_version": 1,
+                "environment_version": ENVIRONMENT_VERSION}, checkpoint)
+    from softrole.train import source_snapshot
+    original = run_episode
+    if changed == "evaluator":
+        calls = 0
+
+        def changed_source():
+            nonlocal calls
+            calls += 1
+            record = source_snapshot()
+            if calls > 1:
+                record["sha256"] = "changed-evaluator"
+            return record
+
+        monkeypatch.setattr("softrole.train.source_snapshot", changed_source)
+
+    def changed_rollout(*args, **kwargs):
+        result = original(*args, **kwargs)
+        if changed == "checkpoint":
+            checkpoint.write_bytes(b"replaced after loading")
+        return result
+
+    monkeypatch.setattr("softrole.evaluate.run_episode", changed_rollout)
+    output = tmp_path / "invalid.json"
+    with pytest.raises(RuntimeError, match="changed during"):
+        evaluate_checkpoint(checkpoint, make_scenarios(44, 1, [(2, 1)]), output)
+    assert not output.exists()
+
+
+DIAGNOSTIC_FIELDS = ("pre_event_victim_reached", "pre_event_victim_target_visible",
+                     "pre_event_victim_target_seen")
+
+
+def scripted_diagnostic_episode(monkeypatch, starts, actions, event_step, sham=False):
+    """Use physical PCP transitions with fixed starts and prescribed actions."""
+    config = recipe("pcp", max_steps=4, vision=1, msg_dim=2)
+    adapter = make_env(config)
+    monkeypatch.setattr(adapter.raw, "_get_cordinates", lambda: np.array(starts))
+    monkeypatch.setattr("softrole.rollout.sample_actions", lambda logits, seed, step: (
+        torch.tensor(actions[min(step, len(actions) - 1)]), logits[:, 4].sum() * 0))
+    scenario = Scenario("diagnostic", 11, 12, 13, 2, 1, event_step=event_step,
+                        victim=0 if event_step >= 0 else -1)
+    episode = run_episode(ToyModel(), adapter, config, scenario, training=False,
+                          trace=True, sham=sham, event_diagnostics=True)
+    return episode, adapter
+
+
+@pytest.mark.parametrize("victim_start,actions,event_step,expected", [
+    # At step zero there is no earlier delivered observation, even if visible.
+    ([0, 1], [[1, 4, 4]], 0, (False, True, False)),
+    # The first visible observation is at the event itself, before reaching it.
+    ([0, 0], [[1, 4, 4]], 1, (False, True, False)),
+    # Earlier direct observation remains recorded after leaving the view.
+    ([0, 1], [[3, 4, 4]], 1, (False, False, True)),
+    # Reached status includes the action just before the scheduled event.
+    ([0, 0], [[1, 4, 4]], 2, (True, True, True)),
+])
+def test_pre_event_diagnostics_distinguish_visibility_history_and_reaching(
+        monkeypatch, victim_start, actions, event_step, expected):
+    starts = [victim_start, [4, 4], [4, 3], [0, 2]]
+    failure, failed_adapter = scripted_diagnostic_episode(
+        monkeypatch, starts, actions, event_step)
+    sham, _ = scripted_diagnostic_episode(monkeypatch, starts, actions, event_step, sham=True)
+    assert tuple(failure.metrics[key] for key in DIAGNOSTIC_FIELDS) == expected
+    assert tuple(sham.metrics[key] for key in DIAGNOSTIC_FIELDS) == expected
+    assert failure.traces[:event_step] == sham.traces[:event_step]
+    assert failure.metrics["scheduled_event_exposed"] and sham.metrics["scheduled_event_exposed"]
+    assert failed_adapter.kappa[0, 0] == 0
+
+
+@pytest.mark.parametrize("event_step", [-1, 2])
+def test_unexposed_diagnostic_fields_are_null(monkeypatch, event_step):
+    episode, _ = scripted_diagnostic_episode(
+        monkeypatch, [[1, 2], [2, 1], [2, 3], [2, 2]],
+        [[2, 1, 3], [4, 4, 5]], event_step)
+    assert episode.metrics["success"] and episode.metrics["steps"] == 2
+    assert not episode.metrics["scheduled_event_exposed"]
+    assert all(episode.metrics[key] is None for key in DIAGNOSTIC_FIELDS)
+    assert episode.metrics["pre_event_success"] == (event_step >= 0)
+
+
+def test_sensor_status_reads_cached_view_without_observation_calls(monkeypatch):
+    adapter = make_env(recipe("pcp", max_steps=4))
+    with pytest.raises(RuntimeError, match="reset"):
+        adapter.pcp_sensor_status(0)
+    adapter.reset(9)
+    original = adapter.raw_observation
+    before = adapter.pcp_sensor_status(0)
+    monkeypatch.setattr(adapter.raw, "_get_obs", lambda: pytest.fail("generated another view"))
+    monkeypatch.setattr(adapter, "observe", lambda *_: pytest.fail("adapted another view"))
+    assert adapter.pcp_sensor_status(0) == before
+    np.testing.assert_array_equal(adapter.raw_observation, original)
+    with pytest.raises(ValueError, match="sensing agent"):
+        adapter.pcp_sensor_status(adapter.num_p)
+    with pytest.raises(ValueError, match="only for PCP"):
+        make_env(recipe("fc")).pcp_sensor_status(0)
+
+
+@pytest.mark.parametrize("sham", [False, True])
+def test_diagnostics_do_not_change_policy_trajectory_rng_or_observation_count(monkeypatch, sham):
+    config = recipe("pcp", max_steps=5, pre_dim=8, hidden_dim=8, heads=1, head_dim=4, msg_dim=3)
+    model = SoftRoleNet(**config.model_kwargs()).double()
+    model.eval()
+    signature = model_signature(model)
+    scenario = Scenario("noninterference", 11, 12, 13, 2, 1, event_step=2, victim=0)
+    episodes, adapters, call_counts = [], [], []
+    np_before, py_before, torch_before = np.random.get_state(), random.getstate(), torch.get_rng_state()
+    for enabled in (False, True):
+        adapter = make_env(config)
+        counts = {"native": 0, "adapted": 0}
+        native, adapted = adapter.raw._get_obs, adapter.observe
+
+        def counted_native():
+            counts["native"] += 1
+            return native()
+
+        def counted_adapted(kappa):
+            counts["adapted"] += 1
+            return adapted(kappa)
+
+        monkeypatch.setattr(adapter.raw, "_get_obs", counted_native)
+        monkeypatch.setattr(adapter, "observe", counted_adapted)
+        episode = run_episode(model, adapter, config, scenario, training=False,
+                              trace=True, sham=sham, event_diagnostics=enabled)
+        episodes.append(episode)
+        adapters.append(adapter)
+        call_counts.append(counts)
+    plain, diagnostic = episodes
+    assert plain.metrics == {key: value for key, value in diagnostic.metrics.items()
+                             if key not in DIAGNOSTIC_FIELDS}
+    assert plain.traces == diagnostic.traces
+    for left, right in zip(plain.values + plain.log_probs, diagnostic.values + diagnostic.log_probs):
+        assert torch.equal(left, right)
+    assert call_counts[0] == call_counts[1]
+    assert call_counts[0] == {"native": plain.metrics["steps"] + 1,
+                              "adapted": plain.metrics["steps"] + 1 + (not sham)}
+    for attribute in ("positions", "raw_observation", "kappa"):
+        np.testing.assert_array_equal(getattr(adapters[0], attribute), getattr(adapters[1], attribute))
+    assert model_signature(model) == signature
+    assert np_before[0] == np.random.get_state()[0]
+    np.testing.assert_array_equal(np_before[1], np.random.get_state()[1])
+    assert np_before[2:] == np.random.get_state()[2:]
+    assert py_before == random.getstate()
+    assert torch.equal(torch_before, torch.get_rng_state())

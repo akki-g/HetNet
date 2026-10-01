@@ -1,0 +1,31 @@
+{
+  "window_metric_checks": 432,
+  "input_hashes_still_match": true,
+  "markdown_links_valid": true,
+  "pdf_clean_tex_log": true,
+  "report_pages": 3,
+  "plot_pages": 4,
+  "all_figures_and_report_pages_visually_reviewed": true,
+  "files": {
+    "README.md": "6dd463bb5adf183e32b567a930eb64097a1a27a3b166aa1b325a87f094f7a5df",
+    "analysis_console.json": "994b694abf7d72b5c517d0ca1d6a37b1dac07af8e5641afd1d39f3dc1d875551",
+    "analyze.py": "c9be595988d9982c3ac69c475ead52d6bab5603790ba223355e4469a0753b0a0",
+    "build_pdf.py": "6e8cbd19e169b41d5b84125076cd4c2f48f3c9c015d4a93d8dbf001b1f2dcfae",
+    "epoch_metrics.csv": "61b4a980d46c9560ff40624641ef5dd8311b8316a203a060efd66fdec2716e4c",
+    "provenance.json": "fcd6f2ee4929e0a69b7d513d7360cefeeff06e47f8246eb7e92333b6edb3d896",
+    "quick_report.md": "2f774aa3a9835671001866eb45eddbb241f0ff39a4fb96a9737b0e593a4aa2cd",
+    "quick_report.pdf": "6e172fbb9aa134b6d8bae0130a0787f15bc6baabdf9ed3b89e8ac58a1270a4b6",
+    "quick_report.tex": "8735b2c8b3383e3a480e7129ca13550801a518304b161372f33183f8b8f54780",
+    "reproduction_training.pdf": "830862b92651d0e59c7c2b42120bcf2165741d60852ef3c3af5376fd94a189fd",
+    "reproduction_training.png": "609564d6066f6ea79c6d872c8f84b705233156f44e3a0d82e78a736769be7fbf",
+    "run_summary.csv": "5d9b8dbd19141607177f2819a9121edf3a35881a01226f4fd090eadeaa54e008",
+    "softrole_common_samples.pdf": "c9d5beb3b40aa730318d5e31a25212265f98bf9f2f1204b7698aa633d3ec3915",
+    "softrole_common_samples.png": "7f75e709cf13d8339c788410aa4371bf592e7284a25b026f88f381950541f0ab",
+    "softrole_diagnostics.pdf": "831ab894028d52ee67585807cfbfcd83892d3883bf5d66fd2779dc917a7abeca",
+    "softrole_diagnostics.png": "e31aff7aab1ff44050e445cab6d8d38dbcfa140792d368972796d9581cc3feb2",
+    "softrole_training.pdf": "599a601d453d73a7536fc1fb1fc01987fb8d037d6ec192dc35d9cd31c840c380",
+    "softrole_training.png": "9919713ec61bfb1e69533192e72068e86ebc42f89aa91287c5a62218d09d283c",
+    "summary.json": "12a425376a380a83b69448a5d4c6cb2058949ce1b009f1c655c20810682e2849",
+    "training_plots.pdf": "2282c237e7d1ecc64f35961bf2c67c8782cbf2fd18d08370306748e4a8f6b282"
+  }
+}

@@ -202,9 +202,13 @@ The standalone `softrole` package implements the revised deterministic,
 capability-conditioned architecture. It removes explicit actor class labels and
 typed occupancy channels, uses two 16-bit broadcast rounds, and trains with one
 team advantage. See [the mathematical plan and experiment protocol](softrole/RESEARCH.md)
-and [the implementation record](AGENTS.md). The [architecture comparison](softrole/ARCHITECTURE_COMPARISON.md)
+and [the implementation record](AGENTS.md). The [architecture comparison](docs/research/ARCHITECTURE_COMPARISON.md)
 explains what was retained from the supplied proposal, what changed, the
 mathematical reasons, differences from original HetNet, and defensible contribution claims.
+
+For the next PCP sensor-failure experiments, start with the
+[agent handoff](docs/plans/SENSOR_FAILURE_HANDOFF.md). It records current findings, existing
+support, pilot preparation, verified entrypoints and required implementation logs.
 
 ```bash
 # Inspect the original-domain recipe; no run directory is created.
@@ -222,6 +226,19 @@ bash scripts/softrole.sh pcp banked 0
 SOFTROLE_RUN_ROOT=runs/softrole_failure \
   bash scripts/softrole.sh pcp banked 0 --study failure
 ```
+
+For the native-composition sensor pilot, use `pilot-failure`: it saves a common
+20-scenario panel by default, evaluator source/runtime identities and matched failure/sham
+traces, then checks paired prefixes and reports descriptive outcomes. Supply one
+nominal shared/banked checkpoint pair per seed and a predeclared checkpoint rule.
+The [pilot protocol and commands](softrole/RESEARCH.md#81-native-pcp-failure-pilot)
+explain the pre-event diagnostics and interpretation limits.
+
+The PCP-only failure-training route is `bash scripts/softrole_failure.sh 0 --dry-run`.
+Indices 0–2 select shared seeds 0–2; 3–5 select banked seeds 0–2. Set
+`SOFTROLE_FAILURE_RUN_ROOT` to a fresh study root. Its optional
+`slurm/softrole_failure.sbatch` has six PCP jobs; passing the failure preset to
+the original 18-job all-domain array is unsupported. No submission is automatic.
 
 The package also provides `evaluate`, `evaluate-hetnet` and `summarize` commands.
 Frozen evaluation supports held-out compositions, event-timed gate/communication

@@ -1,0 +1,6 @@
+!*.md
+!*.pdf
+*.log
+*.aux
+*.out
+preview/

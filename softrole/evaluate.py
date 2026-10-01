@@ -1,6 +1,10 @@
 """Frozen checkpoint evaluation on explicit, reusable scenario records."""
 import hashlib
+import io
 import json
+from importlib.metadata import distributions
+import platform
+import sys
 from dataclasses import asdict
 from pathlib import Path
 
@@ -18,18 +22,37 @@ def model_signature(model):
     return digest.hexdigest()
 
 
+def evaluator_identity():
+    """Keep evaluator source/runtime separate from the checkpoint's training source."""
+    from softrole.train import source_snapshot
+    return {
+        "source": source_snapshot(),
+        "runtime": {
+            "python": sys.version, "executable": sys.executable,
+            "platform": platform.platform(), "torch_threads": torch.get_num_threads(),
+            "device": "cpu", "dtype": "float64",
+            "packages": dict(sorted((dist.metadata["Name"], dist.version)
+                                    for dist in distributions() if dist.metadata["Name"])),
+        },
+    }
+
+
 def evaluate_checkpoint(checkpoint, scenarios, output, intervention="none",
                         intervention_step=None, trace=False, sham=False):
     from softrole.config import Config
     from softrole.env import make_env
     from softrole.model import SoftRoleNet
-    from softrole import CHECKPOINT_VERSION
+    from softrole import CHECKPOINT_VERSION, EVALUATION_VERSION
+    from softrole.train import source_snapshot
 
     destination = Path(output)
     if destination.exists():
         raise FileExistsError(f"Evaluation output already exists: {destination}")
     torch.set_num_threads(1)
-    saved = torch.load(checkpoint, map_location="cpu", weights_only=False)
+    evaluator = evaluator_identity()
+    checkpoint_bytes = Path(checkpoint).read_bytes()
+    checkpoint_sha256 = hashlib.sha256(checkpoint_bytes).hexdigest()
+    saved = torch.load(io.BytesIO(checkpoint_bytes), map_location="cpu", weights_only=False)
     if saved.get("format_version") != CHECKPOINT_VERSION:
         raise ValueError("Unsupported checkpoint format")
     config = Config(**saved["config"])
@@ -56,7 +79,7 @@ def evaluate_checkpoint(checkpoint, scenarios, output, intervention="none",
         for scenario in scenarios:
             episode = run_episode(model, adapter, config, scenario, training=False,
                                   intervention=intervention, intervention_step=intervention_step,
-                                  trace=trace, sham=sham)
+                                  trace=trace, sham=sham, event_diagnostics=config.task == "pcp")
             record = dict(episode.metrics)
             if trace:
                 record["trace"] = episode.traces
@@ -64,12 +87,17 @@ def evaluate_checkpoint(checkpoint, scenarios, output, intervention="none",
     after = model_signature(model)
     if before != after:
         raise RuntimeError("Frozen evaluation changed model parameters or buffers")
+    if evaluator["source"]["sha256"] != source_snapshot()["sha256"]:
+        raise RuntimeError("Evaluator source changed during evaluation; keep the checkout fixed")
+    if hashlib.sha256(Path(checkpoint).read_bytes()).hexdigest() != checkpoint_sha256:
+        raise RuntimeError("Checkpoint file changed during frozen evaluation")
     exposed = [episode for episode in episodes if episode["event_exposed"]]
     scheduled = [episode for episode in episodes if episode["scheduled_event_exposed"]]
     report = {
         "checkpoint": str(Path(checkpoint)), "model_signature": before,
-        "checkpoint_sha256": hashlib.sha256(Path(checkpoint).read_bytes()).hexdigest(),
+        "checkpoint_sha256": checkpoint_sha256,
         "format_version": CHECKPOINT_VERSION, "training_seed": config.seed,
+        "evaluation_version": EVALUATION_VERSION, "evaluator": evaluator,
         "config": config.to_dict(), "model_config": saved["model_config"],
         "environment_version": adapter.environment_version,
         "source_sha256": saved.get("source_sha256"),

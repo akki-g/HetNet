@@ -1,0 +1,261 @@
+{
+  "panel": [
+    {
+      "scenario_id": "260930:0",
+      "env_seed": 1148480180,
+      "action_seed": 3550257012,
+      "message_seed": 3826602035,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:1",
+      "env_seed": 2007150296,
+      "action_seed": 1615759084,
+      "message_seed": 3254162962,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:2",
+      "env_seed": 3667227335,
+      "action_seed": 3400120532,
+      "message_seed": 3154827398,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:3",
+      "env_seed": 4195781515,
+      "action_seed": 281709694,
+      "message_seed": 3171885544,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:4",
+      "env_seed": 4213022914,
+      "action_seed": 3309024093,
+      "message_seed": 993201258,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:5",
+      "env_seed": 1394027417,
+      "action_seed": 1823919240,
+      "message_seed": 3205015164,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:6",
+      "env_seed": 1630580251,
+      "action_seed": 1432038280,
+      "message_seed": 302889957,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:7",
+      "env_seed": 2621648190,
+      "action_seed": 1672524829,
+      "message_seed": 1283740695,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:8",
+      "env_seed": 3018956703,
+      "action_seed": 2347214041,
+      "message_seed": 1332799504,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:9",
+      "env_seed": 477066595,
+      "action_seed": 853251975,
+      "message_seed": 2055742654,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:10",
+      "env_seed": 488504959,
+      "action_seed": 1404312046,
+      "message_seed": 920657853,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:11",
+      "env_seed": 3147128471,
+      "action_seed": 2159250009,
+      "message_seed": 1763027993,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:12",
+      "env_seed": 3835129384,
+      "action_seed": 3855717598,
+      "message_seed": 3926825423,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:13",
+      "env_seed": 2921751286,
+      "action_seed": 3952806883,
+      "message_seed": 4173292449,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:14",
+      "env_seed": 3686600541,
+      "action_seed": 2965373400,
+      "message_seed": 1971938067,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:15",
+      "env_seed": 893324657,
+      "action_seed": 3293196180,
+      "message_seed": 3376304614,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:16",
+      "env_seed": 897775283,
+      "action_seed": 1398719863,
+      "message_seed": 2168214171,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:17",
+      "env_seed": 2642348387,
+      "action_seed": 1217081255,
+      "message_seed": 1025328279,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:18",
+      "env_seed": 1628602734,
+      "action_seed": 3998969175,
+      "message_seed": 2552418989,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:19",
+      "env_seed": 3645628993,
+      "action_seed": 4073752635,
+      "message_seed": 3778409505,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:20",
+      "env_seed": 2165258787,
+      "action_seed": 3663580161,
+      "message_seed": 2232593568,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:21",
+      "env_seed": 3989875068,
+      "action_seed": 2863689099,
+      "message_seed": 3541019581,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:22",
+      "env_seed": 1140686857,
+      "action_seed": 1176872982,
+      "message_seed": 1316332527,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    },
+    {
+      "scenario_id": "260930:23",
+      "env_seed": 2258314173,
+      "action_seed": 2048329489,
+      "message_seed": 1580899162,
+      "num_p": 2,
+      "num_a": 1,
+      "event_step": -1,
+      "victim": -1
+    }
+  ],
+  "source_sha256": {
+    "WildFire_Simulate_Original.py": "1d092e0a9cd3bafd0f96fd8f28212567c6c4a8212d4f137c0eedf3d6eba63406",
+    "envs/ic3net_envs/fire_commander_env.py": "c2a4df6e2a385fe407889e299122946fbaab330b332a4928e1e50dfefb41f75e",
+    "softrole/env.py": "d0c49b3fb10521946cc5501fc33af5b1a0c8e3c16c5e9231854f9aac3cf87cd1",
+    "softrole/model.py": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a",
+    "softrole/rollout.py": "a552947c97d40bf42c25df38a763277510a557170aef937f727771856d8a4bda",
+    "softrole/scenarios.py": "c9f68a1cf7e4f9b4d2194478a783c0789fc2bd7741819613bbde6335d82cc503",
+    "softrole/config.py": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1",
+    "softrole/learning.py": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280",
+    "analysis/fc_audit_2026-09-30/policy_probe.py": "05c13aadc784f5ad8462f52c5a3e2ac3f3c4e32b1947012718639b3d93789847"
+  },
+  "checkpoint_rule": "epoch0200.pt for every FC shared/banked seed 0,1,2; common archived epoch selected before outcomes",
+  "python": "3.12.13 (main, Jun 23 2026, 15:44:24) [Clang 22.1.3 ]",
+  "torch": "2.2.1",
+  "numpy": "1.26.4",
+  "torch_threads": 1,
+  "policy_results": []
+}

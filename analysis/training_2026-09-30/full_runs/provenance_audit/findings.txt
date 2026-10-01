@@ -1,0 +1,82 @@
+Provenance and checkpoint audit of stokes_runs/runs
+
+Scope: read-only audit of copied artifacts. No inference about live scheduler status,
+completion of requested research budgets, causal architectural benefits or learned
+robustness. The reproducible audit is audit.py; machine-readable evidence is audit.json.
+
+Inventory and launch separation
+- 37 run directories: 9 reproduction-fast and 18 softrole_primary primary runs;
+  9 earlier reproduction launches and one speed-check launch.
+- The earlier reproduction folders end after 8-17 epochs despite nominal 1400/2000
+  budgets, contain exit_code=0 but no checkpoint, and must not be combined with the
+  primary runs as extra independent seeds. The speed-check is explicitly 3 epochs.
+- The 27 primary snapshots have no exit_code.txt; absence alone does not establish
+  whether their remote jobs are currently running, complete or failed.
+- 218 checkpoint files: 97 primary original, 120 SoftRole, 1 speed-check.
+
+Source and configuration identity
+- Every SoftRole source manifest identifies commit 6994d87b0094e17afa85a1a1ed28043d1c812b46
+  and source SHA256 35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163.
+- All 73 archived source files per SoftRole run match their recorded hashes, across
+  all 18 archives. All 18 aggregate source hashes recompute exactly and agree with
+  run.json. Compared with local checkout, the only differing archived file is
+  AGENTS.md; the model, learner, environment and evaluation source bytes match.
+- Captured git status lists untracked logs_1/logs_sr, with no tracked source changes.
+  This verifies saved source provenance, not an independent certificate of every
+  byte executed throughout the remote process lifetime.
+- All 9 primary original runs record commit 37dd2f314393b21949b60c1dbcc3c82a642e4de8,
+  empty source.patch, Python 3.12.7, Torch 2.2.1, DGL 2.1.0, NumPy 1.26.4, and CPU args.
+  This commit exists locally, allowing source reconstruction. No full original
+  per-run source snapshot was supplied; the commit/patch is the identity record.
+- SoftRole run.json confirms NumPy 1.26.4, Torch 2.2.1+cu121, float64, environment
+  corrected-observation-v1, and no resume/parent source. It does not provide a full
+  pip inventory or host/time record, so a complete cross-pipeline runtime-environment
+  equivalence claim or hardware-normalized speed comparison is not supported.
+- Within each SoftRole task, saved configs differ only in model and seed; numerical
+  settings, input/state architecture and batch schedule are otherwise identical.
+  Every config has failure_prob=0, no composition mixture, and no held-out panel.
+  Thus these are ordinary fixed-roster training runs, not adaptation evidence.
+
+Parameterization
+- PP/PCP: shared 171087, banked 224171 parameters; FC: shared 113743, banked 166827.
+  Banked adds 53084 parameters: 31.03% for PP/PCP and 46.67% for FC. The banked/shared
+  comparison is not parameter-count matched, although other saved hyperparameters
+  match within task. Greater capacity does not imply easier or faster optimization.
+- Original Real: PP/PCP 498812, FC 108620 parameters, including unused typed paths.
+  Signatures show 52 float64 parameter tensors and 24 float32 attention tensors.
+  All SoftRole parameter tensors are float64. Avoid describing both models as
+  uniformly float64. Parameter counts alone do not determine computation or quality.
+- All SoftRole parameter tensors changed between initialization and latest saved
+  checkpoint. Original PP has 40/76 unchanged parameter tensors, PCP/FC 21-22/76.
+  Unchanged original tensors are not automatically a defect: absent agent types
+  remove some paths; a singleton attention neighborhood has softmax weight 1 and
+  derivative 0. This audit does not prove every unchanged tensor has that cause.
+- Matching PP/PCP seed numbers share initialization signatures within a model,
+  consistent with identical parameter shapes and deterministic seeded initialization.
+  Different seeds have different initialization signatures. Matching seed integers
+  do not establish independent matched evaluation pairs across algorithms.
+
+Checkpoint checks
+- All 120 SoftRole checkpoints loaded using torch.load(weights_only=True).
+  Actual tensor names/shapes/dtypes/content hashes match the embedded signature and
+  external sidecar; all model and optimizer tensors are finite. Config, source ID,
+  environment version, epoch/update/step/episode counts match saved metrics; every
+  optimizer per-parameter step counter equals the recorded update count.
+- All 97 primary original checkpoint byte lengths agree with checkpoint_records,
+  and their canonical sidecar signatures agree exactly with the recorded signature
+  at that epoch. All original epoch-signature counts match metric epoch counts.
+  The speed-check checkpoint passes the same checks. This script does not deserialize
+  legacy checkpoints: weights_only=True rejected project class utils.LogField.
+  A separate reproduction audit may document stronger actual-payload verification.
+- SHA256 file hashes are recorded for all 218 checkpoints (1,521,516,182 bytes total).
+  No missing expected checkpoint/sidecar pairs were found. Latest checkpoints precede
+  final observed metrics by the configured save cadence, so the last metric point
+  generally cannot be treated as a supplied frozen checkpoint result.
+
+Snapshot alignment
+- fc_banked/seed0: metrics.jsonl ends epoch 319/update 3190, while updates.jsonl ends 3189.
+- The other 17 SoftRole runs have zero through nine update rows after their latest
+  completed epoch. These are not atomic cross-file snapshots; use reconciled prefixes
+  for cross-file aggregation and retain the mismatch as a data-quality note.
+- Sidecar/checkpoint and epoch-metric alignment is exact at every checkpoint tested.
+  The one-update copy mismatch does not by itself imply corrupted training.

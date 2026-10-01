@@ -1,0 +1,31 @@
+{
+  "all_probe_source_hashes_match": true,
+  "all_six_checkpoint_bytes_match": true,
+  "date": "2026-09-30",
+  "episodes": 144,
+  "existing_tests": {
+    "command": ".venv/bin/python -m pytest -q tests/test_softrole_env.py tests/test_softrole_learning.py tests/test_softrole_training.py tests/test_reproduction_launch.py",
+    "duration_seconds": 9.88,
+    "passed": 40
+  },
+  "failures_after_source_capture": 70,
+  "full_policy_traces_rechecked": 144,
+  "git_commit": "6994d87b0094e17afa85a1a1ed28043d1c812b46",
+  "independent_reviews": [
+    "simulator correctness and interpretation",
+    "log arithmetic, all policy traces, critic bound and causal limits"
+  ],
+  "independent_summary_fields": 180,
+  "local_links_verified": 8,
+  "log_input_hashes_rechecked": 475,
+  "optimizer_updates": 0,
+  "placeholder_exposed": 138,
+  "report_sha256": "00c38cf35eac1065c94e2df9c6d86781a0a6c7a1948da464da89d7a2a86c2c5a",
+  "runtime_training_dependencies_existing_inputs_unchanged": true,
+  "scope": "Read-only FC runtime audit plus new repository analysis artifacts and AGENTS work log",
+  "script_compilation": "all four probes passed",
+  "source_captures": 143,
+  "successes": 73,
+  "terminal_value_bound_and_advantage_verified": true,
+  "whitespace_check": "passed"
+}

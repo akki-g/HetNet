@@ -1,4 +1,4 @@
-"""Run ``python -m softrole {train,evaluate,evaluate-hetnet,summarize}``."""
+"""Standalone training, frozen evaluation, native PCP pilot and summaries."""
 import argparse
 import json
 from pathlib import Path
@@ -79,6 +79,14 @@ def parser():
     legacy.add_argument("--msg-dim", type=int)
     legacy.add_argument("--comm-range", type=float)
 
+    pilot = commands.add_parser("pilot-failure", help="paired nominal PCP 2P1A diagnostic pilot")
+    pilot.add_argument("--checkpoints", nargs="+", type=Path, required=True,
+                       help="one nominal shared and banked checkpoint per training seed")
+    pilot.add_argument("--checkpoint-rule", required=True, help="predeclared selection rule, recorded verbatim")
+    pilot.add_argument("--output", type=Path, required=True, help="fresh pilot directory")
+    pilot.add_argument("--episodes", type=int, default=20, help="scenarios per policy and condition")
+    pilot.add_argument("--seed", type=int, default=1700, help="evaluation scenario seed")
+
     report = commands.add_parser("summarize", help="seed-level uncertainty, stratified by composition")
     report.add_argument("reports", nargs="+", type=Path)
     report.add_argument("--output", type=Path)
@@ -142,7 +150,7 @@ def main(argv=None):
             report = evaluate_checkpoint(args.checkpoint, scenarios, args.output,
                          args.intervention, args.intervention_step, args.trace, sham=args.sham)
             print(json.dumps({key: value for key, value in report.items()
-                              if key not in ("per_episode", "scenarios", "config", "model_config")}, indent=2))
+                              if key not in ("per_episode", "scenarios", "config", "model_config", "evaluator")}, indent=2))
         elif args.command == "evaluate-hetnet":
             from softrole.hetnet import evaluate_hetnet
             config = recipe(args.task, **{name: getattr(args, name) for name in
@@ -151,6 +159,10 @@ def main(argv=None):
                                     args.output, use_binary=args.variant == "binary", trace=args.trace)
             print(json.dumps({key: value for key, value in report.items()
                               if key not in ("per_episode", "scenarios", "config", "model_config")}, indent=2))
+        elif args.command == "pilot-failure":
+            from softrole.pilot import run_pilot
+            report = run_pilot(args.checkpoints, args.output, args.checkpoint_rule, args.episodes, args.seed)
+            print(json.dumps(report, indent=2, allow_nan=False))
         else:
             from softrole.report import summarize_reports
             report = summarize_reports(args.reports, args.output, args.bootstrap_samples, args.seed)

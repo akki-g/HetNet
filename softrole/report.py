@@ -53,6 +53,8 @@ def summarize_reports(paths, output=None, bootstrap_samples=10000, seed=0):
             scheduled_failure = episode.get("event_step", -1) >= 0
             identity = {"config": config, "environment_version": environment,
                         "source_sha256": report.get("source_sha256"),
+                        "evaluation_version": report.get("evaluation_version"),
+                        "evaluator_source_sha256": report.get("evaluator", {}).get("source", {}).get("sha256"),
                         "checkpoint_epoch": progress.get("epoch"),
                         "checkpoint_updates": progress.get("updates"),
                         "composition": episode["composition"],

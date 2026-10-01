@@ -79,14 +79,19 @@ def validate_scenario(config, scenario, intervention="none", intervention_step=N
 
 
 def run_episode(model, adapter, config, scenario, training=True, intervention="none",
-                intervention_step=None, trace=False, sham=False):
+                intervention_step=None, trace=False, sham=False, event_diagnostics=False):
     """Run one scenario; sham suppresses failure but retains its intervention clock.
 
     ``event_exposed`` and recovery metrics always describe actual sensor loss.
     Scheduled exposure/completion metrics provide the corresponding no-failure
     follow-up in a sham control, including right censoring at the task horizon.
+    Opt-in PCP diagnostics describe the victim immediately before event masking
+    and action. Direct-observation history includes only steps strictly before
+    the event; unexposed or absent events have null diagnostic fields.
     """
     trigger = validate_scenario(config, scenario, intervention, intervention_step, sham)
+    if event_diagnostics and getattr(config, "task", "pcp") != "pcp":
+        raise ValueError("Sensor-event diagnostics are supported only for PCP")
     n_agents = scenario.num_p + scenario.num_a
     dtype = next(model.parameters()).dtype
     obs, kappa = adapter.reset(seed=scenario.env_seed, num_p=scenario.num_p, num_a=scenario.num_a)
@@ -97,9 +102,23 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
     prior_gate, pinned_gate = None, None
     gate_sum, entropy_sum, null_sum = None, 0.0, 0.0
     event_exposed = scheduled_event_exposed = intervention_exposed = False
+    diagnostic_metrics = {"pre_event_victim_reached": None,
+                          "pre_event_victim_target_visible": None,
+                          "pre_event_victim_target_seen": None} if event_diagnostics else {}
+    victim_target_seen = False
     info = {}
     with torch.set_grad_enabled(training):
         for t in range(config.max_steps):
+            if event_diagnostics and t <= scenario.event_step:
+                status = adapter.pcp_sensor_status(scenario.victim)
+                if t == scenario.event_step:
+                    diagnostic_metrics.update(
+                        pre_event_victim_reached=status["reached"],
+                        pre_event_victim_target_visible=status["target_visible"],
+                        pre_event_victim_target_seen=victim_target_seen,
+                    )
+                else:
+                    victim_target_seen |= status["target_visible"]
             if t == scenario.event_step:
                 scheduled_event_exposed = True
                 if not sham:
@@ -181,4 +200,5 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
         "payload_bits_generated": steps * n_agents * 2 * config.msg_dim,
         "environment_version": info.get("environment_version", "unspecified"),
     }
+    episode.metrics.update(diagnostic_metrics)
     return episode

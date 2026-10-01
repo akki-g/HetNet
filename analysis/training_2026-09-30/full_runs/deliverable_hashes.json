@@ -1,0 +1,62 @@
+{
+  "analysis/training_2026-09-30/report.md": {
+    "bytes": 32908,
+    "sha256": "b4a3a5fe1026cfd1a42dc294c7cd8b2711e84ffaa175022d4506d20402839bb2"
+  },
+  "analysis/training_2026-09-30/training_report.pdf": {
+    "bytes": 1003933,
+    "sha256": "f0a4a5ba0eb16ca68a9d9f8dd0425ee27d17489c5a63a7ea78a9d5059d6043d1"
+  },
+  "analysis/training_2026-09-30/training_report.tex": {
+    "bytes": 40869,
+    "sha256": "d0dc780e7148dfa9d33d8746bb334b5bb1896e4ba6ad3fdc42a836565cfdf91d"
+  },
+  "analysis/training_2026-09-30/full_runs/plot_episode_diagnostics.py": {
+    "bytes": 5937,
+    "sha256": "55e06055909f23c6c39c462aa46dae127b3be233676cf0393480785a96709d4d"
+  },
+  "analysis/training_2026-09-30/full_runs/build_pdf.py": {
+    "bytes": 2713,
+    "sha256": "8255240bbc3eeda5833f1fe67c2e224e1a0d0e4ebb3da7a97565b9ab6023af94"
+  },
+  "analysis/training_2026-09-30/full_runs/write_report.py": {
+    "bytes": 31576,
+    "sha256": "5852eade0bcc541c1d23c6b9f61433ee2702ca07d7b8aba08ec8065a3c275441"
+  },
+  "analysis/training_2026-09-30/full_runs/analyze_full.py": {
+    "bytes": 12354,
+    "sha256": "9abdcf506ff0fe2a3cd8b842448d0cd5be83e5adb879f48315cadac5a58ebe53"
+  },
+  "analysis/training_2026-09-30/full_runs/expert_weights.pdf": {
+    "bytes": 16934,
+    "sha256": "776d44d3db2651a290f7896bfa2f069e15b4021e97d0b13c1ac9d92aa0e64c5c"
+  },
+  "analysis/training_2026-09-30/full_runs/optimization_diagnostics.pdf": {
+    "bytes": 396149,
+    "sha256": "41903459472c8eb8e41de31b2430d6662143081f92ca15e3e14951cc998fbe5a"
+  },
+  "analysis/training_2026-09-30/full_runs/sample_learning_curves.pdf": {
+    "bytes": 412803,
+    "sha256": "be2ef1426297fb48302b8572720f85112d525165aeefeb5efa9cc95ef52422ff"
+  },
+  "analysis/training_2026-09-30/full_runs/gate_diagnostics.pdf": {
+    "bytes": 36279,
+    "sha256": "c165cf04c4146949535feaf06b6ba6b2ea4cdc5f3e65e4b4e64df9f381f50b10"
+  },
+  "analysis/training_2026-09-30/full_runs/full_run_plots.pdf": {
+    "bytes": 812575,
+    "sha256": "7dd2cb2b8d84165d8da6489e36097276eff2e3ac8f19b5fb4d4d20966923cf2b"
+  },
+  "analysis/training_2026-09-30/full_runs/episode_diagnostic_plots.pdf": {
+    "bytes": 66987,
+    "sha256": "ec78a42b4669b1e402456a80b855f465f5f00d91c18088f487e85ddd718563f4"
+  },
+  "analysis/training_2026-09-30/full_runs/episode_length_survival.pdf": {
+    "bytes": 35832,
+    "sha256": "80e6e3c783644bf564427ec92716d659c5b25a5242d2f10bb432dbc0eb4981b1"
+  },
+  "analysis/training_2026-09-30/full_runs/common_sample_comparison.pdf": {
+    "bytes": 28970,
+    "sha256": "e5ae86d46cc19d9aa9c950676b2999521663262e85ef57134d47a154c3c7ae5f"
+  }
+}

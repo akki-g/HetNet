@@ -1,0 +1,2039 @@
+[
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed0/checkpoints/fc_real_seed0/run1/model_ep100.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1000,
+    "optimizer_step_max": 1000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed0/checkpoints/fc_real_seed0/run1/model_ep150.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1500,
+    "optimizer_step_max": 1500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed0/checkpoints/fc_real_seed0/run1/model_ep200.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2000,
+    "optimizer_step_max": 2000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed0/checkpoints/fc_real_seed0/run1/model_ep250.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2500,
+    "optimizer_step_max": 2500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed0/checkpoints/fc_real_seed0/run1/model_ep300.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 3000,
+    "optimizer_step_max": 3000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed0/checkpoints/fc_real_seed0/run1/model_ep350.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 3500,
+    "optimizer_step_max": 3500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed0/checkpoints/fc_real_seed0/run1/model_ep400.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 4000,
+    "optimizer_step_max": 4000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed0/checkpoints/fc_real_seed0/run1/model_ep450.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 4500,
+    "optimizer_step_max": 4500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed0/checkpoints/fc_real_seed0/run1/model_ep50.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 500,
+    "optimizer_step_max": 500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed0/checkpoints/fc_real_seed0/run1/model_ep500.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 5000,
+    "optimizer_step_max": 5000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed0/checkpoints/fc_real_seed0/run1/model_ep550.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 5500,
+    "optimizer_step_max": 5500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed0/checkpoints/fc_real_seed0/run1/model_ep600.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 6000,
+    "optimizer_step_max": 6000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed1/checkpoints/fc_real_seed1/run1/model_ep100.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1000,
+    "optimizer_step_max": 1000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed1/checkpoints/fc_real_seed1/run1/model_ep150.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1500,
+    "optimizer_step_max": 1500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed1/checkpoints/fc_real_seed1/run1/model_ep200.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2000,
+    "optimizer_step_max": 2000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed1/checkpoints/fc_real_seed1/run1/model_ep250.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2500,
+    "optimizer_step_max": 2500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed1/checkpoints/fc_real_seed1/run1/model_ep300.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 3000,
+    "optimizer_step_max": 3000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed1/checkpoints/fc_real_seed1/run1/model_ep350.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 3500,
+    "optimizer_step_max": 3500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed1/checkpoints/fc_real_seed1/run1/model_ep400.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 4000,
+    "optimizer_step_max": 4000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed1/checkpoints/fc_real_seed1/run1/model_ep450.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 4500,
+    "optimizer_step_max": 4500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed1/checkpoints/fc_real_seed1/run1/model_ep50.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 500,
+    "optimizer_step_max": 500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed1/checkpoints/fc_real_seed1/run1/model_ep500.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 5000,
+    "optimizer_step_max": 5000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed1/checkpoints/fc_real_seed1/run1/model_ep550.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 5500,
+    "optimizer_step_max": 5500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed1/checkpoints/fc_real_seed1/run1/model_ep600.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 6000,
+    "optimizer_step_max": 6000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed2/checkpoints/fc_real_seed2/run1/model_ep100.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1000,
+    "optimizer_step_max": 1000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed2/checkpoints/fc_real_seed2/run1/model_ep150.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1500,
+    "optimizer_step_max": 1500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed2/checkpoints/fc_real_seed2/run1/model_ep200.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2000,
+    "optimizer_step_max": 2000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed2/checkpoints/fc_real_seed2/run1/model_ep250.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2500,
+    "optimizer_step_max": 2500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed2/checkpoints/fc_real_seed2/run1/model_ep300.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 3000,
+    "optimizer_step_max": 3000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed2/checkpoints/fc_real_seed2/run1/model_ep350.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 3500,
+    "optimizer_step_max": 3500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed2/checkpoints/fc_real_seed2/run1/model_ep400.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 4000,
+    "optimizer_step_max": 4000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed2/checkpoints/fc_real_seed2/run1/model_ep450.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 4500,
+    "optimizer_step_max": 4500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed2/checkpoints/fc_real_seed2/run1/model_ep50.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 500,
+    "optimizer_step_max": 500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed2/checkpoints/fc_real_seed2/run1/model_ep500.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 5000,
+    "optimizer_step_max": 5000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed2/checkpoints/fc_real_seed2/run1/model_ep550.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 5500,
+    "optimizer_step_max": 5500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed2/checkpoints/fc_real_seed2/run1/model_ep600.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 6000,
+    "optimizer_step_max": 6000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/fc_real/seed2/checkpoints/fc_real_seed2/run1/model_ep650.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 6500,
+    "optimizer_step_max": 6500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep100.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1000,
+    "optimizer_step_max": 1000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep150.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1500,
+    "optimizer_step_max": 1500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep200.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2000,
+    "optimizer_step_max": 2000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep250.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2500,
+    "optimizer_step_max": 2500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep300.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 3000,
+    "optimizer_step_max": 3000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep350.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 3500,
+    "optimizer_step_max": 3500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep400.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 4000,
+    "optimizer_step_max": 4000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep450.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 4500,
+    "optimizer_step_max": 4500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep50.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 500,
+    "optimizer_step_max": 500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep500.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 5000,
+    "optimizer_step_max": 5000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep550.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 5500,
+    "optimizer_step_max": 5500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep600.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 6000,
+    "optimizer_step_max": 6000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep650.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 6500,
+    "optimizer_step_max": 6500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep700.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 7000,
+    "optimizer_step_max": 7000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep750.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 7500,
+    "optimizer_step_max": 7500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/checkpoints/pcp_real_seed0/run1/model_ep800.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 8000,
+    "optimizer_step_max": 8000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed1/checkpoints/pcp_real_seed1/run1/model_ep100.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1000,
+    "optimizer_step_max": 1000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed1/checkpoints/pcp_real_seed1/run1/model_ep150.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1500,
+    "optimizer_step_max": 1500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed1/checkpoints/pcp_real_seed1/run1/model_ep200.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2000,
+    "optimizer_step_max": 2000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed1/checkpoints/pcp_real_seed1/run1/model_ep250.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2500,
+    "optimizer_step_max": 2500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed1/checkpoints/pcp_real_seed1/run1/model_ep300.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 3000,
+    "optimizer_step_max": 3000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed1/checkpoints/pcp_real_seed1/run1/model_ep350.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 3500,
+    "optimizer_step_max": 3500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed1/checkpoints/pcp_real_seed1/run1/model_ep400.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 4000,
+    "optimizer_step_max": 4000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed1/checkpoints/pcp_real_seed1/run1/model_ep450.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 4500,
+    "optimizer_step_max": 4500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed1/checkpoints/pcp_real_seed1/run1/model_ep50.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 500,
+    "optimizer_step_max": 500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed1/checkpoints/pcp_real_seed1/run1/model_ep500.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 5000,
+    "optimizer_step_max": 5000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed1/checkpoints/pcp_real_seed1/run1/model_ep550.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 5500,
+    "optimizer_step_max": 5500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed1/checkpoints/pcp_real_seed1/run1/model_ep600.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 6000,
+    "optimizer_step_max": 6000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep100.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1000,
+    "optimizer_step_max": 1000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep150.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1500,
+    "optimizer_step_max": 1500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep200.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2000,
+    "optimizer_step_max": 2000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep250.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2500,
+    "optimizer_step_max": 2500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep300.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 3000,
+    "optimizer_step_max": 3000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep350.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 3500,
+    "optimizer_step_max": 3500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep400.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 4000,
+    "optimizer_step_max": 4000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep450.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 4500,
+    "optimizer_step_max": 4500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep50.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 500,
+    "optimizer_step_max": 500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep500.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 5000,
+    "optimizer_step_max": 5000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep550.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 5500,
+    "optimizer_step_max": 5500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep600.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 6000,
+    "optimizer_step_max": 6000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep650.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 6500,
+    "optimizer_step_max": 6500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep700.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 7000,
+    "optimizer_step_max": 7000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/checkpoints/pcp_real_seed2/run1/model_ep750.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 7500,
+    "optimizer_step_max": 7500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed0/checkpoints/pp_real_seed0/run1/model_ep100.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1000,
+    "optimizer_step_max": 1000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed0/checkpoints/pp_real_seed0/run1/model_ep150.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1500,
+    "optimizer_step_max": 1500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed0/checkpoints/pp_real_seed0/run1/model_ep200.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2000,
+    "optimizer_step_max": 2000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed0/checkpoints/pp_real_seed0/run1/model_ep250.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2500,
+    "optimizer_step_max": 2500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed0/checkpoints/pp_real_seed0/run1/model_ep50.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 500,
+    "optimizer_step_max": 500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 0
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed1/checkpoints/pp_real_seed1/run1/model_ep100.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1000,
+    "optimizer_step_max": 1000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed1/checkpoints/pp_real_seed1/run1/model_ep150.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1500,
+    "optimizer_step_max": 1500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed1/checkpoints/pp_real_seed1/run1/model_ep200.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2000,
+    "optimizer_step_max": 2000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed1/checkpoints/pp_real_seed1/run1/model_ep250.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2500,
+    "optimizer_step_max": 2500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed1/checkpoints/pp_real_seed1/run1/model_ep50.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 500,
+    "optimizer_step_max": 500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 1
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed2/checkpoints/pp_real_seed2/run1/model_ep100.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1000,
+    "optimizer_step_max": 1000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed2/checkpoints/pp_real_seed2/run1/model_ep150.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 1500,
+    "optimizer_step_max": 1500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed2/checkpoints/pp_real_seed2/run1/model_ep200.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2000,
+    "optimizer_step_max": 2000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed2/checkpoints/pp_real_seed2/run1/model_ep250.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 2500,
+    "optimizer_step_max": 2500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed2/checkpoints/pp_real_seed2/run1/model_ep300.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 3000,
+    "optimizer_step_max": 3000,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed2/checkpoints/pp_real_seed2/run1/model_ep350.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 3500,
+    "optimizer_step_max": 3500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  },
+  {
+    "path": "stokes_runs/runs/reproduction-fast/pp_real/seed2/checkpoints/pp_real_seed2/run1/model_ep50.pt",
+    "tensors_match_sidecar": true,
+    "model_and_optimizer_tensors_finite": true,
+    "optimizer_step_min": 500,
+    "optimizer_step_max": 500,
+    "optimizer_groups": [
+      {
+        "lr": 0.0001,
+        "momentum": 0,
+        "alpha": 0.97,
+        "eps": 1e-06,
+        "centered": false,
+        "weight_decay": 0,
+        "foreach": null,
+        "maximize": false,
+        "differentiable": false
+      }
+    ],
+    "seed": 2
+  }
+]

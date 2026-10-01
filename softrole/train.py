@@ -8,7 +8,6 @@ import hashlib
 import json
 import multiprocessing as mp
 from pathlib import Path
-import shutil
 import subprocess
 import time
 
@@ -36,8 +35,11 @@ def append_json(path, payload):
         stream.write(json.dumps(payload, sort_keys=True, allow_nan=False) + "\n")
 
 
-def source_snapshot(output):
-    """Archive actual source bytes, including new untracked implementation files."""
+def source_snapshot(output=None):
+    """Identify actual source bytes; optionally archive them in a fresh output.
+
+    The read-only form lets evaluation record the same provenance as training.
+    """
     root = Path(__file__).resolve().parents[1]
     tracked = subprocess.check_output(["git", "ls-files", "-z"], cwd=root).decode().split("\0")
     files = {root / name for name in tracked if name and Path(name).suffix in
@@ -52,15 +54,18 @@ def source_snapshot(output):
         if not path.is_file():
             continue
         relative = path.relative_to(root)
-        target = output / "source" / relative
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(path, target)
-        manifest[str(relative)] = hashlib.sha256(path.read_bytes()).hexdigest()
+        data = path.read_bytes()
+        if output is not None:
+            target = Path(output) / "source" / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(data)
+        manifest[str(relative)] = hashlib.sha256(data).hexdigest()
     source_id = hashlib.sha256(json.dumps(manifest, sort_keys=True).encode()).hexdigest()
     record = {"sha256": source_id, "files": manifest,
               "git_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root).decode().strip(),
               "git_status": subprocess.check_output(["git", "status", "--short"], cwd=root).decode()}
-    write_json(output / "source_manifest.json", record)
+    if output is not None:
+        write_json(Path(output) / "source_manifest.json", record)
     return record
 
 

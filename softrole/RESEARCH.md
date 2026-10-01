@@ -385,14 +385,18 @@ not pool horizons, training-source hashes or checkpoint epoch/update counts, and
 scenarios and conflicting same-seed checkpoints. Intervals are conditional on
 the supplied evaluation panels; few-seed percentile intervals remain unstable.
 Exact collected steps/episodes remain available but are not equality conditions
-for grouping. Evaluation currently records the checkpoint's training-source hash,
-not a separate hash of the executed evaluator; retain the evaluator checkout when
-archiving an experiment. Event strata distinguish scheduled event presence,
+for grouping. SoftRole evaluation schema version 2 records the checkpoint's
+training-source hash separately from the evaluator source manifest/hash and
+runtime inventory. Summary strata also separate evaluator hashes and schema
+versions (absent in historical reports). The pilot below archives evaluator source;
+standalone `evaluate` records its identity, so retain that checkout when archiving.
+Event strata distinguish scheduled event presence,
 sham status and intervention offset, rather than infer the event-time/victim
 distribution. Callers must hold those evaluation distributions consistent within
 a stratum. The emphasis on independent runs and uncertainty follows
 [Agarwal et al.](https://arxiv.org/abs/2108.13264). A formal paired difference
-analysis or hierarchical episode-and-seed bootstrap is not implemented.
+analysis or hierarchical episode-and-seed bootstrap is not implemented. The
+native pilot calculates descriptive paired means without inferential intervals.
 
 The `evaluate-hetnet` path strictly loads existing `policy_net` tensors, creates
 the requested count-specific graph using actual positions, and handles the
@@ -476,6 +480,110 @@ Every run saves resolved configuration, copied source and SHA manifest, initial
 signature, per-episode/update/epoch JSON records, model/optimizer checkpoints and
 completion counts. Resume permits only budget/checkpoint-frequency changes and
 preserves work-indexed randomness, including a partially completed epoch.
+
+### 8.1 Native PCP failure pilot
+
+`pilot-failure` tests unexpected sensor loss in **nominally trained** weights on
+their native 2P1A team, map5, vision2, horizon80. It requires one shared and one
+banked checkpoint per supplied training seed, matching training source and
+configuration except model, seed and budget/checkpoint-frequency settings. It
+does not select checkpoints, change their configuration or evaluate held-out teams.
+Record a selection rule before inspecting pilot outcomes; exact checkpoint
+steps/episodes and hashes remain in the manifest because equal epochs do not
+imply equal samples.
+
+The engineering pilot rule is: seed 0 for both models, first archived checkpoint
+reaching 4M environment steps. This selects epoch0200 for both: shared 4,265,196
+steps/77,778 episodes and banked 4,279,220/68,993, both 2,000 updates. These are
+partial nominal-training checkpoints, not final research checkpoints. The
+14,024-step difference is retained; the pilot does not estimate architectural
+superiority or support a between-training-seed interval.
+
+```bash
+.venv/bin/python -m softrole pilot-failure \
+  --checkpoints \
+    stokes_runs/runs/softrole_primary/pcp_shared/seed0/checkpoints/epoch0200.pt \
+    stokes_runs/runs/softrole_primary/pcp_banked/seed0/checkpoints/epoch0200.pt \
+  --checkpoint-rule 'Seed 0; first archived checkpoint reaching 4000000 environment steps per model' \
+  --episodes 20 --seed 1700 --output runs/sensor_failure_pilot_reference
+```
+
+The fixed reference panel assigns a failure to every scenario, with uniform
+integer time 10–30 and uniform sensing victim. Every policy receives the same
+panel and separate failure/sham runs with no gate intervention. The seed uses
+the same composition namespace as `evaluate --compositions 2,1 --seed 1700`.
+`pilot.json`, `scenarios.json` and the evaluator `source/` archive plus manifest
+are written before outcomes. Per-condition JSON files include traces and runtime
+versions; `summary.json` is written only after all pairs pass checks. An interrupted
+pilot is left intact; use a fresh directory when rerunning.
+
+All PCP SoftRole evaluations record these diagnostics, including when `--trace`
+is absent. Training collection remains unchanged.
+
+| Episode field | Meaning at the scheduled step, before masking/action |
+|---|---|
+| `pre_event_victim_reached` | Physical reached flag; under static PCP the victim remains at the target. |
+| `pre_event_victim_target_visible` | Target appears in the cached pre-loss view; this view is masked before the failure policy can consume it. |
+| `pre_event_victim_target_seen` | Target appeared in a directly delivered sensing view at a strictly earlier step. This excludes the event step and is false for an event at step zero. |
+
+Fields are null when the episode ends before the schedule or no event is assigned.
+Diagnostics read cached observations/state without simulator observation calls or
+random draws. They never enter actor/critic inputs, rewards or transitions, so
+the environment and checkpoint versions remain unchanged. Direct sight does not
+measure what the agent remembers or learned through messages. Current visibility,
+previous sight and reached status are overlapping diagnostics, not disjoint groups.
+
+The summary verifies full scenario records, checkpoint/evaluator identities,
+pre-event traces and diagnostics. It reports absolute success, return and
+horizon-capped completion for both conditions, full-panel failure-minus-sham
+means and discordant success counts for each policy. Exposure, pre-event success,
+failed/censored completion and diagnostic counts retain explicit denominators.
+The completion-time difference has the opposite desirability direction to success
+and return: a positive value means slower completion under failure. No hypothesis
+test, cross-model pooled estimate or paired inferential interval is computed.
+
+To replay a condition or inspect mechanism controls, reuse the saved panel:
+
+```bash
+.venv/bin/python -m softrole evaluate \
+  --checkpoint stokes_runs/runs/softrole_primary/pcp_banked/seed0/checkpoints/epoch0200.pt \
+  --scenarios runs/sensor_failure_pilot_reference/scenarios.json \
+  --intervention freeze_affected --trace \
+  --output runs/sensor_failure_pilot_controls/banked_failure_freeze.json
+# Repeat with --sham and a fresh filename; none/freeze_all/comm_off are also available.
+```
+
+Keep the evaluator checkout fixed during evaluation. The reference pilot only
+uses `none`; the example freeze is a separate prospective control, not part of
+its completed-panel summary. A full assigned-panel mechanism contrast remains
+separate analysis. Earlier events or harder conditions require a declared
+supplemental protocol before held-out evaluation.
+
+### 8.2 PCP-only failure training launch
+
+`scripts/softrole_failure.sh` uses the existing learner and declared failure
+preset: compositions (2,1)/(2,2)/(3,1), failure probability .5, window10–30.
+Indices 0/1/2 select shared seeds0/1/2; 3/4/5 select banked seeds0/1/2. Outputs
+default to `runs/softrole_failure/pcp_MODEL/seedSEED`; set a new
+`SOFTROLE_FAILURE_RUN_ROOT` for each study. The route accepts budget/collector/
+checkpoint-frequency flags and `--dry-run`, and rejects protocol/model/seed/
+output/resume overrides. It never repurposes nominal `--resume` as failure training.
+
+```bash
+bash scripts/softrole_failure.sh 0 --dry-run
+# Tiny real training check with the reference horizon/window; not a research run.
+SOFTROLE_FAILURE_RUN_ROOT=runs/sensor_failure_training_check \
+  bash scripts/softrole_failure.sh 0 --epochs 1 --updates-per-epoch 1 \
+  --batch-steps 1 --nprocesses 1 --save-every 1
+# Optional research submission, after locking the budget and inspecting the pilot:
+# mkdir -p logs_sr
+# SOFTROLE_FAILURE_RUN_ROOT=runs/declared_failure_study \
+#   sbatch slurm/softrole_failure.sbatch --total-steps DECLARED_BUDGET
+```
+
+The dedicated Slurm array is 0–5 with the original unmeasured resource requests;
+it submits no jobs automatically. This first screen is distinct from the final
+multi-seed comparison, mechanism controls and frozen held-out study in section6.
 
 ## 9. Evidence required before making research claims
 

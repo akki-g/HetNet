@@ -1,0 +1,2166 @@
+{
+  "summary": {
+    "variant": "shared",
+    "seed": 1,
+    "checkpoint": "stokes_runs/runs/softrole_primary/fc_shared/seed1/checkpoints/epoch0200.pt",
+    "checkpoint_sha256": "011ccc529d2ab22f23eaf5ad99c987a12374ceaaafa8ae678a6b3d28e503bd37",
+    "model_signature": "799d53341db5eafe8f262c1490a107ea8ae0a1060dd7503710460c5b9e4f4934",
+    "training_source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+    "total_steps": 5018477,
+    "epoch": 200,
+    "updates": 2000,
+    "episodes": 24,
+    "successes": 11,
+    "mean_steps": 221.0,
+    "mean_return": -153.10000000000048,
+    "zero_placeholder_episodes": 23,
+    "source_captured_episodes": 24,
+    "source_capture_at_origin_episodes": 23,
+    "failed_after_source_capture": 13,
+    "mean_action_entropy_per_agent": [
+      1.5489586304432255,
+      1.5486198022132498,
+      1.6339993600880505
+    ],
+    "instrumentation_first_episode_matches_plain": true,
+    "weights_and_checkpoint_unchanged": true
+  },
+  "episodes": [
+    {
+      "metrics": {
+        "scenario_id": "260930:0",
+        "num_p": 2,
+        "env_seed": 1148480180,
+        "action_seed": 3550257012,
+        "message_seed": 3826602035,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 83,
+        "success": true,
+        "team_return": -17.39999999999996,
+        "agent_returns": [
+          -8.199999999999987,
+          -8.199999999999987,
+          -0.9999999999999858
+        ],
+        "return_nocap": -8.199999999999987,
+        "return_cap": -0.9999999999999858,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.34934703804920497,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 7968,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            0,
+            0
+          ]
+        ],
+        "initial_positions": [
+          [
+            1,
+            3
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            4
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 0,
+        "source_capture_count": 1,
+        "source_capture_step": 82,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 0,
+        "false_drop_count": 28.0,
+        "dump_count": 29,
+        "post_source_steps": 0,
+        "post_source_dump_count": 0,
+        "post_source_origin_steps": 0,
+        "final_fire_count": 0,
+        "max_fire_count": 1,
+        "mean_action_entropy_per_agent": [
+          1.546782030853496,
+          1.5501657335733006,
+          1.6404459840572323
+        ],
+        "mean_value_prediction": -92.73357906577937
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:1",
+        "num_p": 2,
+        "env_seed": 2007150296,
+        "action_seed": 1615759084,
+        "message_seed": 3254162962,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 300,
+        "success": false,
+        "team_return": -117.00000000000075,
+        "agent_returns": [
+          -39.4000000000003,
+          -39.4000000000003,
+          -38.20000000000016
+        ],
+        "return_nocap": -39.4000000000003,
+        "return_cap": -38.20000000000016,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.3507386640878156,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 28800,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            1,
+            3
+          ]
+        ],
+        "initial_positions": [
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            3,
+            2
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 4,
+        "source_capture_count": 1,
+        "source_capture_step": 15,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 2,
+        "false_drop_count": 94.0,
+        "dump_count": 97,
+        "post_source_steps": 284,
+        "post_source_dump_count": 92,
+        "post_source_origin_steps": 68,
+        "final_fire_count": 1,
+        "max_fire_count": 4,
+        "mean_action_entropy_per_agent": [
+          1.5474074454958047,
+          1.548679072851966,
+          1.6281619420093234
+        ],
+        "mean_value_prediction": -95.00372331195001
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:2",
+        "num_p": 2,
+        "env_seed": 3667227335,
+        "action_seed": 3400120532,
+        "message_seed": 3154827398,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 300,
+        "success": false,
+        "team_return": -154.30000000000098,
+        "agent_returns": [
+          -51.50000000000033,
+          -51.50000000000033,
+          -51.30000000000033
+        ],
+        "return_nocap": -51.50000000000033,
+        "return_cap": -51.30000000000033,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.3521516402473322,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 28800,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            2,
+            4
+          ]
+        ],
+        "initial_positions": [
+          [
+            1,
+            4
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            0,
+            2
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 6,
+        "source_capture_count": 1,
+        "source_capture_step": 11,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 3,
+        "false_drop_count": 108.0,
+        "dump_count": 112,
+        "post_source_steps": 288,
+        "post_source_dump_count": 106,
+        "post_source_origin_steps": 62,
+        "final_fire_count": 1,
+        "max_fire_count": 5,
+        "mean_action_entropy_per_agent": [
+          1.5464149345142388,
+          1.5470885876509963,
+          1.6265668913159002
+        ],
+        "mean_value_prediction": -95.18954297873674
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:3",
+        "num_p": 2,
+        "env_seed": 4195781515,
+        "action_seed": 281709694,
+        "message_seed": 3171885544,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 300,
+        "success": false,
+        "team_return": -182.30000000000086,
+        "agent_returns": [
+          -60.80000000000037,
+          -60.80000000000037,
+          -60.70000000000014
+        ],
+        "return_nocap": -60.80000000000037,
+        "return_cap": -60.70000000000014,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.3522586929514307,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 28800,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            1,
+            3
+          ]
+        ],
+        "initial_positions": [
+          [
+            3,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            0,
+            3
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 1,
+        "source_capture_count": 1,
+        "source_capture_step": 52,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 1,
+        "false_drop_count": 102.0,
+        "dump_count": 104,
+        "post_source_steps": 247,
+        "post_source_dump_count": 90,
+        "post_source_origin_steps": 72,
+        "final_fire_count": 1,
+        "max_fire_count": 3,
+        "mean_action_entropy_per_agent": [
+          1.5468197514030648,
+          1.5473600081120646,
+          1.6248852742516815
+        ],
+        "mean_value_prediction": -94.9797895064337
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:4",
+        "num_p": 2,
+        "env_seed": 4213022914,
+        "action_seed": 3309024093,
+        "message_seed": 993201258,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 300,
+        "success": false,
+        "team_return": -278.99999999999744,
+        "agent_returns": [
+          -94.59999999999899,
+          -94.59999999999899,
+          -89.79999999999946
+        ],
+        "return_nocap": -94.59999999999899,
+        "return_cap": -89.79999999999946,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.35181760060910666,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 28800,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            2,
+            3
+          ]
+        ],
+        "initial_positions": [
+          [
+            4,
+            2
+          ],
+          [
+            0,
+            4
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 13,
+        "source_capture_count": 1,
+        "source_capture_step": 15,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 8,
+        "false_drop_count": 97.0,
+        "dump_count": 106,
+        "post_source_steps": 284,
+        "post_source_dump_count": 99,
+        "post_source_origin_steps": 21,
+        "final_fire_count": 1,
+        "max_fire_count": 10,
+        "mean_action_entropy_per_agent": [
+          1.5487069679019212,
+          1.5486881102433636,
+          1.6340761517758293
+        ],
+        "mean_value_prediction": -94.47846668305802
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:5",
+        "num_p": 2,
+        "env_seed": 1394027417,
+        "action_seed": 1823919240,
+        "message_seed": 3205015164,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 58,
+        "success": true,
+        "team_return": -24.09999999999998,
+        "agent_returns": [
+          -10.799999999999994,
+          -10.799999999999994,
+          -2.499999999999994
+        ],
+        "return_nocap": -10.799999999999994,
+        "return_cap": -2.499999999999994,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.3518268848684275,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 5568,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            2,
+            0
+          ]
+        ],
+        "initial_positions": [
+          [
+            0,
+            3
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 0,
+        "source_capture_count": 1,
+        "source_capture_step": 51,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 1,
+        "false_drop_count": 18.0,
+        "dump_count": 20,
+        "post_source_steps": 6,
+        "post_source_dump_count": 2,
+        "post_source_origin_steps": 1,
+        "final_fire_count": 0,
+        "max_fire_count": 2,
+        "mean_action_entropy_per_agent": [
+          1.548806621111687,
+          1.5484538553652119,
+          1.647707546334072
+        ],
+        "mean_value_prediction": -92.17540347981941
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:6",
+        "num_p": 2,
+        "env_seed": 1630580251,
+        "action_seed": 1432038280,
+        "message_seed": 302889957,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 300,
+        "success": false,
+        "team_return": -122.90000000000063,
+        "agent_returns": [
+          -40.60000000000023,
+          -40.60000000000023,
+          -41.700000000000166
+        ],
+        "return_nocap": -40.60000000000023,
+        "return_cap": -41.700000000000166,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.3514163198049411,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 28800,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            0,
+            4
+          ]
+        ],
+        "initial_positions": [
+          [
+            4,
+            2
+          ],
+          [
+            4,
+            1
+          ],
+          [
+            3,
+            2
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 0,
+        "source_capture_count": 1,
+        "source_capture_step": 106,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 0,
+        "false_drop_count": 112.0,
+        "dump_count": 113,
+        "post_source_steps": 193,
+        "post_source_dump_count": 78,
+        "post_source_origin_steps": 68,
+        "final_fire_count": 1,
+        "max_fire_count": 2,
+        "mean_action_entropy_per_agent": [
+          1.5477974135520958,
+          1.5467621866052514,
+          1.624660984330751
+        ],
+        "mean_value_prediction": -95.06767102397728
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:7",
+        "num_p": 2,
+        "env_seed": 2621648190,
+        "action_seed": 1672524829,
+        "message_seed": 1283740695,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 300,
+        "success": false,
+        "team_return": -254.4000000000008,
+        "agent_returns": [
+          -85.10000000000038,
+          -85.10000000000038,
+          -84.20000000000005
+        ],
+        "return_nocap": -85.10000000000038,
+        "return_cap": -84.20000000000005,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.3506635922912651,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 28800,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            4,
+            3
+          ]
+        ],
+        "initial_positions": [
+          [
+            2,
+            2
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 6,
+        "source_capture_count": 1,
+        "source_capture_step": 41,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 4,
+        "false_drop_count": 109.0,
+        "dump_count": 114,
+        "post_source_steps": 258,
+        "post_source_dump_count": 99,
+        "post_source_origin_steps": 35,
+        "final_fire_count": 2,
+        "max_fire_count": 6,
+        "mean_action_entropy_per_agent": [
+          1.5481086228452365,
+          1.5476791083689068,
+          1.6280243078026382
+        ],
+        "mean_value_prediction": -94.76961941442732
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:8",
+        "num_p": 2,
+        "env_seed": 3018956703,
+        "action_seed": 2347214041,
+        "message_seed": 1332799504,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 240,
+        "success": true,
+        "team_return": -189.0,
+        "agent_returns": [
+          -64.19999999999997,
+          -64.19999999999997,
+          -60.60000000000005
+        ],
+        "return_nocap": -64.19999999999997,
+        "return_cap": -60.60000000000005,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.35214958909677296,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 23040,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            1,
+            1
+          ]
+        ],
+        "initial_positions": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 6,
+        "source_capture_count": 1,
+        "source_capture_step": 148,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 5,
+        "false_drop_count": 79.0,
+        "dump_count": 85,
+        "post_source_steps": 91,
+        "post_source_dump_count": 31,
+        "post_source_origin_steps": 4,
+        "final_fire_count": 0,
+        "max_fire_count": 6,
+        "mean_action_entropy_per_agent": [
+          1.5469623876192196,
+          1.5467736092856497,
+          1.631135350288935
+        ],
+        "mean_value_prediction": -95.02799104961345
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:9",
+        "num_p": 2,
+        "env_seed": 477066595,
+        "action_seed": 853251975,
+        "message_seed": 2055742654,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 251,
+        "success": true,
+        "team_return": -94.00000000000041,
+        "agent_returns": [
+          -31.20000000000019,
+          -31.20000000000019,
+          -31.600000000000033
+        ],
+        "return_nocap": -31.20000000000019,
+        "return_cap": -31.600000000000033,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.3514252277447845,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 24096,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            0,
+            4
+          ]
+        ],
+        "initial_positions": [
+          [
+            4,
+            0
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            1,
+            4
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 0,
+        "source_capture_count": 1,
+        "source_capture_step": 62,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 1,
+        "false_drop_count": 105.0,
+        "dump_count": 107,
+        "post_source_steps": 188,
+        "post_source_dump_count": 77,
+        "post_source_origin_steps": 28,
+        "final_fire_count": 0,
+        "max_fire_count": 2,
+        "mean_action_entropy_per_agent": [
+          1.5469533393417936,
+          1.5472050955223033,
+          1.6274013625902743
+        ],
+        "mean_value_prediction": -94.53234891791278
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:10",
+        "num_p": 2,
+        "env_seed": 488504959,
+        "action_seed": 1404312046,
+        "message_seed": 920657853,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 49,
+        "success": true,
+        "team_return": -18.299999999999997,
+        "agent_returns": [
+          -9.0,
+          -9.0,
+          -0.2999999999999954
+        ],
+        "return_nocap": -9.0,
+        "return_cap": -0.2999999999999954,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.348123757916017,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 4704,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            1,
+            1
+          ]
+        ],
+        "initial_positions": [
+          [
+            2,
+            0
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            2,
+            4
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 3,
+        "source_capture_count": 1,
+        "source_capture_step": 48,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 1,
+        "false_drop_count": 14.0,
+        "dump_count": 16,
+        "post_source_steps": 0,
+        "post_source_dump_count": 0,
+        "post_source_origin_steps": 0,
+        "final_fire_count": 0,
+        "max_fire_count": 2,
+        "mean_action_entropy_per_agent": [
+          1.5549937463703252,
+          1.5518973774369353,
+          1.6418443337779822
+        ],
+        "mean_value_prediction": -90.18363896098322
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:11",
+        "num_p": 2,
+        "env_seed": 3147128471,
+        "action_seed": 2159250009,
+        "message_seed": 1763027993,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 300,
+        "success": false,
+        "team_return": -219.60000000000122,
+        "agent_returns": [
+          -73.30000000000054,
+          -73.30000000000054,
+          -73.00000000000016
+        ],
+        "return_nocap": -73.30000000000054,
+        "return_cap": -73.00000000000016,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.35166001212030634,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 28800,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            2,
+            3
+          ]
+        ],
+        "initial_positions": [
+          [
+            4,
+            0
+          ],
+          [
+            4,
+            1
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 6,
+        "source_capture_count": 1,
+        "source_capture_step": 21,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 2,
+        "false_drop_count": 106.0,
+        "dump_count": 109,
+        "post_source_steps": 278,
+        "post_source_dump_count": 104,
+        "post_source_origin_steps": 67,
+        "final_fire_count": 2,
+        "max_fire_count": 5,
+        "mean_action_entropy_per_agent": [
+          1.547068018566792,
+          1.5463145748218914,
+          1.625141416750733
+        ],
+        "mean_value_prediction": -95.63158006639863
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:12",
+        "num_p": 2,
+        "env_seed": 3835129384,
+        "action_seed": 3855717598,
+        "message_seed": 3926825423,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 155,
+        "success": true,
+        "team_return": -69.50000000000024,
+        "agent_returns": [
+          -25.000000000000124,
+          -25.000000000000124,
+          -19.499999999999996
+        ],
+        "return_nocap": -25.000000000000124,
+        "return_cap": -19.499999999999996,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.35253293216649506,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 14880,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            1,
+            1
+          ]
+        ],
+        "initial_positions": [
+          [
+            2,
+            1
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            3,
+            2
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 3,
+        "source_capture_count": 1,
+        "source_capture_step": 37,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 3,
+        "false_drop_count": 51.0,
+        "dump_count": 55,
+        "post_source_steps": 117,
+        "post_source_dump_count": 43,
+        "post_source_origin_steps": 36,
+        "final_fire_count": 0,
+        "max_fire_count": 4,
+        "mean_action_entropy_per_agent": [
+          1.5481940793585391,
+          1.5478019679286859,
+          1.6255847125262877
+        ],
+        "mean_value_prediction": -94.43335103371541
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:13",
+        "num_p": 2,
+        "env_seed": 2921751286,
+        "action_seed": 3952806883,
+        "message_seed": 4173292449,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 205,
+        "success": true,
+        "team_return": -68.90000000000016,
+        "agent_returns": [
+          -23.800000000000082,
+          -23.800000000000082,
+          -21.299999999999994
+        ],
+        "return_nocap": -23.800000000000082,
+        "return_cap": -21.299999999999994,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.35065725769955536,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 19680,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            4,
+            0
+          ]
+        ],
+        "initial_positions": [
+          [
+            3,
+            2
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 0,
+        "source_capture_count": 1,
+        "source_capture_step": 34,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 1,
+        "false_drop_count": 76.0,
+        "dump_count": 78,
+        "post_source_steps": 170,
+        "post_source_dump_count": 64,
+        "post_source_origin_steps": 50,
+        "final_fire_count": 0,
+        "max_fire_count": 2,
+        "mean_action_entropy_per_agent": [
+          1.5488156223881957,
+          1.5473042834038895,
+          1.6260589609944114
+        ],
+        "mean_value_prediction": -94.73358742487002
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:14",
+        "num_p": 2,
+        "env_seed": 3686600541,
+        "action_seed": 2965373400,
+        "message_seed": 1971938067,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 300,
+        "success": false,
+        "team_return": -469.7000000000026,
+        "agent_returns": [
+          -157.400000000001,
+          -157.400000000001,
+          -154.9000000000006
+        ],
+        "return_nocap": -157.400000000001,
+        "return_cap": -154.9000000000006,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.35140125319730914,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 28800,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            1,
+            4
+          ]
+        ],
+        "initial_positions": [
+          [
+            3,
+            0
+          ],
+          [
+            4,
+            0
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "zero_placeholder_exposed": false,
+        "zero_placeholder_first_step": null,
+        "source_capture_count": 1,
+        "source_capture_step": 110,
+        "source_capture_at_origin": false,
+        "ordinary_fire_capture_count": 4,
+        "false_drop_count": 104.0,
+        "dump_count": 109,
+        "post_source_steps": 189,
+        "post_source_dump_count": 65,
+        "post_source_origin_steps": 56,
+        "final_fire_count": 4,
+        "max_fire_count": 8,
+        "mean_action_entropy_per_agent": [
+          1.548256884454194,
+          1.5461113922070004,
+          1.6261544785287294
+        ],
+        "mean_value_prediction": -95.29534437198802
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:15",
+        "num_p": 2,
+        "env_seed": 893324657,
+        "action_seed": 3293196180,
+        "message_seed": 3376304614,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 300,
+        "success": false,
+        "team_return": -413.4000000000026,
+        "agent_returns": [
+          -138.700000000001,
+          -138.700000000001,
+          -136.00000000000057
+        ],
+        "return_nocap": -138.700000000001,
+        "return_cap": -136.00000000000057,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.35212469185015893,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 28800,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            2,
+            4
+          ]
+        ],
+        "initial_positions": [
+          [
+            3,
+            1
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 11,
+        "source_capture_count": 1,
+        "source_capture_step": 18,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 4,
+        "false_drop_count": 103.0,
+        "dump_count": 108,
+        "post_source_steps": 281,
+        "post_source_dump_count": 102,
+        "post_source_origin_steps": 19,
+        "final_fire_count": 4,
+        "max_fire_count": 9,
+        "mean_action_entropy_per_agent": [
+          1.5475385824308352,
+          1.5479345640593647,
+          1.6299543268151846
+        ],
+        "mean_value_prediction": -94.96170237807235
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:16",
+        "num_p": 2,
+        "env_seed": 897775283,
+        "action_seed": 1398719863,
+        "message_seed": 2168214171,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 87,
+        "success": true,
+        "team_return": -26.199999999999932,
+        "agent_returns": [
+          -10.899999999999979,
+          -10.899999999999979,
+          -4.3999999999999755
+        ],
+        "return_nocap": -10.899999999999979,
+        "return_cap": -4.3999999999999755,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.3491544300229516,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 8352,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            3,
+            0
+          ]
+        ],
+        "initial_positions": [
+          [
+            3,
+            4
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 0,
+        "source_capture_count": 1,
+        "source_capture_step": 86,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 1,
+        "false_drop_count": 36.0,
+        "dump_count": 38,
+        "post_source_steps": 0,
+        "post_source_dump_count": 0,
+        "post_source_origin_steps": 0,
+        "final_fire_count": 0,
+        "max_fire_count": 2,
+        "mean_action_entropy_per_agent": [
+          1.5502287444979563,
+          1.54864258959761,
+          1.636319092192831
+        ],
+        "mean_value_prediction": -92.45148958488637
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:17",
+        "num_p": 2,
+        "env_seed": 2642348387,
+        "action_seed": 1217081255,
+        "message_seed": 1025328279,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 300,
+        "success": false,
+        "team_return": -125.70000000000063,
+        "agent_returns": [
+          -41.200000000000216,
+          -41.200000000000216,
+          -43.300000000000196
+        ],
+        "return_nocap": -41.200000000000216,
+        "return_cap": -43.300000000000196,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.35171722391274424,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 28800,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            0,
+            4
+          ]
+        ],
+        "initial_positions": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            0
+          ],
+          [
+            3,
+            2
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 0,
+        "source_capture_count": 1,
+        "source_capture_step": 112,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 0,
+        "false_drop_count": 122.0,
+        "dump_count": 123,
+        "post_source_steps": 187,
+        "post_source_dump_count": 79,
+        "post_source_origin_steps": 36,
+        "final_fire_count": 1,
+        "max_fire_count": 2,
+        "mean_action_entropy_per_agent": [
+          1.5467426548449137,
+          1.5466639583103083,
+          1.6309183764339126
+        ],
+        "mean_value_prediction": -95.48997819639946
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:18",
+        "num_p": 2,
+        "env_seed": 1628602734,
+        "action_seed": 3998969175,
+        "message_seed": 2552418989,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 300,
+        "success": false,
+        "team_return": -104.40000000000057,
+        "agent_returns": [
+          -34.40000000000023,
+          -34.40000000000023,
+          -35.6000000000001
+        ],
+        "return_nocap": -34.40000000000023,
+        "return_cap": -35.6000000000001,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.3524928622125185,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 28800,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            0,
+            3
+          ]
+        ],
+        "initial_positions": [
+          [
+            4,
+            4
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            4,
+            2
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 0,
+        "source_capture_count": 1,
+        "source_capture_step": 44,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 0,
+        "false_drop_count": 113.0,
+        "dump_count": 114,
+        "post_source_steps": 255,
+        "post_source_dump_count": 100,
+        "post_source_origin_steps": 80,
+        "final_fire_count": 1,
+        "max_fire_count": 2,
+        "mean_action_entropy_per_agent": [
+          1.5472786399962102,
+          1.5472509898252214,
+          1.6272886675925173
+        ],
+        "mean_value_prediction": -95.0695887380714
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:19",
+        "num_p": 2,
+        "env_seed": 3645628993,
+        "action_seed": 4073752635,
+        "message_seed": 3778409505,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 300,
+        "success": false,
+        "team_return": -258.200000000001,
+        "agent_returns": [
+          -86.30000000000048,
+          -86.30000000000048,
+          -85.60000000000004
+        ],
+        "return_nocap": -86.30000000000048,
+        "return_cap": -85.60000000000004,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.3520069910228454,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 28800,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            1,
+            3
+          ]
+        ],
+        "initial_positions": [
+          [
+            3,
+            3
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 9,
+        "source_capture_count": 1,
+        "source_capture_step": 100,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 4,
+        "false_drop_count": 113.0,
+        "dump_count": 118,
+        "post_source_steps": 199,
+        "post_source_dump_count": 83,
+        "post_source_origin_steps": 93,
+        "final_fire_count": 2,
+        "max_fire_count": 7,
+        "mean_action_entropy_per_agent": [
+          1.5480867905179374,
+          1.5470848409553504,
+          1.6253958980834666
+        ],
+        "mean_value_prediction": -94.98113061121896
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:20",
+        "num_p": 2,
+        "env_seed": 2165258787,
+        "action_seed": 3663580161,
+        "message_seed": 2232593568,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 5,
+        "success": true,
+        "team_return": 8.799999999999999,
+        "agent_returns": [
+          -0.4,
+          -0.4,
+          9.6
+        ],
+        "return_nocap": -0.4,
+        "return_cap": 9.6,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.33632354123955965,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 480,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            0,
+            0
+          ]
+        ],
+        "initial_positions": [
+          [
+            4,
+            1
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 0,
+        "source_capture_count": 1,
+        "source_capture_step": 4,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 0,
+        "false_drop_count": 0.0,
+        "dump_count": 1,
+        "post_source_steps": 0,
+        "post_source_dump_count": 0,
+        "post_source_origin_steps": 0,
+        "final_fire_count": 0,
+        "max_fire_count": 1,
+        "mean_action_entropy_per_agent": [
+          1.5704804147840545,
+          1.5677067840364631,
+          1.7111166193398268
+        ],
+        "mean_value_prediction": -55.14424169939741
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:21",
+        "num_p": 2,
+        "env_seed": 3989875068,
+        "action_seed": 2863689099,
+        "message_seed": 3541019581,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 300,
+        "success": false,
+        "team_return": -359.80000000000075,
+        "agent_returns": [
+          -120.60000000000026,
+          -120.60000000000026,
+          -118.60000000000022
+        ],
+        "return_nocap": -120.60000000000026,
+        "return_cap": -118.60000000000022,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.3520343225889268,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 28800,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            4,
+            3
+          ]
+        ],
+        "initial_positions": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            0
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 17,
+        "source_capture_count": 1,
+        "source_capture_step": 63,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 5,
+        "false_drop_count": 107.0,
+        "dump_count": 113,
+        "post_source_steps": 236,
+        "post_source_dump_count": 88,
+        "post_source_origin_steps": 24,
+        "final_fire_count": 2,
+        "max_fire_count": 8,
+        "mean_action_entropy_per_agent": [
+          1.5475940752338155,
+          1.54762554526894,
+          1.6317234446707989
+        ],
+        "mean_value_prediction": -94.92947924401464
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:22",
+        "num_p": 2,
+        "env_seed": 1140686857,
+        "action_seed": 1176872982,
+        "message_seed": 1316332527,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 169,
+        "success": true,
+        "team_return": -84.50000000000017,
+        "agent_returns": [
+          -29.800000000000075,
+          -29.800000000000075,
+          -24.900000000000013
+        ],
+        "return_nocap": -29.800000000000075,
+        "return_cap": -24.900000000000013,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.35069008909846466,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 16224,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            1,
+            3
+          ]
+        ],
+        "initial_positions": [
+          [
+            4,
+            4
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 2,
+        "source_capture_count": 1,
+        "source_capture_step": 89,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 3,
+        "false_drop_count": 57.0,
+        "dump_count": 61,
+        "post_source_steps": 79,
+        "post_source_dump_count": 30,
+        "post_source_origin_steps": 2,
+        "final_fire_count": 0,
+        "max_fire_count": 4,
+        "mean_action_entropy_per_agent": [
+          1.5490028889770802,
+          1.5477573225079593,
+          1.6301621873564345
+        ],
+        "mean_value_prediction": -93.62472007001318
+      }
+    },
+    {
+      "metrics": {
+        "scenario_id": "260930:23",
+        "num_p": 2,
+        "env_seed": 2258314173,
+        "action_seed": 2048329489,
+        "message_seed": 1580899162,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 102,
+        "success": true,
+        "team_return": -30.59999999999995,
+        "agent_returns": [
+          -12.499999999999975,
+          -12.499999999999975,
+          -5.6
+        ],
+        "return_nocap": -12.499999999999975,
+        "return_cap": -5.6,
+        "event_step": -1,
+        "victim": -1,
+        "sham": false,
+        "scheduled_event_exposed": false,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": false,
+        "post_schedule_steps": 0,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": -1,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.3520725671410553,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 9792,
+        "environment_version": "corrected-observation-v1"
+      },
+      "diagnostics": {
+        "initial_fire": [
+          [
+            0,
+            1
+          ]
+        ],
+        "initial_positions": [
+          [
+            4,
+            4
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "zero_placeholder_exposed": true,
+        "zero_placeholder_first_step": 0,
+        "source_capture_count": 1,
+        "source_capture_step": 24,
+        "source_capture_at_origin": true,
+        "ordinary_fire_capture_count": 1,
+        "false_drop_count": 32.0,
+        "dump_count": 34,
+        "post_source_steps": 77,
+        "post_source_dump_count": 25,
+        "post_source_origin_steps": 1,
+        "final_fire_count": 0,
+        "max_fire_count": 2,
+        "mean_action_entropy_per_agent": [
+          1.5459664735779963,
+          1.547923695179354,
+          1.635256332293472
+        ],
+        "mean_value_prediction": -93.15914290122446
+      }
+    }
+  ]
+}

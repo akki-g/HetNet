@@ -1,0 +1,266 @@
+\slide{Capability-Conditioned HetNet}
+{\textbf{Akshat Guduru \quad | \quad advisor update, 30 September 2026}
+\bigskip
+\begin{itemize}
+\item The question: can a shared policy coordinate when the team or its sensing changes?
+\item The implementation is in place; the main runs test ordinary fixed-team training.
+\item Shared is ahead on PCP so far. A tiny sensor-loss pilot is done; the main adaptation comparison is still ahead.
+\end{itemize}
+\point{Today: architecture, experimental setup, what the logs actually show, and next steps.}}
+{Plan for about 12--15 minutes on slides 1--15, then discussion. Slides 16--18 are backup. This is an update on a partial artifact snapshot, not a completed benchmark or a live cluster-status report. The new full-run analysis supersedes the earlier stdout-only numbers. I would open with the research question and the current result, rather than spend five slides retelling the original paper.}
+{Full-artifact training report, 30 Sep; \code{full_runs/summary.json}; \code{softrole/RESEARCH.md}.}
+
+\slide{Quick recap: what HetNet gives us}
+{\begin{itemize}
+\item Heterogeneous teams: sensing agents and capture/extinguish agents have different physical abilities.
+\item Class-indexed communication transforms, typed relations and class-specific action outputs.
+\item A training-only state embedding node supplies class-value predictions on the exercised path.
+\item The binary variant sends one 16-bit payload per agent per round; two rounds per step.
+\end{itemize}
+\point{Our starting point: keep the domains and communication setting, remove explicit class selectors from the actor.}
+\small The current reproduction runs use \textbf{HetNet Real}; the 32-bit comparison describes HetNet Binary.}
+{Keep this to roughly a minute. The paper calls its formulation MAH-POMDP. Do not call the state embedding node the simulator's complete global state: it combines metadata and agent features. In the released preprocessing, some recurrence is shared and the sensing branch is specific to sensing agents, so ``a completely separate network per class'' is too broad. The original Real runs are a contextual reference, not an information- and optimizer-matched baseline.}
+{Seraj et al., AAMAS 2022, Secs. 4--5; \code{hetgat/uavnet.py}; \code{hetgat/graph/fastbinary.py}; recorded reproduction configurations.}
+
+\slide{Where this sits relative to Howell et al.}
+{\begin{itemize}
+\item Capability-aware shared policies and learned communication already have a direct precedent: Howell et al., CoRL 2023.
+\item Our shared model is close in its core idea. The implementation adds recurrent history, binary payloads and receiver-dependent attention in HetNet's domains.
+\item Banked asks a narrower question: do capability/history-dependent communication transforms help beyond that shared baseline?
+\item CASH is also relevant prior work on capability-conditioned parameter generation.
+\end{itemize}
+\point{The contribution has to come from the controlled question and evidence. Banks are a hypothesis.}}
+{We should be direct about the overlap. Howell's paper studies continuous capabilities and generalization to new teams and robots. Our binary sensing/actuation contract is narrower. The fixed binary channel and intervention protocol make a concrete study, but architectural differences alone do not establish novelty or usefulness. If shared wins, the result should stay in the story. Do not call this the first class-free policy or claim that capability-aware parameter generation is new.}
+{\refpaper{https://proceedings.mlr.press/v229/howell23a.html}{Howell et al., CoRL 2023}; \refpaper{https://arxiv.org/abs/2501.06058}{Fu et al., CASH}; \code{softrole/model.py}.}
+
+\slide{What each agent is allowed to know}
+{\[
+\kappa_{j,t}=(s_{j,t},a_j):\qquad (1,0)\text{ sensing},\quad (0,1)\text{ actuating},\quad (0,0)\text{ after sensing loss}.
+\]
+\[
+x_{j,t}=[\text{position encoding};\ s_{j,t}(\text{outside},\text{target},n_P+n_A);\ \kappa_{j,t}].
+\]
+\begin{itemize}
+\item Merge \emph{per-cell counts}, not Boolean occupancy; no neighbor type labels or agent IDs.
+\item PCP: $25(25+3)+2=702$ inputs. One six-action head; impossible actuation has probability zero.
+\item Own sensor health is known. Loss preserves localization, memory, movement and radio.
+\end{itemize}
+\small On nominal training data, the two capability vectors still identify physical class.}
+{This is removal of explicit labels and class-indexed actor weights, not statistical independence from class. The failure study introduces the new capability value (0,0). Each agent gets its own capability flags, not an oracle list of everybody's capabilities. SoftRole uses corrected independent observation copies; original reproduction defaults remain legacy. Relative to a corrected typed observation, merging channels discards information. That does not mean every buggy legacy observation is richer than every corrected new observation.}
+{\code{softrole/env.py:adapt_observation}; \code{softrole/model.py:SoftRoleNet.forward}; observation tests; recorded environment version.}
+
+\slide{One agent, one timestep}
+{\architecture\small
+\begin{itemize}
+\item Same actor dimensions for every team size; each agent keeps its own memory.
+\item PCP: encoder $702\to128$, LSTM $150\to64$, communicated output width 16.
+\item The critic pools features and team metadata; its output does not enter the actor.
+\end{itemize}}
+{Read the diagram from left to right. The feedback consists of the previous step's final communicated feature and previous action. Initial previous action is stay. The gate is present only in the banked variants, and one gate per agent-step is reused in both rounds. It changes effective parameters, but input-conditioned shared policies can already produce different behavior across agents. The critic uses the hidden states, capabilities, team size and remaining horizon only for training.}
+{\code{softrole/model.py:SoftRoleNet}; tensor dimensions and actor/critic separation checked against the archived model source.}
+
+\slide{Shared vs banked: the actual difference}
+{\[
+g_{j,t}=\softmax\!\left(G([H_{j,t};\kappa_{j,t}])\right),\qquad G:66\to32\to4.
+\]
+\[
+B(x,g)=\sum_{k=1}^{K}g_k(W_kx+b_k),\qquad g_k\ge0,\quad\sum_k g_k=1.
+\]
+\begin{itemize}
+\item \textbf{Shared:} one effective transform, no gate network; 171,087 PCP parameters.
+\item \textbf{Banked:} four experts; 224,171 PCP parameters. Same observations, learner and message budget.
+\item Identical experts recover the shared map exactly. Extra capacity does not guarantee easier training.
+\end{itemize}
+\small $\|\sum_k g_kW_k\|\le\max_k\|W_k\|$ bounds mixing relative to the experts, not the whole recurrent system.}
+{The bank is the additional hypothesis. Sender encoders use the sender's gate; decoding and attention use the receiver's gate. The equality with a shared transform follows immediately when every expert has the same matrix and bias. Do not say this reproduces all of original HetNet: the inputs, relation structure and attention differ. A finite softmax also does not produce an exact one-hot gate. The norm inequality says nothing about whether experts grow large or whether optimization converges.}
+{\code{softrole/model.py:AffineBank,HeadBank,CommunicationRound}; parameter counts in recorded runs; triangle inequality.}
+
+\slide{What goes over the wire}
+{\[
+u_k=B_{\rm enc}(h_k,g_k),\qquad b_k=\mathbf1[u_k+\nu_k>0],\quad \nu_k\sim\mathrm{Logistic}(0,1)^{16}.
+\]
+\[
+m_{jk}=B_{\rm dec}(b_k,g_j),\qquad
+\bar m_j=\sum_{k\in\mathcal N(j)}\alpha_{jk}m_{jk}.
+\]
+\begin{itemize}
+\item $\Pr(b_{k,d}=1\mid u_{k,d})=\sigma(u_{k,d})$; fresh noise for each bit and round.
+\item Receiver-dependent GATv2 attention normalizes over permitted senders \emph{plus null}.
+\item Null contributes zero. No neighbors means exactly zero received aggregate.
+\item Two 16-bit broadcasts: \textbf{32 payload bits per agent-step}, shared across receivers and heads.
+\end{itemize}
+\small Training uses a biased straight-through sigmoid derivative.}
+{The receiver sees the binary payload, not the sender's uncompressed hidden state. The first round concatenates four heads with ReLU; the second averages the heads without a final nonlinearity. The Logistic CDF proves the Bernoulli marginal, but not an unbiased gradient estimator. The payload total excludes network headers and delivery overhead. GATv2 motivates receiver-dependent ranking; it does not guarantee higher return. We omit the old guide's specific toy-gradient ratios because they are not a result about these trained policies.}
+{\code{softrole/model.py:straight_through_bits,CommunicationRound}; \refpaper{https://arxiv.org/abs/2105.14491}{Brody et al., GATv2, ICLR 2022}.}
+
+\slide{Training against the team objective}
+{\[
+J(\theta)=\E\!\left[\sum_{t=0}^{\tau-1}\sum_{j=1}^{N}r_{j,t}\right],\qquad \gamma=1,\quad\tau\le T.
+\]
+\begin{itemize}
+\item One pooled team critic; every agent's action score uses the same team GAE advantage.
+\item Sum episode gradients across collectors; average once by the global episode count; clip once at 0.75.
+\item RMSprop: learning rate $10^{-4}$, $\alpha=0.97$, $\epsilon=10^{-6}$.
+\item Actor coefficient 50, value coefficient 1, GAE $\lambda=0.95$; detach recurrence every five steps.
+\end{itemize}
+\point{This is a practical approximate learner, not an unbiased-estimator or convergence claim.}}
+{Team credit matches the intended reward sum: an action that helps another agent should receive credit. The critic is permutation-invariant through mean pooling plus team metadata. Approximation sources are the learned critic inside GAE, straight-through bits, and truncated backpropagation. The original and new pipelines have different loss normalization, so raw critic losses should not be compared directly. Avoid the old guide's broad claim that the released optimizer is effectively SGD; this update does not establish it.}
+{\code{softrole/learning.py}; \code{softrole/train.py:apply_gradients}; \code{softrole/rollout.py}; \refpaper{https://arxiv.org/abs/1506.02438}{Schulman et al., GAE}.}
+
+\slide{The experiment plan}
+{\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{.19\linewidth}>{\raggedright\arraybackslash}p{.38\linewidth}>{\raggedright\arraybackslash}p{.34\linewidth}}
+\toprule
+Stage & Training & Evaluation / status\\\midrule
+Nominal screen & PP 3P0A; PCP/FC 2P1A. Shared and banked, three seeds each. & Main training artifacts; separate small failure-transfer pilot.\\[2mm]
+Composition & PCP: $(1,1),(1,2),(2,1),(2,2),(3,1)$. & Hold out $(3,2)$; separately $(4,1),(4,2)$.\\[2mm]
+Known sensor loss & PCP: $(2,1),(2,2),(3,1)$; 50\% event assignment; $t^*\sim U\{10,\ldots,30\}$. & Matched failure/sham panels; uniform sensing victim; at least one sensor survives.\\
+\bottomrule
+\end{tabular}
+\medskip
+\begin{itemize}
+\item PCP study: map $5\times5$, vision 2, horizon 80. Team counts are $(P,A)$.
+\item $(3,2)$ changes both composition and size. No tuning or checkpoint selection on held-out teams.
+\item Nominal-trained failure transfer and failure-trained adaptation are separate experiments.
+\end{itemize}}
+{The presets and evaluator exist; their existence is not a result. Both models must receive the same training regime before comparing adaptation. The fixed recipes target 2,000 epochs for PP/PCP and 1,400 for FC, ten updates per epoch and four collectors at a 500-step floor: approximately 40M and 28M steps before complete-episode overshoot. Report actual counts. Final evaluation should use prespecified checkpoints, 500 common scenarios per composition per seed, and more independent training seeds if feasible; ten is a planning target, not a power guarantee.}
+{\code{softrole/config.py}; \code{softrole/RESEARCH.md} Secs. 6--7; \code{SENSOR_FAILURE_HANDOFF.md}.}
+
+\slide{What is actually done}
+{\begin{itemize}
+\item Model, learner, failure preset, frozen evaluator, matched shams and PCP pilot tooling are implemented.
+\item Latest recorded engineering check: \textbf{178 tests passed on 30 Sep}; small failure-training/evaluation checks.
+\item Primary training: \textbf{27 runs, 11,375 completed epochs}; three seeds per setting.
+\item Completed-epoch ledgers cover 252.82M environment steps in total; these are separate runs, not one training budget.
+\item Full-artifact audit checked 120 SoftRole and 97 primary reproduction checkpoints.
+\end{itemize}
+\point{Primary training has fixed teams and zero failures. The separate pilot does not establish adaptation.}}
+{The 178-test count is the latest dated validation record, superseding the 129-test record from 29 Sep; tests were not rerun for this presentation. The prior full-artifact audit checked checkpoint hashes, finite state and provenance; this presentation rechecks metric ledgers, update counts, configurations and archived code hashes. There are 37 primary-analysis run folders, but ten shorter launches are repeat prefixes, not extra independent seeds. Copies have different ledger cutoffs and all configured primary runs are partial. Pilot validation added two tiny failure-training runs and a separate nominal-checkpoint panel. Current uncommitted pilot tooling is not the archived training source.}
+{\code{runs/sensor_failure_validation_20260930/validation.json}; full-run provenance/checkpoint audits; \code{verified_facts.json}.}
+
+\slide{Current results, at comparable sample budgets}
+{\begin{center}
+\includegraphics[width=.90\linewidth]{success_by_budget.pdf}
+\end{center}
+\small
+\begin{center}
+\input{result_rows.tex}
+\end{center}
+\small Dots: three seed means; diamonds: equal-seed mean. Last 50 completed epochs at/before budget, episode-weighted within seed. No confidence intervals.}
+{PP and PCP use a 5M-step budget; FC uses 5.5M. These are approximately aligned sample windows, not evaluations of exactly the same frozen checkpoint. Endpoints miss their budget by less than 0.42\%. Shared and banked use the same within-task configuration except model and seed. Original Real differs in observation handling, communication and learner, so these numbers cannot isolate an architectural gate effect. The updated PCP numbers replace the older 84.2/68.9 comparison; the estimator and window changed, so do not interpret that old-to-new gap as a longitudinal trend.}
+{Raw primary \code{metrics.jsonl}, re-aggregated in \code{prepare.py}; full-run report Secs. 2--3; generated figure and result rows.}
+
+\slide{PCP: shared learns faster; banked is catching up}
+{\begin{center}\includegraphics[width=.96\linewidth]{pcp_progress.pdf}\end{center}
+\begin{itemize}
+\item Common-window success: at 4M, shared 84.67\%, banked 70.01\%; at 5M, 91.07\% vs 81.89\%.
+\item The gap narrows from 14.7 to 9.2 percentage points using the same estimator.
+\item Shared remains a primary candidate. No evidence yet that banks help adaptation.
+\end{itemize}
+\small Lines: individual seeds; trailing episode-weighted means over up to 50 epochs.}
+{This shows slower learning over observed budgets, not proof that banked has a lower eventual ceiling. Later endpoints differ, so use the common-budget table to compare rather than the rightmost point of each curve. The shared model is itself recurrent and capability-aware. A possible explanation is more difficult optimization or unnecessary capacity, but the curves do not identify a cause. We do not need to make banked win for the project to be useful.}
+{Re-aggregated PCP ledgers; \code{full_runs/summary.json:common_4m,common}; full-run report Sec. 3.}
+
+\slide{FC is still the weak spot}
+{\begin{itemize}
+\item Near 5.5M steps: shared 47.15\% success, banked 47.31\%. No established advantage or equivalence.
+\item Latest windows: roughly half or more of episodes reach the 300-step horizon.
+\item Across all tasks, every one of the \textbf{63,214 available SoftRole updates} exceeds the 0.75 clipping threshold.
+\item FC banked gates have little observed variation around their pooled mixture.
+\end{itemize}
+\point{These are reasons to inspect behavior and gradients, not proof of divergence or useless communication.}
+\small Raw HetNet and SoftRole value losses have different targets and normalization.}
+{Clipping is routine here, not an occasional safeguard. RMSprop preconditions the clipped gradient, so a small clipping multiplier is not the same as that fraction of the effective learning rate. Gate entropy is not semantic role evidence; low gate variability also does not bound functional changes unless expert outputs are considered. Current scalar logs do not identify whether FC is limited by navigation, discovery, actuation, communication or critic fitting. FC's own sensor-failure semantics are not implemented.}
+{Update ledgers, rechecked in \code{prepare.py}; existing episode/gate audit; full-run report Secs. 3--5.}
+
+\slide{First sensor-loss pilot: a useful reality check}
+{\small Nominal-trained seed 0, native PCP 2P1A, checkpoints near 4.27M steps.\\
+20 common scenarios per condition; loss scheduled at steps 10--30 in every scenario.
+\medskip
+\begin{center}
+\input{pilot_rows.tex}
+\end{center}
+\small $^*$Among exposed victims, before loss: reached the target / previously directly saw it.
+\medskip
+\begin{itemize}
+\item Each $\pm5$-point failure/sham difference is \textbf{one scenario}. This does not rank the models.
+\item Most exposed victims had already seen the target; many had reached it.
+\item The target is stationary and memory survives. We need to check how demanding this timing is across seeds.
+\end{itemize}}
+{The declared rule selected the first archived checkpoint above 4M steps: shared 4,265,196 and banked 4,279,220, both epoch 200. Sham suppresses physical loss while retaining the scenario, event and random streams. Success is over all 20 assigned scenarios; diagnostic denominators include only exposed victims. Five shared and two banked episodes finished before the event. Paired prefixes and diagnostics match. There is one training seed per architecture and 80 total rollouts, not 80 independent models. Prior direct sight does not measure retained knowledge or knowledge from messages; a reached victim can still influence communication. The two discordant-success pairs both involved reached victims. Keep the reference schedule; predeclare any earlier supplemental condition using training teams. These diagnostics stay out of policy inputs and rewards. For nominal duration $T$, counting eligible times gives $\Pr(U<T\mid T)=\max(0,\min(21,T-10))/21$; exposure alone does not establish a need for fresh sensing.}
+{\code{runs/sensor_failure_validation_20260930/pilot/summary.json}, panel and per-episode reports; freshly checked in \code{prepare.py}.}
+
+\slide{What I want to discuss today}
+{\begin{enumerate}
+\item Keep shared as a first-class model, and keep banked as the mechanism hypothesis.
+\item Agree on a common budget/checkpoint rule before making final comparisons.
+\item Replicate the PCP failure/sham pilot across seeds before committing to a larger failure-training sweep.
+\item Decide whether the declared event timing is informative; predeclare any supplemental timing study.
+\item Keep FC diagnosis separate from the first PCP adaptation study.
+\end{enumerate}
+\point{The near-term goal: a credible adaptation experiment, with a result we can explain either way.}}
+{I would ask for feedback on the scope and evaluation design, rather than ask whether the current banked model is novel enough. The current findings support keeping the simpler baseline and inspecting the challenge created by late sensor losses. Pilot diagnostics, provenance and a PCP-only launcher now have recorded engineering validation and one small pilot. This still leaves multi-seed failure training, mechanism controls and final frozen held-out testing. The original 18-job array includes PP and FC, so use the new PCP-only launcher for the scoped failure study. This presentation task did not launch training or evaluation.}
+{Declared protocol, sensor-failure handoff and separate 30 Sep pilot artifacts.}
+
+\slide{Backup: baselines and interventions}
+{\small
+\begin{tabular}{lrl}\toprule
+Variant & PCP parameters & Question\\\midrule
+Shared & 171,087 & Is one capability-aware recurrent policy sufficient?\\
+Constant gate & 221,899 & Does a fixed bank mixture behave differently in training?\\
+Capability gate & 222,123 & Does gating need history beyond current capabilities?\\
+Banked & 224,171 & Does $g(H,\kappa)$ help?\\
+\bottomrule\end{tabular}
+\begin{itemize}
+\item No-feedback ablation removes the previous communicated feature from the LSTM.
+\item Freeze the affected agent's or all agents' gates at the event; recurrent states still evolve.
+\item Remove received communication; pair every intervention with a matched sham.
+\item Our capability-only \emph{gate} is not Howell's no-capability-communication ablation.
+\end{itemize}
+\[
+D=(Y_{\rm adapt,fail}-Y_{\rm freeze,fail})-(Y_{\rm adapt,sham}-Y_{\rm freeze,sham}).
+\]
+\small Matched evaluation is implemented; these gate comparisons and formal paired inference remain research work.}
+{The variants are not all parameter-matched. A fixed mixture has the function class of a shared affine map at each bank but a different parameterization and optimization path. Capabilities still enter the observation encoder in the capability-only variant, so they can influence messages even though its gate ignores history. Positive D would support a failure-specific benefit of changing gates within that trained model; it would not prove role discovery. Compare the full assigned scenario panel, since selecting only exposed episodes can select different subsets for different policies.}
+{\code{softrole/model.py}; \code{softrole/rollout.py}; \code{ARCHITECTURE_COMPARISON.md} Sec. 7; Howell implementation.}
+
+\slide{Backup: math behind the checks}
+{\small
+\textbf{Team GAE and actual episode loss} ($V_\tau=0$, stop-gradient $\sg$):
+\[
+\delta_t=r_t+V_{t+1}-V_t,\quad \widehat A_t=\delta_t+0.95\widehat A_{t+1},\quad
+\widehat R_t=\sg(\widehat A_t+V_t),
+\]
+\[
+L_e=-50\sum_t\left(\sum_j\log\pi_\theta(a_{j,t}\mid\text{local history and messages})\right)\sg(\widehat A_t)
++\frac1{\tau_e}\sum_t(V_t-\widehat R_t)^2.
+\]
+\textbf{Why team credit matters:} if $a_1\sim\mathrm{Bernoulli}(\sigma(\theta))$, $r_1=0$, $r_2=a_1$,
+\[
+\E[\nabla_\theta\log\pi(a_1)r_1]=0,\qquad
+\nabla_\theta\E[r_1+r_2]=\sigma(\theta)(1-\sigma(\theta))>0.
+\]
+\textbf{What attention guarantees:}
+\[
+\left\|\sum_k\alpha_{jk}m_{jk}\right\|\le(1-\alpha_{j\varnothing})\max_k\|m_{jk}\|.
+\]
+Empty neighborhoods give zero. This does not measure causal communication value.}
+{The two-agent example is an exact counterexample to own-return credit for a team objective. It is not a proof that every production gradient is unbiased. Communication uses straight-through derivatives, GAE uses an approximate critic, and recurrence is truncated. The attention bound follows from nonnegative normalized weights and the triangle inequality; it requires a nonempty neighborhood for the maximum expression. Permuting agent order leaves pooled critic outputs unchanged and permutes actor outputs when states, adjacency and random draws are permuted consistently; that symmetry does not prove generalization.}
+{\code{softrole/learning.py}; SoftRole learning and model tests; equations checked against current source.}
+
+\slide{Backup: sources and corrections}
+{\small
+\begin{itemize}
+\item \refpaper{https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf}{Seraj et al., HetNet, AAMAS 2022}: original method and tasks.
+\item \refpaper{https://proceedings.mlr.press/v229/howell23a.html}{Howell et al., CoRL 2023}: capability-aware shared teaming.
+\item \refpaper{https://arxiv.org/abs/2501.06058}{Fu et al., CASH}: related conditional-weight work.
+\item \refpaper{https://arxiv.org/abs/2105.14491}{Brody et al., GATv2, ICLR 2022}; \refpaper{https://arxiv.org/abs/1506.02438}{Schulman et al., GAE}; \refpaper{https://arxiv.org/abs/2108.13264}{Agarwal et al., NeurIPS 2021}: attention, learning and evaluation context.
+\end{itemize}
+\medskip
+\textbf{Repo evidence:} current model/learner; full-run report and audited ledgers; source/checkpoint manifests; dated engineering log.
+\medskip
+\textbf{Corrections to the old guide:} Real vs Binary comparison; legacy vs corrected observations; finite-horizon budgets; norm bound vs stability; conditional weights vs behavior; partial training vs demonstrated adaptation.
+\medskip
+\textbf{Not claimed:} first capability-aware policy, semantic roles, an unbiased production estimator, or proven robustness.}
+{The source guide was reorganized rather than copied verbatim. Long MAH-POMDP notation and original-paper derivations were shortened; the main architecture is retained with properly rendered equations. Unverified reset counts, specific toy-gradient ratios and a broad optimizer-as-SGD claim were removed. A finite softmax does not select an exact one-hot expert, and changing the information pathway prevents claiming exact recovery of all of HetNet. Default static-target PP/PCP natural termination implies success because reached agents cannot leave. The detailed correction and evidence map is in \code{FACT_CHECK.md}.}
+{Original supplied deck-review PDF; local primary papers; \code{FACT_CHECK.md}; \code{verified_facts.json}.}

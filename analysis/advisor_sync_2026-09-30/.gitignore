@@ -1,0 +1,11 @@
+!*.pdf
+!README.md
+!FACT_CHECK.md
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.vrb
+preview/

@@ -1,0 +1,1644 @@
+{
+  "snapshot": "2026-09-30",
+  "primary_runs": 27,
+  "completed_epochs": 11375,
+  "completed_epoch_steps": 252821848,
+  "completed_epoch_episodes": 10820962,
+  "available_softrole_updates": 63214,
+  "all_updates_above_clip_threshold": true,
+  "source_files_matched_to_all_18_manifests": [
+    "softrole/config.py",
+    "softrole/env.py",
+    "softrole/learning.py",
+    "softrole/model.py",
+    "softrole/rollout.py",
+    "softrole/train.py"
+  ],
+  "current_source_status": {
+    "softrole/model.py": {
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a",
+      "matches_training_archive": true
+    },
+    "softrole/env.py": {
+      "sha256": "d0c49b3fb10521946cc5501fc33af5b1a0c8e3c16c5e9231854f9aac3cf87cd1",
+      "matches_training_archive": false
+    },
+    "softrole/config.py": {
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1",
+      "matches_training_archive": true
+    },
+    "softrole/rollout.py": {
+      "sha256": "a552947c97d40bf42c25df38a763277510a557170aef937f727771856d8a4bda",
+      "matches_training_archive": false
+    },
+    "softrole/learning.py": {
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280",
+      "matches_training_archive": true
+    },
+    "softrole/train.py": {
+      "sha256": "21f97f36dc181c7689a127d5b1384938d3d244e98c41ddb2746428567a0ab699",
+      "matches_training_archive": false
+    }
+  },
+  "common_budget_groups": [
+    {
+      "task": "pp",
+      "model": "HetNet Real",
+      "budget": 5000000,
+      "common": {
+        "success_rate": {
+          "mean": 0.984538139052754,
+          "min": 0.978009290336439,
+          "max": 0.9891701203868166
+        },
+        "team_return": {
+          "mean": -2.9703867399664734,
+          "min": -3.0913688478371775,
+          "max": -2.8357682060390768
+        },
+        "steps_taken": {
+          "mean": 26.6720540472089,
+          "min": 25.486061772251826,
+          "max": 27.8645920038665
+        }
+      },
+      "latest50": {
+        "success_rate": {
+          "mean": 0.9925321240533438,
+          "min": 0.9881745704800445,
+          "max": 0.9949098993681255
+        },
+        "team_return": {
+          "mean": -2.5852692179522463,
+          "min": -2.788823999806141,
+          "max": -2.338573601684999
+        },
+        "steps_taken": {
+          "mean": 22.87688552125373,
+          "min": 20.02504095483267,
+          "max": 25.04025007875542
+        }
+      },
+      "common_4m": {
+        "success_rate": {
+          "mean": 0.9296688440107261,
+          "min": 0.9159355233625791,
+          "max": 0.9480043939948737
+        },
+        "team_return": {
+          "mean": -3.834762806934949,
+          "min": -3.998983200707337,
+          "max": -3.6042978762358104
+        },
+        "steps_taken": {
+          "mean": 33.82973363816112,
+          "min": 31.829183449285974,
+          "max": 35.6859484458954
+        }
+      }
+    },
+    {
+      "task": "pp",
+      "model": "SoftRole shared",
+      "budget": 5000000,
+      "common": {
+        "success_rate": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.3823368747760963,
+          "min": -0.38375542423838505,
+          "max": -0.38002229408594246
+        },
+        "steps_taken": {
+          "mean": 4.9424330718508775,
+          "min": 4.921196530942232,
+          "max": 4.957909391152382
+        }
+      },
+      "latest50": {
+        "success_rate": {
+          "mean": 0.9999983924587023,
+          "min": 0.9999951773761068,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.3711589387384296,
+          "min": -0.37253261774327806,
+          "max": -0.3697332124462278
+        },
+        "steps_taken": {
+          "mean": 4.852532227184798,
+          "min": 4.843423870059222,
+          "max": 4.860348632377708
+        }
+      },
+      "common_4m": {
+        "success_rate": {
+          "mean": 0.9999981206257565,
+          "min": 0.9999943618772693,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.441676123672019,
+          "min": -0.4647465100020298,
+          "max": -0.4180328380734303
+        },
+        "steps_taken": {
+          "mean": 5.446279785894614,
+          "min": 5.2293461008040385,
+          "max": 5.66864188899664
+        }
+      }
+    },
+    {
+      "task": "pp",
+      "model": "SoftRole banked",
+      "budget": 5000000,
+      "common": {
+        "success_rate": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.39204751246673625,
+          "min": -0.39855492058368097,
+          "max": -0.385828046769377
+        },
+        "steps_taken": {
+          "mean": 5.01985041555283,
+          "min": 4.974183739668296,
+          "max": 5.067346249098401
+        }
+      },
+      "latest50": {
+        "success_rate": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.3765212079364553,
+          "min": -0.3773454650349822,
+          "max": -0.3757555777231698
+        },
+        "steps_taken": {
+          "mean": 4.89895176178419,
+          "min": 4.886791075642928,
+          "max": 4.909745615621929
+        }
+      },
+      "common_4m": {
+        "success_rate": {
+          "mean": 0.9999979874942895,
+          "min": 0.9999939624828685,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.53996209337171,
+          "min": -0.5765993008666064,
+          "max": -0.5104065664036322
+        },
+        "steps_taken": {
+          "mean": 6.33846055674024,
+          "min": 6.074726349536017,
+          "max": 6.692221808708597
+        }
+      }
+    },
+    {
+      "task": "pcp",
+      "model": "HetNet Real",
+      "budget": 5000000,
+      "common": {
+        "success_rate": {
+          "mean": 0.8607413561101721,
+          "min": 0.821896780617325,
+          "max": 0.9025405482991244
+        },
+        "team_return": {
+          "mean": -4.6860159752737305,
+          "min": -4.993747925655489,
+          "max": -4.363809745945168
+        },
+        "steps_taken": {
+          "mean": 41.01839217168447,
+          "min": 37.67981197071911,
+          "max": 43.75954198473283
+        }
+      },
+      "latest50": {
+        "success_rate": {
+          "mean": 0.9931055620801441,
+          "min": 0.9917416282409857,
+          "max": 0.995089033994798
+        },
+        "team_return": {
+          "mean": -2.2839448968980527,
+          "min": -2.373319374035707,
+          "max": -2.192527146728751
+        },
+        "steps_taken": {
+          "mean": 19.531466677988742,
+          "min": 18.63446043034613,
+          "max": 20.573667020658423
+        }
+      },
+      "common_4m": {
+        "success_rate": {
+          "mean": 0.7904925265954376,
+          "min": 0.7555484078481827,
+          "max": 0.82842917193813
+        },
+        "team_return": {
+          "mean": -5.175880976635091,
+          "min": -5.361356430639154,
+          "max": -4.975360159980407
+        },
+        "steps_taken": {
+          "mean": 46.308123552498465,
+          "min": 43.04260702771089,
+          "max": 48.65542434407021
+        }
+      }
+    },
+    {
+      "task": "pcp",
+      "model": "SoftRole shared",
+      "budget": 5000000,
+      "common": {
+        "success_rate": {
+          "mean": 0.9106670052003466,
+          "min": 0.894882289152412,
+          "max": 0.929123588356927
+        },
+        "team_return": {
+          "mean": -2.537608824140834,
+          "min": -2.713598838632944,
+          "max": -2.340217909972959
+        },
+        "steps_taken": {
+          "mean": 35.12841693051613,
+          "min": 33.21259742325434,
+          "max": 36.76202469654039
+        }
+      },
+      "latest50": {
+        "success_rate": {
+          "mean": 0.9916758728772191,
+          "min": 0.9750276186316573,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -1.1895146297663421,
+          "min": -1.782823780284151,
+          "max": -0.8315014380466046
+        },
+        "steps_taken": {
+          "mean": 17.461047952129366,
+          "min": 11.882667136232905,
+          "max": 26.626544716491534
+        }
+      },
+      "common_4m": {
+        "success_rate": {
+          "mean": 0.8467356224328143,
+          "min": 0.832100471468054,
+          "max": 0.8642223401835141
+        },
+        "team_return": {
+          "mean": -3.3631700042321406,
+          "min": -3.5125873841651756,
+          "max": -3.116575036020323
+        },
+        "steps_taken": {
+          "mean": 41.686026400427515,
+          "min": 39.93872753469326,
+          "max": 42.861323362054954
+        }
+      }
+    },
+    {
+      "task": "pcp",
+      "model": "SoftRole banked",
+      "budget": 5000000,
+      "common": {
+        "success_rate": {
+          "mean": 0.8188847237499818,
+          "min": 0.8064489077110152,
+          "max": 0.8307479771067693
+        },
+        "team_return": {
+          "mean": -3.3147901359391443,
+          "min": -3.510725816596082,
+          "max": -3.21161042036708
+        },
+        "steps_taken": {
+          "mean": 42.81574766605544,
+          "min": 41.62206433787251,
+          "max": 44.34923896180133
+        }
+      },
+      "latest50": {
+        "success_rate": {
+          "mean": 0.8683807258305375,
+          "min": 0.8292357238237373,
+          "max": 0.9458064892283474
+        },
+        "team_return": {
+          "mean": -2.778591711953022,
+          "min": -3.124647358647121,
+          "max": -2.130026528291986
+        },
+        "steps_taken": {
+          "mean": 37.84773242655436,
+          "min": 30.365070110485963,
+          "max": 41.71551621952665
+        }
+      },
+      "common_4m": {
+        "success_rate": {
+          "mean": 0.7000680963750215,
+          "min": 0.6827172420806427,
+          "max": 0.7116883116883117
+        },
+        "team_return": {
+          "mean": -4.655238041034355,
+          "min": -4.802687242589107,
+          "max": -4.515874221851868
+        },
+        "steps_taken": {
+          "mean": 52.714860986244254,
+          "min": 51.99245283018868,
+          "max": 54.06213454009254
+        }
+      }
+    },
+    {
+      "task": "fc",
+      "model": "HetNet Real",
+      "budget": 5500000,
+      "common": {
+        "success_rate": {
+          "mean": 0.31715815168827916,
+          "min": 0.17176220806794054,
+          "max": 0.4116617054806514
+        },
+        "team_return": {
+          "mean": -253.73186468083497,
+          "min": -300.4489171974523,
+          "max": -226.30824724216438
+        },
+        "steps_taken": {
+          "mean": 236.57566957563947,
+          "min": 220.65084923831202,
+          "max": 261.4649681528662
+        }
+      },
+      "latest50": {
+        "success_rate": {
+          "mean": 0.40203251244253063,
+          "min": 0.40010524469391334,
+          "max": 0.4049469964664311
+        },
+        "team_return": {
+          "mean": -225.17630538673652,
+          "min": -228.27510452961687,
+          "max": -221.57268551236763
+        },
+        "steps_taken": {
+          "mean": 220.87332304167992,
+          "min": 220.00574912891986,
+          "max": 221.89434628975266
+        }
+      },
+      "common_4m": {
+        "success_rate": {
+          "mean": 0.30946248382620273,
+          "min": 0.16231263383297645,
+          "max": 0.40042485395645244
+        },
+        "team_return": {
+          "mean": -256.5945189645741,
+          "min": -306.7494646680944,
+          "max": -227.6554611435654
+        },
+        "steps_taken": {
+          "mean": 237.81437634437114,
+          "min": 221.67215436360416,
+          "max": 263.17366167023556
+        }
+      }
+    },
+    {
+      "task": "fc",
+      "model": "SoftRole shared",
+      "budget": 5500000,
+      "common": {
+        "success_rate": {
+          "mean": 0.4714708030063923,
+          "min": 0.45167514471145415,
+          "max": 0.5087898958866701
+        },
+        "team_return": {
+          "mean": -208.4093907135773,
+          "min": -213.59814067707435,
+          "max": -198.4269670592252
+        },
+        "steps_taken": {
+          "mean": 217.1513139608377,
+          "min": 213.87847755589692,
+          "max": 219.97175934046658
+        }
+      },
+      "latest50": {
+        "success_rate": {
+          "mean": 0.4514180971847841,
+          "min": 0.39334395468224465,
+          "max": 0.5045747204337513
+        },
+        "team_return": {
+          "mean": -210.72928620971265,
+          "min": -228.49955744379545,
+          "max": -196.3664689935616
+        },
+        "steps_taken": {
+          "mean": 216.5320297784615,
+          "min": 212.03388681802778,
+          "max": 222.60346964064436
+        }
+      },
+      "common_4m": {
+        "success_rate": {
+          "mean": 0.4477557076127899,
+          "min": 0.4277846864451945,
+          "max": 0.47993800585500257
+        },
+        "team_return": {
+          "mean": -210.2938240209497,
+          "min": -215.73998934091327,
+          "max": -200.4050800757708
+        },
+        "steps_taken": {
+          "mean": 220.75097105096938,
+          "min": 215.336318236611,
+          "max": 224.34757732880385
+        }
+      }
+    },
+    {
+      "task": "fc",
+      "model": "SoftRole banked",
+      "budget": 5500000,
+      "common": {
+        "success_rate": {
+          "mean": 0.4730652589033047,
+          "min": 0.4674322934521769,
+          "max": 0.47814300237207724
+        },
+        "team_return": {
+          "mean": -206.41149464305389,
+          "min": -208.73812135755932,
+          "max": -204.68039647577106
+        },
+        "steps_taken": {
+          "mean": 214.9651486059048,
+          "min": 212.562182311081,
+          "max": 216.68413769244074
+        }
+      },
+      "latest50": {
+        "success_rate": {
+          "mean": 0.4768730045590648,
+          "min": 0.46500857632933107,
+          "max": 0.48688885129419723
+        },
+        "team_return": {
+          "mean": -204.03468830052736,
+          "min": -205.26224699828484,
+          "max": -202.2903907968196
+        },
+        "steps_taken": {
+          "mean": 214.0570768867785,
+          "min": 211.9661647775334,
+          "max": 215.70668953687823
+        }
+      },
+      "common_4m": {
+        "success_rate": {
+          "mean": 0.44855136560176584,
+          "min": 0.422550052687039,
+          "max": 0.48427887901572114
+        },
+        "team_return": {
+          "mean": -209.45795400294477,
+          "min": -218.32028451001065,
+          "max": -198.87872522214641
+        },
+        "steps_taken": {
+          "mean": 217.92594111662206,
+          "min": 214.37012987012986,
+          "max": 221.24780470670882
+        }
+      }
+    }
+  ],
+  "pilot": {
+    "checkpoint_rule": "Seed 0; first archived checkpoint reaching 4000000 environment steps per model",
+    "composition": [
+      2,
+      1
+    ],
+    "episodes_per_policy_condition": 20,
+    "evaluation_version": 2,
+    "evaluator_source_sha256": "288f650c37ca38542a3917157ba1c3bc2c3a9d975db57eaa972c1e9efa6c0351",
+    "failure_probability": 1.0,
+    "failure_window": [
+      10,
+      30
+    ],
+    "intervention": "none",
+    "policies": [
+      {
+        "checkpoint": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/runs/softrole_primary/pcp_shared/seed0/checkpoints/epoch0200.pt",
+        "checkpoint_progress": {
+          "epoch": 200,
+          "total_episodes": 77778,
+          "total_steps": 4265196,
+          "updates": 2000
+        },
+        "checkpoint_sha256": "1a29dc78472e58888bbf1f8a9089eb1f4473f0655b414928efb879df6ab415fa",
+        "model": "shared",
+        "training_seed": 0,
+        "training_source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163"
+      },
+      {
+        "checkpoint": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/runs/softrole_primary/pcp_banked/seed0/checkpoints/epoch0200.pt",
+        "checkpoint_progress": {
+          "epoch": 200,
+          "total_episodes": 68993,
+          "total_steps": 4279220,
+          "updates": 2000
+        },
+        "checkpoint_sha256": "d221c5196afecacead617b4f2a8c130aca6da5cd4c2177c9fbb5dae0e9f36437",
+        "model": "banked",
+        "training_seed": 0,
+        "training_source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163"
+      }
+    ],
+    "purpose": "Native-composition unexpected-failure diagnostic pilot; nominal training only",
+    "scenario_seed": 1700,
+    "scenarios_sha256": "43df5242d11629276c8965903d131cbb7036b40620b8166741d44d27f56025eb"
+  },
+  "pilot_summary": {
+    "evaluation_version": 2,
+    "evaluator_source_sha256": "288f650c37ca38542a3917157ba1c3bc2c3a9d975db57eaa972c1e9efa6c0351",
+    "limitations": [
+      "A tiny nominal-transfer pilot does not establish robustness or architecture superiority",
+      "Exposure-conditioned diagnostics can select different subsets across policies",
+      "Direct target observation does not measure knowledge obtained through messages",
+      "Checkpoint sample counts can differ; the manifest retains actual progress"
+    ],
+    "method": "Per-policy paired full-panel means; descriptive only, no inferential intervals",
+    "policies": [
+      {
+        "checkpoint": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/runs/softrole_primary/pcp_banked/seed0/checkpoints/epoch0200.pt",
+        "checkpoint_progress": {
+          "epoch": 200,
+          "total_episodes": 68993,
+          "total_steps": 4279220,
+          "updates": 2000
+        },
+        "checkpoint_sha256": "d221c5196afecacead617b4f2a8c130aca6da5cd4c2177c9fbb5dae0e9f36437",
+        "failure": {
+          "actual_event_exposed": 18,
+          "censored_completions": 4,
+          "completion_steps_horizon_capped": 45.4,
+          "diagnostic_denominator": 18,
+          "diagnostic_true_counts": {
+            "pre_event_victim_reached": 11,
+            "pre_event_victim_target_seen": 18,
+            "pre_event_victim_target_visible": 15
+          },
+          "episodes": 20,
+          "post_schedule_censored": 4,
+          "pre_event_successes": 2,
+          "scheduled_event_exposed": 18,
+          "success_rate": 0.8,
+          "team_return": -3.634999999999998
+        },
+        "failure_minus_sham": {
+          "completion_steps_horizon_capped": -2.25,
+          "success_rate": 0.050000000000000044,
+          "team_return": 0.022500000000000853
+        },
+        "failure_only_successes": 1,
+        "model": "banked",
+        "model_signature": "a2486eab3be6a6900297a11943fc74989d80b04a7462bb40b2482e88fed4d921",
+        "paired_prefixes_and_diagnostics_verified": true,
+        "sham": {
+          "actual_event_exposed": 0,
+          "censored_completions": 5,
+          "completion_steps_horizon_capped": 47.65,
+          "diagnostic_denominator": 18,
+          "diagnostic_true_counts": {
+            "pre_event_victim_reached": 11,
+            "pre_event_victim_target_seen": 18,
+            "pre_event_victim_target_visible": 15
+          },
+          "episodes": 20,
+          "post_schedule_censored": 5,
+          "pre_event_successes": 2,
+          "scheduled_event_exposed": 18,
+          "success_rate": 0.75,
+          "team_return": -3.657499999999999
+        },
+        "sham_only_successes": 0,
+        "training_seed": 0,
+        "training_source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163"
+      },
+      {
+        "checkpoint": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/runs/softrole_primary/pcp_shared/seed0/checkpoints/epoch0200.pt",
+        "checkpoint_progress": {
+          "epoch": 200,
+          "total_episodes": 77778,
+          "total_steps": 4265196,
+          "updates": 2000
+        },
+        "checkpoint_sha256": "1a29dc78472e58888bbf1f8a9089eb1f4473f0655b414928efb879df6ab415fa",
+        "failure": {
+          "actual_event_exposed": 15,
+          "censored_completions": 6,
+          "completion_steps_horizon_capped": 47.25,
+          "diagnostic_denominator": 15,
+          "diagnostic_true_counts": {
+            "pre_event_victim_reached": 8,
+            "pre_event_victim_target_seen": 14,
+            "pre_event_victim_target_visible": 13
+          },
+          "episodes": 20,
+          "post_schedule_censored": 6,
+          "pre_event_successes": 5,
+          "scheduled_event_exposed": 15,
+          "success_rate": 0.7,
+          "team_return": -3.4574999999999982
+        },
+        "failure_minus_sham": {
+          "completion_steps_horizon_capped": 2.950000000000003,
+          "success_rate": -0.050000000000000044,
+          "team_return": -0.22750000000000004
+        },
+        "failure_only_successes": 0,
+        "model": "shared",
+        "model_signature": "de43238409921dabf63c1fa231d950bb608f6ff3f331d1e50e5c46531ba8e1b4",
+        "paired_prefixes_and_diagnostics_verified": true,
+        "sham": {
+          "actual_event_exposed": 0,
+          "censored_completions": 5,
+          "completion_steps_horizon_capped": 44.3,
+          "diagnostic_denominator": 15,
+          "diagnostic_true_counts": {
+            "pre_event_victim_reached": 8,
+            "pre_event_victim_target_seen": 14,
+            "pre_event_victim_target_visible": 13
+          },
+          "episodes": 20,
+          "post_schedule_censored": 5,
+          "pre_event_successes": 5,
+          "scheduled_event_exposed": 15,
+          "success_rate": 0.75,
+          "team_return": -3.229999999999998
+        },
+        "sham_only_successes": 1,
+        "training_seed": 0,
+        "training_source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163"
+      }
+    ]
+  },
+  "latest_recorded_engineering_validation": {
+    "tests": {
+      "command": ".venv/bin/python -m pytest -q",
+      "passed": 178,
+      "seconds": 50.27
+    },
+    "training": [
+      {
+        "model": "shared",
+        "steps": 160,
+        "episodes": 2,
+        "exposed": 1,
+        "compositions": [
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            1
+          ]
+        ],
+        "finite_model_and_optimizer": true,
+        "signature_changed": true,
+        "gradient_norm_before_clip": 1561.602049334479
+      },
+      {
+        "model": "banked",
+        "steps": 138,
+        "episodes": 2,
+        "exposed": 1,
+        "compositions": [
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            1
+          ]
+        ],
+        "finite_model_and_optimizer": true,
+        "signature_changed": true,
+        "gradient_norm_before_clip": 1136.947091592758
+      }
+    ],
+    "frozen_evaluations": [
+      {
+        "model": "shared",
+        "episodes": 2,
+        "event_exposed": 2,
+        "checkpoint_immutable": true
+      },
+      {
+        "model": "banked",
+        "episodes": 2,
+        "event_exposed": 2,
+        "checkpoint_immutable": true
+      }
+    ],
+    "source_archives_verified": true,
+    "summary_strata": 4,
+    "single_seed_intervals": null
+  },
+  "scope": "Fresh verification of metrics/configs/update counts and cited source paths. Existing streaming episode/checkpoint audits are cited, not rerun.",
+  "inputs": {
+    "analysis/training_2026-09-30/full_runs/summary.json": {
+      "bytes": 83949,
+      "sha256": "21b87242285236a62d029b18d9995c5552a894865bf0e2c6605f68113372daf3"
+    },
+    "analysis/training_2026-09-30/full_runs/structured_input_hashes.json": {
+      "bytes": 55938,
+      "sha256": "dafc36e6f40ef45283eeab5c8d4971e99bc9503ffc0b5db5f514bf443c1cc88c"
+    },
+    "analysis/training_2026-09-30/full_runs/softrole_audit/findings.json": {
+      "bytes": 109922,
+      "sha256": "598c3bfd9d3a18b1f38439c04ad3353e6f7f5e4a61268f390daa58a408fa8a49"
+    },
+    "analysis/training_2026-09-30/full_runs/softrole_audit/nominal_failure_exposure.json": {
+      "bytes": 3143,
+      "sha256": "cceb8cd9510fafa96e4860e473e5f46f6a42119988209d2f2b88ecbce0ea4316"
+    },
+    "stokes_runs/runs/reproduction-fast/fc_real/seed0/metrics.jsonl": {
+      "bytes": 228547,
+      "sha256": "240fc046fb663eb1a9603406dea75b51412e341d0cf9349987a35dc4e2d2afe3"
+    },
+    "stokes_runs/runs/reproduction-fast/fc_real/seed1/metrics.jsonl": {
+      "bytes": 221370,
+      "sha256": "6b7e809e7e0dd399b86368d78b8a6d0d20961c37091ef43b14c10d86be0318fc"
+    },
+    "stokes_runs/runs/reproduction-fast/fc_real/seed2/metrics.jsonl": {
+      "bytes": 249189,
+      "sha256": "5a23e0dc9f70ca6933cac17a223bb3412ac5e958ce5c6bdcde45d3c0c8977952"
+    },
+    "stokes_runs/runs/reproduction-fast/pcp_real/seed0/metrics.jsonl": {
+      "bytes": 294849,
+      "sha256": "0e6da98bb45de337660ab757c49e4a38989bb2addd2a09730650ebaa73bef0da"
+    },
+    "stokes_runs/runs/reproduction-fast/pcp_real/seed1/metrics.jsonl": {
+      "bytes": 234907,
+      "sha256": "208edfb648b93394b764f1659c80c9a2a1f2ff38ca367d44d1fe4d3acc6b159e"
+    },
+    "stokes_runs/runs/reproduction-fast/pcp_real/seed2/metrics.jsonl": {
+      "bytes": 292455,
+      "sha256": "1e5d6b26c789474c000a524795cf1817f8404c27e8917cd5ea737a4db02a2e93"
+    },
+    "stokes_runs/runs/reproduction-fast/pp_real/seed0/metrics.jsonl": {
+      "bytes": 95294,
+      "sha256": "fe2f4b81864c48afeb398bbcb12f4ad9e8d1bcab7f8a1fa6596c611a8e8ddb2f"
+    },
+    "stokes_runs/runs/reproduction-fast/pp_real/seed1/metrics.jsonl": {
+      "bytes": 94127,
+      "sha256": "4d645003aec484d4ac2ef958a8bf3f6dbcddd5becb644aaebeed1c4988794c15"
+    },
+    "stokes_runs/runs/reproduction-fast/pp_real/seed2/metrics.jsonl": {
+      "bytes": 131066,
+      "sha256": "f79df5c4a54b956adaadfc48f82223e35c8d6c8c930d45dec87020ad2df1e1ca"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/metrics.jsonl": {
+      "bytes": 179383,
+      "sha256": "e042c1fa2b0a51fc935b7c9f5d1fff3dab65d5df97c6817f5f332c2dbbb99fd0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/config.json": {
+      "bytes": 685,
+      "sha256": "01cbe7b8c3fc3c189fb81abe305e91988b9377e36536befd2ba293ab2af61033"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/updates.jsonl": {
+      "bytes": 381954,
+      "sha256": "ecb7c96a0a94d41f0de9317117feb0c287b4dddff447d7ac7a84e7e583165007"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "softrole/env.py": {
+      "bytes": 9371,
+      "sha256": "d0c49b3fb10521946cc5501fc33af5b1a0c8e3c16c5e9231854f9aac3cf87cd1"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "softrole/rollout.py": {
+      "bytes": 11435,
+      "sha256": "a552947c97d40bf42c25df38a763277510a557170aef937f727771856d8a4bda"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "softrole/train.py": {
+      "bytes": 14144,
+      "sha256": "21f97f36dc181c7689a127d5b1384938d3d244e98c41ddb2746428567a0ab699"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/metrics.jsonl": {
+      "bytes": 184070,
+      "sha256": "07cc5334ccde9b6c4c4b4d580471979dcb0834ba5a5769e7a11182edf81b1115"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/config.json": {
+      "bytes": 685,
+      "sha256": "3c5415556bc6139439ac79c5526fbb153882cd6293c63c50928ab88ff811b4fc"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/updates.jsonl": {
+      "bytes": 392255,
+      "sha256": "0031459f42d93ed22e5c5369fdb5c303334853dd3cb8b2b4e5483edf601f559e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/metrics.jsonl": {
+      "bytes": 131197,
+      "sha256": "1b17381ea00d56877d14fe250e3eacf14f6a3d600a2dd65760f1806a3185b051"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/config.json": {
+      "bytes": 685,
+      "sha256": "7d1507d5ec658182942058aa66f05c8920bf33c2dc3ff7d46db78731450d765b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/updates.jsonl": {
+      "bytes": 280845,
+      "sha256": "4592409d8f38a5fd03fb87d2cde4e3e47c0cf85e5f0eb5b3b021bfe62c0581b4"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/metrics.jsonl": {
+      "bytes": 179895,
+      "sha256": "61e6923e32ffe487d4aa1feb30aed2e9e7fd7ae311cc5c87f03f38186c626e68"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/config.json": {
+      "bytes": 685,
+      "sha256": "c5c4634c415cb2a3f55d901464c1e2a76a7e894177ded159b62fec334fbe23da"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/updates.jsonl": {
+      "bytes": 393321,
+      "sha256": "caf696574086ca1e97e1521c2db944b0e7a87fd9185c5100230c45be20ab08ca"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/metrics.jsonl": {
+      "bytes": 173520,
+      "sha256": "a179e260416c8d7a6c85f246303e322dbeccfa1ab1b923ab5d905b56f6a5d9e2"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/config.json": {
+      "bytes": 685,
+      "sha256": "5c546e56146288929c19cfd6b7b8ae7bb70387116941bfb4080555f118ddce90"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/updates.jsonl": {
+      "bytes": 379895,
+      "sha256": "45001244d77dc83bad24c3c956591ef4a5eb5b263cbb77acacd6e474c719d04e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/metrics.jsonl": {
+      "bytes": 197892,
+      "sha256": "22fe74d49f27d35c185c8ff39c2c2a9e08fa04e59f9fcb45aafc59075822ee16"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/config.json": {
+      "bytes": 685,
+      "sha256": "05e9d0f6629c518ce16aa7b2b3993d08e105e2c97e7132e8d28566c9d7183019"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/updates.jsonl": {
+      "bytes": 432631,
+      "sha256": "5b77ae2890f13a3d66ea2dae7d75c928606baf8709e6bc2ac75f02ef916a196a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed0/metrics.jsonl": {
+      "bytes": 141954,
+      "sha256": "0606fa0198062af797a11d67724cadb9b4869c1c4a46f01f4f8a6a4672e4e8df"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed0/config.json": {
+      "bytes": 685,
+      "sha256": "e2de7e2c7961a610289352ec3ac9139681161be87155226869b1253da4157da1"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed0/updates.jsonl": {
+      "bytes": 301582,
+      "sha256": "bc8eae2c06c4f847d1fcc0bd24a8f8bdac285bc9f607322764e7f10cfea96c4f"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed0/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed0/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed0/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed0/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed0/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed0/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed0/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed1/metrics.jsonl": {
+      "bytes": 135712,
+      "sha256": "ceb441c9da9c242eb95ef0a01c9e560426daecb426e84ce3cddbad53a4b4c4d2"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed1/config.json": {
+      "bytes": 685,
+      "sha256": "02614ef5558a0ed8accb6d7fb93cbfde5e6ec40f417505c0a35ff7037a8f13a6"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed1/updates.jsonl": {
+      "bytes": 289146,
+      "sha256": "5b9b5f46dbc2f68fcaef01081d0d20db35d67b0c9ff20d66bb548e0ca87fc4ad"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed1/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed1/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed1/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed1/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed1/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed1/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed1/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed2/metrics.jsonl": {
+      "bytes": 169540,
+      "sha256": "acec05750e980c6dada7cbb1db842ff4190769266600848c1559ab1cf2ee2a29"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed2/config.json": {
+      "bytes": 685,
+      "sha256": "a6b970b01a79fed639d19bdda91e39d675f4381a01cb341c5633007635f7e024"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed2/updates.jsonl": {
+      "bytes": 360004,
+      "sha256": "be8ca91aafaec3df8e3f4e2d4694c92548f510b245420d815223a078fda563f2"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed2/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed2/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed2/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed2/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed2/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed2/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed2/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed0/metrics.jsonl": {
+      "bytes": 170052,
+      "sha256": "40d582662a9936a8a0171e4af4fb38125f6efa65c45f9c73877561c0ae2edfc1"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed0/config.json": {
+      "bytes": 685,
+      "sha256": "16c1b7beca56146d7dce4718c69217dccd558c8bb863c0a281a22a937499e647"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed0/updates.jsonl": {
+      "bytes": 370292,
+      "sha256": "6a32994df59e36dc1837946ea9d6f2fa7b0c67240e1170a51d9e015042bfdf40"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed0/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed0/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed0/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed0/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed0/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed0/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed0/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed1/metrics.jsonl": {
+      "bytes": 229902,
+      "sha256": "84dc75ebb0ecc853ef1c1d261f3b2e92a8509885e8f969fe63f36b3ed825e47c"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed1/config.json": {
+      "bytes": 685,
+      "sha256": "11cc50c9dbbc21c1b7ef3111a4297626f0409a57e145173078bc6c9dff67ffbb"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed1/updates.jsonl": {
+      "bytes": 504826,
+      "sha256": "1eac8a58366054268cca476823b3072fdd0c9f14d36223c05ee135600b086075"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed1/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed1/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed1/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed1/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed1/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed1/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed1/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed2/metrics.jsonl": {
+      "bytes": 227379,
+      "sha256": "a60231f9800d7ddc8712e5f1b83dbeb3f3181711c4d14e17d0cfbe6795bc7d3c"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed2/config.json": {
+      "bytes": 685,
+      "sha256": "8c16687aaaaf17b33852a2d260d83f30ebf7e5d9a4b6f6b3fdb8af774edef54d"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed2/updates.jsonl": {
+      "bytes": 498004,
+      "sha256": "53c42823d329c244f764361c480d8253c9ef738db9e2014dd9afac024b74a2cd"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed2/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed2/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed2/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed2/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed2/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed2/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed2/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed0/metrics.jsonl": {
+      "bytes": 206880,
+      "sha256": "56759603051a9f928b3e6173e30fc3c395f8a25a56bc4fadbbfd3183fbe4c6d9"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed0/config.json": {
+      "bytes": 684,
+      "sha256": "b98a28de0220e003bfd3d7257488ccd8bf0704d14d8eccaf991f6e3c278bbe0b"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed0/updates.jsonl": {
+      "bytes": 456828,
+      "sha256": "0eaa7bf75ea7f3ba1c41b537c300fa8f8ed96ebf02fcd9d1aca0e3fc93b3dbc1"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed0/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed0/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed0/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed0/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed0/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed0/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed0/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed1/metrics.jsonl": {
+      "bytes": 213235,
+      "sha256": "0e7371dd38a92a3aa44467d80ea8d5fa05496069daf0dcdf96de989b6eb61657"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed1/config.json": {
+      "bytes": 684,
+      "sha256": "acac5d207a6439dd0d2a76bd40636ec2196fab00347ed5954da9259f9723a15b"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed1/updates.jsonl": {
+      "bytes": 472726,
+      "sha256": "e859950e139b3038b8dee0fd6cb9e8a419710452d805cb7ec7c04a6882116cb7"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed1/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed1/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed1/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed1/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed1/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed1/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed1/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed2/metrics.jsonl": {
+      "bytes": 196959,
+      "sha256": "3532e21acc5d0b479ec81b124c3b5e41d81454c2f1d016bc9d694ee816e58513"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed2/config.json": {
+      "bytes": 684,
+      "sha256": "73600f020dece8475425d0af571b80823dfba0ec6c6256dc5073da6eca3b8530"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed2/updates.jsonl": {
+      "bytes": 436346,
+      "sha256": "afb341faee23728125e5ddef5edd550f51bac7af133d9eff70c10d932a715534"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed2/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed2/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed2/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed2/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed2/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed2/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed2/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed0/metrics.jsonl": {
+      "bytes": 240261,
+      "sha256": "163e31f9493f09ef81e647ca64e343caf8eda36925e8c21b35422c2e07b91c37"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed0/config.json": {
+      "bytes": 684,
+      "sha256": "1645a6cd28af26cfd85d6d5689d9dc0ccc69c0c775491a9dff6c79cf7b87899f"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed0/updates.jsonl": {
+      "bytes": 548111,
+      "sha256": "d99306ad681e11a0d6855eb2bccd808adbf0aa8523bcbc7d3c49b7ed269476f4"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed0/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed0/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed0/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed0/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed0/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed0/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed0/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed1/metrics.jsonl": {
+      "bytes": 242260,
+      "sha256": "8157c4dd97bd19fddfb40372bc4dfcfcd2b792b3a90c96284a002954f1678a8f"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed1/config.json": {
+      "bytes": 684,
+      "sha256": "a4085dd4f82ae96cce328f20961d7df7dafb48999fdc1f0473be75b297cdaac4"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed1/updates.jsonl": {
+      "bytes": 553065,
+      "sha256": "d0284ddd344597c7ddba803d673af6430228f80853b0d59609c7228b4587c35a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed1/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed1/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed1/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed1/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed1/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed1/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed1/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed2/metrics.jsonl": {
+      "bytes": 240426,
+      "sha256": "2fd35727c67a2e25c51c3e316944233a6255579fa9bde18d15e8acb78ace56bf"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed2/config.json": {
+      "bytes": 684,
+      "sha256": "158e04378b2e4a2653dec660b21fa60e4f1037fee6724c821ef9f80e6543979f"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed2/updates.jsonl": {
+      "bytes": 548489,
+      "sha256": "255af2c9d1e1f4943a577d4161922c1bbc20397efacbeda2949d35d9fc8a5d59"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed2/source_manifest.json": {
+      "bytes": 7390,
+      "sha256": "446596e11e7e30dd8326da2d5e42af748da12ff630182ecaff9668d43d31facd"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed2/source/softrole/model.py": {
+      "bytes": 12588,
+      "sha256": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed2/source/softrole/env.py": {
+      "bytes": 8426,
+      "sha256": "8b2927e203229a11b72418f642528b6e45452f2dae9c70840f4f3aaa63f02f83"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed2/source/softrole/config.py": {
+      "bytes": 6842,
+      "sha256": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed2/source/softrole/rollout.py": {
+      "bytes": 10175,
+      "sha256": "87a981e895e5d9dc4e3c7ddb093c45da5360e1e94e1968949a1249191c51bbb3"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed2/source/softrole/learning.py": {
+      "bytes": 2920,
+      "sha256": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed2/source/softrole/train.py": {
+      "bytes": 13966,
+      "sha256": "392a67ced3334800f0624cfa901c595e8fbc06da2a140657fbc7a3fd11497b9a"
+    },
+    "runs/sensor_failure_validation_20260930/artifact_manifest.json": {
+      "bytes": 33521,
+      "sha256": "c581095b66c133b64147e4aae6a5a5880c8882ac75a227e76d39dcbf716d7938"
+    },
+    "runs/sensor_failure_validation_20260930/validation.json": {
+      "bytes": 1193,
+      "sha256": "3e86496d7dacbf949c2de2077109288b8c22d2a4913110947a6eea7afcc31108"
+    },
+    "runs/sensor_failure_validation_20260930/pilot/pilot.json": {
+      "bytes": 1733,
+      "sha256": "5d6311214139371f3f0ca5c89117df918aa5cd95979358a211068d4527e4b778"
+    },
+    "runs/sensor_failure_validation_20260930/pilot/summary.json": {
+      "bytes": 4805,
+      "sha256": "38b77ee544b50d79346126c70d8e7d85dc982fdca1af18f7268d8ee617d69011"
+    },
+    "runs/sensor_failure_validation_20260930/pilot/scenarios.json": {
+      "bytes": 4070,
+      "sha256": "43df5242d11629276c8965903d131cbb7036b40620b8166741d44d27f56025eb"
+    },
+    "runs/sensor_failure_validation_20260930/pilot/shared_seed0_failure.json": {
+      "bytes": 1453700,
+      "sha256": "c5e74ebc56d4ea8d1c487b39cf8b0ce372c15d3086ad89e00b394fb5ecb1b074"
+    },
+    "runs/sensor_failure_validation_20260930/pilot/shared_seed0_sham.json": {
+      "bytes": 1366121,
+      "sha256": "1bb991c962803117e77b7810230f54a15f22360ac531ccc335eacbad733c2269"
+    },
+    "runs/sensor_failure_validation_20260930/pilot/banked_seed0_failure.json": {
+      "bytes": 1729352,
+      "sha256": "c732778bf278084971e57b10a5ee86cdc9978976afa0073302e1051a9e1641ce"
+    },
+    "runs/sensor_failure_validation_20260930/pilot/banked_seed0_sham.json": {
+      "bytes": 1812863,
+      "sha256": "a514c22b39ed8a701522cb9367d32397f1c6333ff9067139e026ac7929f46e6e"
+    },
+    "analysis/training_2026-09-30/full_runs/softrole_audit/episode_epoch_sufficient_stats.jsonl": {
+      "bytes": 17083340,
+      "sha256": "5d25a0913d8afe3080edebab1fb8952f6c0b35e8aed83e97675deb684c94df53"
+    },
+    "softrole/RESEARCH.md": {
+      "bytes": 34111,
+      "sha256": "c146046c187b173da02b683ffb4f97fdf7ab52eddfffedae051f00909aba0fbb"
+    },
+    "softrole/ARCHITECTURE_COMPARISON.md": {
+      "bytes": 42413,
+      "sha256": "71eb261761a8be987e846e03aa002442a297a9ba797c9d2cd582f47288881c81"
+    },
+    "analysis/training_2026-09-30/report.md": {
+      "bytes": 32908,
+      "sha256": "b4a3a5fe1026cfd1a42dc294c7cd8b2711e84ffaa175022d4506d20402839bb2"
+    },
+    "SENSOR_FAILURE_HANDOFF.md": {
+      "bytes": 23253,
+      "sha256": "921d284d47a37be4ecd85a1e353144eaf52afe4f85374db45616da9ac7b026e3"
+    },
+    "Capability-Conditioned HetNet Deck Review and Revised Outline.pdf": {
+      "bytes": 626880,
+      "sha256": "68e7e38227684e82336ae7dedb7c71898793d12a13c36b64fbd2e065eec0acbc"
+    }
+  }
+}

@@ -20,3 +20,11 @@ slurm-*.err
 research/
 evidence/
 logs/
+docs/
+
+logs_1/
+logs_sr/
+logs/
+
+*.tar.gz
+*.zip

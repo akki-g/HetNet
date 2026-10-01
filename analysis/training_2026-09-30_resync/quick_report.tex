@@ -1,0 +1,321 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setlength{\emergencystretch}{3em}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={HetNet / SoftRole training update},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{HetNet / SoftRole training update}
+\author{}
+\date{Resynced logs, 30 September 2026}
+
+\begin{document}
+\maketitle
+
+30 September 2026 --- descriptive training snapshot
+
+\textbf{PCP has caught up in success, but shared remains more efficient.
+FC has improved at comparable budgets and is still unstable.} These are
+training trajectories, not frozen-policy evaluation or demonstrated
+capability adaptation.
+
+The refresh contains \textbf{26,878 completed epochs across 27 runs},
+15,503 beyond the previous structured archive. New data is in
+\texttt{logs\_1/} and \texttt{logs\_sr/}; \texttt{stokes\_runs/runs/} is
+unchanged. All 18 SoftRole stdout prefixes exactly match their archived
+epoch records, and all nine reproduction prefixes agree within stdout
+rounding. Every old stdout byte prefix and all stderr files are
+unchanged. SoftRole now records 432,912,460 environment steps across its
+18 separate runs. All 27 runs remain below their configured epoch
+targets.
+
+\subsection{What the new data says}\label{what-the-new-data-says}
+
+SoftRole comparisons below use the \textbf{last 50 completed epochs at
+or before the same sample budget}, pool episodes within a training seed,
+then average the three seeds equally. Shared and banked use the same
+nominal task recipe in the matched archive. Checkpoint/source provenance
+for the appended tail has not been resynced. Numbers describe the
+supplied continuation logs.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1579}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2105}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2105}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2105}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2105}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Task / common budget
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Shared success
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Banked success
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Shared episode length
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Banked episode length
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+PP / 23.5M steps & 99.999\% & 99.996\% & 4.75 & 4.78 \\
+PCP / 15M steps & 99.9997\% & 99.9878\% & 8.04 & 10.97 \\
+FC / 22.5M steps & 66.87\% & 55.09\% & 186.88 & 202.73 \\
+\end{longtable}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{PP:} both variants have reached a near-ceiling
+  training-success plateau. Current differences are small; success alone
+  gives little separation.
+\item
+  \textbf{PCP:} the earlier 91.07\% versus 81.89\% gap near 5M steps has
+  largely disappeared by 15M using the same estimator. Shared still uses
+  \textbf{26.7\% fewer steps per episode}, computed as
+  \(1-8.0362/10.9678\). Team return is also better (less negative):
+  \textbf{−0.606 versus −0.766}. Individual seed lengths are 7.89--8.13
+  for shared and 10.19--11.58 for banked. This supports an observed
+  efficiency advantage; it is not a proof of population superiority or
+  optimality.
+\item
+  \textbf{FC:} at 22.5M steps, shared leads by 11.78 percentage points
+  and has higher mean team return, \textbf{−136.42 versus −173.22}. Seed
+  success ranges are 59.26--74.06\% and 47.73--65.32\%, respectively.
+  Later behavior is not consistently better, so this window should not
+  be treated as a final ranking.
+\end{itemize}
+
+The most important new diagnostic is \textbf{FC shared seed 2}. Its
+preceding 50-epoch window (958--1007) averages 70.87\% success; epochs
+1008--1057 average 20.67\%. Value-target MSE rises from about 466 to
+2,078. This is not simply a single bad epoch: five consecutive ten-epoch
+blocks over 998--1047 have success between 6.1\% and 12.6\%. The last
+ten epochs recover to \textbf{51.3\%}. The temporal association with
+value loss does not establish that critic error caused the drop.
+
+Latest FC windows illustrate the variability. These endpoints have
+different sample counts and \textbf{must not replace the common-budget
+comparison}:
+
+\begin{longtable}[]{@{}lrrr@{}}
+\toprule\noalign{}
+Variant & Seed 0 success & Seed 1 success & Seed 2 success \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Shared & 79.09\% & 57.83\% & 20.67\% \\
+Banked & 70.21\% & 43.09\% & 50.12\% \\
+\end{longtable}
+
+\subsection{Where the reproduction
+stands}\label{where-the-reproduction-stands}
+
+The running reproduction is \textbf{HetNet Real}. To include its new
+tail without inventing sample counts, this table uses common
+\textbf{epoch} windows and weights epochs equally for every method. Each
+epoch has ten optimizer updates in the recorded recipes; equal updates
+do not imply equal environment samples or compute.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2000}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2667}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2667}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2667}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Task / epoch window
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+HetNet Real success
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Shared success
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Banked success
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+PP / 289--338 & 99.60\% & 100.00\% & 100.00\% \\
+PCP / 693--742 & 99.38\% & 100.00\% & 99.99\% \\
+FC / 797--846 & 39.27\% & 66.12\% & 57.92\% \\
+\end{longtable}
+
+At their own latest windows, reproduction success is about 99.61\% PP,
+99.65\% PCP and 40.21\% FC. PP/PCP continue to complete episodes more
+quickly; FC has made limited recent progress in success. Reproduction
+endpoints range from 338--498 epochs for PP, 909--1113 for PCP, and
+846--938 for FC.
+
+This is a contextual comparison. The release and SoftRole differ in
+observation handling, communication, recurrence and learner. The gap
+cannot isolate the benefit of banks or establish a controlled
+improvement over the published
+\href{https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf}{HetNet
+method}.
+
+\subsection{Immediate next steps}\label{immediate-next-steps}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Keep shared as the main baseline and banked as the mechanism
+  hypothesis.} Banks now reach near-perfect nominal PCP success, but
+  there is still no observed nominal efficiency benefit from them at the
+  compared budget.
+\item
+  \textbf{Inspect FC's regression before selecting a final checkpoint.}
+  Resync \texttt{metrics.jsonl}, \texttt{updates.jsonl}, episode records
+  and checkpoints around shared seed-2 epochs 990--1060. Evaluate
+  prespecified checkpoints on the same frozen scenario panel and inspect
+  behavior. Current stdout cannot identify whether the change comes from
+  optimization, communication or another mechanism.
+\item
+  \textbf{Continue the separate PCP adaptation protocol.} These 18
+  nominal runs report zero exposed sensor-loss events. They add no
+  failure or composition evaluation; the separate one-seed pilot remains
+  a limited diagnostic. Use the declared training/evaluation regimes and
+  checkpoint rule, including matched shams and event-exposure
+  diagnostics, without held-out tuning.
+\end{enumerate}
+
+\subsection{Why the comparisons are defined this
+way}\label{why-the-comparisons-are-defined-this-way}
+
+For epoch \(e\), let \(n_e\) be completed episodes and \(y_e\) an
+episode-mean metric. The SoftRole window statistic is
+
+\[\widehat y_s(B)=\frac{\sum_{e\in W_s(B)}n_e y_e}{\sum_{e\in W_s(B)}n_e},
+\qquad \overline y(B)=\frac13\sum_{s=0}^{2}\widehat y_s(B).\]
+
+Expanding \(n_e y_e\) as the sum of episode outcomes proves that this
+pools episodes within a run; equal seed weights prevent a faster run
+from dominating the group estimate. \(W_s(B)\) is the last 50 completed
+epochs ending no later than \(B\). The maximum endpoint shortfall is
+17,397 steps for PP, 16,176 for PCP and 24,828 for FC, each below 0.12\%
+of its budget. Window starts and sample counts are recorded in
+\texttt{summary.json}; these are approximate sample-matched training
+windows, not the same frozen policy or identical window widths.
+
+For reproduction's common-epoch table, the estimand is instead
+\(\overline y=\frac13\sum_s\frac1{50}\sum_{e=E-49}^{E}y_{s,e}\). Its
+success values are printed to two decimals, allowing up to 0.5
+percentage points of rounding error in an individual value and in a
+worst-case averaged value. Reproduction's printed cumulative counters
+cannot supply the missing episode weights: \texttt{main.py} adds the
+within-epoch cumulative statistic after each batch. If batch \(i\)
+contributes \(b_i\) steps and there are \(m\) batches,
+
+\[\Delta C=\sum_{j=1}^{m}\sum_{i=1}^{j}b_i
+=\sum_{i=1}^{m}(m-i+1)b_i\ne\sum_{i=1}^{m}b_i.\]
+
+The generally unequal coefficients show why neither the counter nor a
+fixed division recovers the true sample count. The earlier JSON archive
+has valid counts, but it does not cover the new reproduction tail.
+
+No confidence bands, significance claims or convergence claims are
+inferred from three seeds and changing-policy training data. Seed ranges
+are descriptive; episodes sharing a training run are not independent
+replications of training. The caution about few-run point estimates
+follows \href{https://arxiv.org/abs/2108.13264}{Agarwal et al., NeurIPS
+2021}. Entropy, null attention and value loss are diagnostics, not
+causal evidence of role discovery, communication benefit or failure
+robustness. New gradient-norm records were not supplied, so the previous
+clipping audit is not extended to this tail.
+
+\subsection{Artifacts and
+verification}\label{artifacts-and-verification}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{training_plots.pdf}{Four-page plot PDF}: reproduction curves,
+  SoftRole curves, SoftRole common-budget comparison and
+  communication/value diagnostics.
+\item
+  Individual figures: \href{reproduction_training.png}{reproduction},
+  \href{softrole_training.png}{SoftRole},
+  \href{softrole_common_samples.png}{matched samples},
+  \href{softrole_diagnostics.png}{diagnostics}.
+\item
+  \texttt{summary.json}, \texttt{run\_summary.csv},
+  \texttt{epoch\_metrics.csv}: exact windows, per-seed outcomes and
+  extracted complete epoch records.
+\item
+  \texttt{provenance.json}: hashes, archive-prefix checks, stderr status
+  and counts; \texttt{analyze.py}: reproducible extraction and plotting.
+\end{itemize}
+
+All epoch sequences are contiguous; SoftRole episode/step totals
+reconcile, reported numeric metrics are finite, and no incomplete epoch
+was accepted. Input hashes remained unchanged throughout analysis.
+Copied stderr contains the same earlier warnings and no Python
+traceback; this does not establish live scheduler status. The
+presentation and older report remain dated snapshots. No training,
+evaluation, checkpoint mutation or runtime-code change was performed.
+
+\end{document}

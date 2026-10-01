@@ -1,0 +1,128 @@
+[
+  {
+    "name": "fc_banked/seed0",
+    "first_epoch": 270,
+    "last_epoch": 319,
+    "episodes": 5830,
+    "nominal_uniform_10_30_event_exposure": 0.9759127664788042
+  },
+  {
+    "name": "fc_banked/seed1",
+    "first_epoch": 278,
+    "last_epoch": 327,
+    "episodes": 5851,
+    "nominal_uniform_10_30_event_exposure": 0.9739157327603747
+  },
+  {
+    "name": "fc_banked/seed2",
+    "first_epoch": 185,
+    "last_epoch": 234,
+    "episodes": 5911,
+    "nominal_uniform_10_30_event_exposure": 0.9717314772297008
+  },
+  {
+    "name": "fc_shared/seed0",
+    "first_epoch": 279,
+    "last_epoch": 328,
+    "episodes": 5649,
+    "nominal_uniform_10_30_event_exposure": 0.9700832005664719
+  },
+  {
+    "name": "fc_shared/seed1",
+    "first_epoch": 268,
+    "last_epoch": 317,
+    "episodes": 5902,
+    "nominal_uniform_10_30_event_exposure": 0.9747462522792919
+  },
+  {
+    "name": "fc_shared/seed2",
+    "first_epoch": 312,
+    "last_epoch": 361,
+    "episodes": 5840,
+    "nominal_uniform_10_30_event_exposure": 0.9735159817351597
+  },
+  {
+    "name": "pcp_banked/seed0",
+    "first_epoch": 203,
+    "last_epoch": 252,
+    "episodes": 25309,
+    "nominal_uniform_10_30_event_exposure": 0.75985203833005
+  },
+  {
+    "name": "pcp_banked/seed1",
+    "first_epoch": 192,
+    "last_epoch": 241,
+    "episodes": 25462,
+    "nominal_uniform_10_30_event_exposure": 0.7543603726935751
+  },
+  {
+    "name": "pcp_banked/seed2",
+    "first_epoch": 251,
+    "last_epoch": 300,
+    "episodes": 34303,
+    "nominal_uniform_10_30_event_exposure": 0.6189143529026337
+  },
+  {
+    "name": "pcp_shared/seed0",
+    "first_epoch": 260,
+    "last_epoch": 309,
+    "episodes": 38923,
+    "nominal_uniform_10_30_event_exposure": 0.5742301956365621
+  },
+  {
+    "name": "pcp_shared/seed1",
+    "first_epoch": 370,
+    "last_epoch": 419,
+    "episodes": 85185,
+    "nominal_uniform_10_30_event_exposure": 0.12641785246116993
+  },
+  {
+    "name": "pcp_shared/seed2",
+    "first_epoch": 365,
+    "last_epoch": 414,
+    "episodes": 73151,
+    "nominal_uniform_10_30_event_exposure": 0.21138141522005036
+  },
+  {
+    "name": "pp_banked/seed0",
+    "first_epoch": 330,
+    "last_epoch": 379,
+    "episodes": 204533,
+    "nominal_uniform_10_30_event_exposure": 5.3082597219729126e-05
+  },
+  {
+    "name": "pp_banked/seed1",
+    "first_epoch": 342,
+    "last_epoch": 391,
+    "episodes": 205505,
+    "nominal_uniform_10_30_event_exposure": 2.7342632145434994e-05
+  },
+  {
+    "name": "pp_banked/seed2",
+    "first_epoch": 312,
+    "last_epoch": 361,
+    "episodes": 204963,
+    "nominal_uniform_10_30_event_exposure": 6.760802123867653e-05
+  },
+  {
+    "name": "pp_shared/seed0",
+    "first_epoch": 404,
+    "last_epoch": 453,
+    "episodes": 207356,
+    "nominal_uniform_10_30_event_exposure": 8.037706488679695e-05
+  },
+  {
+    "name": "pp_shared/seed1",
+    "first_epoch": 408,
+    "last_epoch": 457,
+    "episodes": 206636,
+    "nominal_uniform_10_30_event_exposure": 1.129199816747001e-05
+  },
+  {
+    "name": "pp_shared/seed2",
+    "first_epoch": 404,
+    "last_epoch": 453,
+    "episodes": 206881,
+    "nominal_uniform_10_30_event_exposure": 1.933478666479764e-05
+  }
+]

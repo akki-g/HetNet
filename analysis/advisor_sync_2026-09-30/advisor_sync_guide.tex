@@ -1,0 +1,23 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{xcolor,hyperref,fancyhdr,parskip}
+\input{common.tex}
+\hypersetup{pdftitle={Capability-Conditioned HetNet: advisor speaking guide},pdfauthor={Akshat Guduru},colorlinks=true,urlcolor=accent}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Capability-Conditioned HetNet | speaking guide}
+\fancyhead[R]{\small 30 Sep 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\newcounter{slide}
+\newcommand{\slide}[4]{%
+ \ifnum\value{slide}>0\clearpage\fi\stepcounter{slide}
+ {\color{muted}\small Slide \theslide\ of 18\par}
+ {\Large\bfseries\color{ink}#1\par}\medskip
+ {\color{accent}\bfseries On screen}\par {\normalsize #2\par}
+ \medskip\hrule\medskip
+ {\color{accent}\bfseries What to say / keep in mind}\par {\normalsize #3\par}
+ \medskip{\small\color{muted}\textbf{Evidence:} #4\par}}
+\begin{document}
+\input{content.tex}
+\end{document}

@@ -140,6 +140,23 @@ class EnvironmentAdapter:
             raise RuntimeError("reset the environment before observing")
         return adapt_observation(self._raw_obs, self._validate_kappa(kappa), self.base)
 
+    def pcp_sensor_status(self, victim):
+        """Read diagnostic state without generating an observation or using RNG.
+
+        Visibility is the cached native sensing view, before capability masking.
+        The rollout reads it only up to the scheduled event; this is neither a
+        policy input nor a claim about knowledge obtained through communication.
+        """
+        if self.task != "pcp":
+            raise ValueError("Sensor-event diagnostics are supported only for PCP")
+        if self._raw_obs is None:
+            raise RuntimeError("reset the environment before reading sensor status")
+        if not 0 <= victim < self.num_p:
+            raise ValueError("Sensor diagnostic victim must identify a sensing agent")
+        cells = self._raw_obs[victim].reshape(-1, self.base + 4)
+        return {"reached": bool(self.raw.reached_prey[victim]),
+                "target_visible": bool(np.any(cells[:, self.base + 2] > 0))}
+
     def step(self, actions, kappa):
         if self._raw_obs is None or self._done:
             raise RuntimeError("reset the environment before stepping a new episode")
