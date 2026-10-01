@@ -1,0 +1,20 @@
+{
+  "full_existing_suite": {
+    "command": ".venv/bin/python -m pytest -q",
+    "passed": 178,
+    "seconds": 49.14
+  },
+  "note": "Suite result recorded from this turn; validator rechecks saved evidence and bytes, not policy executions.",
+  "head": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+  "runs": 27,
+  "completed_epochs": 37566,
+  "archived_source_files_rechecked": 144,
+  "unchanged_checkpoint_files": 6,
+  "replayed_policy_episodes": 144,
+  "policy_transitions": 15746,
+  "paired_observation_transitions": 10992,
+  "python_syntax": "passed",
+  "git_diff_check": "passed",
+  "input_hashes_rechecked": 82,
+  "AGENTS_sha256": "eb8d260869f4df0faa1bb925b36fad983a3ae18ce975df64d9e5b80848048ddd"
+}

@@ -1,0 +1,83 @@
+{
+  "inputs": {
+    "analysis/project_overview_2026-09-30/latest_snapshot/summary.json": {
+      "bytes": 85181,
+      "sha256": "6e550325307c3aa4165651f488f487d36e002ca42fceba13ec925f9996b2b1e9"
+    },
+    "analysis/project_overview_2026-09-30/latest_snapshot/provenance.json": {
+      "bytes": 35948,
+      "sha256": "9717a32b170f7caacd34c4f7e98d05fc181498b96c3e18d8ec3304aa128bccbf"
+    },
+    "analysis/project_overview_2026-09-30/latest_snapshot/epoch_metrics.csv": {
+      "bytes": 8260378,
+      "sha256": "995d1f296b39bf5b9cddec74c8e023d2f2e00a7b26cef96b10881a2ae4cf2063"
+    }
+  },
+  "script": "analysis/project_overview_2026-09-30/make_figures.py",
+  "script_sha256": "ffc15a627b761d9adf841d41f595a8f8cb5d639afe01d5450b6568448786aa7f",
+  "software": {
+    "matplotlib": "3.10.7",
+    "numpy": "1.26.4"
+  },
+  "method": {
+    "main_panels": "Every seed; trailing 50 completed epochs; partial windows at the left edge.",
+    "hetnet": "Equal weights across rounded stdout epoch means; x = completed epoch.",
+    "softrole": "Episode-weighted epoch means; x = recorded environment steps in millions.",
+    "uncertainty": "Individual seed trajectories only; no pooled confidence intervals or significance tests.",
+    "archive_dots": "Last completed epoch represented in the earlier structured archive, by run.",
+    "diagnostics": "SoftRole; episode-weighted trailing 50-epoch means; value MSE log y; gate-entropy reference = ln(4).",
+    "fc_regression": "Shared FC seed 2, epoch 900 onward; faint raw epoch means plus episode-weighted trailing 10-epoch means, calculated with earlier epochs before trimming.",
+    "comparability": "The two columns have different x measures. These are training curves, not a controlled architecture ranking or frozen evaluation.",
+    "scope": "Only recorded metrics were plotted; no training, policy evaluation or input mutation."
+  },
+  "rows": 37566,
+  "run_count": 27,
+  "numeric_checks": {
+    "plotted_final_window_values_match_existing_audited_summary": 135,
+    "all_epoch_sequences_contiguous": true,
+    "all_softrole_sample_counts_strictly_increasing": true,
+    "input_hashes_unchanged_during_plotting": true
+  },
+  "outputs": {
+    "analysis/project_overview_2026-09-30/figures/pp_training.pdf": {
+      "bytes": 37818,
+      "sha256": "f0e0f72f151b38f13de0f9e98bc3347037be025736e999d6b89697579929c4ff"
+    },
+    "analysis/project_overview_2026-09-30/figures/pp_training.png": {
+      "bytes": 131270,
+      "sha256": "1edd07ab49be9971c04b976c4c2caa427d63eb0e8afc77c876c7c646d9b8af07"
+    },
+    "analysis/project_overview_2026-09-30/figures/pcp_training.pdf": {
+      "bytes": 44158,
+      "sha256": "c384a84124c83939162a721243c59bab7ba9dd88c5a5cac0f801b51df372190e"
+    },
+    "analysis/project_overview_2026-09-30/figures/pcp_training.png": {
+      "bytes": 154022,
+      "sha256": "6b6cb8d83b86a1277c010c3583c05b64480e270dd8fcd695b3cda4b766f6f6ec"
+    },
+    "analysis/project_overview_2026-09-30/figures/fc_training.pdf": {
+      "bytes": 154258,
+      "sha256": "f712a783de9b84fab152472335d98555db8b0f114801e338581e6f9d3710f2e7"
+    },
+    "analysis/project_overview_2026-09-30/figures/fc_training.png": {
+      "bytes": 234206,
+      "sha256": "a95f2f931683fc65d042712bc19e56126e7434a93ac69d6db05bc024fb87b351"
+    },
+    "analysis/project_overview_2026-09-30/figures/diagnostics.pdf": {
+      "bytes": 77065,
+      "sha256": "c88b398b906fceadcfc5482ef85c75c0accf2e8cc91dde40dd37defee377c9af"
+    },
+    "analysis/project_overview_2026-09-30/figures/diagnostics.png": {
+      "bytes": 201675,
+      "sha256": "2ba2f2b8f7838468f2142590fa88b5c26db401920b7c058bcfe23a02407fd285"
+    },
+    "analysis/project_overview_2026-09-30/figures/fc_regression.pdf": {
+      "bytes": 27096,
+      "sha256": "a8dc89380401ede543aaebd7dc555731b9e0f0abc5553191e3e1000c55eacc1a"
+    },
+    "analysis/project_overview_2026-09-30/figures/fc_regression.png": {
+      "bytes": 93835,
+      "sha256": "03a94c637bc88f2bf300553e62189cd380f68a5ebd0424c4f1791a543155d3da"
+    }
+  }
+}

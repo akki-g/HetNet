@@ -1,0 +1,438 @@
+--- d57da0717d5564027df7e8ba75614feca8006960/WildFire_Simulate_Original.py
++++ publication_reconstruction/runtime/WildFire_Simulate_Original.py
+@@ -20,7 +20,12 @@
+ class WildFire(object):
+ 
+     def __init__(self, terrain_sizes=None, hotspot_areas=None, num_ign_points=None, duration=None,
+-                 time_step=1, radiation_radius=10, weak_fire_threshold=0.5, flame_height=3, flame_angle=np.pi/3):
++                 time_step=1, radiation_radius=10, weak_fire_threshold=0.5, flame_height=3, flame_angle=np.pi/3,
++                 publication_env_version='historical-2022'):
++
++        if publication_env_version not in ('historical-2022', 'corrected-v1'):
++            raise ValueError('Unsupported publication_env_version: ' + str(publication_env_version))
++        self.publication_env_version = publication_env_version
+ 
+         if terrain_sizes is None or hotspot_areas is None or num_ign_points is None or duration is None:
+             raise ValueError(">>> Oops! 'WildFire' environment cannot be initialized without any parameters.")
+@@ -52,8 +57,11 @@
+         for hotspot in self.hotspot_areas:
+             x_min, x_max = hotspot[0], hotspot[1]
+             y_min, y_max = hotspot[2], hotspot[3]
+-            ign_points_x = np.random.randint(low=x_min, high=x_max, size=(self.num_ign_points, 1))
+-            ign_points_y = np.random.randint(low=y_min, high=y_max, size=(self.num_ign_points, 1))
++            # HetNet passes single-cell hotspots; randint(x, x) cannot run.
++            ign_points_x = (np.full((self.num_ign_points, 1), x_min) if x_min == x_max
++                            else np.random.randint(low=x_min, high=x_max, size=(self.num_ign_points, 1)))
++            ign_points_y = (np.full((self.num_ign_points, 1), y_min) if y_min == y_max
++                            else np.random.randint(low=y_min, high=y_max, size=(self.num_ign_points, 1)))
+             ign_points_this_area = np.concatenate([ign_points_x, ign_points_y], axis=1)
+             ign_points_all = np.concatenate([ign_points_all, ign_points_this_area], axis=0)
+ 
+@@ -172,6 +180,15 @@
+         for point in ign_points_all:
+             # extracting the data
+             x, y = point[0], point[1]
++            if self.publication_env_version == 'corrected-v1':
++                if not (0 <= x <= world_Size - 1 and 0 <= y <= world_Size - 1):
++                    raise ValueError('corrected-v1 requires in-bounds fire fronts')
++                if x == 0 or y == 0:
++                    # Preserve the original stationary boundary behavior and
++                    # source identity, without emitting an unfilled origin row.
++                    new_fire_front[counter] = point
++                    counter += 1
++                    continue
+             # Ensure that all the fire spots to be displayed must be within the window scope
+             if ((x <= (world_Size - 1)) and (y <= (world_Size - 1)) and (x > 0) and (y > 0)):
+                 spread_rate = geo_phys_info['spread_rate']
+@@ -196,6 +213,11 @@
+                 if [int(x), int(y)] not in pruned_List:
+                     x_new = x + x_diff * self.time_step
+                     y_new = y + y_diff * self.time_step
++                    if self.publication_env_version == 'corrected-v1' and not (
++                            0 <= x_new <= world_Size - 1 and 0 <= y_new <= world_Size - 1):
++                        # Explicit reconstruction choice: a proposed exit keeps
++                        # the previous source position instead of clipping it.
++                        x_new, y_new = x, y
+                 else:
+                     x_new = x
+                     y_new = y
+@@ -218,6 +240,8 @@
+ 
+                 counter += 1
+ 
++        if self.publication_env_version == 'corrected-v1':
++            return new_fire_front[:counter], current_geo_phys_info[:counter]
+         return new_fire_front, current_geo_phys_info
+ 
+     # dynamic fire decay
+--- d57da0717d5564027df7e8ba75614feca8006960/envs/ic3net_envs/fire_commander_env.py
++++ publication_reconstruction/runtime/envs/ic3net_envs/fire_commander_env.py
+@@ -88,6 +88,9 @@
+                             help="Vision of A agents. If -1, defaults to blind")
+ 
+     def multi_agent_init(self, args):
++        self.publication_env_version = getattr(args, 'publication_env_version', 'historical-2022')
++        if self.publication_env_version not in ('historical-2022', 'corrected-v1'):
++            raise ValueError('Unsupported publication_env_version: ' + str(self.publication_env_version))
+         # General variables defining the environment : CONFIG
+         params = ['dim', 'vision', 'fire_spread_off', 'mode', 'nfriendly_P', 'nfriendly_A', 'max_wind_speed', 'tensor_obs', 'reward_type', 'A_vision']
+ 
+@@ -245,7 +248,8 @@
+ 
+         # Uniform fire model with default parameters
+         self.fire_mdl = WildFire(terrain_sizes=terrain_sizes, hotspot_areas=hotspot_areas, num_ign_points=1,
+-                                 duration=self.duration, flame_angle=np.pi/3)
++                                 duration=self.duration, flame_angle=np.pi/3,
++                                 publication_env_version=self.publication_env_version)
+         self.ign_points_all = self.fire_mdl.hotspot_init()  # initialize hotspots (fire front fires)
+         self.previous_terrain_map = self.ign_points_all.copy()  # initializing the starting terrain map
+         self.geo_phys_info = self.fire_mdl.geo_phys_info_init(
+@@ -296,6 +300,15 @@
+ 
+         self.empty_bool_base_grid = self._onehot_initialization(self.grid)
+ 
++    def _contains_fire_position(self, point, positions):
++        if len(positions) == 0:
++            return False
++        positions = np.asarray(positions)
++        if self.publication_env_version == 'corrected-v1':
++            # Coordinates match only when both components belong to one row.
++            return bool(np.any(np.all(positions == point, axis=1)))
++        return point in positions
++
+     def _get_obs(self):
+         self.bool_base_grid = self.empty_bool_base_grid.copy()
+ 
+@@ -313,16 +326,17 @@
+         for i, p in enumerate(self.predator_loc):
+             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
+             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
+-            obs.append(self.bool_base_grid[slice_y, slice_x])
++            view = self.bool_base_grid[slice_y, slice_x]
++            obs.append(view.copy() if self.publication_env_version == 'corrected-v1' else view)
+ 
+             for fire in self.fire_loc:
+-                if fire in np.array(self.discovered_fire):
++                if self._contains_fire_position(fire, self.discovered_fire):
+                     continue
+ 
+                 if fire[0] >= p[0] - self.vision and fire[0] <= p[0] + self.vision and fire[1] >= p[1] - self.vision and fire[1] <= p[1] + self.vision:
+                     self.discovered_fire.append(fire)
+ 
+-                    if fire in self.ign_points_all[:,:2].astype(np.int):
++                    if self._contains_fire_position(fire, self.ign_points_all[:, :2].astype(int)):
+                         self.just_discovered_source[i] = 1
+                     else:
+                         self.just_discovered_nonsource[i] = 1
+@@ -332,20 +346,11 @@
+         for p in self.predator_capture_loc:
+             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
+             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
+-            obs.append(self.bool_base_grid[slice_y, slice_x])
++            view = self.bool_base_grid[slice_y, slice_x]
++            obs.append(view.copy() if self.publication_env_version == 'corrected-v1' else view)
+ 
+             if self.action_blind:
+-                import copy
+-                c = copy.deepcopy(obs)
+                 obs[-1][:, :, self.BASE:] = np.zeros(shape=obs[-1][:, :, self.BASE:].shape)
+-
+-        print((c[0] == obs[0]).all())
+-        if (c[0] == obs[0]).all() == False:
+-            print('bad')
+-        print((c[1] == obs[1]).all())
+-        if (c[1] == obs[1]).all() == False:
+-            print('bad')
+-        print((c[2] == obs[2]).all())
+ 
+         obs = np.stack(obs)
+ 
+@@ -388,7 +393,7 @@
+                 # put out fire
+                 pred_cap_loc = self.predator_capture_loc[idx - self.npredator]
+                 fire_loc_idx = np.argwhere(np.all(self.fire_loc == pred_cap_loc, axis=1))
+-                ign_point_idx = np.argwhere(np.all(self.ign_points_all[:,:2].astype(np.int) == pred_cap_loc, axis=1))
++                ign_point_idx = np.argwhere(np.all(self.ign_points_all[:,:2].astype(int) == pred_cap_loc, axis=1))
+                 self.extinguishing[idx - self.npredator] = 1
+ 
+                 if len(fire_loc_idx) + len(ign_point_idx) == 0:
+@@ -529,7 +534,7 @@
+         self.stdscr.clear()
+ 
+         for p in self.fire_loc:
+-            render_char = 'F' if np.all(self.ign_points_all[:,:2].astype(np.int) == p, axis=1) else 'f'
++            render_char = 'F' if np.all(self.ign_points_all[:,:2].astype(int) == p, axis=1) else 'f'
+ 
+             if grid[p[0]][p[1]] != 0:
+                 grid[p[0]][p[1]] = str(grid[p[0]][p[1]]) + render_char
+@@ -572,4 +577,3 @@
+ 
+     def exit_render(self):
+         curses.endwin()
+-
+--- d57da0717d5564027df7e8ba75614feca8006960/envs/ic3net_envs/predator_capture_env.py
++++ publication_reconstruction/runtime/envs/ic3net_envs/predator_capture_env.py
+@@ -88,6 +88,10 @@
+ 
+     def multi_agent_init(self, args):
+ 
++        self.publication_env_version = getattr(args, 'publication_env_version', 'historical-2022')
++        if self.publication_env_version not in ('historical-2022', 'corrected-v1'):
++            raise ValueError('Unsupported publication_env_version: ' + str(self.publication_env_version))
++
+         # General variables defining the environment : CONFIG
+         params = ['dim', 'vision', 'moving_prey', 'mode', 'enemy_comm', 'nfriendly_P', 'nfriendly_A', 'tensor_obs']
+         for key in params:
+@@ -277,12 +281,14 @@
+         for p in self.predator_loc:
+             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
+             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
+-            obs.append(self.bool_base_grid[slice_y, slice_x])
++            view = self.bool_base_grid[slice_y, slice_x]
++            obs.append(view.copy() if self.publication_env_version == 'corrected-v1' else view)
+ 
+         for p in self.predator_capture_loc:
+             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
+             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
+-            obs.append(self.bool_base_grid[slice_y, slice_x])
++            view = self.bool_base_grid[slice_y, slice_x]
++            obs.append(view.copy() if self.publication_env_version == 'corrected-v1' else view)
+             # x,y,z = self.bool_base_grid[slice_y, slice_x].shape
+             # obs.append(np.arange(x*y*z).reshape(x,y,z))
+ 
+--- d57da0717d5564027df7e8ba75614feca8006960/envs/ic3net_envs/predator_prey_env.py
++++ publication_reconstruction/runtime/envs/ic3net_envs/predator_prey_env.py
+@@ -80,6 +80,10 @@
+ 
+     def multi_agent_init(self, args):
+ 
++        self.publication_env_version = getattr(args, 'publication_env_version', 'historical-2022')
++        if self.publication_env_version not in ('historical-2022', 'corrected-v1'):
++            raise ValueError('Unsupported publication_env_version: ' + str(self.publication_env_version))
++
+         # General variables defining the environment : CONFIG
+         params = ['dim', 'vision', 'moving_prey', 'mode', 'enemy_comm']
+         for key in params:
+--- 0ee9ceb38b6133866e9c1db40bed2c6caa3b842d/hetgat/uavnet.py
++++ publication_reconstruction/runtime/hetgat/uavnet.py
+@@ -212,7 +212,8 @@
+                 ob_feat = ob_pos + self.P_s
+                 P_i[0, Pi_pos:Pi_pos + self.in_dim['state']] = x[0][i][ob_feat:ob_feat + self.in_dim['state']]
+ 
+-                ob_pos += self.P_s
++                # February 2022 extraction advances over position AND sensory entries.
++                ob_pos += self.P_s + self.in_dim['state']
+                 Pi_pos += self.in_dim['state']
+ 
+             if i == 0:
+--- 0ee9ceb38b6133866e9c1db40bed2c6caa3b842d/main.py
++++ publication_reconstruction/runtime/main.py
+@@ -1,4 +1,10 @@
++# Resolve the frozen environment copy in the parent and spawned collectors.
++from pathlib import Path
++import sys
++sys.path.insert(0, str(Path(__file__).resolve().parent / 'envs'))
++
+ import argparse
++import atexit
+ import signal
+ import sys
+ import time
+@@ -36,7 +42,12 @@
+ 
+ torch.set_default_tensor_type('torch.DoubleTensor')
+ 
+-parser = argparse.ArgumentParser(description='PyTorch RL trainer')
++parser = argparse.ArgumentParser(description='Isolated historical HetNet reconstruction')
++parser.add_argument('--publication_env_version', required=True,
++                    choices=['historical-2022', 'corrected-v1'])
++parser.add_argument('--max_env_steps', type=int, default=0,
++                    help='stop after a complete update reaching this total; zero disables')
++parser.add_argument('--source_manifest', required=True)
+ # training
+ # note: number of steps per epoch = epoch_size X batch_size x nprocesses
+ 
+@@ -335,6 +346,9 @@
+             trainer = EvalTrainer(args, policy_net, data.init(args.env_name, args))
+         else:
+             trainer = Trainer(args, policy_net, data.init(args.env_name, args))
++if __name__ == '__main__' and args.nprocesses > 1:
++    # Covers failures in later initialization as well as the training finally.
++    atexit.register(trainer.quit)
+ if args.hetcomm:
+     disp_trainer = Trainer(args, [policy_perception_net, policy_action_net], data.init(args.env_name, args, False))
+ else:
+@@ -380,6 +394,7 @@
+     else:
+         curr_run = 'run%i' % (max(exst_run_nums) + 1)
+ run_dir = model_dir / curr_run
++progress = dict(env_steps=0, episodes=0, updates=0, epoch=0)
+ 
+ def run(num_epochs):
+     num_episodes = 0
+@@ -412,11 +427,16 @@
+ 
+             merge_stat(s, stat)
+             trainer.display = False
+-            num_episodes += stat['num_episodes']
+-            num_steps += stat['num_steps']
++            num_episodes += s['num_episodes']
++            num_steps += s['num_steps']
++            progress.update(env_steps=int(num_steps), episodes=int(num_episodes),
++                            updates=progress['updates'] + 1, epoch=ep + 1)
+             
+             epoch_cpu_mem_peak = np.maximum(epoch_cpu_mem_peak, cpu_mem_peak)
+             epoch_gpu_mem_peak = np.maximum(epoch_gpu_mem_peak, gpu_mem_peak)
++
++            if args.max_env_steps and num_steps >= args.max_env_steps:
++                break
+ 
+         epoch_time = time.time() - epoch_begin_time
+         if recorder is not None:
+@@ -467,7 +487,8 @@
+                     vis.line(np.asarray(v.data), np.asarray(log[v.x_axis].data[-len(v.data):]),
+                              win=k, opts=dict(xlabel=v.x_axis, ylabel=k))
+ 
+-        if args.save_every and args.save != '' and (ep + 1) % args.save_every == 0 and ep + 1 < num_epochs:
++        budget_reached = bool(args.max_env_steps and num_steps >= args.max_env_steps)
++        if args.save_every and args.save != '' and (ep + 1) % args.save_every == 0 and ep + 1 < num_epochs and not budget_reached:
+             save(ep + 1, args)
+ 
+         # if args.save != '':
+@@ -477,6 +498,11 @@
+         print('Global Python Allocation Peak {}\nGlobal GPU Memory Peak {}MB'.format(
+             global_cpu_memory, global_gpu_mem_peak / 10 ** 6
+         ))
++
++        if budget_reached:
++            break
++
++    return len(log['epoch'].data)
+ 
+ 
+ def save(epoch, args):
+@@ -486,6 +512,10 @@
+     d['log'] = log
+     d['trainer'] = trainer.state_dict()
+     d['seed'] = args.seed
++    import hashlib
++    d['reconstruction'] = dict(schema_version=1, env_version=args.publication_env_version,
++        resolved_args=vars(args), counts=dict(progress),
++        source_manifest_sha256=hashlib.sha256(Path(args.source_manifest).read_bytes()).hexdigest())
+     checkpoint = run_dir / ('model_ep%i.pt' % (int(epoch)))
+     checkpoint_begin_time = time.monotonic()
+     torch.save(d, checkpoint)
+@@ -504,28 +534,27 @@
+ 
+ 
+ def signal_handler(signal, frame):
+-    print('You pressed Ctrl+C! Exiting gracefully.')
++    print('Training interrupted by signal {}.'.format(signal), flush=True)
+     if args.display:
+         env.end_display()
+-    sys.exit(0)
++    sys.exit(128 + signal)
+ 
+ 
+ signal.signal(signal.SIGINT, signal_handler)
++signal.signal(signal.SIGTERM, signal_handler)
+ 
+ if __name__ == '__main__':
+-    if args.load != '':
+-        load(args.load)
+-
+-    run(args.num_epochs)
+-
+-    if args.display:
+-        env.end_display()
+-
+-    if args.save != '':
+-        save(args.num_epochs, args)
+-
+-    if sys.flags.interactive == 0 and args.nprocesses > 1:
+-        trainer.quit()
+-        import os
+-
+-        os._exit(0)
++    try:
++        if args.load != '':
++            load(args.load)
++
++        completed_epochs = run(args.num_epochs)
++
++        if args.display:
++            env.end_display()
++
++        if args.save != '':
++            save(completed_epochs, args)
++    finally:
++        if args.nprocesses > 1:
++            trainer.quit()
+--- 0ee9ceb38b6133866e9c1db40bed2c6caa3b842d/multi_processing.py
++++ publication_reconstruction/runtime/multi_processing.py
+@@ -49,24 +49,58 @@
+ class MultiProcessTrainer(object):
+     def __init__(self, args, trainer_maker):
+         self.comms = []
++        self.workers = []
+         self.trainer = trainer_maker()
+         # itself will do the same job as workers
+         self.nworkers = args.nprocesses - 1
+ 
+-        for i in range(self.nworkers):
+-            comm, comm_remote = mp.Pipe()
+-            self.comms.append(comm)
+-            worker = MultiProcessWorker(i, trainer_maker, comm_remote, seed=args.seed)
+-            worker.start()
++        try:
++            for i in range(self.nworkers):
++                comm, comm_remote = mp.Pipe()
++                self.comms.append(comm)
++                worker = MultiProcessWorker(i, trainer_maker, comm_remote, seed=args.seed)
++                self.workers.append(worker)
++                worker.start()
++                comm_remote.close()
++        except BaseException:
++            self.quit()
++            raise
+ 
+         self.grads = None
+         self.worker_grads = None
+         self.is_random = args.random
+-        self.reset_mem_peak()
++        try:
++            self.reset_mem_peak()
++        except BaseException:
++            self.quit()
++            raise
+ 
+     def quit(self):
+         for comm in self.comms:
+-            comm.send('quit')
++            try:
++                comm.send('quit')
++            except (BrokenPipeError, EOFError, OSError):
++                pass
++        # A failed or interrupted collector may never return to its command
++        # loop. Bound shutdown, then terminate only this trainer's workers.
++        deadline = time.monotonic() + 2
++        for worker in self.workers:
++            if worker.pid is not None:
++                worker.join(timeout=max(0, deadline - time.monotonic()))
++        for worker in self.workers:
++            if worker.pid is not None and worker.is_alive():
++                worker.terminate()
++        deadline = time.monotonic() + 2
++        for worker in self.workers:
++            if worker.pid is not None:
++                worker.join(timeout=max(0, deadline - time.monotonic()))
++                if worker.is_alive():
++                    worker.kill()
++                    worker.join(timeout=1)
++        for comm in self.comms:
++            comm.close()
++        self.comms = []
++        self.workers = []
+ 
+     def obtain_grad_pointers(self):
+         # only need perform this once

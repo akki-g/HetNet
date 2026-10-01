@@ -1,0 +1,2113 @@
+{
+  "panel_seed": 93001,
+  "episodes_per_condition": 12,
+  "selection": "Latest locally archived seed-0 checkpoint by epoch, selected before outcomes",
+  "limits": "Small nominal diagnostic panel; not held-out, not a ranking or final performance estimate",
+  "archived_source": {
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed0": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed1": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed2": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed0": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed1": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed2": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed0": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed1": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed2": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed0": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed1": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed2": {
+      "softrole/model.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/learning.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/scenarios.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "softrole/rollout.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/env.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "softrole/train.py": {
+        "matches_current": false,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/predator_capture_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      },
+      "envs/ic3net_envs/fire_commander_env.py": {
+        "matches_current": true,
+        "matches_manifest": true
+      }
+    }
+  },
+  "information_probes": {
+    "empty_graph_local_actor_unchanged": true,
+    "current_message_noise_changes_actor_but_not_critic_or_gate": true
+  },
+  "conditions": [
+    {
+      "task": "pp",
+      "model": "shared",
+      "trained": false,
+      "checkpoint": null,
+      "checkpoint_sha256": null,
+      "checkpoint_epoch": 0,
+      "checkpoint_steps": 0,
+      "successes": 6,
+      "mean_steps": 63.583333333333336,
+      "mean_team_return": -5.137499999999995,
+      "independent_replay_passed": true,
+      "episodes": [
+        {
+          "scenario_id": "93001:0",
+          "env_seed": 487619804,
+          "action_seed": 3068347519,
+          "message_seed": 1859629089,
+          "success": true,
+          "steps": 70,
+          "team_return": -7.199999999999997
+        },
+        {
+          "scenario_id": "93001:1",
+          "env_seed": 3454697521,
+          "action_seed": 698978493,
+          "message_seed": 3205309128,
+          "success": false,
+          "steps": 80,
+          "team_return": -5.749999999999995
+        },
+        {
+          "scenario_id": "93001:2",
+          "env_seed": 2787128894,
+          "action_seed": 2066650503,
+          "message_seed": 2546977615,
+          "success": false,
+          "steps": 80,
+          "team_return": -5.449999999999994
+        },
+        {
+          "scenario_id": "93001:3",
+          "env_seed": 507832297,
+          "action_seed": 3798341344,
+          "message_seed": 4117911861,
+          "success": true,
+          "steps": 12,
+          "team_return": -0.8499999999999999
+        },
+        {
+          "scenario_id": "93001:4",
+          "env_seed": 4122750282,
+          "action_seed": 479116952,
+          "message_seed": 1930216240,
+          "success": false,
+          "steps": 80,
+          "team_return": -9.249999999999991
+        },
+        {
+          "scenario_id": "93001:5",
+          "env_seed": 2153092276,
+          "action_seed": 2123561499,
+          "message_seed": 2676259115,
+          "success": true,
+          "steps": 20,
+          "team_return": -2.4500000000000006
+        },
+        {
+          "scenario_id": "93001:6",
+          "env_seed": 3682141969,
+          "action_seed": 4146389108,
+          "message_seed": 1762418938,
+          "success": false,
+          "steps": 80,
+          "team_return": -5.449999999999994
+        },
+        {
+          "scenario_id": "93001:7",
+          "env_seed": 3560474850,
+          "action_seed": 3036778851,
+          "message_seed": 5366769,
+          "success": true,
+          "steps": 41,
+          "team_return": -4.700000000000002
+        },
+        {
+          "scenario_id": "93001:8",
+          "env_seed": 2942263865,
+          "action_seed": 1259519956,
+          "message_seed": 199779761,
+          "success": false,
+          "steps": 80,
+          "team_return": -4.399999999999993
+        },
+        {
+          "scenario_id": "93001:9",
+          "env_seed": 1111259704,
+          "action_seed": 3422907592,
+          "message_seed": 262487935,
+          "success": true,
+          "steps": 76,
+          "team_return": -4.0499999999999945
+        },
+        {
+          "scenario_id": "93001:10",
+          "env_seed": 3786785931,
+          "action_seed": 839524909,
+          "message_seed": 1816424532,
+          "success": false,
+          "steps": 80,
+          "team_return": -8.249999999999988
+        },
+        {
+          "scenario_id": "93001:11",
+          "env_seed": 2084128418,
+          "action_seed": 1195819733,
+          "message_seed": 3731586234,
+          "success": true,
+          "steps": 64,
+          "team_return": -3.849999999999997
+        }
+      ]
+    },
+    {
+      "task": "pp",
+      "model": "shared",
+      "trained": true,
+      "checkpoint": "stokes_runs/runs/softrole_primary/pp_shared/seed0/checkpoints/epoch0450.pt",
+      "checkpoint_sha256": "f4bfcdc39c73e56790a819f51c471ee8a3fb22d4daa1a71a23f1cacf7762abf4",
+      "checkpoint_epoch": 450,
+      "checkpoint_steps": 9167309,
+      "successes": 12,
+      "mean_steps": 3.9166666666666665,
+      "mean_team_return": -0.2708333333333333,
+      "independent_replay_passed": true,
+      "episodes": [
+        {
+          "scenario_id": "93001:0",
+          "env_seed": 487619804,
+          "action_seed": 3068347519,
+          "message_seed": 1859629089,
+          "success": true,
+          "steps": 4,
+          "team_return": -0.3
+        },
+        {
+          "scenario_id": "93001:1",
+          "env_seed": 3454697521,
+          "action_seed": 698978493,
+          "message_seed": 3205309128,
+          "success": true,
+          "steps": 6,
+          "team_return": -0.4
+        },
+        {
+          "scenario_id": "93001:2",
+          "env_seed": 2787128894,
+          "action_seed": 2066650503,
+          "message_seed": 2546977615,
+          "success": true,
+          "steps": 3,
+          "team_return": -0.15000000000000002
+        },
+        {
+          "scenario_id": "93001:3",
+          "env_seed": 507832297,
+          "action_seed": 3798341344,
+          "message_seed": 4117911861,
+          "success": true,
+          "steps": 2,
+          "team_return": -0.05
+        },
+        {
+          "scenario_id": "93001:4",
+          "env_seed": 4122750282,
+          "action_seed": 479116952,
+          "message_seed": 1930216240,
+          "success": true,
+          "steps": 3,
+          "team_return": -0.2
+        },
+        {
+          "scenario_id": "93001:5",
+          "env_seed": 2153092276,
+          "action_seed": 2123561499,
+          "message_seed": 2676259115,
+          "success": true,
+          "steps": 4,
+          "team_return": -0.30000000000000004
+        },
+        {
+          "scenario_id": "93001:6",
+          "env_seed": 3682141969,
+          "action_seed": 4146389108,
+          "message_seed": 1762418938,
+          "success": true,
+          "steps": 5,
+          "team_return": -0.35000000000000003
+        },
+        {
+          "scenario_id": "93001:7",
+          "env_seed": 3560474850,
+          "action_seed": 3036778851,
+          "message_seed": 5366769,
+          "success": true,
+          "steps": 5,
+          "team_return": -0.4
+        },
+        {
+          "scenario_id": "93001:8",
+          "env_seed": 2942263865,
+          "action_seed": 1259519956,
+          "message_seed": 199779761,
+          "success": true,
+          "steps": 5,
+          "team_return": -0.35
+        },
+        {
+          "scenario_id": "93001:9",
+          "env_seed": 1111259704,
+          "action_seed": 3422907592,
+          "message_seed": 262487935,
+          "success": true,
+          "steps": 3,
+          "team_return": -0.2
+        },
+        {
+          "scenario_id": "93001:10",
+          "env_seed": 3786785931,
+          "action_seed": 839524909,
+          "message_seed": 1816424532,
+          "success": true,
+          "steps": 3,
+          "team_return": -0.25
+        },
+        {
+          "scenario_id": "93001:11",
+          "env_seed": 2084128418,
+          "action_seed": 1195819733,
+          "message_seed": 3731586234,
+          "success": true,
+          "steps": 4,
+          "team_return": -0.30000000000000004
+        }
+      ]
+    },
+    {
+      "task": "pp",
+      "model": "banked",
+      "trained": false,
+      "checkpoint": null,
+      "checkpoint_sha256": null,
+      "checkpoint_epoch": 0,
+      "checkpoint_steps": 0,
+      "successes": 4,
+      "mean_steps": 69.83333333333333,
+      "mean_team_return": -5.962499999999994,
+      "independent_replay_passed": true,
+      "episodes": [
+        {
+          "scenario_id": "93001:0",
+          "env_seed": 487619804,
+          "action_seed": 3068347519,
+          "message_seed": 1859629089,
+          "success": true,
+          "steps": 70,
+          "team_return": -7.2499999999999964
+        },
+        {
+          "scenario_id": "93001:1",
+          "env_seed": 3454697521,
+          "action_seed": 698978493,
+          "message_seed": 3205309128,
+          "success": false,
+          "steps": 80,
+          "team_return": -5.749999999999995
+        },
+        {
+          "scenario_id": "93001:2",
+          "env_seed": 2787128894,
+          "action_seed": 2066650503,
+          "message_seed": 2546977615,
+          "success": true,
+          "steps": 49,
+          "team_return": -5.049999999999999
+        },
+        {
+          "scenario_id": "93001:3",
+          "env_seed": 507832297,
+          "action_seed": 3798341344,
+          "message_seed": 4117911861,
+          "success": true,
+          "steps": 12,
+          "team_return": -0.8499999999999999
+        },
+        {
+          "scenario_id": "93001:4",
+          "env_seed": 4122750282,
+          "action_seed": 479116952,
+          "message_seed": 1930216240,
+          "success": false,
+          "steps": 80,
+          "team_return": -10.099999999999987
+        },
+        {
+          "scenario_id": "93001:5",
+          "env_seed": 2153092276,
+          "action_seed": 2123561499,
+          "message_seed": 2676259115,
+          "success": false,
+          "steps": 80,
+          "team_return": -5.499999999999994
+        },
+        {
+          "scenario_id": "93001:6",
+          "env_seed": 3682141969,
+          "action_seed": 4146389108,
+          "message_seed": 1762418938,
+          "success": false,
+          "steps": 80,
+          "team_return": -4.349999999999993
+        },
+        {
+          "scenario_id": "93001:7",
+          "env_seed": 3560474850,
+          "action_seed": 3036778851,
+          "message_seed": 5366769,
+          "success": true,
+          "steps": 67,
+          "team_return": -6.549999999999997
+        },
+        {
+          "scenario_id": "93001:8",
+          "env_seed": 2942263865,
+          "action_seed": 1259519956,
+          "message_seed": 199779761,
+          "success": false,
+          "steps": 80,
+          "team_return": -4.399999999999993
+        },
+        {
+          "scenario_id": "93001:9",
+          "env_seed": 1111259704,
+          "action_seed": 3422907592,
+          "message_seed": 262487935,
+          "success": false,
+          "steps": 80,
+          "team_return": -8.649999999999988
+        },
+        {
+          "scenario_id": "93001:10",
+          "env_seed": 3786785931,
+          "action_seed": 839524909,
+          "message_seed": 1816424532,
+          "success": false,
+          "steps": 80,
+          "team_return": -8.399999999999988
+        },
+        {
+          "scenario_id": "93001:11",
+          "env_seed": 2084128418,
+          "action_seed": 1195819733,
+          "message_seed": 3731586234,
+          "success": false,
+          "steps": 80,
+          "team_return": -4.699999999999994
+        }
+      ]
+    },
+    {
+      "task": "pp",
+      "model": "banked",
+      "trained": true,
+      "checkpoint": "stokes_runs/runs/softrole_primary/pp_banked/seed0/checkpoints/epoch0350.pt",
+      "checkpoint_sha256": "3c6e6b58edc0d22e877b3540db8553d99c4c506ad8d16ee00e03a7901eafabff",
+      "checkpoint_epoch": 350,
+      "checkpoint_steps": 7192864,
+      "successes": 12,
+      "mean_steps": 3.75,
+      "mean_team_return": -0.2625,
+      "independent_replay_passed": true,
+      "episodes": [
+        {
+          "scenario_id": "93001:0",
+          "env_seed": 487619804,
+          "action_seed": 3068347519,
+          "message_seed": 1859629089,
+          "success": true,
+          "steps": 4,
+          "team_return": -0.3
+        },
+        {
+          "scenario_id": "93001:1",
+          "env_seed": 3454697521,
+          "action_seed": 698978493,
+          "message_seed": 3205309128,
+          "success": true,
+          "steps": 6,
+          "team_return": -0.4
+        },
+        {
+          "scenario_id": "93001:2",
+          "env_seed": 2787128894,
+          "action_seed": 2066650503,
+          "message_seed": 2546977615,
+          "success": true,
+          "steps": 3,
+          "team_return": -0.15000000000000002
+        },
+        {
+          "scenario_id": "93001:3",
+          "env_seed": 507832297,
+          "action_seed": 3798341344,
+          "message_seed": 4117911861,
+          "success": true,
+          "steps": 2,
+          "team_return": -0.05
+        },
+        {
+          "scenario_id": "93001:4",
+          "env_seed": 4122750282,
+          "action_seed": 479116952,
+          "message_seed": 1930216240,
+          "success": true,
+          "steps": 3,
+          "team_return": -0.2
+        },
+        {
+          "scenario_id": "93001:5",
+          "env_seed": 2153092276,
+          "action_seed": 2123561499,
+          "message_seed": 2676259115,
+          "success": true,
+          "steps": 4,
+          "team_return": -0.30000000000000004
+        },
+        {
+          "scenario_id": "93001:6",
+          "env_seed": 3682141969,
+          "action_seed": 4146389108,
+          "message_seed": 1762418938,
+          "success": true,
+          "steps": 5,
+          "team_return": -0.35000000000000003
+        },
+        {
+          "scenario_id": "93001:7",
+          "env_seed": 3560474850,
+          "action_seed": 3036778851,
+          "message_seed": 5366769,
+          "success": true,
+          "steps": 3,
+          "team_return": -0.30000000000000004
+        },
+        {
+          "scenario_id": "93001:8",
+          "env_seed": 2942263865,
+          "action_seed": 1259519956,
+          "message_seed": 199779761,
+          "success": true,
+          "steps": 5,
+          "team_return": -0.35
+        },
+        {
+          "scenario_id": "93001:9",
+          "env_seed": 1111259704,
+          "action_seed": 3422907592,
+          "message_seed": 262487935,
+          "success": true,
+          "steps": 3,
+          "team_return": -0.2
+        },
+        {
+          "scenario_id": "93001:10",
+          "env_seed": 3786785931,
+          "action_seed": 839524909,
+          "message_seed": 1816424532,
+          "success": true,
+          "steps": 3,
+          "team_return": -0.25
+        },
+        {
+          "scenario_id": "93001:11",
+          "env_seed": 2084128418,
+          "action_seed": 1195819733,
+          "message_seed": 3731586234,
+          "success": true,
+          "steps": 4,
+          "team_return": -0.30000000000000004
+        }
+      ]
+    },
+    {
+      "task": "pcp",
+      "model": "shared",
+      "trained": false,
+      "checkpoint": null,
+      "checkpoint_sha256": null,
+      "checkpoint_epoch": 0,
+      "checkpoint_steps": 0,
+      "successes": 3,
+      "mean_steps": 69.83333333333333,
+      "mean_team_return": -6.4541666666666595,
+      "independent_replay_passed": true,
+      "episodes": [
+        {
+          "scenario_id": "93001:0",
+          "env_seed": 487619804,
+          "action_seed": 3068347519,
+          "message_seed": 1859629089,
+          "success": false,
+          "steps": 80,
+          "team_return": -9.04999999999999
+        },
+        {
+          "scenario_id": "93001:1",
+          "env_seed": 3454697521,
+          "action_seed": 698978493,
+          "message_seed": 3205309128,
+          "success": false,
+          "steps": 80,
+          "team_return": -5.849999999999995
+        },
+        {
+          "scenario_id": "93001:2",
+          "env_seed": 2787128894,
+          "action_seed": 2066650503,
+          "message_seed": 2546977615,
+          "success": false,
+          "steps": 80,
+          "team_return": -5.599999999999994
+        },
+        {
+          "scenario_id": "93001:3",
+          "env_seed": 507832297,
+          "action_seed": 3798341344,
+          "message_seed": 4117911861,
+          "success": true,
+          "steps": 22,
+          "team_return": -1.9000000000000001
+        },
+        {
+          "scenario_id": "93001:4",
+          "env_seed": 4122750282,
+          "action_seed": 479116952,
+          "message_seed": 1930216240,
+          "success": false,
+          "steps": 80,
+          "team_return": -10.149999999999988
+        },
+        {
+          "scenario_id": "93001:5",
+          "env_seed": 2153092276,
+          "action_seed": 2123561499,
+          "message_seed": 2676259115,
+          "success": true,
+          "steps": 20,
+          "team_return": -2.5500000000000007
+        },
+        {
+          "scenario_id": "93001:6",
+          "env_seed": 3682141969,
+          "action_seed": 4146389108,
+          "message_seed": 1762418938,
+          "success": false,
+          "steps": 80,
+          "team_return": -5.449999999999994
+        },
+        {
+          "scenario_id": "93001:7",
+          "env_seed": 3560474850,
+          "action_seed": 3036778851,
+          "message_seed": 5366769,
+          "success": false,
+          "steps": 80,
+          "team_return": -7.449999999999996
+        },
+        {
+          "scenario_id": "93001:8",
+          "env_seed": 2942263865,
+          "action_seed": 1259519956,
+          "message_seed": 199779761,
+          "success": false,
+          "steps": 80,
+          "team_return": -8.049999999999986
+        },
+        {
+          "scenario_id": "93001:9",
+          "env_seed": 1111259704,
+          "action_seed": 3422907592,
+          "message_seed": 262487935,
+          "success": true,
+          "steps": 76,
+          "team_return": -5.499999999999996
+        },
+        {
+          "scenario_id": "93001:10",
+          "env_seed": 3786785931,
+          "action_seed": 839524909,
+          "message_seed": 1816424532,
+          "success": false,
+          "steps": 80,
+          "team_return": -8.249999999999988
+        },
+        {
+          "scenario_id": "93001:11",
+          "env_seed": 2084128418,
+          "action_seed": 1195819733,
+          "message_seed": 3731586234,
+          "success": false,
+          "steps": 80,
+          "team_return": -7.649999999999991
+        }
+      ]
+    },
+    {
+      "task": "pcp",
+      "model": "shared",
+      "trained": true,
+      "checkpoint": "stokes_runs/runs/softrole_primary/pcp_shared/seed0/checkpoints/epoch0300.pt",
+      "checkpoint_sha256": "96005b7bb6b01af4545190f510626cf902a7deb1a95df4432b5448dbc7692020",
+      "checkpoint_epoch": 300,
+      "checkpoint_steps": 6352302,
+      "successes": 11,
+      "mean_steps": 27.833333333333332,
+      "mean_team_return": -1.7458333333333333,
+      "independent_replay_passed": true,
+      "episodes": [
+        {
+          "scenario_id": "93001:0",
+          "env_seed": 487619804,
+          "action_seed": 3068347519,
+          "message_seed": 1859629089,
+          "success": true,
+          "steps": 20,
+          "team_return": -1.2000000000000002
+        },
+        {
+          "scenario_id": "93001:1",
+          "env_seed": 3454697521,
+          "action_seed": 698978493,
+          "message_seed": 3205309128,
+          "success": true,
+          "steps": 28,
+          "team_return": -2.0500000000000007
+        },
+        {
+          "scenario_id": "93001:2",
+          "env_seed": 2787128894,
+          "action_seed": 2066650503,
+          "message_seed": 2546977615,
+          "success": true,
+          "steps": 9,
+          "team_return": -0.6499999999999999
+        },
+        {
+          "scenario_id": "93001:3",
+          "env_seed": 507832297,
+          "action_seed": 3798341344,
+          "message_seed": 4117911861,
+          "success": true,
+          "steps": 40,
+          "team_return": -2.500000000000001
+        },
+        {
+          "scenario_id": "93001:4",
+          "env_seed": 4122750282,
+          "action_seed": 479116952,
+          "message_seed": 1930216240,
+          "success": true,
+          "steps": 19,
+          "team_return": -1.2000000000000002
+        },
+        {
+          "scenario_id": "93001:5",
+          "env_seed": 2153092276,
+          "action_seed": 2123561499,
+          "message_seed": 2676259115,
+          "success": true,
+          "steps": 18,
+          "team_return": -1.2500000000000002
+        },
+        {
+          "scenario_id": "93001:6",
+          "env_seed": 3682141969,
+          "action_seed": 4146389108,
+          "message_seed": 1762418938,
+          "success": true,
+          "steps": 19,
+          "team_return": -1.4000000000000004
+        },
+        {
+          "scenario_id": "93001:7",
+          "env_seed": 3560474850,
+          "action_seed": 3036778851,
+          "message_seed": 5366769,
+          "success": true,
+          "steps": 27,
+          "team_return": -1.6000000000000005
+        },
+        {
+          "scenario_id": "93001:8",
+          "env_seed": 2942263865,
+          "action_seed": 1259519956,
+          "message_seed": 199779761,
+          "success": true,
+          "steps": 17,
+          "team_return": -1.1500000000000001
+        },
+        {
+          "scenario_id": "93001:9",
+          "env_seed": 1111259704,
+          "action_seed": 3422907592,
+          "message_seed": 262487935,
+          "success": true,
+          "steps": 28,
+          "team_return": -1.6000000000000005
+        },
+        {
+          "scenario_id": "93001:10",
+          "env_seed": 3786785931,
+          "action_seed": 839524909,
+          "message_seed": 1816424532,
+          "success": false,
+          "steps": 80,
+          "team_return": -4.599999999999993
+        },
+        {
+          "scenario_id": "93001:11",
+          "env_seed": 2084128418,
+          "action_seed": 1195819733,
+          "message_seed": 3731586234,
+          "success": true,
+          "steps": 29,
+          "team_return": -1.7500000000000004
+        }
+      ]
+    },
+    {
+      "task": "pcp",
+      "model": "banked",
+      "trained": false,
+      "checkpoint": null,
+      "checkpoint_sha256": null,
+      "checkpoint_epoch": 0,
+      "checkpoint_steps": 0,
+      "successes": 2,
+      "mean_steps": 72.58333333333333,
+      "mean_team_return": -7.024999999999992,
+      "independent_replay_passed": true,
+      "episodes": [
+        {
+          "scenario_id": "93001:0",
+          "env_seed": 487619804,
+          "action_seed": 3068347519,
+          "message_seed": 1859629089,
+          "success": false,
+          "steps": 80,
+          "team_return": -9.04999999999999
+        },
+        {
+          "scenario_id": "93001:1",
+          "env_seed": 3454697521,
+          "action_seed": 698978493,
+          "message_seed": 3205309128,
+          "success": false,
+          "steps": 80,
+          "team_return": -5.849999999999995
+        },
+        {
+          "scenario_id": "93001:2",
+          "env_seed": 2787128894,
+          "action_seed": 2066650503,
+          "message_seed": 2546977615,
+          "success": true,
+          "steps": 49,
+          "team_return": -5.199999999999999
+        },
+        {
+          "scenario_id": "93001:3",
+          "env_seed": 507832297,
+          "action_seed": 3798341344,
+          "message_seed": 4117911861,
+          "success": true,
+          "steps": 22,
+          "team_return": -1.9000000000000001
+        },
+        {
+          "scenario_id": "93001:4",
+          "env_seed": 4122750282,
+          "action_seed": 479116952,
+          "message_seed": 1930216240,
+          "success": false,
+          "steps": 80,
+          "team_return": -9.59999999999999
+        },
+        {
+          "scenario_id": "93001:5",
+          "env_seed": 2153092276,
+          "action_seed": 2123561499,
+          "message_seed": 2676259115,
+          "success": false,
+          "steps": 80,
+          "team_return": -5.599999999999994
+        },
+        {
+          "scenario_id": "93001:6",
+          "env_seed": 3682141969,
+          "action_seed": 4146389108,
+          "message_seed": 1762418938,
+          "success": false,
+          "steps": 80,
+          "team_return": -4.349999999999993
+        },
+        {
+          "scenario_id": "93001:7",
+          "env_seed": 3560474850,
+          "action_seed": 3036778851,
+          "message_seed": 5366769,
+          "success": false,
+          "steps": 80,
+          "team_return": -9.29999999999999
+        },
+        {
+          "scenario_id": "93001:8",
+          "env_seed": 2942263865,
+          "action_seed": 1259519956,
+          "message_seed": 199779761,
+          "success": false,
+          "steps": 80,
+          "team_return": -8.049999999999986
+        },
+        {
+          "scenario_id": "93001:9",
+          "env_seed": 1111259704,
+          "action_seed": 3422907592,
+          "message_seed": 262487935,
+          "success": false,
+          "steps": 80,
+          "team_return": -11.999999999999982
+        },
+        {
+          "scenario_id": "93001:10",
+          "env_seed": 3786785931,
+          "action_seed": 839524909,
+          "message_seed": 1816424532,
+          "success": false,
+          "steps": 80,
+          "team_return": -7.899999999999991
+        },
+        {
+          "scenario_id": "93001:11",
+          "env_seed": 2084128418,
+          "action_seed": 1195819733,
+          "message_seed": 3731586234,
+          "success": false,
+          "steps": 80,
+          "team_return": -5.499999999999994
+        }
+      ]
+    },
+    {
+      "task": "pcp",
+      "model": "banked",
+      "trained": true,
+      "checkpoint": "stokes_runs/runs/softrole_primary/pcp_banked/seed0/checkpoints/epoch0250.pt",
+      "checkpoint_sha256": "a3d4e7587aa64ee1f32b4ed62f11732ff21aa8ab20da8f7ffe9435971248cdec",
+      "checkpoint_epoch": 250,
+      "checkpoint_steps": 5335403,
+      "successes": 12,
+      "mean_steps": 32.333333333333336,
+      "mean_team_return": -2.3958333333333326,
+      "independent_replay_passed": true,
+      "episodes": [
+        {
+          "scenario_id": "93001:0",
+          "env_seed": 487619804,
+          "action_seed": 3068347519,
+          "message_seed": 1859629089,
+          "success": true,
+          "steps": 45,
+          "team_return": -3.3500000000000005
+        },
+        {
+          "scenario_id": "93001:1",
+          "env_seed": 3454697521,
+          "action_seed": 698978493,
+          "message_seed": 3205309128,
+          "success": true,
+          "steps": 6,
+          "team_return": -0.55
+        },
+        {
+          "scenario_id": "93001:2",
+          "env_seed": 2787128894,
+          "action_seed": 2066650503,
+          "message_seed": 2546977615,
+          "success": true,
+          "steps": 77,
+          "team_return": -5.449999999999996
+        },
+        {
+          "scenario_id": "93001:3",
+          "env_seed": 507832297,
+          "action_seed": 3798341344,
+          "message_seed": 4117911861,
+          "success": true,
+          "steps": 14,
+          "team_return": -0.8
+        },
+        {
+          "scenario_id": "93001:4",
+          "env_seed": 4122750282,
+          "action_seed": 479116952,
+          "message_seed": 1930216240,
+          "success": true,
+          "steps": 19,
+          "team_return": -1.3000000000000003
+        },
+        {
+          "scenario_id": "93001:5",
+          "env_seed": 2153092276,
+          "action_seed": 2123561499,
+          "message_seed": 2676259115,
+          "success": true,
+          "steps": 12,
+          "team_return": -1.0499999999999998
+        },
+        {
+          "scenario_id": "93001:6",
+          "env_seed": 3682141969,
+          "action_seed": 4146389108,
+          "message_seed": 1762418938,
+          "success": true,
+          "steps": 72,
+          "team_return": -4.349999999999995
+        },
+        {
+          "scenario_id": "93001:7",
+          "env_seed": 3560474850,
+          "action_seed": 3036778851,
+          "message_seed": 5366769,
+          "success": true,
+          "steps": 17,
+          "team_return": -1.7000000000000002
+        },
+        {
+          "scenario_id": "93001:8",
+          "env_seed": 2942263865,
+          "action_seed": 1259519956,
+          "message_seed": 199779761,
+          "success": true,
+          "steps": 11,
+          "team_return": -0.75
+        },
+        {
+          "scenario_id": "93001:9",
+          "env_seed": 1111259704,
+          "action_seed": 3422907592,
+          "message_seed": 262487935,
+          "success": true,
+          "steps": 33,
+          "team_return": -1.8000000000000007
+        },
+        {
+          "scenario_id": "93001:10",
+          "env_seed": 3786785931,
+          "action_seed": 839524909,
+          "message_seed": 1816424532,
+          "success": true,
+          "steps": 45,
+          "team_return": -5.150000000000001
+        },
+        {
+          "scenario_id": "93001:11",
+          "env_seed": 2084128418,
+          "action_seed": 1195819733,
+          "message_seed": 3731586234,
+          "success": true,
+          "steps": 37,
+          "team_return": -2.500000000000001
+        }
+      ]
+    },
+    {
+      "task": "fc",
+      "model": "shared",
+      "trained": false,
+      "checkpoint": null,
+      "checkpoint_sha256": null,
+      "checkpoint_epoch": 0,
+      "checkpoint_steps": 0,
+      "successes": 4,
+      "mean_steps": 271.5,
+      "mean_team_return": -204.6166666666671,
+      "independent_replay_passed": true,
+      "episodes": [
+        {
+          "scenario_id": "93001:0",
+          "env_seed": 487619804,
+          "action_seed": 3068347519,
+          "message_seed": 1859629089,
+          "success": false,
+          "steps": 300,
+          "team_return": -131.1000000000006
+        },
+        {
+          "scenario_id": "93001:1",
+          "env_seed": 3454697521,
+          "action_seed": 698978493,
+          "message_seed": 3205309128,
+          "success": false,
+          "steps": 300,
+          "team_return": -195.40000000000103
+        },
+        {
+          "scenario_id": "93001:2",
+          "env_seed": 2787128894,
+          "action_seed": 2066650503,
+          "message_seed": 2546977615,
+          "success": false,
+          "steps": 300,
+          "team_return": -260.8999999999986
+        },
+        {
+          "scenario_id": "93001:3",
+          "env_seed": 507832297,
+          "action_seed": 3798341344,
+          "message_seed": 4117911861,
+          "success": true,
+          "steps": 280,
+          "team_return": -96.50000000000054
+        },
+        {
+          "scenario_id": "93001:4",
+          "env_seed": 4122750282,
+          "action_seed": 479116952,
+          "message_seed": 1930216240,
+          "success": true,
+          "steps": 223,
+          "team_return": -99.4000000000002
+        },
+        {
+          "scenario_id": "93001:5",
+          "env_seed": 2153092276,
+          "action_seed": 2123561499,
+          "message_seed": 2676259115,
+          "success": true,
+          "steps": 179,
+          "team_return": -51.40000000000005
+        },
+        {
+          "scenario_id": "93001:6",
+          "env_seed": 3682141969,
+          "action_seed": 4146389108,
+          "message_seed": 1762418938,
+          "success": false,
+          "steps": 300,
+          "team_return": -184.40000000000092
+        },
+        {
+          "scenario_id": "93001:7",
+          "env_seed": 3560474850,
+          "action_seed": 3036778851,
+          "message_seed": 5366769,
+          "success": false,
+          "steps": 300,
+          "team_return": -172.20000000000084
+        },
+        {
+          "scenario_id": "93001:8",
+          "env_seed": 2942263865,
+          "action_seed": 1259519956,
+          "message_seed": 199779761,
+          "success": false,
+          "steps": 300,
+          "team_return": -789.3000000000004
+        },
+        {
+          "scenario_id": "93001:9",
+          "env_seed": 1111259704,
+          "action_seed": 3422907592,
+          "message_seed": 262487935,
+          "success": true,
+          "steps": 176,
+          "team_return": -54.50000000000005
+        },
+        {
+          "scenario_id": "93001:10",
+          "env_seed": 3786785931,
+          "action_seed": 839524909,
+          "message_seed": 1816424532,
+          "success": false,
+          "steps": 300,
+          "team_return": -318.20000000000107
+        },
+        {
+          "scenario_id": "93001:11",
+          "env_seed": 2084128418,
+          "action_seed": 1195819733,
+          "message_seed": 3731586234,
+          "success": false,
+          "steps": 300,
+          "team_return": -102.10000000000062
+        }
+      ]
+    },
+    {
+      "task": "fc",
+      "model": "shared",
+      "trained": true,
+      "checkpoint": "stokes_runs/runs/softrole_primary/fc_shared/seed0/checkpoints/epoch0300.pt",
+      "checkpoint_sha256": "b5dff236db269d3910667f7a6d224a9b79252b5f35c321a2ea697713b35fb6f5",
+      "checkpoint_epoch": 300,
+      "checkpoint_steps": 7511738,
+      "successes": 6,
+      "mean_steps": 211.75,
+      "mean_team_return": -190.05833333333348,
+      "independent_replay_passed": true,
+      "episodes": [
+        {
+          "scenario_id": "93001:0",
+          "env_seed": 487619804,
+          "action_seed": 3068347519,
+          "message_seed": 1859629089,
+          "success": true,
+          "steps": 280,
+          "team_return": -98.60000000000049
+        },
+        {
+          "scenario_id": "93001:1",
+          "env_seed": 3454697521,
+          "action_seed": 698978493,
+          "message_seed": 3205309128,
+          "success": false,
+          "steps": 300,
+          "team_return": -276.9999999999989
+        },
+        {
+          "scenario_id": "93001:2",
+          "env_seed": 2787128894,
+          "action_seed": 2066650503,
+          "message_seed": 2546977615,
+          "success": true,
+          "steps": 258,
+          "team_return": -139.20000000000073
+        },
+        {
+          "scenario_id": "93001:3",
+          "env_seed": 507832297,
+          "action_seed": 3798341344,
+          "message_seed": 4117911861,
+          "success": true,
+          "steps": 89,
+          "team_return": -35.699999999999946
+        },
+        {
+          "scenario_id": "93001:4",
+          "env_seed": 4122750282,
+          "action_seed": 479116952,
+          "message_seed": 1930216240,
+          "success": false,
+          "steps": 300,
+          "team_return": -180.3000000000007
+        },
+        {
+          "scenario_id": "93001:5",
+          "env_seed": 2153092276,
+          "action_seed": 2123561499,
+          "message_seed": 2676259115,
+          "success": true,
+          "steps": 18,
+          "team_return": 3.6999999999999975
+        },
+        {
+          "scenario_id": "93001:6",
+          "env_seed": 3682141969,
+          "action_seed": 4146389108,
+          "message_seed": 1762418938,
+          "success": false,
+          "steps": 300,
+          "team_return": -100.50000000000051
+        },
+        {
+          "scenario_id": "93001:7",
+          "env_seed": 3560474850,
+          "action_seed": 3036778851,
+          "message_seed": 5366769,
+          "success": false,
+          "steps": 300,
+          "team_return": -97.50000000000043
+        },
+        {
+          "scenario_id": "93001:8",
+          "env_seed": 2942263865,
+          "action_seed": 1259519956,
+          "message_seed": 199779761,
+          "success": false,
+          "steps": 300,
+          "team_return": -840.2000000000003
+        },
+        {
+          "scenario_id": "93001:9",
+          "env_seed": 1111259704,
+          "action_seed": 3422907592,
+          "message_seed": 262487935,
+          "success": true,
+          "steps": 70,
+          "team_return": -21.199999999999978
+        },
+        {
+          "scenario_id": "93001:10",
+          "env_seed": 3786785931,
+          "action_seed": 839524909,
+          "message_seed": 1816424532,
+          "success": false,
+          "steps": 300,
+          "team_return": -491.49999999999966
+        },
+        {
+          "scenario_id": "93001:11",
+          "env_seed": 2084128418,
+          "action_seed": 1195819733,
+          "message_seed": 3731586234,
+          "success": true,
+          "steps": 26,
+          "team_return": -2.700000000000001
+        }
+      ]
+    },
+    {
+      "task": "fc",
+      "model": "banked",
+      "trained": false,
+      "checkpoint": null,
+      "checkpoint_sha256": null,
+      "checkpoint_epoch": 0,
+      "checkpoint_steps": 0,
+      "successes": 1,
+      "mean_steps": 292.4166666666667,
+      "mean_team_return": -219.75000000000077,
+      "independent_replay_passed": true,
+      "episodes": [
+        {
+          "scenario_id": "93001:0",
+          "env_seed": 487619804,
+          "action_seed": 3068347519,
+          "message_seed": 1859629089,
+          "success": false,
+          "steps": 300,
+          "team_return": -131.1000000000006
+        },
+        {
+          "scenario_id": "93001:1",
+          "env_seed": 3454697521,
+          "action_seed": 698978493,
+          "message_seed": 3205309128,
+          "success": false,
+          "steps": 300,
+          "team_return": -195.300000000001
+        },
+        {
+          "scenario_id": "93001:2",
+          "env_seed": 2787128894,
+          "action_seed": 2066650503,
+          "message_seed": 2546977615,
+          "success": false,
+          "steps": 300,
+          "team_return": -421.2000000000015
+        },
+        {
+          "scenario_id": "93001:3",
+          "env_seed": 507832297,
+          "action_seed": 3798341344,
+          "message_seed": 4117911861,
+          "success": true,
+          "steps": 209,
+          "team_return": -57.80000000000011
+        },
+        {
+          "scenario_id": "93001:4",
+          "env_seed": 4122750282,
+          "action_seed": 479116952,
+          "message_seed": 1930216240,
+          "success": false,
+          "steps": 300,
+          "team_return": -107.50000000000067
+        },
+        {
+          "scenario_id": "93001:5",
+          "env_seed": 2153092276,
+          "action_seed": 2123561499,
+          "message_seed": 2676259115,
+          "success": false,
+          "steps": 300,
+          "team_return": -100.10000000000053
+        },
+        {
+          "scenario_id": "93001:6",
+          "env_seed": 3682141969,
+          "action_seed": 4146389108,
+          "message_seed": 1762418938,
+          "success": false,
+          "steps": 300,
+          "team_return": -140.5000000000005
+        },
+        {
+          "scenario_id": "93001:7",
+          "env_seed": 3560474850,
+          "action_seed": 3036778851,
+          "message_seed": 5366769,
+          "success": false,
+          "steps": 300,
+          "team_return": -227.80000000000075
+        },
+        {
+          "scenario_id": "93001:8",
+          "env_seed": 2942263865,
+          "action_seed": 1259519956,
+          "message_seed": 199779761,
+          "success": false,
+          "steps": 300,
+          "team_return": -554.7000000000004
+        },
+        {
+          "scenario_id": "93001:9",
+          "env_seed": 1111259704,
+          "action_seed": 3422907592,
+          "message_seed": 262487935,
+          "success": false,
+          "steps": 300,
+          "team_return": -184.30000000000086
+        },
+        {
+          "scenario_id": "93001:10",
+          "env_seed": 3786785931,
+          "action_seed": 839524909,
+          "message_seed": 1816424532,
+          "success": false,
+          "steps": 300,
+          "team_return": -332.8000000000014
+        },
+        {
+          "scenario_id": "93001:11",
+          "env_seed": 2084128418,
+          "action_seed": 1195819733,
+          "message_seed": 3731586234,
+          "success": false,
+          "steps": 300,
+          "team_return": -183.9000000000009
+        }
+      ]
+    },
+    {
+      "task": "fc",
+      "model": "banked",
+      "trained": true,
+      "checkpoint": "stokes_runs/runs/softrole_primary/fc_banked/seed0/checkpoints/epoch0300.pt",
+      "checkpoint_sha256": "af3dbfc274db094d12620184b90bd08a0f41313b23fe2e0457866a5ae6061624",
+      "checkpoint_epoch": 300,
+      "checkpoint_steps": 7521038,
+      "successes": 7,
+      "mean_steps": 192.83333333333334,
+      "mean_team_return": -185.01666666666662,
+      "independent_replay_passed": true,
+      "episodes": [
+        {
+          "scenario_id": "93001:0",
+          "env_seed": 487619804,
+          "action_seed": 3068347519,
+          "message_seed": 1859629089,
+          "success": true,
+          "steps": 101,
+          "team_return": -36.39999999999996
+        },
+        {
+          "scenario_id": "93001:1",
+          "env_seed": 3454697521,
+          "action_seed": 698978493,
+          "message_seed": 3205309128,
+          "success": false,
+          "steps": 300,
+          "team_return": -225.00000000000074
+        },
+        {
+          "scenario_id": "93001:2",
+          "env_seed": 2787128894,
+          "action_seed": 2066650503,
+          "message_seed": 2546977615,
+          "success": true,
+          "steps": 282,
+          "team_return": -202.10000000000008
+        },
+        {
+          "scenario_id": "93001:3",
+          "env_seed": 507832297,
+          "action_seed": 3798341344,
+          "message_seed": 4117911861,
+          "success": true,
+          "steps": 194,
+          "team_return": -87.50000000000027
+        },
+        {
+          "scenario_id": "93001:4",
+          "env_seed": 4122750282,
+          "action_seed": 479116952,
+          "message_seed": 1930216240,
+          "success": false,
+          "steps": 300,
+          "team_return": -180.00000000000068
+        },
+        {
+          "scenario_id": "93001:5",
+          "env_seed": 2153092276,
+          "action_seed": 2123561499,
+          "message_seed": 2676259115,
+          "success": true,
+          "steps": 18,
+          "team_return": 3.6999999999999975
+        },
+        {
+          "scenario_id": "93001:6",
+          "env_seed": 3682141969,
+          "action_seed": 4146389108,
+          "message_seed": 1762418938,
+          "success": true,
+          "steps": 112,
+          "team_return": -37.49999999999995
+        },
+        {
+          "scenario_id": "93001:7",
+          "env_seed": 3560474850,
+          "action_seed": 3036778851,
+          "message_seed": 5366769,
+          "success": false,
+          "steps": 300,
+          "team_return": -180.3000000000008
+        },
+        {
+          "scenario_id": "93001:8",
+          "env_seed": 2942263865,
+          "action_seed": 1259519956,
+          "message_seed": 199779761,
+          "success": false,
+          "steps": 300,
+          "team_return": -700.3999999999994
+        },
+        {
+          "scenario_id": "93001:9",
+          "env_seed": 1111259704,
+          "action_seed": 3422907592,
+          "message_seed": 262487935,
+          "success": true,
+          "steps": 70,
+          "team_return": -21.199999999999978
+        },
+        {
+          "scenario_id": "93001:10",
+          "env_seed": 3786785931,
+          "action_seed": 839524909,
+          "message_seed": 1816424532,
+          "success": false,
+          "steps": 300,
+          "team_return": -546.8999999999971
+        },
+        {
+          "scenario_id": "93001:11",
+          "env_seed": 2084128418,
+          "action_seed": 1195819733,
+          "message_seed": 3731586234,
+          "success": true,
+          "steps": 37,
+          "team_return": -6.599999999999993
+        }
+      ]
+    }
+  ],
+  "probe_sha256": "5bd61addaf905aca96a9570472f9f554a394bb0855e03d9f86f1de3b5a4af39e",
+  "current_source_sha256": {
+    "softrole/model.py": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a",
+    "softrole/learning.py": "a3779797064d443d6a87fe51fb8d6e2f04b99a4ccdf86743553a7f528a08a280",
+    "softrole/scenarios.py": "c9f68a1cf7e4f9b4d2194478a783c0789fc2bd7741819613bbde6335d82cc503",
+    "softrole/rollout.py": "a552947c97d40bf42c25df38a763277510a557170aef937f727771856d8a4bda",
+    "softrole/env.py": "d0c49b3fb10521946cc5501fc33af5b1a0c8e3c16c5e9231854f9aac3cf87cd1",
+    "softrole/train.py": "21f97f36dc181c7689a127d5b1384938d3d244e98c41ddb2746428567a0ab699",
+    "envs/ic3net_envs/predator_capture_env.py": "935875ac665877965f86a2e12f5ef52669065d3a2a01ba11b0ed065bfac59583",
+    "envs/ic3net_envs/fire_commander_env.py": "c2a4df6e2a385fe407889e299122946fbaab330b332a4928e1e50dfefb41f75e"
+  }
+}

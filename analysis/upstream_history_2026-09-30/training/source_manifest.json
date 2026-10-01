@@ -1,0 +1,450 @@
+[
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "path": "main.py",
+    "local_path": "snapshots/3ca462b/main.py",
+    "blob": "4174933e2f7e8d6b51f50eb4c57d32d88f77580f",
+    "sha256": "e7f76dacdbee44aa61fd4bde60e1dc2a8e07792ce42ee50fd50285b1bb8171a1",
+    "bytes": 21403
+  },
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "path": "trainer.py",
+    "local_path": "snapshots/3ca462b/trainer.py",
+    "blob": "ac5a92da670045029debb5ac29360130dd15fd79",
+    "sha256": "7eeea9de449c5ad2f5db2135dfcc48fcf40f3f4540ed799ef238aa1ba9c6ef44",
+    "bytes": 25188
+  },
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "path": "multi_processing.py",
+    "local_path": "snapshots/3ca462b/multi_processing.py",
+    "blob": "13348b728ff60272c6ea81208b9cc9e04cec9b61",
+    "sha256": "03302688ee809e29a9b0c74087db08b15231a153bf0e847165653f046b4cb1e1",
+    "bytes": 4348
+  },
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "path": "action_utils.py",
+    "local_path": "snapshots/3ca462b/action_utils.py",
+    "blob": "43a5477c72cef260c463c825df99e947a88dfa05",
+    "sha256": "1c167fe066c08ab129a52eaaf66ae00421bf419177ac8a1ebf20c168f92324ca",
+    "bytes": 3530
+  },
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "path": "README.md",
+    "local_path": "snapshots/3ca462b/README.md",
+    "blob": "4d4727a45c6031ac41fe9b4b2dcfa69cfbaf5062",
+    "sha256": "23d707e333c0d50d0a4a92b4a7c8d29db86611af36b3f74da179cede4c230b2f",
+    "bytes": 306
+  },
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "path": "utils.py",
+    "local_path": "snapshots/3ca462b/utils.py",
+    "blob": "485b522d8426ae3fa13f934d1a5ed977419748f5",
+    "sha256": "422d428c9fa4c43ca47325131b8d3bc1b960c83aabf9a5cc5d4e1904a1ddc253",
+    "bytes": 6386
+  },
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "path": "hetgat/uavnet.py",
+    "local_path": "snapshots/3ca462b/hetgat/uavnet.py",
+    "blob": "3671e67875b9c74d5e07203ec83b0c1a08d9e5d8",
+    "sha256": "d6aaba748c2c36eaa06d83b4562ffc6b5a3f9762c001404f614f9253e44634aa",
+    "bytes": 33202
+  },
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "path": "hetgat/policy.py",
+    "local_path": "snapshots/3ca462b/hetgat/policy.py",
+    "blob": "a3f6fca1bf8019e25e02b993d7dfaa9b68c844b4",
+    "sha256": "16d4fac9407754dc70b1f5223b2d7833c44f7b7b02d03c3229ad4ace7bf819a0",
+    "bytes": 42294
+  },
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "path": "hetgat/policy_entropy.py",
+    "local_path": "snapshots/3ca462b/hetgat/policy_entropy.py",
+    "blob": "d8418765ba1b4c6d52b55f63fc6a5707f4f12894",
+    "sha256": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895",
+    "bytes": 44176
+  },
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "path": "hetgat/utils.py",
+    "local_path": "snapshots/3ca462b/hetgat/utils.py",
+    "blob": "7c3dc4da02c592db958264d2ab08df20e0120de6",
+    "sha256": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0",
+    "bytes": 7126
+  },
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "path": "hetgat/graph/fastreal.py",
+    "local_path": "snapshots/3ca462b/hetgat/graph/fastreal.py",
+    "blob": "80efe09ac78045c7341e297f170d166a3c128760",
+    "sha256": "23bcac992ebcaa0d515412f79f8f7069a1309eec39b1788bbeaa0a4bc5f729af",
+    "bytes": 37216
+  },
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "path": "hetgat/graph/fastbinary.py",
+    "local_path": "snapshots/3ca462b/hetgat/graph/fastbinary.py",
+    "blob": "6ca8228c95e9bd8875203afbd194a39a69d87a06",
+    "sha256": "7c03fd7bc319424ff8d9c9fd6e1120530f955806c8031186ae8360e971867733",
+    "bytes": 28337
+  },
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "path": "hetgat/graph/hetgatreal.py",
+    "local_path": "snapshots/3ca462b/hetgat/graph/hetgatreal.py",
+    "blob": "f3962e90c77f339e61d196f71019fc9a1e726e2b",
+    "sha256": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d",
+    "bytes": 20637
+  },
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "path": "hetgat/graph/hetgata2c.py",
+    "local_path": "snapshots/3ca462b/hetgat/graph/hetgata2c.py",
+    "blob": "81ee03de4579a2fb6293441ff975f93460efbc7a",
+    "sha256": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948",
+    "bytes": 11456
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "path": "main.py",
+    "local_path": "snapshots/d57da07/main.py",
+    "blob": "fbbb18ff56baa21829a5f34a39cd5b67e8581868",
+    "sha256": "2ecb83e7cad16d8ae444a670944ba7ef12a3803610a005976b28783de38bbbbf",
+    "bytes": 20683
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "path": "trainer.py",
+    "local_path": "snapshots/d57da07/trainer.py",
+    "blob": "ac5a92da670045029debb5ac29360130dd15fd79",
+    "sha256": "7eeea9de449c5ad2f5db2135dfcc48fcf40f3f4540ed799ef238aa1ba9c6ef44",
+    "bytes": 25188
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "path": "multi_processing.py",
+    "local_path": "snapshots/d57da07/multi_processing.py",
+    "blob": "13348b728ff60272c6ea81208b9cc9e04cec9b61",
+    "sha256": "03302688ee809e29a9b0c74087db08b15231a153bf0e847165653f046b4cb1e1",
+    "bytes": 4348
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "path": "action_utils.py",
+    "local_path": "snapshots/d57da07/action_utils.py",
+    "blob": "43a5477c72cef260c463c825df99e947a88dfa05",
+    "sha256": "1c167fe066c08ab129a52eaaf66ae00421bf419177ac8a1ebf20c168f92324ca",
+    "bytes": 3530
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "path": "README.md",
+    "local_path": "snapshots/d57da07/README.md",
+    "blob": "ffd8fcfc7c9b2f86eb4cfa7b582be1d0bf035288",
+    "sha256": "5d52d5941ce3fb060ea83898672163a301aed67fb052800a5c5454f9d3f4efe6",
+    "bytes": 547
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "path": "utils.py",
+    "local_path": "snapshots/d57da07/utils.py",
+    "blob": "e6758e3532562b3b2f082ad74e09421a5e47d18b",
+    "sha256": "54fcc42e2e78df9d65a93baedc8786ab5d90b8bff255b281a8fbdbb428fe5405",
+    "bytes": 6391
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "path": "hetgat/uavnet.py",
+    "local_path": "snapshots/d57da07/hetgat/uavnet.py",
+    "blob": "3671e67875b9c74d5e07203ec83b0c1a08d9e5d8",
+    "sha256": "d6aaba748c2c36eaa06d83b4562ffc6b5a3f9762c001404f614f9253e44634aa",
+    "bytes": 33202
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "path": "hetgat/policy.py",
+    "local_path": "snapshots/d57da07/hetgat/policy.py",
+    "blob": "a3f6fca1bf8019e25e02b993d7dfaa9b68c844b4",
+    "sha256": "16d4fac9407754dc70b1f5223b2d7833c44f7b7b02d03c3229ad4ace7bf819a0",
+    "bytes": 42294
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "path": "hetgat/policy_entropy.py",
+    "local_path": "snapshots/d57da07/hetgat/policy_entropy.py",
+    "blob": "d8418765ba1b4c6d52b55f63fc6a5707f4f12894",
+    "sha256": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895",
+    "bytes": 44176
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "path": "hetgat/utils.py",
+    "local_path": "snapshots/d57da07/hetgat/utils.py",
+    "blob": "7c3dc4da02c592db958264d2ab08df20e0120de6",
+    "sha256": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0",
+    "bytes": 7126
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "path": "hetgat/graph/fastreal.py",
+    "local_path": "snapshots/d57da07/hetgat/graph/fastreal.py",
+    "blob": "80efe09ac78045c7341e297f170d166a3c128760",
+    "sha256": "23bcac992ebcaa0d515412f79f8f7069a1309eec39b1788bbeaa0a4bc5f729af",
+    "bytes": 37216
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "path": "hetgat/graph/fastbinary.py",
+    "local_path": "snapshots/d57da07/hetgat/graph/fastbinary.py",
+    "blob": "6ca8228c95e9bd8875203afbd194a39a69d87a06",
+    "sha256": "7c03fd7bc319424ff8d9c9fd6e1120530f955806c8031186ae8360e971867733",
+    "bytes": 28337
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "path": "hetgat/graph/hetgatreal.py",
+    "local_path": "snapshots/d57da07/hetgat/graph/hetgatreal.py",
+    "blob": "f3962e90c77f339e61d196f71019fc9a1e726e2b",
+    "sha256": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d",
+    "bytes": 20637
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "path": "hetgat/graph/hetgata2c.py",
+    "local_path": "snapshots/d57da07/hetgat/graph/hetgata2c.py",
+    "blob": "81ee03de4579a2fb6293441ff975f93460efbc7a",
+    "sha256": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948",
+    "bytes": 11456
+  },
+  {
+    "commit": "6b09d36c352a4170f574d118cc565132b14b4050",
+    "path": "main.py",
+    "local_path": "snapshots/6b09d36/main.py",
+    "blob": "75b9c9fd15ea5fbb534afecfdf008e594a09e18c",
+    "sha256": "88122948cd21b820e2f051fcc7847dec512181605a9238f98668e312bc30add5",
+    "bytes": 19311
+  },
+  {
+    "commit": "6b09d36c352a4170f574d118cc565132b14b4050",
+    "path": "trainer.py",
+    "local_path": "snapshots/6b09d36/trainer.py",
+    "blob": "ac5a92da670045029debb5ac29360130dd15fd79",
+    "sha256": "7eeea9de449c5ad2f5db2135dfcc48fcf40f3f4540ed799ef238aa1ba9c6ef44",
+    "bytes": 25188
+  },
+  {
+    "commit": "6b09d36c352a4170f574d118cc565132b14b4050",
+    "path": "multi_processing.py",
+    "local_path": "snapshots/6b09d36/multi_processing.py",
+    "blob": "13348b728ff60272c6ea81208b9cc9e04cec9b61",
+    "sha256": "03302688ee809e29a9b0c74087db08b15231a153bf0e847165653f046b4cb1e1",
+    "bytes": 4348
+  },
+  {
+    "commit": "6b09d36c352a4170f574d118cc565132b14b4050",
+    "path": "action_utils.py",
+    "local_path": "snapshots/6b09d36/action_utils.py",
+    "blob": "4d55df94af4888c98661baebd9a76af129d68341",
+    "sha256": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd",
+    "bytes": 3579
+  },
+  {
+    "commit": "6b09d36c352a4170f574d118cc565132b14b4050",
+    "path": "README.md",
+    "local_path": "snapshots/6b09d36/README.md",
+    "blob": "a0ea62c093fff39dce0e51bec2dd11f5d874b7ec",
+    "sha256": "6bd8e9b5d2311ad75a8437d964a73569e0a6ca06577ad33955aedb13a5cf4e3d",
+    "bytes": 2721
+  },
+  {
+    "commit": "6b09d36c352a4170f574d118cc565132b14b4050",
+    "path": "utils.py",
+    "local_path": "snapshots/6b09d36/utils.py",
+    "blob": "e6758e3532562b3b2f082ad74e09421a5e47d18b",
+    "sha256": "54fcc42e2e78df9d65a93baedc8786ab5d90b8bff255b281a8fbdbb428fe5405",
+    "bytes": 6391
+  },
+  {
+    "commit": "6b09d36c352a4170f574d118cc565132b14b4050",
+    "path": "hetgat/uavnet.py",
+    "local_path": "snapshots/6b09d36/hetgat/uavnet.py",
+    "blob": "245fb8a191243f5e6ff7dee051cb306e6a0ca075",
+    "sha256": "67f7da3e4e51804b01271232f34d53610c38f13b875a8d5cad5867a63807e7f8",
+    "bytes": 28070
+  },
+  {
+    "commit": "6b09d36c352a4170f574d118cc565132b14b4050",
+    "path": "hetgat/policy.py",
+    "local_path": "snapshots/6b09d36/hetgat/policy.py",
+    "blob": "b93e44a9c9f15173d7391edb18edb6cc6bcfc0c0",
+    "sha256": "8777152e7bd7c010ae4e05068e8f7f6a5fc07340771a0809653bdecf4360fd6d",
+    "bytes": 42558
+  },
+  {
+    "commit": "6b09d36c352a4170f574d118cc565132b14b4050",
+    "path": "hetgat/policy_entropy.py",
+    "local_path": "snapshots/6b09d36/hetgat/policy_entropy.py",
+    "blob": "d8418765ba1b4c6d52b55f63fc6a5707f4f12894",
+    "sha256": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895",
+    "bytes": 44176
+  },
+  {
+    "commit": "6b09d36c352a4170f574d118cc565132b14b4050",
+    "path": "hetgat/utils.py",
+    "local_path": "snapshots/6b09d36/hetgat/utils.py",
+    "blob": "7c3dc4da02c592db958264d2ab08df20e0120de6",
+    "sha256": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0",
+    "bytes": 7126
+  },
+  {
+    "commit": "6b09d36c352a4170f574d118cc565132b14b4050",
+    "path": "hetgat/graph/fastreal.py",
+    "local_path": "snapshots/6b09d36/hetgat/graph/fastreal.py",
+    "blob": "a8b070e55e28ea86e0003869c49aa7d9aeff4fab",
+    "sha256": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862",
+    "bytes": 38810
+  },
+  {
+    "commit": "6b09d36c352a4170f574d118cc565132b14b4050",
+    "path": "hetgat/graph/fastbinary.py",
+    "local_path": "snapshots/6b09d36/hetgat/graph/fastbinary.py",
+    "blob": "6ca8228c95e9bd8875203afbd194a39a69d87a06",
+    "sha256": "7c03fd7bc319424ff8d9c9fd6e1120530f955806c8031186ae8360e971867733",
+    "bytes": 28337
+  },
+  {
+    "commit": "6b09d36c352a4170f574d118cc565132b14b4050",
+    "path": "hetgat/graph/hetgatreal.py",
+    "local_path": "snapshots/6b09d36/hetgat/graph/hetgatreal.py",
+    "blob": "f3962e90c77f339e61d196f71019fc9a1e726e2b",
+    "sha256": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d",
+    "bytes": 20637
+  },
+  {
+    "commit": "6b09d36c352a4170f574d118cc565132b14b4050",
+    "path": "hetgat/graph/hetgata2c.py",
+    "local_path": "snapshots/6b09d36/hetgat/graph/hetgata2c.py",
+    "blob": "81ee03de4579a2fb6293441ff975f93460efbc7a",
+    "sha256": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948",
+    "bytes": 11456
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "path": "main.py",
+    "local_path": "snapshots/f54ca5a/main.py",
+    "blob": "75b9c9fd15ea5fbb534afecfdf008e594a09e18c",
+    "sha256": "88122948cd21b820e2f051fcc7847dec512181605a9238f98668e312bc30add5",
+    "bytes": 19311
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "path": "trainer.py",
+    "local_path": "snapshots/f54ca5a/trainer.py",
+    "blob": "ac5a92da670045029debb5ac29360130dd15fd79",
+    "sha256": "7eeea9de449c5ad2f5db2135dfcc48fcf40f3f4540ed799ef238aa1ba9c6ef44",
+    "bytes": 25188
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "path": "multi_processing.py",
+    "local_path": "snapshots/f54ca5a/multi_processing.py",
+    "blob": "13348b728ff60272c6ea81208b9cc9e04cec9b61",
+    "sha256": "03302688ee809e29a9b0c74087db08b15231a153bf0e847165653f046b4cb1e1",
+    "bytes": 4348
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "path": "action_utils.py",
+    "local_path": "snapshots/f54ca5a/action_utils.py",
+    "blob": "4d55df94af4888c98661baebd9a76af129d68341",
+    "sha256": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd",
+    "bytes": 3579
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "path": "README.md",
+    "local_path": "snapshots/f54ca5a/README.md",
+    "blob": "4aa129df71c766902027be486ae966da464cc970",
+    "sha256": "c6eb8191cb53e19ef5b3a740bff847c59e13a4792f47fad933a6727c1e4b3b99",
+    "bytes": 3195
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "path": "utils.py",
+    "local_path": "snapshots/f54ca5a/utils.py",
+    "blob": "e6758e3532562b3b2f082ad74e09421a5e47d18b",
+    "sha256": "54fcc42e2e78df9d65a93baedc8786ab5d90b8bff255b281a8fbdbb428fe5405",
+    "bytes": 6391
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "path": "hetgat/uavnet.py",
+    "local_path": "snapshots/f54ca5a/hetgat/uavnet.py",
+    "blob": "99ee98107959bf88cf48825bb32d43f70f85ab0f",
+    "sha256": "343e1df3337723d1323d687e4c94d48b31011ab8890fbd8f196d948d02ff5f55",
+    "bytes": 23755
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "path": "hetgat/policy.py",
+    "local_path": "snapshots/f54ca5a/hetgat/policy.py",
+    "blob": "b93e44a9c9f15173d7391edb18edb6cc6bcfc0c0",
+    "sha256": "8777152e7bd7c010ae4e05068e8f7f6a5fc07340771a0809653bdecf4360fd6d",
+    "bytes": 42558
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "path": "hetgat/policy_entropy.py",
+    "local_path": "snapshots/f54ca5a/hetgat/policy_entropy.py",
+    "blob": "d8418765ba1b4c6d52b55f63fc6a5707f4f12894",
+    "sha256": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895",
+    "bytes": 44176
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "path": "hetgat/utils.py",
+    "local_path": "snapshots/f54ca5a/hetgat/utils.py",
+    "blob": "7c3dc4da02c592db958264d2ab08df20e0120de6",
+    "sha256": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0",
+    "bytes": 7126
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "path": "hetgat/graph/fastreal.py",
+    "local_path": "snapshots/f54ca5a/hetgat/graph/fastreal.py",
+    "blob": "a8b070e55e28ea86e0003869c49aa7d9aeff4fab",
+    "sha256": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862",
+    "bytes": 38810
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "path": "hetgat/graph/fastbinary.py",
+    "local_path": "snapshots/f54ca5a/hetgat/graph/fastbinary.py",
+    "blob": "6ca8228c95e9bd8875203afbd194a39a69d87a06",
+    "sha256": "7c03fd7bc319424ff8d9c9fd6e1120530f955806c8031186ae8360e971867733",
+    "bytes": 28337
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "path": "hetgat/graph/hetgatreal.py",
+    "local_path": "snapshots/f54ca5a/hetgat/graph/hetgatreal.py",
+    "blob": "f3962e90c77f339e61d196f71019fc9a1e726e2b",
+    "sha256": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d",
+    "bytes": 20637
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "path": "hetgat/graph/hetgata2c.py",
+    "local_path": "snapshots/f54ca5a/hetgat/graph/hetgata2c.py",
+    "blob": "81ee03de4579a2fb6293441ff975f93460efbc7a",
+    "sha256": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948",
+    "bytes": 11456
+  }
+]

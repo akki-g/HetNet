@@ -1,0 +1,658 @@
+{
+  "scope": "All commits reachable from advertised upstream refs at fetch; deleted/private/unadvertised history is not recovered",
+  "refs": [
+    "refs/heads/henet-ppo-updated 48d7be85073a3c6195003e93e83991507f74c8e7",
+    "refs/heads/hetnet-ppo e0bcaf3fe2223c8db2bee69427b6006d408a57a0",
+    "refs/heads/main bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec",
+    "refs/heads/main-updated bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec",
+    "refs/heads/robot-demo 6b50c91061f9803154de9a215278c9c195ce02f7"
+  ],
+  "commits": [
+    {
+      "sha": "a869ade396f437e058917b92735756a80eae36ed",
+      "parents": [],
+      "author_date": "2022-01-21T11:45:42-05:00",
+      "committer_date": "2022-01-21T11:45:42-05:00",
+      "author": "Esmaeil Seraj",
+      "subject": "Initial commit",
+      "on_main": true,
+      "changed_files": [
+        "A\tLICENSE",
+        "A\tREADME.md"
+      ]
+    },
+    {
+      "sha": "748976574323ff850282918c9513531b4ad8a106",
+      "parents": [
+        "a869ade396f437e058917b92735756a80eae36ed"
+      ],
+      "author_date": "2022-01-21T11:47:16-05:00",
+      "committer_date": "2022-01-21T11:47:16-05:00",
+      "author": "Esmaeil Seraj",
+      "subject": "Update README.md",
+      "on_main": true,
+      "changed_files": [
+        "M\tREADME.md"
+      ]
+    },
+    {
+      "sha": "d2e5701392bdeb71873250cc707d620dde0dd336",
+      "parents": [
+        "748976574323ff850282918c9513531b4ad8a106"
+      ],
+      "author_date": "2022-01-21T11:47:45-05:00",
+      "committer_date": "2022-01-21T11:47:45-05:00",
+      "author": "Esmaeil Seraj",
+      "subject": "Readme updated",
+      "on_main": true,
+      "changed_files": [
+        "M\tREADME.md"
+      ]
+    },
+    {
+      "sha": "8b28c6f741fa45e5f8e3fd3c983cf6e77c46ba54",
+      "parents": [
+        "d2e5701392bdeb71873250cc707d620dde0dd336"
+      ],
+      "author_date": "2022-01-21T12:27:13-05:00",
+      "committer_date": "2022-01-21T12:27:13-05:00",
+      "author": "Esmaeil Seraj",
+      "subject": "Add files via upload",
+      "on_main": true,
+      "changed_files": [
+        "A\tAAMAS_22___HetNet_Supplementary.pdf"
+      ]
+    },
+    {
+      "sha": "236924f59521253fce92424af1dc44598225cbfc",
+      "parents": [
+        "8b28c6f741fa45e5f8e3fd3c983cf6e77c46ba54"
+      ],
+      "author_date": "2022-01-21T12:27:42-05:00",
+      "committer_date": "2022-01-21T12:27:42-05:00",
+      "author": "Esmaeil Seraj",
+      "subject": "uploaded the suplementary file",
+      "on_main": true,
+      "changed_files": []
+    },
+    {
+      "sha": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+      "parents": [
+        "236924f59521253fce92424af1dc44598225cbfc"
+      ],
+      "author_date": "2022-02-10T23:04:01-05:00",
+      "committer_date": "2022-02-10T23:04:01-05:00",
+      "author": "Rohan",
+      "subject": "Adding initial files from repository",
+      "on_main": true,
+      "changed_files": [
+        "A\t.gitignore",
+        "A\t.idea/.gitignore",
+        "A\taction_utils.py",
+        "A\tcomm.py",
+        "A\teval_trainer.py",
+        "A\thetgat/graph/fastbinary.py",
+        "A\thetgat/graph/fastreal.py",
+        "A\thetgat/graph/hetgat.py",
+        "A\thetgat/graph/hetgata2c.py",
+        "A\thetgat/graph/hetgatreal.py",
+        "A\thetgat/policy.py",
+        "A\thetgat/policy_entropy.py",
+        "A\thetgat/uavnet.py",
+        "A\thetgat/utils.py",
+        "A\tic3net-envs/.gitignore",
+        "A\tic3net-envs/LICENSE.md",
+        "A\tic3net-envs/README.md",
+        "A\tic3net-envs/examples/random_agent.py",
+        "A\tic3net-envs/ic3net_envs/__init__.py",
+        "A\tic3net-envs/ic3net_envs/fire_commander_env.py",
+        "A\tic3net-envs/ic3net_envs/predator_capture_env.py",
+        "A\tic3net-envs/ic3net_envs/predator_prey_env.py",
+        "A\tic3net-envs/ic3net_envs/traffic_helper.py",
+        "A\tic3net-envs/ic3net_envs/traffic_junction_env.py",
+        "A\tic3net-envs/setup.py",
+        "A\tmain.py",
+        "A\tmodels.py",
+        "A\tmulti_processing.py",
+        "A\ttrainer.py",
+        "A\tutils.py"
+      ]
+    },
+    {
+      "sha": "59d598319d6285acfa42a1d9d8c859305a9bbf1e",
+      "parents": [
+        "3ca462bfaa945deb710f510fe865a5b750c0990c"
+      ],
+      "author_date": "2022-02-14T23:54:07-05:00",
+      "committer_date": "2022-02-14T23:54:07-05:00",
+      "author": "Rohan",
+      "subject": "Adding some more files",
+      "on_main": true,
+      "changed_files": [
+        "D\t.idea/.gitignore",
+        "M\tREADME.md",
+        "A\tWildFire_Simulate_Original.py",
+        "A\tdata.py",
+        "A\tenv_wrappers.py",
+        "A\tenvs/.gitignore",
+        "A\tenvs/LICENSE.md",
+        "A\tenvs/README.md",
+        "A\tenvs/examples/random_agent.py",
+        "A\tenvs/ic3net_envs/__init__.py",
+        "A\tenvs/ic3net_envs/fire_commander_env.py",
+        "A\tenvs/ic3net_envs/predator_capture_env.py",
+        "A\tenvs/ic3net_envs/predator_prey_env.py",
+        "A\tenvs/ic3net_envs/traffic_helper.py",
+        "A\tenvs/ic3net_envs/traffic_junction_env.py",
+        "A\tenvs/setup.py",
+        "D\tic3net-envs/.gitignore",
+        "D\tic3net-envs/LICENSE.md",
+        "D\tic3net-envs/README.md",
+        "D\tic3net-envs/examples/random_agent.py",
+        "D\tic3net-envs/ic3net_envs/__init__.py",
+        "D\tic3net-envs/ic3net_envs/fire_commander_env.py",
+        "D\tic3net-envs/ic3net_envs/predator_capture_env.py",
+        "D\tic3net-envs/ic3net_envs/predator_prey_env.py",
+        "D\tic3net-envs/ic3net_envs/traffic_helper.py",
+        "D\tic3net-envs/ic3net_envs/traffic_junction_env.py",
+        "D\tic3net-envs/setup.py",
+        "M\tutils.py"
+      ]
+    },
+    {
+      "sha": "d57da0717d5564027df7e8ba75614feca8006960",
+      "parents": [
+        "59d598319d6285acfa42a1d9d8c859305a9bbf1e"
+      ],
+      "author_date": "2022-02-15T00:08:23-05:00",
+      "committer_date": "2022-02-15T00:08:23-05:00",
+      "author": "Rohan",
+      "subject": "Added better saving (following MAGIC)",
+      "on_main": true,
+      "changed_files": [
+        "A\t.idea/.gitignore",
+        "A\t.idea/HetNet.iml",
+        "A\t.idea/inspectionProfiles/Project_Default.xml",
+        "A\t.idea/inspectionProfiles/profiles_settings.xml",
+        "A\t.idea/misc.xml",
+        "A\t.idea/modules.xml",
+        "A\t.idea/vcs.xml",
+        "M\tmain.py"
+      ]
+    },
+    {
+      "sha": "6acaa4fc7a5a3e3cd9c14f05f6a3609b46a7d9b0",
+      "parents": [
+        "d57da0717d5564027df7e8ba75614feca8006960"
+      ],
+      "author_date": "2022-06-17T19:34:05-04:00",
+      "committer_date": "2022-06-17T19:34:05-04:00",
+      "author": "Rohan",
+      "subject": "deleting paths",
+      "on_main": true,
+      "changed_files": [
+        "M\t.idea/HetNet.iml",
+        "M\tmain.py"
+      ]
+    },
+    {
+      "sha": "442ec42f636187caca6d76b78c5a6e5d8a54dce6",
+      "parents": [
+        "6acaa4fc7a5a3e3cd9c14f05f6a3609b46a7d9b0"
+      ],
+      "author_date": "2022-06-17T17:16:12-07:00",
+      "committer_date": "2022-06-17T17:16:12-07:00",
+      "author": "Esmaeil Seraj",
+      "subject": "Update README.md",
+      "on_main": true,
+      "changed_files": [
+        "M\tREADME.md"
+      ]
+    },
+    {
+      "sha": "61b8a58cdd0b136c88ebe1b8b7d145a2471ed851",
+      "parents": [
+        "442ec42f636187caca6d76b78c5a6e5d8a54dce6"
+      ],
+      "author_date": "2022-06-17T17:16:38-07:00",
+      "committer_date": "2022-06-17T17:16:38-07:00",
+      "author": "Esmaeil Seraj",
+      "subject": "Update README.md",
+      "on_main": true,
+      "changed_files": [
+        "M\tREADME.md"
+      ]
+    },
+    {
+      "sha": "b94e2186aed38535002dba1043e7102445011564",
+      "parents": [
+        "61b8a58cdd0b136c88ebe1b8b7d145a2471ed851"
+      ],
+      "author_date": "2022-06-17T17:19:48-07:00",
+      "committer_date": "2022-06-17T17:19:48-07:00",
+      "author": "Esmaeil Seraj",
+      "subject": "Update README.md",
+      "on_main": true,
+      "changed_files": [
+        "M\tREADME.md"
+      ]
+    },
+    {
+      "sha": "394b57ed611c25a4282ff833c57e885bdf7aa631",
+      "parents": [
+        "b94e2186aed38535002dba1043e7102445011564"
+      ],
+      "author_date": "2022-06-17T21:44:11-04:00",
+      "committer_date": "2022-06-17T21:44:11-04:00",
+      "author": "Rohan",
+      "subject": "updating readme to include run commands and some todos",
+      "on_main": true,
+      "changed_files": [
+        "M\tREADME.md"
+      ]
+    },
+    {
+      "sha": "c1f5759694b4ae7eb7e88e94d7569bb92991e047",
+      "parents": [
+        "394b57ed611c25a4282ff833c57e885bdf7aa631"
+      ],
+      "author_date": "2022-06-17T21:48:10-04:00",
+      "committer_date": "2022-06-17T21:48:10-04:00",
+      "author": "Rohan",
+      "subject": "update readme",
+      "on_main": true,
+      "changed_files": [
+        "M\tREADME.md"
+      ]
+    },
+    {
+      "sha": "4179f485ff388fe2403c8f8305f321f09946930b",
+      "parents": [
+        "c1f5759694b4ae7eb7e88e94d7569bb92991e047"
+      ],
+      "author_date": "2022-06-17T21:58:14-04:00",
+      "committer_date": "2022-06-17T21:58:14-04:00",
+      "author": "Rohan",
+      "subject": "update firecommander",
+      "on_main": true,
+      "changed_files": [
+        "M\tREADME.md"
+      ]
+    },
+    {
+      "sha": "6b09d36c352a4170f574d118cc565132b14b4050",
+      "parents": [
+        "4179f485ff388fe2403c8f8305f321f09946930b"
+      ],
+      "author_date": "2022-10-10T16:22:29-04:00",
+      "committer_date": "2022-10-10T16:22:29-04:00",
+      "author": "Rohan",
+      "subject": "Updating files",
+      "on_main": true,
+      "changed_files": [
+        "M\taction_utils.py",
+        "M\thetgat/graph/fastreal.py",
+        "M\thetgat/policy.py",
+        "M\thetgat/uavnet.py"
+      ]
+    },
+    {
+      "sha": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+      "parents": [
+        "6b09d36c352a4170f574d118cc565132b14b4050"
+      ],
+      "author_date": "2022-10-11T11:02:36-04:00",
+      "committer_date": "2022-10-11T11:02:36-04:00",
+      "author": "Rohan",
+      "subject": "Tested PP and PC, updated readme",
+      "on_main": true,
+      "changed_files": [
+        "M\tREADME.md",
+        "M\thetgat/uavnet.py"
+      ]
+    },
+    {
+      "sha": "2c34389007e254239ae497c45599a1eac291bd23",
+      "parents": [
+        "f54ca5ad05bd68dcaa525034e440149b7adf9d51"
+      ],
+      "author_date": "2023-08-24T01:51:10-04:00",
+      "committer_date": "2023-08-24T01:51:10-04:00",
+      "author": "Luis",
+      "subject": "cleans branch",
+      "on_main": false,
+      "changed_files": [
+        "D\t.gitignore",
+        "D\t.idea/.gitignore",
+        "D\t.idea/HetNet.iml",
+        "D\t.idea/inspectionProfiles/Project_Default.xml",
+        "D\t.idea/inspectionProfiles/profiles_settings.xml",
+        "D\t.idea/misc.xml",
+        "D\t.idea/modules.xml",
+        "D\t.idea/vcs.xml",
+        "D\tAAMAS_22___HetNet_Supplementary.pdf",
+        "D\tLICENSE",
+        "D\tREADME.md",
+        "D\tWildFire_Simulate_Original.py",
+        "D\taction_utils.py",
+        "D\tcomm.py",
+        "D\tdata.py",
+        "D\tenv_wrappers.py",
+        "D\tenvs/.gitignore",
+        "D\tenvs/LICENSE.md",
+        "D\tenvs/README.md",
+        "D\tenvs/examples/random_agent.py",
+        "D\tenvs/ic3net_envs/__init__.py",
+        "D\tenvs/ic3net_envs/fire_commander_env.py",
+        "D\tenvs/ic3net_envs/predator_capture_env.py",
+        "D\tenvs/ic3net_envs/predator_prey_env.py",
+        "D\tenvs/ic3net_envs/traffic_helper.py",
+        "D\tenvs/ic3net_envs/traffic_junction_env.py",
+        "D\tenvs/setup.py",
+        "D\teval_trainer.py",
+        "D\thetgat/graph/fastbinary.py",
+        "D\thetgat/graph/fastreal.py",
+        "D\thetgat/graph/hetgat.py",
+        "D\thetgat/graph/hetgata2c.py",
+        "D\thetgat/graph/hetgatreal.py",
+        "D\thetgat/policy.py",
+        "D\thetgat/policy_entropy.py",
+        "D\thetgat/uavnet.py",
+        "D\thetgat/utils.py",
+        "D\tmain.py",
+        "D\tmodels.py",
+        "D\tmulti_processing.py",
+        "D\ttrainer.py",
+        "D\tutils.py"
+      ]
+    },
+    {
+      "sha": "5cc9aea0a96277cc7471d6e80fdaeeb8973be5d0",
+      "parents": [
+        "2c34389007e254239ae497c45599a1eac291bd23"
+      ],
+      "author_date": "2023-08-24T07:19:35-04:00",
+      "committer_date": "2023-08-24T07:19:35-04:00",
+      "author": "Luis",
+      "subject": "add HetNet-PPO codebase",
+      "on_main": false,
+      "changed_files": [
+        "A\t.gitignore",
+        "A\tLICENSE",
+        "A\tREADME.md",
+        "A\tenvironment.yml",
+        "A\tonpolicy/__init__.py",
+        "A\tonpolicy/algorithms/__init__.py",
+        "A\tonpolicy/algorithms/hetgat_mappo/algorithm/MAPPO_GAT_Policy.py",
+        "A\tonpolicy/algorithms/hetgat_mappo/algorithm/gat_actor_critic.py",
+        "A\tonpolicy/algorithms/hetgat_mappo/graphs/fastreal.py",
+        "A\tonpolicy/algorithms/hetgat_mappo/graphs/graph_utils.py",
+        "A\tonpolicy/algorithms/hetgat_mappo/graphs/test_graph.py",
+        "A\tonpolicy/algorithms/hetgat_mappo/graphs/utils.py",
+        "A\tonpolicy/algorithms/hetgat_mappo/hetgat_mappo.py",
+        "A\tonpolicy/algorithms/r_mappo/__init__.py",
+        "A\tonpolicy/algorithms/r_mappo/algorithm/rMAPPOPolicy.py",
+        "A\tonpolicy/algorithms/r_mappo/algorithm/r_actor_critic.py",
+        "A\tonpolicy/algorithms/r_mappo/r_mappo.py",
+        "A\tonpolicy/algorithms/utils/act.py",
+        "A\tonpolicy/algorithms/utils/cnn.py",
+        "A\tonpolicy/algorithms/utils/distributions.py",
+        "A\tonpolicy/algorithms/utils/hetgat.py",
+        "A\tonpolicy/algorithms/utils/mlp.py",
+        "A\tonpolicy/algorithms/utils/popart.py",
+        "A\tonpolicy/algorithms/utils/rnn.py",
+        "A\tonpolicy/algorithms/utils/util.py",
+        "A\tonpolicy/config.py",
+        "A\tonpolicy/envs/__init__.py",
+        "A\tonpolicy/envs/env_wrappers.py",
+        "A\tonpolicy/envs/fire_commander/WildFire_Simulate_Original.py",
+        "A\tonpolicy/envs/fire_commander/fire_commander_env.py",
+        "A\tonpolicy/envs/predator_prey/PredatorCaptureEnv.py",
+        "A\tonpolicy/envs/predator_prey/PredatorPreyEnv.py",
+        "A\tonpolicy/envs/predator_prey/multiagentenv.py",
+        "A\tonpolicy/runner/separated/base_runner.py",
+        "A\tonpolicy/runner/shared/base_runner.py",
+        "A\tonpolicy/runner/shared/predator_runner.py",
+        "A\tonpolicy/scripts/__init__.py",
+        "A\tonpolicy/scripts/eval/eval_fire_commander.py",
+        "A\tonpolicy/scripts/eval/eval_predator.py",
+        "A\tonpolicy/scripts/eval/eval_scripts/hetnet_ppo_5x5_2p1a_vision_0_tensorized.sh",
+        "A\tonpolicy/scripts/eval/evaluation_conditions.py",
+        "A\tonpolicy/scripts/eval/print_plot_eval.py",
+        "A\tonpolicy/scripts/eval/test_config/10x10_3p2a_initial_conditions.pkl",
+        "A\tonpolicy/scripts/eval/test_config/20x20_6p4a_initial_conditions.pkl",
+        "A\tonpolicy/scripts/eval/test_config/5x5_2p1a_initial_conditions.pkl",
+        "A\tonpolicy/scripts/train/__init__.py",
+        "A\tonpolicy/scripts/train/train_fire_commander.py",
+        "A\tonpolicy/scripts/train/train_predator.py",
+        "A\tonpolicy/utils/__init__.py",
+        "A\tonpolicy/utils/logging.py",
+        "A\tonpolicy/utils/make_json.py",
+        "A\tonpolicy/utils/multi_discrete.py",
+        "A\tonpolicy/utils/separated_buffer.py",
+        "A\tonpolicy/utils/shared_buffer.py",
+        "A\tonpolicy/utils/util.py",
+        "A\tonpolicy/utils/valuenorm.py",
+        "A\trequirements.txt",
+        "A\tsetup.py"
+      ]
+    },
+    {
+      "sha": "4d3870dc9b9e995351043be00e37b31e0a8b48ca",
+      "parents": [
+        "5cc9aea0a96277cc7471d6e80fdaeeb8973be5d0"
+      ],
+      "author_date": "2024-04-22T23:35:30-04:00",
+      "committer_date": "2024-04-22T23:35:30-04:00",
+      "author": "Rohan Paleja",
+      "subject": "robot-demo files",
+      "on_main": false,
+      "changed_files": [
+        "M\tonpolicy/envs/fire_commander/fire_commander_env.py",
+        "M\tonpolicy/runner/shared/base_runner.py",
+        "A\tonpolicy/scripts/eval/hetgat_ppo_5x5_2p1a_vision_1_fire_commander_mod_state.zip"
+      ]
+    },
+    {
+      "sha": "2e5d8ca71587601af809e2665cc47bc5d201e0a1",
+      "parents": [
+        "4d3870dc9b9e995351043be00e37b31e0a8b48ca"
+      ],
+      "author_date": "2024-04-22T23:45:04-04:00",
+      "committer_date": "2024-04-22T23:45:04-04:00",
+      "author": "Rohan Paleja",
+      "subject": "robot-demo readme",
+      "on_main": false,
+      "changed_files": [
+        "M\tREADME.md"
+      ]
+    },
+    {
+      "sha": "5fc4cba7be60b08acd17acf8f3fc9ab81bc39789",
+      "parents": [
+        "2e5d8ca71587601af809e2665cc47bc5d201e0a1"
+      ],
+      "author_date": "2024-04-22T23:54:36-04:00",
+      "committer_date": "2024-04-22T23:54:36-04:00",
+      "author": "Rohan Paleja",
+      "subject": "robot-demo readme",
+      "on_main": false,
+      "changed_files": [
+        "A\trobotarium_python_simulator/LICENSE",
+        "A\trobotarium_python_simulator/README.md",
+        "A\trobotarium_python_simulator/robotarium_python_simulator.egg-info/PKG-INFO",
+        "A\trobotarium_python_simulator/robotarium_python_simulator.egg-info/SOURCES.txt",
+        "A\trobotarium_python_simulator/robotarium_python_simulator.egg-info/dependency_links.txt",
+        "A\trobotarium_python_simulator/robotarium_python_simulator.egg-info/requires.txt",
+        "A\trobotarium_python_simulator/robotarium_python_simulator.egg-info/top_level.txt",
+        "A\trobotarium_python_simulator/rps/__init__.py",
+        "A\trobotarium_python_simulator/rps/__version__.py",
+        "A\trobotarium_python_simulator/rps/examples/__init__.py",
+        "A\trobotarium_python_simulator/rps/examples/barrier_certificates/barrier_certificates.py",
+        "A\trobotarium_python_simulator/rps/examples/barrier_certificates/si_barriers_with_boundary.py",
+        "A\trobotarium_python_simulator/rps/examples/barrier_certificates/uni_barriers_with_boundary.py",
+        "A\trobotarium_python_simulator/rps/examples/barrier_certificates/uni_dd_barriers_with_boundary.py",
+        "A\trobotarium_python_simulator/rps/examples/consensus/consensus.py",
+        "A\trobotarium_python_simulator/rps/examples/consensus/consensus_fewer_errors.py",
+        "A\trobotarium_python_simulator/rps/examples/data_saving/leader_follower_save_data.py",
+        "A\trobotarium_python_simulator/rps/examples/figure-8.py",
+        "A\trobotarium_python_simulator/rps/examples/formation_control/formation_control.py",
+        "A\trobotarium_python_simulator/rps/examples/go_to_point/si_go_to_point.py",
+        "A\trobotarium_python_simulator/rps/examples/go_to_point/uni_go_to_point.py",
+        "A\trobotarium_python_simulator/rps/examples/go_to_pose/uni_go_to_pose_clf.py",
+        "A\trobotarium_python_simulator/rps/examples/go_to_pose/uni_go_to_pose_hybrid.py",
+        "A\trobotarium_python_simulator/rps/examples/leader_follower_static/leader_follower.py",
+        "A\trobotarium_python_simulator/rps/examples/plotting/FireLogo.jpg",
+        "A\trobotarium_python_simulator/rps/examples/plotting/FireLogo.png",
+        "A\trobotarium_python_simulator/rps/examples/plotting/GTLogo.png",
+        "A\trobotarium_python_simulator/rps/examples/plotting/barrier_certificates_with_plotting.py",
+        "A\trobotarium_python_simulator/rps/examples/plotting/fc_sim.py",
+        "A\trobotarium_python_simulator/rps/examples/plotting/leader_follower_with_plotting.py",
+        "A\trobotarium_python_simulator/rps/examples/plotting/si_go_to_point_gt.py",
+        "A\trobotarium_python_simulator/rps/examples/plotting/si_go_to_point_with_plotting.py",
+        "A\trobotarium_python_simulator/rps/examples/plotting/uni_go_to_pose_hybrid_with_plotting.py",
+        "A\trobotarium_python_simulator/rps/robotarium.py",
+        "A\trobotarium_python_simulator/rps/robotarium_abc.py",
+        "A\trobotarium_python_simulator/rps/utilities/__init__.py",
+        "A\trobotarium_python_simulator/rps/utilities/barrier_certificates.py",
+        "A\trobotarium_python_simulator/rps/utilities/barrier_certificates2.py",
+        "A\trobotarium_python_simulator/rps/utilities/controllers.py",
+        "A\trobotarium_python_simulator/rps/utilities/graph.py",
+        "A\trobotarium_python_simulator/rps/utilities/misc.py",
+        "A\trobotarium_python_simulator/rps/utilities/transformations.py",
+        "A\trobotarium_python_simulator/setup.py"
+      ]
+    },
+    {
+      "sha": "6b50c91061f9803154de9a215278c9c195ce02f7",
+      "parents": [
+        "5fc4cba7be60b08acd17acf8f3fc9ab81bc39789"
+      ],
+      "author_date": "2024-04-23T00:17:18-04:00",
+      "committer_date": "2024-04-23T00:17:18-04:00",
+      "author": "Rohan Paleja",
+      "subject": "robot-demo readme",
+      "on_main": false,
+      "changed_files": [
+        "M\tREADME.md"
+      ]
+    },
+    {
+      "sha": "bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec",
+      "parents": [
+        "f54ca5ad05bd68dcaa525034e440149b7adf9d51"
+      ],
+      "author_date": "2026-05-26T02:22:15-04:00",
+      "committer_date": "2026-05-26T02:22:15-04:00",
+      "author": "Luis Pimentel",
+      "subject": "update codebase and documentation for arxiv release",
+      "on_main": true,
+      "changed_files": [
+        "M\tWildFire_Simulate_Original.py",
+        "M\tenv_wrappers.py",
+        "M\tenvs/ic3net_envs/fire_commander_env.py",
+        "M\tenvs/setup.py",
+        "M\tmain.py",
+        "A\tprint_plot_eval.py",
+        "A\tscripts_eval/README.md",
+        "A\tscripts_eval/hetnet_a2c_fc_5x5_2p1a.sh",
+        "A\ttest_config/10x10_3p2a_initial_conditions.pkl",
+        "A\ttest_config/20x20_6p4a_initial_conditions.pkl",
+        "A\ttest_config/5x5_2p1a_initial_conditions.pkl",
+        "A\ttest_config/evaluation_conditions.py",
+        "M\ttrainer.py"
+      ]
+    },
+    {
+      "sha": "48d7be85073a3c6195003e93e83991507f74c8e7",
+      "parents": [
+        "5cc9aea0a96277cc7471d6e80fdaeeb8973be5d0"
+      ],
+      "author_date": "2026-05-26T02:14:47-04:00",
+      "committer_date": "2026-05-26T02:14:47-04:00",
+      "author": "Luis Pimentel",
+      "subject": "update codebase and documentation for arxiv release",
+      "on_main": false,
+      "changed_files": [
+        "M\t.gitignore",
+        "M\tonpolicy/envs/fire_commander/fire_commander_env.py",
+        "M\tonpolicy/runner/shared/predator_runner.py",
+        "A\tonpolicy/scripts/eval/eval_scripts/README.md",
+        "D\tonpolicy/scripts/eval/eval_scripts/hetnet_ppo_5x5_2p1a_vision_0_tensorized.sh",
+        "A\tonpolicy/scripts/eval/eval_scripts/hetnet_ppo_5x5_2p1a_vision_1_fire_commander_tensorized.sh",
+        "M\tonpolicy/scripts/eval/print_plot_eval.py",
+        "M\tsetup.py"
+      ]
+    },
+    {
+      "sha": "e0bcaf3fe2223c8db2bee69427b6006d408a57a0",
+      "parents": [
+        "48d7be85073a3c6195003e93e83991507f74c8e7"
+      ],
+      "author_date": "2026-06-14T18:04:47-04:00",
+      "committer_date": "2026-06-14T18:04:47-04:00",
+      "author": "Kin Man Lee",
+      "subject": "Update README to include experiment artifacts.",
+      "on_main": false,
+      "changed_files": [
+        "M\tREADME.md"
+      ]
+    }
+  ],
+  "api_fetches": {
+    "repository": {
+      "url": "https://api.github.com/repos/CORE-Robotics-Lab/HetNet",
+      "response_date": "Thu, 01 Oct 2026 02:39:56 GMT",
+      "sha256": "e699909a7baa67540e335c3e548729fd1ddc15b014143c4737b5fec35e86b5d0",
+      "pagination": null
+    },
+    "branches": {
+      "url": "https://api.github.com/repos/CORE-Robotics-Lab/HetNet/branches?per_page=100",
+      "response_date": "Thu, 01 Oct 2026 02:39:57 GMT",
+      "sha256": "0cf6d59fbe1ce9e5cee242c8d29ef246052752fd638f43e0bccc7da265900550",
+      "pagination": null
+    },
+    "tags": {
+      "url": "https://api.github.com/repos/CORE-Robotics-Lab/HetNet/tags?per_page=100",
+      "response_date": "Thu, 01 Oct 2026 02:39:57 GMT",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "pagination": null
+    },
+    "releases": {
+      "url": "https://api.github.com/repos/CORE-Robotics-Lab/HetNet/releases?per_page=100",
+      "response_date": "Thu, 01 Oct 2026 02:39:57 GMT",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "pagination": null
+    },
+    "issues": {
+      "url": "https://api.github.com/repos/CORE-Robotics-Lab/HetNet/issues?state=all&per_page=100",
+      "response_date": "Thu, 01 Oct 2026 02:39:58 GMT",
+      "sha256": "8603271561c0405140a2893f139f1481ae49251005118c2a8fc9d3daf3d908e1",
+      "pagination": null
+    },
+    "issue_2_comments": {
+      "url": "https://api.github.com/repos/CORE-Robotics-Lab/HetNet/issues/2/comments?per_page=100",
+      "response_date": "Thu, 01 Oct 2026 02:39:58 GMT",
+      "sha256": "d099fcdd4fe3d3fe858904357f73dccc6b0c11410b958b96eda6b98eba6db6a4",
+      "pagination": null
+    },
+    "issue_1_comments": {
+      "url": "https://api.github.com/repos/CORE-Robotics-Lab/HetNet/issues/1/comments?per_page=100",
+      "response_date": "Thu, 01 Oct 2026 02:39:58 GMT",
+      "sha256": "e6800f080fbbbfde66a76e484bb411c3f7aa18b0b3cc407c610b934f3c9c46cb",
+      "pagination": null
+    },
+    "forks": {
+      "url": "https://api.github.com/repos/CORE-Robotics-Lab/HetNet/forks?per_page=100&sort=oldest",
+      "response_date": "Thu, 01 Oct 2026 02:39:59 GMT",
+      "sha256": "a1cb6f16ffee9a0365142a668e789a5d217f58e6e29d41a406522f502c6502ca",
+      "pagination": null
+    },
+    "main_commits": {
+      "url": "https://api.github.com/repos/CORE-Robotics-Lab/HetNet/commits?sha=main&per_page=100",
+      "response_date": "Thu, 01 Oct 2026 02:39:59 GMT",
+      "sha256": "fd052a944d031623731d9558b7b23f61e31c4bb0fd003d39e1d4e73a114c33a5",
+      "pagination": null
+    }
+  }
+}

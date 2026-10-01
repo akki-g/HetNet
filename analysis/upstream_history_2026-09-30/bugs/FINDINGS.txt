@@ -1,0 +1,160 @@
+Historical defect audit of the AAMAS HetNet source lineage
+========================================================
+
+Scope and reproducibility
+
+probe_history.py inventories all 26 reachable commits in the freshly fetched
+upstream mirror. Thirteen trees contain the AAMAS legacy paths under audit.
+The 2023+ PPO/robot code on other branches is a separate implementation and is
+not asserted to be bug-equivalent. The inventory follows the February rename
+from ic3net-envs/ic3net_envs to envs/ic3net_envs.
+
+There are nine distinct blobs across the legacy sensory-model, PCP simulator,
+FC simulator, wildfire model and multiprocess-learner files. findings.json maps
+every available legacy tree to exact SHA256 source identities. source_blobs/
+contains those nine files verbatim. Equivalent blobs are probed once rather
+than repeatedly presenting identical tests as independent evidence.
+
+Methods/classes are extracted as unchanged AST nodes directly from git show;
+no working-tree model, environment, adapter or helper is imported. The dynamic
+probes use Torch 2.2.1, NumPy 1.26.4 and Gym 0.26.2. A namespace proxy supplies
+historical np.int as Python int. That compatibility shim is explicit; source
+algorithms and arrays are not rewritten. These are bounded unit probes, not
+training or a full historical environment reconstruction.
+
+1. Sensory extraction: a definite October 10, 2022 regression
+
+The initial 3ca462bfaa945deb710f510fe865a5b750c0990c (February 10, 2022)
+get_obs_features implementation advances to the next observation block by the
+full cell width. It correctly selects all four sensory entries from every cell.
+Its blob stays unchanged through 4179f485ff388fe2403c8f8305f321f09946930b
+(June 17, 2022).
+
+Commit 6b09d36c352a4170f574d118cc565132b14b4050 (October 10, 2022) rewrites
+the extractor and increments ob_pos by self.P_s (25), although each flattened
+cell contains 25 position entries and four sensory entries, width 29. Commit
+f54ca5ad05bd68dcaa525034e440149b7adf9d51 (October 11, 2022), whose message
+says "Tested PP and PC, updated readme", keeps this regression. The exact
+October 11 uavnet.py blob also appears at the current legacy main tip.
+
+Direct target-channel perturbation probes:
+
+                            February/June       October/current
+PP / PCP, 25 view cells      25 of 25 preserved  4 of 25 preserved
+FC, 9 view cells             9 of 9 preserved    2 of 9 preserved
+PP/PCP misplaced entries     0 of 100             96 of 100
+FC misplaced entries        0 of 36              32 of 36
+
+The October PP/PCP surviving target cells are flattened indices 0, 6, 12, 19;
+FC survivors are 0 and 6. The separate position extractor preserves none of the
+target perturbations in either revision. The February extraction probe for
+3P0A concerns this method only; it does not establish that the whole February
+training entrypoint supported zero action agents.
+
+Consequence: this defect can plausibly contribute to our released-code
+reproduction gap. It was absent from the public source before the AAMAS 2022
+meeting. It is not evidence that the paper's original models trained with this
+defect. An exact training-commit record is still needed before attributing any
+published number to a particular source revision.
+
+Permalinks:
+https://github.com/CORE-Robotics-Lab/HetNet/blob/3ca462bfaa945deb710f510fe865a5b750c0990c/hetgat/uavnet.py#L307
+https://github.com/CORE-Robotics-Lab/HetNet/commit/6b09d36c352a4170f574d118cc565132b14b4050
+https://github.com/CORE-Robotics-Lab/HetNet/blob/f54ca5ad05bd68dcaa525034e440149b7adf9d51/hetgat/uavnet.py#L204
+
+2. PCP observation aliasing: present in the earliest source and never fixed
+
+All historical PCP simulator trees under audit contain the same source bytes.
+Each agent observation is a view of bool_base_grid. Writing the blind A-agent
+sensory channels to -1 also changes any overlapping P-agent observation.
+
+In an exact-source probe, a P agent at (2,1), A at (2,2), and prey at (2,2)
+produce -1 in the P agent's prey entry; suppressing only the A masking branch
+restores that P entry to 1. With no A view (the PP-style condition), it remains 1.
+The changes to P observations violate independent sensing irrespective of
+whether the downstream extractor is correct. The bug existed by the first
+February source release, but public code presence does not establish that the
+unpublished training workspace was identical.
+
+https://github.com/CORE-Robotics-Lab/HetNet/blob/3ca462bfaa945deb710f510fe865a5b750c0990c/ic3net-envs/ic3net_envs/predator_capture_env.py#L264
+
+3. FC cannot literally execute from the 2022 checkout without repairs
+
+The initial February 10 FC file imports WildFire_Simulate_Original, which is
+missing from that tree. It is added in 59d598319d6285acfa42a1d9d8c859305a9bbf1e
+(February 14, 2022). However, FC supplies a hotspot as [x,x,y,y]; the wildfire
+initializer calls np.random.randint(low=x, high=x), then the same for y.
+The direct exact-source reset probe raises ValueError: low >= high.
+
+The initializer remains byte-identical through October 2022. The legacy main
+update bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec on May 26, 2026 adds a
+single-coordinate case for equal bounds; its reset passes the probe. That
+update also clamps propagated coordinates into the map, corrects one of the
+discovered-fire membership checks, and comments out debug printing. These are
+material FC behavior changes relative to the 2022 public code.
+
+This is strong evidence that a literal 2022 public checkout is not a complete,
+executable record of the FC experiments. It does not establish what replacement
+or private source the researchers actually used, nor imply fabricated results.
+
+https://github.com/CORE-Robotics-Lab/HetNet/blob/59d598319d6285acfa42a1d9d8c859305a9bbf1e/WildFire_Simulate_Original.py#L52
+https://github.com/CORE-Robotics-Lab/HetNet/commit/bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec
+
+4. FC phantom origin and observation aliasing: historical and current
+
+The original wildfire propagation initializes one all-zero output row per input
+fire, and only fills rows whose input has x > 0 and y > 0. Boundary inputs are
+therefore returned as [0,0,0]. The simulator accepts these rows as real fires at
+(0,0), and updates its active source list with them. The May 2026 change does
+not remove this behavior.
+
+Because the old reset fails, the historical physics probe explicitly initializes
+one fire at (0,2), an active front [0,2,1], physical agent positions and event
+arrays. It then executes unchanged _fire_propagation, _take_action and
+_get_reward methods; it does not claim to execute a historical training episode.
+
+Both distinct same-commit FC/wildfire source pairs produce:
+  after propagation: fires (0,0), (0,2); source/front [0,0,0]
+  after A extinguishes (0,0): individual rewards [-0.1,-0.1,10.0]
+  residual physical fire: (0,2); episode remains unfinished
+
+Thus the phantom has the +10 source-extinguishing reward while the physical
+initial fire remains. The same mechanism exists in the February/October and
+May 2026 source. It is not a newly introduced SoftRole defect.
+
+The historical and current FC views also alias: an overlapping A view changes
+a P agent's visible-fire entry from 1 to 0. The historical code even deep-copies
+the list into local c and prints "bad" when a P observation changes; it still
+returns the mutated views. The May 2026 code comments out the debug print but
+retains the views and in-place masking. The observation probe pre-marks the
+fire as discovered to isolate masking from unrelated discovery logic.
+
+Historical FC additionally uses NumPy's elementwise array membership as though
+it tests equality of coordinate pairs. An empty discovered-fire array errors
+under NumPy 1.26. This is a compatibility/semantic issue, separate from the
+initialization failure, and is why the physical probe calls the exact methods
+directly rather than claiming an unmodified complete historical step succeeded.
+
+https://github.com/CORE-Robotics-Lab/HetNet/blob/59d598319d6285acfa42a1d9d8c859305a9bbf1e/WildFire_Simulate_Original.py#L173
+https://github.com/CORE-Robotics-Lab/HetNet/blob/59d598319d6285acfa42a1d9d8c859305a9bbf1e/envs/ic3net_envs/fire_commander_env.py#L252
+https://github.com/CORE-Robotics-Lab/HetNet/blob/59d598319d6285acfa42a1d9d8c859305a9bbf1e/envs/ic3net_envs/fire_commander_env.py#L337
+
+5. Gradient pointer compatibility: a version caveat, not an original-training claim
+
+multi_processing.py is byte-identical across all legacy source trees. It caches
+p._grad.data pointers once, while calling optimizer.zero_grad() without an
+explicit set_to_none argument. This depends on the installed Torch default:
+replacing grad tensors invalidates the cached pointers. That cannot be labeled
+an original 2022 training defect simply by running the old source with today's
+Torch behavior. The local reproduction explicitly sets set_to_none=False.
+Only a static source check is performed for this issue here.
+
+What the history establishes
+
+The strongest causal candidate for the current PP reproduction gap is a known
+post-publication regression in sensory extraction. The history overturns any
+assumption that current-main input behavior necessarily matches the study's
+training implementation. PCP's observation interference and FC's defects have
+older public provenance. They make literal replication difficult, but do not
+identify the authors' actual training workspace or quantify the contribution
+of any individual defect to performance.

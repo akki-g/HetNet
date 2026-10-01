@@ -1,0 +1,1538 @@
+{
+  "scope": "Existing copied local training metrics only; no remote status or frozen-policy evaluation.",
+  "estimator": "Last 50 complete epochs ending at or before each budget; episode-weighted within seed, equal weight for each of 3 training seeds. Latest windows have unequal budgets and are descriptive only. Seed ranges are not confidence intervals.",
+  "provenance_limit": "SoftRole appended stdout retains the audited configuration/source-prefix linkage but has no new corresponding checkpoint/source archive. Legacy exact steps stop at archived metrics; later stdout cumulative counters are invalid.",
+  "budget_arithmetic": {
+    "one_collector_2000_epochs": {
+      "collectors": 1,
+      "batch_floor_per_collector": 500,
+      "updates_per_epoch": 10,
+      "epochs": 2000,
+      "optimizer_updates": 20000,
+      "minimum_environment_steps": 10000000,
+      "complete_episode_upper_bound_at_horizon80": 11580000
+    },
+    "four_collectors_2000_epochs": {
+      "collectors": 4,
+      "batch_floor_per_collector": 500,
+      "updates_per_epoch": 10,
+      "epochs": 2000,
+      "optimizer_updates": 20000,
+      "minimum_environment_steps": 40000000,
+      "complete_episode_upper_bound_at_horizon80": 46320000
+    },
+    "interpretation": "10M is a lower bound implied by June release commands, not an established paper budget or evidence of optimal stopping. Four collectors multiply samples per update, not update count. Modern sample-matched and update-matched comparisons differ."
+  },
+  "softrole_runs": [
+    {
+      "task": "pp",
+      "model": "SoftRole shared",
+      "seed": 0,
+      "source": "logs_sr/softrole-898824_0.out",
+      "config_source": "stokes_runs/runs/softrole_primary/pp_shared/seed0/config.json",
+      "epochs": 2000,
+      "total_steps": 40298505,
+      "total_episodes": 7894025,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          442,
+          491
+        ],
+        "updates_at_endpoint": 4910,
+        "steps_start": 8986521,
+        "steps_end": 9991049,
+        "steps": 1004528,
+        "episodes": 207750,
+        "steps_taken": 4.835273164861612,
+        "success_rate": 0.9998074608904933,
+        "team_return": -0.3674442839951865
+      },
+      "at_20m": {
+        "requested_budget": 20000000,
+        "epochs": [
+          940,
+          989
+        ],
+        "updates_at_endpoint": 9890,
+        "steps_start": 18989288,
+        "steps_end": 19994524,
+        "steps": 1005236,
+        "episodes": 208466,
+        "steps_taken": 4.8220621108478126,
+        "success_rate": 0.999395584891541,
+        "team_return": -0.36183238513714466
+      },
+      "latest": {
+        "requested_budget": null,
+        "epochs": [
+          1951,
+          2000
+        ],
+        "updates_at_endpoint": 20000,
+        "steps_start": 39294367,
+        "steps_end": 40298505,
+        "steps": 1004138,
+        "episodes": 211424,
+        "steps_taken": 4.749404041168457,
+        "success_rate": 1.0,
+        "team_return": -0.35647443052822764
+      },
+      "latest_common_task_budget": {
+        "requested_budget": 37000000,
+        "epochs": [
+          1786,
+          1835
+        ],
+        "updates_at_endpoint": 18350,
+        "steps_start": 35980785,
+        "steps_end": 36984974,
+        "steps": 1004189,
+        "episodes": 211502,
+        "steps_taken": 4.747893636939604,
+        "success_rate": 1.0,
+        "team_return": -0.35653681761874595
+      }
+    },
+    {
+      "task": "pp",
+      "model": "SoftRole shared",
+      "seed": 1,
+      "source": "logs_sr/softrole-898824_1.out",
+      "config_source": "stokes_runs/runs/softrole_primary/pp_shared/seed1/config.json",
+      "epochs": 2000,
+      "total_steps": 40287117,
+      "total_episodes": 7929131,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          442,
+          491
+        ],
+        "updates_at_endpoint": 4910,
+        "steps_start": 8976231,
+        "steps_end": 9980554,
+        "steps": 1004323,
+        "episodes": 207037,
+        "steps_taken": 4.850934857054536,
+        "success_rate": 1.0,
+        "team_return": -0.3714249143872834
+      },
+      "at_20m": {
+        "requested_budget": 20000000,
+        "epochs": [
+          940,
+          989
+        ],
+        "updates_at_endpoint": 9890,
+        "steps_start": 18978723,
+        "steps_end": 19982852,
+        "steps": 1004129,
+        "episodes": 210663,
+        "steps_taken": 4.7665180881312805,
+        "success_rate": 0.9999905061638731,
+        "team_return": -0.35860331429819187
+      },
+      "latest": {
+        "requested_budget": null,
+        "epochs": [
+          1951,
+          2000
+        ],
+        "updates_at_endpoint": 20000,
+        "steps_start": 39282765,
+        "steps_end": 40287117,
+        "steps": 1004352,
+        "episodes": 212341,
+        "steps_taken": 4.729901432130394,
+        "success_rate": 0.9999811623756129,
+        "team_return": -0.35519989074177855
+      },
+      "latest_common_task_budget": {
+        "requested_budget": 37000000,
+        "epochs": [
+          1787,
+          1836
+        ],
+        "updates_at_endpoint": 18360,
+        "steps_start": 35989314,
+        "steps_end": 36993401,
+        "steps": 1004087,
+        "episodes": 211751,
+        "steps_taken": 4.741828846144764,
+        "success_rate": 0.9999716648327517,
+        "team_return": -0.356063253538354
+      }
+    },
+    {
+      "task": "pp",
+      "model": "SoftRole shared",
+      "seed": 2,
+      "source": "logs_sr/softrole-898824_2.out",
+      "config_source": "stokes_runs/runs/softrole_primary/pp_shared/seed2/config.json",
+      "epochs": 2000,
+      "total_steps": 40299946,
+      "total_episodes": 7887220,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          442,
+          491
+        ],
+        "updates_at_endpoint": 4910,
+        "steps_start": 8990031,
+        "steps_end": 9994302,
+        "steps": 1004271,
+        "episodes": 207718,
+        "steps_taken": 4.83478080859627,
+        "success_rate": 0.9999903715614439,
+        "team_return": -0.3686736344467018
+      },
+      "at_20m": {
+        "requested_budget": 20000000,
+        "epochs": [
+          940,
+          989
+        ],
+        "updates_at_endpoint": 9890,
+        "steps_start": 18991757,
+        "steps_end": 19996105,
+        "steps": 1004348,
+        "episodes": 210849,
+        "steps_taken": 4.763351972264512,
+        "success_rate": 0.9999715436165217,
+        "team_return": -0.3583097382486993
+      },
+      "latest": {
+        "requested_budget": null,
+        "epochs": [
+          1951,
+          2000
+        ],
+        "updates_at_endpoint": 20000,
+        "steps_start": 39295919,
+        "steps_end": 40299946,
+        "steps": 1004027,
+        "episodes": 212004,
+        "steps_taken": 4.735887058734741,
+        "success_rate": 1.0,
+        "team_return": -0.3553706533838984
+      },
+      "latest_common_task_budget": {
+        "requested_budget": 37000000,
+        "epochs": [
+          1786,
+          1835
+        ],
+        "updates_at_endpoint": 18350,
+        "steps_start": 35982242,
+        "steps_end": 36986505,
+        "steps": 1004263,
+        "episodes": 212183,
+        "steps_taken": 4.7330040578180155,
+        "success_rate": 1.0,
+        "team_return": -0.3554502481348647
+      }
+    },
+    {
+      "task": "pp",
+      "model": "SoftRole banked",
+      "seed": 0,
+      "source": "logs_sr/softrole-898824_3.out",
+      "config_source": "stokes_runs/runs/softrole_primary/pp_banked/seed0/config.json",
+      "epochs": 1986,
+      "total_steps": 40051970,
+      "total_episodes": 7695554,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          440,
+          489
+        ],
+        "updates_at_endpoint": 4890,
+        "steps_start": 8980380,
+        "steps_end": 9984678,
+        "steps": 1004298,
+        "episodes": 205499,
+        "steps_taken": 4.887118672110327,
+        "success_rate": 1.0,
+        "team_return": -0.3753334566104945
+      },
+      "at_20m": {
+        "requested_budget": 20000000,
+        "epochs": [
+          938,
+          987
+        ],
+        "updates_at_endpoint": 9870,
+        "steps_start": 18983543,
+        "steps_end": 19987873,
+        "steps": 1004330,
+        "episodes": 208440,
+        "steps_taken": 4.818317021684897,
+        "success_rate": 0.9999952024563423,
+        "team_return": -0.36705670696603343
+      },
+      "latest": {
+        "requested_budget": null,
+        "epochs": [
+          1937,
+          1986
+        ],
+        "updates_at_endpoint": 19860,
+        "steps_start": 39047793,
+        "steps_end": 40051970,
+        "steps": 1004177,
+        "episodes": 211501,
+        "steps_taken": 4.747859348182751,
+        "success_rate": 0.9999858156699023,
+        "team_return": -0.3567257365213404
+      },
+      "latest_common_task_budget": {
+        "requested_budget": 37000000,
+        "epochs": [
+          1785,
+          1834
+        ],
+        "updates_at_endpoint": 18340,
+        "steps_start": 35994960,
+        "steps_end": 36999095,
+        "steps": 1004135,
+        "episodes": 211090,
+        "steps_taken": 4.756904637832204,
+        "success_rate": 0.9999384148941209,
+        "team_return": -0.35754772845705624
+      }
+    },
+    {
+      "task": "pp",
+      "model": "SoftRole banked",
+      "seed": 1,
+      "source": "logs_sr/softrole-898824_4.out",
+      "config_source": "stokes_runs/runs/softrole_primary/pp_banked/seed1/config.json",
+      "epochs": 2000,
+      "total_steps": 40320695,
+      "total_episodes": 7811807,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          441,
+          490
+        ],
+        "updates_at_endpoint": 4900,
+        "steps_start": 8990057,
+        "steps_end": 9994235,
+        "steps": 1004178,
+        "episodes": 205943,
+        "steps_taken": 4.8759996698115495,
+        "success_rate": 1.0,
+        "team_return": -0.37519799167730883
+      },
+      "at_20m": {
+        "requested_budget": 20000000,
+        "epochs": [
+          939,
+          988
+        ],
+        "updates_at_endpoint": 9880,
+        "steps_start": 18992580,
+        "steps_end": 19996816,
+        "steps": 1004236,
+        "episodes": 209610,
+        "steps_taken": 4.790973713086208,
+        "success_rate": 1.0,
+        "team_return": -0.36193788464290827
+      },
+      "latest": {
+        "requested_budget": null,
+        "epochs": [
+          1951,
+          2000
+        ],
+        "updates_at_endpoint": 20000,
+        "steps_start": 39316586,
+        "steps_end": 40320695,
+        "steps": 1004109,
+        "episodes": 211943,
+        "steps_taken": 4.737637006176189,
+        "success_rate": 0.9999528175028192,
+        "team_return": -0.35589309389788765
+      },
+      "latest_common_task_budget": {
+        "requested_budget": 37000000,
+        "epochs": [
+          1785,
+          1834
+        ],
+        "updates_at_endpoint": 18340,
+        "steps_start": 35982510,
+        "steps_end": 36986733,
+        "steps": 1004223,
+        "episodes": 211120,
+        "steps_taken": 4.756645509662751,
+        "success_rate": 0.9999147404319818,
+        "team_return": -0.3570303618794998
+      }
+    },
+    {
+      "task": "pp",
+      "model": "SoftRole banked",
+      "seed": 2,
+      "source": "logs_sr/softrole-898824_5.out",
+      "config_source": "stokes_runs/runs/softrole_primary/pp_banked/seed2/config.json",
+      "epochs": 1837,
+      "total_steps": 37044046,
+      "total_episodes": 7137695,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          441,
+          490
+        ],
+        "updates_at_endpoint": 4900,
+        "steps_start": 8985601,
+        "steps_end": 9989898,
+        "steps": 1004297,
+        "episodes": 206649,
+        "steps_taken": 4.859917057425877,
+        "success_rate": 1.0,
+        "team_return": -0.3727339595158941
+      },
+      "at_20m": {
+        "requested_budget": 20000000,
+        "epochs": [
+          939,
+          988
+        ],
+        "updates_at_endpoint": 9880,
+        "steps_start": 18988861,
+        "steps_end": 19993198,
+        "steps": 1004337,
+        "episodes": 210028,
+        "steps_taken": 4.781919553583331,
+        "success_rate": 0.9999952387300741,
+        "team_return": -0.36113684842021065
+      },
+      "latest": {
+        "requested_budget": null,
+        "epochs": [
+          1788,
+          1837
+        ],
+        "updates_at_endpoint": 18370,
+        "steps_start": 36039945,
+        "steps_end": 37044046,
+        "steps": 1004101,
+        "episodes": 211511,
+        "steps_taken": 4.747275555408466,
+        "success_rate": 1.0,
+        "team_return": -0.3564103049013999
+      },
+      "latest_common_task_budget": {
+        "requested_budget": 37000000,
+        "epochs": [
+          1785,
+          1834
+        ],
+        "updates_at_endpoint": 18340,
+        "steps_start": 35979712,
+        "steps_end": 36983774,
+        "steps": 1004062,
+        "episodes": 211533,
+        "steps_taken": 4.746597457607088,
+        "success_rate": 1.0,
+        "team_return": -0.3563214722998303
+      }
+    },
+    {
+      "task": "pcp",
+      "model": "SoftRole shared",
+      "seed": 0,
+      "source": "logs_sr/softrole-898818_6.out",
+      "config_source": "stokes_runs/runs/softrole_primary/pcp_shared/seed0/config.json",
+      "epochs": 998,
+      "total_steps": 20448904,
+      "total_episodes": 1711274,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          430,
+          479
+        ],
+        "updates_at_endpoint": 4790,
+        "steps_start": 8977239,
+        "steps_end": 9988047,
+        "steps": 1010808,
+        "episodes": 94245,
+        "steps_taken": 10.72532229826516,
+        "success_rate": 0.9999893893575256,
+        "team_return": -0.7595018303358269
+      },
+      "at_20m": {
+        "requested_budget": 20000000,
+        "epochs": [
+          926,
+          975
+        ],
+        "updates_at_endpoint": 9750,
+        "steps_start": 18978850,
+        "steps_end": 19985819,
+        "steps": 1006969,
+        "episodes": 139811,
+        "steps_taken": 7.202358898799093,
+        "success_rate": 0.9998712547653618,
+        "team_return": -0.5640965303159264
+      },
+      "latest": {
+        "requested_budget": null,
+        "epochs": [
+          949,
+          998
+        ],
+        "updates_at_endpoint": 9980,
+        "steps_start": 19441967,
+        "steps_end": 20448904,
+        "steps": 1006937,
+        "episodes": 141391,
+        "steps_taken": 7.121648478333133,
+        "success_rate": 0.9998726934529072,
+        "team_return": -0.5595653188675376
+      },
+      "latest_common_task_budget": {
+        "requested_budget": 20000000,
+        "epochs": [
+          926,
+          975
+        ],
+        "updates_at_endpoint": 9750,
+        "steps_start": 18978850,
+        "steps_end": 19985819,
+        "steps": 1006969,
+        "episodes": 139811,
+        "steps_taken": 7.202358898799093,
+        "success_rate": 0.9998712547653618,
+        "team_return": -0.5640965303159264
+      }
+    },
+    {
+      "task": "pcp",
+      "model": "SoftRole shared",
+      "seed": 1,
+      "source": "logs_sr/softrole-898818_7.out",
+      "config_source": "stokes_runs/runs/softrole_primary/pcp_shared/seed1/config.json",
+      "epochs": 1998,
+      "total_steps": 40517118,
+      "total_episodes": 5267066,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          432,
+          481
+        ],
+        "updates_at_endpoint": 4810,
+        "steps_start": 8984992,
+        "steps_end": 9994941,
+        "steps": 1009949,
+        "episodes": 100110,
+        "steps_taken": 10.088392767955249,
+        "success_rate": 1.0,
+        "team_return": -0.7218404754769753
+      },
+      "at_20m": {
+        "requested_budget": 20000000,
+        "epochs": [
+          928,
+          977
+        ],
+        "updates_at_endpoint": 9770,
+        "steps_start": 18983406,
+        "steps_end": 19989979,
+        "steps": 1006573,
+        "episodes": 146938,
+        "steps_taken": 6.8503246267133076,
+        "success_rate": 1.0,
+        "team_return": -0.5433084021832337
+      },
+      "latest": {
+        "requested_budget": null,
+        "epochs": [
+          1949,
+          1998
+        ],
+        "updates_at_endpoint": 19980,
+        "steps_start": 39512358,
+        "steps_end": 40517118,
+        "steps": 1004760,
+        "episodes": 184937,
+        "steps_taken": 5.432985286881479,
+        "success_rate": 1.0,
+        "team_return": -0.4550914635794892
+      },
+      "latest_common_task_budget": {
+        "requested_budget": 20000000,
+        "epochs": [
+          928,
+          977
+        ],
+        "updates_at_endpoint": 9770,
+        "steps_start": 18983406,
+        "steps_end": 19989979,
+        "steps": 1006573,
+        "episodes": 146938,
+        "steps_taken": 6.8503246267133076,
+        "success_rate": 1.0,
+        "team_return": -0.5433084021832337
+      }
+    },
+    {
+      "task": "pcp",
+      "model": "SoftRole shared",
+      "seed": 2,
+      "source": "logs_sr/softrole-898818_8.out",
+      "config_source": "stokes_runs/runs/softrole_primary/pcp_shared/seed2/config.json",
+      "epochs": 1980,
+      "total_steps": 40184051,
+      "total_episodes": 5117526,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          430,
+          479
+        ],
+        "updates_at_endpoint": 4790,
+        "steps_start": 8969358,
+        "steps_end": 9980618,
+        "steps": 1011260,
+        "episodes": 89791,
+        "steps_taken": 11.262375961956097,
+        "success_rate": 1.0,
+        "team_return": -0.7867843102315376
+      },
+      "at_20m": {
+        "requested_budget": 20000000,
+        "epochs": [
+          927,
+          976
+        ],
+        "updates_at_endpoint": 9760,
+        "steps_start": 18991820,
+        "steps_end": 19998452,
+        "steps": 1006632,
+        "episodes": 144831,
+        "steps_taken": 6.95039045508213,
+        "success_rate": 0.999986190801693,
+        "team_return": -0.5489618935172719
+      },
+      "latest": {
+        "requested_budget": null,
+        "epochs": [
+          1931,
+          1980
+        ],
+        "updates_at_endpoint": 19800,
+        "steps_start": 39179192,
+        "steps_end": 40184051,
+        "steps": 1004859,
+        "episodes": 185403,
+        "steps_taken": 5.419863756249899,
+        "success_rate": 1.0,
+        "team_return": -0.45213804523119905
+      },
+      "latest_common_task_budget": {
+        "requested_budget": 20000000,
+        "epochs": [
+          927,
+          976
+        ],
+        "updates_at_endpoint": 9760,
+        "steps_start": 18991820,
+        "steps_end": 19998452,
+        "steps": 1006632,
+        "episodes": 144831,
+        "steps_taken": 6.95039045508213,
+        "success_rate": 0.999986190801693,
+        "team_return": -0.5489618935172719
+      }
+    },
+    {
+      "task": "pcp",
+      "model": "SoftRole banked",
+      "seed": 0,
+      "source": "logs_sr/softrole-898818_9.out",
+      "config_source": "stokes_runs/runs/softrole_primary/pcp_banked/seed0/config.json",
+      "epochs": 1352,
+      "total_steps": 27747038,
+      "total_episodes": 2102298,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          425,
+          474
+        ],
+        "updates_at_endpoint": 4740,
+        "steps_start": 8965836,
+        "steps_end": 9994919,
+        "steps": 1029083,
+        "episodes": 49098,
+        "steps_taken": 20.959774328893236,
+        "success_rate": 0.9908142897877714,
+        "team_return": -1.354011365025052
+      },
+      "at_20m": {
+        "requested_budget": 20000000,
+        "epochs": [
+          918,
+          967
+        ],
+        "updates_at_endpoint": 9670,
+        "steps_start": 18977671,
+        "steps_end": 19986630,
+        "steps": 1008959,
+        "episodes": 113817,
+        "steps_taken": 8.864747796902044,
+        "success_rate": 0.9998067072581425,
+        "team_return": -0.6514483776588734
+      },
+      "latest": {
+        "requested_budget": null,
+        "epochs": [
+          1303,
+          1352
+        ],
+        "updates_at_endpoint": 13520,
+        "steps_start": 26739509,
+        "steps_end": 27747038,
+        "steps": 1007529,
+        "episodes": 132277,
+        "steps_taken": 7.6168116906189285,
+        "success_rate": 0.999727843842845,
+        "team_return": -0.5860795905561814
+      },
+      "latest_common_task_budget": {
+        "requested_budget": 20000000,
+        "epochs": [
+          918,
+          967
+        ],
+        "updates_at_endpoint": 9670,
+        "steps_start": 18977671,
+        "steps_end": 19986630,
+        "steps": 1008959,
+        "episodes": 113817,
+        "steps_taken": 8.864747796902044,
+        "success_rate": 0.9998067072581425,
+        "team_return": -0.6514483776588734
+      }
+    },
+    {
+      "task": "pcp",
+      "model": "SoftRole banked",
+      "seed": 1,
+      "source": "logs_sr/softrole-898818_10.out",
+      "config_source": "stokes_runs/runs/softrole_primary/pcp_banked/seed1/config.json",
+      "epochs": 1287,
+      "total_steps": 26395052,
+      "total_episodes": 1991701,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          426,
+          475
+        ],
+        "updates_at_endpoint": 4750,
+        "steps_start": 8966860,
+        "steps_end": 9987241,
+        "steps": 1020381,
+        "episodes": 60517,
+        "steps_taken": 16.86106383330304,
+        "success_rate": 0.9980005618256027,
+        "team_return": -1.11461572781202
+      },
+      "at_20m": {
+        "requested_budget": 20000000,
+        "epochs": [
+          920,
+          969
+        ],
+        "updates_at_endpoint": 9690,
+        "steps_start": 18975613,
+        "steps_end": 19984587,
+        "steps": 1008974,
+        "episodes": 112588,
+        "steps_taken": 8.961647777738303,
+        "success_rate": 0.999884534763918,
+        "team_return": -0.6556560201797705
+      },
+      "latest": {
+        "requested_budget": null,
+        "epochs": [
+          1238,
+          1287
+        ],
+        "updates_at_endpoint": 12870,
+        "steps_start": 25388039,
+        "steps_end": 26395052,
+        "steps": 1007013,
+        "episodes": 133203,
+        "steps_taken": 7.559987387671449,
+        "success_rate": 0.9999549559694602,
+        "team_return": -0.5795113473420268
+      },
+      "latest_common_task_budget": {
+        "requested_budget": 20000000,
+        "epochs": [
+          920,
+          969
+        ],
+        "updates_at_endpoint": 9690,
+        "steps_start": 18975613,
+        "steps_end": 19984587,
+        "steps": 1008974,
+        "episodes": 112588,
+        "steps_taken": 8.961647777738303,
+        "success_rate": 0.999884534763918,
+        "team_return": -0.6556560201797705
+      }
+    },
+    {
+      "task": "pcp",
+      "model": "SoftRole banked",
+      "seed": 2,
+      "source": "logs_sr/softrole-898818_11.out",
+      "config_source": "stokes_runs/runs/softrole_primary/pcp_banked/seed2/config.json",
+      "epochs": 1455,
+      "total_steps": 29729274,
+      "total_episodes": 2589105,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          428,
+          477
+        ],
+        "updates_at_endpoint": 4770,
+        "steps_start": 8974435,
+        "steps_end": 9991771,
+        "steps": 1017336,
+        "episodes": 67995,
+        "steps_taken": 14.961923670858152,
+        "success_rate": 0.999602911978822,
+        "team_return": -1.0173961320685345
+      },
+      "at_20m": {
+        "requested_budget": 20000000,
+        "epochs": [
+          923,
+          972
+        ],
+        "updates_at_endpoint": 9720,
+        "steps_start": 18989095,
+        "steps_end": 19997446,
+        "steps": 1008351,
+        "episodes": 119607,
+        "steps_taken": 8.430535002131982,
+        "success_rate": 0.9999916392853261,
+        "team_return": -0.6286170541857918
+      },
+      "latest": {
+        "requested_budget": null,
+        "epochs": [
+          1406,
+          1455
+        ],
+        "updates_at_endpoint": 14550,
+        "steps_start": 28722269,
+        "steps_end": 29729274,
+        "steps": 1007005,
+        "episodes": 140130,
+        "steps_taken": 7.186219938628416,
+        "success_rate": 0.9998001855419967,
+        "team_return": -0.5633344037679298
+      },
+      "latest_common_task_budget": {
+        "requested_budget": 20000000,
+        "epochs": [
+          923,
+          972
+        ],
+        "updates_at_endpoint": 9720,
+        "steps_start": 18989095,
+        "steps_end": 19997446,
+        "steps": 1008351,
+        "episodes": 119607,
+        "steps_taken": 8.430535002131982,
+        "success_rate": 0.9999916392853261,
+        "team_return": -0.6286170541857918
+      }
+    }
+  ],
+  "softrole_groups": [
+    {
+      "task": "pp",
+      "model": "SoftRole shared",
+      "latest_common_task_budget": 37000000,
+      "windows": {
+        "at_10m": {
+          "n_seeds": 3,
+          "steps_end_min": 9980554,
+          "steps_end_max": 9994302,
+          "steps_taken": {
+            "mean": 4.840329610170806,
+            "seed_min": 4.83478080859627,
+            "seed_max": 4.850934857054536
+          },
+          "success_rate": {
+            "mean": 0.9999326108173124,
+            "seed_min": 0.9998074608904933,
+            "seed_max": 1.0
+          },
+          "team_return": {
+            "mean": -0.36918094427639064,
+            "seed_min": -0.3714249143872834,
+            "seed_max": -0.3674442839951865
+          }
+        },
+        "at_20m": {
+          "n_seeds": 3,
+          "steps_end_min": 19982852,
+          "steps_end_max": 19996105,
+          "steps_taken": {
+            "mean": 4.783977390414535,
+            "seed_min": 4.763351972264512,
+            "seed_max": 4.8220621108478126
+          },
+          "success_rate": {
+            "mean": 0.9997858782239786,
+            "seed_min": 0.999395584891541,
+            "seed_max": 0.9999905061638731
+          },
+          "team_return": {
+            "mean": -0.35958181256134525,
+            "seed_min": -0.36183238513714466,
+            "seed_max": -0.3583097382486993
+          }
+        },
+        "latest": {
+          "n_seeds": 3,
+          "steps_end_min": 40287117,
+          "steps_end_max": 40299946,
+          "steps_taken": {
+            "mean": 4.7383975106778635,
+            "seed_min": 4.729901432130394,
+            "seed_max": 4.749404041168457
+          },
+          "success_rate": {
+            "mean": 0.999993720791871,
+            "seed_min": 0.9999811623756129,
+            "seed_max": 1.0
+          },
+          "team_return": {
+            "mean": -0.3556816582179682,
+            "seed_min": -0.35647443052822764,
+            "seed_max": -0.35519989074177855
+          }
+        },
+        "latest_common_task_budget": {
+          "n_seeds": 3,
+          "steps_end_min": 36984974,
+          "steps_end_max": 36993401,
+          "steps_taken": {
+            "mean": 4.740908846967461,
+            "seed_min": 4.7330040578180155,
+            "seed_max": 4.747893636939604
+          },
+          "success_rate": {
+            "mean": 0.9999905549442506,
+            "seed_min": 0.9999716648327517,
+            "seed_max": 1.0
+          },
+          "team_return": {
+            "mean": -0.35601677309732155,
+            "seed_min": -0.35653681761874595,
+            "seed_max": -0.3554502481348647
+          }
+        },
+        "change_10m_to_20m": {
+          "episode_length_difference": -0.05635221975627136,
+          "episode_length_percent_change": -1.1642227760246022,
+          "all_three_seeds_lower_length": true,
+          "seed_differences": [
+            {
+              "seed": 0,
+              "episode_length_difference": -0.013211054013799739
+            },
+            {
+              "seed": 1,
+              "episode_length_difference": -0.08441676892325578
+            },
+            {
+              "seed": 2,
+              "episode_length_difference": -0.07142883633175856
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "pp",
+      "model": "SoftRole banked",
+      "latest_common_task_budget": 37000000,
+      "windows": {
+        "at_10m": {
+          "n_seeds": 3,
+          "steps_end_min": 9984678,
+          "steps_end_max": 9994235,
+          "steps_taken": {
+            "mean": 4.874345133115917,
+            "seed_min": 4.859917057425877,
+            "seed_max": 4.887118672110327
+          },
+          "success_rate": {
+            "mean": 1.0,
+            "seed_min": 1.0,
+            "seed_max": 1.0
+          },
+          "team_return": {
+            "mean": -0.3744218026012325,
+            "seed_min": -0.3753334566104945,
+            "seed_max": -0.3727339595158941
+          }
+        },
+        "at_20m": {
+          "n_seeds": 3,
+          "steps_end_min": 19987873,
+          "steps_end_max": 19996816,
+          "steps_taken": {
+            "mean": 4.797070096118145,
+            "seed_min": 4.781919553583331,
+            "seed_max": 4.818317021684897
+          },
+          "success_rate": {
+            "mean": 0.9999968137288056,
+            "seed_min": 0.9999952024563423,
+            "seed_max": 1.0
+          },
+          "team_return": {
+            "mean": -0.36337714667638416,
+            "seed_min": -0.36705670696603343,
+            "seed_max": -0.36113684842021065
+          }
+        },
+        "latest": {
+          "n_seeds": 3,
+          "steps_end_min": 37044046,
+          "steps_end_max": 40320695,
+          "steps_taken": {
+            "mean": 4.744257303255802,
+            "seed_min": 4.737637006176189,
+            "seed_max": 4.747859348182751
+          },
+          "success_rate": {
+            "mean": 0.9999795443909072,
+            "seed_min": 0.9999528175028192,
+            "seed_max": 1.0
+          },
+          "team_return": {
+            "mean": -0.35634304510687603,
+            "seed_min": -0.3567257365213404,
+            "seed_max": -0.35589309389788765
+          }
+        },
+        "latest_common_task_budget": {
+          "n_seeds": 3,
+          "steps_end_min": 36983774,
+          "steps_end_max": 36999095,
+          "steps_taken": {
+            "mean": 4.753382535034015,
+            "seed_min": 4.746597457607088,
+            "seed_max": 4.756904637832204
+          },
+          "success_rate": {
+            "mean": 0.9999510517753677,
+            "seed_min": 0.9999147404319818,
+            "seed_max": 1.0
+          },
+          "team_return": {
+            "mean": -0.3569665208787955,
+            "seed_min": -0.35754772845705624,
+            "seed_max": -0.3563214722998303
+          }
+        },
+        "change_10m_to_20m": {
+          "episode_length_difference": -0.07727503699777216,
+          "episode_length_percent_change": -1.585341925682932,
+          "all_three_seeds_lower_length": true,
+          "seed_differences": [
+            {
+              "seed": 0,
+              "episode_length_difference": -0.06880165042542963
+            },
+            {
+              "seed": 1,
+              "episode_length_difference": -0.08502595672534152
+            },
+            {
+              "seed": 2,
+              "episode_length_difference": -0.07799750384254533
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "pcp",
+      "model": "SoftRole shared",
+      "latest_common_task_budget": 20000000,
+      "windows": {
+        "at_10m": {
+          "n_seeds": 3,
+          "steps_end_min": 9980618,
+          "steps_end_max": 9994941,
+          "steps_taken": {
+            "mean": 10.692030342725502,
+            "seed_min": 10.088392767955249,
+            "seed_max": 11.262375961956097
+          },
+          "success_rate": {
+            "mean": 0.9999964631191752,
+            "seed_min": 0.9999893893575256,
+            "seed_max": 1.0
+          },
+          "team_return": {
+            "mean": -0.7560422053481132,
+            "seed_min": -0.7867843102315376,
+            "seed_max": -0.7218404754769753
+          }
+        },
+        "at_20m": {
+          "n_seeds": 3,
+          "steps_end_min": 19985819,
+          "steps_end_max": 19998452,
+          "steps_taken": {
+            "mean": 7.001024660198176,
+            "seed_min": 6.8503246267133076,
+            "seed_max": 7.202358898799093
+          },
+          "success_rate": {
+            "mean": 0.999952481855685,
+            "seed_min": 0.9998712547653618,
+            "seed_max": 1.0
+          },
+          "team_return": {
+            "mean": -0.5521222753388106,
+            "seed_min": -0.5640965303159264,
+            "seed_max": -0.5433084021832337
+          }
+        },
+        "latest": {
+          "n_seeds": 3,
+          "steps_end_min": 20448904,
+          "steps_end_max": 40517118,
+          "steps_taken": {
+            "mean": 5.991499173821503,
+            "seed_min": 5.419863756249899,
+            "seed_max": 7.121648478333133
+          },
+          "success_rate": {
+            "mean": 0.9999575644843025,
+            "seed_min": 0.9998726934529072,
+            "seed_max": 1.0
+          },
+          "team_return": {
+            "mean": -0.4889316092260753,
+            "seed_min": -0.5595653188675376,
+            "seed_max": -0.45213804523119905
+          }
+        },
+        "latest_common_task_budget": {
+          "n_seeds": 3,
+          "steps_end_min": 19985819,
+          "steps_end_max": 19998452,
+          "steps_taken": {
+            "mean": 7.001024660198176,
+            "seed_min": 6.8503246267133076,
+            "seed_max": 7.202358898799093
+          },
+          "success_rate": {
+            "mean": 0.999952481855685,
+            "seed_min": 0.9998712547653618,
+            "seed_max": 1.0
+          },
+          "team_return": {
+            "mean": -0.5521222753388106,
+            "seed_min": -0.5640965303159264,
+            "seed_max": -0.5433084021832337
+          }
+        },
+        "change_10m_to_20m": {
+          "episode_length_difference": -3.691005682527326,
+          "episode_length_percent_change": -34.52109247930223,
+          "all_three_seeds_lower_length": true,
+          "seed_differences": [
+            {
+              "seed": 0,
+              "episode_length_difference": -3.522963399466067
+            },
+            {
+              "seed": 1,
+              "episode_length_difference": -3.238068141241941
+            },
+            {
+              "seed": 2,
+              "episode_length_difference": -4.311985506873968
+            }
+          ]
+        }
+      }
+    },
+    {
+      "task": "pcp",
+      "model": "SoftRole banked",
+      "latest_common_task_budget": 20000000,
+      "windows": {
+        "at_10m": {
+          "n_seeds": 3,
+          "steps_end_min": 9987241,
+          "steps_end_max": 9994919,
+          "steps_taken": {
+            "mean": 17.594253944351475,
+            "seed_min": 14.961923670858152,
+            "seed_max": 20.959774328893236
+          },
+          "success_rate": {
+            "mean": 0.996139254530732,
+            "seed_min": 0.9908142897877714,
+            "seed_max": 0.999602911978822
+          },
+          "team_return": {
+            "mean": -1.1620077416352022,
+            "seed_min": -1.354011365025052,
+            "seed_max": -1.0173961320685345
+          }
+        },
+        "at_20m": {
+          "n_seeds": 3,
+          "steps_end_min": 19984587,
+          "steps_end_max": 19997446,
+          "steps_taken": {
+            "mean": 8.752310192257443,
+            "seed_min": 8.430535002131982,
+            "seed_max": 8.961647777738303
+          },
+          "success_rate": {
+            "mean": 0.9998942937691289,
+            "seed_min": 0.9998067072581425,
+            "seed_max": 0.9999916392853261
+          },
+          "team_return": {
+            "mean": -0.6452404840081453,
+            "seed_min": -0.6556560201797705,
+            "seed_max": -0.6286170541857918
+          }
+        },
+        "latest": {
+          "n_seeds": 3,
+          "steps_end_min": 26395052,
+          "steps_end_max": 29729274,
+          "steps_taken": {
+            "mean": 7.454339672306265,
+            "seed_min": 7.186219938628416,
+            "seed_max": 7.6168116906189285
+          },
+          "success_rate": {
+            "mean": 0.9998276617847672,
+            "seed_min": 0.999727843842845,
+            "seed_max": 0.9999549559694602
+          },
+          "team_return": {
+            "mean": -0.576308447222046,
+            "seed_min": -0.5860795905561814,
+            "seed_max": -0.5633344037679298
+          }
+        },
+        "latest_common_task_budget": {
+          "n_seeds": 3,
+          "steps_end_min": 19984587,
+          "steps_end_max": 19997446,
+          "steps_taken": {
+            "mean": 8.752310192257443,
+            "seed_min": 8.430535002131982,
+            "seed_max": 8.961647777738303
+          },
+          "success_rate": {
+            "mean": 0.9998942937691289,
+            "seed_min": 0.9998067072581425,
+            "seed_max": 0.9999916392853261
+          },
+          "team_return": {
+            "mean": -0.6452404840081453,
+            "seed_min": -0.6556560201797705,
+            "seed_max": -0.6286170541857918
+          }
+        },
+        "change_10m_to_20m": {
+          "episode_length_difference": -8.841943752094032,
+          "episode_length_percent_change": -50.25472395737861,
+          "all_three_seeds_lower_length": true,
+          "seed_differences": [
+            {
+              "seed": 0,
+              "episode_length_difference": -12.095026531991191
+            },
+            {
+              "seed": 1,
+              "episode_length_difference": -7.8994160555647355
+            },
+            {
+              "seed": 2,
+              "episode_length_difference": -6.531388668726169
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "legacy_exact_runs": [
+    {
+      "task": "pp",
+      "model": "HetNet Real",
+      "seed": 0,
+      "source": "stokes_runs/runs/reproduction-fast/pp_real/seed0/metrics.jsonl",
+      "last_exact_steps": 5501250,
+      "at_10m": null,
+      "at_20m": null
+    },
+    {
+      "task": "pp",
+      "model": "HetNet Real",
+      "seed": 1,
+      "source": "stokes_runs/runs/reproduction-fast/pp_real/seed1/metrics.jsonl",
+      "last_exact_steps": 5420391,
+      "at_10m": null,
+      "at_20m": null
+    },
+    {
+      "task": "pp",
+      "model": "HetNet Real",
+      "seed": 2,
+      "source": "stokes_runs/runs/reproduction-fast/pp_real/seed2/metrics.jsonl",
+      "last_exact_steps": 7486490,
+      "at_10m": null,
+      "at_20m": null
+    },
+    {
+      "task": "pcp",
+      "model": "HetNet Real",
+      "seed": 0,
+      "source": "stokes_runs/runs/reproduction-fast/pcp_real/seed0/metrics.jsonl",
+      "last_exact_steps": 16712878,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          427,
+          476
+        ],
+        "updates_at_endpoint": 4760,
+        "steps_start": 8967867,
+        "steps_end": 9999040,
+        "steps": 1031173,
+        "episodes": 43981,
+        "steps_taken": 23.44587435483504,
+        "success_rate": 0.9917464359609831,
+        "team_return": -2.6681476091948797
+      },
+      "at_20m": null
+    },
+    {
+      "task": "pcp",
+      "model": "HetNet Real",
+      "seed": 1,
+      "source": "stokes_runs/runs/reproduction-fast/pcp_real/seed1/metrics.jsonl",
+      "last_exact_steps": 13360997,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          428,
+          477
+        ],
+        "updates_at_endpoint": 4770,
+        "steps_start": 8959330,
+        "steps_end": 9989547,
+        "steps": 1030217,
+        "episodes": 44473,
+        "steps_taken": 23.164998988150113,
+        "success_rate": 0.9925347963933173,
+        "team_return": -2.6544656308321906
+      },
+      "at_20m": null
+    },
+    {
+      "task": "pcp",
+      "model": "HetNet Real",
+      "seed": 2,
+      "source": "stokes_runs/runs/reproduction-fast/pcp_real/seed2/metrics.jsonl",
+      "last_exact_steps": 16626301,
+      "at_10m": {
+        "requested_budget": 10000000,
+        "epochs": [
+          425,
+          474
+        ],
+        "updates_at_endpoint": 4740,
+        "steps_start": 8952639,
+        "steps_end": 9985073,
+        "steps": 1032434,
+        "episodes": 40218,
+        "steps_taken": 25.670943358695112,
+        "success_rate": 0.9903525784474614,
+        "team_return": -2.9075413993734154
+      },
+      "at_20m": null
+    }
+  ],
+  "legacy_pcp_at_10m": {
+    "n_seeds": 3,
+    "steps_end_min": 9985073,
+    "steps_end_max": 9999040,
+    "steps_taken": {
+      "mean": 24.09393890056009,
+      "seed_min": 23.164998988150113,
+      "seed_max": 25.670943358695112
+    },
+    "success_rate": {
+      "mean": 0.9915446036005872,
+      "seed_min": 0.9903525784474614,
+      "seed_max": 0.9925347963933173
+    },
+    "team_return": {
+      "mean": -2.743384879800162,
+      "seed_min": -2.9075413993734154,
+      "seed_max": -2.6544656308321906
+    }
+  },
+  "inputs": {
+    "analysis/results_audit_2026-09-30/training/inventory.json": {
+      "bytes": 82747,
+      "sha256": "2b05a3709ed488127773c6b67a4b275454a08525f4770aa85fce3cf0c7b97dc7"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed0/config.json": {
+      "bytes": 684,
+      "sha256": "1645a6cd28af26cfd85d6d5689d9dc0ccc69c0c775491a9dff6c79cf7b87899f"
+    },
+    "logs_sr/softrole-898824_0.out": {
+      "bytes": 1068211,
+      "sha256": "afabe5cdd4a210cb8a713d75104fc27c16e693aa3753f2ff35021d483d353e7a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed1/config.json": {
+      "bytes": 684,
+      "sha256": "a4085dd4f82ae96cce328f20961d7df7dafb48999fdc1f0473be75b297cdaac4"
+    },
+    "logs_sr/softrole-898824_1.out": {
+      "bytes": 1067923,
+      "sha256": "68ffaee7a7a16ce1ccd3c31ea364a228d8612887e651a66120883a162f5aa699"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed2/config.json": {
+      "bytes": 684,
+      "sha256": "158e04378b2e4a2653dec660b21fa60e4f1037fee6724c821ef9f80e6543979f"
+    },
+    "logs_sr/softrole-898824_2.out": {
+      "bytes": 1067737,
+      "sha256": "e0ce650afe27220c61e1ec184c74a87177e6c897b249b7683ea901af19ff5196"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed0/config.json": {
+      "bytes": 684,
+      "sha256": "b98a28de0220e003bfd3d7257488ccd8bf0704d14d8eccaf991f6e3c278bbe0b"
+    },
+    "logs_sr/softrole-898824_3.out": {
+      "bytes": 1093368,
+      "sha256": "4fac742585a29d169fe444c19f7d11bf48a0b604ee3eba60fef563f361f5db65"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed1/config.json": {
+      "bytes": 684,
+      "sha256": "acac5d207a6439dd0d2a76bd40636ec2196fab00347ed5954da9259f9723a15b"
+    },
+    "logs_sr/softrole-898824_4.out": {
+      "bytes": 1098020,
+      "sha256": "feaf9fe2ad4f7d86df88bed69d3fea21c2fe2c7ae2ec3404a14afb2d84d27c31"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed2/config.json": {
+      "bytes": 684,
+      "sha256": "73600f020dece8475425d0af571b80823dfba0ec6c6256dc5073da6eca3b8530"
+    },
+    "logs_sr/softrole-898824_5.out": {
+      "bytes": 1008742,
+      "sha256": "60cc410b474ba25d164c5cd345f81a5f9a69810bbcd7d9496e318d10a5894f7a"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed0/config.json": {
+      "bytes": 685,
+      "sha256": "16c1b7beca56146d7dce4718c69217dccd558c8bb863c0a281a22a937499e647"
+    },
+    "logs_sr/softrole-898818_6.out": {
+      "bytes": 545865,
+      "sha256": "ef69ef98cf22f0178f9eb5c7b6853dac2639c029878c84cb3b851dcf244bc692"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed1/config.json": {
+      "bytes": 685,
+      "sha256": "11cc50c9dbbc21c1b7ef3111a4297626f0409a57e145173078bc6c9dff67ffbb"
+    },
+    "logs_sr/softrole-898818_7.out": {
+      "bytes": 1095259,
+      "sha256": "fd0ce3961f4986eaadfee932dbd84a84dd2598b7968cbfa697891e4756bcc005"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed2/config.json": {
+      "bytes": 685,
+      "sha256": "8c16687aaaaf17b33852a2d260d83f30ebf7e5d9a4b6f6b3fdb8af774edef54d"
+    },
+    "logs_sr/softrole-898818_8.out": {
+      "bytes": 1086932,
+      "sha256": "563ad610456774389a651114846cb821da14c2efd389d6a3a1bc57b852b94b88"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed0/config.json": {
+      "bytes": 685,
+      "sha256": "e2de7e2c7961a610289352ec3ac9139681161be87155226869b1253da4157da1"
+    },
+    "logs_sr/softrole-898818_9.out": {
+      "bytes": 764114,
+      "sha256": "29efe10f70f5426868b542f0f12d45a1d45058262c1c7b2d0742fd76f9aaa388"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed1/config.json": {
+      "bytes": 685,
+      "sha256": "02614ef5558a0ed8accb6d7fb93cbfde5e6ec40f417505c0a35ff7037a8f13a6"
+    },
+    "logs_sr/softrole-898818_10.out": {
+      "bytes": 728075,
+      "sha256": "b8068b94b7d1e0f9e2ecbae1fef1f1e9cb6b99b54b6109d4b4b316e7d954d51c"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed2/config.json": {
+      "bytes": 685,
+      "sha256": "a6b970b01a79fed639d19bdda91e39d675f4381a01cb341c5633007635f7e024"
+    },
+    "logs_sr/softrole-898818_11.out": {
+      "bytes": 820988,
+      "sha256": "24af09e7e15f51509b377d489f26f7805945712325dc36eb3a599d316802580f"
+    },
+    "stokes_runs/runs/reproduction-fast/pp_real/seed0/metrics.jsonl": {
+      "bytes": 95294,
+      "sha256": "fe2f4b81864c48afeb398bbcb12f4ad9e8d1bcab7f8a1fa6596c611a8e8ddb2f"
+    },
+    "stokes_runs/runs/reproduction-fast/pp_real/seed1/metrics.jsonl": {
+      "bytes": 94127,
+      "sha256": "4d645003aec484d4ac2ef958a8bf3f6dbcddd5becb644aaebeed1c4988794c15"
+    },
+    "stokes_runs/runs/reproduction-fast/pp_real/seed2/metrics.jsonl": {
+      "bytes": 131066,
+      "sha256": "f79df5c4a54b956adaadfc48f82223e35c8d6c8c930d45dec87020ad2df1e1ca"
+    },
+    "stokes_runs/runs/reproduction-fast/pcp_real/seed0/metrics.jsonl": {
+      "bytes": 294849,
+      "sha256": "0e6da98bb45de337660ab757c49e4a38989bb2addd2a09730650ebaa73bef0da"
+    },
+    "stokes_runs/runs/reproduction-fast/pcp_real/seed1/metrics.jsonl": {
+      "bytes": 234907,
+      "sha256": "208edfb648b93394b764f1659c80c9a2a1f2ff38ca367d44d1fe4d3acc6b159e"
+    },
+    "stokes_runs/runs/reproduction-fast/pcp_real/seed2/metrics.jsonl": {
+      "bytes": 292455,
+      "sha256": "1e5d6b26c789474c000a524795cf1817f8404c27e8917cd5ea737a4db02a2e93"
+    }
+  }
+}

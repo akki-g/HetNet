@@ -1,0 +1,380 @@
+HISTORICAL HETNET REPRODUCIBILITY AUDIT
+30 September 2026 — public source history, paper versions and bounded probes
+
+The closest public preconference snapshot is d57da0717d5564027df7e8ba75614feca8006960,
+dated 15 February 2022. It is a useful historical reference, NOT an identified
+training commit. No reachable public snapshot can be certified as the source
+that generated the AAMAS 2022 results. The code and reported protocol disagree,
+and the early public bundle cannot execute the stated PP/FC setups unchanged.
+
+The most important new finding is positive evidence about the reproduction gap:
+the sensory-indexing defect in our current legacy HetNet originates in the
+10 October 2022 update, AFTER the conference. February source extracts the
+sensory cells correctly. It is therefore wrong to assume the paper's models
+trained with the current defect. PCP observation interference and FC defects
+do occur in the earliest public source, but that is not proof those exact files
+were used in the authors' unpublished training workspace.
+
+1. Search scope and the dates that matter
+
+Fetched a fresh full mirror of CORE-Robotics-Lab/HetNet without modifying this
+workspace's refs. Inventoried all 26 commits reachable from five advertised
+branches, including 18 ancestors of current legacy main. There are no public
+tags or releases at the recorded fetch. Inspected GitHub repository, branches,
+commits, both issues and their comments, releases/tags and six fork metadata
+records. Detailed bug probes cover the legacy AAMAS implementation; the later
+PPO/robot implementations were inventoried but not audited as the same learner.
+Deleted/private/unadvertised commits and unprovided experiment files are outside
+this evidence. Fork metadata was inspected; fork histories were not all cloned.
+
+Date (commit's recorded local date) / source / significance:
+
+2021-08-21  arXiv v1: an earlier paper and results already exist, before this
+            repository's public history starts.
+2021-10-28  arXiv v2: still reports three GAT layers and Adam at 1e-3. Its PP/PCP
+            table is 8.10/10.01 steps, not the final AAMAS 8.30/9.98; its table
+            caption and nearby text also disagree about trials/uncertainty.
+            Do not mix this protocol with the final proceedings paper.
+2022-01-21  a869ade: repository initialized; 8b28c6f uploads the AAMAS supplement.
+            The supplement's bytes match today's supplied supplement, including
+            the three-layer/Adam description. There is no executable model yet.
+2022-02-10  3ca462b: first runtime source. Sensory extraction is correct. Some
+            imported dependencies (including the wildfire module) are absent.
+2022-02-14  59d5983: adds support files and renames the environment directory;
+            the bundled FC initializer nevertheless fails on ordinary reset.
+2022-02-15  d57da07: saving changes; last public commit before AAMAS May 9–13.
+            Actor/learner/environment algorithms are the February family.
+2022-06-17  394b57e: first sample training commands, initially one collector.
+            Later that day 4179f48 amends FC's recipe to four collectors,
+            1400 epochs and horizon 300. These are postconference recipes.
+2022-10-10  6b09d36: model/Real-graph/policy refactor. Introduces the sensory
+            stride regression and adds several zero-A handling branches.
+2022-10-11  f54ca5a: says PP/PC were tested; changes PP to predator_capture(3P0A)
+            and PP/PCP examples to four collectors. Keeps the stride defect.
+2023–2024   Separate PPO and robot-demo development; does not recover a dated
+            AAMAS checkpoint/run manifest. A robot training archive is later.
+2026-05-26  bff9f7f: current legacy main update, including an FC equal-hotspot
+            reset fix and coordinate clipping; retains other identified bugs.
+2026-06-14  PPO README adds an external artifact link; it returned HTTP 404
+            during this audit. Its contents cannot be assessed, and its date
+            and branch do not establish AAMAS provenance.
+
+The 2024 author reply on issue 1 says deprecated baseline variables were removed
+during cleanup and points to f54ca5a. That supports a release-cleanup history,
+not a claim that f54ca5a produced the paper. No 2022 model weights, training
+ledgers, exact evaluation panel or source/run mapping were located. Internal
+source comments with 2021 dates are not evidence of Git availability or run dates.
+
+Inference: if a public source family must be chosen for historical reconstruction,
+use February 10–15 as the preconference reference and d57da07 as its latest
+snapshot. An exact training SHA remains unknown; presenting d57da07 as proven
+would overstate the evidence. Some earlier experiments even predate the first
+public code, so publication dates alone cannot identify their source.
+
+2. Bugs at the historical stage
+
+Issue                         February public source       October/current upstream
+Sensory extraction stride     Correct                      Broken from 6b09d36
+PCP overlapping observations  Broken                       Same broken source
+FC overlapping observations   Broken                       Still broken
+FC equal-hotspot reset        Fails once module supplied   Fixed only May 2026
+FC zero rows / phantom fire   Present downstream           Still present
+PP zero-A model path          Real/Binary fail probe       Real passes; Binary fails
+CLI seeding before init       No: seed comes afterward     Same ordering
+Cached gradient pointers      Present; version-dependent   Same legacy mechanism
+
+Sensory extraction: a 5x5 position encoding contributes 25 entries per viewed
+cell and four sensory entries bring the actual stride to 29. The February
+extractor walks 29. October walks 25. Exact-method probes preserve target
+signals from 25/25 PP/PCP view cells in February versus only 4/25 in October;
+FC preserves 9/9 versus 2/9. The separate position branch does not recover the
+missing target signal. This is a strong candidate explanation for current
+reproduction difficulties; its quantitative effect needs controlled training.
+
+PCP/FC aliasing: P observations are views into the grid. Blinding an overlapping
+A observation modifies those same arrays. A direct February PCP probe changes
+a visible target entry from 1 to -1; FC changes a visible fire entry from 1 to 0.
+The old FC file even detects the P-view change and prints "bad", without fixing
+it. PP with no A agents avoids this particular interference. Current SoftRole's
+independent observation copies remove it, while the legacy default preserves it.
+
+FC initialization: the wrapper passes a one-cell hotspot [x,x,y,y], while the
+old wildfire initializer calls randint(x,x). That is an empty sampling interval,
+and an exact-source reset probe raises ValueError for the historical bundle.
+This is not merely an unavailable modern NumPy API. The initial February 10
+tree lacks the wildfire module entirely; February 14 supplies this failing one.
+An undisclosed fix, different dependency/source, or incomplete public packaging
+is therefore required to explain an executing historical FC experiment.
+
+FC propagation: the wildfire routine preallocates zero output rows and skips
+fronts on x=0 or y=0, but returns the unused rows. The wrapper treats them as
+fires at (0,0). Eight of 25 initial cells create a NEW phantom origin; an initial
+(0,0) instead becomes a zero-intensity front at its existing location. Both old
+and current source pairs can pay [-0.1,-0.1,+10] for extinguishing the phantom
+while the true (0,2) fire remains. Because historical reset fails, these checks
+explicitly initialize physical state and execute unchanged downstream methods;
+they are not claimed to be complete historical episodes.
+
+PP support: under the current pinned runtime, the February model's 3P0A path
+fails by calling the A-agent LSTM with incompatible zero-agent hidden state.
+October Real PP passes, while Binary still accesses absent A-agent features.
+These are shape/control-flow checks using synthetic observations, not proof
+about an undocumented alternative PP implementation used for the study.
+
+Seeding and gradient compatibility: main constructs the model before setting
+torch.manual_seed(args.seed), so that flag does not determine initial weights.
+Worker seed ranges overlap for adjacent experiment seeds. Multiprocessing caches
+gradient buffers and relies on zero_grad preserving storage. Modern Torch
+defaults can invalidate this assumption; the absent historical dependency lock
+prevents attributing a modern-runtime failure to the original 2022 training.
+Our local reproduction already seeds before construction and explicitly preserves
+gradient storage. Those two compatibility corrections must not be confused with
+the unchanged upstream initialization/storage behavior described here.
+
+3. Architecture: reported design and executable public design
+
+Reported in the January supplement: preprocessing followed by THREE HetGAT
+layers; the first two have four 16-wide heads concatenated to 64 features; the
+last has four action-width heads averaged. Per-class critics and Adam at 1e-3.
+The earlier arXiv paper already makes the three-layer/Adam claim.
+
+The active February and October main.py -> hetgat.policy.A2CPolicy ->
+UAVNetA2CEasy route instead instantiates TWO communication layers:
+
+  P: position encoder/LSTM(25 hidden) + sensory encoder/LSTM(4 hidden) -> 29
+  A: position encoder/LSTM(25 hidden)                                  -> 25
+       -> typed HetGAT, four heads x16, concatenate                     -> 64
+       -> typed HetGAT, four action-width heads, average                -> 5P/6A
+
+Position preprocessing is Linear(25*S,25*S), ReLU, then LSTMCell(25*S,25).
+Sensory preprocessing is Linear(4*S,4*S), ReLU, then LSTMCell(4*S,4), where S
+is the number of viewed cells. Radius 2: S=25, raw observation 725, branch
+inputs 625 and 100. Radius 1: S=9, raw observation 261, branch inputs 225 and36.
+The README --hid_size128 flag does not set these hardcoded HetNet dimensions.
+The actor has local recurrent memory but no previous-action or communicated-
+feature input to that memory, unlike SoftRole.
+
+Real communication uses distinct P->P, P->A, A->P, A->A transforms, original
+additive GAT attention with LeakyReLU(.2), per-relation receiver softmax, and
+an own-feature contribution. It is not GATv2 and has no null-message candidate.
+Default communication ranges are unlimited, giving directed connections among
+all distinct actors. Binary communication uses a class encoder (default width16),
+shared two-class binarization and hard Gumbel-softmax at temperature1, followed
+by receiver-class decoders. This differs from SoftRole's logistic Bernoulli bits.
+
+Two critic nodes start from [num_P,num_A,grid_dim,500], receive their class's
+agent features, and have self edges. Final eight-wide features feed separate
+Linear(8,1) critics after ReLU. Critic nodes do not send actor messages. Values
+are shared within a class, but policy advantages use each agent's own rewards.
+Typed actor branches/relations explicitly encode P/A class. SoftRole's label-
+independent merged counts, capabilities, shared recurrence and invariant team
+critic are substantial design changes, not just alternative GAT weights.
+
+4. Training and the real meaning of epochs/steps
+
+There is no public preconference training command. Thus the exact study's
+effective hyperparameters cannot all be recovered. Distinguish these records:
+
+Setting                   Paper/supplement      February executable path
+Communication layers      3                     2
+Heads                     4                     4
+Hidden head width         16                    16
+Stepping optimizer        Adam                  RMSprop in Trainer
+Learning rate             1e-3                  CLI default1e-3, can override
+Critic                    Per class             Per class enabled by main
+Training seeds            0,1,2                 Seed -1 default; set after init
+Collector count           Not recovered         16 parser default; can override
+Detach gap                Not recovered         10000 default; can override
+Episode horizons          PP/PCP80,FC300         20 generic default; needs flags
+
+The policy owns an Adam object, but its .step() is commented out. The trainer
+actually steps RMSprop, alpha .97, epsilon1e-6. A MultiStepLR object exists,
+but the training path never calls its adjustment routine. Object names alone
+would have led to the wrong optimizer/schedule conclusion.
+
+Other effective defaults in the active historical learner:
+  gamma1; GAE lambda .95; zero terminal bootstrap even at horizon truncation.
+  Individual-agent rewards; class-value baselines; normalized advantages with
+  zero-padded horizon entries included in the normalization statistics.
+  Actor loss coefficient50; critic coefficient1; no active entropy term here.
+  Each collector averages its losses by its own number of episodes and clips
+  the gradient norm at .75. Collected gradients are summed, divided again by
+  global collected ENVIRONMENT STEPS, then the trainer makes one RMSprop update.
+  Whole episodes accumulate until a collector has at least500 steps in the
+  later recipes; completion causes overshoot. Ten updates per epoch by default.
+
+These are not SoftRole's common team GAE, unnormalized episode-gradient sums,
+single global episode average and single global clip. Faster SoftRole learning
+cannot be causally attributed to gates without controlling these differences.
+
+Final October README recipes (postconference, not certified paper settings):
+
+Setting                        PP                 PCP                FC
+Environment                    predator_capture   predator_capture   fire_commander
+Team                           3P0A               2P1A               2P1A
+Grid                           5x5                5x5                5x5
+P sensing radius               2                  2                  1
+Episode horizon                80                 80                 300
+Epoch target                   2000               2000               1400
+Updates per epoch              10                 10                 10
+Collectors                     4                  4                  4
+Step floor per collector       500                500                500
+Learning rate                  1e-4               1e-4               1e-4
+Detach gap                     5                  5                  5
+Example seed                   5                  5                  random default
+Minimum training env steps     40,000,000         40,000,000         28,000,000
+Maximum from batch overshoot   46,320,000         46,320,000         44,744,000
+
+These commands default to Real messages; they do not add --use_binary.
+There is NO global environment-step cap. --max_steps means per-episode horizon.
+For N collectors, E epochs and10 updates/epoch, the sample floor is N*E*10*500.
+Whole-episode batches are at most500+horizon-1 per collector. These bounds
+assume normal completion of every scheduled update without restarts.
+
+Crucially, June PP/PCP examples used ONE collector, giving a10M-step floor at
+2000 epochs; October used FOUR, giving40M. June PP additionally used the
+separate predator_prey wrapper. An epoch on our current recipe therefore cannot
+be assigned a sample count in Figure3 without the missing original commands.
+The current reproduction's printed cumulative counters have a separate counting
+bug; this does not invalidate the separately averaged episode-length metric.
+
+5. Environments and evaluation
+
+PP: 5x5, three sensing predators, one static prey, cardinal moves plus stay,
+80-step horizon. An agent receives -.05 until reaching the target, then0;
+all must finish. Initial locations are distinct, and reached predators cannot
+leave. The original PP wrapper has three populated class channels in a four-slot
+representation; PCP uses the otherwise-unused slot for A, so zero-A observations
+retain the same29-entry cell width. There is a separate June recipe error: the
+old PP wrapper takes its physical predator count from --nagents (default1),
+but the sample command gives --nfriendly_P3/--nfriendly_A0 without --nagents3.
+PCP instead derives physical team size from the nfriendly fields. Thus the
+June example is not, unchanged, a verified three-predator training recipe.
+
+PCP: 5x5, two sensing predators plus one environmentally blind capture agent,
+one static prey, horizon80. P agents move/stay and finish by reaching. A has an
+additional capture action and finishes by using it on the target. Each unfinished
+agent pays -.05. All must finish; reached agents cannot leave. A retains position
+encoding. Historical radius defaults to2; A sensing defaults to-1. The sample
+recipes do not enable the optional alternative reward schemes.
+
+FC: 5x5, two sensing P and one blind firefighting A, one initial spreading fire,
+horizon300, with vision1 in the amended June recipe. Public actor/wrapper have
+five P and six A actions including stay, while the supplement lists four/five.
+The supplement describes discovery before suppression and team-wide rewards.
+Historical code permits extinguishing undiscovered fires. Combined reward_type3
+assigns -.1*current_fire_count to each agent, replacing the acting A's value by0
+for a nonfront extinguishing or+10 for a front extinguishing, with an additional
+false-drop penalty. Other agents do not receive+10. There is no separate time
+penalty in that mode. Final physical-fire removal does terminate successfully.
+These are substantive simulator/protocol mismatches besides the confirmed bugs.
+
+The final AAMAS Table1 reports frozen-policy evaluation over50 trials, mean±SE:
+PP8.30±.25, PCP9.98±.36, FC46.40±2.90 steps. Figure3 is PP/PCP TRAINING curves
+averaged across episodes and three seeds; it is not a20M-step frozen evaluation.
+The supplement identifies training seeds0,1,2. The exact checkpoint rule and
+how50 evaluation trials nest across training seeds remain unspecified.
+
+The public eval_trainer collects50 episodes, samples categorical actions, records
+t+1 including horizon failures, computes mean and population_std/sqrt(50), and
+exits before optimizer updates. main selects it only with --eval AND one process;
+--eval with multiple processes takes the normal trainer branch. PCP's evaluation
+reset loads an absent absolute-path initial_starts_for_test_time.txt. October's
+PP-through-PCP recipe inherits that missing panel. Rewards are stored as per-agent
+vectors; the Table1 scalar reduction is not implemented in the checked evaluator.
+Exact panels, checkpoint identities, plotting/smoothing and dependency versions
+are not recovered by setting the published seeds alone.
+
+6. Consequences and the path to a defensible replication
+
+The audit establishes public-code/protocol divergence. It does not establish
+that the authors' experiments were wrong, nor determine how much of the observed
+performance gap any single defect explains. The clearest current confound is a
+postconference observation regression, so matching today's released code is not
+equivalent to matching the training implementation of the paper.
+
+For an exact reproduction, missing artifacts are: actual training checkout or
+source archive and commands per domain; model checkpoints and training logs;
+Torch/DGL/NumPy versions; true sample counts and collector settings; the evaluation
+start-state panel; and decisions resolving the layer/optimizer/FC discrepancies.
+This audit did not contact the authors. Public history alone cannot supply those.
+
+While those artifacts are unavailable, a transparent reconstruction should:
+  1. Freeze d57da07 as historical evidence and preserve all current results.
+  2. Add an opt-in versioned reference fixing the confirmed sensory regression
+     and observation aliasing, plus explicit zero-A support; record each change.
+     First compare PP/PCP with the existing two-layer learner to isolate defects.
+  3. Implement a separately named paper-specification variant with three layers
+     and Adam1e-3. Do not silently mix this with README/RMSprop results.
+  4. Resolve/version FC initialization, propagation, discovery, action and reward
+     semantics before using FC for a paper comparison. Retain legacy results as
+     diagnostic evidence, not a validated physical benchmark.
+  5. Fix training seeds before model construction and worker launch; pin runtime.
+     Use matched total environment steps, independent training seeds and fixed
+     frozen evaluation panels shared across methods, including horizon failures.
+     Report success, capped length, return and training-seed uncertainty separately.
+  6. Compare shared and banked SoftRole under the same learner/observation path;
+     use controlled baseline ablations to isolate architecture effects.
+
+Existing SoftRole PP/PCP nominal learning is not invalidated by a postpublication
+legacy bug. Earlier independent replay and source checks support actual task
+completion in our simulator. However, 20M-step training means below the paper's
+evaluation means do not establish superiority: evaluation conditions, observations,
+learner, sample budget and historical baseline source are not matched. A defensible
+current description is promising nominal performance under our implementation;
+claims of improvement over published HetNet need the controlled frozen comparison.
+
+7. Evidence, validation and artifact map
+
+history.json/timeline.csv/file_history.json: all advertised reachable chronology,
+exact commit dates, main ancestry, API provenance and source-blob changes.
+snapshot_manifest.json and snapshots/: six exact exported source snapshots.
+papers/: arXiv v1/v2 and January2022 supplement PDFs and extracted text.
+diffs/: decisive source changes, saved without modifying any checkout.
+artifact_search.json: per-commit artifact candidates and external-link status.
+training/TRAINING_AUDIT.txt: dimensions, active optimizer and precise file lines.
+training/*_model_probe.json:18 exact-source synthetic model/loss checks,14 passes
+and4 documented PP failures. Passing cases have finite gradients, unchanged
+weights and no policy optimizer step. These checks used current pinned runtime,
+not an unavailable historical environment, and did not perform training.
+bugs/FINDINGS.txt and findings.json: nine distinct legacy blobs, exact-AST feature,
+aliasing, reset and downstream physics probes; inventories13 legacy-bearing trees.
+env_eval/findings.txt and historical_probe.json: independently repeated February
+environment probes, all25 initial fire positions, recipes and evaluation path.
+validation.json/artifact_manifest.json: source/hash/chronology/arithmetic checks
+and exact deliverable identities. The bare mirror and transient caches are excluded
+from the deliverable manifest; exported blobs and Git/API records are retained.
+
+No model/runtime/test implementation or existing experiment artifact was changed.
+No optimizer update, research training, cluster action, dependency change, message
+to authors, commit or push occurred. The prior178-test result belongs to the
+earlier current-code audit; it was not rerun or represented as historical proof.
+
+Primary sources (immutable commits wherever possible)
+
+Final proceedings paper:
+https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf
+Earlier versions and dates:
+https://arxiv.org/abs/2108.09568v1
+https://arxiv.org/abs/2108.09568v2
+January supplement:
+https://github.com/CORE-Robotics-Lab/HetNet/blob/8b28c6f741fa45e5f8e3fd3c983cf6e77c46ba54/AAMAS_22___HetNet_Supplementary.pdf
+Preconference snapshot:
+https://github.com/CORE-Robotics-Lab/HetNet/commit/d57da0717d5564027df7e8ba75614feca8006960
+Historical architecture/main:
+https://github.com/CORE-Robotics-Lab/HetNet/blob/d57da0717d5564027df7e8ba75614feca8006960/hetgat/uavnet.py
+https://github.com/CORE-Robotics-Lab/HetNet/blob/d57da0717d5564027df7e8ba75614feca8006960/main.py
+Historical actual learner:
+https://github.com/CORE-Robotics-Lab/HetNet/blob/d57da0717d5564027df7e8ba75614feca8006960/trainer.py
+https://github.com/CORE-Robotics-Lab/HetNet/blob/d57da0717d5564027df7e8ba75614feca8006960/hetgat/policy.py
+October regression:
+https://github.com/CORE-Robotics-Lab/HetNet/commit/6b09d36c352a4170f574d118cc565132b14b4050
+October recipes:
+https://github.com/CORE-Robotics-Lab/HetNet/blob/f54ca5ad05bd68dcaa525034e440149b7adf9d51/README.md
+Historical FC source pair:
+https://github.com/CORE-Robotics-Lab/HetNet/blob/59d598319d6285acfa42a1d9d8c859305a9bbf1e/envs/ic3net_envs/fire_commander_env.py
+https://github.com/CORE-Robotics-Lab/HetNet/blob/59d598319d6285acfa42a1d9d8c859305a9bbf1e/WildFire_Simulate_Original.py
+2026 FC update:
+https://github.com/CORE-Robotics-Lab/HetNet/commit/bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec
+Author's2024 cleanup comment:
+https://github.com/CORE-Robotics-Lab/HetNet/issues/1#issuecomment-2227113251

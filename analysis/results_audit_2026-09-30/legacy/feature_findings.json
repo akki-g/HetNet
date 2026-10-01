@@ -1,0 +1,169 @@
+{
+  "interpretation": "Confirmed active released feature-stride defect; performance causality requires controlled retraining.",
+  "upstream_url": "https://raw.githubusercontent.com/CORE-Robotics-Lab/HetNet/main/hetgat/uavnet.py",
+  "upstream_equals_local": true,
+  "uavnet_sha256": "343e1df3337723d1323d687e4c94d48b31011ab8890fbd8f196d948d02ff5f55",
+  "probe_sha256": "b4c34655e6e03cbcdde684a21cc5186a4c056af561ed6c760138d73bafab5ad4",
+  "domains": [
+    {
+      "task": "pp",
+      "relative_cells": 25,
+      "sensory_width_per_P": 100,
+      "misplaced_entries_per_P": 96,
+      "selected_entries_actually_from_sensory_channels": 16,
+      "relative_cells_whose_target_channel_reaches_model": [
+        0,
+        6,
+        12,
+        19
+      ],
+      "position_branch_does_not_recover_target": true,
+      "first_three_actual_index_groups": [
+        [
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          50,
+          51,
+          52,
+          53
+        ],
+        [
+          75,
+          76,
+          77,
+          78
+        ]
+      ],
+      "first_three_expected_index_groups": [
+        [
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          54,
+          55,
+          56,
+          57
+        ],
+        [
+          83,
+          84,
+          85,
+          86
+        ]
+      ]
+    },
+    {
+      "task": "pcp",
+      "relative_cells": 25,
+      "sensory_width_per_P": 100,
+      "misplaced_entries_per_P": 96,
+      "selected_entries_actually_from_sensory_channels": 16,
+      "relative_cells_whose_target_channel_reaches_model": [
+        0,
+        6,
+        12,
+        19
+      ],
+      "position_branch_does_not_recover_target": true,
+      "first_three_actual_index_groups": [
+        [
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          50,
+          51,
+          52,
+          53
+        ],
+        [
+          75,
+          76,
+          77,
+          78
+        ]
+      ],
+      "first_three_expected_index_groups": [
+        [
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          54,
+          55,
+          56,
+          57
+        ],
+        [
+          83,
+          84,
+          85,
+          86
+        ]
+      ]
+    },
+    {
+      "task": "fc",
+      "relative_cells": 9,
+      "sensory_width_per_P": 36,
+      "misplaced_entries_per_P": 32,
+      "selected_entries_actually_from_sensory_channels": 8,
+      "relative_cells_whose_target_channel_reaches_model": [
+        0,
+        6
+      ],
+      "position_branch_does_not_recover_target": true,
+      "first_three_actual_index_groups": [
+        [
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          50,
+          51,
+          52,
+          53
+        ],
+        [
+          75,
+          76,
+          77,
+          78
+        ]
+      ],
+      "first_three_expected_index_groups": [
+        [
+          25,
+          26,
+          27,
+          28
+        ],
+        [
+          54,
+          55,
+          56,
+          57
+        ],
+        [
+          83,
+          84,
+          85,
+          86
+        ]
+      ]
+    }
+  ]
+}

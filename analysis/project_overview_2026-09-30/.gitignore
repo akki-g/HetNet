@@ -1,0 +1,7 @@
+!*.pdf
+!*.md
+*.aux
+*.log
+*.out
+previews/
+__pycache__/

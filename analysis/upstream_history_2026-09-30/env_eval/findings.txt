@@ -1,0 +1,202 @@
+Historical environment and evaluation audit — 30 September 2026
+
+Scope and conclusion
+====================
+Read-only audit of upstream public history, with bounded function probes of the
+February 2022 source. No training, checkpoint mutation, runtime repository edit,
+cluster action or contact with authors. Files created are confined to this
+env_eval directory. All copied snapshot files are byte-for-byte git objects.
+
+The public February release does not identify the exact model-producing commit.
+Its PP/PCP/FC wrappers already contain the observation defects discussed in the
+current audit. The FC source additionally fails during reset with its bundled
+wildfire dependency. Therefore it cannot be assumed that the public February
+tree, as a complete runnable unit, produced the FC results. This is evidence of
+an incomplete/inconsistent public snapshot, not evidence the published result
+was false or that the authors trained through the exact same defect.
+
+Commit chronology relevant to environments
+=========================================
+3ca462bfaa945deb710f510fe865a5b750c0990c — 2022-02-10 23:04:01 -05:00:
+  First source commit. Contains wrappers in ic3net-envs/ic3net_envs, evaluation
+  trainer, main and learner. FC imports WildFire_Simulate_Original, but this
+  dependency and data.py are absent from this tree. README has no run recipes.
+59d598319d6285acfa42a1d9d8c859305a9bbf1e — 2022-02-14 23:54:07 -05:00:
+  Adds support files including wildfire dependency/data.py; environment directory
+  renamed to envs. The three environment wrapper bytes are unchanged.
+d57da0717d5564027df7e8ba75614feca8006960 — 2022-02-15 00:08:23 -05:00:
+  Last February source commit before May AAMAS conference. Same wrapper and
+  wildfire bytes. Saving updates do not resolve the environmental defects.
+394b57ed611c25a4282ff833c57e885bdf7aa631 — 2022-06-17 21:44:11 -04:00:
+  First README run commands, after the conference. All three list one collector,
+  2000 epochs, 500-step batches, horizon 80, lr 1e-4, seed 5. PP initially uses
+  predator_prey directly. These sample commands cannot be backdated to training.
+c1f5759694b4ae7eb7e88e94d7569bb92991e047 — 2022-06-17 21:48:10 -04:00:
+  README baseline support statement only; recipes unchanged.
+4179f485ff388fe2403c8f8305f321f09946930b — 2022-06-17 21:58:14 -04:00:
+  README FC recipe changes to 4 collectors, 1400 epochs, horizon 300, vision 1,
+  nfires 1, reward type 3. Seed omitted (-1/random parser default). Despite the
+  message 'update firecommander', the change is README only, not environment.
+f54ca5ad05bd68dcaa525034e440149b7adf9d51 — 2022-10-11 11:02:36 -04:00:
+  PP recipe becomes predator_capture with 3P0A; PP/PCP become 4 collectors.
+  FC recipe stays as above. The 2022 environment wrappers and wildfire dependency
+  still have the same content. README says these are sample commands.
+
+Environment byte identity
+=========================
+Compared complete file SHA256 at 3ca462, 59d598, d57da07, 4179f48 and f54ca5a:
+  fire_commander_env.py:
+    12cbf94ac2ce1157aeea457ef3d5ad168181cb5dfc1c8963ed508ca8f210c439
+  predator_capture_env.py:
+    5cbacd28f4f851a44bdf0f71b9e76b85a87ef1bb8d5e58418a0ffbcffbbaf853
+  predator_prey_env.py:
+    cfb96417c3c2200471ae02a159809a0092f36df6e97b66e1cb4cf74898de516e
+Wildfire dependency, first present 59d598 and unchanged through f54ca5a:
+    825001e5a5d274e6396bc902576760a1fda838268ad6e2d4be1a6c02bf520b04
+eval_trainer.py has no diff between 3ca462 and f54ca5a.
+
+Paper environment specification versus historical code
+=====================================================
+Sources: AAMAS paper pp1178–1179, sections 6.1,6.3.1, Figure 3/Table 1;
+supplement sections 1.1–1.3. The paper/supplement texts used are cached in
+../results_audit_2026-09-30/paper (relative from the parent analysis directory).
+
+PP: 5x5 grid, 3 homogeneous sensing predators, one static prey; cardinal moves
+plus stay; -0.05 per agent per step until it reaches the prey; zero thereafter;
+all predators must complete, horizon 80. Historical predator_prey implements
+this basic reward/termination structure. Initially distinct agent/prey cells
+are sampled without replacement by np.random.choice. Reached predators cannot
+leave the target. The October recipe instead instantiates the PCP wrapper with
+3P0A. Original PP has three populated class channels but a four-slot sensory
+representation (vocab_size=BASE+4); PCP uses the otherwise-unused slot for A,
+so both have29 entries per cell. A separate June recipe mismatch is that PP
+reads its physical predator count from --nagents (default1), while the sample
+command only supplies nfriendly_P3/nfriendly_A0. PCP derives the physical team
+counts from those nfriendly fields. No main assignment reconciles June PP's
+--nagents to its intended three-agent model.
+Paper does not state numerical sensing radius; historical wrapper default is 2.
+
+PCP: 5x5, 2 sensing predators and 1 blind capture agent, one static prey. Predators
+have five actions; capture agent has capture as a sixth action. Predators pay
+-0.05 until reaching the prey; capture agent pays -0.05 until taking capture on
+the prey. All agents must complete, horizon 80. Historical wrapper generally
+implements this reward contract for mixed mode, second_reward_scheme=False.
+Blind A still receives grid position one-hot channels (BASE=25); its environmental
+channels are replaced by -1. Initial agent/prey locations are distinct. P agents
+freeze after reaching, A cannot move off target after reaching and freezes after
+capture. Historical source references: predator_capture_env.py:34–47,62–155,
+202–248,264–307,392–449,481–546. Optional second reward scheme and alternative
+reward modes exist, but the sample recipes do not enable them.
+
+PCP mask aliasing: _get_obs appends views of a shared grid for P agents at281
+and A agents at285; at291 it writes -1 into A's environmental channels. This
+also mutates overlapping P views before np.stack. Direct probe with one target
+inside P's field of view shows target present when masking disabled and erased
+with masking enabled; 20 masked cells become -1 in that sensing view. Same code
+is present in the initial February commit. PP with zero A does not trigger this.
+
+FC paper: 5x5, 2 sensing P and 1 blind A, one initial fire, horizon300; fire
+propagates and leaves earlier cells burning; all active fires must be discovered
+and extinguished; -0.1 time penalty, -0.1 false-drop penalty, -0.1 per new fire,
+and +10 for all agents per extinguished fire. Supplement lists four P moves and
+five A actions, omitting stay. The historical executable model/wrapper includes
+stay (five P, six A actions). Numerical FOV is unspecified in the paper; June
+FC command sets vision1 (3x3); wrapper parser default is vision2 (5x5).
+
+FC historical code differs materially from that description:
+  * Reset failure: wrapper _fire_init supplies [x,x,y,y] hotspot bounds at241;
+    WildFire.hotspot_init calls np.random.randint(low=x_min,high=x_max) at55–56.
+    Equal bounds are invalid, so every ordinary FC reset raises ValueError.
+    This is not caused by a modern NumPy exclusive-bound change: randint has
+    historically excluded its upper bound. Current local code adds +1; 2022
+    history has no such fix.
+  * Phantom origin fire: wildfire fire_propagation allocates zero rows at169–170,
+    skips any front with x=0 or y=0 at176, increments counter only when accepted
+    at219, and returns the whole untrimmed array at221. Wrapper255–280 consumes
+    all rows as legitimate coordinates and replaces active fronts. Eight of25
+    possible initial positions therefore create a new (0,0) fire; (0,0) itself
+    instead becomes a zero-intensity active front at its existing location.
+  * Mask aliasing: FC P and A views share grid memory at316,335; A mask at340
+    zeroes P channels. The code even contains diagnostic deepcopy/'bad' prints
+    at339–348 observing this mutation, but does not use independent copies.
+  * Discovery is not a prerequisite for extinguishing. _take_action387–412
+    deletes a physical fire and/or active front even when discovered_fire is
+    empty. The discovery list is only cleaned when a matching entry exists.
+  * Combined reward type3 is -0.1 times CURRENT fire count for every agent, with
+    extinguishing A's reward overwritten by 0 for a nonfront fire or +10 for
+    an active-front fire; false-drop penalty is then added to A. P agents do
+    not receive +10 when another agent extinguishes a fire. No distinct -0.1
+    time cost is added in combined mode. See482–497 and constants43–49.
+  * fire_out is set when nfire becomes0 at414–415, and _get_reward501–506 sets
+    termination/success. Direct final-fire suppression terminates successfully
+    despite no prior discovery. No final-fire-termination defect was found.
+
+Historical bounded probe
+========================
+Command:
+  .venv/bin/python analysis/upstream_history_2026-09-30/env_eval/probe_historical.py
+Results: historical_probe.json, all assertions passed.
+Unmodified FC reset failure was reproduced before downstream checks. PCP alias
+check calls historical observation code directly. FC downstream checks manually
+initialize physical state and call the historical propagation/action/reward
+functions; initial front intensity=1, wind=0. Full historical FC episodes are
+NOT claimed: reset fails and old NumPy array containment in _get_obs also raises
+under installed NumPy1.26. np.int=int is only a compatibility alias. All source
+files are unchanged. Manually initialized function probes confirm:
+  - 8/25 initial fire cells create a new phantom origin fire;
+  - capturing phantom produces [-0.1,-0.1,+10], team9.8, while real(0,2) remains;
+  - undiscovered final source can be extinguished, rewards[0,0,10], done=True.
+These downstream defects preexist the current reproduction. They do not prove
+which environmental version generated the paper's training/evaluation results.
+
+Evaluation protocol recoverable from public code
+================================================
+Paper Table1 uses final policies at convergence and mean ±SE over50 evaluation
+trials with different initializations. Figure3 averages training episodes over
+three random seeds; supplement says seeds0,1,2. Exact per-seed checkpoint rule,
+50-trial versus three-training-seed aggregation, smoothing, and raw panels are
+not recoverable from checked files.
+
+Historical eval_trainer.py uses50 complete episodes (476–493), each ending on
+environment completion or max_steps (185–208), and records t+1 (209–210).
+Reported step mean is np.mean(lengths); displayed 'std' is actually population
+std/√50, without Bessel correction (503–505). It writes raw lengths and per-agent
+reward vectors and exits at521 before any optimizer update. This is frozen
+weight evaluation by control flow, even though it retains computation graphs
+and uses a trainer-shaped object. It is selected only with --nprocesses1 and
+--eval (main.py306–327); --eval with multiple workers selects normal training.
+Actual eval invocation is not documented in 2022 README.
+
+Actions remain stochastic: action_utils.select_action uses Categorical(logits)
+for P and A and samples at each step, including evaluation. The evaluator does
+not choose argmax actions. It also runs learned stochastic communication through
+the same forward methods. Reward statistics accumulate each physical agent's
+reward vector over time, not the team sum (eval_trainer181–183); raw vectors are
+saved and means across evaluation episodes printed per agent (519). The script
+does not contain the scalar reduction used to create paper Table1.
+
+Historical PCP reset has an evaluation-only override (_get_cordinates242–248):
+it loads a hard-coded absolute path ending initial_starts_for_test_time.txt and
+selects the next row by episode_eval_counter. This file is absent from every
+checked2022 tree. Thus exact PCP evaluation scenarios cannot be recovered from
+public history alone. Original predator_prey and FC wrappers sample random
+positions without this override. October PP recipe's switch to predator_capture
+would inherit the missing-panel dependency during --eval.
+
+No .pt/.pth/.pkl model weights, recorded initial-start panel, training logs or
+plotting scripts were found in the checked d57da07 tree. Parent audit covers
+later branches/artifact links. Default seeds/runtime versions are not a substitute
+for missing experiment artifacts. The release seed is set after model creation
+in main334–335; initialization provenance must be treated separately from the
+documented intended seeds (parent learner audit covers details).
+
+Source URLs useful for citation
+==============================
+https://github.com/CORE-Robotics-Lab/HetNet/blob/3ca462bfaa945deb710f510fe865a5b750c0990c/ic3net-envs/ic3net_envs/predator_capture_env.py#L264-L307
+https://github.com/CORE-Robotics-Lab/HetNet/blob/59d598319d6285acfa42a1d9d8c859305a9bbf1e/envs/ic3net_envs/fire_commander_env.py#L229-L280
+https://github.com/CORE-Robotics-Lab/HetNet/blob/59d598319d6285acfa42a1d9d8c859305a9bbf1e/WildFire_Simulate_Original.py#L45-L56
+https://github.com/CORE-Robotics-Lab/HetNet/blob/59d598319d6285acfa42a1d9d8c859305a9bbf1e/WildFire_Simulate_Original.py#L155-L221
+https://github.com/CORE-Robotics-Lab/HetNet/blob/3ca462bfaa945deb710f510fe865a5b750c0990c/eval_trainer.py#L467-L521
+https://github.com/CORE-Robotics-Lab/HetNet/commit/394b57ed611c25a4282ff833c57e885bdf7aa631
+https://github.com/CORE-Robotics-Lab/HetNet/commit/4179f485ff388fe2403c8f8305f321f09946930b
+https://github.com/CORE-Robotics-Lab/HetNet/blob/f54ca5ad05bd68dcaa525034e440149b7adf9d51/README.md#L22-L31

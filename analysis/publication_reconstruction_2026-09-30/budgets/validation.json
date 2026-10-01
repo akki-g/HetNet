@@ -1,0 +1,10 @@
+{
+  "input_count": 31,
+  "softrole_runs": 12,
+  "csv_windows": 48,
+  "python_syntax": "passed",
+  "exact_count_and_configuration_checks": "passed during analysis",
+  "independent_csv_reaggregation": "passed",
+  "latest_means_match_prior_audit": "passed",
+  "training_or_evaluation_executed": false
+}

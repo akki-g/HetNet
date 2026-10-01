@@ -1,0 +1,124 @@
+    Learning Efficient Diverse Communication for Cooperative
+            Heterogeneous Teaming – Supplementary
+         Esmaeil Seraj1,∗ , Zheyuan Wang1,∗ , Rohan Paleja1,∗ , Daniel Martin1 , Matthew Sklar1 , Anirudh
+                                         Patel2 , Matthew Gombolay1
+                                            1 Georgia Institute of Technology, 2 Sandia National Laboratory
+                                                       1 Atlanta, GA, USA, 2 Albuquerque, NM, USA
+
+      {eseraj3,pjohnwang,rpaleja3,dmartin1,msklar3}@gatech.edu,anipate@sandia.gov,matthew.gombolay@cc.gatech.edu
+ACM Reference Format:                                                                  to the agents in PP domain. The second class of agents, called the
+Esmaeil Seraj1,∗ , Zheyuan Wang1,∗ , Rohan Paleja1,∗ , Daniel Martin1 , Matthew        capture agents, have the objective of locating the prey and capturing
+Sklar1 , Anirudh Patel2 , Matthew Gombolay1 . 2022. Learning Efficient Di-             it. Capture agents differ from the predator agents in both their ob-
+verse Communication for Cooperative Heterogeneous Teaming – Supplemen-                 servation and their action spaces. Capture agents do not receive any
+tary. In Proc. of the 21st International Conference on Autonomous Agents and
+                                                                                       observation inputs from the environment (i.e., no scanning sensors)
+Multiagent Systems (AAMAS 2022), Online, May 9–13, 2022, IFAAMAS,
+                                                                                       and have an additional action of capture-prey in their action-space.
+2 pages.
+                                                                                       This additional action must be used at a prey’s location to capture the
+1     EVALUATION ENVIRONMENT:                                                          prey. Note that this domain is an explicit example of the perception-
+                                                                                       action composite teams, as introduced in Section 6.1. An episode
+      ADDITIONAL DETAILS AND PARAMETERS                                                is deemed successful once all agents have completed their class-
+Here we provide additional details regarding the employed evalua-                      specific objectives. Each predator agent is penalized with -0.05
+tion environments for training and testing InfoPG and cover the asso-                  reward every timestep until it has discovered the prey. Each capture
+ciated environment parameters related to our experiments. For repro-                   agent is also penalized with -0.05 every timestep until it has captured
+ducibility, we publicly provide our code at github.com/HetNet1 .                       (i.e., find the prey and then capture it) the prey. Note the difference
+                                                                                       in reward scheme, a capture agent may have discovered the prey but
+1.1     Predator-Prey (PP) [7]                                                         will receive a negative reward until the capture-action is utilized.
+The objective within this homogeneous environment is for 𝑁 preda-                          We utilize PCP as a testbed for several test heterogeneous interac-
+tor agents with limited vision to find a stationary prey and move to its               tions. In our head-to-head evaluation against baselines, we utilize a
+location. The agents in this domain are homogeneous in their state,                    problem with two predator agents and one capture agent within a
+observation, and action spaces and thus, all agents are of the same                    5x5 grid. We set the maximum steps for an episode to be 80.
+class. All agents are able to sense/observe the environment and each
+agent’s observation is a concatenated array of the state vectors of all
+grids within the agent’s Field of View (FOV). The predator agents’                     1.3    FireCommander (FC) [6]
+action-space is of dimension five, including cardinal movements and                    We also evaluate the performance both our HetNet variants, HetNet-
+a null action, and is the same for all agents. Each predator agent will                 Binary and HetNet-Real, in a new cooperative multi-agent environ-
+receive a small penalty per timestep until it has discovered the prey.                  ment with heterogeneous agents, called FireCommander (FC) [5, 6].
+A higher-performing algorithm in this domain is defined as one that                     FireCommander can be categorized as a strategic game, in which
+minimizes the average number of steps taken by agents to complete                       a composite team of robots (i.e., UAVs) must collaboratively find
+an episode.                                                                             hidden areas of propagating wildfire and extinguish the fire in such
+   Within our evaluation, we evaluate in a grid size of 5x5 with 3                      areas as fast as possible. The robot team in FC is composed of two
+predators. We set the maximum steps for an episode to be 80. For                        classes of agents: (1) perception agents (class P), which can only
+the reward, each agent receives -0.05 per time step before they find                    sense the environment and detect areas of fire and, (2) action agents
+the prey. An episode is considered unsuccessful if the prey is not                     (class A), which can only manipulate the environment by extinguish-
+discovered within the maximum steps.                                                    ing a firespot which has already been detected by class P agents.
+                                                                                        Neither class P, nor class A agents are capable of accomplishing the
+1.2     Predator-Capture-Prey (PCP)                                                     task on their own, and therefore must communicate and collaborate.
+In our second domain, we have two classes of agents: predator                               Under the notations in our problem formulation in Section ??,
+agents and capture agents. The first class of agent, called the preda-                 we have C = {P, A} where, A (P) = {1, 2, · · · , 4} representing the
+tor agents, have the goal of discovering the prey and have an action-                   four primitive motions and A (A) = {1, · · · , 5}, representing the four
+space of dimension five, including cardinal movements and a null                        primitive motions and an extra action which corresponds to extin-
+(stay) action. Predator agents have an observation space similar                        guishing fire by dousing water. Agents of class P are equipped with
+1 Available online at: https://github.com/CORE-Robotics-Lab/HetNet                      fire detection sensors and can observe the environment, receiving an
+                                                                                        input vector of length 29 for each grid within their FOV. Agents of
+Proc. of the 21st International Conference on Autonomous Agents and Multiagent          class A, do not receive any observation from the environment. The
+Systems (AAMAS 2022), P. Faliszewski, V. Mascardi, C. Pelachaud, M.E. Taylor (eds.),
+May 9–13, 2022, Online. © 2022 International Foundation for Autonomous Agents and       reward scheme in this domain includes a small temporal penalty of
+Multiagent Systems (www.ifaamas.org). All rights reserved.                             -0.1 per timestep for all agents, a false water-drop penalty of -0.1 for
+                                                                            to train HetNet with the per-class critic architecture. The policy and
+                                                                            critic network parameters are initialized per class (line 2) and the
+                                                                            communication steps through HetGAT layers are performed at each
+                                                                            step of an episode (line 8). The rest of training procedure imple-
+                                                                            ments an on-policy advantage AC procedure except that the gradient
+                                                                            updates are class-specific (lines 15-20). We implement HetNet using
+                                                                            PyTorch [4] and Deep Graph Library [8]. All of our experiments are
+                                                                            performed across three random seeds (0, 1 and 2) and the presented
+                                                                            results are averaged across all seeds.
+
+                                                                            2.2     Message Binarization Method: An Ablation
+                                                                                    Study
+                                                                            Learning a communication model that sends binary messages re-
+                                                                            quires a differentiable approach to convert data from continuous-
+                                                                            scale to a discrete (binarized) representation. We experiment with
+                                                                            two different techniques that enable binarization: Straight-Through
+                                                                            Estimators (STE) with a fixed threshold function [1] and Gumbel-
+                                                                            Softmax [2]. The STE binarizes the activations of a layer during
+                                                                            forward-pass and directly passes gradients similar to the identity
+Figure 1: Performance comparison for two different binariza-                function during backpropagation. The Gumbel-Softmax utilizes a
+tion methods: (1) STE and (2) Gumbel-Softmax, for 8-bits and                differentiable sampling approach to produce binarized messages
+16-bits message dimensions.                                                 from a continuous distribution via categorical reparameterization.
+                                                                            By analyzing the results of HetNet with each approach across mul-
+action agents, a -0.1 penalty per new firespot for all agents, and a        tiple message dimension sizes (8 and 16 bit), we conclude that
+positive reward of +10 for all agents per each extinguished firespot.       Gumbel-Softmax allows for better performance.
+   In our head-to-head evaluation against baselines, we utilize a
+problem with two perception agents and one action agent within a
+                                                                            REFERENCES
+                                                                            [1] Yoshua Bengio, Nicholas Léonard, and Aaron C. Courville. 2013. Estimating or
+5x5 grid and one initial firespot that propagates to a new location at          Propagating Gradients Through Stochastic Neurons for Conditional Computation.
+each timestep, leaving the previous grid on fire. We set the maximum            CoRR abs/1308.3432 (2013). arXiv:1308.3432 http://arxiv.org/abs/1308.3432
+steps for an episode to be 300. An episode of the game is marked as         [2] Eric Jang, Shixiang Gu, and Ben Poole. 2016. Categorical reparameterization with
+                                                                                gumbel-softmax. arXiv preprint arXiv:1611.01144 (2016).
+successful only if all the active firespots within the map are discov-      [3] Diederik P Kingma and Jimmy Ba. 2014. Adam: A method for stochastic optimiza-
+ered and extinguished. Please refer to the provided FireCommander               tion. arXiv preprint arXiv:1412.6980 (2014).
+                                                                            [4] Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory
+supplementary document for further details.                                     Chanan, Trevor Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga, Alban
+                                                                                Desmaison, Andreas Kopf, Edward Yang, Zachary DeVito, Martin Raison, Alykhan
+2     SUPPLEMENTARY RESULTS AND                                                 Tejani, Sasank Chilamkurthy, Benoit Steiner, Lu Fang, Junjie Bai, and Soumith
+                                                                                Chintala. 2019. PyTorch: An Imperative Style, High-Performance Deep Learning
+      ABLATION STUDIES                                                          Library. In Advances in Neural Information Processing Systems 32, H. Wallach,
+                                                                                H. Larochelle, A. Beygelzimer, F. d'Alché-Buc, E. Fox, and R. Garnett (Eds.).
+In this section, we provide our supplementary results. We first pro-            Curran Associates, Inc., 8024–8035. http://papers.neurips.cc/paper/9015-pytorch-
+vide the implementation and model details for our experiments and               an-imperative-style-high-performance-deep-learning-library.pdf
+then, present the results of an ablation study on the binarization pro-     [5] Esmaeil Seraj, Letian Chen, and Matthew C Gombolay. 2021. A hierarchical
+                                                                                coordination framework for joint perception-action tasks in composite robot teams.
+cess for digitizing the communication messages. For reproducibility,            IEEE Transactions on Robotics (2021).
+we publicly provide our code at github.com/HetNet2 .                        [6] Esmaeil Seraj, Xiyang Wu, and Matthew Gombolay. 2020. FireCommander: An
+                                                                                Interactive, Probabilistic Multi-agent Environment for Joint Perception-Action
+                                                                                Tasks. arXiv e-prints (2020), arXiv–2011.
+2.1    Implementation and Model Details                                     [7] Amanpreet Singh, Tushar Jain, and Sainbayar Sukhbaatar. 2018. Learning when
+                                                                                to communicate at scale in multiagent cooperative and competitive tasks. arXiv
+For our empirical results, our HetNet implementation consists of                preprint arXiv:1812.09755 (2018).
+three multi-head HetGAT layers stacked on top of the feature prepro-        [8] Minjie Wang, Da Zheng, Zihao Ye, Quan Gan, Mufei Li, Xiang Song, Jinjing Zhou,
+cessing modules. The first two multi-head layers use 𝐿 = 4 attention            Chao Ma, Lingfan Yu, Yu Gai, Tianjun Xiao, Tong He, George Karypis, Jinyang Li,
+                                                                                and Zheng Zhang. 2019. Deep Graph Library: A Graph-Centric, Highly-Performant
+heads computing 16 features each (for a total of 64 features merged             Package for Graph Neural Networks. arXiv preprint arXiv:1909.01315 (2019).
+by concatenation). The final layer also uses 𝐾 = 4 attention heads,
+but the output dimension is set to the size of an agent’s action-
+space and is merged by averaging. We used the Adam optimizer [3]
+through training with a learning rate of 10−3 for all our experiments
+and results presented here. We leverage the per-class critic architec-
+ture (chosen as a result of a sensitivity analyses detailed in 6.3.5) for
+all our experiments in Section 6. Algorithm 1 provides a pseudocode
+2 Available online at: https://github.com/CORE-Robotics-Lab/HetNet
+

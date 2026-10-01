@@ -1,0 +1,1009 @@
+{
+  "inputs": {
+    "analysis/training_2026-09-30_resync/provenance.json": {
+      "bytes": 31093,
+      "sha256": "fcd6f2ee4929e0a69b7d513d7360cefeeff06e47f8246eb7e92333b6edb3d896"
+    },
+    "analysis/training_2026-09-30_resync/summary.json": {
+      "bytes": 85192,
+      "sha256": "12a425376a380a83b69448a5d4c6cb2058949ce1b009f1c655c20810682e2849"
+    },
+    "analysis/training_2026-09-30/full_runs/summary.json": {
+      "bytes": 83949,
+      "sha256": "21b87242285236a62d029b18d9995c5552a894865bf0e2c6605f68113372daf3"
+    },
+    "analysis/training_2026-09-30/full_runs/structured_input_hashes.json": {
+      "bytes": 55938,
+      "sha256": "dafc36e6f40ef45283eeab5c8d4971e99bc9503ffc0b5db5f514bf443c1cc88c"
+    },
+    "analysis/training_2026-09-30/analyze.py": {
+      "bytes": 17028,
+      "sha256": "44019f4ceb6fa43b022ece5fef227bb20885fbf3bfac5705ccb5a07e6d698ab3"
+    },
+    "analysis/training_2026-09-30_resync/analyze.py": {
+      "bytes": 14632,
+      "sha256": "c9be595988d9982c3ac69c475ead52d6bab5603790ba223355e4469a0753b0a0"
+    },
+    "logs_1/reproduce-896848_0.out": {
+      "bytes": 193571,
+      "sha256": "5b3b9e61cfac1792d56fc2327c174fa5ef00d52ff0830b2e7f467635311ef4cb"
+    },
+    "stokes_runs/runs/reproduction-fast/pp_real/seed0/metrics.jsonl": {
+      "bytes": 95294,
+      "sha256": "fe2f4b81864c48afeb398bbcb12f4ad9e8d1bcab7f8a1fa6596c611a8e8ddb2f"
+    },
+    "stokes_runs/runs/reproduction-fast/pp_real/seed0/resolved_args.json": {
+      "bytes": 1870,
+      "sha256": "fc7012c3c9f560885fe6ec490fc42fc4785ef904d06249f751d512d976147f7c"
+    },
+    "logs_1/reproduce-896848_1.out": {
+      "bytes": 189776,
+      "sha256": "7542f60a67bf3881729d03ae6765da47177630b916c72bdae203bf4365747e20"
+    },
+    "stokes_runs/runs/reproduction-fast/pp_real/seed1/metrics.jsonl": {
+      "bytes": 94127,
+      "sha256": "4d645003aec484d4ac2ef958a8bf3f6dbcddd5becb644aaebeed1c4988794c15"
+    },
+    "stokes_runs/runs/reproduction-fast/pp_real/seed1/resolved_args.json": {
+      "bytes": 1870,
+      "sha256": "66bbe3bfb4e7bbd925ca2c252d1be83f8b202f19d7ff47377a20594da234c3fd"
+    },
+    "logs_1/reproduce-896848_2.out": {
+      "bytes": 279885,
+      "sha256": "512a20489a0f96b7824e34ae431238cdcc5f9b662e5d534cbeaa82fc4a9ddc0f"
+    },
+    "stokes_runs/runs/reproduction-fast/pp_real/seed2/metrics.jsonl": {
+      "bytes": 131066,
+      "sha256": "f79df5c4a54b956adaadfc48f82223e35c8d6c8c930d45dec87020ad2df1e1ca"
+    },
+    "stokes_runs/runs/reproduction-fast/pp_real/seed2/resolved_args.json": {
+      "bytes": 1870,
+      "sha256": "e44840b1a4e56460ed747f451ef808c9df853a2bee8eedf816555a3de9978c78"
+    },
+    "logs_1/reproduce-896848_3.out": {
+      "bytes": 585605,
+      "sha256": "b36ecc960d28b6f8d250df7ec0b271a5872cc45fa5543d4809ff2761cbc487a4"
+    },
+    "stokes_runs/runs/reproduction-fast/pcp_real/seed0/metrics.jsonl": {
+      "bytes": 294849,
+      "sha256": "0e6da98bb45de337660ab757c49e4a38989bb2addd2a09730650ebaa73bef0da"
+    },
+    "stokes_runs/runs/reproduction-fast/pcp_real/seed0/resolved_args.json": {
+      "bytes": 1873,
+      "sha256": "888965bad45c117d868a9214e1a35ad312753b58e67daa634dc99c17b3bfc5cb"
+    },
+    "logs_1/reproduce-896848_4.out": {
+      "bytes": 496763,
+      "sha256": "d7f21486a940b68fa9b4b3c52b8fac729df5644ace0b0756416b210dc18e1eca"
+    },
+    "stokes_runs/runs/reproduction-fast/pcp_real/seed1/metrics.jsonl": {
+      "bytes": 234907,
+      "sha256": "208edfb648b93394b764f1659c80c9a2a1f2ff38ca367d44d1fe4d3acc6b159e"
+    },
+    "stokes_runs/runs/reproduction-fast/pcp_real/seed1/resolved_args.json": {
+      "bytes": 1873,
+      "sha256": "17dc1e65297b55d7f616279063a39bbf6dc1fe4acd6bea7ab0f778ce6b495472"
+    },
+    "logs_1/reproduce-896848_5.out": {
+      "bytes": 575240,
+      "sha256": "6317fae4eec712efc13c2cfa780c918761ec2a3ee4b286297ddef493350fe8b4"
+    },
+    "stokes_runs/runs/reproduction-fast/pcp_real/seed2/metrics.jsonl": {
+      "bytes": 292455,
+      "sha256": "1e5d6b26c789474c000a524795cf1817f8404c27e8917cd5ea737a4db02a2e93"
+    },
+    "stokes_runs/runs/reproduction-fast/pcp_real/seed2/resolved_args.json": {
+      "bytes": 1873,
+      "sha256": "fa747271c43d82d6f7231ee712587c227f88ad40d3f469c1eb96856b39e09d3a"
+    },
+    "logs_1/reproduce-896848_6.out": {
+      "bytes": 512369,
+      "sha256": "0cf081c4a33b39169192882ee03e233d8e08ede5f6db732e1efc08512c423d11"
+    },
+    "stokes_runs/runs/reproduction-fast/fc_real/seed0/metrics.jsonl": {
+      "bytes": 228547,
+      "sha256": "240fc046fb663eb1a9603406dea75b51412e341d0cf9349987a35dc4e2d2afe3"
+    },
+    "stokes_runs/runs/reproduction-fast/fc_real/seed0/resolved_args.json": {
+      "bytes": 1887,
+      "sha256": "245fc662c9b46186d6595e4a2b14f482dfbf0860b8b3978b7daa96803d747899"
+    },
+    "logs_1/reproduce-896848_7.out": {
+      "bytes": 502779,
+      "sha256": "d95ed69e433095759fa811a82b0f9fed69f76e4e45024cfaff585cbd951bc30b"
+    },
+    "stokes_runs/runs/reproduction-fast/fc_real/seed1/metrics.jsonl": {
+      "bytes": 221370,
+      "sha256": "6b7e809e7e0dd399b86368d78b8a6d0d20961c37091ef43b14c10d86be0318fc"
+    },
+    "stokes_runs/runs/reproduction-fast/fc_real/seed1/resolved_args.json": {
+      "bytes": 1887,
+      "sha256": "64e0a3341f12e08607300bdf374f7d22a36af41a6cff19c8f4b44aa672d05110"
+    },
+    "logs_1/reproduce-896848_8.out": {
+      "bytes": 550050,
+      "sha256": "ab25a73158b64fb0923c7239edf5c9da6693b3e50732c9bfacc1699a45e3e01b"
+    },
+    "stokes_runs/runs/reproduction-fast/fc_real/seed2/metrics.jsonl": {
+      "bytes": 249189,
+      "sha256": "5a23e0dc9f70ca6933cac17a223bb3412ac5e958ce5c6bdcde45d3c0c8977952"
+    },
+    "stokes_runs/runs/reproduction-fast/fc_real/seed2/resolved_args.json": {
+      "bytes": 1887,
+      "sha256": "7bad8858abd1de7b1f1cfdb005344321deeb086c39e1c68c6ebe40ea890129dd"
+    },
+    "logs_sr/softrole-898818_10.out": {
+      "bytes": 728075,
+      "sha256": "b8068b94b7d1e0f9e2ecbae1fef1f1e9cb6b99b54b6109d4b4b316e7d954d51c"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed1/metrics.jsonl": {
+      "bytes": 135712,
+      "sha256": "ceb441c9da9c242eb95ef0a01c9e560426daecb426e84ce3cddbad53a4b4c4d2"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed1/config.json": {
+      "bytes": 685,
+      "sha256": "02614ef5558a0ed8accb6d7fb93cbfde5e6ec40f417505c0a35ff7037a8f13a6"
+    },
+    "logs_sr/softrole-898818_11.out": {
+      "bytes": 820988,
+      "sha256": "24af09e7e15f51509b377d489f26f7805945712325dc36eb3a599d316802580f"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed2/metrics.jsonl": {
+      "bytes": 169540,
+      "sha256": "acec05750e980c6dada7cbb1db842ff4190769266600848c1559ab1cf2ee2a29"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed2/config.json": {
+      "bytes": 685,
+      "sha256": "a6b970b01a79fed639d19bdda91e39d675f4381a01cb341c5633007635f7e024"
+    },
+    "logs_sr/softrole-898818_6.out": {
+      "bytes": 545865,
+      "sha256": "ef69ef98cf22f0178f9eb5c7b6853dac2639c029878c84cb3b851dcf244bc692"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed0/metrics.jsonl": {
+      "bytes": 170052,
+      "sha256": "40d582662a9936a8a0171e4af4fb38125f6efa65c45f9c73877561c0ae2edfc1"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed0/config.json": {
+      "bytes": 685,
+      "sha256": "16c1b7beca56146d7dce4718c69217dccd558c8bb863c0a281a22a937499e647"
+    },
+    "logs_sr/softrole-898818_7.out": {
+      "bytes": 1095259,
+      "sha256": "fd0ce3961f4986eaadfee932dbd84a84dd2598b7968cbfa697891e4756bcc005"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed1/metrics.jsonl": {
+      "bytes": 229902,
+      "sha256": "84dc75ebb0ecc853ef1c1d261f3b2e92a8509885e8f969fe63f36b3ed825e47c"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed1/config.json": {
+      "bytes": 685,
+      "sha256": "11cc50c9dbbc21c1b7ef3111a4297626f0409a57e145173078bc6c9dff67ffbb"
+    },
+    "logs_sr/softrole-898818_8.out": {
+      "bytes": 1086932,
+      "sha256": "563ad610456774389a651114846cb821da14c2efd389d6a3a1bc57b852b94b88"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed2/metrics.jsonl": {
+      "bytes": 227379,
+      "sha256": "a60231f9800d7ddc8712e5f1b83dbeb3f3181711c4d14e17d0cfbe6795bc7d3c"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_shared/seed2/config.json": {
+      "bytes": 685,
+      "sha256": "8c16687aaaaf17b33852a2d260d83f30ebf7e5d9a4b6f6b3fdb8af774edef54d"
+    },
+    "logs_sr/softrole-898818_9.out": {
+      "bytes": 764114,
+      "sha256": "29efe10f70f5426868b542f0f12d45a1d45058262c1c7b2d0742fd76f9aaa388"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed0/metrics.jsonl": {
+      "bytes": 141954,
+      "sha256": "0606fa0198062af797a11d67724cadb9b4869c1c4a46f01f4f8a6a4672e4e8df"
+    },
+    "stokes_runs/runs/softrole_primary/pcp_banked/seed0/config.json": {
+      "bytes": 685,
+      "sha256": "e2de7e2c7961a610289352ec3ac9139681161be87155226869b1253da4157da1"
+    },
+    "logs_sr/softrole-898824_0.out": {
+      "bytes": 1068211,
+      "sha256": "afabe5cdd4a210cb8a713d75104fc27c16e693aa3753f2ff35021d483d353e7a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed0/metrics.jsonl": {
+      "bytes": 240261,
+      "sha256": "163e31f9493f09ef81e647ca64e343caf8eda36925e8c21b35422c2e07b91c37"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed0/config.json": {
+      "bytes": 684,
+      "sha256": "1645a6cd28af26cfd85d6d5689d9dc0ccc69c0c775491a9dff6c79cf7b87899f"
+    },
+    "logs_sr/softrole-898824_1.out": {
+      "bytes": 1067923,
+      "sha256": "68ffaee7a7a16ce1ccd3c31ea364a228d8612887e651a66120883a162f5aa699"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed1/metrics.jsonl": {
+      "bytes": 242260,
+      "sha256": "8157c4dd97bd19fddfb40372bc4dfcfcd2b792b3a90c96284a002954f1678a8f"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed1/config.json": {
+      "bytes": 684,
+      "sha256": "a4085dd4f82ae96cce328f20961d7df7dafb48999fdc1f0473be75b297cdaac4"
+    },
+    "logs_sr/softrole-898824_12.out": {
+      "bytes": 770331,
+      "sha256": "a90f7d774dc42e18b4b467af1fc55c79acbcff7b6a8cacfa09d552b0420e95e2"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/metrics.jsonl": {
+      "bytes": 179895,
+      "sha256": "61e6923e32ffe487d4aa1feb30aed2e9e7fd7ae311cc5c87f03f38186c626e68"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed0/config.json": {
+      "bytes": 685,
+      "sha256": "c5c4634c415cb2a3f55d901464c1e2a76a7e894177ded159b62fec334fbe23da"
+    },
+    "logs_sr/softrole-898824_13.out": {
+      "bytes": 769710,
+      "sha256": "d6484c75de9ac815ce21e645d544860893156cc7c7277c715c64f713542140d6"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/metrics.jsonl": {
+      "bytes": 173520,
+      "sha256": "a179e260416c8d7a6c85f246303e322dbeccfa1ab1b923ab5d905b56f6a5d9e2"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed1/config.json": {
+      "bytes": 685,
+      "sha256": "5c546e56146288929c19cfd6b7b8ae7bb70387116941bfb4080555f118ddce90"
+    },
+    "logs_sr/softrole-898824_14.out": {
+      "bytes": 770650,
+      "sha256": "19fe9198787f1654222d8a789dee5642dca7f10d6a23894c38c9f39e0203c20e"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/metrics.jsonl": {
+      "bytes": 197892,
+      "sha256": "22fe74d49f27d35c185c8ff39c2c2a9e08fa04e59f9fcb45aafc59075822ee16"
+    },
+    "stokes_runs/runs/softrole_primary/fc_shared/seed2/config.json": {
+      "bytes": 685,
+      "sha256": "05e9d0f6629c518ce16aa7b2b3993d08e105e2c97e7132e8d28566c9d7183019"
+    },
+    "logs_sr/softrole-898824_15.out": {
+      "bytes": 764471,
+      "sha256": "ef45796fd867e1d392b2b5461c0344510c257afc66103103ffdcf6bfe730df4b"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/metrics.jsonl": {
+      "bytes": 179383,
+      "sha256": "e042c1fa2b0a51fc935b7c9f5d1fff3dab65d5df97c6817f5f332c2dbbb99fd0"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed0/config.json": {
+      "bytes": 685,
+      "sha256": "01cbe7b8c3fc3c189fb81abe305e91988b9377e36536befd2ba293ab2af61033"
+    },
+    "logs_sr/softrole-898824_16.out": {
+      "bytes": 789477,
+      "sha256": "988adc9fd7025169263af01bfaa6dac962806336068bb7d3067f68bc208917ab"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/metrics.jsonl": {
+      "bytes": 184070,
+      "sha256": "07cc5334ccde9b6c4c4b4d580471979dcb0834ba5a5769e7a11182edf81b1115"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed1/config.json": {
+      "bytes": 685,
+      "sha256": "3c5415556bc6139439ac79c5526fbb153882cd6293c63c50928ab88ff811b4fc"
+    },
+    "logs_sr/softrole-898824_17.out": {
+      "bytes": 790265,
+      "sha256": "2417155c32fa273e1b5af58078dbef79ce9c27fdb3078b9d8243952928b55ea4"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/metrics.jsonl": {
+      "bytes": 131197,
+      "sha256": "1b17381ea00d56877d14fe250e3eacf14f6a3d600a2dd65760f1806a3185b051"
+    },
+    "stokes_runs/runs/softrole_primary/fc_banked/seed2/config.json": {
+      "bytes": 685,
+      "sha256": "7d1507d5ec658182942058aa66f05c8920bf33c2dc3ff7d46db78731450d765b"
+    },
+    "logs_sr/softrole-898824_2.out": {
+      "bytes": 1067737,
+      "sha256": "e0ce650afe27220c61e1ec184c74a87177e6c897b249b7683ea901af19ff5196"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed2/metrics.jsonl": {
+      "bytes": 240426,
+      "sha256": "2fd35727c67a2e25c51c3e316944233a6255579fa9bde18d15e8acb78ace56bf"
+    },
+    "stokes_runs/runs/softrole_primary/pp_shared/seed2/config.json": {
+      "bytes": 684,
+      "sha256": "158e04378b2e4a2653dec660b21fa60e4f1037fee6724c821ef9f80e6543979f"
+    },
+    "logs_sr/softrole-898824_3.out": {
+      "bytes": 1093368,
+      "sha256": "4fac742585a29d169fe444c19f7d11bf48a0b604ee3eba60fef563f361f5db65"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed0/metrics.jsonl": {
+      "bytes": 206880,
+      "sha256": "56759603051a9f928b3e6173e30fc3c395f8a25a56bc4fadbbfd3183fbe4c6d9"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed0/config.json": {
+      "bytes": 684,
+      "sha256": "b98a28de0220e003bfd3d7257488ccd8bf0704d14d8eccaf991f6e3c278bbe0b"
+    },
+    "logs_sr/softrole-898824_4.out": {
+      "bytes": 1098020,
+      "sha256": "feaf9fe2ad4f7d86df88bed69d3fea21c2fe2c7ae2ec3404a14afb2d84d27c31"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed1/metrics.jsonl": {
+      "bytes": 213235,
+      "sha256": "0e7371dd38a92a3aa44467d80ea8d5fa05496069daf0dcdf96de989b6eb61657"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed1/config.json": {
+      "bytes": 684,
+      "sha256": "acac5d207a6439dd0d2a76bd40636ec2196fab00347ed5954da9259f9723a15b"
+    },
+    "logs_sr/softrole-898824_5.out": {
+      "bytes": 1008742,
+      "sha256": "60cc410b474ba25d164c5cd345f81a5f9a69810bbcd7d9496e318d10a5894f7a"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed2/metrics.jsonl": {
+      "bytes": 196959,
+      "sha256": "3532e21acc5d0b479ec81b124c3b5e41d81454c2f1d016bc9d694ee816e58513"
+    },
+    "stokes_runs/runs/softrole_primary/pp_banked/seed2/config.json": {
+      "bytes": 684,
+      "sha256": "73600f020dece8475425d0af571b80823dfba0ec6c6256dc5073da6eca3b8530"
+    },
+    "logs_1/reproduce-896848_0.err": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs_1/reproduce-896848_1.err": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs_1/reproduce-896848_2.err": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs_1/reproduce-896848_3.err": {
+      "bytes": 106,
+      "sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110"
+    },
+    "logs_1/reproduce-896848_4.err": {
+      "bytes": 106,
+      "sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110"
+    },
+    "logs_1/reproduce-896848_5.err": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs_1/reproduce-896848_6.err": {
+      "bytes": 106,
+      "sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110"
+    },
+    "logs_1/reproduce-896848_7.err": {
+      "bytes": 106,
+      "sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110"
+    },
+    "logs_1/reproduce-896848_8.err": {
+      "bytes": 106,
+      "sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110"
+    },
+    "logs_sr/softrole-898818_10.err": {
+      "bytes": 2500,
+      "sha256": "6cc56b9067223910e8050650328171f719d9279f24391c0083eb34711ee6434f"
+    },
+    "logs_sr/softrole-898818_11.err": {
+      "bytes": 2500,
+      "sha256": "8617c15c1dce38f723f9dc96bed4a404f7b8cd7401699a43d2b85aa54d061714"
+    },
+    "logs_sr/softrole-898818_6.err": {
+      "bytes": 2606,
+      "sha256": "5c60bc538d84bdfd8119076fc8139beecb718f6f97ec59dfc2be575984aa4590"
+    },
+    "logs_sr/softrole-898818_7.err": {
+      "bytes": 2500,
+      "sha256": "8617c15c1dce38f723f9dc96bed4a404f7b8cd7401699a43d2b85aa54d061714"
+    },
+    "logs_sr/softrole-898818_8.err": {
+      "bytes": 2500,
+      "sha256": "53daf55766304a5cf16af2bae3e9618ab986b17e6e29072d1569d6c10e588068"
+    },
+    "logs_sr/softrole-898818_9.err": {
+      "bytes": 2500,
+      "sha256": "8617c15c1dce38f723f9dc96bed4a404f7b8cd7401699a43d2b85aa54d061714"
+    },
+    "logs_sr/softrole-898824_0.err": {
+      "bytes": 2500,
+      "sha256": "6cc56b9067223910e8050650328171f719d9279f24391c0083eb34711ee6434f"
+    },
+    "logs_sr/softrole-898824_1.err": {
+      "bytes": 2500,
+      "sha256": "8617c15c1dce38f723f9dc96bed4a404f7b8cd7401699a43d2b85aa54d061714"
+    },
+    "logs_sr/softrole-898824_12.err": {
+      "bytes": 2500,
+      "sha256": "8617c15c1dce38f723f9dc96bed4a404f7b8cd7401699a43d2b85aa54d061714"
+    },
+    "logs_sr/softrole-898824_13.err": {
+      "bytes": 2500,
+      "sha256": "dab3b55f172f9e505e22f93ea06636ee6f700968898462c41412aa092e9d086d"
+    },
+    "logs_sr/softrole-898824_14.err": {
+      "bytes": 2500,
+      "sha256": "8617c15c1dce38f723f9dc96bed4a404f7b8cd7401699a43d2b85aa54d061714"
+    },
+    "logs_sr/softrole-898824_15.err": {
+      "bytes": 2500,
+      "sha256": "8617c15c1dce38f723f9dc96bed4a404f7b8cd7401699a43d2b85aa54d061714"
+    },
+    "logs_sr/softrole-898824_16.err": {
+      "bytes": 2500,
+      "sha256": "dab3b55f172f9e505e22f93ea06636ee6f700968898462c41412aa092e9d086d"
+    },
+    "logs_sr/softrole-898824_17.err": {
+      "bytes": 2500,
+      "sha256": "97dedcbd83b9e5a2f2d0c9664e09608c297f16c37acc7302a222437dfc18949f"
+    },
+    "logs_sr/softrole-898824_2.err": {
+      "bytes": 2500,
+      "sha256": "dab3b55f172f9e505e22f93ea06636ee6f700968898462c41412aa092e9d086d"
+    },
+    "logs_sr/softrole-898824_3.err": {
+      "bytes": 2500,
+      "sha256": "6cc56b9067223910e8050650328171f719d9279f24391c0083eb34711ee6434f"
+    },
+    "logs_sr/softrole-898824_4.err": {
+      "bytes": 2500,
+      "sha256": "8617c15c1dce38f723f9dc96bed4a404f7b8cd7401699a43d2b85aa54d061714"
+    },
+    "logs_sr/softrole-898824_5.err": {
+      "bytes": 2500,
+      "sha256": "53daf55766304a5cf16af2bae3e9618ab986b17e6e29072d1569d6c10e588068"
+    }
+  },
+  "extensions": [
+    {
+      "source": "logs_1/reproduce-896848_0.out",
+      "task": "pp",
+      "model": "HetNet Real",
+      "seed": 0,
+      "archived_epochs": 261,
+      "previous_stdout_epochs": 345,
+      "new_epochs": 401,
+      "additional_epochs": 56,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 2
+    },
+    {
+      "source": "logs_1/reproduce-896848_1.out",
+      "task": "pp",
+      "model": "HetNet Real",
+      "seed": 1,
+      "archived_epochs": 258,
+      "previous_stdout_epochs": 338,
+      "new_epochs": 392,
+      "additional_epochs": 54,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 5
+    },
+    {
+      "source": "logs_1/reproduce-896848_2.out",
+      "task": "pp",
+      "model": "HetNet Real",
+      "seed": 2,
+      "archived_epochs": 358,
+      "previous_stdout_epochs": 498,
+      "new_epochs": 603,
+      "additional_epochs": 105,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 6
+    },
+    {
+      "source": "logs_1/reproduce-896848_3.out",
+      "task": "pcp",
+      "model": "HetNet Real",
+      "seed": 0,
+      "archived_epochs": 803,
+      "previous_stdout_epochs": 1113,
+      "new_epochs": 1320,
+      "additional_epochs": 207,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 10
+    },
+    {
+      "source": "logs_1/reproduce-896848_4.out",
+      "task": "pcp",
+      "model": "HetNet Real",
+      "seed": 1,
+      "archived_epochs": 641,
+      "previous_stdout_epochs": 909,
+      "new_epochs": 1113,
+      "additional_epochs": 204,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 7
+    },
+    {
+      "source": "logs_1/reproduce-896848_5.out",
+      "task": "pcp",
+      "model": "HetNet Real",
+      "seed": 2,
+      "archived_epochs": 797,
+      "previous_stdout_epochs": 1082,
+      "new_epochs": 1296,
+      "additional_epochs": 214,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 7
+    },
+    {
+      "source": "logs_1/reproduce-896848_6.out",
+      "task": "fc",
+      "model": "HetNet Real",
+      "seed": 0,
+      "archived_epochs": 635,
+      "previous_stdout_epochs": 866,
+      "new_epochs": 1044,
+      "additional_epochs": 178,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 6
+    },
+    {
+      "source": "logs_1/reproduce-896848_7.out",
+      "task": "fc",
+      "model": "HetNet Real",
+      "seed": 1,
+      "archived_epochs": 615,
+      "previous_stdout_epochs": 846,
+      "new_epochs": 1025,
+      "additional_epochs": 179,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 1
+    },
+    {
+      "source": "logs_1/reproduce-896848_8.out",
+      "task": "fc",
+      "model": "HetNet Real",
+      "seed": 2,
+      "archived_epochs": 692,
+      "previous_stdout_epochs": 938,
+      "new_epochs": 1125,
+      "additional_epochs": 187,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 5
+    },
+    {
+      "source": "logs_sr/softrole-898818_10.out",
+      "task": "pcp",
+      "model": "SoftRole banked",
+      "seed": 1,
+      "archived_epochs": 241,
+      "previous_stdout_epochs": 765,
+      "new_epochs": 1287,
+      "additional_epochs": 522,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898818_11.out",
+      "task": "pcp",
+      "model": "SoftRole banked",
+      "seed": 2,
+      "archived_epochs": 300,
+      "previous_stdout_epochs": 929,
+      "new_epochs": 1455,
+      "additional_epochs": 526,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898818_6.out",
+      "task": "pcp",
+      "model": "SoftRole shared",
+      "seed": 0,
+      "archived_epochs": 309,
+      "previous_stdout_epochs": 742,
+      "new_epochs": 998,
+      "additional_epochs": 256,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898818_7.out",
+      "task": "pcp",
+      "model": "SoftRole shared",
+      "seed": 1,
+      "archived_epochs": 419,
+      "previous_stdout_epochs": 1353,
+      "new_epochs": 1998,
+      "additional_epochs": 645,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898818_8.out",
+      "task": "pcp",
+      "model": "SoftRole shared",
+      "seed": 2,
+      "archived_epochs": 414,
+      "previous_stdout_epochs": 1341,
+      "new_epochs": 1980,
+      "additional_epochs": 639,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898818_9.out",
+      "task": "pcp",
+      "model": "SoftRole banked",
+      "seed": 0,
+      "archived_epochs": 252,
+      "previous_stdout_epochs": 808,
+      "new_epochs": 1352,
+      "additional_epochs": 544,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898824_0.out",
+      "task": "pp",
+      "model": "SoftRole shared",
+      "seed": 0,
+      "archived_epochs": 453,
+      "previous_stdout_epochs": 1425,
+      "new_epochs": 2000,
+      "additional_epochs": 575,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898824_1.out",
+      "task": "pp",
+      "model": "SoftRole shared",
+      "seed": 1,
+      "archived_epochs": 457,
+      "previous_stdout_epochs": 1434,
+      "new_epochs": 2000,
+      "additional_epochs": 566,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898824_12.out",
+      "task": "fc",
+      "model": "SoftRole shared",
+      "seed": 0,
+      "archived_epochs": 328,
+      "previous_stdout_epochs": 1060,
+      "new_epochs": 1400,
+      "additional_epochs": 340,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898824_13.out",
+      "task": "fc",
+      "model": "SoftRole shared",
+      "seed": 1,
+      "archived_epochs": 317,
+      "previous_stdout_epochs": 926,
+      "new_epochs": 1400,
+      "additional_epochs": 474,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898824_14.out",
+      "task": "fc",
+      "model": "SoftRole shared",
+      "seed": 2,
+      "archived_epochs": 361,
+      "previous_stdout_epochs": 1057,
+      "new_epochs": 1400,
+      "additional_epochs": 343,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898824_15.out",
+      "task": "fc",
+      "model": "SoftRole banked",
+      "seed": 0,
+      "archived_epochs": 319,
+      "previous_stdout_epochs": 955,
+      "new_epochs": 1354,
+      "additional_epochs": 399,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898824_16.out",
+      "task": "fc",
+      "model": "SoftRole banked",
+      "seed": 1,
+      "archived_epochs": 327,
+      "previous_stdout_epochs": 962,
+      "new_epochs": 1400,
+      "additional_epochs": 438,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898824_17.out",
+      "task": "fc",
+      "model": "SoftRole banked",
+      "seed": 2,
+      "archived_epochs": 234,
+      "previous_stdout_epochs": 903,
+      "new_epochs": 1400,
+      "additional_epochs": 497,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898824_2.out",
+      "task": "pp",
+      "model": "SoftRole shared",
+      "seed": 2,
+      "archived_epochs": 453,
+      "previous_stdout_epochs": 1428,
+      "new_epochs": 2000,
+      "additional_epochs": 572,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898824_3.out",
+      "task": "pp",
+      "model": "SoftRole banked",
+      "seed": 0,
+      "archived_epochs": 379,
+      "previous_stdout_epochs": 1337,
+      "new_epochs": 1986,
+      "additional_epochs": 649,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898824_4.out",
+      "task": "pp",
+      "model": "SoftRole banked",
+      "seed": 1,
+      "archived_epochs": 391,
+      "previous_stdout_epochs": 1350,
+      "new_epochs": 2000,
+      "additional_epochs": 650,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    },
+    {
+      "source": "logs_sr/softrole-898824_5.out",
+      "task": "pp",
+      "model": "SoftRole banked",
+      "seed": 2,
+      "archived_epochs": 361,
+      "previous_stdout_epochs": 1168,
+      "new_epochs": 1837,
+      "additional_epochs": 669,
+      "previous_stdout_byte_prefix_unchanged": true,
+      "archive_metric_prefix_matches": true,
+      "incomplete_metric_header_blocks": 0,
+      "incomplete_json_lines": 0,
+      "trailing_in_progress_batch_lines": 0
+    }
+  ],
+  "stderr": [
+    {
+      "path": "logs_1/reproduce-896848_0.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_1/reproduce-896848_1.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_1/reproduce-896848_2.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_1/reproduce-896848_3.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_1/reproduce-896848_4.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_1/reproduce-896848_5.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_1/reproduce-896848_6.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_1/reproduce-896848_7.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_1/reproduce-896848_8.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898818_10.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898818_11.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898818_6.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898818_7.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898818_8.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898818_9.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898824_0.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898824_1.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898824_12.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898824_13.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898824_14.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898824_15.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898824_16.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898824_17.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898824_2.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898824_3.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898824_4.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    },
+    {
+      "path": "logs_sr/softrole-898824_5.err",
+      "unchanged_from_previous": true,
+      "has_traceback": false
+    }
+  ],
+  "completed_epochs": 37566,
+  "archived_completed_epochs": 11375,
+  "previous_stdout_completed_epochs": 26878,
+  "analysis_sha256": "9d47fbc92649c5ce21d1955fa527277d28cc20afe12172529ea708177f4f11a4",
+  "scope": "Latest resynced stdout with verified prior stdout and archived prefixes; no new checkpoint/episode-ledger/source audit; no policy execution"
+}

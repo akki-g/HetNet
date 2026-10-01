@@ -1,0 +1,310 @@
+{
+  "fetched_resources_verified": 32,
+  "repository_inventories": {
+    "esiseraj": {
+      "repository_count": 22,
+      "names": [
+        "EsiSeraj/awesome-robotics-ai-companies",
+        "EsiSeraj/baselines",
+        "EsiSeraj/Basic_Plain_DNN",
+        "EsiSeraj/deeprl_network",
+        "EsiSeraj/EEG-PhaseFreq-Analysis",
+        "EsiSeraj/ERP_Connectivity_EMG_Analysis",
+        "EsiSeraj/fire-commander-game",
+        "EsiSeraj/FireCommander2020",
+        "EsiSeraj/gym",
+        "EsiSeraj/ma-gym",
+        "EsiSeraj/maddpg",
+        "EsiSeraj/MDA",
+        "EsiSeraj/mujoco-py",
+        "EsiSeraj/multiagent-particle-envs",
+        "EsiSeraj/open_spiel",
+        "EsiSeraj/PettingZoo",
+        "EsiSeraj/robot-learning-fieldbook",
+        "EsiSeraj/robot-learning-sys-design",
+        "EsiSeraj/robotics-toolbox-matlab",
+        "EsiSeraj/SemanticSegmentation",
+        "EsiSeraj/stable-baselines",
+        "EsiSeraj/TD3"
+      ]
+    },
+    "rohan": {
+      "repository_count": 20,
+      "names": [
+        "rohanpaleja27/aerial_lidar",
+        "rohanpaleja27/awesome-robotics-ai-companies",
+        "rohanpaleja27/BattleTank",
+        "rohanpaleja27/Bootcamp",
+        "rohanpaleja27/BuildingEscape",
+        "rohanpaleja27/BullCowGame",
+        "rohanpaleja27/catkin_ws_jetson",
+        "rohanpaleja27/Control-of-Mobile-Robots",
+        "rohanpaleja27/draw-io-neural",
+        "rohanpaleja27/home_service",
+        "rohanpaleja27/imu",
+        "rohanpaleja27/Interpretable_DDTS_AISTATS2020",
+        "rohanpaleja27/Intro_to_Robotics_Research",
+        "rohanpaleja27/loam",
+        "rohanpaleja27/Machine-Learning-CourseEra",
+        "rohanpaleja27/new-git-project",
+        "rohanpaleja27/rohanpaleja27.github.io",
+        "rohanpaleja27/slam_project",
+        "rohanpaleja27/udacity_bot",
+        "rohanpaleja27/UnrealCourse"
+      ]
+    },
+    "wang": {
+      "repository_count": 10,
+      "names": [
+        "phejohnwang/10-701-Spring-2011-ML-CMU",
+        "phejohnwang/BehaviorLabel",
+        "phejohnwang/Computer-Vision-Practice",
+        "phejohnwang/KinectRecording",
+        "phejohnwang/LeapMotionVideo",
+        "phejohnwang/MRCScheduling",
+        "phejohnwang/phejohnwang.github.io",
+        "phejohnwang/RaspberryPi",
+        "phejohnwang/sample.github.io",
+        "phejohnwang/transferlearning"
+      ]
+    },
+    "daniel": {
+      "repository_count": 13,
+      "names": [
+        "Daniel-Martin576/ARBlockbot",
+        "Daniel-Martin576/cs4641",
+        "Daniel-Martin576/CS7650-SpamDetection",
+        "Daniel-Martin576/ECE4180-Space-Invaders-Clone-Expanded-with-Multiplayer",
+        "Daniel-Martin576/emadeTitanic",
+        "Daniel-Martin576/face_recognition",
+        "Daniel-Martin576/igvc-software",
+        "Daniel-Martin576/jr",
+        "Daniel-Martin576/my-resume",
+        "Daniel-Martin576/one-click-hugo-cms",
+        "Daniel-Martin576/roboracing-software",
+        "Daniel-Martin576/ros-training",
+        "Daniel-Martin576/skill-sample-nodejs-fact"
+      ]
+    },
+    "sklar": {
+      "repository_count": 34,
+      "names": [
+        "matthewsklar/3-Even-2-Odd",
+        "matthewsklar/AdvCompArch",
+        "matthewsklar/AtlantaJSON",
+        "matthewsklar/BackPropagation",
+        "matthewsklar/BookLoversUSA",
+        "matthewsklar/CartPole",
+        "matthewsklar/cloaked-robot",
+        "matthewsklar/CS-1331",
+        "matthewsklar/cs-140e-os",
+        "matthewsklar/cs4240-backend",
+        "matthewsklar/CutDetection",
+        "matthewsklar/dankbot",
+        "matthewsklar/Donatracker",
+        "matthewsklar/DoubleQLearning",
+        "matthewsklar/EvolutionSimulator",
+        "matthewsklar/Finance",
+        "matthewsklar/Gravity-Guy-Gear-VR",
+        "matthewsklar/Greek-Week-Hackathon-2019",
+        "matthewsklar/gtsam",
+        "matthewsklar/M2",
+        "matthewsklar/minecraft-abilities2020",
+        "matthewsklar/Muse",
+        "matthewsklar/OpenAI",
+        "matthewsklar/openopps-platform",
+        "matthewsklar/PartyPass",
+        "matthewsklar/pipelines-java",
+        "matthewsklar/PoetryBot",
+        "matthewsklar/Recon-Blind-Chess-AI",
+        "matthewsklar/ResQFTC1002",
+        "matthewsklar/RocAlphaGo",
+        "matthewsklar/SlouchDetector",
+        "matthewsklar/Stock-Ticker",
+        "matthewsklar/tensorflow",
+        "matthewsklar/ThermometerTimer"
+      ]
+    },
+    "patel": {
+      "repository_count": 5,
+      "names": [
+        "anirudh2/code-katas",
+        "anirudh2/datathon_apollo",
+        "anirudh2/ee267-vr",
+        "anirudh2/infagent-web",
+        "anirudh2/setup-jl"
+      ]
+    },
+    "core": {
+      "repository_count": 31,
+      "names": [
+        "CORE-Robotics-Lab/Bootcamp",
+        "CORE-Robotics-Lab/Interpretable_DDTS_AISTATS2020",
+        "CORE-Robotics-Lab/Personalized_Neural_Trees",
+        "CORE-Robotics-Lab/ProLoNets",
+        "CORE-Robotics-Lab/MAGIC",
+        "CORE-Robotics-Lab/SSRR",
+        "CORE-Robotics-Lab/Utility-of-Explainable-AI-NeurIPS2021",
+        "CORE-Robotics-Lab/HetNet",
+        "CORE-Robotics-Lab/Cross_Loss_Influence_Functions",
+        "CORE-Robotics-Lab/InfoPG",
+        "CORE-Robotics-Lab/ICCT",
+        "CORE-Robotics-Lab/AirME",
+        "CORE-Robotics-Lab/HybridNet_IROS2022",
+        "CORE-Robotics-Lab/Wheelchair-Tennis-Robot",
+        "CORE-Robotics-Lab/ConDT",
+        "CORE-Robotics-Lab/FLAIR",
+        "CORE-Robotics-Lab/Opponent-Modeling",
+        "CORE-Robotics-Lab/MixTURE",
+        "CORE-Robotics-Lab/GrAMMI",
+        "CORE-Robotics-Lab/SECURE",
+        "CORE-Robotics-Lab/GSD",
+        "CORE-Robotics-Lab/HijackingRobotTeams",
+        "CORE-Robotics-Lab/Bayes-POMCP",
+        "CORE-Robotics-Lab/SchedHGNN",
+        "CORE-Robotics-Lab/TCFM",
+        "CORE-Robotics-Lab/Team-Development-with-Transparent-Policies",
+        "CORE-Robotics-Lab/MINDMELD",
+        "CORE-Robotics-Lab/NeurIPS2025_TARGETNET",
+        "CORE-Robotics-Lab/GCD",
+        "CORE-Robotics-Lab/HINT",
+        "CORE-Robotics-Lab/REPRESENT"
+      ]
+    }
+  },
+  "firecommander_commit": "b04e8ec702f5c550978a170d9823c2a39de617be",
+  "wildfire_exact_match": true,
+  "wildfire_size_bytes": 13934,
+  "wildfire_sha256": "825001e5a5d274e6396bc902576760a1fda838268ad6e2d4be1a6c02bf520b04",
+  "degenerate_hotspot": {
+    "exception": "ValueError",
+    "message": "high <= 0"
+  },
+  "nondegenerate_hotspot": [
+    [
+      2.0,
+      2.0,
+      18.7236177683208
+    ]
+  ],
+  "boundary_point": [
+    [
+      0.0,
+      2.0,
+      1.0
+    ]
+  ],
+  "returned_front": [
+    [
+      0.0,
+      0.0,
+      0.0
+    ]
+  ],
+  "base_undiscovered_suppression": {
+    "pruned": [],
+    "remaining_fires": [
+      12
+    ]
+  },
+  "base_discovered_suppression": {
+    "pruned": [
+      12
+    ],
+    "remaining_fires": []
+  },
+  "historical_tree_blob_paths": {
+    "fc_tree_oct2021": [
+      "Documentation/FireCommander_Manual.pdf",
+      "Documentation/FireCommander_TutorialSlides.pdf",
+      "Documentation/README.md",
+      "LfD-HRI Package/Dependencies/DemoVisualization.py",
+      "LfD-HRI Package/Dependencies/Images/Tutorial1.png",
+      "LfD-HRI Package/Dependencies/Images/Tutorial1_1.png",
+      "LfD-HRI Package/Dependencies/Images/Tutorial1_2.png",
+      "LfD-HRI Package/Dependencies/Images/Tutorial1_3.png",
+      "LfD-HRI Package/Dependencies/Images/Tutorial2.png",
+      "LfD-HRI Package/Dependencies/Images/Tutorial2_2.png",
+      "LfD-HRI Package/Dependencies/Images/background.png",
+      "LfD-HRI Package/Dependencies/Images/background_Screen1.png",
+      "LfD-HRI Package/Dependencies/Images/orange_200_100.png",
+      "LfD-HRI Package/Dependencies/Images/orange_300_100.png",
+      "LfD-HRI Package/Dependencies/Images/orange_300_75.png",
+      "LfD-HRI Package/Dependencies/Images/white_300_100.png",
+      "LfD-HRI Package/Dependencies/Images/white_300_75.png",
+      "LfD-HRI Package/Dependencies/Images/yellow_200_100.png",
+      "LfD-HRI Package/Dependencies/Images/yellow_300_100.png",
+      "LfD-HRI Package/Dependencies/Images/yellow_300_150.png",
+      "LfD-HRI Package/Dependencies/Images/yellow_300_75.png",
+      "LfD-HRI Package/Dependencies/ScenarioModeParams.py",
+      "LfD-HRI Package/Dependencies/Utilities.py",
+      "LfD-HRI Package/Dependencies/WildFireModel.py",
+      "LfD-HRI Package/FireCommander.py",
+      "LfD-HRI Package/License - gpl-3.0.txt",
+      "LfD-HRI Package/README.md",
+      "MARL Package/FireCommander_Base.py",
+      "MARL Package/FireCommander_Base_Utilities.py",
+      "MARL Package/FireCommander_Cmplx1.py",
+      "MARL Package/FireCommander_Cmplx1_Utilities.py",
+      "MARL Package/FireCommander_Cmplx2.py",
+      "MARL Package/FireCommander_Cmplx2_Utilities.py",
+      "MARL Package/License - gpl-3.0.txt",
+      "MARL Package/README.md",
+      "MARL Package/WildFire_Model.py",
+      "README.md"
+    ],
+    "fc_tree_nov2020": [
+      "Documentation/FireCommander_PPTSlides.pdf",
+      "Documentation/FireCommander_Tutorial.pdf",
+      "Documentation/README.md",
+      "LfD-HRI Package/README.md",
+      "LfD-HRI Package/README.txt",
+      "MARL Package/README.md",
+      "MARL Package/README.txt",
+      "README.md"
+    ],
+    "magic_tree": [
+      "LICENSE",
+      "README.md",
+      "aamas_2021_supplementary.pdf",
+      "action_utils.py",
+      "baselines/comm.py",
+      "baselines/ga_comm.py",
+      "baselines/models.py",
+      "baselines/run_baselines.py",
+      "baselines/tar_comm.py",
+      "baselines/train_grf.sh",
+      "baselines/train_pp_hard.sh",
+      "baselines/train_pp_medium.sh",
+      "baselines/train_tj_easy.sh",
+      "baselines/train_tj_hard.sh",
+      "baselines/train_tj_medium.sh",
+      "baselines/trainer.py",
+      "data.py",
+      "env_wrappers.py",
+      "envs/grf-envs/grf_envs/__init__.py",
+      "envs/grf-envs/grf_envs/grf_wrapper_env.py",
+      "envs/grf-envs/setup.py",
+      "envs/ic3net-envs/ic3net_envs/__init__.py",
+      "envs/ic3net-envs/ic3net_envs/predator_prey_env.py",
+      "envs/ic3net-envs/ic3net_envs/traffic_helper.py",
+      "envs/ic3net-envs/ic3net_envs/traffic_junction_env.py",
+      "envs/ic3net-envs/setup.py",
+      "gnn_layers.py",
+      "magic.py",
+      "main.py",
+      "multi_processing.py",
+      "plot.py",
+      "train_grf.sh",
+      "train_pp_hard.sh",
+      "train_pp_medium.sh",
+      "train_tj_easy.sh",
+      "train_tj_hard.sh",
+      "train_tj_medium.sh",
+      "trainer.py",
+      "utils.py"
+    ]
+  },
+  "gatech_access": "Redirect to LDAP login; source unavailable without institutional access",
+  "scope": "Exact archived predecessor methods only; no learning or complete historical FC episode"
+}

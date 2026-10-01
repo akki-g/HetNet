@@ -1,0 +1,35 @@
+{
+  "status": "pass",
+  "tests_passed": 220,
+  "test_seconds": 42.17,
+  "runtime_files": 37,
+  "modified_from_recorded_sources": [
+    "WildFire_Simulate_Original.py",
+    "envs/ic3net_envs/fire_commander_env.py",
+    "envs/ic3net_envs/predator_capture_env.py",
+    "envs/ic3net_envs/predator_prey_env.py",
+    "hetgat/uavnet.py",
+    "main.py",
+    "multi_processing.py"
+  ],
+  "actual_smoke_runs": 18,
+  "smoke_steps": 190,
+  "smoke_episodes": 48,
+  "smoke_updates": 36,
+  "original_tracked_runtime_changed": false,
+  "research_training_or_cluster_submission": false,
+  "historical_training_commit_identified": false,
+  "source_hashes_verified": true,
+  "python_syntax_checked": [
+    "publication_reconstruction/__main__.py",
+    "publication_reconstruction/__init__.py",
+    "analysis/publication_reconstruction_2026-09-30/record_sources.py",
+    "analysis/publication_reconstruction_2026-09-30/finalize.py",
+    "analysis/publication_reconstruction_2026-09-30/validate_runs.py",
+    "tests/test_publication_launcher.py",
+    "tests/test_publication_lifecycle.py",
+    "tests/test_publication_envs.py",
+    "tests/test_publication_model.py"
+  ],
+  "git_diff_check": "passed"
+}

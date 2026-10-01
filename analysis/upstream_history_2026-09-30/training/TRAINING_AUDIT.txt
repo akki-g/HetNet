@@ -1,0 +1,214 @@
+Historical HetNet architecture and training audit — 30 September 2026
+
+Scope and confidence
+====================
+The audited preconference snapshot is d57da0717d5564027df7e8ba75614feca8006960
+(15 February 2022). Its core actor, graph, policy, trainer and multiprocessing
+files are unchanged from 3ca462bfaa945deb710f510fe865a5b750c0990c (10 February).
+The other comparison points are 6b09d36c352a4170f574d118cc565132b14b4050
+(10 October 2022) and f54ca5ad05bd68dcaa525034e440149b7adf9d51 (11 October).
+These are public source snapshots. None is established as the exact source or
+configuration of the experiments used for the AAMAS figures. The February README
+contains no training command. June and October commands appeared after AAMAS.
+An imported source file's internal 2021 date is not evidence of its public Git
+availability or of the experiment date; notably fastreal.py's October 2022
+commit changes its internal version string from 2021-4-30 to 2021-10-31.
+
+Active model path in all audited snapshots
+=========================================
+main imports A2CPolicy from hetgat.policy, not policy_entropy. With --hetgat
+--hetgat_a2c, it builds UAVNetA2CEasy with two GAT communication layers, four heads,
+per-class critic enabled, two critic state nodes, and no CNN or final tanh. The
+README's --hid_size 128 does NOT configure this architecture. main hardcodes
+the GAT dimensions separately, and the recurrent hidden dimensions are derived
+from the observation schema rather than this CLI flag.
+
+For a 5x5 grid and non-tensor observation path:
+  Each viewed cell has 25 position features plus 4 sensory channels. With
+  radius 2, a raw observation has 25*29=725 entries; radius 1 gives 9*29=261.
+  P agents receive a position branch and a sensory branch. A agents use a
+  position branch. Class identity is inherent in separate P/A paths and typed
+  edges; this is a typed actor, unlike SoftRole's capability-conditioned actor.
+  Position preprocessing is Linear(25*S,25*S), ReLU, LSTMCell(25*S,25).
+  Sensory preprocessing is Linear(4*S,4*S), ReLU, LSTMCell(4*S,4).
+  Thus radius 2 gives 625 -> 625 -> recurrent 25 and 100 -> 100 -> recurrent 4.
+  Radius 1 gives 225 -> 225 -> recurrent 25 and 36 -> 36 -> recurrent 4.
+  P concatenates the 25 and 4 hidden features: width 29. A width is 25.
+  First GAT layer: P/A/state inputs 29/25/4, four 16-wide heads, concatenate
+  to width 64 for each node type; ReLU. Second layer: 64-wide inputs, four
+  heads producing widths P=5, A=6, state=8, averaged across heads, no ReLU.
+  P logits have five actions (up/right/down/left/stay). A has six, including
+  capture or water drop. Action sampling uses Categorical(logits=...).
+  The recurrent state is the position/sensory LSTM state. The forward path
+  does not feed previous communicated features or previous actions into it.
+
+Real communication: relation-specific affine transformations for P->P, P->A,
+A->P and A->A. Learned additive source/destination attention is followed by
+LeakyReLU(.2); softmax is per receiver within each relation. Relation aggregates
+are added to each node's own transformed feature. This is the original GAT form,
+not GATv2. There is no SoftRole-style null-message candidate. The default graph
+connects all distinct agents in both directions (ranges default -1), with typed
+relations and no explicit actor self edge; own-feature terms remain in layers.
+
+Binary communication: a per-class encoder maps to 16 elements by default,
+shared Linear(1,2) binarization logits produce hard two-class Gumbel-softmax
+samples at tau=1, and receiver-class decoders produce the four head features.
+The optional threshold STE class exists but use_gumble=True is the default.
+The binary source is byte-identical across the February/October snapshots.
+
+Critics: two state nodes start from [num_P,num_A,world_dim,500]. P agents feed
+the P state node, A agents feed the A state node; each state has a self edge.
+After the second GAT layer, separate Linear(8,1) heads act on ReLU state features.
+These nodes have no outgoing edges to actors. The two class values support
+individual-agent advantages with within-class shared baselines. They are not
+the SoftRole summed-team critic.
+
+Exact references for the February snapshot (repository-relative line numbers):
+  main.py:238-277 — dimensions, flags, four heads, critic choices.
+  hetgat/uavnet.py:94-169 — preprocessing, LSTM dimensions, two GAT layers.
+  hetgat/uavnet.py:418-556 — forward, feature construction, state/critic outputs.
+  hetgat/graph/fastreal.py:54-110,161-377 — relation transforms, attention, heads.
+  hetgat/graph/fastbinary.py:34-61,175-215 — encoder/Gumbel/decoder mechanism.
+  hetgat/utils.py:49-159 — typed graph and critic edges.
+  action_utils.py:28-53 — categorical action sampling.
+
+An immutable public source URL can be constructed as:
+https://github.com/CORE-Robotics-Lab/HetNet/blob/d57da0717d5564027df7e8ba75614feca8006960/main.py#L238
+
+Effective learner, not just optimizer object names
+==================================================
+The policy creates an Adam optimizer and MultiStepLR, but its optimizer.step()
+is commented out. The trainer separately creates RMSprop with args.lrate,
+alpha=.97, eps=1e-6; the trainer is the optimizer that actually steps. This is
+already true in February and unchanged in October. adjust_lr exists but no
+training entrypoint calls it. Consequently the declared scheduler milestones
+[200,400] do not establish an active learning-rate schedule.
+
+The main CLI default learning rate is .001; README recipes override to .0001.
+Therefore it is incorrect to infer the original study used .0001 merely from
+the old default code, or Adam merely from the policy's constructor. The actual
+publication training commands are not present in the preconference snapshot.
+
+The default active A2C path uses:
+  gamma=1 from main; GAE lambda=.95 from A2CPolicy default; no time-limit bootstrap
+  (nextvalue=0 at the end of every collected episode).
+  Individual rewards, each agent's action scores multiplied by its own GAE.
+  A single critic value per class; critic target is mean agent lambda-return
+  within the class, with MSE averaged across real time steps for each episode.
+  Classwise advantage normalization across zero-padded arrays, including padding.
+  Actor sums over agents and real times; losses are divided by local episode
+  count; total loss=50*policy_loss+critic_loss. --value_coeff .01 and --entr are
+  unrelated generic-trainer arguments, not these A2C loss weights. No active
+  entropy term is included in this policy's per-class loss.
+  Backward and norm clip .75 occur inside each collector's policy method.
+  Collector gradients are added, divided by total collected environment steps,
+  and RMSprop steps once. For a single collector, the same extra step denominator
+  is applied after the policy already divided by its local episode count.
+  This is the legacy method, not SoftRole's global episode average/one clip.
+  Complete episodes are collected until at least batch_size steps PER collector;
+  episode boundaries can overshoot. Main epoch_size defaults to 10 updates.
+  Recurrence is detached every detach_gap steps; default 10000, README override5.
+
+Exact February references:
+  hetgat/policy.py:369-413 — GAE default, Adam object, scheduler object.
+  hetgat/policy.py:777-873 — padded normalization, losses, local episode mean,
+                             coefficient50, clipping, commented Adam.step.
+  hetgat/policy.py:878-911 — individual-reward GAE and zero terminal value.
+  trainer.py:54-56,143-146,455-467,488-503,514-532 — RMSprop, detach, episode
+                                collection, local loss route, steps denominator.
+  multi_processing.py:85-112 — local gradients, sum, global step division, step.
+  main.py:48-86,151-154 — CLI defaults.
+
+Historical README recipes and what an epoch represents
+======================================================
+February15 d57da07: installation only; no training recipe.
+June17 394b57e first adds PP/PCP/FC samples: 2000epochs,1collector,500steps per
+collector,80-step horizon,lr1e-4,detach5; PP environment is predator_prey.
+June17 4179f48 revises FC to 1400epochs,4collectors,300-step horizon,vision1,
+1fire,reward_type3. PP and PCP remain one collector,2000epochs,horizon80.
+October10 6b09d36 still publishes these latter June recipes.
+October11 f54ca5a switches PP to predator_capture(3P0A), and both PP and PCP
+to four collectors; README says they typically use four processes. The paper's
+actual number of collectors cannot be recovered from that postconference claim.
+
+Final October recipe table:
+  Setting                 PP                 PCP                FC
+  Simulator               predator_capture   predator_capture   fire_commander
+  Team                    3P0A               2P1A               2P1A
+  Grid                    5x5                5x5                5x5
+  P radius                2(default)         2(default)         1(explicit)
+  A radius                absent             blind(-1 default)  blind(-1 default)
+  Initial prey/fires      1                  1                  1
+  Episode horizon         80                 80                 300
+  Epoch target            2000               2000               1400
+  Updates/epoch           10(default)        10(default)        10(default)
+  Collectors              4                  4                  4
+  Per-collector floor     500                500                500(default)
+  Learning rate           .0001              .0001              .0001
+  Detach gap              5                  5                  5
+  Example seed            5                  5                  random default
+  Explicit binary flag    none(Real)         none(Real)         none(Real)
+  Minimum total envsteps  40,000,000         40,000,000         28,000,000
+
+There is no global environment-step cap in these recipes. --max_steps is an
+episode horizon. Per-collector batch sizes lie between500 and500+horizon-1.
+Consequently the maximum sample totals at the recipe epoch target are46.32M
+for PP/PCP and44.744M forFC. June one-collector PP/PCP recipes imply a10M floor,
+not40M. Thus identical epoch labels can hide a fourfold sample-budget difference.
+These calculations characterize code recipes; they do not recover Figure3's
+unlogged actual sample counts. Source: f54ca5a README:23-31; main:48-54;trainer:488.
+
+Behavioral probes and limitations
+================================
+The source snapshots are exact exports, recorded in source_manifest.json.
+probe_model.py constructs the actual historical models under current pinned
+Torch2.2.1,DGL2.1.0,NumPy1.26.4,CPU float64,one Torch thread. It uses synthetic
+all-zero observations and three synthetic reward steps for shape/gradient checks.
+It neither runs an environment nor performs an optimizer update. These checks
+are not historical training reruns or task-performance measurements.
+
+Results:
+  February d57da07: PCP/FC Real and Binary forward and loss/backward pass.
+  PP3P0A Real and Binary fail in the A-agent LSTM: input batch1,hidden batch0.
+  October10 andOctober11: PP Real now passes. PP Binary fails with KeyError'A'
+  in fastbinary.py, whose unconditional A-node feature access was not updated.
+  PCP/FC Real andBinary pass forward/backward in bothOctober snapshots.
+  Every passing loss has finite gradients; post-policy norm is approximately.75.
+  Every passing loss leaves parameters unchanged and never calls policy Adam.step.
+  Instrumenting the exact historical Trainer.train_batch method records its
+  trainer optimizer step and verifies .5 synthetic gradient /500steps =.001.
+  This instrumentation observes the control flow and performs no update.
+
+PP's failure is additional evidence that the February public tree cannot simply
+be labeled the verified code for all publication experiments. This is distinct
+from the postconference sensory regression. A different private source tree,
+run configuration or incomplete public packaging remains possible.
+
+Other reproducibility issues directly visible in the code:
+  main constructs the model/trainers before torch.manual_seed(args.seed)
+  (d57 main:269,309-335), so --seed does not determine initial model weights.
+  Multiprocess workers seed with seed+worker_id+1; overlapping seed ranges across
+  neighboring experiment seeds should not be confused with independent streams.
+  Cumulative printed episode counts repeatedly add an already merged epoch
+  subtotal (d57 main:384-385); this overcounts total Episodes, but Steps-taken
+  is accumulated separately and normalized by actual episode count.
+  The historical multi-process code caches gradient storage once. Whether that
+  is correct depends on optimizer.zero_grad's library-version behavior; modern
+  set_to_none defaults require care. It is not evidence the 2022 run failed.
+
+The known sensory stride regression is absent in the February get_obs_features
+and appears in the October10 rewrite. February increments by full29-entrycell;
+October increments only25. The companion historical-bugs audit independently
+tests target feature survival, observation view aliasing and FC semantics.
+
+Reproduction commands for this evidence
+=======================================
+  .venv/bin/python analysis/upstream_history_2026-09-30/training/export_sources.py
+  for c in d57da07 6b09d36 f54ca5a; do
+    .venv/bin/python analysis/upstream_history_2026-09-30/training/probe_model.py \
+      analysis/upstream_history_2026-09-30/training/snapshots/$c \
+      analysis/upstream_history_2026-09-30/training/${c}_model_probe.json
+  done
+
+Only this fresh audit directory was written by this subtask. No runtime code,
+original inputs, checkpoints, learner settings or experiment logs were changed.

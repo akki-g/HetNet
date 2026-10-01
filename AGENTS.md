@@ -544,6 +544,264 @@ one Torch thread. These are implementation checks, not estimates of task quality
   Recommended a separately versioned opt-in environment correction and frozen
   replay of resynced checkpoints before attributing the late collapse.
 
+### 2026-09-30 — project overview PDF with newly resynced logs
+
+- Created the professional ten-page
+  [project overview PDF](analysis/project_overview_2026-09-30/project_overview.pdf).
+  Its first three pages cover foundations/HetNet/prior work, the architecture
+  overview, and individual components in accessible language. Remaining pages
+  explain comparison methods, PP/PCP/FC return/success/length curves, learning
+  diagnostics, the separate sensor-loss pilot, research status and traceability.
+- Incorporated the user's additional `logs_1/` and `logs_sr/` resync during this
+  task. The final snapshot has 27 runs and 37,566 completed epochs, 10,688 beyond
+  the earlier same-day resync; SoftRole records 631,310,527 steps and 66,164,807
+  episodes. Verified old stdout byte prefixes and archived metric/configuration
+  identities. Recorded but excluded trailing in-progress reproduction batches;
+  no incomplete JSON lines or completed-epoch metric blocks were found.
+- Independently checked 114 input hashes, 317,427 raw-to-CSV numerical fields,
+  702 per-run window fields and 351 grouped statistics. All 135 plotted endpoint
+  values agree with the latest summaries. Rechecked the existing 80-outcome PCP
+  pilot and its two checkpoint hashes, plus saved FC audit counts and source
+  identities; these were read-only checks, not fresh policy executions.
+- Used current common SoftRole budgets of 37M PP, 20M PCP and 33.5M FC steps.
+  PP remains near ceiling. PCP shared/banked lengths are 7.001/8.752 (20.0%
+  fewer for shared), narrowing the earlier 26.7% gap. FC common-budget success
+  is 63.912%/32.967%; the new tail includes substantial banked seed-1/2
+  regressions and broad seed variation. Nine runs reach their configured epoch
+  targets; this is not convergence. Kept HetNet Real on an epoch axis because
+  stdout sample counters overcount. Explicitly retained pipeline differences,
+  FC physical-simulator defects, the newer-tail provenance boundary and the
+  absence of learned adaptation evidence.
+- Files touched: only `AGENTS.md` and the fresh directory
+  `analysis/project_overview_2026-09-30/`. Authored files there are `.gitignore`,
+  `README.txt`, `project_overview.tex`, `prepare_report.py`, `build_pdf.py`,
+  `refresh_results.py`, `review_results.py`, `make_figures.py` and
+  `validate_report.py`. Generated files include `project_overview.pdf`, its
+  expanded TeX/text, six table fragments, `latest_snapshot/{summary.json,
+  epoch_metrics.csv,provenance.json,comparison_audit.json}`, comparison CSV,
+  independent review JSON, evidence/input/figure/validation records, and five
+  PDF/PNG figure pairs. `artifact_manifest.json` lists every deliverable with
+  exact paths and SHA256 hashes; it excludes itself and transient build,
+  bytecode and visual-review files.
+- Verified primary-paper links and exact titles, obtained independent
+  architecture and numerical reviews, and inspected all ten rendered pages.
+  Final PDF checks: exactly ten pages in the requested order, 27 embedded
+  fonts, no TeX overflow/underflow or missing-character warnings, and all
+  extracted words within page bounds. Python sources compile; input hashes
+  and whitespace checks pass. Used isolated Matplotlib 3.10.7/NumPy 1.26.4
+  for plots and Tectonic for LaTeX. No runtime code, dependency, original input,
+  prior analysis or checkpoint changed; no training, policy evaluation, runtime
+  test suite, cluster action, commit or push. Inspected HEAD was `0ee9ceb`.
+
+### 2026-09-30 — paper comparison and independent results/code audit
+
+- Audited the user's Figure 3 reproduction concern, FC validity, SoftRole
+  correctness and exact settings/progress of the three current architecture
+  suites. Added `analysis/results_audit_2026-09-30/AUDIT.txt`, with a fresh
+  27-run inventory and deterministic/frozen-policy evidence. Read the published
+  AAMAS paper and supplement; distinguished Figure 3 training curves from
+  Table 1 frozen evaluation, and the published three-layer Adam specification
+  from the active two-layer RMSprop release.
+- New confirmed finding: `hetgat/uavnet.py:get_obs_features` advances 25 entries
+  through 29-entry observation cells. Tagged-cell probes find 96/100 misplaced
+  slots per PP/PCP sensing agent and 32/36 for FC. Target impulses survive only
+  in 4/25 and 2/9 relative cells, respectively; the separate position branch
+  provides no bypass. Independently verified the active call chain. The current
+  upstream file is byte-identical to local. This is a serious inherited
+  information-loss confound; its causal share of the learning gap and the code
+  revision used for the paper remain unestablished. Preserved the legacy path.
+- Reconfirmed the FC placeholder-front defect: eight of 25 initial fire cells
+  create a phantom origin fire; dropping water on it can give team reward +9.8
+  while the real fire remains. All six archived SoftRole FC runs match current
+  physics files. Final-real-fire termination passes. The defect affects all
+  architectures but does not establish why particular seeds regress late.
+- Quantified observation aliasing on paired reset seeds 0–999: legacy blindness
+  erases 688/1144 (60.14%) otherwise visible PCP sensing-agent target views and
+  123/510 (24.12%) FC views; PP has no copy-path difference. Matched actions in
+  90 episodes/10,992 transitions preserve positions, rewards, done and info.
+- Audited SoftRole core inputs, recurrence, gates, bits, masking, actor/critic
+  separation, GAE, clipping and global episode weighting. Found no new core
+  implementation defect in these paths. A prespecified diagnostic used latest
+  locally archived seed-0 shared/banked checkpoints per task plus initialization,
+  12 common nominal scenarios each (panel seed 93001). All 144 episodes/15,746
+  transitions reconciled through independent action replay, including physical
+  success and per-step/cumulative rewards; checkpoint hashes were unchanged.
+  These small unequal-progress panels support real learned simulator behavior,
+  not architecture superiority or valid FC physics. Checked 144 archived source
+  files across 18 runs against manifests and scoped current diagnostic changes.
+- Freshly parsed 37,566 completed epochs; SoftRole totals reconcile to
+  631,310,527 joint steps and 66,164,807 episodes. Nine runs reach epoch caps.
+  All suites use four collectors, 500-step floor per collector, ten updates per
+  epoch, PP/PCP 2000 epochs and horizon 80, FC 1400 and horizon 300. There is no
+  configured global training-step cap. Retained true archived legacy counts and
+  marked newer printed totals invalid; the stdout count bug does not invalidate
+  its separately normalized episode-length metric. No live job status inferred.
+- Validation: `.venv/bin/python -m pytest -q` passed **178 tests in 49.14
+  seconds**. New deterministic probes, action replay, raw-log reconciliation,
+  source/checkpoint hash checks, Python syntax and whitespace checks passed.
+  Independent reviewers verified stride retention/call-chain behavior, FC
+  mechanics and inventory arithmetic. Test passage is not a bug-free certificate.
+- Files touched: this existing `AGENTS.md` and only the fresh
+  `analysis/results_audit_2026-09-30/` directory. Authored files there are
+  `.gitignore`, `AUDIT.txt`, `legacy/probe_features.py`, `fc/confirm_fc.py`,
+  `training/inventory.py`, `softrole/probe.py`, `softrole/observation_probe.py`
+  and `validate.py`. Downloaded references are `legacy/upstream_uavnet.py` and
+  `paper/{hetnet_aamas2022,supplement}.pdf`; extracted/rendered references are
+  `paper/{hetnet_aamas2022,supplement}.txt` and `paper/figure3_page.png`.
+  Generated evidence is `legacy/feature_findings.json`, `fc/findings.json`,
+  `training/{inventory.json,progress.csv}`, `softrole/{probe_results.json,
+  probe_console.jsonl,observation_results.json,observation_console.json}`,
+  `validation.json` and `artifact_manifest.json`. The manifest lists exact
+  hashes of all other audit files, excluding itself and transient Python caches.
+- No runtime or test source edits, optimizer updates, research training,
+  dependency changes, input/checkpoint mutation, cluster actions, commit or push.
+  Preserved pre-existing `AGENTS.md` changes and the untracked project-overview
+  deliverables. Recommended separately versioned opt-in fixes and corrected
+  reference retraining before causal architecture or paper-reproduction claims.
+
+### 2026-09-30 — upstream historical training and defect audit
+
+- Traced all 26 reachable commits across five advertised upstream branches,
+  including 18 main ancestors, in a fresh isolated mirror. Archived commit/file
+  chronology, GitHub metadata, six exact source snapshots, arXiv v1/v2 and the
+  January 2022 supplement. Checked public tags/releases/issues/fork metadata
+  and later artifact references. The June 2026 PPO artifact link returned 404;
+  no inference about its unavailable contents was made. No messages were sent.
+- Identified `d57da0717d5564027df7e8ba75614feca8006960` (15 February 2022) as
+  the last public preconference snapshot, **not a verified training commit**.
+  Public source cannot establish the model-producing checkout, command/runtime,
+  checkpoints, exact sample budget or evaluation panel. Earlier arXiv results
+  predate the public code and differ from the final AAMAS table.
+- Dated the current sensory-stride defect to **10 October 2022, `6b09d36`**,
+  after AAMAS. Exact-source probes show February target retention 25/25 PP/PCP
+  cells and 9/9 FC, versus October/current 4/25 and 2/9. This corrects any
+  inference that the present upstream extractor necessarily trained the paper's
+  models. Its quantitative contribution to the reproduction gap remains untested.
+- Confirmed PCP/FC observation aliasing in the earliest public wrappers. The
+  February FC bundle cannot reset: its single-cell hotspot passes equal bounds
+  to `randint`; upstream fixes this only in May 2026. Independently initialized
+  downstream historical-function probes confirm the old phantom-origin/+9.8
+  reward issue and discovery/reward differences. These are explicitly not full
+  historical FC episodes. Eight of 25 initial positions create a new phantom.
+- Traced active February/October architecture and optimizer control flow:
+  two HetGAT layers and trainer RMSprop, despite the pre-existing supplement's
+  three-layer/Adam specification. Recorded exact recurrent/attention/critic
+  dimensions, loss/GAE/gradient normalization, commands, horizons and defaults.
+  June PP/PCP examples imply a 10M sample floor; October's four collectors imply
+  40M for the same 2000 epochs. FC's amended recipe implies 28M over 1400 epochs.
+  These later commands are not proof of the paper's settings; no global step
+  cap is configured. The June PP command also omits its wrapper's `--nagents 3`.
+- Validation: 18 exact-source synthetic forward/loss checks under the current
+  pinned runtime yielded 14 passes and four documented PP failures (February
+  Real/Binary zero-A paths and both October Binary paths). Passing cases had
+  finite clipped gradients, unchanged parameters and no policy optimizer step.
+  Instrumented trainer routing confirmed its step denominator without updating
+  weights. Independent reviews checked learner/budget and environment/evaluation
+  findings; corrected PP channel wording (both wrappers have 29-wide cells)
+  and distinguished current upstream defects from local seed/buffer fixes.
+  Source hashes, Git identities, report arithmetic, Python syntax and whitespace
+  were checked. The previous 178-test result was not rerun as historical proof.
+- Files touched: this existing `AGENTS.md` and only the new
+  `analysis/upstream_history_2026-09-30/` tree. Authored files are `.gitignore`,
+  `AUDIT.txt`, `collect_history.py`, `collect_extra_evidence.py`, `validate.py`,
+  `bugs/{FINDINGS.txt,probe_history.py}`, `training/{TRAINING_AUDIT.txt,
+  export_sources.py,probe_model.py}`, and `env_eval/{findings.txt,
+  probe_historical.py}`. Generated evidence includes root history/file/snapshot/
+  artifact-search/validation JSONs, `timeline.csv`, `public_api/`, `papers/`,
+  `diffs/`, `snapshots/`, exact source copies and probe JSON/manifests in each
+  subaudit. Root `artifact_manifest.json` records every deliverable's exact path
+  and SHA256, excluding itself, ignored `history.git/` and transient caches.
+- No runtime/test source edit, optimizer update, research training, dependency
+  change, existing input/checkpoint mutation, cluster action, commit or push.
+  Preserved earlier uncommitted work. Existing SoftRole PP/PCP nominal learning
+  remains meaningful, but a lower training mean than the paper's evaluation mean
+  is not evidence of superiority. Recommended separate versioned historical-
+  code and paper-specification reconstructions and matched frozen evaluation.
+
+### 2026-09-30 — isolated publication-era reconstruction and author search
+
+- Implemented the user's requested separate runnable reconstruction in
+  `publication_reconstruction/`. The February15 `d57da07` environment family
+  remains the closest public reference, not an identified publication training
+  commit. Original runtime, existing launchers, SoftRole, checkpoints and logs
+  remain unchanged. Added only a discovery link to root `README.md`.
+- Copied 12 historical environment/dependency files and 25 current reproduction
+  scaffold files into an isolated runtime. `ORIGINS.json` identifies each exact
+  original commit/path/hash and modified hash; `runtime_changes.patch` records
+  the seven changed files against those sources. The public two-layer/RMSprop
+  learner is retained; this does not implement the unresolved three-layer/Adam
+  paper specification. Restored full29-entry sensory stride for both versions.
+- Added explicit `historical-2022` and `corrected-v1` environment versions.
+  Historical mode retains old observation/FC defects, with only `np.int`,
+  equal-hotspot initialization, empty-array containment and debug-print repairs
+  needed for execution. Corrected mode additionally copies PCP/FC views, carries
+  actual stationary boundary fronts instead of zero placeholders, keeps prior
+  positions for out-of-map proposals and uses coordinate-row membership.
+  FC individual reward formulas and suppression without discovery are preserved
+  and documented as differences from the paper; no speculative team reward was
+  silently substituted. Corrected boundary handling is an explicit choice.
+- Added a separate module launcher with dated June/October recipes, fresh output
+  protection, verified source origins, a copied-source execution archive, package
+  records, and source/config/count provenance in checkpoints. June PP explicitly
+  passes `--nagents 3`. Optional sample stopping occurs after complete updates,
+  with recorded overshoot and actual partial-epoch counts. Fixed copied stdout
+  counters to add each batch once. Added worker/process-group cleanup so failures
+  and interruptions terminate owned processes and record nonzero exit status.
+- Searched135 public repository records across four directly corroborated author
+  accounts, two qualified candidate accounts and the lab organization; examined
+  relevant predecessor history. Archived32 public resources with hashes. The
+  October2021 FireCommander wildfire file is byte-identical to the February2022
+  HetNet dependency, including the phantom-front defect. Its original wrapper's
+  nondegenerate rectangles explain why HetNet's equal-bound adaptation fails.
+  Predecessor discovery-before-suppression supports domain intent but does not
+  identify the unpublished AAMAS wrapper. An institutional source link redirects
+  to login; no protected contents or author messages were accessed/sent.
+- Recomputed10M/20M SoftRole PP/PCP windows across all12 training seeds. Equal-seed
+  episode lengths were PP shared4.840→4.784, banked4.874→4.797; PCP shared
+  10.692→7.001, banked17.594→8.752. Every seed's length improves; PP gains are
+  small while PCP continues improving strongly. This is nominal training evidence,
+  not frozen generalization. One versus four collectors imply10M versus40M floors
+  but the same20,000 updates at2000epochs. The10M floor establishes neither the
+  actual paper budget nor overtraining/optimal stopping. Checked31 input hashes
+  and independently reaggregated48 windows; later legacy sample counts remain
+  unavailable rather than reconstructed from invalid printed counters.
+- Validation: `.venv/bin/python -m pytest -q` passed **220 tests in42.17seconds**,
+  including all178 existing tests. New checks cover exact sensory extraction and
+  influence, allsix domain/message forward-gradient paths, unchanged existing
+  graph outputs, physical completion/rewards, both observation modes, all25 FC
+  starts, coordinate collisions, bounded random FC rollouts, recipe budgets,
+  source archive integrity, overwrite protection and actual child/grandchild
+  cleanup on SIGINT/SIGTERM/output errors. `uv lock --check` and whitespace checks
+  passed without dependency changes. Independent implementation review found and
+  resolved the inherited interruption/worker-cleanup issue in the copied runtime.
+- Validation:18 final tiny training commands, all2updates, covered PP/PCP/FC ×
+  Real/Binary × both versions with one collector, plus PPBinary/PCPReal/FCReal ×
+  both versions with two collectors. Combined190 steps/48episodes/36updates;
+  each saved finite changed weights and optimizer state, correct step/update/
+  episode counts and source identities. Thresholds5/9 deliberately stopped
+  inside configured epochs. One earlier successful PP smoke is preserved beside
+  the final matrix; its inspection harness initially lacked the legacy `utils`
+  import path, which was corrected before rerunning the matrix in a fresh folder.
+  These are engineering executions, not performance or replication evidence.
+- Files touched: `AGENTS.md`, root `README.md`, and the new
+  `publication_reconstruction/{__init__.py,__main__.py,README.md,ORIGINS.json,
+  runtime/}` tree. Within runtime, modified files are `main.py`,
+  `multi_processing.py`, `hetgat/uavnet.py`, `WildFire_Simulate_Original.py`,
+  and `envs/ic3net_envs/{predator_prey_env,predator_capture_env,
+  fire_commander_env}.py`; every copied file is enumerated in `ORIGINS.json`.
+  New tests are `tests/test_publication_{envs,model,launcher,lifecycle}.py`.
+  New analysis is `analysis/publication_reconstruction_2026-09-30/`: authored
+  `record_sources.py`, `validate_runs.py`, `finalize.py`, author-search collection/
+  probe scripts and `FINDINGS.txt`, budget analysis script/`FINDINGS.txt`, fetched
+  public records, numerical evidence, runtime diff, logs, validation and manifests.
+  Its `artifact_manifest.json` enumerates every new deliverable with exact hashes;
+  `smoke_artifact_manifest.json` separately enumerates all initial/final run
+  artifacts excluding transient caches. Runs are confined to fresh
+  `runs/publication_reconstruction_validation{,_final}_20260930/` directories.
+- No full research training, frozen performance evaluation, cluster submission,
+  job cancellation, existing input/checkpoint mutation, dependency change,
+  commit or push occurred. Earlier uncommitted audit/presentation work was preserved.
+
 ## Remaining research work and boundaries
 
 Run the locked research protocol and assess actual learning across independent

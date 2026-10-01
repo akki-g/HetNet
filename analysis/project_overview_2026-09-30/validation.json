@@ -1,0 +1,39 @@
+{
+  "pages": 10,
+  "required_first_three_pages": [
+    "01 / FOUNDATIONS",
+    "02 / ARCHITECTURE OVERVIEW",
+    "03 / COMPONENTS"
+  ],
+  "all_pages_have_evidence_notes": true,
+  "all_fonts_embedded": true,
+  "font_count": 27,
+  "tex_layout_warnings": 0,
+  "all_extracted_words_within_page_bounds": true,
+  "extracted_words": 4072,
+  "local_input_hashes_rechecked": 89,
+  "snapshot_input_hashes_rechecked": 114,
+  "raw_audit": {
+    "completed_epochs": 37566,
+    "runs": 27,
+    "raw_csv_numeric_fields_checked": 317427,
+    "window_numeric_fields_checked": 702,
+    "group_numeric_fields_checked": 351,
+    "softrole_total_steps": 631310527
+  },
+  "primary_reference_urls": [
+    "https://arxiv.org/abs/1506.02438",
+    "https://arxiv.org/abs/2105.14491",
+    "https://arxiv.org/abs/2108.13264",
+    "https://arxiv.org/abs/2501.06058",
+    "https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf",
+    "https://papers.nips.cc/paper/2017/hash/f22e4747da1aa27e363d86d40ff442fe-Abstract.html",
+    "https://proceedings.mlr.press/v229/howell23a.html"
+  ],
+  "python_source_compilation": "passed",
+  "pdf_sha256": "30feacc43b3b54782415bf38d911f60b7b5195a5cbe881d0fa9a8451120b6523",
+  "pdf_bytes": 387979,
+  "work_log_sha256": "61bad03a98614afbfd52af1bf7eb24af51bbc4e413d8e98a74856f980833432f",
+  "visual_review": "All ten rendered pages inspected; final changed pages re-inspected by the authoring agent.",
+  "scope": "Document build and read-only analysis; no training, evaluation, simulator changes, dependency edits or runtime tests."
+}

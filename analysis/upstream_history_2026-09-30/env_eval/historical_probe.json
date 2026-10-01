@@ -1,0 +1,189 @@
+{
+  "unmodified_fc_reset": {
+    "error": "high <= 0",
+    "type": "ValueError",
+    "reason": "Wrapper supplies [x,x,y,y] hotspot bounds; hotspot_init uses randint(low=x, high=x), whose upper bound is exclusive"
+  },
+  "pcp_view_aliasing": {
+    "same_physical_state_target_count_without_blind_mask": 1,
+    "visible_target_after_blind_mask": false,
+    "negative_mask_entries_in_sensing_agent_view": 20
+  },
+  "phantom_fire": {
+    "new_origin_fires_of_25_initial_cells": 8,
+    "boundary_examples": [
+      {
+        "initial": [
+          0,
+          0
+        ],
+        "fires": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      {
+        "initial": [
+          0,
+          1
+        ],
+        "fires": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      {
+        "initial": [
+          0,
+          2
+        ],
+        "fires": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            2
+          ]
+        ]
+      },
+      {
+        "initial": [
+          0,
+          3
+        ],
+        "fires": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            3
+          ]
+        ]
+      },
+      {
+        "initial": [
+          0,
+          4
+        ],
+        "fires": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            4
+          ]
+        ]
+      },
+      {
+        "initial": [
+          1,
+          0
+        ],
+        "fires": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ]
+        ]
+      },
+      {
+        "initial": [
+          2,
+          0
+        ],
+        "fires": [
+          [
+            0,
+            0
+          ],
+          [
+            2,
+            0
+          ]
+        ]
+      },
+      {
+        "initial": [
+          3,
+          0
+        ],
+        "fires": [
+          [
+            0,
+            0
+          ],
+          [
+            3,
+            0
+          ]
+        ]
+      },
+      {
+        "initial": [
+          4,
+          0
+        ],
+        "fires": [
+          [
+            0,
+            0
+          ],
+          [
+            4,
+            0
+          ]
+        ]
+      }
+    ]
+  },
+  "phantom_capture": {
+    "reward": [
+      -0.1,
+      -0.1,
+      10.0
+    ],
+    "team_sum": 9.8,
+    "done": false,
+    "remaining_fire": [
+      [
+        0,
+        2
+      ]
+    ]
+  },
+  "undiscovered_final_fire_capture": {
+    "discovered_before": false,
+    "done": true,
+    "remaining_fire_count": 0,
+    "reward": [
+      0.0,
+      0.0,
+      10.0
+    ]
+  },
+  "source_sha256": {
+    "59d598/envs/ic3net_envs/fire_commander_env.py": "12cbf94ac2ce1157aeea457ef3d5ad168181cb5dfc1c8963ed508ca8f210c439",
+    "59d598/envs/ic3net_envs/predator_capture_env.py": "5cbacd28f4f851a44bdf0f71b9e76b85a87ef1bb8d5e58418a0ffbcffbbaf853",
+    "59d598/WildFire_Simulate_Original.py": "825001e5a5d274e6396bc902576760a1fda838268ad6e2d4be1a6c02bf520b04"
+  },
+  "source_commit": "59d598319d6285acfa42a1d9d8c859305a9bbf1e",
+  "scope": "February 14 2022 source files unmodified; NumPy np.int compatibility alias; injected initial coordinates; FC reset tested as-is, downstream FC function probes manually establish initial state with [x,y,intensity=1] front and zero wind. FC _get_obs/full steps bypassed due additional old NumPy containment incompatibility; no training."
+}

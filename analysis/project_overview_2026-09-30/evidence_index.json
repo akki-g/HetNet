@@ -1,0 +1,68 @@
+{
+  "E1": {
+    "claim": "Current log inventory, common-epoch and common-sample comparisons, window endpoints and three-seed statistics",
+    "files": [
+      "analysis/project_overview_2026-09-30/latest_snapshot/summary.json",
+      "analysis/project_overview_2026-09-30/latest_snapshot/epoch_metrics.csv",
+      "analysis/project_overview_2026-09-30/latest_snapshot/provenance.json",
+      "analysis/project_overview_2026-09-30/refresh_results.py",
+      "analysis/training_2026-09-30_resync/summary.json",
+      "analysis/training_2026-09-30_resync/provenance.json",
+      "analysis/training_2026-09-30_resync/analyze.py",
+      "analysis/training_2026-09-30/analyze.py"
+    ],
+    "lookup": "summary.groups[task,model].common_epoch/common_sample/prior_common_sample/latest; summary.runs includes source paths and windows. CSV source_line maps to raw stdout."
+  },
+  "E2": {
+    "claim": "Implemented observation, architecture, training and task rules",
+    "files": [
+      "softrole/RESEARCH.md",
+      "softrole/model.py",
+      "softrole/env.py",
+      "softrole/learning.py",
+      "softrole/train.py",
+      "softrole/rollout.py",
+      "softrole/config.py",
+      "softrole/scenarios.py",
+      "hetgat/uavnet.py",
+      "envs/ic3net_envs/predator_capture_env.py",
+      "envs/ic3net_envs/fire_commander_env.py",
+      "main.py",
+      "trainer.py",
+      "multi_processing.py"
+    ],
+    "lookup": "Named classes/functions in report; current source describes implementation. Archived training source provenance is separately recorded in E1."
+  },
+  "E3": {
+    "claim": "FC late regression, simulator defect and older frozen-panel diagnostics",
+    "files": [
+      "analysis/fc_audit_2026-09-30/log_findings.json",
+      "analysis/fc_audit_2026-09-30/simulator_probe.json",
+      "analysis/fc_audit_2026-09-30/policy_panel/summary.json",
+      "analysis/fc_audit_2026-09-30/learner_findings.json",
+      "analysis/fc_audit_2026-09-30/artifact_manifest.json",
+      "analysis/fc_audit_2026-09-30/simulator_probe.py",
+      "analysis/fc_audit_2026-09-30/log_probe.py",
+      "analysis/fc_audit_2026-09-30/policy_probe.py",
+      "WildFire_Simulate_Original.py"
+    ],
+    "lookup": "simulator_probe.deterministic_checks.immediate_origin_additions_of_25_cells; passive_panel; policy_panel summary; log_findings.softrole."
+  },
+  "E4": {
+    "claim": "Separate one-seed paired PCP sensor-loss pilot",
+    "files": [
+      "runs/sensor_failure_validation_20260930/pilot/summary.json",
+      "runs/sensor_failure_validation_20260930/pilot/pilot.json",
+      "runs/sensor_failure_validation_20260930/pilot/scenarios.json",
+      "runs/sensor_failure_validation_20260930/validation.json"
+    ],
+    "lookup": "summary.policies[model].failure/sham/failure_minus_sham; checkpoint_progress; diagnostic_true_counts."
+  },
+  "E5": {
+    "claim": "Previously recorded engineering validations and scope",
+    "files": [
+      "AGENTS.md"
+    ],
+    "lookup": "2026-09-30 reproducible native PCP sensor-failure pilot: 178 tests; FC audit: targeted 40 tests. Historical records, not rerun for PDF."
+  }
+}

@@ -1,0 +1,115 @@
+[
+  {
+    "commit": "3ca462bfaa945deb710f510fe865a5b750c0990c",
+    "author_date": "2022-02-10T23:04:01-05:00",
+    "committer_date": "2022-02-10T23:04:01-05:00",
+    "subject": "Adding initial files from repository",
+    "source_sha256": {
+      "predator_capture_env.py": {
+        "ic3net-envs/ic3net_envs/predator_capture_env.py": "5cbacd28f4f851a44bdf0f71b9e76b85a87ef1bb8d5e58418a0ffbcffbbaf853"
+      },
+      "predator_prey_env.py": {
+        "ic3net-envs/ic3net_envs/predator_prey_env.py": "cfb96417c3c2200471ae02a159809a0092f36df6e97b66e1cb4cf74898de516e"
+      },
+      "fire_commander_env.py": {
+        "ic3net-envs/ic3net_envs/fire_commander_env.py": "12cbf94ac2ce1157aeea457ef3d5ad168181cb5dfc1c8963ed508ca8f210c439"
+      },
+      "WildFire_Simulate_Original.py": {},
+      "eval_trainer.py": {
+        "eval_trainer.py": "48c4d4f6745faaa03661bce0fa35db91ac1f448ac56765564628324d799a3650"
+      }
+    }
+  },
+  {
+    "commit": "59d598319d6285acfa42a1d9d8c859305a9bbf1e",
+    "author_date": "2022-02-14T23:54:07-05:00",
+    "committer_date": "2022-02-14T23:54:07-05:00",
+    "subject": "Adding some more files",
+    "source_sha256": {
+      "predator_capture_env.py": {
+        "envs/ic3net_envs/predator_capture_env.py": "5cbacd28f4f851a44bdf0f71b9e76b85a87ef1bb8d5e58418a0ffbcffbbaf853"
+      },
+      "predator_prey_env.py": {
+        "envs/ic3net_envs/predator_prey_env.py": "cfb96417c3c2200471ae02a159809a0092f36df6e97b66e1cb4cf74898de516e"
+      },
+      "fire_commander_env.py": {
+        "envs/ic3net_envs/fire_commander_env.py": "12cbf94ac2ce1157aeea457ef3d5ad168181cb5dfc1c8963ed508ca8f210c439"
+      },
+      "WildFire_Simulate_Original.py": {
+        "WildFire_Simulate_Original.py": "825001e5a5d274e6396bc902576760a1fda838268ad6e2d4be1a6c02bf520b04"
+      },
+      "eval_trainer.py": {
+        "eval_trainer.py": "48c4d4f6745faaa03661bce0fa35db91ac1f448ac56765564628324d799a3650"
+      }
+    }
+  },
+  {
+    "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+    "author_date": "2022-02-15T00:08:23-05:00",
+    "committer_date": "2022-02-15T00:08:23-05:00",
+    "subject": "Added better saving (following MAGIC)",
+    "source_sha256": {
+      "predator_capture_env.py": {
+        "envs/ic3net_envs/predator_capture_env.py": "5cbacd28f4f851a44bdf0f71b9e76b85a87ef1bb8d5e58418a0ffbcffbbaf853"
+      },
+      "predator_prey_env.py": {
+        "envs/ic3net_envs/predator_prey_env.py": "cfb96417c3c2200471ae02a159809a0092f36df6e97b66e1cb4cf74898de516e"
+      },
+      "fire_commander_env.py": {
+        "envs/ic3net_envs/fire_commander_env.py": "12cbf94ac2ce1157aeea457ef3d5ad168181cb5dfc1c8963ed508ca8f210c439"
+      },
+      "WildFire_Simulate_Original.py": {
+        "WildFire_Simulate_Original.py": "825001e5a5d274e6396bc902576760a1fda838268ad6e2d4be1a6c02bf520b04"
+      },
+      "eval_trainer.py": {
+        "eval_trainer.py": "48c4d4f6745faaa03661bce0fa35db91ac1f448ac56765564628324d799a3650"
+      }
+    }
+  },
+  {
+    "commit": "4179f485ff388fe2403c8f8305f321f09946930b",
+    "author_date": "2022-06-17T21:58:14-04:00",
+    "committer_date": "2022-06-17T21:58:14-04:00",
+    "subject": "update firecommander",
+    "source_sha256": {
+      "predator_capture_env.py": {
+        "envs/ic3net_envs/predator_capture_env.py": "5cbacd28f4f851a44bdf0f71b9e76b85a87ef1bb8d5e58418a0ffbcffbbaf853"
+      },
+      "predator_prey_env.py": {
+        "envs/ic3net_envs/predator_prey_env.py": "cfb96417c3c2200471ae02a159809a0092f36df6e97b66e1cb4cf74898de516e"
+      },
+      "fire_commander_env.py": {
+        "envs/ic3net_envs/fire_commander_env.py": "12cbf94ac2ce1157aeea457ef3d5ad168181cb5dfc1c8963ed508ca8f210c439"
+      },
+      "WildFire_Simulate_Original.py": {
+        "WildFire_Simulate_Original.py": "825001e5a5d274e6396bc902576760a1fda838268ad6e2d4be1a6c02bf520b04"
+      },
+      "eval_trainer.py": {
+        "eval_trainer.py": "48c4d4f6745faaa03661bce0fa35db91ac1f448ac56765564628324d799a3650"
+      }
+    }
+  },
+  {
+    "commit": "f54ca5ad05bd68dcaa525034e440149b7adf9d51",
+    "author_date": "2022-10-11T11:02:36-04:00",
+    "committer_date": "2022-10-11T11:02:36-04:00",
+    "subject": "Tested PP and PC, updated readme",
+    "source_sha256": {
+      "predator_capture_env.py": {
+        "envs/ic3net_envs/predator_capture_env.py": "5cbacd28f4f851a44bdf0f71b9e76b85a87ef1bb8d5e58418a0ffbcffbbaf853"
+      },
+      "predator_prey_env.py": {
+        "envs/ic3net_envs/predator_prey_env.py": "cfb96417c3c2200471ae02a159809a0092f36df6e97b66e1cb4cf74898de516e"
+      },
+      "fire_commander_env.py": {
+        "envs/ic3net_envs/fire_commander_env.py": "12cbf94ac2ce1157aeea457ef3d5ad168181cb5dfc1c8963ed508ca8f210c439"
+      },
+      "WildFire_Simulate_Original.py": {
+        "WildFire_Simulate_Original.py": "825001e5a5d274e6396bc902576760a1fda838268ad6e2d4be1a6c02bf520b04"
+      },
+      "eval_trainer.py": {
+        "eval_trainer.py": "48c4d4f6745faaa03661bce0fa35db91ac1f448ac56765564628324d799a3650"
+      }
+    }
+  }
+]

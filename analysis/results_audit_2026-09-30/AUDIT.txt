@@ -1,0 +1,261 @@
+RESULTS AND CODE AUDIT — 30 SEPTEMBER 2026
+
+Conclusion
+----------
+The current evidence does not establish a reproduction of the paper's results,
+or a causal SoftRole architecture advantage. A newly identified active bug in
+the released HetNet sensory extractor discards most target indicators. A known
+FC simulator bug affects all three architectures. SoftRole's audited learner
+and episode accounting passed the checks below, but the experiment as a whole
+cannot be certified bug-free, and FC cannot be treated as validated physical
+firefighting. No runtime code, training settings, existing inputs/checkpoints,
+or cluster jobs were changed in this audit.
+
+1. Original paper and the apparent reproduction gap
+-------------------------------------------------
+Read the published AAMAS paper, including a rendered page 7, and its supplement:
+https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf
+https://github.com/CORE-Robotics-Lab/HetNet/blob/main/AAMAS_22___HetNet_Supplementary.pdf
+
+Figure 3 plots PP/PCP training episode length against epochs, across three seeds.
+Its curves finish near 8 and 10 steps. Table 1 is a separate final-policy,
+50-trial evaluation: HetNet steps are 8.30 +/- 0.25 (PP), 9.98 +/- 0.36 (PCP),
+46.40 +/- 2.90 (FC). These Table 1 numbers are not exact digitized Figure 3
+endpoints. The supplement specifies three attention layers and Adam at 0.001;
+the active release builds two layers and steps RMSprop at 0.0001. Its internal
+Adam exists but optimizer.step is commented out. The available documents do
+not establish that the source currently released produced the paper's figure.
+
+Latest local trailing-50-epoch summaries, equal weight per seed:
+                  HetNet Real         SoftRole shared       SoftRole banked
+PP length         17.211              4.738                 4.744
+PCP length        16.990              5.991                 7.454
+FC length         217.211             181.756               230.257
+PP success        99.753%             99.999%               99.998%
+PCP success       99.880%             99.996%               99.983%
+FC success        41.980%             61.495%               35.116%
+
+Endpoints are unequal: PP Real is only at epochs 401/392/603 versus shared at
+2000 each. PCP Real is at 1320/1113/1296. The gap is also present at common epoch
+windows: PP ending epoch392 has lengths 18.253/4.875/4.897, and PCP ending
+epoch998 has 17.943/6.918/8.615 (Real/shared/banked). These are still different
+pipelines. Latest endpoint windows pool episodes within each SoftRole run;
+reproduction stdout permits equal-epoch means of rounded metrics. The common-
+epoch comparisons above weight epochs equally for every architecture. Seeds
+receive equal weight throughout. Neither is the paper's frozen evaluation.
+
+The original stdout cumulative count bug (main.py:408-416) adds within-epoch
+cumulative totals ten times with weights 10,9,...,1. This invalidates printed
+Total Steps/Episodes as sample counts. It does NOT explain the episode-length
+gap: Steps-taken divides the correctly accumulated episode steps by episodes
+(main.py:355,430-433; trainer.py:243-244). Archived metrics.jsonl uses fresh
+counts correctly but ends earlier than the copied stdout tails.
+
+2. Confirmed major legacy sensory-extraction defect (new finding)
+----------------------------------------------------------------
+File: hetgat/uavnet.py:204-219, called unconditionally by forward at 300-327.
+Each raw observation cell contains 25 position entries plus four sensory
+entries. get_obs_features advances by P_s=25 instead of the full stride 29.
+Expected sensory slices: 25:29,54:58,83:87,...
+Actual sensory slices:   25:29,50:54,75:79,...
+
+Independent tagged-cell and target-impulse probes using the actual methods:
+* PP/PCP: 96/100 extracted slots per sensing agent have the wrong schema index;
+  only 16/100 come from any sensory channel. Target indicators survive only
+  in four of 25 relative cells: indices 0, 6, 12, 19, corresponding to offsets
+  (-2,-2),(-1,-1),(0,0),(+1,+2).
+* FC: 32/36 slots have the wrong index; only 8/36 come from sensory channels.
+  Target indicators survive only in two of 9 cells: indices 0, 6, corresponding
+  to offsets (-1,-1),(+1,-1).
+* The separate position extractor correctly drops ALL target-channel impulses;
+  it provides no alternate route for discarded target indicators. Retained
+  indicators in other agents' observations and history can still help.
+
+This is not simply an invertible permutation. It removes sensory information.
+All recorded reproduction configurations use this active non-tensor A2C path.
+The downloaded current upstream uavnet.py is byte-identical to local, SHA256
+343e1df3337723d1323d687e4c94d48b31011ab8890fbd8f196d948d02ff5f55.
+Upstream: https://github.com/CORE-Robotics-Lab/HetNet/blob/main/hetgat/uavnet.py
+It is a concrete confound and plausible contributor to poor learning, including
+PP. Its share of the performance gap requires controlled retraining; this audit
+does not identify the code revision actually used for the published results.
+
+Evidence: legacy/probe_features.py, feature_findings.json, upstream_uavnet.py.
+An independent reviewer reproduced the retained target-cell sets and verified
+the actual runtime call chain and absence of a position-branch bypass.
+
+3. FC is still physically defective for all three architectures
+-------------------------------------------------------------
+WildFire_Simulate_Original.py:172 allocates zero-filled propagation rows. Line 178
+skips fronts on the top or left boundary; line 227 returns unwritten rows.
+fire_commander_env.py:280-293 converts these placeholders into fires at (0,0).
+Its source-capture path at 401-426 and reward at 509-510 can then award +10.
+
+Fresh exhaustive initial-cell probe: eight of 25 initial fire locations create a
+nonexistent origin fire after one stay step. In a deterministic case with the
+real fire at (0,2), extinguishing phantom (0,0) returns [-0.1,-0.1,+10], team +9.8,
+while the real fire remains. It also removes the propagation front. The current
+physics files match all six archived SoftRole FC runs byte-for-byte. Legacy
+HetNet uses the same physical simulator. Final-real-fire capture DOES terminate
+and report success correctly in the separate sanity check.
+
+FC learning is also unstable across seeds. Latest shared seed successes are
+95.15%,46.22%,43.12%; banked 69.92%,15.53%,19.90%. At a common 33.5M-step window,
+shared/banked mean success is 63.91%/32.97%, with length 178.35/233.31. A persistent
+simulator defect does not by itself explain the timing of late regressions.
+The earlier saved FC audit also found a badly inaccurate terminal critic at
+one checkpoint; that is prior evidence of learned value error, not a newly
+demonstrated GAE arithmetic defect or an established cause of later collapse.
+
+Evidence: fc/confirm_fc.py and fc/findings.json. Further historical diagnostics
+are in analysis/fc_audit_2026-09-30/ and are not claimed as rerun here.
+
+4. Why SoftRole can look much better without proving a gate advantage
+-------------------------------------------------------------------
+SoftRole reshapes the raw cells correctly, avoiding the legacy stride defect.
+It also enables independent observation copies. In the legacy view-based path,
+masking a blind A agent modifies overlapping P-agent observations. On fixed
+reset seeds 0-999, independently comparing identical simulator states:
+* PCP: target visible in 1144 corrected P-agent views, 456 legacy views. The
+  legacy path erased 688/1144 (60.14%) otherwise visible target observations.
+* FC: 510 corrected versus 387 legacy visible views, erasing 123/510 (24.12%).
+* PP: no copy-path difference, because the team has no blind A agents.
+These percentages concern this reset panel and raw views, before the separate
+legacy feature-extraction defect; they are not training-trajectory estimates.
+Matched actions across 90 episodes / 10,992 transitions preserved positions,
+rewards, termination and info exactly between observation-copy settings.
+
+The comparison also changes recurrence, communication, reward credit and
+optimization. Legacy has typed Real communication and per-class critics;
+SoftRole has untyped binary communication, action/communication recurrence and
+a pooled team critic. Both SoftRole variants use the same corrected inputs and
+learner; shared has one transform, banked four convex experts with a learned
+gate. Banked adds capacity as well as gating. At common 20M PCP samples,
+shared length 7.001 beats banked 8.752. The data do not show that banks are the
+reason either pipeline beats the compromised legacy reference.
+
+Effective optimizer details (active paths, not irrelevant generic CLI flags):
+                         HetNet Real                     Both SoftRole modes
+RMSprop lr/alpha/eps      1e-4/.97/1e-6                   same
+Gamma / GAE lambda       1/.95                          same
+Actor/value weights      50/1                           same
+Actor credit             individual reward,class critic summed team reward/GAE
+Advantage normalization  class-wise,padded batch        none
+Gradient aggregation     local episode mean,local clip; global episode mean,
+                         sum then global-step division  one global clip
+Clip threshold           .75 per collector              .75 after aggregation
+Entropy bonus            none in active A2C path        none
+Recurrence detach gap    5                              5
+
+RMSprop adaptive scaling means these gradient changes cannot be translated into
+a simple fixed learning-rate multiplier. The legacy generic value_coeff=.01,
+tau=1 and hid_size128 flags do not describe the active HetGAT A2C path. See
+hetgat/policy.py:369,849-865; trainer.py:55; multi_processing.py:107-114;
+softrole/learning.py and softrole/train.py:114-133.
+
+5. SoftRole audit evidence and its limits
+---------------------------------------
+The current full suite passed: 178 tests in 49.14 seconds. Independently checked
+model/learning/rollout/aggregation: common team credit, finite-horizon GAE,
+physical action masking, count-preserving observation transform, affine banks,
+sender/receiver distinction, null-message handling, actor/critic separation,
+episode averaging and single clipping. No new core SoftRole implementation
+defect was found in these paths. Straight-through bits, approximate-critic GAE
+and recurrence truncation remain declared approximations.
+
+Additional direct probes verified that other agents' inputs cannot change a
+local actor without a message path, and fresh current message noise affects
+current action logits but not the pre-message critic or gate.
+
+A prespecified nominal diagnostic panel used the latest LOCALLY ARCHIVED
+seed 0 checkpoint by epoch for each task/model, plus its seeded initialization:
+six checkpoint policies + six initialization policies, 12 common scenarios each,
+144 episodes total, panel seed 93001. Actions were independently replayed in
+fresh simulators. Every step reward, summed agent/team return, episode length,
+termination and physical success condition reconciled; checkpoint byte hashes
+were unchanged. Trained PP policies both succeeded 12/12, with lengths 3.92/3.75
+(shared/banked), versus 6/12 and 4/12 at initialization, lengths 63.58/69.83.
+Trained PCP succeeded 11/12 and 12/12 versus 3/12 and 2/12 at initialization.
+This supports actual learned behavior within the supplied simulators rather
+than fabricated short-episode accounting. It is a tiny nominal panel with
+unequal checkpoint progress, not a model ranking or final evaluation. FC replay
+agreement certifies bookkeeping within the buggy simulator, not its physics.
+
+Model, learning, scenarios and simulator sources were compared to 18 archived
+SoftRole runs; the selected files match their recorded manifests. Current
+env/rollout differences add opt-in diagnostics; train differences concern source
+archiving. The newest copied stdout extends archived metric prefixes exactly,
+but newer checkpoint/source snapshots are absent. No claim is made to have
+audited unavailable late-checkpoint tensors or live cluster state.
+
+Evidence: softrole/{probe.py,probe_results.json,observation_probe.py,
+observation_results.json} and their console records.
+
+6. Exact training schemes and latest progress
+--------------------------------------------
+All three suites use seeds 0,1,2; 5x5 maps; fixed teams; no configured sensor
+failures; unlimited communication range; four collectors; 10 updates/epoch;
+complete-episode batch floor 500 steps per collector/update. A joint environment
+step advances all agents once. Checkpoints are requested every 50 epochs/final.
+
+Task   Team   Sensing radius   Episode cap   Epoch cap   Update cap
+PP     3P0A   2                80            2000        20,000
+PCP    2P1A   2                80            2000        20,000
+FC     2P1A   1                300           1400        14,000
+
+PP/PCP prey is stationary. FC starts with one fire, propagation and reward_type3.
+There is NO explicit global training-step cap in these configs: SoftRole
+total_steps=null; the legacy loop stops by epochs. max_steps is the PER-EPISODE
+cap. Each epoch collects at least 20,000 joint steps. Completing all epochs
+implies 40M-46.32M steps per PP/PCP run, 28M-44.744M per FC run; upper bounds allow
+the last complete episode to overshoot a batch floor. Actual counts are preferred.
+
+Latest completed epochs from local copied logs (seed 0 / seed1 / seed2):
+Architecture       PP                 PCP                FC
+HetNet Real        401/392/603        1320/1113/1296      1044/1025/1125
+SoftRole shared    2000/2000/2000     998/1998/1980       1400/1400/1400
+SoftRole banked    1986/2000/1837     1352/1287/1455      1354/1400/1400
+
+Exact SoftRole joint steps (same seed order):
+PP shared         40,298,505 /40,287,117 /40,299,946
+PP banked         40,051,970 /40,320,695 /37,044,046
+PCP shared        20,448,904 /40,517,118 /40,184,051
+PCP banked        27,747,038 /26,395,052 /29,729,274
+FC shared         34,638,797 /34,884,206 /34,885,101
+FC banked         33,696,929 /34,900,777 /34,981,001
+
+All 27 raw logs were freshly parsed: 37,566 completed epochs. SoftRole records
+631,310,527 steps and 66,164,807 episodes. Nine runs reach their epoch targets;
+this is not convergence. Exact new legacy totals are unavailable from overcounted
+stdout. training/progress.csv includes the earlier valid structured totals,
+per-run settings and endpoints; inventory.json retains complete config contents,
+source paths and input hashes. Remote scheduler status was not queried.
+
+7. What is needed before a defensible comparison
+----------------------------------------------
+Preserve these runs as released-code and original SoftRole evidence. Implement
+separately versioned, opt-in corrections for the legacy sensory stride and
+observation copies, with schema/visibility tests; do not silently relabel old
+weights as trained on corrected inputs. Correct FC propagation/front validity,
+then validate reward/discovery/termination with deterministic physical scenarios.
+Retrain a corrected HetNet reference and both SoftRole variants under common
+environment semantics and actual sample budgets. Use an explicit release-recipe
+label versus a separate paper-specification reconstruction. Assess final frozen
+policies on a locked common panel across training seeds. Corrections applied
+only at evaluation introduce an input/physics distribution shift and cannot
+repair the training history. Controlled ablations are required to separate the
+input fix, learner changes and banks. The current evidence does not justify
+spending further FC comparison compute under the known defective semantics.
+
+Reproducibility
+---------------
+All new work is in this directory plus the additive root AGENTS.md record.
+artifact_manifest.json records all deliverables except itself and Python caches.
+validation.json records checks/source identities. Probe JSON files are created
+exclusively to prevent accidental overwrite. To rerun, copy only the authored
+probe scripts (plus legacy/upstream_uavnet.py) into a fresh sibling tree
+analysis/<fresh-name>/{legacy,fc,softrole}/ at the same directory depth, leaving
+result filenames absent. Run from the repository root. The inventory script
+can likewise be copied to analysis/<fresh-name>/training/. Full existing
+runtime tests: .venv/bin/python -m pytest -q. No research training or job
+submission ran.

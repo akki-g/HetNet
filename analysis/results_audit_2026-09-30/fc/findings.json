@@ -1,0 +1,302 @@
+{
+  "scope": "Current default FC, 5x5, 2P1A, vision1, reward3; deterministic diagnostic only",
+  "boundary_examples": [
+    {
+      "initial": [
+        0,
+        0
+      ],
+      "fires_after_stay": [
+        [
+          0,
+          0
+        ]
+      ],
+      "front_after_stay": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "initial": [
+        0,
+        1
+      ],
+      "fires_after_stay": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "front_after_stay": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "initial": [
+        0,
+        2
+      ],
+      "fires_after_stay": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "front_after_stay": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "initial": [
+        0,
+        3
+      ],
+      "fires_after_stay": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          3
+        ]
+      ],
+      "front_after_stay": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "initial": [
+        0,
+        4
+      ],
+      "fires_after_stay": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          4
+        ]
+      ],
+      "front_after_stay": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "initial": [
+        1,
+        0
+      ],
+      "fires_after_stay": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "front_after_stay": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "initial": [
+        2,
+        0
+      ],
+      "fires_after_stay": [
+        [
+          0,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ],
+      "front_after_stay": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "initial": [
+        3,
+        0
+      ],
+      "fires_after_stay": [
+        [
+          0,
+          0
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "front_after_stay": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "initial": [
+        4,
+        0
+      ],
+      "fires_after_stay": [
+        [
+          0,
+          0
+        ],
+        [
+          4,
+          0
+        ]
+      ],
+      "front_after_stay": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ]
+    }
+  ],
+  "new_phantom_origin_fires_of_25_initial_cells": 8,
+  "phantom_source_capture": {
+    "physical_fire": [
+      0,
+      2
+    ],
+    "water_drop": [
+      0,
+      0
+    ],
+    "agent_rewards": [
+      -0.1,
+      -0.1,
+      10.0
+    ],
+    "team_reward": 9.8,
+    "done": false,
+    "residual_fires": [
+      [
+        0,
+        2
+      ]
+    ]
+  },
+  "observation_aliasing": {
+    "legacy_sensor_fire_count": 0,
+    "softrole_sensor_fire_count": 1
+  },
+  "final_fire_capture": {
+    "done": true,
+    "success": true,
+    "rewards": [
+      0.0,
+      0.0,
+      10.0
+    ]
+  },
+  "physics_source_matches_six_archived_runs": [
+    {
+      "model": "shared",
+      "seed": 0,
+      "physics_matches_current": {
+        "WildFire_Simulate_Original.py": true,
+        "envs/ic3net_envs/fire_commander_env.py": true
+      }
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "physics_matches_current": {
+        "WildFire_Simulate_Original.py": true,
+        "envs/ic3net_envs/fire_commander_env.py": true
+      }
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "physics_matches_current": {
+        "WildFire_Simulate_Original.py": true,
+        "envs/ic3net_envs/fire_commander_env.py": true
+      }
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "physics_matches_current": {
+        "WildFire_Simulate_Original.py": true,
+        "envs/ic3net_envs/fire_commander_env.py": true
+      }
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "physics_matches_current": {
+        "WildFire_Simulate_Original.py": true,
+        "envs/ic3net_envs/fire_commander_env.py": true
+      }
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "physics_matches_current": {
+        "WildFire_Simulate_Original.py": true,
+        "envs/ic3net_envs/fire_commander_env.py": true
+      }
+    }
+  ],
+  "source_sha256": {
+    "WildFire_Simulate_Original.py": "1d092e0a9cd3bafd0f96fd8f28212567c6c4a8212d4f137c0eedf3d6eba63406",
+    "envs/ic3net_envs/fire_commander_env.py": "c2a4df6e2a385fe407889e299122946fbaab330b332a4928e1e50dfefb41f75e",
+    "softrole/env.py": "d0c49b3fb10521946cc5501fc33af5b1a0c8e3c16c5e9231854f9aac3cf87cd1",
+    "softrole/config.py": "df7e10769efe632adc71c7254b2ef5e790638c423a003cbfffba9d8885b927f1"
+  },
+  "probe_sha256": "b50253764e7402f38725ec769b22cd819ca6943fa4ac726e2518c9f4531e3bb7"
+}

@@ -1,0 +1,2758 @@
+{
+  "common_epoch_ends": {
+    "pp": 392,
+    "pcp": 998,
+    "fc": 1025
+  },
+  "softrole_sample_budgets": {
+    "pp": 37000000,
+    "pcp": 20000000,
+    "fc": 33500000
+  },
+  "runs": [
+    {
+      "source": "logs_1/reproduce-896848_0.out",
+      "task": "pp",
+      "model": "HetNet Real",
+      "seed": 0,
+      "archived_epochs": 261,
+      "archived_steps": 5501250,
+      "identity_basis": "Observed stdout Namespace",
+      "epochs": 401,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 343,
+        "last_epoch": 392,
+        "weighting": "equal epochs",
+        "success_rate": 0.9992,
+        "team_return": -2.095,
+        "steps_taken": 18.275199999999998
+      },
+      "latest": {
+        "first_epoch": 352,
+        "last_epoch": 401,
+        "weighting": "equal epochs",
+        "success_rate": 0.9992,
+        "team_return": -2.0644,
+        "steps_taken": 17.970399999999998
+      },
+      "previous": {
+        "first_epoch": 302,
+        "last_epoch": 351,
+        "weighting": "equal epochs",
+        "success_rate": 0.9976,
+        "team_return": -2.2396000000000003,
+        "steps_taken": 19.7176
+      },
+      "archive_latest": {
+        "first_epoch": 212,
+        "last_epoch": 261,
+        "weighting": "equal epochs",
+        "success_rate": 0.988,
+        "team_return": -2.7982,
+        "steps_taken": 25.130399999999998
+      }
+    },
+    {
+      "source": "logs_1/reproduce-896848_1.out",
+      "task": "pp",
+      "model": "HetNet Real",
+      "seed": 1,
+      "archived_epochs": 258,
+      "archived_steps": 5420391,
+      "identity_basis": "Observed stdout Namespace",
+      "epochs": 392,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 343,
+        "last_epoch": 392,
+        "weighting": "equal epochs",
+        "success_rate": 0.9987999999999999,
+        "team_return": -1.9942000000000002,
+        "steps_taken": 17.294
+      },
+      "latest": {
+        "first_epoch": 343,
+        "last_epoch": 392,
+        "weighting": "equal epochs",
+        "success_rate": 0.9987999999999999,
+        "team_return": -1.9942000000000002,
+        "steps_taken": 17.294
+      },
+      "previous": {
+        "first_epoch": 293,
+        "last_epoch": 342,
+        "weighting": "equal epochs",
+        "success_rate": 0.9972,
+        "team_return": -2.1866,
+        "steps_taken": 19.044
+      },
+      "archive_latest": {
+        "first_epoch": 209,
+        "last_epoch": 258,
+        "weighting": "equal epochs",
+        "success_rate": 0.9954000000000001,
+        "team_return": -2.6334,
+        "steps_taken": 23.6264
+      }
+    },
+    {
+      "source": "logs_1/reproduce-896848_2.out",
+      "task": "pp",
+      "model": "HetNet Real",
+      "seed": 2,
+      "archived_epochs": 358,
+      "archived_steps": 7486490,
+      "identity_basis": "Observed stdout Namespace",
+      "epochs": 603,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 343,
+        "last_epoch": 392,
+        "weighting": "equal epochs",
+        "success_rate": 0.9934000000000001,
+        "team_return": -2.255,
+        "steps_taken": 19.1894
+      },
+      "latest": {
+        "first_epoch": 554,
+        "last_epoch": 603,
+        "weighting": "equal epochs",
+        "success_rate": 0.9945999999999999,
+        "team_return": -1.9672,
+        "steps_taken": 16.368199999999998
+      },
+      "previous": {
+        "first_epoch": 504,
+        "last_epoch": 553,
+        "weighting": "equal epochs",
+        "success_rate": 0.9952,
+        "team_return": -2.0134,
+        "steps_taken": 16.8034
+      },
+      "archive_latest": {
+        "first_epoch": 309,
+        "last_epoch": 358,
+        "weighting": "equal epochs",
+        "success_rate": 0.9952,
+        "team_return": -2.3412,
+        "steps_taken": 20.0408
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898824_0.out",
+      "task": "pp",
+      "model": "SoftRole shared",
+      "seed": 0,
+      "archived_epochs": 453,
+      "archived_steps": 9227583,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 2000,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 343,
+        "last_epoch": 392,
+        "weighting": "equal epochs",
+        "success_rate": 1.0,
+        "team_return": -0.3719013449787441,
+        "steps_taken": 4.857866831732498
+      },
+      "latest": {
+        "first_epoch": 1951,
+        "last_epoch": 2000,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.35647443052822764,
+        "steps_taken": 4.749404041168457,
+        "episodes": 211424,
+        "steps_start": 39294367,
+        "steps_end": 40298505,
+        "value_loss_per_episode": 0.0025255219354172365,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.3104261195688624
+      },
+      "previous": {
+        "first_epoch": 1901,
+        "last_epoch": 1950,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.35546281959288495,
+        "steps_taken": 4.739628573586616,
+        "episodes": 211832,
+        "steps_start": 38290362,
+        "steps_end": 39294367,
+        "value_loss_per_episode": 0.0024394303668401137,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.313928697162072
+      },
+      "archive_latest": {
+        "first_epoch": 404,
+        "last_epoch": 453,
+        "weighting": "episodes",
+        "success_rate": 0.9999951773761068,
+        "team_return": -0.3697332124462278,
+        "steps_taken": 4.843423870059222,
+        "episodes": 207356,
+        "steps_start": 8223270,
+        "steps_end": 9227583,
+        "value_loss_per_episode": 0.004404165736899728,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.3604946786888888
+      },
+      "total_steps": 40298505,
+      "total_episodes": 7894025,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 1786,
+        "last_epoch": 1835,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.35653681761874595,
+        "steps_taken": 4.747893636939604,
+        "episodes": 211502,
+        "steps_start": 35980785,
+        "steps_end": 36984974,
+        "value_loss_per_episode": 0.0025073478994892813,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.3159520166712245
+      },
+      "prior_common_sample": {
+        "first_epoch": 193,
+        "last_epoch": 242,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.38323290600396126,
+        "steps_taken": 4.948193293458018,
+        "episodes": 202966,
+        "steps_start": 3984870,
+        "steps_end": 4989185,
+        "value_loss_per_episode": 0.007564081307368056,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.41292922391121384
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898824_1.out",
+      "task": "pp",
+      "model": "SoftRole shared",
+      "seed": 1,
+      "archived_epochs": 457,
+      "archived_steps": 9297629,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 2000,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 343,
+        "last_epoch": 392,
+        "weighting": "equal epochs",
+        "success_rate": 1.0,
+        "team_return": -0.3748164557827281,
+        "steps_taken": 4.884916873608452
+      },
+      "latest": {
+        "first_epoch": 1951,
+        "last_epoch": 2000,
+        "weighting": "episodes",
+        "success_rate": 0.9999811623756129,
+        "team_return": -0.35519989074177855,
+        "steps_taken": 4.729901432130394,
+        "episodes": 212341,
+        "steps_start": 39282765,
+        "steps_end": 40287117,
+        "value_loss_per_episode": 0.002118609528341663,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.4142593770333299
+      },
+      "previous": {
+        "first_epoch": 1901,
+        "last_epoch": 1950,
+        "weighting": "episodes",
+        "success_rate": 0.9999952907935012,
+        "team_return": -0.35509959971744764,
+        "steps_taken": 4.728476571697669,
+        "episodes": 212350,
+        "steps_start": 38278673,
+        "steps_end": 39282765,
+        "value_loss_per_episode": 0.002218974106882327,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.41856425590717883
+      },
+      "archive_latest": {
+        "first_epoch": 408,
+        "last_epoch": 457,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.37253261774327806,
+        "steps_taken": 4.860348632377708,
+        "episodes": 206636,
+        "steps_start": 8293306,
+        "steps_end": 9297629,
+        "value_loss_per_episode": 0.004807796759364507,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.4419402048006441
+      },
+      "total_steps": 40287117,
+      "total_episodes": 7929131,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 1787,
+        "last_epoch": 1836,
+        "weighting": "episodes",
+        "success_rate": 0.9999716648327517,
+        "team_return": -0.356063253538354,
+        "steps_taken": 4.741828846144764,
+        "episodes": 211751,
+        "steps_start": 35989314,
+        "steps_end": 36993401,
+        "value_loss_per_episode": 0.002253557431536235,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.4146898546939663
+      },
+      "prior_common_sample": {
+        "first_epoch": 194,
+        "last_epoch": 243,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.38002229408594246,
+        "steps_taken": 4.921196530942232,
+        "episodes": 204090,
+        "steps_start": 3994870,
+        "steps_end": 4999237,
+        "value_loss_per_episode": 0.0070088474672198395,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.4667413957976294
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898824_2.out",
+      "task": "pp",
+      "model": "SoftRole shared",
+      "seed": 2,
+      "archived_epochs": 453,
+      "archived_steps": 9231010,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 2000,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 343,
+        "last_epoch": 392,
+        "weighting": "equal epochs",
+        "success_rate": 0.9999853335956622,
+        "team_return": -0.37496486055520334,
+        "steps_taken": 4.882662382471102
+      },
+      "latest": {
+        "first_epoch": 1951,
+        "last_epoch": 2000,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.3553706533838984,
+        "steps_taken": 4.735887058734741,
+        "episodes": 212004,
+        "steps_start": 39295919,
+        "steps_end": 40299946,
+        "value_loss_per_episode": 0.0021983842979281065,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.4419630350042425
+      },
+      "previous": {
+        "first_epoch": 1901,
+        "last_epoch": 1950,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.35526326958900234,
+        "steps_taken": 4.735475960291447,
+        "episodes": 212045,
+        "steps_start": 38291785,
+        "steps_end": 39295919,
+        "value_loss_per_episode": 0.0023145911877778093,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.438976590118307
+      },
+      "archive_latest": {
+        "first_epoch": 404,
+        "last_epoch": 453,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.37121098602578295,
+        "steps_taken": 4.8538241791174634,
+        "episodes": 206881,
+        "steps_start": 8226846,
+        "steps_end": 9231010,
+        "value_loss_per_episode": 0.004100379350498593,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.43134785026533357
+      },
+      "total_steps": 40299946,
+      "total_episodes": 7887220,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 1786,
+        "last_epoch": 1835,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.3554502481348647,
+        "steps_taken": 4.7330040578180155,
+        "episodes": 212183,
+        "steps_start": 35982242,
+        "steps_end": 36986505,
+        "value_loss_per_episode": 0.0021589503638835697,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.4438823920405666
+      },
+      "prior_common_sample": {
+        "first_epoch": 193,
+        "last_epoch": 242,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.38375542423838516,
+        "steps_taken": 4.957909391152382,
+        "episodes": 202563,
+        "steps_start": 3988648,
+        "steps_end": 4992937,
+        "value_loss_per_episode": 0.006603095071153214,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.43094378158840185
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898824_3.out",
+      "task": "pp",
+      "model": "SoftRole banked",
+      "seed": 0,
+      "archived_epochs": 379,
+      "archived_steps": 7775300,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 1986,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 343,
+        "last_epoch": 392,
+        "weighting": "equal epochs",
+        "success_rate": 1.0,
+        "team_return": -0.3772069106167158,
+        "steps_taken": 4.906119925813342
+      },
+      "latest": {
+        "first_epoch": 1937,
+        "last_epoch": 1986,
+        "weighting": "episodes",
+        "success_rate": 0.9999858156699023,
+        "team_return": -0.3567257365213404,
+        "steps_taken": 4.747859348182751,
+        "episodes": 211501,
+        "steps_start": 39047793,
+        "steps_end": 40051970,
+        "value_loss_per_episode": 0.002991229849380381,
+        "gate_entropy": 0.8250419028620124,
+        "alpha_null": 0.00042944038576518565
+      },
+      "previous": {
+        "first_epoch": 1887,
+        "last_epoch": 1936,
+        "weighting": "episodes",
+        "success_rate": 0.9999716475602726,
+        "team_return": -0.3566344708962207,
+        "steps_taken": 4.744936726805341,
+        "episodes": 211622,
+        "steps_start": 38043660,
+        "steps_end": 39047793,
+        "value_loss_per_episode": 0.002907978197563905,
+        "gate_entropy": 0.8257605992622602,
+        "alpha_null": 0.00042525333737254207
+      },
+      "archive_latest": {
+        "first_epoch": 330,
+        "last_epoch": 379,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.3773454650349822,
+        "steps_taken": 4.909745615621929,
+        "episodes": 204533,
+        "steps_start": 6771095,
+        "steps_end": 7775300,
+        "value_loss_per_episode": 0.007326632909440662,
+        "gate_entropy": 1.0914279938598308,
+        "alpha_null": 0.05818824908430304
+      },
+      "total_steps": 40051970,
+      "total_episodes": 7695554,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 1785,
+        "last_epoch": 1834,
+        "weighting": "episodes",
+        "success_rate": 0.9999384148941209,
+        "team_return": -0.35754772845705624,
+        "steps_taken": 4.756904637832204,
+        "episodes": 211090,
+        "steps_start": 35994960,
+        "steps_end": 36999095,
+        "value_loss_per_episode": 0.002867418746272924,
+        "gate_entropy": 0.8493983915503254,
+        "alpha_null": 0.0005155099596451311
+      },
+      "prior_common_sample": {
+        "first_epoch": 191,
+        "last_epoch": 240,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.39855492058368097,
+        "steps_taken": 5.067346249098401,
+        "episodes": 198259,
+        "steps_start": 3978653,
+        "steps_end": 4983300,
+        "value_loss_per_episode": 0.01204576316125843,
+        "gate_entropy": 1.1269337553318122,
+        "alpha_null": 0.062384970656553865
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898824_4.out",
+      "task": "pp",
+      "model": "SoftRole banked",
+      "seed": 1,
+      "archived_epochs": 391,
+      "archived_steps": 8005643,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 2000,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 343,
+        "last_epoch": 392,
+        "weighting": "equal epochs",
+        "success_rate": 1.0,
+        "team_return": -0.37567852680691344,
+        "steps_taken": 4.886156158276409
+      },
+      "latest": {
+        "first_epoch": 1951,
+        "last_epoch": 2000,
+        "weighting": "episodes",
+        "success_rate": 0.9999528175028192,
+        "team_return": -0.35589309389788765,
+        "steps_taken": 4.737637006176189,
+        "episodes": 211943,
+        "steps_start": 39316586,
+        "steps_end": 40320695,
+        "value_loss_per_episode": 0.0025876736685917228,
+        "gate_entropy": 0.42060288143259905,
+        "alpha_null": 0.1996355172992488
+      },
+      "previous": {
+        "first_epoch": 1901,
+        "last_epoch": 1950,
+        "weighting": "episodes",
+        "success_rate": 0.9999669844024884,
+        "team_return": -0.35569306813947676,
+        "steps_taken": 4.736601563052717,
+        "episodes": 212021,
+        "steps_start": 38312327,
+        "steps_end": 39316586,
+        "value_loss_per_episode": 0.0026243602512818517,
+        "gate_entropy": 0.422154972461889,
+        "alpha_null": 0.19881785124904022
+      },
+      "archive_latest": {
+        "first_epoch": 342,
+        "last_epoch": 391,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.3757555777231698,
+        "steps_taken": 4.886791075642928,
+        "episodes": 205505,
+        "steps_start": 7001383,
+        "steps_end": 8005643,
+        "value_loss_per_episode": 0.006811412663729901,
+        "gate_entropy": 0.7579681381889876,
+        "alpha_null": 0.28696212140307126
+      },
+      "total_steps": 40320695,
+      "total_episodes": 7811807,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 1785,
+        "last_epoch": 1834,
+        "weighting": "episodes",
+        "success_rate": 0.9999147404319818,
+        "team_return": -0.3570303618794998,
+        "steps_taken": 4.756645509662751,
+        "episodes": 211120,
+        "steps_start": 35982510,
+        "steps_end": 36986733,
+        "value_loss_per_episode": 0.003018093854602392,
+        "gate_entropy": 0.4815676525470951,
+        "alpha_null": 0.18779480650767041
+      },
+      "prior_common_sample": {
+        "first_epoch": 192,
+        "last_epoch": 241,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.391759570047151,
+        "steps_taken": 5.018021257891792,
+        "episodes": 200208,
+        "steps_start": 3987996,
+        "steps_end": 4992644,
+        "value_loss_per_episode": 0.010240342369237163,
+        "gate_entropy": 0.8457277879884069,
+        "alpha_null": 0.3133491982246083
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898824_5.out",
+      "task": "pp",
+      "model": "SoftRole banked",
+      "seed": 2,
+      "archived_epochs": 361,
+      "archived_steps": 7398888,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 1837,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 343,
+        "last_epoch": 392,
+        "weighting": "equal epochs",
+        "success_rate": 1.0,
+        "team_return": -0.3763041172807649,
+        "steps_taken": 4.898272894798155
+      },
+      "latest": {
+        "first_epoch": 1788,
+        "last_epoch": 1837,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.3564103049013999,
+        "steps_taken": 4.747275555408466,
+        "episodes": 211511,
+        "steps_start": 36039945,
+        "steps_end": 37044046,
+        "value_loss_per_episode": 0.0024967542684938824,
+        "gate_entropy": 0.47169831576546734,
+        "alpha_null": 0.1371964343789918
+      },
+      "previous": {
+        "first_epoch": 1738,
+        "last_epoch": 1787,
+        "weighting": "episodes",
+        "success_rate": 0.9999952716887637,
+        "team_return": -0.35685250505929306,
+        "steps_taken": 4.747621659448112,
+        "episodes": 211492,
+        "steps_start": 35035861,
+        "steps_end": 36039945,
+        "value_loss_per_episode": 0.002309569294655637,
+        "gate_entropy": 0.46652374202224733,
+        "alpha_null": 0.15002949381724737
+      },
+      "archive_latest": {
+        "first_epoch": 312,
+        "last_epoch": 361,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.37646258105121416,
+        "steps_taken": 4.900318594087714,
+        "episodes": 204963,
+        "steps_start": 6394504,
+        "steps_end": 7398888,
+        "value_loss_per_episode": 0.00604445009907868,
+        "gate_entropy": 0.7617172538300416,
+        "alpha_null": 0.16628191344015916
+      },
+      "total_steps": 37044046,
+      "total_episodes": 7137695,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 1785,
+        "last_epoch": 1834,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.3563214722998303,
+        "steps_taken": 4.746597457607088,
+        "episodes": 211533,
+        "steps_start": 35979712,
+        "steps_end": 36983774,
+        "value_loss_per_episode": 0.0024985036165484395,
+        "gate_entropy": 0.4722593390859853,
+        "alpha_null": 0.1376424295324139
+      },
+      "prior_common_sample": {
+        "first_epoch": 192,
+        "last_epoch": 241,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.3858280467693771,
+        "steps_taken": 4.974183739668296,
+        "episodes": 201927,
+        "steps_start": 3983949,
+        "steps_end": 4988371,
+        "value_loss_per_episode": 0.00780028015574437,
+        "gate_entropy": 0.8237916120802791,
+        "alpha_null": 0.16285446011194266
+      }
+    },
+    {
+      "source": "logs_1/reproduce-896848_3.out",
+      "task": "pcp",
+      "model": "HetNet Real",
+      "seed": 0,
+      "archived_epochs": 803,
+      "archived_steps": 16712878,
+      "identity_basis": "Observed stdout Namespace",
+      "epochs": 1320,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 949,
+        "last_epoch": 998,
+        "weighting": "equal epochs",
+        "success_rate": 0.9968,
+        "team_return": -2.0924,
+        "steps_taken": 17.6798
+      },
+      "latest": {
+        "first_epoch": 1271,
+        "last_epoch": 1320,
+        "weighting": "equal epochs",
+        "success_rate": 1.0,
+        "team_return": -1.9679999999999997,
+        "steps_taken": 16.5792
+      },
+      "previous": {
+        "first_epoch": 1221,
+        "last_epoch": 1270,
+        "weighting": "equal epochs",
+        "success_rate": 0.9998,
+        "team_return": -1.9724000000000002,
+        "steps_taken": 16.651400000000002
+      },
+      "archive_latest": {
+        "first_epoch": 754,
+        "last_epoch": 803,
+        "weighting": "equal epochs",
+        "success_rate": 0.996,
+        "team_return": -2.193,
+        "steps_taken": 18.6416
+      }
+    },
+    {
+      "source": "logs_1/reproduce-896848_4.out",
+      "task": "pcp",
+      "model": "HetNet Real",
+      "seed": 1,
+      "archived_epochs": 641,
+      "archived_steps": 13360997,
+      "identity_basis": "Observed stdout Namespace",
+      "epochs": 1113,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 949,
+        "last_epoch": 998,
+        "weighting": "equal epochs",
+        "success_rate": 0.9978,
+        "team_return": -2.0976000000000004,
+        "steps_taken": 18.0026
+      },
+      "latest": {
+        "first_epoch": 1064,
+        "last_epoch": 1113,
+        "weighting": "equal epochs",
+        "success_rate": 0.9998,
+        "team_return": -2.0288,
+        "steps_taken": 17.4324
+      },
+      "previous": {
+        "first_epoch": 1014,
+        "last_epoch": 1063,
+        "weighting": "equal epochs",
+        "success_rate": 0.9986,
+        "team_return": -2.0436,
+        "steps_taken": 17.5848
+      },
+      "archive_latest": {
+        "first_epoch": 592,
+        "last_epoch": 641,
+        "weighting": "equal epochs",
+        "success_rate": 0.9915999999999999,
+        "team_return": -2.3746,
+        "steps_taken": 20.5806
+      }
+    },
+    {
+      "source": "logs_1/reproduce-896848_5.out",
+      "task": "pcp",
+      "model": "HetNet Real",
+      "seed": 2,
+      "archived_epochs": 797,
+      "archived_steps": 16626301,
+      "identity_basis": "Observed stdout Namespace",
+      "epochs": 1296,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 949,
+        "last_epoch": 998,
+        "weighting": "equal epochs",
+        "success_rate": 0.993,
+        "team_return": -2.1468000000000003,
+        "steps_taken": 18.1468
+      },
+      "latest": {
+        "first_epoch": 1247,
+        "last_epoch": 1296,
+        "weighting": "equal epochs",
+        "success_rate": 0.9965999999999999,
+        "team_return": -2.0112,
+        "steps_taken": 16.9574
+      },
+      "previous": {
+        "first_epoch": 1197,
+        "last_epoch": 1246,
+        "weighting": "equal epochs",
+        "success_rate": 0.995,
+        "team_return": -2.0262000000000002,
+        "steps_taken": 17.1282
+      },
+      "archive_latest": {
+        "first_epoch": 748,
+        "last_epoch": 797,
+        "weighting": "equal epochs",
+        "success_rate": 0.9912000000000001,
+        "team_return": -2.2854,
+        "steps_taken": 19.393
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898818_6.out",
+      "task": "pcp",
+      "model": "SoftRole shared",
+      "seed": 0,
+      "archived_epochs": 309,
+      "archived_steps": 6537680,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 998,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 949,
+        "last_epoch": 998,
+        "weighting": "equal epochs",
+        "success_rate": 0.999868318063796,
+        "team_return": -0.5597128136914337,
+        "steps_taken": 7.123223022359011
+      },
+      "latest": {
+        "first_epoch": 949,
+        "last_epoch": 998,
+        "weighting": "episodes",
+        "success_rate": 0.9998726934529072,
+        "team_return": -0.5595653188675376,
+        "steps_taken": 7.121648478333133,
+        "episodes": 141391,
+        "steps_start": 19441967,
+        "steps_end": 20448904,
+        "value_loss_per_episode": 0.00999157765623476,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.3813266010670159
+      },
+      "previous": {
+        "first_epoch": 899,
+        "last_epoch": 948,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.5661040030631633,
+        "steps_taken": 7.273669077222058,
+        "episodes": 138419,
+        "steps_start": 18435153,
+        "steps_end": 19441967,
+        "value_loss_per_episode": 0.009274052046504808,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.3832405602530214
+      },
+      "archive_latest": {
+        "first_epoch": 260,
+        "last_epoch": 309,
+        "weighting": "episodes",
+        "success_rate": 0.9750276186316573,
+        "team_return": -1.7828237802841505,
+        "steps_taken": 26.626544716491534,
+        "episodes": 38923,
+        "steps_start": 5501295,
+        "steps_end": 6537680,
+        "value_loss_per_episode": 0.20688839903008138,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.22673511628467913
+      },
+      "total_steps": 20448904,
+      "total_episodes": 1711274,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 926,
+        "last_epoch": 975,
+        "weighting": "episodes",
+        "success_rate": 0.9998712547653618,
+        "team_return": -0.5640965303159264,
+        "steps_taken": 7.202358898799093,
+        "episodes": 139811,
+        "steps_start": 18978850,
+        "steps_end": 19985819,
+        "value_loss_per_episode": 0.010127381402318378,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.3836779603499672
+      },
+      "prior_common_sample": {
+        "first_epoch": 185,
+        "last_epoch": 234,
+        "weighting": "episodes",
+        "success_rate": 0.894882289152412,
+        "team_return": -2.713598838632944,
+        "steps_taken": 36.76202469654039,
+        "episodes": 28587,
+        "steps_start": 3928569,
+        "steps_end": 4979485,
+        "value_loss_per_episode": 0.47132282143429377,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.29207049447051187
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898818_7.out",
+      "task": "pcp",
+      "model": "SoftRole shared",
+      "seed": 1,
+      "archived_epochs": 419,
+      "archived_steps": 8742582,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 1998,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 949,
+        "last_epoch": 998,
+        "weighting": "equal epochs",
+        "success_rate": 1.0,
+        "team_return": -0.5389677096678487,
+        "steps_taken": 6.774117855595706
+      },
+      "latest": {
+        "first_epoch": 1949,
+        "last_epoch": 1998,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.4550914635794892,
+        "steps_taken": 5.432985286881479,
+        "episodes": 184937,
+        "steps_start": 39512358,
+        "steps_end": 40517118,
+        "value_loss_per_episode": 0.00398020494318459,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.2900690939972956
+      },
+      "previous": {
+        "first_epoch": 1899,
+        "last_epoch": 1948,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.45587329008220606,
+        "steps_taken": 5.442320397708196,
+        "episodes": 184658,
+        "steps_start": 38507390,
+        "steps_end": 39512358,
+        "value_loss_per_episode": 0.004048250218075544,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.2941081348361871
+      },
+      "archive_latest": {
+        "first_epoch": 370,
+        "last_epoch": 419,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.8315014380466044,
+        "steps_taken": 11.882667136232905,
+        "episodes": 85185,
+        "steps_start": 7730357,
+        "steps_end": 8742582,
+        "value_loss_per_episode": 0.03337763502262562,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.19412846865562225
+      },
+      "total_steps": 40517118,
+      "total_episodes": 5267066,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 928,
+        "last_epoch": 977,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.5433084021832337,
+        "steps_taken": 6.8503246267133076,
+        "episodes": 146938,
+        "steps_start": 18983406,
+        "steps_end": 19989979,
+        "value_loss_per_episode": 0.008400419219141714,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.27749628407376653
+      },
+      "prior_common_sample": {
+        "first_epoch": 186,
+        "last_epoch": 235,
+        "weighting": "episodes",
+        "success_rate": 0.929123588356927,
+        "team_return": -2.3402179099729596,
+        "steps_taken": 33.21259742325434,
+        "episodes": 31435,
+        "steps_start": 3941471,
+        "steps_end": 4985509,
+        "value_loss_per_episode": 0.3299902451880595,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.1906164862000094
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898818_8.out",
+      "task": "pcp",
+      "model": "SoftRole shared",
+      "seed": 2,
+      "archived_epochs": 414,
+      "archived_steps": 8665328,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 1980,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 949,
+        "last_epoch": 998,
+        "weighting": "equal epochs",
+        "success_rate": 0.9999655850386506,
+        "team_return": -0.543929777314275,
+        "steps_taken": 6.855236560894472
+      },
+      "latest": {
+        "first_epoch": 1931,
+        "last_epoch": 1980,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.45213804523119905,
+        "steps_taken": 5.419863756249899,
+        "episodes": 185403,
+        "steps_start": 39179192,
+        "steps_end": 40184051,
+        "value_loss_per_episode": 0.0037374332751234692,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.3579823618850969
+      },
+      "previous": {
+        "first_epoch": 1881,
+        "last_epoch": 1930,
+        "weighting": "episodes",
+        "success_rate": 0.9999945854337339,
+        "team_return": -0.4544426516213919,
+        "steps_taken": 5.440810668861371,
+        "episodes": 184687,
+        "steps_start": 38174345,
+        "steps_end": 39179192,
+        "value_loss_per_episode": 0.0038755249381547223,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.3585560777679012
+      },
+      "archive_latest": {
+        "first_epoch": 365,
+        "last_epoch": 414,
+        "weighting": "episodes",
+        "success_rate": 1.0,
+        "team_return": -0.9542186709682712,
+        "steps_taken": 13.873932003663654,
+        "episodes": 73151,
+        "steps_start": 7650436,
+        "steps_end": 8665328,
+        "value_loss_per_episode": 0.04676149048858116,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.1318438806737869
+      },
+      "total_steps": 40184051,
+      "total_episodes": 5117526,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 927,
+        "last_epoch": 976,
+        "weighting": "episodes",
+        "success_rate": 0.999986190801693,
+        "team_return": -0.5489618935172719,
+        "steps_taken": 6.95039045508213,
+        "episodes": 144831,
+        "steps_start": 18991820,
+        "steps_end": 19998452,
+        "value_loss_per_episode": 0.007873816458506834,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.33851261729969995
+      },
+      "prior_common_sample": {
+        "first_epoch": 186,
+        "last_epoch": 235,
+        "weighting": "episodes",
+        "success_rate": 0.907995138091701,
+        "team_return": -2.5590097238165974,
+        "steps_taken": 35.41062867175366,
+        "episodes": 29618,
+        "steps_start": 3945623,
+        "steps_end": 4994415,
+        "value_loss_per_episode": 0.3847428617698763,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.18936471519485598
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898818_9.out",
+      "task": "pcp",
+      "model": "SoftRole banked",
+      "seed": 0,
+      "archived_epochs": 252,
+      "archived_steps": 5377575,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 1352,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 949,
+        "last_epoch": 998,
+        "weighting": "equal epochs",
+        "success_rate": 0.9998125121471184,
+        "team_return": -0.6442203931711035,
+        "steps_taken": 8.733403479939152
+      },
+      "latest": {
+        "first_epoch": 1303,
+        "last_epoch": 1352,
+        "weighting": "episodes",
+        "success_rate": 0.999727843842845,
+        "team_return": -0.5860795905561814,
+        "steps_taken": 7.6168116906189285,
+        "episodes": 132277,
+        "steps_start": 26739509,
+        "steps_end": 27747038,
+        "value_loss_per_episode": 0.011221065536202642,
+        "gate_entropy": 0.9991116346983617,
+        "alpha_null": 0.05410624941938283
+      },
+      "previous": {
+        "first_epoch": 1253,
+        "last_epoch": 1302,
+        "weighting": "episodes",
+        "success_rate": 0.9998618243787855,
+        "team_return": -0.5910135949458428,
+        "steps_taken": 7.734226869017188,
+        "episodes": 130269,
+        "steps_start": 25731979,
+        "steps_end": 26739509,
+        "value_loss_per_episode": 0.010987192740054592,
+        "gate_entropy": 1.0057960026172232,
+        "alpha_null": 0.05230199798709299
+      },
+      "archive_latest": {
+        "first_epoch": 203,
+        "last_epoch": 252,
+        "weighting": "episodes",
+        "success_rate": 0.8300999644395275,
+        "team_return": -3.1246473586471204,
+        "steps_taken": 41.71551621952665,
+        "episodes": 25309,
+        "steps_start": 4321797,
+        "steps_end": 5377575,
+        "value_loss_per_episode": 0.5513793123493685,
+        "gate_entropy": 1.1685267528142556,
+        "alpha_null": 0.19225818124989058
+      },
+      "total_steps": 27747038,
+      "total_episodes": 2102298,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 918,
+        "last_epoch": 967,
+        "weighting": "episodes",
+        "success_rate": 0.9998067072581425,
+        "team_return": -0.6514483776588734,
+        "steps_taken": 8.864747796902044,
+        "episodes": 113817,
+        "steps_start": 18977671,
+        "steps_end": 19986630,
+        "value_loss_per_episode": 0.01700044169215592,
+        "gate_entropy": 1.0575402574340749,
+        "alpha_null": 0.044802453533123066
+      },
+      "prior_common_sample": {
+        "first_epoch": 185,
+        "last_epoch": 234,
+        "weighting": "episodes",
+        "success_rate": 0.8064489077110152,
+        "team_return": -3.510725816596082,
+        "steps_taken": 44.34923896180133,
+        "episodes": 23849,
+        "steps_start": 3940195,
+        "steps_end": 4997880,
+        "value_loss_per_episode": 0.7055197184963637,
+        "gate_entropy": 1.1788268713485275,
+        "alpha_null": 0.2061716315925113
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898818_10.out",
+      "task": "pcp",
+      "model": "SoftRole banked",
+      "seed": 1,
+      "archived_epochs": 241,
+      "archived_steps": 5141025,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 1287,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 949,
+        "last_epoch": 998,
+        "weighting": "equal epochs",
+        "success_rate": 0.9998338943545171,
+        "team_return": -0.6461562053557706,
+        "steps_taken": 8.773966031574927
+      },
+      "latest": {
+        "first_epoch": 1238,
+        "last_epoch": 1287,
+        "weighting": "episodes",
+        "success_rate": 0.9999549559694602,
+        "team_return": -0.5795113473420268,
+        "steps_taken": 7.559987387671449,
+        "episodes": 133203,
+        "steps_start": 25388039,
+        "steps_end": 26395052,
+        "value_loss_per_episode": 0.011305207081619369,
+        "gate_entropy": 0.790489428942812,
+        "alpha_null": 0.16737345237596965
+      },
+      "previous": {
+        "first_epoch": 1188,
+        "last_epoch": 1237,
+        "weighting": "episodes",
+        "success_rate": 0.9999767044572139,
+        "team_return": -0.5944774033234974,
+        "steps_taken": 7.822247243360771,
+        "episodes": 128780,
+        "steps_start": 24380690,
+        "steps_end": 25388039,
+        "value_loss_per_episode": 0.01203777843748522,
+        "gate_entropy": 0.7871419514108327,
+        "alpha_null": 0.16471495471301828
+      },
+      "archive_latest": {
+        "first_epoch": 192,
+        "last_epoch": 241,
+        "weighting": "episodes",
+        "success_rate": 0.8292357238237373,
+        "team_return": -3.081101248919958,
+        "steps_taken": 41.46261094965046,
+        "episodes": 25462,
+        "steps_start": 4085304,
+        "steps_end": 5141025,
+        "value_loss_per_episode": 0.5426468963441421,
+        "gate_entropy": 1.1133758539884897,
+        "alpha_null": 0.26959523999245333
+      },
+      "total_steps": 26395052,
+      "total_episodes": 1991701,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 920,
+        "last_epoch": 969,
+        "weighting": "episodes",
+        "success_rate": 0.999884534763918,
+        "team_return": -0.6556560201797705,
+        "steps_taken": 8.961647777738303,
+        "episodes": 112588,
+        "steps_start": 18975613,
+        "steps_end": 19984587,
+        "value_loss_per_episode": 0.017445590648575916,
+        "gate_entropy": 0.7818270795807605,
+        "alpha_null": 0.12110104110510417
+      },
+      "prior_common_sample": {
+        "first_epoch": 185,
+        "last_epoch": 234,
+        "weighting": "episodes",
+        "success_rate": 0.8194572864321608,
+        "team_return": -3.2220341708542697,
+        "steps_taken": 42.47593969849246,
+        "episodes": 24875,
+        "steps_start": 3937326,
+        "steps_end": 4993915,
+        "value_loss_per_episode": 0.5918314336770708,
+        "gate_entropy": 1.1236947100337864,
+        "alpha_null": 0.2728425474523205
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898818_11.out",
+      "task": "pcp",
+      "model": "SoftRole banked",
+      "seed": 2,
+      "archived_epochs": 300,
+      "archived_steps": 6369381,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 1455,
+      "configured_epochs": 2000,
+      "common_epoch": {
+        "first_epoch": 949,
+        "last_epoch": 998,
+        "weighting": "equal epochs",
+        "success_rate": 0.9999914965986395,
+        "team_return": -0.6228521169289344,
+        "steps_taken": 8.33645022396496
+      },
+      "latest": {
+        "first_epoch": 1406,
+        "last_epoch": 1455,
+        "weighting": "episodes",
+        "success_rate": 0.9998001855419967,
+        "team_return": -0.5633344037679298,
+        "steps_taken": 7.186219938628416,
+        "episodes": 140130,
+        "steps_start": 28722269,
+        "steps_end": 29729274,
+        "value_loss_per_episode": 0.00992805167910843,
+        "gate_entropy": 0.6680859835105607,
+        "alpha_null": 0.16859294544344905
+      },
+      "previous": {
+        "first_epoch": 1356,
+        "last_epoch": 1405,
+        "weighting": "episodes",
+        "success_rate": 0.9997748320319593,
+        "team_return": -0.5685854367169058,
+        "steps_taken": 7.314058471036862,
+        "episodes": 137675,
+        "steps_start": 27715306,
+        "steps_end": 28722269,
+        "value_loss_per_episode": 0.009989223659600031,
+        "gate_entropy": 0.660932569537505,
+        "alpha_null": 0.16510963222723263
+      },
+      "archive_latest": {
+        "first_epoch": 251,
+        "last_epoch": 300,
+        "weighting": "episodes",
+        "success_rate": 0.9458064892283474,
+        "team_return": -2.1300265282919857,
+        "steps_taken": 30.365070110485963,
+        "episodes": 34303,
+        "steps_start": 5327768,
+        "steps_end": 6369381,
+        "value_loss_per_episode": 0.28544722598710703,
+        "gate_entropy": 0.820880508417512,
+        "alpha_null": 0.0707584422711681
+      },
+      "total_steps": 29729274,
+      "total_episodes": 2589105,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 923,
+        "last_epoch": 972,
+        "weighting": "episodes",
+        "success_rate": 0.9999916392853261,
+        "team_return": -0.6286170541857918,
+        "steps_taken": 8.430535002131982,
+        "episodes": 119607,
+        "steps_start": 18989095,
+        "steps_end": 19997446,
+        "value_loss_per_episode": 0.014877202836671748,
+        "gate_entropy": 0.6937167624560293,
+        "alpha_null": 0.12127992932146278
+      },
+      "prior_common_sample": {
+        "first_epoch": 185,
+        "last_epoch": 234,
+        "weighting": "episodes",
+        "success_rate": 0.8307479771067693,
+        "team_return": -3.2116104203670797,
+        "steps_taken": 41.62206433787251,
+        "episodes": 25335,
+        "steps_start": 3937570,
+        "steps_end": 4992065,
+        "value_loss_per_episode": 0.6006959686510731,
+        "gate_entropy": 0.8618023488349948,
+        "alpha_null": 0.15249505868826166
+      }
+    },
+    {
+      "source": "logs_1/reproduce-896848_6.out",
+      "task": "fc",
+      "model": "HetNet Real",
+      "seed": 0,
+      "archived_epochs": 635,
+      "archived_steps": 15762069,
+      "identity_basis": "Observed stdout Namespace",
+      "epochs": 1044,
+      "configured_epochs": 1400,
+      "common_epoch": {
+        "first_epoch": 976,
+        "last_epoch": 1025,
+        "weighting": "equal epochs",
+        "success_rate": 0.3962,
+        "team_return": -228.61880000000002,
+        "steps_taken": 220.15439999999998
+      },
+      "latest": {
+        "first_epoch": 995,
+        "last_epoch": 1044,
+        "weighting": "equal epochs",
+        "success_rate": 0.39520000000000005,
+        "team_return": -228.81920000000002,
+        "steps_taken": 220.79919999999998
+      },
+      "previous": {
+        "first_epoch": 945,
+        "last_epoch": 994,
+        "weighting": "equal epochs",
+        "success_rate": 0.3932,
+        "team_return": -228.636,
+        "steps_taken": 221.45
+      },
+      "archive_latest": {
+        "first_epoch": 586,
+        "last_epoch": 635,
+        "weighting": "equal epochs",
+        "success_rate": 0.40259999999999996,
+        "team_return": -222.15259999999998,
+        "steps_taken": 222.4928
+      }
+    },
+    {
+      "source": "logs_1/reproduce-896848_7.out",
+      "task": "fc",
+      "model": "HetNet Real",
+      "seed": 1,
+      "archived_epochs": 615,
+      "archived_steps": 15475236,
+      "identity_basis": "Observed stdout Namespace",
+      "epochs": 1025,
+      "configured_epochs": 1400,
+      "common_epoch": {
+        "first_epoch": 976,
+        "last_epoch": 1025,
+        "weighting": "equal epochs",
+        "success_rate": 0.41759999999999997,
+        "team_return": -217.40200000000002,
+        "steps_taken": 217.747
+      },
+      "latest": {
+        "first_epoch": 976,
+        "last_epoch": 1025,
+        "weighting": "equal epochs",
+        "success_rate": 0.41759999999999997,
+        "team_return": -217.40200000000002,
+        "steps_taken": 217.747
+      },
+      "previous": {
+        "first_epoch": 926,
+        "last_epoch": 975,
+        "weighting": "equal epochs",
+        "success_rate": 0.4164,
+        "team_return": -224.3008,
+        "steps_taken": 218.4152
+      },
+      "archive_latest": {
+        "first_epoch": 566,
+        "last_epoch": 615,
+        "weighting": "equal epochs",
+        "success_rate": 0.39899999999999997,
+        "team_return": -226.34459999999999,
+        "steps_taken": 221.19639999999998
+      }
+    },
+    {
+      "source": "logs_1/reproduce-896848_8.out",
+      "task": "fc",
+      "model": "HetNet Real",
+      "seed": 2,
+      "archived_epochs": 692,
+      "archived_steps": 17412359,
+      "identity_basis": "Observed stdout Namespace",
+      "epochs": 1125,
+      "configured_epochs": 1400,
+      "common_epoch": {
+        "first_epoch": 976,
+        "last_epoch": 1025,
+        "weighting": "equal epochs",
+        "success_rate": 0.4082,
+        "team_return": -225.25560000000002,
+        "steps_taken": 218.97619999999998
+      },
+      "latest": {
+        "first_epoch": 1076,
+        "last_epoch": 1125,
+        "weighting": "equal epochs",
+        "success_rate": 0.44659999999999994,
+        "team_return": -213.36360000000002,
+        "steps_taken": 213.0866
+      },
+      "previous": {
+        "first_epoch": 1026,
+        "last_epoch": 1075,
+        "weighting": "equal epochs",
+        "success_rate": 0.4414,
+        "team_return": -212.83,
+        "steps_taken": 214.0532
+      },
+      "archive_latest": {
+        "first_epoch": 643,
+        "last_epoch": 692,
+        "weighting": "equal epochs",
+        "success_rate": 0.40020000000000006,
+        "team_return": -229.0772,
+        "steps_taken": 220.4368
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898824_12.out",
+      "task": "fc",
+      "model": "SoftRole shared",
+      "seed": 0,
+      "archived_epochs": 328,
+      "archived_steps": 8213729,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 1400,
+      "configured_epochs": 1400,
+      "common_epoch": {
+        "first_epoch": 976,
+        "last_epoch": 1025,
+        "weighting": "equal epochs",
+        "success_rate": 0.7277528971818178,
+        "team_return": -119.23256210618287,
+        "steps_taken": 170.31166223002984
+      },
+      "latest": {
+        "first_epoch": 1351,
+        "last_epoch": 1400,
+        "weighting": "episodes",
+        "success_rate": 0.9514546091833158,
+        "team_return": -60.54006309148271,
+        "steps_taken": 101.77085524009814,
+        "episodes": 11412,
+        "steps_start": 33477388,
+        "steps_end": 34638797,
+        "value_loss_per_episode": 193.62308158425876,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.2946981869850314
+      },
+      "previous": {
+        "first_epoch": 1301,
+        "last_epoch": 1350,
+        "weighting": "episodes",
+        "success_rate": 0.9066624095359728,
+        "team_return": -79.53115155385277,
+        "steps_taken": 126.36685823754789,
+        "episodes": 9396,
+        "steps_start": 32290045,
+        "steps_end": 33477388,
+        "value_loss_per_episode": 253.44174030556087,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.2840920159418766
+      },
+      "archive_latest": {
+        "first_epoch": 279,
+        "last_epoch": 328,
+        "weighting": "episodes",
+        "success_rate": 0.39334395468224465,
+        "team_return": -228.49955744379548,
+        "steps_taken": 222.60346964064436,
+        "episodes": 5649,
+        "steps_start": 6956242,
+        "steps_end": 8213729,
+        "value_loss_per_episode": 1334.824470608781,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.37725976224155666
+      },
+      "total_steps": 34638797,
+      "total_episodes": 190414,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 1301,
+        "last_epoch": 1350,
+        "weighting": "episodes",
+        "success_rate": 0.9066624095359728,
+        "team_return": -79.53115155385277,
+        "steps_taken": 126.36685823754789,
+        "episodes": 9396,
+        "steps_start": 32290045,
+        "steps_end": 33477388,
+        "value_loss_per_episode": 253.44174030556087,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.2840920159418766
+      },
+      "prior_common_sample": {
+        "first_epoch": 171,
+        "last_epoch": 220,
+        "weighting": "episodes",
+        "success_rate": 0.45167514471145415,
+        "team_return": -213.59814067707435,
+        "steps_taken": 219.97175934046658,
+        "episodes": 5701,
+        "steps_start": 4245328,
+        "steps_end": 5499387,
+        "value_loss_per_episode": 1312.357407051209,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.36003536336802733
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898824_13.out",
+      "task": "fc",
+      "model": "SoftRole shared",
+      "seed": 1,
+      "archived_epochs": 317,
+      "archived_steps": 7948988,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 1400,
+      "configured_epochs": 1400,
+      "common_epoch": {
+        "first_epoch": 976,
+        "last_epoch": 1025,
+        "weighting": "equal epochs",
+        "success_rate": 0.8062725020991707,
+        "team_return": -102.08145300983514,
+        "steps_taken": 148.33589806894716
+      },
+      "latest": {
+        "first_epoch": 1351,
+        "last_epoch": 1400,
+        "weighting": "episodes",
+        "success_rate": 0.46215416739168264,
+        "team_return": -178.64894727684026,
+        "steps_taken": 214.62154167391682,
+        "episodes": 5747,
+        "steps_start": 33650776,
+        "steps_end": 34884206,
+        "value_loss_per_episode": 1058.467827272933,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.5339412010828379
+      },
+      "previous": {
+        "first_epoch": 1301,
+        "last_epoch": 1350,
+        "weighting": "episodes",
+        "success_rate": 0.4281984334203655,
+        "team_return": -192.02729329852062,
+        "steps_taken": 217.4182767624021,
+        "episodes": 5745,
+        "steps_start": 32401708,
+        "steps_end": 33650776,
+        "value_loss_per_episode": 1249.5740994450566,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.5153820967487615
+      },
+      "archive_latest": {
+        "first_epoch": 268,
+        "last_epoch": 317,
+        "weighting": "episodes",
+        "success_rate": 0.5045747204337513,
+        "team_return": -196.36646899356165,
+        "steps_taken": 212.03388681802778,
+        "episodes": 5902,
+        "steps_start": 6697564,
+        "steps_end": 7948988,
+        "value_loss_per_episode": 1055.0862260585013,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.3447005848647294
+      },
+      "total_steps": 34884206,
+      "total_episodes": 177304,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 1294,
+        "last_epoch": 1343,
+        "weighting": "episodes",
+        "success_rate": 0.3945480631276901,
+        "team_return": -204.85374820659987,
+        "steps_taken": 224.37123385939742,
+        "episodes": 5576,
+        "steps_start": 32226458,
+        "steps_end": 33477552,
+        "value_loss_per_episode": 1387.6866592652557,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.5084033815405791
+      },
+      "prior_common_sample": {
+        "first_epoch": 170,
+        "last_epoch": 219,
+        "weighting": "episodes",
+        "success_rate": 0.5087898958866701,
+        "team_return": -198.42696705922526,
+        "steps_taken": 213.87847755589692,
+        "episodes": 5859,
+        "steps_start": 4241517,
+        "steps_end": 5494631,
+        "value_loss_per_episode": 1136.0727087117823,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.35154488617770463
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898824_14.out",
+      "task": "fc",
+      "model": "SoftRole shared",
+      "seed": 2,
+      "archived_epochs": 361,
+      "archived_steps": 9080284,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 1400,
+      "configured_epochs": 1400,
+      "common_epoch": {
+        "first_epoch": 976,
+        "last_epoch": 1025,
+        "weighting": "equal epochs",
+        "success_rate": 0.39698222209836587,
+        "team_return": -208.96400432227227,
+        "steps_taken": 234.67804714712295
+      },
+      "latest": {
+        "first_epoch": 1351,
+        "last_epoch": 1400,
+        "weighting": "episodes",
+        "success_rate": 0.4312431243124312,
+        "team_return": -193.12396406307317,
+        "steps_taken": 228.87642097543088,
+        "episodes": 5454,
+        "steps_start": 33636809,
+        "steps_end": 34885101,
+        "value_loss_per_episode": 849.8952830429284,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.35360322291024654
+      },
+      "previous": {
+        "first_epoch": 1301,
+        "last_epoch": 1350,
+        "weighting": "episodes",
+        "success_rate": 0.6102279544091181,
+        "team_return": -147.1278944211159,
+        "steps_taken": 186.58038392321535,
+        "episodes": 6668,
+        "steps_start": 32392691,
+        "steps_end": 33636809,
+        "value_loss_per_episode": 579.3678228919835,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.338924759073599
+      },
+      "archive_latest": {
+        "first_epoch": 312,
+        "last_epoch": 361,
+        "weighting": "episodes",
+        "success_rate": 0.4563356164383562,
+        "team_return": -207.32183219178097,
+        "steps_taken": 214.95873287671233,
+        "episodes": 5840,
+        "steps_start": 7824925,
+        "steps_end": 9080284,
+        "value_loss_per_episode": 1110.8806359504501,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.337091000781175
+      },
+      "total_steps": 34885101,
+      "total_episodes": 173467,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 1295,
+        "last_epoch": 1344,
+        "weighting": "episodes",
+        "success_rate": 0.6161481481481481,
+        "team_return": -145.435051851852,
+        "steps_taken": 184.29940740740741,
+        "episodes": 6750,
+        "steps_start": 32243648,
+        "steps_end": 33487669,
+        "value_loss_per_episode": 576.272072409481,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.33736151894870203
+      },
+      "prior_common_sample": {
+        "first_epoch": 170,
+        "last_epoch": 219,
+        "weighting": "episodes",
+        "success_rate": 0.45394736842105265,
+        "team_return": -213.20306440443227,
+        "steps_taken": 217.60370498614958,
+        "episodes": 5776,
+        "steps_start": 4241398,
+        "steps_end": 5498277,
+        "value_loss_per_episode": 1262.1627907352658,
+        "gate_entropy": 0.0,
+        "alpha_null": 0.33863434611943155
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898824_15.out",
+      "task": "fc",
+      "model": "SoftRole banked",
+      "seed": 0,
+      "archived_epochs": 319,
+      "archived_steps": 7997962,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 1354,
+      "configured_epochs": 1400,
+      "common_epoch": {
+        "first_epoch": 976,
+        "last_epoch": 1025,
+        "weighting": "equal epochs",
+        "success_rate": 0.638123016480406,
+        "team_return": -139.99736734895498,
+        "steps_taken": 186.9818583467854
+      },
+      "latest": {
+        "first_epoch": 1305,
+        "last_epoch": 1354,
+        "weighting": "episodes",
+        "success_rate": 0.6991582948683138,
+        "team_return": -122.95422210154777,
+        "steps_taken": 168.17797990768395,
+        "episodes": 7366,
+        "steps_start": 32458130,
+        "steps_end": 33696929,
+        "value_loss_per_episode": 387.38185981639697,
+        "gate_entropy": 0.8133533635821806,
+        "alpha_null": 0.21935648789883377
+      },
+      "previous": {
+        "first_epoch": 1255,
+        "last_epoch": 1304,
+        "weighting": "episodes",
+        "success_rate": 0.7451773910697423,
+        "team_return": -117.3574531228923,
+        "steps_taken": 165.0692027519223,
+        "episodes": 7413,
+        "steps_start": 31234472,
+        "steps_end": 32458130,
+        "value_loss_per_episode": 377.9922568212499,
+        "gate_entropy": 0.8443556552760759,
+        "alpha_null": 0.2363168356056293
+      },
+      "archive_latest": {
+        "first_epoch": 270,
+        "last_epoch": 319,
+        "weighting": "episodes",
+        "success_rate": 0.46500857632933107,
+        "team_return": -205.26224699828487,
+        "steps_taken": 215.70668953687823,
+        "episodes": 5830,
+        "steps_start": 6740392,
+        "steps_end": 7997962,
+        "value_loss_per_episode": 1093.0206255474666,
+        "gate_entropy": 1.145487432806342,
+        "alpha_null": 0.31370963602715274
+      },
+      "total_steps": 33696929,
+      "total_episodes": 174488,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 1296,
+        "last_epoch": 1345,
+        "weighting": "episodes",
+        "success_rate": 0.7019139405456767,
+        "team_return": -123.880656983847,
+        "steps_taken": 167.97583819736664,
+        "episodes": 7367,
+        "steps_start": 32237982,
+        "steps_end": 33475460,
+        "value_loss_per_episode": 390.9801420938676,
+        "gate_entropy": 0.8274736438293963,
+        "alpha_null": 0.21980483524181346
+      },
+      "prior_common_sample": {
+        "first_epoch": 170,
+        "last_epoch": 219,
+        "weighting": "episodes",
+        "success_rate": 0.47362048088565994,
+        "team_return": -205.8159660958313,
+        "steps_taken": 216.68413769244074,
+        "episodes": 5781,
+        "steps_start": 4224863,
+        "steps_end": 5477514,
+        "value_loss_per_episode": 1139.7954766623889,
+        "gate_entropy": 1.197595250980109,
+        "alpha_null": 0.31277213582064795
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898824_16.out",
+      "task": "fc",
+      "model": "SoftRole banked",
+      "seed": 1,
+      "archived_epochs": 327,
+      "archived_steps": 8210214,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 1400,
+      "configured_epochs": 1400,
+      "common_epoch": {
+        "first_epoch": 976,
+        "last_epoch": 1025,
+        "weighting": "equal epochs",
+        "success_rate": 0.48115792951832687,
+        "team_return": -190.20675868098178,
+        "steps_taken": 209.5684805643874
+      },
+      "latest": {
+        "first_epoch": 1351,
+        "last_epoch": 1400,
+        "weighting": "episodes",
+        "success_rate": 0.1552930883639545,
+        "team_return": -304.867257217848,
+        "steps_taken": 269.0028433945757,
+        "episodes": 4572,
+        "steps_start": 33670896,
+        "steps_end": 34900777,
+        "value_loss_per_episode": 3608.7100156709616,
+        "gate_entropy": 0.9527143652886186,
+        "alpha_null": 0.13985568445239863
+      },
+      "previous": {
+        "first_epoch": 1301,
+        "last_epoch": 1350,
+        "weighting": "episodes",
+        "success_rate": 0.0542782649917042,
+        "team_return": -347.7077269495144,
+        "steps_taken": 286.66082009954965,
+        "episodes": 4219,
+        "steps_start": 32461474,
+        "steps_end": 33670896,
+        "value_loss_per_episode": 3975.1160562695027,
+        "gate_entropy": 0.9922846379335972,
+        "alpha_null": 0.12421764369052984
+      },
+      "archive_latest": {
+        "first_epoch": 278,
+        "last_epoch": 327,
+        "weighting": "episodes",
+        "success_rate": 0.47872158605366605,
+        "team_return": -204.55142710647766,
+        "steps_taken": 214.4983763459238,
+        "episodes": 5851,
+        "steps_start": 6955184,
+        "steps_end": 8210214,
+        "value_loss_per_episode": 1108.2787540478218,
+        "gate_entropy": 1.3080159245425693,
+        "alpha_null": 0.3055608988943767
+      },
+      "total_steps": 34900777,
+      "total_episodes": 154546,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 1293,
+        "last_epoch": 1342,
+        "weighting": "episodes",
+        "success_rate": 0.04519368723098996,
+        "team_return": -347.90994739359184,
+        "steps_taken": 288.70779531324723,
+        "episodes": 4182,
+        "steps_start": 32268924,
+        "steps_end": 33476300,
+        "value_loss_per_episode": 3794.714631593233,
+        "gate_entropy": 1.0037906353074948,
+        "alpha_null": 0.12488751284970108
+      },
+      "prior_common_sample": {
+        "first_epoch": 170,
+        "last_epoch": 219,
+        "weighting": "episodes",
+        "success_rate": 0.4674322934521769,
+        "team_return": -208.7381213575593,
+        "steps_taken": 215.64912581419267,
+        "episodes": 5834,
+        "steps_start": 4236110,
+        "steps_end": 5494207,
+        "value_loss_per_episode": 1175.8917223512715,
+        "gate_entropy": 1.3282803708832822,
+        "alpha_null": 0.30826979738778854
+      }
+    },
+    {
+      "source": "logs_sr/softrole-898824_17.out",
+      "task": "fc",
+      "model": "SoftRole banked",
+      "seed": 2,
+      "archived_epochs": 234,
+      "archived_steps": 5843076,
+      "identity_basis": "All archived epoch fields match stdout exactly; appended tail lacks a fresh source/checkpoint archive",
+      "epochs": 1400,
+      "configured_epochs": 1400,
+      "common_epoch": {
+        "first_epoch": 976,
+        "last_epoch": 1025,
+        "weighting": "equal epochs",
+        "success_rate": 0.33824030883020845,
+        "team_return": -243.81123712135934,
+        "steps_taken": 238.6989913901065
+      },
+      "latest": {
+        "first_epoch": 1351,
+        "last_epoch": 1400,
+        "weighting": "episodes",
+        "success_rate": 0.19901719901719903,
+        "team_return": -297.8314496314498,
+        "steps_taken": 253.59131859131858,
+        "episodes": 4884,
+        "steps_start": 33742461,
+        "steps_end": 34981001,
+        "value_loss_per_episode": 3642.3404774805904,
+        "gate_entropy": 0.9887043396421396,
+        "alpha_null": 0.08186165301861822
+      },
+      "previous": {
+        "first_epoch": 1301,
+        "last_epoch": 1350,
+        "weighting": "episodes",
+        "success_rate": 0.2393814836562928,
+        "team_return": -282.55733020160517,
+        "steps_taken": 243.80779017420238,
+        "episodes": 5109,
+        "steps_start": 32496847,
+        "steps_end": 33742461,
+        "value_loss_per_episode": 2744.149936761545,
+        "gate_entropy": 0.9720495812018047,
+        "alpha_null": 0.118694655574956
+      },
+      "archive_latest": {
+        "first_epoch": 185,
+        "last_epoch": 234,
+        "weighting": "episodes",
+        "success_rate": 0.48688885129419723,
+        "team_return": -202.29039079681965,
+        "steps_taken": 211.9661647775334,
+        "episodes": 5911,
+        "steps_start": 4590144,
+        "steps_end": 5843076,
+        "value_loss_per_episode": 1147.9097581305816,
+        "gate_entropy": 1.3669027736879902,
+        "alpha_null": 0.31561920391199366
+      },
+      "total_steps": 34981001,
+      "total_episodes": 160186,
+      "event_exposed_episodes": 0,
+      "common_sample": {
+        "first_epoch": 1291,
+        "last_epoch": 1340,
+        "weighting": "episodes",
+        "success_rate": 0.24190401872805306,
+        "team_return": -281.6019898556381,
+        "steps_taken": 243.24404994147483,
+        "episodes": 5126,
+        "steps_start": 32247255,
+        "steps_end": 33494124,
+        "value_loss_per_episode": 2862.407973390525,
+        "gate_entropy": 0.9397116739147858,
+        "alpha_null": 0.13175277196509044
+      },
+      "prior_common_sample": {
+        "first_epoch": 171,
+        "last_epoch": 220,
+        "weighting": "episodes",
+        "success_rate": 0.47814300237207724,
+        "team_return": -204.68039647577106,
+        "steps_taken": 212.562182311081,
+        "episodes": 5902,
+        "steps_start": 4237690,
+        "steps_end": 5492232,
+        "value_loss_per_episode": 1180.901540609679,
+        "gate_entropy": 1.3651150730605348,
+        "alpha_null": 0.3146418849494275
+      }
+    }
+  ],
+  "groups": [
+    {
+      "task": "pp",
+      "model": "HetNet Real",
+      "common_epoch": {
+        "success_rate": {
+          "mean": 0.9971333333333333,
+          "min": 0.9934000000000001,
+          "max": 0.9992
+        },
+        "team_return": {
+          "mean": -2.1147333333333336,
+          "min": -2.255,
+          "max": -1.9942000000000002
+        },
+        "steps_taken": {
+          "mean": 18.252866666666666,
+          "min": 17.294,
+          "max": 19.1894
+        }
+      },
+      "latest": {
+        "success_rate": {
+          "mean": 0.9975333333333333,
+          "min": 0.9945999999999999,
+          "max": 0.9992
+        },
+        "team_return": {
+          "mean": -2.0086,
+          "min": -2.0644,
+          "max": -1.9672
+        },
+        "steps_taken": {
+          "mean": 17.210866666666664,
+          "min": 16.368199999999998,
+          "max": 17.970399999999998
+        }
+      },
+      "archive_latest": {
+        "success_rate": {
+          "mean": 0.9928666666666667,
+          "min": 0.988,
+          "max": 0.9954000000000001
+        },
+        "team_return": {
+          "mean": -2.5909333333333335,
+          "min": -2.7982,
+          "max": -2.3412
+        },
+        "steps_taken": {
+          "mean": 22.932533333333335,
+          "min": 20.0408,
+          "max": 25.130399999999998
+        }
+      }
+    },
+    {
+      "task": "pp",
+      "model": "SoftRole shared",
+      "common_epoch": {
+        "success_rate": {
+          "mean": 0.9999951111985541,
+          "min": 0.9999853335956622,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.3738942204388918,
+          "min": -0.37496486055520334,
+          "max": -0.3719013449787441
+        },
+        "steps_taken": {
+          "mean": 4.875148695937351,
+          "min": 4.857866831732498,
+          "max": 4.884916873608452
+        }
+      },
+      "latest": {
+        "success_rate": {
+          "mean": 0.999993720791871,
+          "min": 0.9999811623756129,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.3556816582179682,
+          "min": -0.35647443052822764,
+          "max": -0.35519989074177855
+        },
+        "steps_taken": {
+          "mean": 4.7383975106778635,
+          "min": 4.729901432130394,
+          "max": 4.749404041168457
+        }
+      },
+      "archive_latest": {
+        "success_rate": {
+          "mean": 0.9999983924587023,
+          "min": 0.9999951773761068,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.3711589387384296,
+          "min": -0.37253261774327806,
+          "max": -0.3697332124462278
+        },
+        "steps_taken": {
+          "mean": 4.852532227184798,
+          "min": 4.843423870059222,
+          "max": 4.860348632377708
+        }
+      },
+      "common_sample": {
+        "success_rate": {
+          "mean": 0.9999905549442506,
+          "min": 0.9999716648327517,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.35601677309732155,
+          "min": -0.35653681761874595,
+          "max": -0.3554502481348647
+        },
+        "steps_taken": {
+          "mean": 4.740908846967461,
+          "min": 4.7330040578180155,
+          "max": 4.747893636939604
+        }
+      },
+      "prior_common_sample": {
+        "success_rate": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.3823368747760963,
+          "min": -0.38375542423838516,
+          "max": -0.38002229408594246
+        },
+        "steps_taken": {
+          "mean": 4.9424330718508775,
+          "min": 4.921196530942232,
+          "max": 4.957909391152382
+        }
+      }
+    },
+    {
+      "task": "pp",
+      "model": "SoftRole banked",
+      "common_epoch": {
+        "success_rate": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.3763965182347981,
+          "min": -0.3772069106167158,
+          "max": -0.37567852680691344
+        },
+        "steps_taken": {
+          "mean": 4.896849659629302,
+          "min": 4.886156158276409,
+          "max": 4.906119925813342
+        }
+      },
+      "latest": {
+        "success_rate": {
+          "mean": 0.9999795443909072,
+          "min": 0.9999528175028192,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.35634304510687603,
+          "min": -0.3567257365213404,
+          "max": -0.35589309389788765
+        },
+        "steps_taken": {
+          "mean": 4.744257303255802,
+          "min": 4.737637006176189,
+          "max": 4.747859348182751
+        }
+      },
+      "archive_latest": {
+        "success_rate": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.3765212079364553,
+          "min": -0.3773454650349822,
+          "max": -0.3757555777231698
+        },
+        "steps_taken": {
+          "mean": 4.89895176178419,
+          "min": 4.886791075642928,
+          "max": 4.909745615621929
+        }
+      },
+      "common_sample": {
+        "success_rate": {
+          "mean": 0.9999510517753677,
+          "min": 0.9999147404319818,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.3569665208787955,
+          "min": -0.35754772845705624,
+          "max": -0.3563214722998303
+        },
+        "steps_taken": {
+          "mean": 4.753382535034015,
+          "min": 4.746597457607088,
+          "max": 4.756904637832204
+        }
+      },
+      "prior_common_sample": {
+        "success_rate": {
+          "mean": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.39204751246673636,
+          "min": -0.39855492058368097,
+          "max": -0.3858280467693771
+        },
+        "steps_taken": {
+          "mean": 5.01985041555283,
+          "min": 4.974183739668296,
+          "max": 5.067346249098401
+        }
+      }
+    },
+    {
+      "task": "pcp",
+      "model": "HetNet Real",
+      "common_epoch": {
+        "success_rate": {
+          "mean": 0.9958666666666667,
+          "min": 0.993,
+          "max": 0.9978
+        },
+        "team_return": {
+          "mean": -2.1122666666666667,
+          "min": -2.1468000000000003,
+          "max": -2.0924
+        },
+        "steps_taken": {
+          "mean": 17.943066666666667,
+          "min": 17.6798,
+          "max": 18.1468
+        }
+      },
+      "latest": {
+        "success_rate": {
+          "mean": 0.9988,
+          "min": 0.9965999999999999,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -2.002666666666667,
+          "min": -2.0288,
+          "max": -1.9679999999999997
+        },
+        "steps_taken": {
+          "mean": 16.98966666666667,
+          "min": 16.5792,
+          "max": 17.4324
+        }
+      },
+      "archive_latest": {
+        "success_rate": {
+          "mean": 0.9929333333333333,
+          "min": 0.9912000000000001,
+          "max": 0.996
+        },
+        "team_return": {
+          "mean": -2.284333333333333,
+          "min": -2.3746,
+          "max": -2.193
+        },
+        "steps_taken": {
+          "mean": 19.5384,
+          "min": 18.6416,
+          "max": 20.5806
+        }
+      }
+    },
+    {
+      "task": "pcp",
+      "model": "SoftRole shared",
+      "common_epoch": {
+        "success_rate": {
+          "mean": 0.9999446343674823,
+          "min": 0.999868318063796,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.5475367668911858,
+          "min": -0.5597128136914337,
+          "max": -0.5389677096678487
+        },
+        "steps_taken": {
+          "mean": 6.917525812949729,
+          "min": 6.774117855595706,
+          "max": 7.123223022359011
+        }
+      },
+      "latest": {
+        "success_rate": {
+          "mean": 0.9999575644843025,
+          "min": 0.9998726934529072,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.4889316092260753,
+          "min": -0.5595653188675376,
+          "max": -0.45213804523119905
+        },
+        "steps_taken": {
+          "mean": 5.991499173821503,
+          "min": 5.419863756249899,
+          "max": 7.121648478333133
+        }
+      },
+      "archive_latest": {
+        "success_rate": {
+          "mean": 0.9916758728772191,
+          "min": 0.9750276186316573,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -1.189514629766342,
+          "min": -1.7828237802841505,
+          "max": -0.8315014380466044
+        },
+        "steps_taken": {
+          "mean": 17.461047952129366,
+          "min": 11.882667136232905,
+          "max": 26.626544716491534
+        }
+      },
+      "common_sample": {
+        "success_rate": {
+          "mean": 0.999952481855685,
+          "min": 0.9998712547653618,
+          "max": 1.0
+        },
+        "team_return": {
+          "mean": -0.5521222753388106,
+          "min": -0.5640965303159264,
+          "max": -0.5433084021832337
+        },
+        "steps_taken": {
+          "mean": 7.001024660198176,
+          "min": 6.8503246267133076,
+          "max": 7.202358898799093
+        }
+      },
+      "prior_common_sample": {
+        "success_rate": {
+          "mean": 0.9106670052003466,
+          "min": 0.894882289152412,
+          "max": 0.929123588356927
+        },
+        "team_return": {
+          "mean": -2.537608824140834,
+          "min": -2.713598838632944,
+          "max": -2.3402179099729596
+        },
+        "steps_taken": {
+          "mean": 35.12841693051613,
+          "min": 33.21259742325434,
+          "max": 36.76202469654039
+        }
+      }
+    },
+    {
+      "task": "pcp",
+      "model": "SoftRole banked",
+      "common_epoch": {
+        "success_rate": {
+          "mean": 0.9998793010334249,
+          "min": 0.9998125121471184,
+          "max": 0.9999914965986395
+        },
+        "team_return": {
+          "mean": -0.6377429051519362,
+          "min": -0.6461562053557706,
+          "max": -0.6228521169289344
+        },
+        "steps_taken": {
+          "mean": 8.614606578493012,
+          "min": 8.33645022396496,
+          "max": 8.773966031574927
+        }
+      },
+      "latest": {
+        "success_rate": {
+          "mean": 0.9998276617847672,
+          "min": 0.999727843842845,
+          "max": 0.9999549559694602
+        },
+        "team_return": {
+          "mean": -0.576308447222046,
+          "min": -0.5860795905561814,
+          "max": -0.5633344037679298
+        },
+        "steps_taken": {
+          "mean": 7.454339672306265,
+          "min": 7.186219938628416,
+          "max": 7.6168116906189285
+        }
+      },
+      "archive_latest": {
+        "success_rate": {
+          "mean": 0.8683807258305375,
+          "min": 0.8292357238237373,
+          "max": 0.9458064892283474
+        },
+        "team_return": {
+          "mean": -2.7785917119530215,
+          "min": -3.1246473586471204,
+          "max": -2.1300265282919857
+        },
+        "steps_taken": {
+          "mean": 37.84773242655436,
+          "min": 30.365070110485963,
+          "max": 41.71551621952665
+        }
+      },
+      "common_sample": {
+        "success_rate": {
+          "mean": 0.9998942937691289,
+          "min": 0.9998067072581425,
+          "max": 0.9999916392853261
+        },
+        "team_return": {
+          "mean": -0.6452404840081453,
+          "min": -0.6556560201797705,
+          "max": -0.6286170541857918
+        },
+        "steps_taken": {
+          "mean": 8.752310192257443,
+          "min": 8.430535002131982,
+          "max": 8.961647777738303
+        }
+      },
+      "prior_common_sample": {
+        "success_rate": {
+          "mean": 0.8188847237499818,
+          "min": 0.8064489077110152,
+          "max": 0.8307479771067693
+        },
+        "team_return": {
+          "mean": -3.3147901359391434,
+          "min": -3.510725816596082,
+          "max": -3.2116104203670797
+        },
+        "steps_taken": {
+          "mean": 42.81574766605544,
+          "min": 41.62206433787251,
+          "max": 44.34923896180133
+        }
+      }
+    },
+    {
+      "task": "fc",
+      "model": "HetNet Real",
+      "common_epoch": {
+        "success_rate": {
+          "mean": 0.4073333333333333,
+          "min": 0.3962,
+          "max": 0.41759999999999997
+        },
+        "team_return": {
+          "mean": -223.75880000000004,
+          "min": -228.61880000000002,
+          "max": -217.40200000000002
+        },
+        "steps_taken": {
+          "mean": 218.9592,
+          "min": 217.747,
+          "max": 220.15439999999998
+        }
+      },
+      "latest": {
+        "success_rate": {
+          "mean": 0.41979999999999995,
+          "min": 0.39520000000000005,
+          "max": 0.44659999999999994
+        },
+        "team_return": {
+          "mean": -219.86160000000004,
+          "min": -228.81920000000002,
+          "max": -213.36360000000002
+        },
+        "steps_taken": {
+          "mean": 217.21093333333332,
+          "min": 213.0866,
+          "max": 220.79919999999998
+        }
+      },
+      "archive_latest": {
+        "success_rate": {
+          "mean": 0.4006,
+          "min": 0.39899999999999997,
+          "max": 0.40259999999999996
+        },
+        "team_return": {
+          "mean": -225.8581333333333,
+          "min": -229.0772,
+          "max": -222.15259999999998
+        },
+        "steps_taken": {
+          "mean": 221.37533333333332,
+          "min": 220.4368,
+          "max": 222.4928
+        }
+      }
+    },
+    {
+      "task": "fc",
+      "model": "SoftRole shared",
+      "common_epoch": {
+        "success_rate": {
+          "mean": 0.6436692071264515,
+          "min": 0.39698222209836587,
+          "max": 0.8062725020991707
+        },
+        "team_return": {
+          "mean": -143.4260064794301,
+          "min": -208.96400432227227,
+          "max": -102.08145300983514
+        },
+        "steps_taken": {
+          "mean": 184.4418691487,
+          "min": 148.33589806894716,
+          "max": 234.67804714712295
+        }
+      },
+      "latest": {
+        "success_rate": {
+          "mean": 0.6149506336291433,
+          "min": 0.4312431243124312,
+          "max": 0.9514546091833158
+        },
+        "team_return": {
+          "mean": -144.10432481046539,
+          "min": -193.12396406307317,
+          "max": -60.54006309148271
+        },
+        "steps_taken": {
+          "mean": 181.75627262981527,
+          "min": 101.77085524009814,
+          "max": 228.87642097543088
+        }
+      },
+      "archive_latest": {
+        "success_rate": {
+          "mean": 0.45141809718478404,
+          "min": 0.39334395468224465,
+          "max": 0.5045747204337513
+        },
+        "team_return": {
+          "mean": -210.72928620971268,
+          "min": -228.49955744379548,
+          "max": -196.36646899356165
+        },
+        "steps_taken": {
+          "mean": 216.5320297784615,
+          "min": 212.03388681802778,
+          "max": 222.60346964064436
+        }
+      },
+      "common_sample": {
+        "success_rate": {
+          "mean": 0.6391195402706037,
+          "min": 0.3945480631276901,
+          "max": 0.9066624095359728
+        },
+        "team_return": {
+          "mean": -143.27331720410155,
+          "min": -204.85374820659987,
+          "max": -79.53115155385277
+        },
+        "steps_taken": {
+          "mean": 178.34583316811757,
+          "min": 126.36685823754789,
+          "max": 224.37123385939742
+        }
+      },
+      "prior_common_sample": {
+        "success_rate": {
+          "mean": 0.4714708030063923,
+          "min": 0.45167514471145415,
+          "max": 0.5087898958866701
+        },
+        "team_return": {
+          "mean": -208.4093907135773,
+          "min": -213.59814067707435,
+          "max": -198.42696705922526
+        },
+        "steps_taken": {
+          "mean": 217.15131396083768,
+          "min": 213.87847755589692,
+          "max": 219.97175934046658
+        }
+      }
+    },
+    {
+      "task": "fc",
+      "model": "SoftRole banked",
+      "common_epoch": {
+        "success_rate": {
+          "mean": 0.4858404182763138,
+          "min": 0.33824030883020845,
+          "max": 0.638123016480406
+        },
+        "team_return": {
+          "mean": -191.33845438376537,
+          "min": -243.81123712135934,
+          "max": -139.99736734895498
+        },
+        "steps_taken": {
+          "mean": 211.7497767670931,
+          "min": 186.9818583467854,
+          "max": 238.6989913901065
+        }
+      },
+      "latest": {
+        "success_rate": {
+          "mean": 0.3511561940831558,
+          "min": 0.1552930883639545,
+          "max": 0.6991582948683138
+        },
+        "team_return": {
+          "mean": -241.88430965028184,
+          "min": -304.867257217848,
+          "max": -122.95422210154777
+        },
+        "steps_taken": {
+          "mean": 230.25738063119275,
+          "min": 168.17797990768395,
+          "max": 269.0028433945757
+        }
+      },
+      "archive_latest": {
+        "success_rate": {
+          "mean": 0.4768730045590648,
+          "min": 0.46500857632933107,
+          "max": 0.48688885129419723
+        },
+        "team_return": {
+          "mean": -204.0346883005274,
+          "min": -205.26224699828487,
+          "max": -202.29039079681965
+        },
+        "steps_taken": {
+          "mean": 214.05707688677845,
+          "min": 211.9661647775334,
+          "max": 215.70668953687823
+        }
+      },
+      "common_sample": {
+        "success_rate": {
+          "mean": 0.3296705488349066,
+          "min": 0.04519368723098996,
+          "max": 0.7019139405456767
+        },
+        "team_return": {
+          "mean": -251.13086474435897,
+          "min": -347.90994739359184,
+          "max": -123.880656983847
+        },
+        "steps_taken": {
+          "mean": 233.30922781736288,
+          "min": 167.97583819736664,
+          "max": 288.70779531324723
+        }
+      },
+      "prior_common_sample": {
+        "success_rate": {
+          "mean": 0.4730652589033047,
+          "min": 0.4674322934521769,
+          "max": 0.47814300237207724
+        },
+        "team_return": {
+          "mean": -206.41149464305389,
+          "min": -208.7381213575593,
+          "max": -204.68039647577106
+        },
+        "steps_taken": {
+          "mean": 214.9651486059048,
+          "min": 212.562182311081,
+          "max": 216.68413769244074
+        }
+      }
+    }
+  ]
+}

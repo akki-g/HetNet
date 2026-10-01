@@ -1,0 +1,140 @@
+AUTHOR-ACCOUNT AND PREDECESSOR SOURCE SEARCH
+30 September 2026 (America/New_York; fetch timestamps use UTC)
+
+Result: this bounded public search did not recover an independently dated AAMAS
+training commit, checkpoint, training ledger, or exact evaluation panel. It did
+recover useful environment lineage and an inaccessible institutional source link.
+The February 2022 public HetNet snapshot remains a historical reference rather
+than a demonstrated training source. Absence from this search does not establish
+absence from private, deleted, unadvertised or differently named repositories.
+
+Scope and identity
+
+Fetched full public owner repository listings for four directly corroborated
+accounts: Esmaeil Seraj / EsiSeraj (22 repos), Rohan Paleja / rohanpaleja27 (20),
+Zheyuan Wang / phejohnwang (10), Daniel Martin / Daniel-Martin576 (13). Seraj and
+Paleja are linked to original HetNet commits; Wang's personal website links his
+GitHub; Martin's personal website both links his GitHub and describes his HetNet
+work during May 2021–May 2022. Personal sites are primary self-descriptions, not
+proof of particular unpublished experimental code.
+
+Also inventoried Matthew Sklar / matthewsklar (34 repositories), a strong match
+through name, Atlanta location, Georgia Tech projects and a GTSAM fork matching
+the author's documented contribution. Inventoried Anirudh Patel / anirudh2 (5)
+as a plausible match: his self-described LinkedIn search result connects Sandia
+and this account, but the full LinkedIn page was inaccessible and the GitHub
+profile itself provides no affiliation. These two mappings have less direct
+corroboration than the first four; neither supplies alternative HetNet evidence.
+No standalone Matthew Gombolay account was confidently identified; inventoried
+the paper's CORE-Robotics-Lab organization instead (31 repositories).
+
+These seven listings contain 135 repository records, each returned in one
+unpaginated API response. This is an inventory search, not an assertion that all
+135 repository histories were audited. Inspected relevant FireCommander2020
+preconference tree/source and complete eight-commit metadata, plus MAGIC's tree
+and predecessor PP environment. Search was bounded to public material. No login,
+author contact, private data access or permission request was attempted.
+
+No alternate HetNet-named repository was found in these listings. The author
+publication pages point back to CORE-Robotics-Lab/HetNet. Wang's personal news
+records AAMAS acceptance in December 2021, further supporting the conclusion
+that the February 2022 public runtime follows research development. His May 2022
+GitHub tutorial is MRCScheduling, a scheduling tutorial, not this MARL code.
+
+Useful positive finding: exact FireCommander ancestry
+
+EsiSeraj/FireCommander2020 is explicitly linked by the HetNet README as the
+source domain. Its public history starts July 2020, but the last 2020 tree
+(176a6b1, November 4) contains documentation placeholders rather than the
+Python MARL implementation. Full MARL source appears at:
+
+  b04e8ec702f5c550978a170d9823c2a39de617be — October 28, 2021
+
+Its MARL Package/WildFire_Model.py is byte-for-byte identical to HetNet's
+WildFire_Simulate_Original.py first bundled at 59d5983 in February 2022:
+
+  13,934 bytes
+  SHA256 825001e5a5d274e6396bc902576760a1fda838268ad6e2d4be1a6c02bf520b04
+
+This is positive lineage evidence, not a recovered bug-free dependency. The
+same strict x>0/y>0 boundary predicate and untrimmed zero-filled output rows
+exist in this older author repository. An unchanged-method probe sends a fire
+at (0,2) and receives the fabricated zero row [0,0,0]. Substituting this older
+module into HetNet therefore does not solve the phantom-front problem.
+
+The original complex FireCommander wrapper builds hotspot rectangles using
+center +/- 5. Those are nondegenerate and work with randint(low, high). HetNet's
+5x5 adaptation instead uses [x,x,y,y], explaining why that bundled combination
+fails on reset. The unchanged predecessor module successfully initializes a
+nondegenerate rectangle and raises ValueError on equal bounds. This supports a
+specific integration mismatch; it does not establish what unpublished wrapper
+the authors actually trained.
+
+Discovery before suppression is documented in executable predecessor code:
+
+- Base utilities filter the fire map to state 2 (discovered fire) before pruning.
+  A direct probe at the same cell leaves an undiscovered fire active, then
+  removes it when marked discovered.
+- Complex utilities require the suppression region to contain a sensed front.
+  This is a region-level rule, not necessarily individual-cell discovery.
+
+This independently supports discovery before extinguishing as domain intent.
+It does not establish that the AAMAS wrapper enforced it. The Base environment
+also has different default size/team/reward mixing and no identical growing-fire
+protocol; the complex variants contain altitude/region mechanics. Copying one
+of those whole environments would change the benchmark rather than restore a
+verified AAMAS experiment. The reconstruction should expose its own version and
+record which mechanics are historical, paper-derived, or explicitly repaired.
+
+Source-access limit
+
+The original wildfire header points to:
+  https://github.gatech.edu/MCG-Lab/DistributedControl
+A read-only request redirects to Georgia Tech's GitHub LDAP sign-in. HTTP 200
+is the sign-in page, not recovered repository contents. Nothing behind that
+boundary was inspected. This institutional breadcrumb is a possible source
+location, not proof that AAMAS experiment files are stored there.
+
+Implications for training budgets
+
+This author-account search supplies no new collector count, batch count or
+actual training-step evidence. It therefore does not promote the June 2022
+single-collector 10M-step floor into a known publication budget. Epochs depend
+on collector count and episode overshoot; the previous audit's 10M versus 40M
+uncertainty remains. More samples alone does not prove overfitting or harmful
+training. Keep fixed-budget checkpoints and compare frozen performance on a
+predeclared common evaluation panel; distinguish sample efficiency from final
+performance. Do not infer an optimal stopping point from unmatched paper means.
+
+Reproducibility and limitations
+
+collect_public.py archives 32 public resources and fetch_manifest.json records
+URLs, response timestamps, final redirects and SHA256s. API list pagination and
+recursive tree truncation are checked. probe_evidence.py verifies those hashes,
+compares exact predecessor/bundled module bytes through the existing audit Git
+mirror and executes only the unchanged predecessor class methods described
+above. evidence_checks.json contains all outcomes and repository/tree inventories.
+Run from the workspace root:
+
+  .venv/bin/python analysis/publication_reconstruction_2026-09-30/author_search/probe_evidence.py
+
+The mutable owner inventories and website pages are a dated snapshot. Archived
+immutable October 2021 source URLs can be fetched independently. No runtime,
+training configuration, checkpoint, prior analysis or running job was modified.
+
+Primary links
+
+https://github.com/EsiSeraj
+https://github.com/rohanpaleja27
+https://phejohnwang.github.io/
+https://dmartinnn.com/
+https://github.com/matthewsklar
+https://github.com/anirudh2
+https://github.com/CORE-Robotics-Lab
+https://github.com/EsiSeraj/FireCommander2020/commit/b04e8ec702f5c550978a170d9823c2a39de617be
+https://github.com/EsiSeraj/FireCommander2020/blob/b04e8ec702f5c550978a170d9823c2a39de617be/MARL%20Package/WildFire_Model.py
+https://github.com/EsiSeraj/FireCommander2020/blob/b04e8ec702f5c550978a170d9823c2a39de617be/MARL%20Package/FireCommander_Base_Utilities.py#L56-L70
+https://github.com/EsiSeraj/FireCommander2020/blob/b04e8ec702f5c550978a170d9823c2a39de617be/MARL%20Package/FireCommander_Cmplx1.py#L483-L503
+https://github.com/EsiSeraj/FireCommander2020/blob/b04e8ec702f5c550978a170d9823c2a39de617be/MARL%20Package/FireCommander_Cmplx1_Utilities.py#L187-L246
+https://github.com/CORE-Robotics-Lab/HetNet/blob/59d598319d6285acfa42a1d9d8c859305a9bbf1e/WildFire_Simulate_Original.py
+https://github.gatech.edu/MCG-Lab/DistributedControl

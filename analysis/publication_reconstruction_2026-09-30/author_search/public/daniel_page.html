@@ -1,0 +1,923 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="description" property="og:description" content="The personal site of Daniel Martin"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v4.10.1"><title>Daniel Martin Webite</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,700;1,400&family=Rubik:wght@500;600&display=swap" rel="stylesheet"><script>
+	// This code is inlined in the head to make dark mode instant & blocking.
+	const getThemePreference = () => {
+		if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+			return localStorage.getItem('theme');
+		}
+		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'dark';
+	};
+	const isDark = getThemePreference() === 'dark';
+	document.documentElement.classList[isDark ? 'add' : 'remove']('theme-dark');
+
+	if (typeof localStorage !== 'undefined') {
+		// Watch the document element and persist user preference when it changes.
+		const observer = new MutationObserver(() => {
+			const isDark = document.documentElement.classList.contains('theme-dark');
+			localStorage.setItem('theme', 'dark');
+		});
+		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+	}
+</script><link rel="stylesheet" href="/_astro/@astrojs.DfCpfrmX.css">
+<link rel="stylesheet" href="/_astro/index.DfHQmGIk.css">
+<style>.pill[data-astro-cid-2qeywk4b]{display:flex;padding:.5rem 1rem;gap:.5rem;color:var(--accent-text-over);border:1px solid var(--accent-regular);background-color:var(--accent-regular);border-radius:999rem;font-size:var(--text-md);line-height:1.35;white-space:nowrap}.hero[data-astro-cid-j7pv25f6]{display:flex;flex-direction:column;align-items:center;gap:2rem}.roles[data-astro-cid-j7pv25f6]{display:none}.hero[data-astro-cid-j7pv25f6] img[data-astro-cid-j7pv25f6]{aspect-ratio:5 / 4;-o-object-fit:cover;object-fit:cover;-o-object-position:top;object-position:top;border-radius:1.5rem;box-shadow:var(--shadow-md)}@media (min-width: 50em){.hero[data-astro-cid-j7pv25f6]{display:grid;grid-template-columns:6fr 4fr;padding-inline:2.5rem;gap:3.75rem}.roles[data-astro-cid-j7pv25f6]{margin-top:.5rem;display:flex;gap:.5rem}.hero[data-astro-cid-j7pv25f6] img[data-astro-cid-j7pv25f6]{aspect-ratio:3 / 4;border-radius:4.5rem;-o-object-fit:cover;object-fit:cover}}.section[data-astro-cid-j7pv25f6]{display:grid;gap:2rem}.with-background[data-astro-cid-j7pv25f6]{position:relative}.with-background[data-astro-cid-j7pv25f6]:before{--hero-bg: var(--bg-image-subtle-2);content:"";position:absolute;pointer-events:none;left:50%;width:100vw;aspect-ratio:calc(2.25 / var(--bg-scale));top:0;transform:translateY(-75%) translate(-50%);background:url(/assets/backgrounds/noise.png) top center/220px repeat,var(--hero-bg) center center / var(--bg-gradient-size) no-repeat,var(--gray-999);background-blend-mode:overlay,normal,normal,normal;mix-blend-mode:var(--bg-blend-mode);z-index:-1}.with-background[data-astro-cid-j7pv25f6].bg-variant:before{--hero-bg: var(--bg-image-subtle-1)}.section-header[data-astro-cid-j7pv25f6]{justify-self:center;text-align:center;max-width:50ch;font-size:var(--text-md);color:var(--gray-300)}.section-header[data-astro-cid-j7pv25f6] h3[data-astro-cid-j7pv25f6]{font-size:var(--text-2xl)}@media (min-width: 50em){.section[data-astro-cid-j7pv25f6]{grid-template-columns:repeat(4,1fr);grid-template-areas:"header header header header" "gallery gallery gallery gallery";gap:5rem}.section[data-astro-cid-j7pv25f6].with-cta{grid-template-areas:"header header header cta" "gallery gallery gallery gallery"}.section-header[data-astro-cid-j7pv25f6]{grid-area:header;font-size:var(--text-lg)}.section-header[data-astro-cid-j7pv25f6] h3[data-astro-cid-j7pv25f6]{font-size:var(--text-4xl)}.with-cta[data-astro-cid-j7pv25f6] .section-header[data-astro-cid-j7pv25f6]{justify-self:flex-start;text-align:left}.gallery[data-astro-cid-j7pv25f6]{grid-area:gallery}.cta[data-astro-cid-j7pv25f6]{grid-area:cta}}.mention-card[data-astro-cid-j7pv25f6]{display:flex;height:7rem;justify-content:center;align-items:center;text-align:center;border:1px solid var(--gray-800);border-radius:1.5rem;color:var(--gray-300);background:var(--gradient-subtle);box-shadow:var(--shadow-sm)}@media (min-width: 50em){.mention-card[data-astro-cid-j7pv25f6]{border-radius:1.5rem;height:9.5rem}}
+</style><script type="module" src="/_astro/hoisted.ClEM51Hf.js"></script></head> <body data-astro-cid-37fxchfa> <div class="stack backgrounds" data-astro-cid-37fxchfa> <nav data-astro-cid-dmqpwcec> <div class="menu-header" data-astro-cid-dmqpwcec> <a href="/" class="site-title" data-astro-cid-dmqpwcec> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="url(#icon-gradient-2y4c79qml)" fill="url(#icon-gradient-2y4c79qml)" style="--size:1.6em" class="astro-patnjmll" data-astro-cid-patnjmll> <g data-astro-cid-patnjmll><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="m80 96 40 32-40 32m56 0h40"/><rect width="192" height="160" x="32" y="48" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16.97" rx="8.5"/></g> <linearGradient id="icon-gradient-2y4c79qml" x1="23" x2="235" y1="43" y2="202" gradientUnits="userSpaceOnUse" data-astro-cid-patnjmll> <stop stop-color="var(--gradient-stop-1)" data-astro-cid-patnjmll></stop> <stop offset=".5" stop-color="var(--gradient-stop-2)" data-astro-cid-patnjmll></stop> <stop offset="1" stop-color="var(--gradient-stop-3)" data-astro-cid-patnjmll></stop> </linearGradient> </svg> 
+Daniel Martin
+</a> <menu-button data-astro-cid-dmqpwcec> <template data-astro-cid-dmqpwcec> <button class="menu-button" aria-expanded="false" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>Menu</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" fill="currentcolor" class="astro-patnjmll" data-astro-cid-patnjmll> <g data-astro-cid-patnjmll><path stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M40 128h176M40 64h176M40 192h176"/></g>  </svg>  </button> </template> </menu-button> </div> <noscript> <ul class="nav-items" data-astro-cid-dmqpwcec> <li data-astro-cid-dmqpwcec> <a class="link" href="#about" data-astro-cid-dmqpwcec> About </a> </li><li data-astro-cid-dmqpwcec> <a class="link" href="#experience" data-astro-cid-dmqpwcec> Experience </a> </li><li data-astro-cid-dmqpwcec> <a class="link" href="#publications" data-astro-cid-dmqpwcec> Projects </a> </li><li data-astro-cid-dmqpwcec> <a class="link" href="#skills" data-astro-cid-dmqpwcec> Skills </a> </li> </ul> </noscript> <noscript> <div class="menu-footer" data-astro-cid-dmqpwcec> <div class="socials" data-astro-cid-dmqpwcec> <a href="https://www.linkedin.com/in/dmartinn/" class="social" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>Linkedin</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" fill="currentcolor" class="astro-patnjmll" data-astro-cid-patnjmll> <g data-astro-cid-patnjmll><rect width="184" height="184" x="36" y="36" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" rx="8"/><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M120 112v64m-32-64v64m32-36a28 28 0 0 1 56 0v36"/><circle stroke="none" cx="88" cy="80" r="12"/></g>  </svg>  </a><a href="https://github.com/Daniel-Martin576" class="social" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>GitHub</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" fill="currentcolor" class="astro-patnjmll" data-astro-cid-patnjmll> <g data-astro-cid-patnjmll><g stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke-width="14.7" d="M55.7 167.2c13.9 1 21.3 13.1 22.2 14.6 4.2 7.2 10.4 9.6 18.3 7.1l1.1-3.4a60.3 60.3 0 0 1-25.8-11.9c-12-10.1-18-25.6-18-46.3"/><path fill="none" stroke-width="16" d="M61.4 205.1a24.5 24.5 0 0 1-3-6.1c-3.2-7.9-7.1-10.6-7.8-11.1l-1-.6c-2.4-1.6-9.5-6.5-7.2-13.9 1.4-4.5 6-7.2 12.3-7.2h.8c4 .3 7.6 1.5 10.7 3.2-9.1-10.1-13.6-24.3-13.6-42.3 0-11.3 3.5-21.7 10.1-30.4A46.7 46.7 0 0 1 65 67.3a8.3 8.3 0 0 1 5-4.7c2.8-.9 13.3-2.7 33.2 9.9a105 105 0 0 1 50.5 0c19.9-12.6 30.4-10.8 33.2-9.9 2.3.7 4.1 2.4 5 4.7 5 12.7 4 23.2 2.6 29.4 6.7 8.7 10 18.9 10 30.4 0 42.6-25.8 54.7-43.6 58.7 1.4 4.1 2.2 8.8 2.2 13.7l-.1 23.4v2.3"/><path fill="none" stroke-width="16" d="M160.9 185.7c1.4 4.1 2.2 8.8 2.2 13.7l-.1 23.4v2.3A98.6 98.6 0 1 0 61.4 205c-1.4-2.1-11.3-17.5-11.8-17.8-2.4-1.6-9.5-6.5-7.2-13.9 1.4-4.5 6-7.2 12.3-7.2h.8c4 .3 7.6 1.5 10.7 3.2-9.1-10.1-13.6-24.3-13.6-42.3 0-11.3 3.5-21.7 10.1-30.4A46.4 46.4 0 0 1 65 67.3a8.3 8.3 0 0 1 5-4.7c2.8-.9 13.3-2.7 33.2 9.9a105 105 0 0 1 50.5 0c19.9-12.6 30.4-10.8 33.2-9.9 2.3.7 4.1 2.4 5 4.7 5 12.7 4 23.2 2.6 29.4 6.7 8.7 10 18.9 10 30.4.1 42.6-25.8 54.7-43.6 58.6z"/><path fill="none" stroke-width="18.7" d="m170.1 203.3 17.3-12 17.2-18.7 9.5-26.6v-27.9l-9.5-27.5" /><path fill="none" stroke-width="22.7" d="m92.1 57.3 23.3-4.6 18.7-1.4 29.3 5.4m-110 32.6-8 16-4 21.4.6 20.3 3.4 13" /><path fill="none" stroke-width="13.3" d="M28.8 133a100 100 0 0 0 66.9 94.4v-8.7c-22.4 1.8-33-11.5-35.6-19.8-3.4-8.6-7.8-11.4-8.5-11.8"/></g></g>  </svg>  </a><a href="mailto:dmartin20576@gmail.com" class="social" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>Email</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" fill="currentcolor" class="astro-patnjmll" data-astro-cid-patnjmll> <g data-astro-cid-patnjmll><path stroke="none" d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48Zm-96,85.15L52.57,64H203.43ZM98.71,128,40,181.81V74.19Zm11.84,10.85,12,11.05a8,8,0,0,0,10.82,0l12-11.05,58,53.15H52.57ZM157.29,128,216,74.18V181.82Z"></path></g>  </svg>  </a><a href="https://scholar.google.com/citations?user=dguH5zcAAAAJ&hl=en" class="social" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>Scholar</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" fill="currentcolor" class="astro-patnjmll" data-astro-cid-patnjmll> <g data-astro-cid-patnjmll><path stroke="none" d="M125 10C61.548 10 10 61.548 10 125 10 188.452 61.548 240 125 240 188.452 240 240 188.452 240 125 240 61.548 188.452 10 125 10zM125 20C183.048 20 230 66.952 230 125 230 183.048 183.048 230 125 230 66.952 230 20 183.048 20 125 20 66.952 66.952 20 125 20zM105 55 55 100 88.906 100C89.006 114.235 99.838 128.652 118.848 128.652 120.648 128.652 122.648 128.452 124.648 128.252 123.748 130.502 122.803 132.35 122.803 135.4 122.803 141.15 125.702 144.6 128.252 147.9 120.102 148.45 104.949 149.398 93.799 156.348 83.149 162.798 79.902 172.15 79.902 178.75 79.902 192.35 92.502 205 118.652 205 149.652 205 166.104 187.553 166.104 170.303 166.104 157.653 158.897 151.4 150.947 144.6L144.502 139.453C142.502 137.853 139.746 135.602 139.746 131.602 139.746 127.552 142.504 124.949 144.854 122.549 152.404 116.549 160 109.801 160 96.201 160 90.986 158.781 86.742 157.041 83.252L175 67.852 175 86.387C172.025 88.117 170 91.305 170 95L170 125C170 130.52 174.48 135 180 135 185.52 135 190 130.52 190 125L190 95C190 91.31 187.975 88.122 185 86.387L185 60C185 59.785 184.903 59.605 184.873 59.395L190 55 105 55zM121.348 71.201C136.348 71.201 144.102 91.75 144.102 105 144.102 108.25 143.7 114.1 139.6 118.35 136.7 121.3 131.855 123.496 127.305 123.496 111.855 123.496 104.746 103.101 104.746 90.801 104.746 86.051 105.7 81.105 108.75 77.305 111.65 73.555 116.698 71.201 121.348 71.201zM130.195 153.047C132.045 153.047 132.954 153.052 134.404 153.252 148.104 163.152 154.004 168.101 154.004 177.451 154.004 188.801 144.85 197.305 127.5 197.305 108.2 197.305 95.801 187.952 95.801 174.902 95.801 161.852 107.299 157.496 111.299 155.996 118.849 153.396 128.595 153.047 130.195 153.047z"></path></g>  </svg>  </a> </div> </div> </noscript> <div id="menu-content" hidden data-astro-cid-dmqpwcec> <ul class="nav-items" data-astro-cid-dmqpwcec> <li data-astro-cid-dmqpwcec> <a class="link" href="#about" data-astro-cid-dmqpwcec> About </a> </li><li data-astro-cid-dmqpwcec> <a class="link" href="#experience" data-astro-cid-dmqpwcec> Experience </a> </li><li data-astro-cid-dmqpwcec> <a class="link" href="#publications" data-astro-cid-dmqpwcec> Projects </a> </li><li data-astro-cid-dmqpwcec> <a class="link" href="#skills" data-astro-cid-dmqpwcec> Skills </a> </li> </ul> <div class="menu-footer" data-astro-cid-dmqpwcec> <div class="socials" data-astro-cid-dmqpwcec> <a href="https://www.linkedin.com/in/dmartinn/" class="social" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>Linkedin</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" fill="currentcolor" class="astro-patnjmll" data-astro-cid-patnjmll> <g data-astro-cid-patnjmll><rect width="184" height="184" x="36" y="36" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" rx="8"/><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M120 112v64m-32-64v64m32-36a28 28 0 0 1 56 0v36"/><circle stroke="none" cx="88" cy="80" r="12"/></g>  </svg>  </a><a href="https://github.com/Daniel-Martin576" class="social" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>GitHub</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" fill="currentcolor" class="astro-patnjmll" data-astro-cid-patnjmll> <g data-astro-cid-patnjmll><g stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke-width="14.7" d="M55.7 167.2c13.9 1 21.3 13.1 22.2 14.6 4.2 7.2 10.4 9.6 18.3 7.1l1.1-3.4a60.3 60.3 0 0 1-25.8-11.9c-12-10.1-18-25.6-18-46.3"/><path fill="none" stroke-width="16" d="M61.4 205.1a24.5 24.5 0 0 1-3-6.1c-3.2-7.9-7.1-10.6-7.8-11.1l-1-.6c-2.4-1.6-9.5-6.5-7.2-13.9 1.4-4.5 6-7.2 12.3-7.2h.8c4 .3 7.6 1.5 10.7 3.2-9.1-10.1-13.6-24.3-13.6-42.3 0-11.3 3.5-21.7 10.1-30.4A46.7 46.7 0 0 1 65 67.3a8.3 8.3 0 0 1 5-4.7c2.8-.9 13.3-2.7 33.2 9.9a105 105 0 0 1 50.5 0c19.9-12.6 30.4-10.8 33.2-9.9 2.3.7 4.1 2.4 5 4.7 5 12.7 4 23.2 2.6 29.4 6.7 8.7 10 18.9 10 30.4 0 42.6-25.8 54.7-43.6 58.7 1.4 4.1 2.2 8.8 2.2 13.7l-.1 23.4v2.3"/><path fill="none" stroke-width="16" d="M160.9 185.7c1.4 4.1 2.2 8.8 2.2 13.7l-.1 23.4v2.3A98.6 98.6 0 1 0 61.4 205c-1.4-2.1-11.3-17.5-11.8-17.8-2.4-1.6-9.5-6.5-7.2-13.9 1.4-4.5 6-7.2 12.3-7.2h.8c4 .3 7.6 1.5 10.7 3.2-9.1-10.1-13.6-24.3-13.6-42.3 0-11.3 3.5-21.7 10.1-30.4A46.4 46.4 0 0 1 65 67.3a8.3 8.3 0 0 1 5-4.7c2.8-.9 13.3-2.7 33.2 9.9a105 105 0 0 1 50.5 0c19.9-12.6 30.4-10.8 33.2-9.9 2.3.7 4.1 2.4 5 4.7 5 12.7 4 23.2 2.6 29.4 6.7 8.7 10 18.9 10 30.4.1 42.6-25.8 54.7-43.6 58.6z"/><path fill="none" stroke-width="18.7" d="m170.1 203.3 17.3-12 17.2-18.7 9.5-26.6v-27.9l-9.5-27.5" /><path fill="none" stroke-width="22.7" d="m92.1 57.3 23.3-4.6 18.7-1.4 29.3 5.4m-110 32.6-8 16-4 21.4.6 20.3 3.4 13" /><path fill="none" stroke-width="13.3" d="M28.8 133a100 100 0 0 0 66.9 94.4v-8.7c-22.4 1.8-33-11.5-35.6-19.8-3.4-8.6-7.8-11.4-8.5-11.8"/></g></g>  </svg>  </a><a href="/cdn-cgi/l/email-protection#7511181407011c1b4745404243351218141c195b161a18" class="social" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>Email</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" fill="currentcolor" class="astro-patnjmll" data-astro-cid-patnjmll> <g data-astro-cid-patnjmll><path stroke="none" d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48Zm-96,85.15L52.57,64H203.43ZM98.71,128,40,181.81V74.19Zm11.84,10.85,12,11.05a8,8,0,0,0,10.82,0l12-11.05,58,53.15H52.57ZM157.29,128,216,74.18V181.82Z"></path></g>  </svg>  </a><a href="https://scholar.google.com/citations?user=dguH5zcAAAAJ&hl=en" class="social" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>Scholar</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" fill="currentcolor" class="astro-patnjmll" data-astro-cid-patnjmll> <g data-astro-cid-patnjmll><path stroke="none" d="M125 10C61.548 10 10 61.548 10 125 10 188.452 61.548 240 125 240 188.452 240 240 188.452 240 125 240 61.548 188.452 10 125 10zM125 20C183.048 20 230 66.952 230 125 230 183.048 183.048 230 125 230 66.952 230 20 183.048 20 125 20 66.952 66.952 20 125 20zM105 55 55 100 88.906 100C89.006 114.235 99.838 128.652 118.848 128.652 120.648 128.652 122.648 128.452 124.648 128.252 123.748 130.502 122.803 132.35 122.803 135.4 122.803 141.15 125.702 144.6 128.252 147.9 120.102 148.45 104.949 149.398 93.799 156.348 83.149 162.798 79.902 172.15 79.902 178.75 79.902 192.35 92.502 205 118.652 205 149.652 205 166.104 187.553 166.104 170.303 166.104 157.653 158.897 151.4 150.947 144.6L144.502 139.453C142.502 137.853 139.746 135.602 139.746 131.602 139.746 127.552 142.504 124.949 144.854 122.549 152.404 116.549 160 109.801 160 96.201 160 90.986 158.781 86.742 157.041 83.252L175 67.852 175 86.387C172.025 88.117 170 91.305 170 95L170 125C170 130.52 174.48 135 180 135 185.52 135 190 130.52 190 125L190 95C190 91.31 187.975 88.122 185 86.387L185 60C185 59.785 184.903 59.605 184.873 59.395L190 55 105 55zM121.348 71.201C136.348 71.201 144.102 91.75 144.102 105 144.102 108.25 143.7 114.1 139.6 118.35 136.7 121.3 131.855 123.496 127.305 123.496 111.855 123.496 104.746 103.101 104.746 90.801 104.746 86.051 105.7 81.105 108.75 77.305 111.65 73.555 116.698 71.201 121.348 71.201zM130.195 153.047C132.045 153.047 132.954 153.052 134.404 153.252 148.104 163.152 154.004 168.101 154.004 177.451 154.004 188.801 144.85 197.305 127.5 197.305 108.2 197.305 95.801 187.952 95.801 174.902 95.801 161.852 107.299 157.496 111.299 155.996 118.849 153.396 128.595 153.047 130.195 153.047z"></path></g>  </svg>  </a> </div> <!-- <div class="theme-toggle">
+				<ThemeToggle />
+			</div> --> </div> </div> </nav>     <div class="stack gap-8 lg:gap-20" data-astro-cid-j7pv25f6> <div class="wrapper stack gap-8 lg:gap-20" id="about" data-astro-cid-j7pv25f6> <header class="hero" data-astro-cid-j7pv25f6> <div class="hero stack gap-4 start" data-astro-cid-bbe6dxrz> <div class="stack gap-2" data-astro-cid-bbe6dxrz> <h1 class="title" data-astro-cid-bbe6dxrz>Daniel Martin</h1> <p class="tagline" data-astro-cid-bbe6dxrz>Hello! I am a software developer with a strong passion for robotics and artificial intelligence based in Boston, MA. I have experience in robotics research and currently work at Amazon Robotics, contributing to one of the largest robotics fleets in the world. Feel free to reach out! </p>  </div>  <div class="roles" data-astro-cid-j7pv25f6> <div class="pill" data-astro-cid-2qeywk4b><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" fill="currentcolor" style="--size:1.33em" class="astro-patnjmll" data-astro-cid-patnjmll> <g data-astro-cid-patnjmll><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="m64 88-48 40 48 40m128-80 48 40-48 40M160 40 96 216"/></g>  </svg>  Developer</div>  <div class="pill" data-astro-cid-2qeywk4b><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" fill="currentcolor" style="--size:1.33em" class="astro-patnjmll" data-astro-cid-patnjmll> <g data-astro-cid-patnjmll><path d="M104,126.94a64,64,0,0,1,80-90.29L144,80l5.66,26.34L176,112l43.35-40a64,64,0,0,1-90.29,80L73,217A24,24,0,0,1,39,183Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></g>  </svg>  Roboticist</div>  <div class="pill" data-astro-cid-2qeywk4b><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" fill="currentcolor" style="--size:1.33em" class="astro-patnjmll" data-astro-cid-patnjmll> <g data-astro-cid-patnjmll><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M96 216H48a8 8 0 0 1-8-8v-44.7a7.9 7.9 0 0 1 2.3-5.6l120-120a8 8 0 0 1 11.4 0l44.6 44.6a8 8 0 0 1 0 11.4Zm40-152 56 56"/><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M216 216H96l-55.5-55.5M164 92l-96 96"/></g>  </svg>  Researcher</div>  </div>  </div>  <img width="500" height="200" src="/assets/main.jpg" style="object-fit: cover; object-position: 50% 10% ;" data-astro-cid-j7pv25f6> </header> </div> <section data-astro-cid-j7pv25f6> <div class="wrapper stack gap-10" id="experience" data-astro-cid-j7pv25f6> <h3 class="title flex" data-astro-cid-j7pv25f6><img src="assets/timeline/clock.svg" width="40" height="40" data-astro-cid-j7pv25f6>&nbsp Experience</h3> <div class="wrapper stack gap-8 lg:gap-20" data-astro-cid-j7pv25f6> <ol class="center relative border-s border-gray-700" data-astro-cid-j7pv25f6> <li class="mb-2 ms-12" data-astro-cid-j7pv25f6> <span class="absolute -start-5 flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 ring-8 ring-gray-900" data-astro-cid-j7pv25f6> <div class="image-cropper" data-astro-cid-j7pv25f6> <img src="assets/timeline/amazon2_logo.png" class="rounded-full" data-astro-cid-j7pv25f6> </div> </span> <h3 class="mb-1 text-xl font-semibold text-white" data-astro-cid-j7pv25f6>Amazon Robotics</h3> <h3 class="mb-2 block text-sm font-normal leading-none text-gray-300" data-astro-cid-j7pv25f6>Software Development Engineer</h3> <time class="mb-3 block text-sm font-normal leading-none text-gray-500" data-astro-cid-j7pv25f6>June 2022 &nbsp - &nbsp Present</time> <p class="mb-1 text-base font-normal text-gray-400" data-astro-cid-j7pv25f6>
+Maintain multiple Tier-1 services that are critical for robot work-request scheduling, drive maintenance, and performance profiling within Amazon Fulfillment
+								Centers.
+</p> <div class="drawer-parent" data-astro-cid-j7pv25f6> <div class="drawer hidden text-gray-400" data-astro-cid-j7pv25f6> <p data-astro-cid-j7pv25f6> <img src="assets/timeline/line.svg" width="25" data-astro-cid-j7pv25f6>
+• Spearheaded the migration of a critical database storing millions of robotic work requests to AWS DynamoDB, releasing 2,000+ EC2 hosts running Apache Cassandra
+										and saving ~9,000 engineer hours annually
+<br data-astro-cid-j7pv25f6><br data-astro-cid-j7pv25f6>
+• Engineered the data processing infrastructure for a diagnostic dashboard which enables operation teams to root cause 98% of performance gaps on Amazon robotic
+										floors and attracts ~68k monthly visits
+<br data-astro-cid-j7pv25f6><br data-astro-cid-j7pv25f6>
+• Designed a periodic AWS Lambda sweeper for executing essential business operations on a tier-1 scheduling service, resulting in $45k annual savings and efficiently
+										processing ~1.5 billion work requests per minute
+</p> </div> <div class="arrow-wrapper" data-astro-cid-j7pv25f6> <img src="assets/timeline/arrow.svg" width="25" class="rotate-90" data-astro-cid-j7pv25f6> </div> </div> <!-- TODO: Links to corresponding projects --> </li> <li class="mb-8 ms-12" data-astro-cid-j7pv25f6> <span class="absolute -start-5 flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 ring-8 ring-gray-900" data-astro-cid-j7pv25f6> <div class="image-cropper" data-astro-cid-j7pv25f6> <img src="assets/timeline/gt_logo.png" class="rounded-full" data-astro-cid-j7pv25f6> </div> <div class="image-cropper absolute h-8 w-8" style="top: -22px; right: 25px; transform: rotate(-29deg); scaleY(1);" data-astro-cid-j7pv25f6> <img src="assets/timeline/hat.svg" class="" data-astro-cid-j7pv25f6> </div> </span> <h3 class="mb-1 text-xl font-semibold text-white" data-astro-cid-j7pv25f6>
+Georgia Institute of Technology &nbsp
+<!-- <img src="assets/timeline/hat2.svg" class="h-6 w-6 inline rounded-full bg-gray-500  ring-2 ring-gray-500" style="position: relative; top: 0px;"  /> --> </h3> <h3 class="mb-2 block text-sm font-normal leading-none text-gray-300" data-astro-cid-j7pv25f6>Masters in Computer Science</h3> <time class="mb-2 block text-sm font-normal leading-none text-gray-500" data-astro-cid-j7pv25f6>May 2021 &nbsp - &nbsp May 2022 </time> <p class="mb-4 text-base font-normal text-gray-400" data-astro-cid-j7pv25f6>
+Specialization in Machine Learning <br data-astro-cid-j7pv25f6> GPA: 4.0 / 4.0 | Highest Honors
+</p> <!-- TODO: Little graduation hat --> </li> <li class="mb-2 ms-12" data-astro-cid-j7pv25f6> <span class="absolute -start-5 flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 ring-8 ring-gray-900" data-astro-cid-j7pv25f6> <div class="image-cropper" data-astro-cid-j7pv25f6> <img src="assets/timeline/core_logo.png" class="rounded-full" data-astro-cid-j7pv25f6> </div> </span> <h3 class="mb-1 text-xl font-semibold text-white" data-astro-cid-j7pv25f6>CORE Robotics Lab</h3> <h3 class="mb-2 block text-sm font-normal leading-none text-gray-300" data-astro-cid-j7pv25f6>Graduate Research Assistant</h3> <time class="mb-3 block text-sm font-normal leading-none text-gray-500" data-astro-cid-j7pv25f6>May 2021 &nbsp - &nbsp May 2022</time> <p class="mb-1 text-base font-normal text-gray-400" data-astro-cid-j7pv25f6>
+Collaborated with Dr. Matthew Gombolay to design robotic platforms for playing wheelchair tennis and ping pong.
+<br data-astro-cid-j7pv25f6>
+Also, researched reinforcement learning models for path planning with the Mars rover and coordinating among multi-agent teams.
+<br data-astro-cid-j7pv25f6> </p> <div class="drawer-parent2" data-astro-cid-j7pv25f6> <div class="drawer hidden text-gray-400" data-astro-cid-j7pv25f6> <p data-astro-cid-j7pv25f6> <img src="assets/timeline/line.svg" width="25" data-astro-cid-j7pv25f6>
+• Led the development of a robotic tennis platform, featuring a racket-wielding robotic arm on a motorized wheelchair, and devised its ball-tracking system, adaptive
+										swing controller, and robust motion planner
+<br data-astro-cid-j7pv25f6><br data-astro-cid-j7pv25f6>
+• Improved message compression by 200x within a multi-agent reinforcement learning model (HetNet), leading to more efficient communication between coordinating agents
+										with distinct roles
+<br data-astro-cid-j7pv25f6><br data-astro-cid-j7pv25f6>
+• Designed the real-time motion controller, simulator, and perception system for a Ping-Pong robotic platform that learns from heterogeneous human demonstrations
+										and isolates user-specific strategies
+<br data-astro-cid-j7pv25f6><br data-astro-cid-j7pv25f6>
+• Implemented inverse reinforcement learning algorithms to generate high-quality paths for NASA’s Mars Curiosity Rover by distilling the implicit expertise and personal
+										strategies of trained human rover planners
+</p> </div> <div class="arrow-wrapper" data-astro-cid-j7pv25f6> <img src="assets/timeline/arrow.svg" width="25" class="rotate-90" data-astro-cid-j7pv25f6> </div> </div> </li> <li class="mb-2 ms-12" data-astro-cid-j7pv25f6> <span class="absolute -start-5 flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 ring-8 ring-gray-900" data-astro-cid-j7pv25f6> <img src="assets/timeline/robojackets_logo.png" class="rounded" data-astro-cid-j7pv25f6> </span> <h3 class="mb-1 text-xl font-semibold text-white" data-astro-cid-j7pv25f6>RoboJackets</h3> <h3 class="mb-2 block text-sm font-normal leading-none text-gray-300" data-astro-cid-j7pv25f6>Software Lead</h3> <time class="mb-3 block text-sm font-normal leading-none text-gray-500" data-astro-cid-j7pv25f6>Aug 2018 &nbsp - &nbsp May 2022</time> <p class="mb-1 text-base font-normal text-gray-400" data-astro-cid-j7pv25f6>
+Developed autonomous high-speed vehicles for racing in various international competitions using onboard perception.
+</p> <div class="drawer-parent3" data-astro-cid-j7pv25f6> <div class="drawer hidden text-gray-400" data-astro-cid-j7pv25f6> <p data-astro-cid-j7pv25f6> <img src="assets/timeline/line.svg" width="25" data-astro-cid-j7pv25f6>
+• Developed the real-time mapping, optimization-based path planning, and vision-based opponent-vehicle detection capabilities of a high-speed autonomous electric
+										go-kart for the evGrand Prix national competition
+<br data-astro-cid-j7pv25f6><br data-astro-cid-j7pv25f6>
+• Enhanced the perception stack of an autonomous 1/10-scale RC car by improving its detection accuracy of road lane markings, traffic cones, and road signs for the
+										IARRC international competition
+</p> </div> <div class="arrow-wrapper" data-astro-cid-j7pv25f6> <img src="assets/timeline/arrow.svg" width="25" class="rotate-90" data-astro-cid-j7pv25f6> </div> </div> </li> <li class="mb-8 ms-12" data-astro-cid-j7pv25f6> <span class="absolute -start-5 flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 ring-8 ring-gray-900" data-astro-cid-j7pv25f6> <div class="image-cropper" data-astro-cid-j7pv25f6> <img src="assets/timeline/gt_logo.png" class="rounded-full" data-astro-cid-j7pv25f6> </div> <div class="image-cropper absolute h-8 w-8" style="top: -22px; right: 25px; transform: rotate(-29deg); scaleY(1);" data-astro-cid-j7pv25f6> <img src="assets/timeline/hat.svg" class="" data-astro-cid-j7pv25f6> </div> </span> <h3 class="mb-1 text-xl font-semibold text-white" data-astro-cid-j7pv25f6>Georgia Institute of Technology</h3> <h3 class="mb-2 block text-sm font-normal leading-none text-gray-300" data-astro-cid-j7pv25f6>Bachelors in Computer Science</h3> <time class="mb-3 block text-sm font-normal leading-none text-gray-500" data-astro-cid-j7pv25f6>Aug 2018 &nbsp - &nbsp May 2021</time> <p class="mb-1 text-base font-normal text-gray-400" data-astro-cid-j7pv25f6>
+Minor in Robotics <br data-astro-cid-j7pv25f6> Concentration in Devices and Intelligence <br data-astro-cid-j7pv25f6> GPA: 4.0 / 4.0 | Highest Honors
+</p> </li> <li class="mb-2 ms-12" data-astro-cid-j7pv25f6> <span class="absolute -start-5 flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 ring-8 ring-gray-900" data-astro-cid-j7pv25f6> <img src="assets/timeline/gtri_logo.jpg" class="rounded-full" data-astro-cid-j7pv25f6> </span> <h3 class="mb-1 text-xl font-semibold text-white" data-astro-cid-j7pv25f6>ATAS Robotics Lab</h3> <h3 class="mb-2 block text-sm font-normal leading-none text-gray-300" data-astro-cid-j7pv25f6>Research Intern</h3> <time class="mb-3 block text-sm font-normal leading-none text-gray-500" data-astro-cid-j7pv25f6>May 2020 &nbsp - &nbsp Aug 2020</time> <p class="mb-1 text-base font-normal text-gray-400" data-astro-cid-j7pv25f6>
+Collaborated with Dr. Stephen Balakirsky to develop hierarchical behaviors for a robotic arm for the NASA HOME Project and researched methods of translating human
+								demonstrations into robot behaviors.
+</p> <div class="drawer-parent4" data-astro-cid-j7pv25f6> <div class="drawer hidden text-gray-400" data-astro-cid-j7pv25f6> <p data-astro-cid-j7pv25f6> <img src="assets/timeline/line.svg" width="25" data-astro-cid-j7pv25f6>
+• Designed hierarchical action primitives, real-time motion controllers with force feedback, and tool-changing routines for a robotic arm (UR10e) to disassemble
+										a motor mount for NASA's HOME Project
+<br data-astro-cid-j7pv25f6><br data-astro-cid-j7pv25f6>
+• Researched learning from demonstration (LfD) approaches involving image translations to convert human video demonstrations to robot actions to directly learn human
+										strategies through context analysis
+</p> </div> <div class="arrow-wrapper" data-astro-cid-j7pv25f6> <img src="assets/timeline/arrow.svg" width="25" class="rotate-90" data-astro-cid-j7pv25f6> </div> </div> </li> <li class="ms-12" data-astro-cid-j7pv25f6> <span class="absolute -start-5 flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 ring-8 ring-gray-900" data-astro-cid-j7pv25f6> <img src="assets/timeline/seasideoaks_logo.png" class="rounded-full" data-astro-cid-j7pv25f6> </span> <h3 class="mb-1 text-xl font-semibold text-white" data-astro-cid-j7pv25f6>Seaside Oaks Psychiatry</h3> <h3 class="mb-2 block text-sm font-normal leading-none text-gray-300" data-astro-cid-j7pv25f6>Software Developer</h3> <time class="mb-3 block text-sm font-normal leading-none text-gray-500" data-astro-cid-j7pv25f6> Aug 2017 &nbsp - &nbsp June 2019</time> <p class="mb-1 text-base font-normal text-gray-400" data-astro-cid-j7pv25f6>Designed the company website and developed a synchronization application to mirror two medical calendars.</p> <div class="drawer-parent5" data-astro-cid-j7pv25f6> <div class="drawer hidden text-gray-400" data-astro-cid-j7pv25f6> <p data-astro-cid-j7pv25f6> <img src="assets/timeline/line.svg" width="25" data-astro-cid-j7pv25f6>
+• Designed the company website which attracts 500+ monthly visits and is the source of ~70% of new patients
+<br data-astro-cid-j7pv25f6><br data-astro-cid-j7pv25f6>
+• Built a web application to synchronize patient appointments between multiple medical calendars.
+</p> </div> <div class="arrow-wrapper" data-astro-cid-j7pv25f6> <img src="assets/timeline/arrow.svg" width="25" class="rotate-90" data-astro-cid-j7pv25f6> </div> </div> </li> </ol> </div> </div> </section> <section data-astro-cid-j7pv25f6></section> </div> <div class="stack gap-0 lg:gap-10" data-astro-cid-j7pv25f6> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"> <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script> <section data-astro-cid-j7pv25f6> <main class="wrapper stack gap-8" id="publications" data-astro-cid-j7pv25f6> <div class="" data-astro-cid-j7pv25f6> <h3 class="title flex" data-astro-cid-j7pv25f6> <img src="assets/projects/publications.svg" width="35" height="35" class="inline" data-astro-cid-j7pv25f6> &nbsp Publications
+</h3> <div class="nav-buttons flex" data-astro-cid-j7pv25f6> <button class="swipe-prev1 swiper-button-prev2 rotate-180" data-astro-cid-j7pv25f6><img src="assets/trash/next.svg" width="15" height="15" data-astro-cid-j7pv25f6></button> <button class="swiper-next1 swiper-button-next2" data-astro-cid-j7pv25f6><img src="assets/trash/next.svg" width="15" height="15" data-astro-cid-j7pv25f6></button> </div> </div> <div class="swiper mySwiperPublications lunchbox" data-astro-cid-j7pv25f6> <div class="swiper-wrapper w-fit" data-astro-cid-j7pv25f6> <div class="swiper-slide" data-astro-cid-j7pv25f6><!-- 
+<a class="card">
+	<span class="title">{data.title}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+    <div class="card-actions justify-end">
+		<div class="badge badge-outline">Fashion</div> 
+		<div class="badge badge-outline">Products</div>
+	</div>
+</a> --><div class="max-w-sm border rounded-lg shadow bg-gray-800 border-gray-700"> <a href="#"> <img class="rounded-t-lg w-full" src="/assets/projects/georgia_tech_robot.jpg" alt="" height="00px" loading="lazy" decoding="async"> </a> <div class="p-5"> <a href="#"> <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Robotic Wheelchair Tennis</h5> </a> <p class="mb-3 font-normal text-gray-400">A tennis-playing, racket-swinging robot on wheels with full court tracking — finally, an opponent that never calls it quits!
+</p> <div class="flex flex-col items-center"> <a href="https://ieeexplore.ieee.org/document/10066150" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+Read Paper &nbsp
+<img src="assets/projects/paper.svg" width="15" height="15"> </a> </div> </div> </div> <!-- 
+<style>
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		height: 11rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>  --></div> <div class="swiper-slide" data-astro-cid-j7pv25f6><!-- 
+<a class="card">
+	<span class="title">{data.title}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+    <div class="card-actions justify-end">
+		<div class="badge badge-outline">Fashion</div> 
+		<div class="badge badge-outline">Products</div>
+	</div>
+</a> --><div class="max-w-sm border rounded-lg shadow bg-gray-800 border-gray-700"> <a href="#"> <img class="rounded-t-lg w-full" src="/assets/projects/pingpong.jpg" alt="Pearls of silky soft white cotton, bubble up under vibrant lighting" height="00px" loading="lazy" decoding="async"> </a> <div class="p-5"> <a href="#"> <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Ping Pong Partner</h5> </a> <p class="mb-3 font-normal text-gray-400">Meet your new pingpong partner: a robot arm that learns from your swings and plays alongside you with impressive skill.
+</p> <div class="flex flex-col items-center"> <a href="https://par.nsf.gov/biblio/10411888-fast-lifelong-adaptive-inverse-reinforcement-learning-from-demonstrations" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+Read Paper &nbsp
+<img src="assets/projects/paper.svg" width="15" height="15"> </a> </div> </div> </div> <!-- 
+<style>
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		height: 11rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>  --></div> <div class="swiper-slide" data-astro-cid-j7pv25f6><!-- 
+<a class="card">
+	<span class="title">{data.title}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+    <div class="card-actions justify-end">
+		<div class="badge badge-outline">Fashion</div> 
+		<div class="badge badge-outline">Products</div>
+	</div>
+</a> --><div class="max-w-sm border rounded-lg shadow bg-gray-800 border-gray-700"> <a href="#"> <img class="rounded-t-lg w-full" src="/assets/projects/hetnet.png" alt="" height="00px" loading="lazy" decoding="async"> </a> <div class="p-5"> <a href="#"> <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Multi-Agent Team Coordination</h5> </a> <p class="mb-3 font-normal text-gray-400">A multi-agent reinforcement learning model that enables agents with different roles to efficiently coordinate.
+</p> <div class="flex flex-col items-center"> <a href="https://dl.acm.org/doi/10.5555/3535850.3535981" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+Read Paper &nbsp
+<img src="assets/projects/paper.svg" width="15" height="15"> </a> </div> </div> </div> <!-- 
+<style>
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		height: 11rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>  --></div> <div class="swiper-slide" data-astro-cid-j7pv25f6><!-- 
+<a class="card">
+	<span class="title">{data.title}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+    <div class="card-actions justify-end">
+		<div class="badge badge-outline">Fashion</div> 
+		<div class="badge badge-outline">Products</div>
+	</div>
+</a> --><div class="max-w-sm border rounded-lg shadow bg-gray-800 border-gray-700"> <a href="#"> <img class="rounded-t-lg w-full" src="/assets/projects/droid.png" alt="Soft pink and baby blue water ripples together in a subtle texture." height="00px" loading="lazy" decoding="async"> </a> <div class="p-5"> <a href="#"> <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Martian Pathfinding Made Easy</h5> </a> <p class="mb-3 font-normal text-gray-400">A learning model that handles diverse strategies and improves generalization to skillfully guide NASA&#39;s Mars Curiosity Rover.
+</p> <div class="flex flex-col items-center"> <a href="https://openreview.net/pdf?id=h-geaPzuJu" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+Read Paper &nbsp
+<img src="assets/projects/paper.svg" width="15" height="15"> </a> </div> </div> </div> <!-- 
+<style>
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		height: 11rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>  --></div> </div> <div class="swiper-pagination" data-astro-cid-j7pv25f6></div> <!-- If we need navigation buttons --> </div> </main> </section> <section data-astro-cid-j7pv25f6> <main class="wrapper stack gap-8" data-astro-cid-j7pv25f6> <div class="title-container flex" data-astro-cid-j7pv25f6> <h3 class="title flex" data-astro-cid-j7pv25f6> <img src="assets/projects/projects.svg" width="40" height="40" data-astro-cid-j7pv25f6>&nbsp Projects
+</h3> <div class="nav-buttons flex" data-astro-cid-j7pv25f6> <button class="swipe-prev2 swiper-button-prev2 rotate-180" data-astro-cid-j7pv25f6><img src="assets/trash/next.svg" width="15" height="15" data-astro-cid-j7pv25f6></button> <button class="swiper-next2 swiper-button-next2" data-astro-cid-j7pv25f6><img src="assets/trash/next.svg" width="15" height="15" data-astro-cid-j7pv25f6></button> </div> </div> <div class="swiper mySwiper" data-astro-cid-j7pv25f6> <div class="swiper-wrapper" data-astro-cid-j7pv25f6> <div class="swiper-slide" data-astro-cid-j7pv25f6><!-- 
+<a class="card">
+	<span class="title">{data.title}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+    <div class="card-actions justify-end">
+		<div class="badge badge-outline">Fashion</div> 
+		<div class="badge badge-outline">Products</div>
+	</div>
+</a> --><div class="max-w-sm  rounded-lg shadow bg-gray-800 border-gray-700"> <img class="rounded-t-lg w-full" src="/assets/projects/evgp4.jpg" alt="A bright pink sheet of paper used to wrap flowers curves in front of rich blue background" loading="lazy" decoding="async"> <div class="p-3"> <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Autonomous Go-Kart Racing</h5> <p class="mb-0 font-normal text-gray-400">A self-driving electric go-kart which received 2nd place in the 2021 evGrand Prix autonomous competition. 
+</p> </div> </div> <!-- 
+<style>
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		height: 11rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>  --></div> <div class="swiper-slide" data-astro-cid-j7pv25f6><!-- 
+<a class="card">
+	<span class="title">{data.title}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+    <div class="card-actions justify-end">
+		<div class="badge badge-outline">Fashion</div> 
+		<div class="badge badge-outline">Products</div>
+	</div>
+</a> --><div class="max-w-sm  rounded-lg shadow bg-gray-800 border-gray-700"> <img class="rounded-t-lg w-full" src="/assets/projects/sedanii.png" alt="A bright pink sheet of paper used to wrap flowers curves in front of rich blue background" loading="lazy" decoding="async"> <div class="p-3"> <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Autonomous RC Car Racing</h5> <p class="mb-0 font-normal text-gray-400">An autonomous 1/10-sized RC car that won 1st place at the 2019 International Autonomous Robot Racing Competition. 
+</p> </div> </div> <!-- 
+<style>
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		height: 11rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>  --></div> <div class="swiper-slide" data-astro-cid-j7pv25f6><!-- 
+<a class="card">
+	<span class="title">{data.title}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+    <div class="card-actions justify-end">
+		<div class="badge badge-outline">Fashion</div> 
+		<div class="badge badge-outline">Products</div>
+	</div>
+</a> --><div class="max-w-sm  rounded-lg shadow bg-gray-800 border-gray-700"> <img class="rounded-t-lg w-full" src="/assets/projects/arctos3.jpeg" alt="A bright pink sheet of paper used to wrap flowers curves in front of rich blue background" loading="lazy" decoding="async"> <div class="p-3"> <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Arctos Robotic Arm</h5> <p class="mb-0 font-normal text-gray-400">A brushless DC-motor variant of an open source 3D-printed robotic arm to develop custom reinforcement learning models
+</p> </div> </div> <!-- 
+<style>
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		height: 11rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>  --></div> <div class="swiper-slide" data-astro-cid-j7pv25f6><!-- 
+<a class="card">
+	<span class="title">{data.title}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+    <div class="card-actions justify-end">
+		<div class="badge badge-outline">Fashion</div> 
+		<div class="badge badge-outline">Products</div>
+	</div>
+</a> --><div class="max-w-sm  rounded-lg shadow bg-gray-800 border-gray-700"> <img class="rounded-t-lg w-full" src="/assets/projects/blockbot2.png" alt="A bright pink sheet of paper used to wrap flowers curves in front of rich blue background" loading="lazy" decoding="async"> <div class="p-3"> <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">ARBlockBot</h5> <p class="mb-0 font-normal text-gray-400">An AR app that teaches simplified block-based programming to control the movements of a virtual robot.
+</p> </div> </div> <!-- 
+<style>
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		height: 11rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>  --></div> <div class="swiper-slide" data-astro-cid-j7pv25f6><!-- 
+<a class="card">
+	<span class="title">{data.title}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+    <div class="card-actions justify-end">
+		<div class="badge badge-outline">Fashion</div> 
+		<div class="badge badge-outline">Products</div>
+	</div>
+</a> --><div class="max-w-sm  rounded-lg shadow bg-gray-800 border-gray-700"> <img class="rounded-t-lg w-full" src="/assets/projects/balance.jpg" alt="A bright pink sheet of paper used to wrap flowers curves in front of rich blue background" loading="lazy" decoding="async"> <div class="p-3"> <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Self-Balancing Bot</h5> <p class="mb-0 font-normal text-gray-400">A self-balancing robot that implements the same control strategies used for an inverted pendulum.
+</p> </div> </div> <!-- 
+<style>
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		height: 11rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>  --></div> <div class="swiper-slide" data-astro-cid-j7pv25f6><!-- 
+<a class="card">
+	<span class="title">{data.title}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+    <div class="card-actions justify-end">
+		<div class="badge badge-outline">Fashion</div> 
+		<div class="badge badge-outline">Products</div>
+	</div>
+</a> --><div class="max-w-sm  rounded-lg shadow bg-gray-800 border-gray-700"> <img class="rounded-t-lg w-full" src="/assets/projects/buildgt2.jpg" alt="A bright pink sheet of paper used to wrap flowers curves in front of rich blue background" loading="lazy" decoding="async"> <div class="p-3"> <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Sixth Sense - BuildGT Winner</h5> <p class="mb-0 font-normal text-gray-400">A wearable indoor obstacle detection system for individuals with vision impairments.
+</p> </div> </div> <!-- 
+<style>
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		height: 11rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>  --></div> </div> <div class="swiper-pagination" data-astro-cid-j7pv25f6></div> <!-- If we need navigation buttons --> </div> </main> </section> <section data-astro-cid-j7pv25f6> <main class="wrapper stack gap-8" data-astro-cid-j7pv25f6> <div class="title-container flex" data-astro-cid-j7pv25f6> <h3 class="title flex" data-astro-cid-j7pv25f6> <img src="assets/projects/research.svg" width="40" height="40" data-astro-cid-j7pv25f6>&nbsp Research
+</h3> <div class="nav-buttons flex" data-astro-cid-j7pv25f6> <button class="swiper-button-prev3 swiper-button-next2 rotate-180" data-astro-cid-j7pv25f6><img src="assets/trash/next.svg" width="15" height="15" data-astro-cid-j7pv25f6></button> <button class="swiper-button-next3 swiper-button-next2" data-astro-cid-j7pv25f6><img src="assets/trash/next.svg" width="15" height="15" data-astro-cid-j7pv25f6></button> </div> </div> <div class="swiper mySwiperResearch" data-astro-cid-j7pv25f6> <div class="swiper-wrapper" data-astro-cid-j7pv25f6> <div class="swiper-slide" data-astro-cid-j7pv25f6><!-- 
+<a class="card">
+	<span class="title">{data.title}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+    <div class="card-actions justify-end">
+		<div class="badge badge-outline">Fashion</div> 
+		<div class="badge badge-outline">Products</div>
+	</div>
+</a> --><div class="max-w-sm  rounded-lg shadow bg-gray-800 border-gray-700"> <img class="rounded-t-lg w-full" src="/assets/projects/ur101.jpg" alt="A bright pink sheet of paper used to wrap flowers curves in front of rich blue background" loading="lazy" decoding="async"> <div class="p-3"> <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">NASA Habitat Arm</h5> <p class="mb-0 font-normal text-gray-400">A robotic arm (UR10e) modified to disassemble a motor mount through hierarchical planning for the NASA HOME Project.
+</p> </div> </div> <!-- 
+<style>
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		height: 11rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>  --></div> <div class="swiper-slide" data-astro-cid-j7pv25f6><!-- 
+<a class="card">
+	<span class="title">{data.title}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+    <div class="card-actions justify-end">
+		<div class="badge badge-outline">Fashion</div> 
+		<div class="badge badge-outline">Products</div>
+	</div>
+</a> --><div class="max-w-sm  rounded-lg shadow bg-gray-800 border-gray-700"> <img class="rounded-t-lg w-full" src="/assets/projects/ezcgp4.png" alt="A bright pink sheet of paper used to wrap flowers curves in front of rich blue background" loading="lazy" decoding="async"> <div class="p-3"> <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">AutoML via Genetic Evolution</h5> <p class="mb-0 font-normal text-gray-400">An open source AutoML framework for optimizing complex machine learning pipelines using Cartesian Genetic Graphs.
+</p> </div> </div> <!-- 
+<style>
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		height: 11rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>  --></div> <div class="swiper-slide" data-astro-cid-j7pv25f6><!-- 
+<a class="card">
+	<span class="title">{data.title}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+    <div class="card-actions justify-end">
+		<div class="badge badge-outline">Fashion</div> 
+		<div class="badge badge-outline">Products</div>
+	</div>
+</a> --><div class="max-w-sm  rounded-lg shadow bg-gray-800 border-gray-700"> <img class="rounded-t-lg w-full" src="/assets/projects/suboptimal.png" alt="A bright pink sheet of paper used to wrap flowers curves in front of rich blue background" loading="lazy" decoding="async"> <div class="p-3"> <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Text Transformers on Trajectories</h5> <p class="mb-0 font-normal text-gray-400">An Inverse Reinforcement Learning approach that leverages a semi-supervised text-classifier to score suboptimal trajectories.
+</p> </div> </div> <!-- 
+<style>
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		height: 11rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>  --></div> <div class="swiper-slide" data-astro-cid-j7pv25f6><!-- 
+<a class="card">
+	<span class="title">{data.title}</span>
+	<img src={data.img} alt={data.img_alt || ''} loading="lazy" decoding="async" />
+    <div class="card-actions justify-end">
+		<div class="badge badge-outline">Fashion</div> 
+		<div class="badge badge-outline">Products</div>
+	</div>
+</a> --><div class="max-w-sm  rounded-lg shadow bg-gray-800 border-gray-700"> <img class="rounded-t-lg w-full" src="/assets/projects/bootstrap3.jpg" alt="A bright pink sheet of paper used to wrap flowers curves in front of rich blue background" loading="lazy" decoding="async"> <div class="p-3"> <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Approximating Molecular Systems</h5> <p class="mb-0 font-normal text-gray-400">A statistical bootstrapping approach to approximate the thermal conductivity  of  molecular systems.
+</p> </div> </div> <!-- 
+<style>
+
+	.card {
+		display: grid;
+		grid-template: auto 1fr / auto 1fr;
+		height: 11rem;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-lg);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.title {
+		grid-area: 1 / 1 / 2 / 2;
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	img {
+		grid-area: 1 / 1 / 3 / 3;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>  --></div> </div> <div class="swiper-pagination" data-astro-cid-j7pv25f6></div> </div> <!-- <Grid>
+					{research.map((project) => <PortfolioPreview2 project={project} />)}
+				</Grid> --> </main> </section> <section data-astro-cid-j7pv25f6> <main class="wrapper stack gap-10" id="skills" data-astro-cid-j7pv25f6> <h3 class="title flex" data-astro-cid-j7pv25f6><img src="assets/projects/skills.svg" width="40" height="40" data-astro-cid-j7pv25f6>&nbsp Skills</h3> <div class="container mx-auto flex p-4" data-astro-cid-j7pv25f6> <div class="card-container" data-astro-cid-j7pv25f6> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/c.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>C</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/c++.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>C++</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/python.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>Python</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/java.jpg" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>Java</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/kotlin.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>Kotlin</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/javascript.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>JavaScript</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/typescript.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>TypeScript</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/rust.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>Rust</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/matlab.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>MatLab</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/assembly.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>Assembly</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/html.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>HTML</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/css.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>CSS</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/sql.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>SQL</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/bash.jpg" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>Bash</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/ros3.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>ROS 1 & 2</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/pytorch.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>PyTorch</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/tensorflow.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>TensorFlow</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/aws.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>AWS</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/gcp.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>GCP</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/docker.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>Docker</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/cuda.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>CUDA</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/opencv.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>OpenCV</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/cad.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>SolidWorks</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/unity2.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>Unity</span> </div> <div class="card border border-gray-700 bg-gray-800" data-astro-cid-j7pv25f6> <img src="assets/skills/gazebo.png" class="image-cropper2" data-astro-cid-j7pv25f6> <span class="text-gray-400" data-astro-cid-j7pv25f6>gazebo</span> </div> </div> </div> </main> </section> </div>  <footer data-astro-cid-sz7xmlte> <div class="group" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>
+Designed by Daniel Martin with <a href="https://astro.build/" data-astro-cid-sz7xmlte>Astro</a> <img class="inline" src="assets/astro.svg" width="25" height="25" data-astro-cid-sz7xmlte> </p> <!-- <Icon icon="rocket-launch" size="1.2em" /> --> </div> <p class="socials" data-astro-cid-sz7xmlte> <!-- <a href="https://github.com/me"> GitHub</a>
+		<a href="https://codepen.io/me"> CodePen</a> --> </p> </footer>  </div>   </body> </html>  

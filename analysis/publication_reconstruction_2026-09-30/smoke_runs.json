@@ -1,0 +1,326 @@
+[
+  {
+    "task": "pp",
+    "variant": "real",
+    "version": "historical-2022",
+    "collectors": 1,
+    "counts": {
+      "env_steps": 8,
+      "episodes": 2,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 5,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/pp_real_historical-2022_1collector/checkpoints/pp_real/run1/model_ep1.pt",
+    "checkpoint_sha256": "ab92593d585c2b7b619dda9b9b4b8c27abe8e672f8879d7ef5a08cd28534c66d"
+  },
+  {
+    "task": "pp",
+    "variant": "real",
+    "version": "corrected-v1",
+    "collectors": 1,
+    "counts": {
+      "env_steps": 8,
+      "episodes": 2,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 5,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/pp_real_corrected-v1_1collector/checkpoints/pp_real/run1/model_ep1.pt",
+    "checkpoint_sha256": "04cdbf3620672655f249de507024f33bfac67620e388e2473e2ca27ac753acf6"
+  },
+  {
+    "task": "pp",
+    "variant": "binary",
+    "version": "historical-2022",
+    "collectors": 1,
+    "counts": {
+      "env_steps": 8,
+      "episodes": 2,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 5,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/pp_binary_historical-2022_1collector/checkpoints/pp_binary/run1/model_ep1.pt",
+    "checkpoint_sha256": "2d153e3f4a12c42fd887ccd502d1d060b6ca425983ffb8d27c70349f70fb47dc"
+  },
+  {
+    "task": "pp",
+    "variant": "binary",
+    "version": "corrected-v1",
+    "collectors": 1,
+    "counts": {
+      "env_steps": 8,
+      "episodes": 2,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 5,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/pp_binary_corrected-v1_1collector/checkpoints/pp_binary/run1/model_ep1.pt",
+    "checkpoint_sha256": "9147e7801eea25ce5f2bf9e187e0bf05da18f446a40d0d57fd9f02c44ca375d6"
+  },
+  {
+    "task": "pcp",
+    "variant": "real",
+    "version": "historical-2022",
+    "collectors": 1,
+    "counts": {
+      "env_steps": 8,
+      "episodes": 2,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 5,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/pcp_real_historical-2022_1collector/checkpoints/pcp_real/run1/model_ep1.pt",
+    "checkpoint_sha256": "b81abb5ad2a8208adae89063d46a3f4323edd83aca3060b33ae75e1daadc9303"
+  },
+  {
+    "task": "pcp",
+    "variant": "real",
+    "version": "corrected-v1",
+    "collectors": 1,
+    "counts": {
+      "env_steps": 8,
+      "episodes": 2,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 5,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/pcp_real_corrected-v1_1collector/checkpoints/pcp_real/run1/model_ep1.pt",
+    "checkpoint_sha256": "10e21da8dcc74ee37fd4fadb2019bac6c788950fe7824ed9f66ba01e61d45c22"
+  },
+  {
+    "task": "pcp",
+    "variant": "binary",
+    "version": "historical-2022",
+    "collectors": 1,
+    "counts": {
+      "env_steps": 8,
+      "episodes": 2,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 5,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/pcp_binary_historical-2022_1collector/checkpoints/pcp_binary/run1/model_ep1.pt",
+    "checkpoint_sha256": "1e6fce7120bb5ae4514daa929b950884422f8ea7bdbe725430f555821f4a3998"
+  },
+  {
+    "task": "pcp",
+    "variant": "binary",
+    "version": "corrected-v1",
+    "collectors": 1,
+    "counts": {
+      "env_steps": 8,
+      "episodes": 2,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 5,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/pcp_binary_corrected-v1_1collector/checkpoints/pcp_binary/run1/model_ep1.pt",
+    "checkpoint_sha256": "6761c403cad536b16136f9978d243e2e1b01187def1df11bf3677154b7bc3168"
+  },
+  {
+    "task": "fc",
+    "variant": "real",
+    "version": "historical-2022",
+    "collectors": 1,
+    "counts": {
+      "env_steps": 8,
+      "episodes": 2,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 5,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/fc_real_historical-2022_1collector/checkpoints/fc_real/run1/model_ep1.pt",
+    "checkpoint_sha256": "4257ab1d5606d6426aedb48d712715b2823b63d5f4e9ab70277167d5fde44bc7"
+  },
+  {
+    "task": "fc",
+    "variant": "real",
+    "version": "corrected-v1",
+    "collectors": 1,
+    "counts": {
+      "env_steps": 8,
+      "episodes": 2,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 5,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/fc_real_corrected-v1_1collector/checkpoints/fc_real/run1/model_ep1.pt",
+    "checkpoint_sha256": "1f4744e3404425d0a2e68a00869d85d934e6815f5332ba536908f5979ce2086f"
+  },
+  {
+    "task": "fc",
+    "variant": "binary",
+    "version": "historical-2022",
+    "collectors": 1,
+    "counts": {
+      "env_steps": 8,
+      "episodes": 2,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 5,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/fc_binary_historical-2022_1collector/checkpoints/fc_binary/run1/model_ep1.pt",
+    "checkpoint_sha256": "ddbcabef15f4325b1312cf45406bc70cac5ae33090d3e10763d894cc139cc7c9"
+  },
+  {
+    "task": "fc",
+    "variant": "binary",
+    "version": "corrected-v1",
+    "collectors": 1,
+    "counts": {
+      "env_steps": 8,
+      "episodes": 2,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 5,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/fc_binary_corrected-v1_1collector/checkpoints/fc_binary/run1/model_ep1.pt",
+    "checkpoint_sha256": "8da83c7aebe1160a9a9c32672d57546b6a030dadfff515dbc865aab5af6a7075"
+  },
+  {
+    "task": "pp",
+    "variant": "binary",
+    "version": "historical-2022",
+    "collectors": 2,
+    "counts": {
+      "env_steps": 16,
+      "episodes": 4,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 9,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/pp_binary_historical-2022_2collector/checkpoints/pp_binary/run1/model_ep1.pt",
+    "checkpoint_sha256": "aa4e2072c60bc66298c210795290b4c5f0d72bcbf928692a47c6271cd2780e7c"
+  },
+  {
+    "task": "pp",
+    "variant": "binary",
+    "version": "corrected-v1",
+    "collectors": 2,
+    "counts": {
+      "env_steps": 16,
+      "episodes": 4,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 9,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/pp_binary_corrected-v1_2collector/checkpoints/pp_binary/run1/model_ep1.pt",
+    "checkpoint_sha256": "812bbd7819f808f947d811c3401093ba73229b65b2dd7223115a6a4a0e162c3f"
+  },
+  {
+    "task": "pcp",
+    "variant": "real",
+    "version": "historical-2022",
+    "collectors": 2,
+    "counts": {
+      "env_steps": 16,
+      "episodes": 4,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 9,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/pcp_real_historical-2022_2collector/checkpoints/pcp_real/run1/model_ep1.pt",
+    "checkpoint_sha256": "afb389bea74aac29a2e638e18485639e5c551ca00fd840fdc89f4194bef292ea"
+  },
+  {
+    "task": "pcp",
+    "variant": "real",
+    "version": "corrected-v1",
+    "collectors": 2,
+    "counts": {
+      "env_steps": 16,
+      "episodes": 4,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 9,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/pcp_real_corrected-v1_2collector/checkpoints/pcp_real/run1/model_ep1.pt",
+    "checkpoint_sha256": "a5cd814a5315918aa55ec9182213daf8d1c36ec0bb640a74eb89f09d31bea279"
+  },
+  {
+    "task": "fc",
+    "variant": "real",
+    "version": "historical-2022",
+    "collectors": 2,
+    "counts": {
+      "env_steps": 16,
+      "episodes": 4,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 9,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/fc_real_historical-2022_2collector/checkpoints/fc_real/run1/model_ep1.pt",
+    "checkpoint_sha256": "1d4d9dddecc63e732450dc62ca2455e62dd205ae0c6f61667b375f54c1a322ec"
+  },
+  {
+    "task": "fc",
+    "variant": "real",
+    "version": "corrected-v1",
+    "collectors": 2,
+    "counts": {
+      "env_steps": 14,
+      "episodes": 4,
+      "updates": 2,
+      "epoch": 1
+    },
+    "max_env_steps": 9,
+    "finite_checkpoint": true,
+    "source_hashes_verified": true,
+    "parameter_signature_changed": true,
+    "checkpoint": "runs/publication_reconstruction_validation_final_20260930/fc_real_corrected-v1_2collector/checkpoints/fc_real/run1/model_ep1.pt",
+    "checkpoint_sha256": "a15827abd67fb6efcd254a2564c724fd84bed8b9a83056cc1cf15e7817cf1341"
+  }
+]

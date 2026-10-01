@@ -1,0 +1,83 @@
+Budget audit: does the June 10M-step floor imply overtraining?
+30 September 2026
+
+No. The 10M number is a lower bound implied by a public command introduced
+after the conference, not a verified paper training budget or optimal stopping
+point. With one collector, 2,000 epochs x 10 updates x 500 minimum steps gives
+10M steps and 20,000 optimizer updates. Four collectors give 40M steps and the
+same 20,000 optimizer updates. Collectors finish episodes, so actual counts
+exceed both floors. The horizon-80 upper bounds are 11.58M and 46.32M.
+
+This change affects batch size and sample use. Matching samples alone does not
+match optimizer updates: at approximately 10M steps, the present four-collector
+jobs have approximately 5,000 updates rather than the one-collector recipe's
+20,000. The exact counts for each window are in windows.csv/results.json.
+
+I recomputed existing PP/PCP SoftRole logs at fixed 10M and 20M endpoints. Each
+number below averages the last 50 complete epochs ending at/before the budget,
+weights their episodes equally within each training seed, and then gives equal
+weight to each of three seeds. Windows span roughly the preceding 1M steps.
+These are training measurements, not frozen-policy evaluation results.
+
+Task/model          Length near 10M   Length near 20M   Reduction
+PP shared                    4.840            4.784       1.16%
+PP banked                    4.874            4.797       1.59%
+PCP shared                  10.692            7.001      34.52%
+PCP banked                  17.594            8.752      50.25%
+
+All 12 individual training seeds have lower episode length at 20M than at 10M.
+PP shows small gains after 10M, which can justify calling later training less
+cost-efficient for nominal performance. PCP shows substantial continued gains;
+stopping at 10M would remove much of its observed improvement. Success remains
+very high: 20M equal-seed success is 99.9786% PP shared, 99.9997% PP banked,
+99.9952% PCP shared, and 99.9894% PCP banked. Tiny success fluctuations prevent
+claiming monotonic improvement in every metric.
+
+Latest available tails (unequal budgets, descriptive only):
+Task/model          Mean length    Exact endpoint range (millions of steps)
+PP shared                 4.738     40.287117--40.299946
+PP banked                 4.744     37.044046--40.320695
+PCP shared                5.991     20.448904--40.517118
+PCP banked                7.454     26.395052--29.729274
+
+The latest tails also have shorter lengths in all 12 seeds than their 20M
+windows, but these are not a matched-budget ranking. In particular, the latest
+PCP shared mean combines one seed near 20M and two near 40M. At the latest common
+PP budget, 37M, shared is 4.741 and banked 4.753. The latest common PCP budget
+across all six runs, rounded down to 0.5M, remains 20M.
+
+The structured legacy PCP records reach 10M for all three seeds. Its similarly
+weighted mean length near 10M is 24.094, with 99.1545% success. Legacy PP does
+not reach 10M in all three available structured ledgers, and none of the legacy
+PP/PCP ledgers reaches 20M. Later legacy stdout cumulative counters overcount,
+so no exact 20M or latest sample comparison is fabricated. The legacy PCP number
+uses the currently reproduced, defective observation path; it is not a fair
+estimate of publication-era HetNet performance or an architectural ablation.
+
+Longer training is not itself evidence of overfitting. These logs show no
+aggregate episode-length degradation between the tested budgets. They cannot
+establish whether transfer/generalization deteriorates while training-domain
+performance improves. That requires fixed checkpoints, independent frozen
+evaluation scenarios, multiple training seeds, and a checkpoint/stopping rule
+chosen without tuning on the final held-out compositions. Existing training
+means cannot be directly compared with the publication's evaluation means.
+
+Practical implication: retain the current logs as a separate experiment. For
+the reconstructed reference, explicitly record collectors, batch floor,
+optimizer updates and actual environment samples. Report both sample-matched
+and update-matched comparisons, with predeclared checkpoint budgets. A 10M
+checkpoint is useful; 10M should not be retroactively declared the required
+stopping point. PP could support a smaller future nominal-training budget if
+independent evaluation confirms the small remaining gain. The PCP evidence
+does not support that conclusion at 10M. FC is excluded from this performance
+interpretation because its known simulator defects remain a separate problem.
+
+Files written by this subtask: analyze.py, results.json, windows.csv, FINDINGS.txt,
+validation.json. All are confined to this new budgets directory. The analysis
+read 31 inputs and recorded/rechecked their SHA256 hashes. It verified complete
+epoch ordering, exact SoftRole cumulative counts, episode-length arithmetic,
+configuration identity, and zero configured/exposed sensor failures. Results
+match the previous audit's latest means. No training, policy evaluation,
+checkpoint/source mutation, runtime edit, remote-status query or dependency
+change occurred. No full test-suite execution was needed for this read-only
+metric analysis.

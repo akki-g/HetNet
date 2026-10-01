@@ -1,0 +1,100 @@
+{
+  "files": {
+    ".gitignore": {
+      "bytes": 13,
+      "sha256": "32dae3052f331ee34d628ef535709b301259a45df7c7522c4d35dcf49873f00b"
+    },
+    "AUDIT.txt": {
+      "bytes": 16411,
+      "sha256": "5a7af666cb7b8a677e4763217de6c3567b25782c0efeeb43a5d4b908bff439a5"
+    },
+    "fc/confirm_fc.py": {
+      "bytes": 4912,
+      "sha256": "b50253764e7402f38725ec769b22cd819ca6943fa4ac726e2518c9f4531e3bb7"
+    },
+    "fc/findings.json": {
+      "bytes": 5040,
+      "sha256": "02f4ed60670bb646519f1518f582b8fe0c98bab362f104f74c682152982a0675"
+    },
+    "legacy/feature_findings.json": {
+      "bytes": 3196,
+      "sha256": "6402cb0eb3548ffa66ac8fbf2b34aeb75241933ed7f9ea6581625dfd5337bd88"
+    },
+    "legacy/probe_features.py": {
+      "bytes": 3410,
+      "sha256": "b4c34655e6e03cbcdde684a21cc5186a4c056af561ed6c760138d73bafab5ad4"
+    },
+    "legacy/upstream_uavnet.py": {
+      "bytes": 23755,
+      "sha256": "343e1df3337723d1323d687e4c94d48b31011ab8890fbd8f196d948d02ff5f55"
+    },
+    "paper/figure3_page.png": {
+      "bytes": 690310,
+      "sha256": "dcd0b8ce05f6af1ee0ec66ac327c89b558fae1a0ed6b98dc87d9b6694fab44be"
+    },
+    "paper/hetnet_aamas2022.pdf": {
+      "bytes": 4898022,
+      "sha256": "c4f7d8d45d2414ee9ef025ebb16b2a8303b40a9ea434bb5b57cb6ed8698ac723"
+    },
+    "paper/hetnet_aamas2022.txt": {
+      "bytes": 84290,
+      "sha256": "805bea9baafe8b2c61a952ad6dd972ccc957e32663b7803937e56ec114f8e413"
+    },
+    "paper/supplement.pdf": {
+      "bytes": 319697,
+      "sha256": "22262845fe6f8e1b6aa6f66f970c176a27c9a9f0550b4fc62066c7d99a928696"
+    },
+    "paper/supplement.txt": {
+      "bytes": 16278,
+      "sha256": "92086b9896541cbdf1ff1aa513fd075de936cdffe2efdb77e855ce7dafdef57f"
+    },
+    "softrole/observation_console.json": {
+      "bytes": 971,
+      "sha256": "182d72523a5f8496da99e3d7b9a330c67192b020ef576620eb7f0a2d1c6af9d0"
+    },
+    "softrole/observation_probe.py": {
+      "bytes": 2657,
+      "sha256": "ae49249c0757dcf38451359f8052cb1f0405edca11298b079fe9389a807a460b"
+    },
+    "softrole/observation_results.json": {
+      "bytes": 971,
+      "sha256": "182d72523a5f8496da99e3d7b9a330c67192b020ef576620eb7f0a2d1c6af9d0"
+    },
+    "softrole/probe.py": {
+      "bytes": 6831,
+      "sha256": "5bd61addaf905aca96a9570472f9f554a394bb0855e03d9f86f1de3b5a4af39e"
+    },
+    "softrole/probe_console.jsonl": {
+      "bytes": 4049,
+      "sha256": "fa45894b4030db6ded24638f7cf088924c71bcf0b32f31a7bf6f8071d997ddca"
+    },
+    "softrole/probe_results.json": {
+      "bytes": 61038,
+      "sha256": "a3debfda2cb49c0ef16550df30f34a5f5485d5d2557bbe4d99e4f3bef9d56068"
+    },
+    "training/inventory.json": {
+      "bytes": 82747,
+      "sha256": "2b05a3709ed488127773c6b67a4b275454a08525f4770aa85fce3cf0c7b97dc7"
+    },
+    "training/inventory.py": {
+      "bytes": 8183,
+      "sha256": "c8e92d1d3f60318416a76341daf83c6639fd2ee96e9f921f2251832b97bea396"
+    },
+    "training/progress.csv": {
+      "bytes": 7917,
+      "sha256": "5ea7004a9259f530a269c7d1b5980b28ee43d58cb00cc0d9ac15f59899263789"
+    },
+    "validate.py": {
+      "bytes": 5104,
+      "sha256": "047b8ded3ddfbe8f3d7f295072d443e9130fe0af0ac460ba33187476b7164ee8"
+    },
+    "validation.json": {
+      "bytes": 703,
+      "sha256": "a98cc511cd3ad905247887075a08717af151161f7b552f88792193fc04ba77e1"
+    }
+  },
+  "excludes": [
+    "artifact_manifest.json",
+    "__pycache__/"
+  ]
+}

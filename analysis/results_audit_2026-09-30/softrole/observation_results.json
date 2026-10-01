@@ -1,0 +1,35 @@
+{
+  "pp": {
+    "reset_seeds": 1000,
+    "sensing_views": 3000,
+    "differing_sensing_views": 0,
+    "corrected_target_visible": 1712,
+    "legacy_target_visible": 1712,
+    "visible_target_erased": 0,
+    "lost_target_frames": 0,
+    "matched_action_episodes": 30,
+    "identical_physics_reward_transitions": 2075
+  },
+  "pcp": {
+    "reset_seeds": 1000,
+    "sensing_views": 2000,
+    "differing_sensing_views": 2000,
+    "corrected_target_visible": 1144,
+    "legacy_target_visible": 456,
+    "visible_target_erased": 688,
+    "lost_target_frames": 471,
+    "matched_action_episodes": 30,
+    "identical_physics_reward_transitions": 2183
+  },
+  "fc": {
+    "reset_seeds": 1000,
+    "sensing_views": 2000,
+    "differing_sensing_views": 661,
+    "corrected_target_visible": 510,
+    "legacy_target_visible": 387,
+    "visible_target_erased": 123,
+    "lost_target_frames": 109,
+    "matched_action_episodes": 30,
+    "identical_physics_reward_transitions": 6734
+  }
+}

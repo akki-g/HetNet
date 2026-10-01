@@ -1,0 +1,98 @@
+{
+  "status": "pass",
+  "scope": "Source identities and recorded bounded probes; no training",
+  "reachable_commits": 26,
+  "main_commits": 18,
+  "branch_refs": 5,
+  "last_preconference_commit": "d57da0717d5564027df7e8ba75614feca8006960",
+  "root_snapshot_files_verified_against_git": 173,
+  "training_source_files_verified_against_git": 56,
+  "env_eval_manifest_files_verified": 53,
+  "distinct_bug_source_blobs_verified": 9,
+  "sensory_target_retention": {
+    "3ca462b": {
+      "pp": 25,
+      "pcp": 25,
+      "fc": 9
+    },
+    "6b09d36": {
+      "pp": 4,
+      "pcp": 4,
+      "fc": 2
+    },
+    "f54ca5a": {
+      "pp": 4,
+      "pcp": 4,
+      "fc": 2
+    }
+  },
+  "model_probe_outcomes": {
+    "error": 4,
+    "pass": 14
+  },
+  "documented_model_failures": [
+    {
+      "commit": "d57da07",
+      "task": "pp",
+      "mode": "real",
+      "exception": "RuntimeError",
+      "message": "Input batch size 1 doesn't match hidden0 batch size 0"
+    },
+    {
+      "commit": "d57da07",
+      "task": "pp",
+      "mode": "binary",
+      "exception": "RuntimeError",
+      "message": "Input batch size 1 doesn't match hidden0 batch size 0"
+    },
+    {
+      "commit": "6b09d36",
+      "task": "pp",
+      "mode": "binary",
+      "exception": "KeyError",
+      "message": "'A'"
+    },
+    {
+      "commit": "f54ca5a",
+      "task": "pp",
+      "mode": "binary",
+      "exception": "KeyError",
+      "message": "'A'"
+    }
+  ],
+  "recipe_budget_bounds": {
+    "pp": {
+      "october_min_steps": 40000000,
+      "october_max_steps": 46320000,
+      "epochs": 2000,
+      "episode_horizon": 80
+    },
+    "pcp": {
+      "october_min_steps": 40000000,
+      "october_max_steps": 46320000,
+      "epochs": 2000,
+      "episode_horizon": 80
+    },
+    "fc": {
+      "october_min_steps": 28000000,
+      "october_max_steps": 44744000,
+      "epochs": 1400,
+      "episode_horizon": 300
+    }
+  },
+  "june_pp_pcp_min_steps": 10000000,
+  "supplement_sha256": "22262845fe6f8e1b6aa6f66f970c176a27c9a9f0550b4fc62066c7d99a928696",
+  "authored_python_syntax_checked": [
+    "collect_history.py",
+    "collect_extra_evidence.py",
+    "validate.py",
+    "bugs/probe_history.py",
+    "training/export_sources.py",
+    "training/probe_model.py",
+    "env_eval/probe_historical.py"
+  ],
+  "git_diff_check": "passed",
+  "historical_dependencies_reconstructed": false,
+  "training_commit_identified": false,
+  "runtime_suite_rerun": false
+}
