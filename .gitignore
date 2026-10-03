@@ -28,3 +28,11 @@ logs/
 
 *.tar.gz
 *.zip
+
+# Keep the self-contained SoftRole guide; other local docs stay excluded.
+
+docs/
+analysis/
+
+
+*.pptx

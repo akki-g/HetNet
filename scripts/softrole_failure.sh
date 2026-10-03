@@ -4,7 +4,7 @@ set -euo pipefail
 usage() {
   echo 'Usage: bash scripts/softrole_failure.sh INDEX [runtime options...]' >&2
   echo 'INDEX: 0=shared/0 1=shared/1 2=shared/2 3=banked/0 4=banked/1 5=banked/2' >&2
-  echo 'Options: --dry-run; --epochs, --updates-per-epoch, --batch-steps, --nprocesses, --total-steps, --save-every INTEGER' >&2
+  echo 'Options: --dry-run; --episode-log file|stdout; --epochs, --updates-per-epoch, --batch-steps, --nprocesses, --total-steps, --save-every INTEGER' >&2
   echo 'Output root: SOFTROLE_FAILURE_RUN_ROOT (default runs/softrole_failure).' >&2
 }
 if (( $# == 0 )); then usage; exit 2; fi
@@ -19,6 +19,11 @@ validate_options() {
   while (( $# )); do
     case "$1" in
       --dry-run) shift ;;
+      --episode-log)
+        (( $# >= 2 )) && [[ $2 == file || $2 == stdout ]] || {
+          echo '--episode-log needs file or stdout' >&2; exit 2;
+        }
+        shift 2 ;;
       --epochs|--updates-per-epoch|--batch-steps|--nprocesses|--total-steps|--save-every)
         (( $# >= 2 )) && [[ $2 =~ ^[0-9]+$ ]] || {
           echo "$1 needs an integer value" >&2; exit 2;

@@ -208,6 +208,11 @@ and [the implementation record](AGENTS.md). The [architecture comparison](docs/r
 explains what was retained from the supplied proposal, what changed, the
 mathematical reasons, differences from original HetNet, and defensible contribution claims.
 
+For a self-contained explanation, read the [SoftRole architecture guide](docs/SOFTROLE_ARCHITECTURE_GUIDE.pdf)
+([Markdown](docs/SOFTROLE_ARCHITECTURE_GUIDE.md), [LaTeX](docs/SOFTROLE_ARCHITECTURE_GUIDE.tex)).
+It develops the observation, memory, gates, binary messages, attention, critic,
+rewards and training loss step by step, with equations and an architecture diagram.
+
 For the next PCP sensor-failure experiments, start with the
 [agent handoff](docs/plans/SENSOR_FAILURE_HANDOFF.md). It records current findings, existing
 support, pilot preparation, verified entrypoints and required implementation logs.
@@ -254,6 +259,112 @@ configuration, metrics and optimizer checkpoints; resume requires a fresh output
 directory. PP/PCP/FC defaults match the repository's domain recipes, but the new
 actor, learner and corrected observations constitute a separate experiment.
 Original reproduction commands retain their default behavior.
+
+SoftRole logs both `team_return` and `mean_agent_return`. The latter is the
+mean of each episode's agent returns, matching the released HetNet reporting
+scale. For fixed three-agent teams it is `team_return / 3`; for varying teams,
+divide within each episode before averaging episodes. Team rewards and the
+learning objective are unchanged. Frozen evaluation and seed-level summaries
+also include this metric, including summaries of older evaluation files.
+
+Episode JSONL logging now opens the file once per optimizer update and writes
+the complete batch of episode records. Records are buffered only for that
+update. To put them in Stokes stdout instead, pass `--episode-log stdout` to
+the SoftRole training launcher (also supported by the PCP failure launcher).
+It prints one flushed JSON object per update with
+`record_type: "softrole_episode_batch"`, `update`, and an `episodes` array.
+Filter on that record type when extracting episodes from a mixed `.out` file;
+`metrics.jsonl` continues to contain only epoch records and `updates.jsonl`
+continues to contain update records. The default `--episode-log file` retains
+the existing episode JSONL format. Logging mode can change on resume without
+changing the scientific configuration. Stdout still incurs I/O and has the
+same total episode data; buffering is not a measured training speedup.
+
+The local October 2 snapshot is replotted against completed epochs:
+[PP](analysis/training_epochs_2026-10-02/pp_training_epochs.png),
+[PCP](analysis/training_epochs_2026-10-02/pcp_training_epochs.png),
+[FC](analysis/training_epochs_2026-10-02/fc_training_epochs.png),
+[diagnostics](analysis/training_epochs_2026-10-02/diagnostics_epochs.png), and
+[recorded training time](analysis/training_epochs_2026-10-02/training_time_epochs.png).
+Editable SVGs, input/output hashes and the reproducible `plot.py` are alongside
+the figures. All reward curves use mean-agent returns. Epochs correspond to ten
+updates in these runs; sample counts remain necessary for budget comparisons.
+These historical training curves retain the documented simulator defects and
+are not frozen-policy baseline results. Local analysis artifacts are excluded
+from new checkouts by the repository's existing ignore rules.
+
+Frozen SoftRole evaluation can run where the checkpoints already reside on
+Stokes. From the repository root, create `logs_sr` and submit one checkpoint
+with explicit composition, episode count and evaluation seed. Replace the
+checkpoint placeholder and use a fresh result path:
+
+```bash
+mkdir -p logs_sr
+sbatch slurm/softrole_evaluate.sbatch \
+  /actual/stokes/selected/checkpoint.pt \
+  runs/frozen_pcp/shared_seed0_native.json \
+  --compositions 2,1 --episodes 500 --seed 2700
+```
+
+The same command without Slurm is
+`bash scripts/softrole_evaluate.sh CHECKPOINT OUTPUT [evaluate options...]`.
+Use the same evaluator checkout, environment, checkpoint-selection rule and
+evaluation panel across models/seeds. Copy result JSON files back first;
+`--trace` is optional and can greatly enlarge them. The one-CPU, 4 GB, four-hour
+Slurm requests are unmeasured starting settings. This launcher handles SoftRole
+checkpoints; it does not add evaluation support for publication reconstruction
+checkpoints. It does not submit training or change budgets/architectures.
+
+For the six existing primary PCP policies, prepare the matched frozen panel
+on Stokes after syncing this evaluator code. The preparation command submits
+nothing; it writes a proper `submit.sbatch` file with an 18-task Slurm array:
+
+```bash
+module load anaconda/anaconda-2024.10
+.venv/bin/python scripts/prepare_pcp_frozen.py \
+  --run-root runs/softrole_primary \
+  --output runs/frozen_pcp_30m_20261002_array
+mkdir -p logs_sr
+sbatch runs/frozen_pcp_30m_20261002_array/submit.sbatch
+```
+
+The array uses indices 0–17, with at most three tasks running concurrently.
+Each task executes one frozen evaluation through `srun`, with one CPU, 4 GB,
+a four-hour limit and separate `logs_sr/pcp-frozen-%A_%a.out`/`.err` files.
+Within each shared/banked seed, the three indices select nominal, failure and
+sham in that order. `manifest.json` records the exact job-to-checkpoint mapping.
+The optional generated `submit.sh` submits this same array and records task
+IDs in `job_ids.tsv`; use either submission route once, not both. If a plan
+was prepared before the Slurm-array update, prepare a new output directory.
+
+The checkpoint rule is the first available saved checkpoint reaching 30M true
+environment steps, separately for shared/banked seeds 0/1/2. This is an
+intermediate evaluation selection, not a new training stopping budget. The
+October 2 audited logs predict epoch 1500 for all six (30.51–30.73M actual steps,
+15,000 updates); preparation must validate the actual Stokes checkpoints and
+structured epoch ledgers. Missing eligible checkpoints stop preparation instead
+of silently substituting older policies. Keep the selected checkpoint files and
+evaluator checkout fixed through completion of all jobs; the source archive is
+provenance, not a separate execution checkout.
+
+The prepared panel contains 18 one-CPU evaluation jobs: six nominal/transfer jobs
+with 500 scenarios each for `(2,1)`, `(1,2)`, `(2,2)`, `(3,1)` and `(3,2)`, plus
+six native `(2,1)` failure jobs and six matching shams with 100 scenarios each.
+Evaluation seeds are 2700 for nominal/transfer and 2701 for failure/sham. The
+sensor pilot retains uniform event times 10–30 and failure probability one.
+Explicit panel files preserve the same scenarios across all six policies and
+retain the scheduled events in shams. Only the small sensor panel saves step
+traces, enabling pre-event prefix checks. Total policy episodes: 16,200.
+
+The four-hour requests are allocation limits, not measured completion forecasts.
+Copy result JSON, panel and selection records back before bulky training logs.
+Do not change gates, checkpoints or hyperparameters using held-out outcomes.
+This sensor panel diagnoses exposure; it does not guarantee an informative
+failure-training distribution. Preserve it separately from any preregistered
+earlier-event supplement. Existing summaries stratify by checkpoint epoch/update
+and do not encode event-window identity, so keep distinct timing protocols in
+separate summary invocations. Do not submit the full training arrays as a
+substitute for this frozen evaluation panel.
 
 ## Citation and license
 

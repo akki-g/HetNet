@@ -107,6 +107,8 @@ def evaluate_checkpoint(checkpoint, scenarios, output, intervention="none",
         "intervention": intervention, "sham": bool(sham), "episodes": len(episodes),
         "success_rate": sum(episode["success"] for episode in episodes) / len(episodes),
         "mean_team_return": sum(episode["team_return"] for episode in episodes) / len(episodes),
+        "mean_agent_return": sum(episode["team_return"] / episode["num_agents"]
+                                 for episode in episodes) / len(episodes),
         "event_exposed_episodes": len(exposed),
         "post_event_success_rate": sum(episode["success"] for episode in exposed) / len(exposed) if exposed else None,
         "scheduled_event_exposed_episodes": len(scheduled),

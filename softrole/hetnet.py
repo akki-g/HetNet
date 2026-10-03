@@ -155,6 +155,7 @@ def evaluate_hetnet(checkpoint, config, scenarios, output, use_binary=True, trac
                       "steps": step + 1, "success": info["success"],
                       "terminated": info["terminated"], "truncated": info["truncated"],
                       "team_return": float(returns.sum()), "per_agent_returns": returns.tolist(),
+                      "mean_agent_return": float(returns.mean()),
                       "environment_version": adapter.environment_version,
                       "event_step": -1, "victim": -1, "event_exposed": False,
                       "intervention": "none", "intervention_step": -1}
@@ -170,7 +171,8 @@ def evaluate_hetnet(checkpoint, config, scenarios, output, use_binary=True, trac
         composition_metrics[f"{team[0]}P{team[1]}A"] = {
             "episodes": len(records), "success_rate": float(np.mean([e["success"] for e in records])),
             "mean_steps": float(np.mean([e["steps"] for e in records])),
-            "mean_team_return": float(np.mean([e["team_return"] for e in records]))}
+            "mean_team_return": float(np.mean([e["team_return"] for e in records])),
+            "mean_agent_return": float(np.mean([e["mean_agent_return"] for e in records]))}
     method = "HetNet-Binary" if use_binary else "HetNet-Real"
     report_config = {"model": method, "task": adapter.task, "dim": adapter.dim,
                      "vision": adapter.vision, "max_steps": adapter.max_steps,
@@ -201,6 +203,7 @@ def evaluate_hetnet(checkpoint, config, scenarios, output, use_binary=True, trac
         "success_rate": float(np.mean([e["success"] for e in episodes])),
         "mean_steps": float(np.mean([e["steps"] for e in episodes])),
         "mean_team_return": float(np.mean([e["team_return"] for e in episodes])),
+        "mean_agent_return": float(np.mean([e["mean_agent_return"] for e in episodes])),
         "per_composition": composition_metrics, "per_episode": episodes}
     destination.parent.mkdir(parents=True, exist_ok=True)
     with destination.open("x") as stream:

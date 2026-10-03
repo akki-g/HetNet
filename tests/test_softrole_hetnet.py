@@ -76,6 +76,10 @@ def test_frozen_evaluator_replays_and_refuses_overwrite(tmp_path, binary):
     assert first["episodes"] == 2
     assert len(first["checkpoint_sha256"]) == 64
     assert all(e["trace"] for e in first["per_episode"])
+    assert first["mean_agent_return"] == pytest.approx(np.mean([
+        np.mean(e["per_agent_returns"]) for e in first["per_episode"]]))
+    assert all(e["mean_agent_return"] == pytest.approx(np.mean(e["per_agent_returns"]))
+               for e in first["per_episode"])
     with pytest.raises(FileExistsError):
         evaluate_hetnet(path, settings, scenarios, tmp_path / "first.json", binary)
 

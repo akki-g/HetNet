@@ -35,6 +35,20 @@ def append_json(path, payload):
         stream.write(json.dumps(payload, sort_keys=True, allow_nan=False) + "\n")
 
 
+def log_episode_batch(path, episodes, update, mode="file"):
+    """Preserve every record, with one file open or one stdout flush per update."""
+    if mode == "file":
+        with Path(path).open("a") as stream:
+            for episode in episodes:
+                stream.write(json.dumps(episode, sort_keys=True, allow_nan=False) + "\n")
+    elif mode == "stdout":
+        print(json.dumps({"record_type": "softrole_episode_batch", "schema_version": 1,
+                          "update": update, "episodes": episodes},
+                         sort_keys=True, allow_nan=False), flush=True)
+    else:
+        raise ValueError("episode_log must be file or stdout")
+
+
 def source_snapshot(output=None):
     """Identify actual source bytes; optionally archive them in a fresh output.
 
@@ -142,6 +156,11 @@ def summarize(episodes):
            "success_rate": sum(ep["success"] for ep in episodes) / count,
            "steps_taken": sum(ep["steps"] for ep in episodes) / count,
            "team_return": sum(ep["team_return"] for ep in episodes) / count}
+    # Average each episode's per-agent return before combining variable rosters.
+    # Archived episode records predate the explicit diagnostic but retain N.
+    row["mean_agent_return"] = sum(
+        ep["mean_agent_return"] if ep.get("mean_agent_return") is not None
+        else ep["team_return"] / ep["num_agents"] for ep in episodes) / count
     for key in ("return_nocap", "return_cap", "gate_entropy", "alpha_null", "num_agents"):
         values = [ep[key] for ep in episodes if ep.get(key) is not None]
         row[key] = float(np.mean(values)) if values else None
@@ -149,9 +168,11 @@ def summarize(episodes):
     return row
 
 
-def train(config, output, resume=None):
+def train(config, output, resume=None, episode_log="file"):
     """Run bounded training in a fresh directory; no changes to legacy entrypoints."""
     config.validate()
+    if episode_log not in ("file", "stdout"):
+        raise ValueError("episode_log must be file or stdout")
     output = Path(output)
     if output.exists():
         raise FileExistsError(f"refusing to overwrite run: {output}")
@@ -189,6 +210,7 @@ def train(config, output, resume=None):
                "source_sha256": provenance["sha256"], "resume": str(resume) if resume else None,
                "parent_source_sha256": checkpoint["source_sha256"] if resume else None,
                "torch": torch.__version__, "numpy": np.__version__, "dtype": "float64",
+               "episode_log": episode_log,
                "parameters": sum(p.numel() for p in model.parameters()),
                "actor_objective": "undiscounted sum of physical-agent rewards",
                "approximations": ["straight-through bits", "GAE with learned critic", "truncated BPTT"]})
@@ -229,15 +251,18 @@ def train(config, output, resume=None):
                     batches = [future.result() for future in futures]
                 norm = apply_gradients(model, optimizer, batches, config.max_grad_norm)
                 completed_updates += 1
+                episode_records = []
                 for batch in batches:
                     total_steps += batch["num_steps"]
                     total_episodes += batch["num_episodes"]
                     policy_sum += batch["policy_loss_sum"]
                     value_sum += batch["value_loss_sum"]
                     epoch_episodes.extend(batch["episodes"])
-                    for episode in batch["episodes"]:
-                        append_json(output / "episodes.jsonl", dict(episode, update=completed_updates,
-                                                                    collector=batch["collector"]))
+                    episode_records.extend(dict(episode, update=completed_updates,
+                                                collector=batch["collector"])
+                                           for episode in batch["episodes"])
+                log_episode_batch(output / "episodes.jsonl", episode_records, completed_updates,
+                                  episode_log)
                 append_json(output / "updates.jsonl", {"update": completed_updates,
                     "episodes": sum(b["num_episodes"] for b in batches),
                     "steps": sum(b["num_steps"] for b in batches), "total_steps": total_steps,

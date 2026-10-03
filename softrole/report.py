@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 
 
-METRICS = ("success_rate", "team_return", "completion_steps_horizon_capped")
+METRICS = ("success_rate", "team_return", "completion_steps_horizon_capped", "mean_agent_return")
 
 
 def summarize_reports(paths, output=None, bootstrap_samples=10000, seed=0):
@@ -81,6 +81,8 @@ def summarize_reports(paths, output=None, bootstrap_samples=10000, seed=0):
             steps, reward = int(episode["steps"]), float(episode["team_return"])
             if not 1 <= steps <= horizon or not np.isfinite(reward):
                 raise ValueError("Episode steps/return are outside the finite evaluation contract")
+            if sum(episode["composition"]) <= 0:
+                raise ValueError("Episode composition must contain at least one agent")
             records[key][training_seed].append(episode)
     if not groups:
         raise ValueError("Supply at least one evaluation report")
@@ -99,6 +101,9 @@ def summarize_reports(paths, output=None, bootstrap_samples=10000, seed=0):
                 "scenario_ids": sorted(str(episode["scenario_id"]) for episode in episodes),
                 "success_rate": successes / count,
                 "team_return": float(np.mean([episode["team_return"] for episode in episodes])),
+                # Derive from the physical roster for compatibility with archived reports.
+                "mean_agent_return": float(np.mean([
+                    episode["team_return"] / sum(episode["composition"]) for episode in episodes])),
                 "completion_steps_horizon_capped": float(np.mean([
                     episode["steps"] if episode["success"] else horizon for episode in episodes])),
             })

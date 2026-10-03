@@ -53,6 +53,17 @@ def test_failure_launcher_real_dry_run_preserves_reference_protocol(tmp_path):
     assert not (tmp_path / "nominal").exists() and not (tmp_path / "failure").exists()
 
 
+@pytest.mark.parametrize("mode", ["file", "stdout"])
+def test_episode_destination_is_a_runtime_override_only(tmp_path, mode):
+    result = launch(tmp_path, "0", "--dry-run", "--episode-log", mode)
+    assert result.returncode == 0, result.stderr
+    config = json.loads(result.stdout)
+    assert "episode_log" not in config
+    assert config["compositions"] == [[2, 1], [2, 2], [3, 1]]
+    assert config["failure_prob"] == .5
+    assert not (tmp_path / "failure").exists()
+
+
 @pytest.mark.parametrize("args", [
     ("6",), ("-1",), ("00",),
     ("0", "--task", "fc"), ("0", "--task=pp"), ("0", "--ta", "fc"),
@@ -60,6 +71,7 @@ def test_failure_launcher_real_dry_run_preserves_reference_protocol(tmp_path):
     ("0", "--model", "banked"), ("0", "--seed", "7"),
     ("0", "--resume", "checkpoint.pt"), ("0", "--failure-prob", "0"),
     ("0", "--failure-window", "1", "3"), ("0", "--epochs"),
+    ("0", "--episode-log", "discard"), ("0", "--episode-log"),
 ])
 def test_failure_launcher_rejects_invalid_index_and_protocol_overrides(tmp_path, args):
     result = launch(tmp_path, *args, capture_command=True)

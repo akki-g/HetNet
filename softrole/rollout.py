@@ -179,6 +179,7 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
         "composition": [int(scenario.num_p), int(scenario.num_a)],
         "steps": steps, "success": success,
         "team_return": float(returns.sum()), "agent_returns": returns.tolist(),
+        "mean_agent_return": float(returns.mean()),
         "return_nocap": float(returns[~cap].mean()) if (~cap).any() else None,
         "return_cap": float(returns[cap].mean()) if cap.any() else None,
         "event_step": int(scenario.event_step), "victim": int(scenario.victim),

@@ -802,6 +802,415 @@ one Torch thread. These are implementation checks, not estimates of task quality
   job cancellation, existing input/checkpoint mutation, dependency change,
   commit or push occurred. Earlier uncommitted audit/presentation work was preserved.
 
+### 2026-10-01 — self-contained architecture guide and LaTeX PDF
+
+- Added `docs/SOFTROLE_ARCHITECTURE_GUIDE.md` and its 19-page LaTeX-rendered
+  PDF. The guide explains the current deterministic SoftRole model from first
+  principles, with 46 displayed equation blocks, a notation glossary, worked
+  examples, default tensor dimensions, resource costs and code/test references.
+  Coverage includes observations/capabilities, expanded LSTM memory equations,
+  affine expert mixtures, two binary broadcasts, straight-through bias,
+  receiver-gated attention and null, actions, centralized value, domain reward,
+  team GAE, episode loss, global gradient aggregation and RMSprop.
+- Added an editable vector architecture diagram with an overall actor/critic
+  view and communication inset. The PDF contains two landscape diagram pages,
+  selectable vector text/paths, clickable contents and 26 bookmarks. Included
+  the generated LaTeX and its two vector figure dependencies for direct rebuilds.
+  Preserved the distinction between task cost, training loss and resource cost;
+  documented retained FC physics defects and approximation/generalization limits.
+- Independent read-only reviews checked model equations, dimensions, memory,
+  conditional randomness, parameter counts, simulator rewards, GAE arithmetic,
+  loss normalization and optimizer semantics. Corrected nonexistent simulator
+  method references, aligned diagram indices, and clarified boundary-front
+  rather than generic stationary-front behavior in the inherited FC defect.
+- Files added: `docs/SOFTROLE_ARCHITECTURE_GUIDE.{md,tex,pdf}`,
+  `docs/SOFTROLE_GUIDE_BUILD.txt`, `docs/softrole_architecture.{svg,pdf}`,
+  `docs/softrole_architecture_overview.pdf`,
+  `docs/softrole_architecture_communication.pdf`,
+  `docs/build_softrole_architecture.py`, `docs/export_softrole_diagram.py`, and
+  `docs/build_softrole_guide.py`. Existing files touched: root `README.md`
+  (discovery links), `.gitignore` (only these guide artifacts are included),
+  and this existing uppercase `AGENTS.md` (work record).
+- Validation: rendered/reviewed all PDF pages and checked the final dimension
+  table and diagram pages at full size. Confirmed all 36 local Markdown link
+  targets exist, checked five primary-source links, all three build scripts parse,
+  46 displayed math blocks
+  render, and the guide has zero raster images. Final TeX log has no overfull,
+  underfull or missing-character messages; XeTeX emits input-version notices
+  for the 1.7 figure PDFs, while the final output explicitly uses PDF 1.7.
+  Vector exports reproduce byte-for-byte with pinned tooling. Checked whitespace.
+- Build tools are isolated: Pandoc via `pypandoc-binary==1.15`, Tectonic,
+  `svglib==2.2.0`, `reportlab==5.0.1`, and `pymupdf==1.28.2`. An initial raster
+  proof used isolated resvg; its two superseded PNG panels were removed from
+  `docs/`. Build logs, scratch conversions, validation JSON and rendered previews
+  are under `.tools/softrole_guide_build/`; its `artifact_manifest.json` lists
+  exact scratch paths/hashes. Temporary SVG previews also used
+  `/tmp/softrole_architecture.svg.png` and `/tmp/softrole_architecture_full.png`.
+- No runtime/test source or training dependency changed. No training, policy
+  evaluation, cluster action, checkpoint/input mutation, commit or push was
+  performed for this documentation task. Existing test results remain dated
+  historical records; the test suite was not rerun for these documentation edits.
+
+### 2026-10-02 — latest training audit and three week experiment priorities
+
+- Parsed all 27 fresh primary stdout files and their stderr: 45,259 completed
+  epochs, 7,693 beyond the latest project-overview snapshot. Verified historical
+  stdout byte prefixes, unchanged archived configuration/metric hashes and
+  archived metric agreement. SoftRole counts reconcile to 688,028,940 joint
+  steps and 74,972,901 episodes, with zero recorded failure exposure. Inventoried
+  and hashed 356 log/metric-ledger files; archival copies, timing, setup and
+  validation logs are not additional independent research seeds.
+- Confirmed 23/27 runs reached epoch targets. HetNet PP seeds 0/1/2 stop locally
+  at 910/866/1228 of 2000; no scheduler status inferred. SoftRole PCP shared
+  seed 0 explicitly timed out at epoch 1655/2000, 33,669,601 steps. All other
+  primary PCP/FC runs reached their caps; completion is not convergence.
+- At common SoftRole budgets, episode-weighted within seed and equally weighted
+  across seeds, PCP 33.5M shared/banked lengths are 5.666/6.657 (14.88% fewer
+  for shared), both near-ceiling success. FC 34.5M successes are 65.23%/34.32%,
+  with large seed variation and late regressions. Preserved FC physics and
+  legacy observation confounds; no gate superiority or adaptation established.
+- Audited readiness of publication reconstruction, sensor failure and frozen
+  transfer. Reconstruction has smoke runs only and needs an evaluator using its
+  restored model/environment, not root evaluate-hetnet. Final local checkpoints
+  remain stale. PCP failure mechanics, shams and interventions are implemented;
+  full failure research runs are absent. Identified required matched-mixture
+  no-failure controls, informative event exposure, paired analysis and explicit
+  budget/selection-rule grouping beyond current epoch/update summary strata.
+- Added a detailed report and proposed Oct 2–23 priorities. Recommended existing
+  frozen PCP transfer, six corrected PCP Real/Binary reference runs and twelve
+  matched mixture/failure runs if making a failure-training claim. Twenty-million
+  step new-run budgets and 30M existing-policy transfer selection are proposals,
+  not adopted or executed protocols. Historical replay and corrected FC are
+  separately costed extensions. Recorded multi-day legacy runtime evidence and
+  allocation/time-limit dependencies rather than promising quick completion.
+- Files touched: only this existing uppercase `AGENTS.md` and new
+  `analysis/training_2026-10-02/`. Authored files: `.gitignore`, `analyze.py`,
+  `plot.py`, `report.md`. Generated files: `summary.json`, `provenance.json`,
+  `log_inventory.json`, `epoch_metrics.csv`, `run_summary.csv`,
+  `softrole_training.png`, `hetnet_training.png`, `pcp_fc_diagnostics.png`,
+  `training_plots.pdf`, `validation.json`, `artifact_manifest.json`. The manifest
+  enumerates all other deliverables in that directory with SHA256 hashes.
+- Validation: independent raw checks verified 45,259 CSV rows/759,936 field
+  comparisons, 1,836 run-window fields, 297 grouped statistics, 386 input hashes,
+  and all 356 log-inventory entries. Corrected shallow checkpoint enumeration
+  to include 434 nested checkpoint/sidecar files (217 actual checkpoints); this
+  was a filename inventory, not a fresh tensor audit. Independently reviewed
+  report arithmetic, protocol scope and reconstruction caveats; all eight local
+  report links resolve. Viewed all three plot pages, checked Python syntax,
+  input immutability and whitespace. Matplotlib 3.10.7/NumPy 1.26.4 ran isolated
+  through uv; no project dependency changed or runtime test suite reran.
+- No policy execution, training, job submission/cancellation, model/environment
+  change, input/checkpoint mutation, commit or push occurred. Pre-existing
+  README, ignore-file, documentation and presentation changes were preserved.
+
+### 2026-10-02 — training time, M5 Max measurements and budget amendment
+
+- Recomputed timing for all 27 primary runs and same-work PCP comparisons.
+  Shared seed 0 timed out after 47.964 recorded epoch hours at epoch 1655;
+  seeds 1/2 reached that point in 20.220/20.402 hours, with nearly identical
+  steps and more episodes. Near the stop, epoch time is 133.92 versus
+  45.03/45.46 seconds. Same source/configuration except seed; no learning or
+  numerical failure explains the work-count comparison. Documented abrupt
+  banked timing transitions and missing scheduler/CPU/phase evidence. Per-episode
+  serial open/write/close is a profiling candidate, not a proved timeout cause.
+- Independently rechecked budget provenance: June/October public commands imply
+  10M/40M sample floors but the same 20,000 updates; neither is a verified paper
+  budget. Nominal SoftRole 20M reached in about 12–24 recorded hours. Clarified
+  fixed-budget validity versus convergence, proposed 10M/20M reporting stages,
+  and nine/fifteen/eighteen new-run scopes conditional on intended claims.
+- Benchmarked this actual M5 Max CPU (18 cores, 36 GiB; Torch 2.2.1, NumPy1.26.4,
+  Apple Accelerate confirmed from build) with unchanged numerical/runtime code.
+  A preliminary frozen-gradient probe and a 120-round sustained probe preserve
+  weights; sustained collection did 255,859 steps in 92.69 seconds with four
+  collectors/500-step floors and real gradient IPC. CPU float64-to-MPS probe
+  explicitly fails; GPU porting/float32 are not drop-in protocol-preserving steps.
+- Ran two bounded actual SoftRole resumes from archived PCP epoch200, three
+  epochs each, same four collectors/batch/horizon/optimizer. Shared collected
+  63,013 steps in 22.50 training-function seconds, banked 63,736 in 25.79.
+  All six epochs exactly match historical Stokes steps, episodes, success and
+  returns; neural diagnostic/loss differences are at most about 1.06e-6.
+  Historical epoch-time ratios are 8.31x/9.02x, not isolated chip-only effects.
+  Input checkpoints are unchanged; fresh model/optimizer tensors are finite and
+  parameters changed. No cross-platform bitwise or long-horizon equality claim.
+- Ran three initial corrected-v1 PCP Real reconstruction epochs with the October
+  four-collector recipe: 64,709 steps/924 episodes/30 updates, 121.83 epoch
+  seconds and 139.25 launcher seconds. Checked finite tensors, changed signature,
+  true counts and archived-source identities. Across all actual timing runs:
+  nine epochs, 90 optimizer updates, 191,458 new steps, 4,041 episodes. These are
+  engineering timing measurements, not independent research runs or task results.
+- Measured byte-identical local logging for 3,500 episode records: 0.0961 seconds
+  with 3,500 opens versus 0.0190 with ten grouped opens. This 5.07x logging-only
+  ratio saves little locally and does not identify remote filesystem latency.
+  No log batching, device migration or training-runtime patch was applied.
+- Added the timing report/figure and explicitly labeled short-rate projections:
+  20M about 2.0–2.25 hours for SoftRole and 10.5–12 hours for corrected Real on
+  this Mac if measured early throughput persists. Mature policies, failure
+  mixtures, thermal/background load and concurrent jobs remain unmeasured.
+- Files touched: existing `AGENTS.md`; amended
+  `analysis/training_2026-10-02/{report.md,validation.json,artifact_manifest.json}`
+  for the linked timing/scope correction; and new `analysis/timing_2026-10-02/`.
+  Authored files: `.gitignore`, `report.md`, `analyze_timing.py`, `plot_timing.py`,
+  `benchmark.py`, `benchmark_io.py`, `benchmark_training.py`,
+  `benchmark_reconstruction.py` (including rerunnable audit-only postprocessing)
+  and `compare_migration.py`.
+  Generated principal records: timing CSV/JSON/console, collector probe JSON/logs,
+  training/reconstruction timing JSON/logs, migration comparison, local I/O/build
+  records, timing PNG/PDF and validation/manifest JSON. Fresh actual-run trees
+  are `local_training/{shared,banked}/` and `local_reconstruction_pcp_real/`;
+  their full source/configuration/metric/checkpoint paths and hashes are recorded
+  individually in the new artifact manifest (excluding transient bytecode).
+- Validation: independent raw-log timing/budget reaggregation, benchmark count/
+  throughput/hash checks, matched migration aggregates, reconstruction source
+  review and interpretation review passed. Checked scripts, local links,
+  input immutability and whitespace; viewed the timing plot. Plotting used
+  isolated Matplotlib3.10.7/NumPy1.26.4. No runtime test suite reran because runtime
+  sources were unchanged. No dependency change, production input/checkpoint edit,
+  full research sweep, cluster action, commit or push occurred.
+
+### 2026-10-02 — reward comparability and bank size analysis
+
+- Added [the reward and bank-size report](analysis/reward_banks_2026-10-02/report.md)
+  for the user's questions about lower PP/PCP steps but larger negative reward,
+  reward improvement without structural changes, and two/three-expert banks.
+  Verified the official paper's Table 1 and archived supplementary reward rules
+  against the current simulator, rollout, learner and released evaluator.
+- Established explicit team-sum versus per-agent reporting. The paper does not
+  recoverably specify its scalar agent reduction; mean-agent reporting is a
+  plausible interpretation, not a confirmed correction. Its reward/step pairs
+  violate the current team-sum bound R <= -0.05(T-1), so direct team-return
+  comparison is invalid. Distinguished frozen paper trials from training windows.
+- Reaggregated all twelve PP/PCP SoftRole raw logs at the prior common sample
+  budgets and reproduced the earlier audited means. Preserved class returns:
+  89.89% of the matched PCP banked/shared reward gap comes from the A agent.
+  Derived successful-episode sum-completion versus max-completion identities
+  and separate navigation/capture-delay accounting without assigning a cause
+  unsupported by current aggregate logs.
+- Enumerated all 303,600 ordered distinct initial layouts for each domain's
+  geometric oracle. Expected optimistic team returns are -0.35 PP/-0.40 PCP;
+  expected episode lengths are 4.676759/5.085059. Independent review repeated
+  the enumeration and executed 64 short deterministic environment-only oracle
+  episodes, plus six separate reward-tradeoff/horizon probes. These are physics
+  checks, not learned-policy evaluations or additional research training.
+- Counted actual PCP models: shared 171,087 parameters; banked K=2/3/4 has
+  190,233/207,202/224,171 including critics. Derived local mixture/gate gradients,
+  explained conditional initialization-scale effects and diagnosed the limits
+  of entropy evidence. Recommended a matched three-seed K=2 study before optional
+  K=3, retaining reconstruction/failure priorities. LR, detach-gap and shared
+  initialization alternatives are hypotheses, not implemented improvements.
+- Files touched: existing uppercase `AGENTS.md`; new
+  `analysis/reward_banks_2026-10-02/{.gitignore,analyze.py,report.md}`.
+  Generated files in that directory: `results.json`, `results_repeat.json`,
+  `repeat_console.json`, `k2_dry_run.json`, `k3_dry_run.json`, `validation.json`
+  and `artifact_manifest.json`. The manifest records every other file and hash.
+- Validation: repeated analysis output is identical; all 24 identified input
+  hashes match; local links, Python syntax and whitespace checked. Generic CLI
+  K=2/K=3 dry runs both preserve the remaining PCP protocol and create no run
+  directory. Independent numerical and mathematical reviews passed. No original
+  run/checkpoint mutation, production source edit, dependency change, training,
+  learned-policy evaluation, full test-suite rerun, cluster action, commit or
+  push occurred. All pre-existing changes were preserved.
+
+### 2026-10-02 — HetNet reward reporting correction
+
+- Rechecked the complete released evaluation pipeline for the user's follow-up.
+  Found `print_plot_eval.py`, previously missed after reading `eval_trainer.py`.
+  It pools per-episode reward vectors and calls `np.mean(rewards)` without an
+  axis, explicitly averaging across episodes and agents. The current official
+  upstream script has the same operation. SoftRole's epoch summarizer averages
+  episode team sums, so its scalar is exactly N times that public reporting
+  scalar for identical fixed-N episode data. Exact historical Table 1 source
+  provenance remains unverified; the current public aggregation is now confirmed.
+- Corrected `analysis/reward_banks_2026-10-02/report.md` to replace the earlier
+  missing-reduction statement with the recovered script and equations. Added
+  `reporting_correction.json` with code hashes and arithmetic validation;
+  amended `validation.json` and regenerated `artifact_manifest.json` in that
+  analysis directory. Existing raw inputs, numerical analysis outputs and
+  runtime sources are unchanged. This existing `AGENTS.md` records the correction.
+- Checked the factor-of-three identity on synthetic episode vectors and the
+  previously audited PP/PCP means; checked links and whitespace. No training,
+  policy evaluation, dependency change, cluster action, commit or push occurred.
+
+### 2026-10-02 — epoch plots, comparable reward reporting and buffered logs
+
+- Clarified that 20M was a proposed shorter common-budget experiment, not an
+  authorized change to current recipes. PP/PCP remain 2,000 epochs, ten updates
+  per epoch, four collectors and a 500-step per-collector floor (40M minimum
+  joint steps before complete-episode overshoot); FC remains 1,400 epochs/28M.
+  No budget, architecture, optimizer, reward or learning objective was changed.
+  Supplement section 2.1 describes three layers with four heads, Adam 1e-3;
+  the released/reconstruction two-layer RMSprop path remains distinct.
+- Added `mean_agent_return` to SoftRole episode/epoch/evaluation records and
+  frozen HetNet reports, plus seed-level summaries compatible with archived
+  evaluation reports. Each episode contributes its team return divided by its
+  own team size, then episodes are averaged within independent training seeds.
+  Team-sum reward remains the learning objective. Rechecked the official public
+  `print_plot_eval.py` mean-agent reduction; exact historical Table 1 provenance
+  is still not established merely by inspecting today's public script.
+- Changed SoftRole episode persistence to one buffered file open per optimizer
+  update, retaining one complete JSON object per episode in the original order.
+  Optional `--episode-log stdout` prints one tagged JSON object per update with
+  the full episode array and one explicit flush. This runtime option is outside
+  scientific/checkpoint configuration and may change on resume. Default is file;
+  epoch/update ledgers and all counters remain available. Buffering avoids a
+  whole-run in-memory ledger, but stdout is still I/O and no training speedup
+  from this change has been measured. Historical stdout parsers need to filter
+  the new record type; their dated source is preserved, and `metrics.jsonl`
+  remains the clean epoch source. Neither mode provides atomic crash durability.
+- Added single-checkpoint SoftRole evaluation wrappers for direct CPU execution
+  and Stokes Slurm so checkpoints can stay on Stokes and result JSON can sync
+  first. One CPU/4 GB/four hours are unmeasured resource defaults. This does not
+  implement frozen evaluation for publication-reconstruction checkpoints.
+- Replotted the audited October 2 snapshot: 27 runs and 45,259 completed epochs.
+  PP/PCP/FC panels show success, mean-agent return and episode length; additional
+  panels show gate/value/null diagnostics and recorded training time. Every x
+  axis is completed epochs. SoftRole windows weight episodes; legacy windows
+  average the available rounded epoch means. Thick curves give equal-seed means
+  only while all three seeds exist; individual tails remain visible. Captions
+  retain sensory/FC defects and training-versus-frozen-evaluation limitations.
+  Original sample-axis plots and raw input CSV remain unchanged.
+- Files touched (runtime/launchers): `softrole/train.py`, `softrole/rollout.py`,
+  `softrole/__main__.py`, `softrole/evaluate.py`, `softrole/hetnet.py`,
+  `softrole/report.py`, `scripts/softrole_failure.sh`, new
+  `scripts/softrole_evaluate.sh` and `slurm/softrole_evaluate.sbatch`.
+- Files touched (tests/docs): `tests/test_softrole_training.py`,
+  `tests/test_softrole_evaluation.py`, `tests/test_softrole_hetnet.py`,
+  `tests/test_softrole_report.py`, `tests/test_softrole_failure_launcher.py`,
+  `README.md`, and this existing uppercase `AGENTS.md`. Added
+  `analysis/training_epochs_2026-10-02/{.gitignore,plot.py}`. Generated there:
+  `pp_training_epochs`, `pcp_training_epochs`, `fc_training_epochs`,
+  `diagnostics_epochs`, `training_time_epochs` (each PNG/SVG),
+  `plot_manifest.json`, `validation.json`, and `artifact_manifest.json`.
+- Validation: full `.venv/bin/python -m pytest -q` passed **233 tests in 24.17s**.
+  Logging tests include actual tiny one/two-collector runs with exact matching
+  model/RMSprop/counts between destinations, complete episode reconstruction,
+  unchanged update ledgers, one file open per update, and partial-epoch resume
+  across logging modes. Variable-roster tests check the intended estimand, and
+  evaluator/report tests check new fields and old-file compatibility. Shell
+  syntax passed for the six SoftRole scripts/Slurm wrappers; agent checks also
+  exercised direct/mocked-Slurm argument forwarding, spaces, working directory,
+  runtime variables and missing-checkpoint handling without real evaluation.
+- Validation: all five final PNGs visually inspected; corrected title/subtitle
+  overlap before delivery. Plot input and all ten figure hashes verified.
+  Independent read-only review checked all CSV rows, positive weights, ten
+  updates per epoch, return arithmetic, reporting/checkpoint compatibility and
+  learner invariance. Python syntax and whitespace passed for files changed by
+  this task; unrelated pre-existing `.gitignore` trailing blank lines were
+  preserved. Plotting used isolated NumPy 1.26.4/Matplotlib 3.10.7. No dependency
+  edit, production checkpoint/input mutation, research training, cluster job,
+  commit or push occurred. Actual training in this task was limited to tests.
+
+### 2026-10-02 — traceable Stokes frozen panel and readiness audit
+
+- User confirmed the Stokes primary run root is `runs/softrole_primary`.
+  Audited the actual evaluation/training launchers, restored-runtime imports,
+  optimizer steps, sensor masking, mixed-roster loss assumptions, FC corrections,
+  checkpoint metadata and reporting strata. No live Stokes connection was made.
+  Added `analysis/slurm_readiness_2026-10-02/evidence.json`: hashes and line-numbered
+  excerpts for 20 sources, independently derived checkpoint expectations from
+  the audited CSV, explicit evaluation panels and remaining implementation gaps.
+- Added `scripts/prepare_pcp_frozen.py`. Preparation never submits. It selects
+  the first available saved checkpoint reaching 30M true steps for each of six
+  nominal PCP shared/banked policies, validates contiguous/reconciled ledgers,
+  exact checkpoint progress, fixed native configuration, common training source,
+  strict model loading, finite tensors and stored/sidecar tensor signatures,
+  then rechecks all checkpoint/ledger/sidecar hashes before creating output.
+  Existing destinations and incomplete/inconsistent panels are rejected.
+- Preparation saves the selection/configuration manifest, explicit scenario
+  files, source archive, helper source and artifact hashes. Its separate
+  `submit.sh` uses the existing frozen evaluator wrapper for 18 jobs, records
+  job IDs and rejects repeated submission-script invocation. On partial sbatch
+  failure, recorded IDs identify work already submitted; recovery is manual.
+  Paths are shell-quoted. The live Stokes checkout must remain fixed; archiving
+  source does not change the execution checkout. `submitted: false` records
+  preparation status only, not live scheduler state.
+- Proposed submission panel: shared/banked seeds 0/1/2; nominal evaluation seed
+  2700 with 500 scenarios per composition `(2,1)`, `(1,2)`, `(2,2)`, `(3,1)`,
+  `(3,2)`; native failure/sham seed 2701 with 100 common scenarios, uniform
+  event 10–30 and failure probability one. Sensor jobs retain traces for prefix
+  checks. Six nominal jobs plus twelve sensor-condition jobs yield 16,200 policy
+  episodes and zero training jobs. Four-hour/one-CPU/4-GB requests are unmeasured
+  allocation settings. The native sensor panel is an exposure diagnostic.
+- The audited logs predict epoch 1500/15,000 updates for all six first-saved
+  checkpoints above 30M. Shared steps by seed are 30,552,489 / 30,508,112 /
+  30,536,475; banked 30,728,678 / 30,683,393 / 30,635,286. These are expectations
+  from copied logs, not a late-checkpoint tensor audit. The helper validates the
+  actual Stokes files. Selection is independent of new evaluation outcomes and
+  does not change any full training schedule. Actual sample differences remain.
+- Readiness findings: original-model health-input absence does not mathematically
+  prevent sensor masking; the current explicit rejection is implementation scope.
+  A reconstruction evaluator must select the restored model/environment, retain
+  nested provenance/counts and isolate colliding import names. HetNet masking
+  must preserve physical class, positions, actions, recurrence and communication,
+  and share sham schedules/diagnostics. Supplement alignment needs an opt-in
+  third layer and the active trainer Adam path, not the unused policy Adam.
+  Matching per-episode team mixtures additionally requires roster-aware class
+  advantages/loss bookkeeping. Fixed-team failure training is a smaller distinct
+  study. Corrected FC still needs SoftRole adapter/version integration and
+  cross-method fixed-action replay; existing root FC remains unchanged.
+- Readiness findings: current report strata include checkpoint epoch/update but
+  lack intended failure-window/victim-protocol identity. Keep timing studies
+  separate; add explicit protocol/budget identities and paired seed-level
+  analysis before broad pooled claims. The usual SoftRole training shell
+  launcher injects `--task`, so continuation must currently use the direct
+  `python -m softrole train --resume ...` CLI without `--task`/`--study`.
+- Files touched: new `scripts/prepare_pcp_frozen.py` and
+  `tests/test_softrole_prepare_frozen.py`; appended `README.md` and this existing
+  uppercase `AGENTS.md`; new `analysis/slurm_readiness_2026-10-02/evidence.json`,
+  `validation.json`, `artifact_manifest.json`, and `validation_prepare_4m/`.
+  The recursive artifact manifest lists every generated file, including all
+  archived sources, and excludes itself. All pre-existing changes were preserved.
+- Validation: 11 focused tests passed in 2.15 seconds, including preparation
+  failure before output, threshold selection, ledger/config/signature rejection,
+  explicit common panels, quoted paths, mocked 18-job submission/job-ID recording,
+  repeated-invocation refusal and shell syntax. Full suite: **244 passed in
+  26.94 seconds**. Independent review verified panel arithmetic and generated
+  shell syntax. No real sbatch command was executed.
+- Validation: ran actual preparation on all six local archived checkpoints with
+  the explicitly validation-only `--min-steps 4000000`; all selected epoch 200
+  at 4.255–4.279M steps. Verified 18 input hashes and all generated panel/script
+  hashes; no policy execution, result directory or job-ID file was produced.
+  Default 30M preparation correctly failed against the early local archive and
+  left no output directory. Checked cited source hashes, source/README links,
+  Python/shell syntax and scoped whitespace. No production input mutation,
+  model/optimizer/budget change, dependency edit, research training, cluster
+  submission, commit or push occurred; tiny training was confined to tests.
+
+### 2026-10-02 — proper Slurm array file for the pending frozen panel
+
+- Changed preparation to write `submit.sbatch`, a complete Slurm batch file
+  containing all 18 explicit evaluation commands. Its array is `0-17%3`, with
+  one CPU/4 GB/four hours per task, the existing account/partition/module setup,
+  `srun` execution, and separate `logs_sr/pcp-frozen-%A_%a.out`/`.err` files.
+  Each shared/banked seed maps to nominal, failure and sham consecutively.
+  The existing checkpoint rule, common scenarios and scientific configuration
+  are unchanged. These pending jobs evaluate frozen policies, not training.
+- Kept `submit.sh` as an optional convenience wrapper: it now makes one sbatch
+  array submission and records the 18 array-task IDs, handling optional cluster
+  suffixes. README now gives direct `sbatch .../submit.sbatch` instructions and
+  a fresh `_array` output path. Use one route once. Previously prepared plans
+  remain untouched; rerun preparation in a fresh directory to obtain the new
+  batch file. No already queued cluster job was queried or modified.
+- Files touched: `scripts/prepare_pcp_frozen.py`,
+  `tests/test_softrole_prepare_frozen.py`, `README.md`, and this existing
+  uppercase `AGENTS.md`. New generated evidence is confined to
+  `analysis/slurm_array_2026-10-02/`: `validation.json`,
+  `artifact_manifest.json`, and `validation_prepare_4m/`, including its source
+  archive, manifest, scenario panels, `submit.sh` and `submit.sbatch`. The
+  recursive artifact manifest lists every generated file except itself.
+- Validation: 12 focused tests passed in 3.39 seconds. Checks cover Slurm
+  directives, shell syntax, all 18 task branches via mocked module/srun/Python,
+  checkpoint/output/scenario argument quoting, working directory and thread
+  environment, failure/sham options, invalid/missing array IDs, a single mocked
+  sbatch call, all 18 recorded array-task IDs and repeated-wrapper rejection.
+  Actual preparation against six real archived PCP checkpoints at a validation-
+  only 4M threshold succeeded; generated scripts passed `bash -n`, and selected
+  inputs/generated artifacts were hash-checked. This did not execute policies.
+  Scoped whitespace checks passed. No full learner suite was repeated for this
+  launcher-only change; the prior 244-test result remains the preceding record.
+- No model/optimizer/budget/environment edits, production checkpoint/log
+  mutation, dependency change, training, evaluation, real sbatch submission,
+  commit or push occurred. All pre-existing changes were preserved.
+
 ## Remaining research work and boundaries
 
 Run the locked research protocol and assess actual learning across independent

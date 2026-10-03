@@ -2,8 +2,11 @@
 
 from concurrent.futures import ProcessPoolExecutor
 from dataclasses import replace
+import io
 import json
 import multiprocessing as mp
+from pathlib import Path
+import sys
 
 import numpy as np
 import pytest
@@ -11,7 +14,8 @@ import torch
 
 from softrole.config import Config
 from softrole.model import SoftRoleNet
-from softrole.train import apply_gradients, train, worker_collect
+from softrole.train import (append_json, apply_gradients, log_episode_batch,
+                            summarize, train, worker_collect)
 
 
 def tiny_config(**overrides):
@@ -94,7 +98,7 @@ def test_partial_epoch_resume_matches_uninterrupted_model_and_optimizer(tmp_path
     assert partial["updates"] == 1
     assert partial["completed_epochs"] == 0
     assert partial["updates_in_partial_epoch"] == 1
-    resumed_path = train(config, tmp_path / "resumed", resume=partial_path)
+    resumed_path = train(config, tmp_path / "resumed", resume=partial_path, episode_log="stdout")
     uninterrupted = torch.load(uninterrupted_path, map_location="cpu", weights_only=False)
     resumed = torch.load(resumed_path, map_location="cpu", weights_only=False)
     for field in ("updates", "total_steps", "total_episodes", "completed_epochs", "updates_in_partial_epoch"):
@@ -104,6 +108,8 @@ def test_partial_epoch_resume_matches_uninterrupted_model_and_optimizer(tmp_path
     assert_state_equal(uninterrupted["optimizer_state"], resumed["optimizer_state"])
     metadata = json.loads((tmp_path / "resumed" / "run.json").read_text())
     assert metadata["parent_source_sha256"] == partial["source_sha256"]
+    assert metadata["episode_log"] == "stdout"
+    assert not (tmp_path / "resumed" / "episodes.jsonl").exists()
     with pytest.raises(FileExistsError):
         train(config, tmp_path / "uninterrupted")
 
@@ -116,3 +122,130 @@ def test_partial_epoch_resume_matches_uninterrupted_model_and_optimizer(tmp_path
 def test_malformed_programmatic_config_is_rejected_before_collection(override):
     with pytest.raises(ValueError):
         tiny_config(**override)
+
+
+def test_batched_episode_file_retains_legacy_bytes_and_order_with_one_open(tmp_path, monkeypatch):
+    records = [{"scenario_id": "second", "update": 7, "collector": 1},
+               {"scenario_id": "first", "update": 7, "collector": 0}]
+    legacy = tmp_path / "legacy.jsonl"
+    for record in records:
+        append_json(legacy, record)
+    destination = tmp_path / "episodes.jsonl"
+    opened = []
+    original_open = Path.open
+
+    def observe_open(path, mode="r", *args, **kwargs):
+        if path == destination and mode == "a":
+            opened.append(path)
+        return original_open(path, mode, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "open", observe_open)
+    log_episode_batch(destination, records, update=7)
+    expected = (b'{"collector": 1, "scenario_id": "second", "update": 7}\n'
+                b'{"collector": 0, "scenario_id": "first", "update": 7}\n')
+    assert destination.read_bytes() == legacy.read_bytes() == expected
+    assert opened == [destination]
+
+
+def test_stdout_episode_batch_is_one_tagged_object_with_one_flush(tmp_path, monkeypatch):
+    class RecordedStream(io.StringIO):
+        flush_count = 0
+
+        def flush(self):
+            self.flush_count += 1
+            super().flush()
+
+    stream = RecordedStream()
+    monkeypatch.setattr(sys, "stdout", stream)
+    records = [{"scenario_id": "a", "collector": 0, "update": 4},
+               {"scenario_id": "b", "collector": 1, "update": 4}]
+    path = tmp_path / "episodes.jsonl"
+    log_episode_batch(path, records, update=4, mode="stdout")
+    assert len(stream.getvalue().splitlines()) == 1
+    assert json.loads(stream.getvalue()) == {
+        "record_type": "softrole_episode_batch", "schema_version": 1,
+        "update": 4, "episodes": records}
+    assert stream.flush_count == 1
+    assert not path.exists()
+
+
+@pytest.mark.parametrize("include_new_field", [False, True])
+def test_mean_agent_return_weights_episodes_equally_with_variable_rosters(include_new_field):
+    common = {"steps": 1, "success": False, "event_exposed": False}
+    episodes = [dict(common, team_return=-6., num_agents=2),
+                dict(common, team_return=-4., num_agents=4)]
+    if include_new_field:
+        episodes[0]["mean_agent_return"] = -3.
+        episodes[1]["mean_agent_return"] = -1.
+    result = summarize(episodes)
+    # An episode's typical agent receives -3 or -1; equal episodes yield -2.
+    # Pooling all six agents instead would give -10/6, a different estimand.
+    assert result["mean_agent_return"] == -2.
+    assert result["team_return"] == -5.
+    assert result["mean_agent_return"] != result["team_return"] / result["num_agents"]
+
+
+@pytest.mark.parametrize("nprocesses", [1, 2])
+def test_logging_destination_preserves_training_and_complete_episode_ledger(tmp_path, capsys, monkeypatch,
+                                                                         nprocesses):
+    config = tiny_config(nprocesses=nprocesses, compositions=((1, 1), (2, 1), (2, 2)))
+    opened = []
+    original_open = Path.open
+
+    def observe_open(path, mode="r", *args, **kwargs):
+        if path.name == "episodes.jsonl" and mode == "a":
+            opened.append(path)
+        return original_open(path, mode, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "open", observe_open)
+    checkpoints, outputs = {}, {}
+    for mode in ("file", "stdout"):
+        checkpoint = train(config, tmp_path / mode, episode_log=mode)
+        checkpoints[mode] = torch.load(checkpoint, map_location="cpu", weights_only=False)
+        outputs[mode] = [json.loads(line) for line in capsys.readouterr().out.splitlines()]
+        metadata = json.loads((tmp_path / mode / "run.json").read_text())
+        assert metadata["episode_log"] == mode
+        assert "episode_log" not in checkpoints[mode]["config"]
+    for key in ("model_state", "optimizer_state", "config", "model_config", "updates",
+                "total_steps", "total_episodes", "signature"):
+        assert_state_equal(checkpoints["file"][key], checkpoints["stdout"][key])
+    episodes = [json.loads(line) for line in (tmp_path / "file" / "episodes.jsonl").read_text().splitlines()]
+    batches = [row for row in outputs["stdout"] if row.get("record_type") == "softrole_episode_batch"]
+    assert [row["update"] for row in batches] == [1, 2, 3]
+    assert [record for row in batches for record in row["episodes"]] == episodes
+    assert len(episodes) == checkpoints["file"]["total_episodes"]
+    assert sum(row["steps"] for row in episodes) == checkpoints["file"]["total_steps"]
+    assert set(row["collector"] for row in episodes) == set(range(nprocesses))
+    assert len(opened) == checkpoints["file"]["updates"]
+    assert not (tmp_path / "stdout" / "episodes.jsonl").exists()
+    for row in episodes:
+        assert row["mean_agent_return"] == pytest.approx(sum(row["agent_returns"]) / row["num_agents"])
+    metrics = {}
+    for mode in ("file", "stdout"):
+        metrics[mode] = [json.loads(line) for line in (tmp_path / mode / "metrics.jsonl").read_text().splitlines()]
+        for row in metrics[mode]:
+            row.pop("wall_time_seconds")
+    assert metrics["file"] == metrics["stdout"]
+    assert metrics["file"][0]["mean_agent_return"] == pytest.approx(
+        sum(row["mean_agent_return"] for row in episodes) / len(episodes))
+    assert (tmp_path / "file" / "updates.jsonl").read_bytes() == (tmp_path / "stdout" / "updates.jsonl").read_bytes()
+
+
+def test_invalid_logging_mode_is_rejected_before_creating_run(tmp_path):
+    path = tmp_path / "invalid"
+    with pytest.raises(ValueError, match="episode_log"):
+        train(tiny_config(), path, episode_log="none")
+    assert not path.exists()
+
+
+def test_cli_logging_option_is_runtime_only(tmp_path, monkeypatch, capsys):
+    from softrole.__main__ import main
+
+    calls = []
+    monkeypatch.setattr("softrole.train.train", lambda *args, **kwargs: calls.append((args, kwargs)))
+    main(["train", "--output", str(tmp_path / "stdout"), "--episode-log", "stdout"])
+    assert calls[0][1] == {"episode_log": "stdout"}
+    assert "episode_log" not in calls[0][0][0].to_dict()
+    main(["train", "--output", str(tmp_path / "dry"), "--episode-log", "stdout", "--dry-run"])
+    assert "episode_log" not in json.loads(capsys.readouterr().out)
+    assert not (tmp_path / "dry").exists()

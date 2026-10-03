@@ -189,6 +189,7 @@ def test_checkpoint_evaluation_replays_and_never_overwrites(tmp_path):
     assert first["evaluator"]["runtime"]["packages"]["torch"] == torch.__version__
     assert first["evaluator"]["runtime"]["torch_threads"] == 1
     assert first["model_signature"] == model_signature(model)
+    assert first["mean_agent_return"] == pytest.approx(first["mean_team_return"] / 3)
     with pytest.raises(FileExistsError):
         evaluate_checkpoint(checkpoint, scenarios, tmp_path / "first.json")
     with pytest.raises(ValueError, match="unique"):

@@ -33,6 +33,7 @@ def test_seed_means_receive_equal_weight_despite_unequal_episode_counts(tmp_path
     assert group["training_seeds"] == 2 and group["episodes"] == 10
     assert group["metrics"]["success_rate"]["mean"] == 0.5
     assert group["metrics"]["team_return"]["mean"] == 5.0
+    assert group["metrics"]["mean_agent_return"]["mean"] == pytest.approx(5.0 / 3)
     assert group["metrics"]["success_rate"]["ci95"] == [0., 1.]
     assert group["metrics"]["completion_steps_horizon_capped"]["mean"] == 45.
 
@@ -50,6 +51,15 @@ def test_compositions_and_scheduled_failures_are_separate_strata(tmp_path):
     result = summarize_reports(source, bootstrap_samples=100)
     assert len(result["groups"]) == 3
     assert sum(group["episodes"] for group in result["groups"]) == 3
+
+
+def test_agent_return_uses_each_compositions_roster_and_old_reports(tmp_path):
+    # Neither num_agents nor the newly logged diagnostic is required in old reports.
+    source = report_file(tmp_path, 0, [episode(0, True, reward=-3., composition=(2, 1)),
+                                     episode(1, True, reward=-10., composition=(3, 2))])
+    groups = summarize_reports(source, bootstrap_samples=100)["groups"]
+    means = {tuple(g["composition"]): g["metrics"]["mean_agent_return"]["mean"] for g in groups}
+    assert means == {(2, 1): -1., (3, 2): -2.}
 
 
 @pytest.mark.parametrize("change", ["horizon", "environment", "checkpoint", "source", "model",
