@@ -1,0 +1,223 @@
+{
+  "claim_boundary": "Supplement-aligned architecture/optimizer; documented public-code learner and corrected environment. Tests establish engineering behavior, not convergence or paper-result recovery.",
+  "contracts": [
+    {
+      "code_and_tests": [
+        {
+          "anchor": "class UAVNetA2CEasy(nn.Module):",
+          "line": 39,
+          "path": "publication_reconstruction/runtime/hetgat/uavnet.py",
+          "sha256": "82c72c62630a3f32d840f229cb0794628066184daba614139068390c0ff5088f"
+        },
+        {
+          "anchor": "def test_public_spec_preserves_prechange_parameters_outputs_gradients_and_rng(spec_probe, binary, task):",
+          "line": 264,
+          "path": "tests/test_publication_spec.py",
+          "sha256": "5f020f867102783677eab05b0e4e965398f21bacd265ed72f8c9784adfb34bd4"
+        }
+      ],
+      "contract": "model-spec",
+      "primary_references": [
+        "https://github.com/CORE-Robotics-Lab/HetNet/blob/master/AAMAS_22___HetNet_Supplementary.pdf"
+      ]
+    },
+    {
+      "code_and_tests": [
+        {
+          "anchor": "self.optimizer_perception = optim.RMSprop(self.policy_perception_net.parameters(),",
+          "line": 48,
+          "path": "publication_reconstruction/runtime/trainer.py",
+          "sha256": "dcb4b68edb0ba04099ba93575bbc6dc02992c4706c6f69d379132a863a31e950"
+        },
+        {
+          "anchor": "self.trainer.optimizer.step()",
+          "line": 160,
+          "path": "publication_reconstruction/runtime/multi_processing.py",
+          "sha256": "2fa911d4b3a5adb0f1ab6d8ca8a60bec4264458d33270592427ae95bbbb96927"
+        },
+        {
+          "anchor": "def test_resume_restores_model_optimizer_counts_and_every_collector_rng(continued):",
+          "line": 106,
+          "path": "tests/test_publication_recovery.py",
+          "sha256": "ef59a753d70bdc97dc9c2264eb5a6555bb2c469d2ee98fa81330d42eb4072461"
+        }
+      ],
+      "contract": "active-optimizer",
+      "primary_references": [
+        "https://raw.githubusercontent.com/pytorch/pytorch/v2.2.1/torch/optim/adam.py",
+        "https://arxiv.org/abs/1412.6980"
+      ]
+    },
+    {
+      "code_and_tests": [
+        {
+          "anchor": "class A2CPolicy(object):",
+          "line": 367,
+          "path": "publication_reconstruction/runtime/hetgat/policy.py",
+          "sha256": "419d4e2ad999c111b64c97d69faaef30867dec3254b0e8efd4e9be6619af3d4c"
+        },
+        {
+          "anchor": "self.grads[i] /= stat['num_steps']",
+          "line": 158,
+          "path": "publication_reconstruction/runtime/multi_processing.py",
+          "sha256": "2fa911d4b3a5adb0f1ab6d8ca8a60bec4264458d33270592427ae95bbbb96927"
+        }
+      ],
+      "contract": "public-learner",
+      "primary_references": [
+        "https://arxiv.org/abs/1506.02438"
+      ]
+    },
+    {
+      "code_and_tests": [
+        {
+          "anchor": "def seed_stream(seed, collector_id=None):",
+          "line": 31,
+          "path": "publication_reconstruction/runtime/hetnet_ext/recovery.py",
+          "sha256": "4c85f73c67b7ce839ef4340abab29a6b4631ee41bd1b541751a91311d595f1c4"
+        },
+        {
+          "anchor": "def save_checkpoint(filename, reason):",
+          "line": 451,
+          "path": "publication_reconstruction/runtime/main.py",
+          "sha256": "4b3aa0f240be88f6bf5ef9869711bf6f3f59fa1bd9de5bdd3ca35a7c98c60bf1"
+        },
+        {
+          "anchor": "def test_partial_epoch_metrics_and_complete_episode_order_survive_resume(continued):",
+          "line": 131,
+          "path": "tests/test_publication_recovery.py",
+          "sha256": "ef59a753d70bdc97dc9c2264eb5a6555bb2c469d2ee98fa81330d42eb4072461"
+        }
+      ],
+      "contract": "rng-and-recovery",
+      "primary_references": [
+        "https://numpy.org/doc/1.26/reference/random/parallel.html",
+        "https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html",
+        "https://raw.githubusercontent.com/pytorch/pytorch/v2.2.1/docs/source/notes/randomness.rst"
+      ]
+    },
+    {
+      "code_and_tests": [
+        {
+          "anchor": "def evaluate(args):",
+          "line": 119,
+          "path": "publication_reconstruction/evaluation.py",
+          "sha256": "44b43ddd9e30ee1a88b4e6eeb5e58d269103fbfa338475d8ff265a4a7f8724e6"
+        },
+        {
+          "anchor": "def run(request):",
+          "line": 38,
+          "path": "publication_reconstruction/evaluation_worker.py",
+          "sha256": "3b680aa759eb5698ab4915509f822f2071e00b4771b7b5069645126ac0b3e18b"
+        },
+        {
+          "anchor": "def test_archived_frozen_models_cover_native_domains_and_pcp_singleton_transfer(evaluations, task, spec):",
+          "line": 134,
+          "path": "tests/test_publication_evaluation.py",
+          "sha256": "b043aa51df1cb466b7f7db7167a392cfd047cc13291b6e7e4841a991e61d994f"
+        }
+      ],
+      "contract": "archived-frozen-evaluation",
+      "primary_references": [
+        "https://docs.python.org/3.12/using/cmdline.html#cmdoption-I"
+      ]
+    },
+    {
+      "code_and_tests": [
+        {
+          "anchor": "from dgl.ops import edge_softmax",
+          "line": 28,
+          "path": "publication_reconstruction/runtime/hetgat/graph/fastreal.py",
+          "sha256": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862"
+        },
+        {
+          "anchor": "from dgl.ops import edge_softmax",
+          "line": 13,
+          "path": "publication_reconstruction/runtime/hetgat/graph/fastbinary.py",
+          "sha256": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc"
+        },
+        {
+          "anchor": "original_softmax = module.edge_softmax",
+          "line": 208,
+          "path": "tests/test_publication_spec.py",
+          "sha256": "5f020f867102783677eab05b0e4e965398f21bacd265ed72f8c9784adfb34bd4"
+        }
+      ],
+      "contract": "relation-attention",
+      "primary_references": [
+        "https://raw.githubusercontent.com/dmlc/dgl/v2.1.0/python/dgl/ops/edge_softmax.py"
+      ]
+    },
+    {
+      "code_and_tests": [
+        {
+          "anchor": "def validate_evaluation_protocol(protocol, progress, scenarios, scenario_sha256):",
+          "line": 21,
+          "path": "softrole/report.py",
+          "sha256": "4c2ab0f20ecb6f59629c29b8c46b111e2292b46da7c362c354fe5f2fc59f4495"
+        },
+        {
+          "anchor": "def _paired_summaries(groups, records, metadata, panels, rng, samples):",
+          "line": 121,
+          "path": "softrole/report.py",
+          "sha256": "4c2ab0f20ecb6f59629c29b8c46b111e2292b46da7c362c354fe5f2fc59f4495"
+        },
+        {
+          "anchor": "def test_seed_means_receive_equal_weight_despite_unequal_episode_counts(tmp_path):",
+          "line": 29,
+          "path": "tests/test_softrole_report.py",
+          "sha256": "685666bf7f9c28946cca4850dcf122c6cc5566c646f84899c5d398873f6a8837"
+        }
+      ],
+      "contract": "protocol-and-paired-seeds",
+      "primary_references": [
+        "https://proceedings.neurips.cc/paper/2021/hash/f514cec81cb148559cf475e7426eed5e-Abstract.html"
+      ]
+    },
+    {
+      "code_and_tests": [
+        {
+          "anchor": "def train_arguments(index, run_root, preflight=False):",
+          "line": 35,
+          "path": "publication_reconstruction/study.py",
+          "sha256": "c533bbf1cfd35c8349e76b7e93eedda846aff14b74061238b86730854e19c35d"
+        },
+        {
+          "anchor": "def preflight_summary(run):",
+          "line": 62,
+          "path": "publication_reconstruction/study.py",
+          "sha256": "c533bbf1cfd35c8349e76b7e93eedda846aff14b74061238b86730854e19c35d"
+        },
+        {
+          "anchor": "#SBATCH --array=0-11%3",
+          "line": 11,
+          "path": "slurm/publication_train.sbatch",
+          "sha256": "0ab64703c960e60ac5d32a8e3bc95e2c71b76083f1da0100cc2f6eba4f253742"
+        },
+        {
+          "anchor": "def test_all_locked_array_shell_routes_reach_expected_protocol(shell, tmp_path, preflight, index):",
+          "line": 76,
+          "path": "tests/test_publication_slurm.py",
+          "sha256": "119b75c919d9851846954a63829996761276bee5d9a2c19bdb5810ee7b29d16a"
+        }
+      ],
+      "contract": "slurm-and-budget",
+      "primary_references": [
+        "https://slurm.schedmd.com/sbatch.html",
+        "https://slurm.schedmd.com/job_array.html",
+        "https://www.openmathlib.org/OpenBLAS/docs/faq/"
+      ]
+    }
+  ],
+  "overshoot_proof": {
+    "collector_update_max": "b+H-1",
+    "collector_update_min": "b",
+    "fc": 3195,
+    "pp_pcp": 2315,
+    "threshold_overshoot_max": "C*(b+H-1)-1",
+    "update_max": "C*(b+H-1)"
+  },
+  "schema_version": 1,
+  "supplement_local_path": "docs/papers/Seraj_2022_HetNet_Supplementary.pdf",
+  "supplement_sha256": "22262845fe6f8e1b6aa6f66f970c176a27c9a9f0550b4fc62066c7d99a928696"
+}

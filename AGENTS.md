@@ -1271,12 +1271,124 @@ seeds. No learned robustness, improved return, semantic roles or superiority to
 HetNet has been established. Own sensor state is known locally; fault detection
 is not learned. Only PCP sensor loss and episode-level roster changes are
 implemented. Gaussian roles/KL, mid-episode membership changes, physical FC
-sensor-failure semantics and paired inferential comparison are deferred.
+sensor-failure semantics, cross-model paired inference and gate difference-in-differences are deferred. Within-policy failure-minus-sham seed summaries are now implemented (October 3 record below).
 
 Summary confidence intervals condition on the supplied evaluation panels and
-require consistent event-time/victim distributions. They stratify training-source
-hash and checkpoint epoch/update, not exact step overshoot. SoftRole evaluations
+require consistent event-time/victim distributions. Legacy reports stratify training-source
+hash and checkpoint epoch/update, not exact step overshoot. Explicit validated
+evaluation protocols instead group by declared budget/panel and retain actual progress. SoftRole evaluations
 now record separate training and evaluator source identities; the pilot archives
 evaluator source, while standalone evaluation requires retaining its identified
 checkout. Keep source and environment fixed while spawned-worker jobs run.
 The optional Slurm memory/time requests are unmeasured starting settings.
+
+
+### 2026-10-03 — complete reconstruction training and frozen-evaluation workflow
+
+- Implemented the user-approved 12-run nominal first wave: PP Real seeds0–2 at40M,
+  PCP Real seeds0–2 at40M, FC Real seeds0–2 at28M, and PCP Binary-16 seeds0–2
+  at40M. `STUDY.json` and the resolved study artifact fix corrected-v1, October
+  recipes, four collectors,500-step floors,10 updates/epoch, horizons80/300,
+  milestones10/20/30/40M or10/20/28M, and epoch caps2000/1400. No research
+  array or cluster job was submitted; all actual training here was bounded validation.
+- Added explicit public-code-v1 (compatibility default) and supplement-v1 model
+  specifications. Supplement mode has three four-head layers, two64-wide hidden
+  outputs, final head averaging and the active trainer's Adam1e-3. The inactive
+  policy-local optimizer never steps. Public GAE, padding normalization, local
+  clipping and global step denominator remain unchanged. The scientific claim is
+  supplement-aligned architecture/optimizer with public learner/corrected environment,
+  not an exact publication-producing checkout. Public Real parameter dtype
+  conventions remain mixed even with float64 inputs/defaults; evaluation preserves them.
+- Added SeedSequence initialization/collector/library namespaces for supplement
+  mode, complete-update recovery of parent and worker RNG/optimizer/model/counts,
+  partial epoch statistics and timing, atomic checkpoints with absolute update
+  identities, threshold milestones, and graceful46-hour pause under provisional
+ 48-hour Slurm allocation. Continuing uses a fresh immutable segment and inherited
+  scientific/source configuration. Read-only lineage helpers exclude abandoned
+  parent suffixes, including interrupted trailing ledgers. Same-update milestone
+  crossings are recorded together before any checkpoint is written.
+- Buffered per-episode evidence once per update (file or tagged stdout), while
+  retaining epoch/update metrics and per-agent/team rewards. Added resource/timing
+  records and a100-update compute-node preflight for each of four workloads.
+  The preflight validates optimizer state and executes one native frozen checkpoint
+  probe. Update-work and end-to-end segment projections are separate measurements;
+  no convergence, Mac/Stokes speed ratio or resource sufficiency is inferred locally.
+- Added reconstruction-specific isolated frozen evaluation with strict archived
+  actor/environment imports, captured evaluator/helper execution and separately
+  published replayable source archives. Covers native PP/PCP/FC, PCP singleton and
+  changed compositions, PCP persistent victim-only sensory loss and matched shams,
+  both model specifications and Real/Binary tensors. Unsupported events/overrides
+  fail explicitly. Reports identify all versions, sources, checkpoint/panel hashes,
+  actual progress, pre-event diagnostics and censoring. HetNet receives no health input.
+- Preparation locks the existing PCP30M panels without changing their bytes;
+  native PP40M and FC28M panels use500 scenarios with seeds2702/2703. It generates
+ 24 frozen-evaluation jobs after validating all12 policies and first-saved selection.
+  Continuation maps are explicit. Reporting adds declared-budget/protocol strata,
+  preserves legacy grouping, records actual counts, and computes full-panel paired
+  failure-minus-sham within seed before equal-seed aggregation. Small-seed bootstrap
+  limitations remain explicit. Corrected FC is separated from old SoftRole FC.
+- Runtime provenance refresh preserves September's audit and original per-file
+  origins, marks the new recovery helper as a local addition, and writes fresh
+  October audit snapshots. Training executes its copied source; frozen evaluator
+  archives are independently replayable and reject changed helper bytes.
+- Repository files changed (including new files), grouped by purpose:
+  - Models: `publication_reconstruction/runtime/hetgat/uavnet.py`,
+    `publication_reconstruction/runtime/hetgat/policy.py`.
+  - Learner lifecycle/evidence: `publication_reconstruction/runtime/main.py`,
+    `publication_reconstruction/runtime/trainer.py`,
+    `publication_reconstruction/runtime/multi_processing.py`,
+    `publication_reconstruction/runtime/hetnet_ext/recording.py`,
+    `publication_reconstruction/runtime/hetnet_ext/recovery.py` (new).
+  - CLI/provenance/study: `publication_reconstruction/__init__.py`,
+    `publication_reconstruction/__main__.py`, `publication_reconstruction/ORIGINS.json`,
+    `publication_reconstruction/artifacts.py` (new), `publication_reconstruction/study.py`
+    (new), `publication_reconstruction/STUDY.json` (new), and
+    `scripts/record_publication_sources.py` (new).
+  - Evaluation/reporting: `publication_reconstruction/evaluation.py` (new),
+    `publication_reconstruction/evaluation_worker.py` (new), `softrole/evaluate.py`,
+    `softrole/report.py`, `softrole/__main__.py`. SoftRole learner/model were not changed.
+  - Operations: five new `slurm/publication_{preflight,train,resume,prepare_evaluation,evaluate}.sbatch` files.
+  - Tests: new `tests/test_publication_{spec,artifacts,recovery,evaluation,study,slurm}.py`,
+    new immutable `tests/fixtures/publication_uavnet_public_v1.py`, and additions to
+    `tests/test_softrole_report.py`. Fixture origin/byte hash are asserted.
+  - Documentation/discovery: `publication_reconstruction/README.md`, root `README.md`,
+    `.gitignore` (narrow audit exception), and this existing uppercase `AGENTS.md`.
+  - Evidence: `analysis/publication_submission_2026-10-03/` contains compatibility
+    and smoke validators/results, resolved protocols, source/citation evidence,
+    fresh provenance patches/manifests, and final validation records. Its final
+    artifact manifest inventories each file and hash without self-hashing.
+- Validation already completed before the final integration pass: the full suite
+  passed383 tests in124.57s. Additional focused checks exercised all16 array routes,
+  quoted Slurm arguments/thread limits/exit codes, atomic and interrupted writes,
+  source/checkpoint corruption, exact same-update milestone recovery, archive replay,
+  strict native and transfer evaluation, masking/sham prefixes and seed summaries.
+  The final integrated result is recorded below and in the validation artifact.
+- Independent actual pre-change compatibility audit uses commit
+  `9a436e6d9f8d36c864c17744d4d55819f5e5e504`: PCP Real/Binary ×1/4 collectors,
+  four updates per old/current run. Models, active RMSprop state, historical logs,
+  numerical metrics, true counts, every process RNG and subsequent random draws
+  match exactly. Script and hashed results are retained, temporary runtimes/checkpoints
+  removed. These bounded checks do not estimate trained task quality.
+- Separate archived-launcher smoke: four-collector supplement PCP Binary, horizon3,
+  batch floor4, six updates. Pause after update1 (24steps/8episodes), resume into a
+  fresh segment, and compare to uninterrupted144steps/48episodes. Weights, optimizer,
+  all collector RNG, counts/log and retained epoch metrics match exactly. Two actual
+  frozen scenarios per failure/sham condition preserve pre-event traces and weights;
+  helper archives verify and a one-seed paired summary is produced. These event-step1
+  engineering scenarios do not replace the locked research panel. Exact retained
+  artifact hashes are in `archived_smoke.json`; generated runs remain under
+  `runs/publication_submission_validation_20261003/`.
+- `uv lock --check` passed (59 packages); no dependency update. All five batch
+  files passed shell syntax checks. No commit, push, full research sweep, live Stokes
+  action, held-out tuning, SoftRole learner change or corrected-FC integration occurred.
+  Compute-node preflight remains required before the long research submission.
+
+- Final integration: `.venv/bin/python -m pytest -q` completed with **438 passed
+  in153.44 seconds**; complete stdout is `pytest_final.log`. Final historical
+  compatibility evidence is `compatibility_final.json` and includes cumulative
+  active-time bookkeeping. The final runtime provenance snapshot is
+  `provenance_active_time/`; all38 runtime inventory hashes validate. Cumulative
+  checkpoint active time excludes startup/downtime and cannot include the later
+  serialization of that same checkpoint. Final shell syntax, lock and whitespace
+  checks passed. All local software gates passed; live compute-node preflight
+  compatibility/resource/timing validation has not been run or claimed.

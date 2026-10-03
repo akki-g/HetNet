@@ -1,0 +1,254 @@
+{
+  "array_concurrency": 3,
+  "batch_floor_per_collector": 500,
+  "collectors": 4,
+  "environment_version": "corrected-v1",
+  "evaluation": {
+    "fc_nominal_seed": 2703,
+    "fc_selection_steps": 28000000,
+    "nominal_episodes_per_composition": 500,
+    "pcp_failure_seed": 2701,
+    "pcp_failure_sham_episodes": 100,
+    "pcp_nominal_seed": 2700,
+    "pcp_selection_steps": 30000000,
+    "pp_nominal_seed": 2702,
+    "pp_selection_steps": 40000000
+  },
+  "graceful_stop_hours": 46,
+  "learner_spec": "public-code-v1",
+  "model_spec": "supplement-v1",
+  "nominal_numeric_mode": "cpu-float64 (retains public attention parameter dtype conventions)",
+  "recipe": "october-2022",
+  "runs": [
+    {
+      "array_index": 0,
+      "communication": "real",
+      "composition": [
+        3,
+        0
+      ],
+      "epoch_cap": 2000,
+      "horizon": 80,
+      "milestones": [
+        10000000,
+        20000000,
+        30000000,
+        40000000
+      ],
+      "seed": 0,
+      "target_steps": 40000000,
+      "task": "pp"
+    },
+    {
+      "array_index": 1,
+      "communication": "real",
+      "composition": [
+        3,
+        0
+      ],
+      "epoch_cap": 2000,
+      "horizon": 80,
+      "milestones": [
+        10000000,
+        20000000,
+        30000000,
+        40000000
+      ],
+      "seed": 1,
+      "target_steps": 40000000,
+      "task": "pp"
+    },
+    {
+      "array_index": 2,
+      "communication": "real",
+      "composition": [
+        3,
+        0
+      ],
+      "epoch_cap": 2000,
+      "horizon": 80,
+      "milestones": [
+        10000000,
+        20000000,
+        30000000,
+        40000000
+      ],
+      "seed": 2,
+      "target_steps": 40000000,
+      "task": "pp"
+    },
+    {
+      "array_index": 3,
+      "communication": "real",
+      "composition": [
+        2,
+        1
+      ],
+      "epoch_cap": 2000,
+      "horizon": 80,
+      "milestones": [
+        10000000,
+        20000000,
+        30000000,
+        40000000
+      ],
+      "seed": 0,
+      "target_steps": 40000000,
+      "task": "pcp"
+    },
+    {
+      "array_index": 4,
+      "communication": "real",
+      "composition": [
+        2,
+        1
+      ],
+      "epoch_cap": 2000,
+      "horizon": 80,
+      "milestones": [
+        10000000,
+        20000000,
+        30000000,
+        40000000
+      ],
+      "seed": 1,
+      "target_steps": 40000000,
+      "task": "pcp"
+    },
+    {
+      "array_index": 5,
+      "communication": "real",
+      "composition": [
+        2,
+        1
+      ],
+      "epoch_cap": 2000,
+      "horizon": 80,
+      "milestones": [
+        10000000,
+        20000000,
+        30000000,
+        40000000
+      ],
+      "seed": 2,
+      "target_steps": 40000000,
+      "task": "pcp"
+    },
+    {
+      "array_index": 6,
+      "communication": "real",
+      "composition": [
+        2,
+        1
+      ],
+      "epoch_cap": 1400,
+      "horizon": 300,
+      "milestones": [
+        10000000,
+        20000000,
+        28000000
+      ],
+      "seed": 0,
+      "target_steps": 28000000,
+      "task": "fc"
+    },
+    {
+      "array_index": 7,
+      "communication": "real",
+      "composition": [
+        2,
+        1
+      ],
+      "epoch_cap": 1400,
+      "horizon": 300,
+      "milestones": [
+        10000000,
+        20000000,
+        28000000
+      ],
+      "seed": 1,
+      "target_steps": 28000000,
+      "task": "fc"
+    },
+    {
+      "array_index": 8,
+      "communication": "real",
+      "composition": [
+        2,
+        1
+      ],
+      "epoch_cap": 1400,
+      "horizon": 300,
+      "milestones": [
+        10000000,
+        20000000,
+        28000000
+      ],
+      "seed": 2,
+      "target_steps": 28000000,
+      "task": "fc"
+    },
+    {
+      "array_index": 9,
+      "communication": "binary",
+      "composition": [
+        2,
+        1
+      ],
+      "epoch_cap": 2000,
+      "horizon": 80,
+      "milestones": [
+        10000000,
+        20000000,
+        30000000,
+        40000000
+      ],
+      "seed": 0,
+      "target_steps": 40000000,
+      "task": "pcp"
+    },
+    {
+      "array_index": 10,
+      "communication": "binary",
+      "composition": [
+        2,
+        1
+      ],
+      "epoch_cap": 2000,
+      "horizon": 80,
+      "milestones": [
+        10000000,
+        20000000,
+        30000000,
+        40000000
+      ],
+      "seed": 1,
+      "target_steps": 40000000,
+      "task": "pcp"
+    },
+    {
+      "array_index": 11,
+      "communication": "binary",
+      "composition": [
+        2,
+        1
+      ],
+      "epoch_cap": 2000,
+      "horizon": 80,
+      "milestones": [
+        10000000,
+        20000000,
+        30000000,
+        40000000
+      ],
+      "seed": 2,
+      "target_steps": 40000000,
+      "task": "pcp"
+    }
+  ],
+  "schema_version": 1,
+  "slurm_hours": 48,
+  "study": "hetnet-supplement-v1-first-wave",
+  "threads_per_collector": 1,
+  "updates_per_epoch": 10
+}

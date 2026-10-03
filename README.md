@@ -26,7 +26,7 @@ Every run uses four collectors, ten updates/epoch, batch target 500 **per collec
 
 **Release versus paper:** the supplement describes three layers and Adam at 0.001. The active author release has two layers and stepping RMSprop; its policy-local Adam does not step. FC's released action/reward conventions also differ from the supplement. These runs reproduce the released code/README recipe, not a silently reconstructed paper recipe. Binary-16 is the release default; the paper also reports other widths, including Binary-64.
 
-The separate [historical reconstruction](publication_reconstruction/README.md) restores the pre-October sensory extraction and provides versioned February environments, optional observation/fire-front corrections, dated June/October recipes and explicit sample stopping thresholds. It archives its own source and logs without changing these original entrypoints. The public history does not identify the exact training commit behind the paper.
+The separate [HetNet reconstruction workflow](publication_reconstruction/README.md) provides public-code compatibility and supplement-aligned three-layer/Adam models, corrected environments, complete-update recovery, and isolated frozen evaluation. Its locked 12-run study has proper preflight, training, continuation and evaluation Slurm files. Start with `sbatch slurm/publication_preflight.sbatch` after creating `logs_1`; long training remains gated on compute-node checks. Original entrypoints remain unchanged, and the public history does not identify the exact publication-producing checkout.
 
 ## Run
 

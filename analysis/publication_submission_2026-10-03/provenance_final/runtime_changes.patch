@@ -1,0 +1,909 @@
+--- 9a436e6d9f8d36c864c17744d4d55819f5e5e504/publication_reconstruction/runtime/envs/LICENSE.md
++++ working/publication_reconstruction/runtime/envs/LICENSE.md
+@@ -0,0 +1,7 @@
++Copyright 2018, Anonymous
++
++Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--- 9a436e6d9f8d36c864c17744d4d55819f5e5e504/publication_reconstruction/runtime/hetgat/policy.py
++++ working/publication_reconstruction/runtime/hetgat/policy.py
+@@ -375,9 +375,10 @@
+                  per_agent_critic=False, with_two_state=True, obs=None,
+                  comm_range_P=-1, comm_range_A=-1, lossy_comm=False, tensor_obs=False,
+                  min_comm_loss=0, max_comm_loss=0.3, total_state_action_in_batch=500,
+-                 action_vision=-1):
++                 action_vision=-1, model_spec='public-code-v1'):
+ 
+         self.device = device
++        self.model_spec = model_spec
+         self.use_real = use_real
+         self.per_class_critic = per_class_critic
+         self.per_agent_critic = per_agent_critic
+@@ -397,7 +398,8 @@
+             with_two_state=with_two_state, obs=obs, comm_range_P=comm_range_P,
+             comm_range_A=comm_range_A, lossy_comm=lossy_comm,
+             min_comm_loss=min_comm_loss, max_comm_loss=max_comm_loss,
+-            tensor_obs=tensor_obs, action_vision=action_vision).to(self.device)
++            tensor_obs=tensor_obs, action_vision=action_vision,
++            model_spec=model_spec).to(self.device)
+ 
+         self.gamma = gamma
+         self.lmbda = lmbda
+--- 9a436e6d9f8d36c864c17744d4d55819f5e5e504/publication_reconstruction/runtime/hetgat/uavnet.py
++++ working/publication_reconstruction/runtime/hetgat/uavnet.py
+@@ -46,9 +46,15 @@
+                  per_class_critic=False, per_agent_critic=False, device=None,
+                  with_two_state=False, obs=1, comm_range_P=-1, comm_range_A=-1,
+                  lossy_comm=False, min_comm_loss=0, max_comm_loss=0.3, tensor_obs=False, total_state_action_in_batch=500,
+-                 action_vision=-1):
++                 action_vision=-1, model_spec='public-code-v1'):
+         super(UAVNetA2CEasy, self).__init__()
+ 
++        if model_spec not in ('public-code-v1', 'supplement-v1'):
++            raise ValueError('Unknown HetNet model_spec: ' + str(model_spec))
++        if model_spec == 'supplement-v1' and (
++                num_heads != 4 or any(hid_dim.get(key) != 16 for key in ('P', 'A', 'state'))):
++            raise ValueError('supplement-v1 requires four heads and 16 hidden features per head')
++        self.model_spec = model_spec
+         self.device = device
+ 
+ 
+@@ -105,14 +111,26 @@
+ 
+             self.layer1 = MultiHeteroGATLayerReal(in_dim, hid_dim,
+                                                   num_heads)
+-            self.layer2 = MultiHeteroGATLayerReal(hid_dim_input, out_dim,
+-                                                  num_heads, merge='avg')
++            if model_spec == 'supplement-v1':
++                self.layer2 = MultiHeteroGATLayerReal(hid_dim_input, hid_dim,
++                                                      num_heads)
++                self.layer3 = MultiHeteroGATLayerReal(hid_dim_input, out_dim,
++                                                      num_heads, merge='avg')
++            else:
++                self.layer2 = MultiHeteroGATLayerReal(hid_dim_input, out_dim,
++                                                      num_heads, merge='avg')
+         else:
+ 
+             self.layer1 = MultiHeteroGATLayerBinary(in_dim, hid_dim,
+                                                     num_heads, msg_dim)
+-            self.layer2 = MultiHeteroGATLayerBinary(hid_dim_input, out_dim,
+-                                                    num_heads, msg_dim, merge='avg')
++            if model_spec == 'supplement-v1':
++                self.layer2 = MultiHeteroGATLayerBinary(hid_dim_input, hid_dim,
++                                                        num_heads, msg_dim)
++                self.layer3 = MultiHeteroGATLayerBinary(hid_dim_input, out_dim,
++                                                        num_heads, msg_dim, merge='avg')
++            else:
++                self.layer2 = MultiHeteroGATLayerBinary(hid_dim_input, out_dim,
++                                                        num_heads, msg_dim, merge='avg')
+ 
+         self.relu = nn.ReLU()
+         self.use_tanh = use_tanh
+@@ -367,6 +385,8 @@
+ 
+         h1 = self.layer1(g, feat_dict)
+         h2 = self.layer2(g, h1)
++        if self.model_spec == 'supplement-v1':
++            h2 = self.layer3(g, h2)
+ 
+         # get critic prediction, 1x1
+         if self.per_class_critic:
+--- 9a436e6d9f8d36c864c17744d4d55819f5e5e504/publication_reconstruction/runtime/hetnet_ext/recording.py
++++ working/publication_reconstruction/runtime/hetnet_ext/recording.py
+@@ -8,6 +8,8 @@
+ from __future__ import annotations
+ 
+ from argparse import Namespace
++import copy
++import hashlib
+ import json
+ import math
+ from pathlib import Path
+@@ -30,10 +32,13 @@
+     return signature
+ 
+ 
+-def record_checkpoint(metrics_file, checkpoint: Path, epoch, wall_time_seconds, signature):
++def record_checkpoint(metrics_file, checkpoint: Path, epoch, wall_time_seconds, signature, *, counts=None):
+     record = {"epoch": int(epoch), "path": str(checkpoint.resolve()),
+               "wall_time_seconds": float(wall_time_seconds), "bytes": checkpoint.stat().st_size,
+               "parameter_sha256": signature["sha256"]}
++    record["checkpoint_sha256"] = hashlib.sha256(checkpoint.read_bytes()).hexdigest()
++    if counts is not None:
++        record.update(counts=dict(counts), update=int(counts["updates"]))
+     with (Path(metrics_file).parent / "checkpoint_records.jsonl").open("a") as stream:
+         stream.write(json.dumps(record, sort_keys=True, allow_nan=False) + "\n")
+ 
+@@ -45,7 +50,8 @@
+         args_path = self.path.parent / "resolved_args.json"
+         initial_path = self.path.parent / "initial_signature.json"
+         for path in (self.path, self.signature_path, args_path, initial_path,
+-                     self.path.parent / "checkpoint_records.jsonl"):
++                     self.path.parent / "checkpoint_records.jsonl",
++                     self.path.parent / "updates.jsonl", self.path.parent / "episodes.jsonl"):
+             if path.exists():
+                 raise FileExistsError(f"Refusing to overwrite training evidence: {path}")
+         self.path.parent.mkdir(parents=True, exist_ok=True)
+@@ -62,7 +68,51 @@
+         self.total_steps = 0
+         self.total_episodes = 0
+         self.last_epoch = 0
++        self.episode_log = getattr(args, "episode_log", "file")
+         self._reset_epoch()
++
++    def state_dict(self):
++        names = ("total_steps", "total_episodes", "last_epoch", "steps", "episodes",
++                 "success", "steps_taken", "reward", "policy_loss", "value_loss")
++        return {name: copy.deepcopy(getattr(self, name)) for name in names}
++
++    def load_state_dict(self, state):
++        if set(state) != set(self.state_dict()):
++            raise ValueError("Incomplete training recorder recovery state")
++        for name, value in state.items():
++            setattr(self, name, copy.deepcopy(value))
++
++    def record_update(self, fresh, episodes, counts, epoch, update_in_epoch, wall_seconds):
++        if len(episodes) != int(fresh["num_episodes"]):
++            raise ValueError("Episode records do not match the completed update")
++        records = []
++        for index, episode in enumerate(episodes):
++            records.append({**episode, "update": counts["updates"], "epoch": epoch,
++                            "episode": counts["episodes"] - len(episodes) + index + 1})
++        # Complete-update buffering bounds memory and performs one file open or
++        # one flushed stdout write, independent of the number of episodes.
++        if self.episode_log == "stdout":
++            print(json.dumps({"record_type": "publication_episode_batch", "schema_version": 1,
++                              "update": counts["updates"], "episodes": records},
++                             sort_keys=True, allow_nan=False), flush=True)
++        elif self.episode_log == "file":
++            with (self.path.parent / "episodes.jsonl").open("a") as stream:
++                stream.write("".join(json.dumps(row, sort_keys=True, allow_nan=False) + "\n"
++                                     for row in records))
++        else:
++            raise ValueError("Unsupported episode logging destination")
++        reward = np.asarray(fresh["reward"], dtype=np.float64) / len(records)
++        row = {"update": counts["updates"], "epoch": epoch, "update_in_epoch": update_in_epoch,
++               "steps": int(fresh["num_steps"]), "episodes": len(records),
++               "total_steps": counts["env_steps"], "total_episodes": counts["episodes"],
++               "success_rate": float(fresh["success"]) / len(records),
++               "reward_per_agent": reward.tolist(), "team_return": float(reward.sum()),
++               "mean_agent_return": float(np.mean([r["mean_agent_return"] for r in records])),
++               "policy_loss": float(fresh["action_loss"]) / fresh["num_steps"],
++               "value_loss": float(fresh["value_loss"]) / fresh["num_steps"],
++               "wall_time_seconds": float(wall_seconds)}
++        with (self.path.parent / "updates.jsonl").open("a") as stream:
++            stream.write(json.dumps(row, sort_keys=True, allow_nan=False) + "\n")
+ 
+     def _reset_epoch(self):
+         self.steps = 0
+@@ -88,7 +138,8 @@
+         self.policy_loss += float(fresh["action_loss"])
+         self.value_loss += float(fresh["value_loss"])
+ 
+-    def finish_epoch(self, epoch: int, wall_time_seconds: float, model):
++    def finish_epoch(self, epoch: int, wall_time_seconds: float, model, *, updates=None,
++                     updates_in_epoch=None):
+         if epoch != self.last_epoch + 1 or self.episodes <= 0 or self.steps <= 0:
+             raise ValueError("Epoch records must be contiguous and contain fresh batches")
+         self.total_steps += self.steps
+@@ -100,9 +151,15 @@
+             "success_rate": self.success / self.episodes,
+             "steps_taken": self.steps_taken / self.episodes,
+             "reward_per_agent": (self.reward / self.episodes).tolist(),
++            "team_return": float(self.reward.sum() / self.episodes),
++            "mean_agent_return": float(self.reward.mean() / self.episodes),
+             "policy_loss": self.policy_loss / self.steps,
+             "value_loss": self.value_loss / self.steps,
+         }
++        if updates is not None:
++            metrics["updates"] = int(updates)
++        if updates_in_epoch is not None:
++            metrics["updates_in_epoch"] = int(updates_in_epoch)
+         numeric = [v for k, v in metrics.items() if k != "reward_per_agent"] + metrics["reward_per_agent"]
+         if not all(math.isfinite(value) for value in numeric):
+             raise ValueError(f"Non-finite training metrics at epoch {epoch}: {metrics}")
+--- 9a436e6d9f8d36c864c17744d4d55819f5e5e504/publication_reconstruction/runtime/hetnet_ext/recovery.py
++++ working/publication_reconstruction/runtime/hetnet_ext/recovery.py
+@@ -0,0 +1,135 @@
++"""Complete-update recovery for the isolated CPU reconstruction runtime.
++
++RNG snapshots are taken only while every collector is idle.  The supplement's
++stream derivation is opt-in; the public-code initialization is unchanged.
++"""
++from __future__ import annotations
++
++import os
++from pathlib import Path
++import random
++import resource
++import sys
++import tempfile
++
++import numpy as np
++import torch
++
++
++RECOVERY_VERSION = 1
++RUNTIME_ARGUMENTS = {
++    "metrics_file", "save_dir", "source_manifest", "resume_checkpoint",
++    "wall_seconds", "episode_log", "save_every", "experiment_name", "load",
++}
++
++
++def rng_scheme(model_spec):
++    return "seedsequence-v1" if model_spec == "supplement-v1" else "legacy-offset-v1"
++
++
++def seed_stream(seed, collector_id=None):
++    """Separate initialization from collectors, and libraries from each other.
++
++    Keep the legacy global NumPy API used by the simulators.  SeedSequence only
++    derives its initial multiword seed; no generator replacement is involved.
++    """
++    purpose = 0 if collector_id is None else 1
++    index = 0 if collector_id is None else int(collector_id)
++    for library in range(3):
++        words = np.random.SeedSequence([library, purpose, index, int(seed)]).generate_state(4)
++        integer = sum(int(word) << (32 * i) for i, word in enumerate(words))
++        if library == 0:
++            random.seed(integer)
++        elif library == 1:
++            np.random.seed(words)
++        else:
++            torch.manual_seed(integer & ((1 << 64) - 1))
++
++
++def capture_rng():
++    return {"python": random.getstate(), "numpy": np.random.get_state(),
++            "torch": torch.get_rng_state().clone()}
++
++
++def restore_rng(state):
++    if set(state) != {"python", "numpy", "torch"}:
++        raise ValueError("Incomplete collector RNG state")
++    random.setstate(state["python"])
++    np.random.set_state(state["numpy"])
++    torch.set_rng_state(state["torch"])
++
++
++def process_resources(who=resource.RUSAGE_SELF):
++    usage = resource.getrusage(who)
++    result = {"max_rss": usage.ru_maxrss,
++              "max_rss_unit": "bytes" if sys.platform == "darwin" else "KiB",
++              "user_cpu_seconds": usage.ru_utime, "system_cpu_seconds": usage.ru_stime}
++    if who == resource.RUSAGE_SELF:
++        result.update(torch_threads=torch.get_num_threads(),
++                      cpu_affinity=sorted(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else None)
++    return result
++
++
++def scientific_arguments(args):
++    return {key: value for key, value in vars(args).items() if key not in RUNTIME_ARGUMENTS}
++
++
++def atomic_checkpoint(path, value):
++    """Publish a complete checkpoint without replacing earlier evidence."""
++    path = Path(path)
++    path.parent.mkdir(parents=True, exist_ok=True)
++    if path.exists():
++        raise FileExistsError(f"Checkpoint already exists: {path}")
++    temporary = None
++    try:
++        with tempfile.NamedTemporaryFile(dir=path.parent, prefix=".checkpoint-", delete=False) as stream:
++            temporary = Path(stream.name)
++            torch.save(value, stream)
++            stream.flush()
++            os.fsync(stream.fileno())
++        # link is an atomic, exclusive publication on this same filesystem.
++        os.link(temporary, path)
++    finally:
++        if temporary is not None:
++            temporary.unlink(missing_ok=True)
++
++
++def validate_recovery(checkpoint, args, source_sha256):
++    reconstruction = checkpoint.get("reconstruction", {})
++    recovery = checkpoint.get("recovery", {})
++    if reconstruction.get("schema_version") != 2 or recovery.get("version") != RECOVERY_VERSION:
++        raise ValueError("Checkpoint lacks validated complete-update recovery state")
++    if recovery.get("stop_reason") in {"budget_completed", "epoch_cap_completed"}:
++        raise ValueError("The checkpoint has already completed its locked training limits")
++    if reconstruction.get("source_manifest_sha256") != source_sha256:
++        raise ValueError("Recovery source identity differs from the checkpoint")
++    if recovery.get("scientific_args") != scientific_arguments(args):
++        raise ValueError("Recovery scientific configuration differs from the checkpoint")
++    if reconstruction.get("model_spec") != args.model_spec:
++        raise ValueError("Recovery model specification differs from the checkpoint")
++    counts = recovery.get("counts", {})
++    if counts != reconstruction.get("counts") or set(counts) != {"env_steps", "episodes", "updates", "epoch"}:
++        raise ValueError("Checkpoint progress records disagree")
++    if any(type(value) is not int or value < 0 for value in counts.values()):
++        raise ValueError("Invalid checkpoint progress counters")
++    completed = recovery.get("completed_epochs")
++    partial = recovery.get("updates_in_epoch")
++    if (type(completed) is not int or completed < 0 or type(partial) is not int
++            or not 0 <= partial < args.epoch_size
++            or counts["updates"] != completed * args.epoch_size + partial):
++        raise ValueError("Checkpoint update and epoch counters disagree")
++    if counts["epoch"] != completed + bool(partial):
++        raise ValueError("Checkpoint absolute epoch counter disagrees")
++    recorder = recovery.get("recorder_state")
++    if not isinstance(recorder, dict) or recorder.get("last_epoch") != completed:
++        raise ValueError("Checkpoint recorder epoch disagrees")
++    if (recorder.get("total_steps", -1) + recorder.get("steps", -1) != counts["env_steps"]
++            or recorder.get("total_episodes", -1) + recorder.get("episodes", -1) != counts["episodes"]):
++        raise ValueError("Checkpoint recorder counts disagree")
++    epoch_stat = recovery.get("epoch_stat", {})
++    if (epoch_stat.get("num_steps", 0) != recorder["steps"]
++            or epoch_stat.get("num_episodes", 0) != recorder["episodes"]):
++        raise ValueError("Checkpoint partial epoch statistics disagree")
++    if len(recovery.get("rng_states", [])) != args.nprocesses:
++        raise ValueError("Checkpoint collector RNG count differs")
++    return recovery
+--- 9a436e6d9f8d36c864c17744d4d55819f5e5e504/publication_reconstruction/runtime/main.py
++++ working/publication_reconstruction/runtime/main.py
+@@ -8,9 +8,17 @@
+ import signal
+ import sys
+ import time
++RUNTIME_BEGIN = time.monotonic()
+ import signal
+ import argparse
+ import os
++import hashlib
++import json
++import resource
++
++# Library pools must be constrained before NumPy/Torch/DGL import.
++for variable in ('OPENBLAS_NUM_THREADS', 'OMP_NUM_THREADS', 'MKL_NUM_THREADS', 'NUMEXPR_NUM_THREADS'):
++    os.environ[variable] = '1'
+ 
+ import tracemalloc
+ 
+@@ -33,6 +41,10 @@
+ from pathlib import Path
+ from hetnet_ext.seeding import seed_everything
+ from hetnet_ext.recording import TrainingRecorder, write_checkpoint_signature, record_checkpoint
++from hetnet_ext.recording import write_json_new
++from hetnet_ext.recovery import (RECOVERY_VERSION, atomic_checkpoint, capture_rng,
++    restore_rng, rng_scheme, scientific_arguments, seed_stream, validate_recovery,
++    process_resources)
+ 
+ if __name__ == "__main__":
+     torch.multiprocessing.set_start_method('spawn')
+@@ -48,6 +60,12 @@
+ parser.add_argument('--max_env_steps', type=int, default=0,
+                     help='stop after a complete update reaching this total; zero disables')
+ parser.add_argument('--source_manifest', required=True)
++parser.add_argument('--model_spec', choices=['public-code-v1', 'supplement-v1'], default='public-code-v1')
++parser.add_argument('--milestones', nargs='*', type=int, default=[])
++parser.add_argument('--resume_checkpoint', default='')
++parser.add_argument('--wall_seconds', type=float, default=0,
++                    help='pause after a complete update once this runtime duration is reached; zero disables')
++parser.add_argument('--episode_log', choices=['file', 'stdout'], default='file')
+ # training
+ # note: number of steps per epoch = epoch_size X batch_size x nprocesses
+ 
+@@ -186,9 +204,20 @@
+ # Deviation B: even the environment used to register CLI arguments is constructed
+ # after seeding. Worker run() subsequently retains its seed + id + 1 stream.
+ resolved_seed = seed_everything(parser.parse_known_args()[0].seed)
++if parser.parse_known_args()[0].model_spec == 'supplement-v1':
++    seed_stream(resolved_seed)
+ init_args_for_env(parser)
+ args = parser.parse_args()
+ args.seed = resolved_seed
++args.rng_scheme = rng_scheme(args.model_spec)
++if args.wall_seconds < 0 or not np.isfinite(args.wall_seconds):
++    raise ValueError('wall_seconds must be finite and nonnegative')
++if any(value <= 0 for value in args.milestones) or args.milestones != sorted(set(args.milestones)):
++    raise ValueError('milestones must be positive, strictly increasing step thresholds')
++if args.resume_checkpoint and args.load:
++    raise ValueError('Use resume_checkpoint without legacy load')
++if args.model_spec == 'supplement-v1' and (not args.hetgat_a2c or args.use_cuda):
++    raise ValueError('supplement-v1 requires the CPU HetGAT A2C runtime')
+ 
+ if args.comm_range_P == -1 or args.comm_range_A == -1:
+     args.lossy_comm = False
+@@ -286,6 +315,7 @@
+                            use_CNN=False, use_tanh=False, per_class_critic=True,
+                            per_agent_critic=False, with_two_state=with_two_state, obs=obs,
+                            comm_range_P=args.comm_range_P, comm_range_A=args.comm_range_A,
++                           model_spec=args.model_spec,
+                            lossy_comm=args.lossy_comm, min_comm_loss=args.min_comm_loss,
+                            max_comm_loss=args.max_comm_loss, tensor_obs=tensor_obs, action_vision=args.A_vision)
+     else:
+@@ -395,134 +425,203 @@
+         curr_run = 'run%i' % (max(exst_run_nums) + 1)
+ run_dir = model_dir / curr_run
+ progress = dict(env_steps=0, episodes=0, updates=0, epoch=0)
+-
+-def run(num_epochs):
+-    num_episodes = 0
+-    num_steps = 0
+-    recorder = TrainingRecorder(args, policy_net) if args.metrics_file else None
+-    
+-    if args.save:
+-        os.makedirs(run_dir, exist_ok=True)
+-        
+-    global_cpu_mem_peak = np.zeros((args.nprocesses,))
+-    global_gpu_mem_peak = np.zeros((args.nprocesses,))
+-
+-    for ep in range(num_epochs):
+-        if args.profile_memory:
+-            tracemalloc.start()
+-        epoch_cpu_mem_peak = np.zeros((args.nprocesses,))
+-        epoch_gpu_mem_peak = np.zeros((args.nprocesses,))
+-
+-        epoch_begin_time = time.time()
+-        stat = dict()
+-        for n in range(args.epoch_size):
+-            print("[Epoch] batch", n)
+-            if n == args.epoch_size - 1 and args.display:
+-                trainer.display = True
+-
+-            s, cpu_mem_peak, gpu_mem_peak = trainer.train_batch(ep)
+-
+-            if recorder is not None:
+-                recorder.add_batch(s)
+-
+-            merge_stat(s, stat)
+-            trainer.display = False
+-            num_episodes += s['num_episodes']
+-            num_steps += s['num_steps']
+-            progress.update(env_steps=int(num_steps), episodes=int(num_episodes),
+-                            updates=progress['updates'] + 1, epoch=ep + 1)
+-            
+-            epoch_cpu_mem_peak = np.maximum(epoch_cpu_mem_peak, cpu_mem_peak)
+-            epoch_gpu_mem_peak = np.maximum(epoch_gpu_mem_peak, gpu_mem_peak)
+-
+-            if args.max_env_steps and num_steps >= args.max_env_steps:
+-                break
+-
+-        epoch_time = time.time() - epoch_begin_time
+-        if recorder is not None:
+-            recorder.finish_epoch(ep + 1, epoch_time, policy_net)
+-        epoch = len(log['epoch'].data) + 1
+-        for k, v in log.items():
+-            if k == 'epoch':
+-                v.data.append(epoch)
+-            elif k == 'enemy_count':
+-                v.data.append(stat.get(k, []))
+-            else:
+-                if k in stat and v.divide_by is not None and stat[v.divide_by] > 0:
+-                    stat[k] = stat[k] / stat[v.divide_by]
+-                v.data.append(stat.get(k, 0))
+-
+-        if args.profile_memory:
+-            epoch_cpu_mem_peak[0] = tracemalloc.get_traced_memory()[1]
+-        if torch.cuda.is_available():
+-            epoch_gpu_mem_peak[0] = torch.cuda.max_memory_allocated(device=torch.device('cuda'))
+-
+-        global_cpu_mem_peak = np.maximum(epoch_cpu_mem_peak, global_cpu_mem_peak)
+-        global_gpu_mem_peak = np.maximum(epoch_gpu_mem_peak, global_gpu_mem_peak)
+-
+-        np.set_printoptions(precision=2)
+-        cpu_memory = '{}MB'.format(epoch_cpu_mem_peak / 10 ** 6) if args.profile_memory else 'disabled'
+-        print('Epoch {}\tReward {}\tTime {:.2f}s, Episodes {}, Total Steps {}, Python Allocation Peak {}, GPU Memory Peak {}MB'.format(
+-            epoch, stat['reward'], epoch_time, num_episodes, num_steps, cpu_memory, epoch_gpu_mem_peak / 10 ** 6
+-        ))
+-
+-        if 'enemy_reward' in stat.keys():
+-            print('Enemy-Reward: {}'.format(stat['enemy_reward']))
+-        if 'add_rate' in stat.keys():
+-            print('Add-Rate: {:.2f}'.format(stat['add_rate']))
+-        if 'success' in stat.keys():
+-            print('Success: {:.2f}'.format(stat['success']))
+-        if 'steps_taken' in stat.keys():
+-            print('Steps-taken: {:.2f}'.format(stat['steps_taken']))
+-        if 'comm_action' in stat.keys():
+-            print('Comm-Action: {}'.format(stat['comm_action']))
+-        if 'enemy_comm' in stat.keys():
+-            print('Enemy-Comm: {}'.format(stat['enemy_comm']))
+-        if 'enemy_count' in stat.keys():
+-            print('Average-Enemy-Count: {}'.format(np.average(stat['enemy_count'])))
+-
+-        if args.plot:
+-            for k, v in log.items():
+-                if v.plot and len(v.data) > 0:
+-                    vis.line(np.asarray(v.data), np.asarray(log[v.x_axis].data[-len(v.data):]),
+-                             win=k, opts=dict(xlabel=v.x_axis, ylabel=k))
+-
+-        budget_reached = bool(args.max_env_steps and num_steps >= args.max_env_steps)
+-        if args.save_every and args.save != '' and (ep + 1) % args.save_every == 0 and ep + 1 < num_epochs and not budget_reached:
+-            save(ep + 1, args)
+-
+-        # if args.save != '':
+-        #     save(args.save + '_' + str(ep))
+-
+-        global_cpu_memory = '{}MB'.format(global_cpu_mem_peak / 10 ** 6) if args.profile_memory else 'disabled'
+-        print('Global Python Allocation Peak {}\nGlobal GPU Memory Peak {}MB'.format(
+-            global_cpu_memory, global_gpu_mem_peak / 10 ** 6
+-        ))
+-
+-        if budget_reached:
+-            break
+-
+-    return len(log['epoch'].data)
+-
+-
+-def save(epoch, args):
+-    print(epoch)
+-    d = dict()
+-    d['policy_net'] = policy_net.state_dict()
+-    d['log'] = log
+-    d['trainer'] = trainer.state_dict()
+-    d['seed'] = args.seed
+-    import hashlib
+-    d['reconstruction'] = dict(schema_version=1, env_version=args.publication_env_version,
+-        resolved_args=vars(args), counts=dict(progress),
+-        source_manifest_sha256=hashlib.sha256(Path(args.source_manifest).read_bytes()).hexdigest())
+-    checkpoint = run_dir / ('model_ep%i.pt' % (int(epoch)))
++run_state = dict(completed_epochs=0, updates_in_epoch=0, epoch_stat={},
++                 epoch_elapsed_seconds=0.0, milestones_reached=[])
++recorder = None
++source_sha256 = hashlib.sha256(Path(args.source_manifest).read_bytes()).hexdigest()
++soft_stop_requested = False
++checkpoint_seconds = 0.0
++
++
++def all_rng_states():
++    return trainer.rng_states() if args.nprocesses > 1 else [capture_rng()]
++
++
++def restore_all_rng_states(states):
++    if args.nprocesses > 1:
++        trainer.restore_rng_states(states)
++    else:
++        if len(states) != 1:
++            raise ValueError('Recovery collector count differs')
++        restore_rng(states[0])
++
++
++def save_checkpoint(filename, reason):
++    global checkpoint_seconds
++    recovery = dict(run_state)
++    recovery.update(version=RECOVERY_VERSION, counts=dict(progress),
++                    recorder_state=recorder.state_dict() if recorder else None,
++                    rng_states=all_rng_states(), scientific_args=scientific_arguments(args),
++                    stop_reason=reason)
++    d = dict(policy_net=policy_net.state_dict(), log=log,
++             trainer=trainer.state_dict(), seed=args.seed, recovery=recovery)
++    d['reconstruction'] = dict(schema_version=2, env_version=args.publication_env_version,
++        model_spec=args.model_spec, rng_scheme=args.rng_scheme,
++        resolved_args=vars(args), counts=dict(progress), source_manifest_sha256=source_sha256)
++    checkpoint = run_dir / ('model_update%08i_%s' % (progress['updates'], filename.removeprefix('model_')))
+     checkpoint_begin_time = time.monotonic()
+-    torch.save(d, checkpoint)
++    atomic_checkpoint(checkpoint, d)
+     if args.metrics_file:
+         signature = write_checkpoint_signature(checkpoint, policy_net)
+-        record_checkpoint(args.metrics_file, checkpoint, epoch,
+-                          time.monotonic() - checkpoint_begin_time, signature)
++        record_checkpoint(args.metrics_file, checkpoint, progress['epoch'],
++                          time.monotonic() - checkpoint_begin_time, signature, counts=progress)
++    checkpoint_seconds += time.monotonic() - checkpoint_begin_time
++    return checkpoint
++
++
++def finish_epoch(epoch, cpu_mem_peak, gpu_mem_peak):
++    """Close one full epoch, or the final partial scientific-budget epoch."""
++    stat = dict(run_state['epoch_stat'])
++    epoch_time = run_state['epoch_elapsed_seconds']
++    if recorder is not None:
++        metrics = recorder.finish_epoch(epoch, epoch_time, policy_net,
++            updates=progress['updates'], updates_in_epoch=run_state['updates_in_epoch'])
++        print(json.dumps({'record_type': 'publication_epoch', **metrics},
++                         sort_keys=True, allow_nan=False), flush=True)
++    for key, field in log.items():
++        if key == 'epoch':
++            field.data.append(epoch)
++        elif key == 'enemy_count':
++            field.data.append(stat.get(key, []))
++        else:
++            if key in stat and field.divide_by is not None and stat[field.divide_by] > 0:
++                stat[key] = stat[key] / stat[field.divide_by]
++            field.data.append(stat.get(key, 0))
++    np.set_printoptions(precision=2)
++    cpu_memory = '{}MB'.format(cpu_mem_peak / 10 ** 6) if args.profile_memory else 'disabled'
++    print('Epoch {}\tReward {}\tTime {:.2f}s, Episodes {}, Total Steps {}, Python Allocation Peak {}, GPU Memory Peak {}MB'.format(
++        epoch, stat['reward'], epoch_time, progress['episodes'], progress['env_steps'],
++        cpu_memory, gpu_mem_peak / 10 ** 6))
++    for key, label in [('enemy_reward', 'Enemy-Reward'), ('add_rate', 'Add-Rate'),
++                       ('success', 'Success'), ('steps_taken', 'Steps-taken'),
++                       ('comm_action', 'Comm-Action'), ('enemy_comm', 'Enemy-Comm')]:
++        if key in stat:
++            print('{}: {}'.format(label, stat[key]))
++    if 'enemy_count' in stat:
++        print('Average-Enemy-Count: {}'.format(np.average(stat['enemy_count'])))
++    if args.plot:
++        for key, field in log.items():
++            if field.plot and field.data:
++                vis.line(np.asarray(field.data), np.asarray(log[field.x_axis].data[-len(field.data):]),
++                         win=key, opts=dict(xlabel=field.x_axis, ylabel=key))
++
++
++def run(num_epochs):
++    global recorder
++    resumed = None
++    if args.resume_checkpoint:
++        checkpoint = torch.load(args.resume_checkpoint, map_location='cpu')
++        resumed = validate_recovery(checkpoint, args, source_sha256)
++        policy_net.load_state_dict(checkpoint['policy_net'], strict=True)
++        trainer.load_state_dict(checkpoint['trainer'])
++        log.update(checkpoint['log'])
++        progress.update(resumed['counts'])
++        for name in run_state:
++            run_state[name] = resumed[name]
++    recorder = TrainingRecorder(args, policy_net) if args.metrics_file else None
++    if resumed:
++        if recorder is None or resumed['recorder_state'] is None:
++            raise ValueError('Recovery requires the structured training recorder')
++        recorder.load_state_dict(resumed['recorder_state'])
++        restore_all_rng_states(resumed['rng_states'])
++    elif args.model_spec == 'supplement-v1':
++        # Initialization has a distinct stream; the parent is collector zero.
++        seed_stream(args.seed, 0)
++    if args.save:
++        run_dir.mkdir(parents=True, exist_ok=True)
++    if recorder:
++        write_json_new(recorder.path.parent / 'training_segment.json', {
++            'schema_version': 1, 'resume_checkpoint': args.resume_checkpoint or None,
++            'resume_checkpoint_sha256': hashlib.sha256(Path(args.resume_checkpoint).read_bytes()).hexdigest()
++                if args.resume_checkpoint else None,
++            'starting_counts': dict(progress), 'model_spec': args.model_spec,
++            'rng_scheme': args.rng_scheme, 'source_manifest_sha256': source_sha256})
++
++    run_begin = time.monotonic()
++    startup_seconds = run_begin - RUNTIME_BEGIN
++    update_work_seconds = 0.0
++    epoch_cpu_peak = np.zeros(args.nprocesses)
++    epoch_gpu_peak = np.zeros(args.nprocesses)
++    last_checkpoint = None
++    reason = 'epoch_cap_completed'
++    while run_state['completed_epochs'] < num_epochs:
++        ep = run_state['completed_epochs']
++        n = run_state['updates_in_epoch']
++        print('[Epoch] batch', n)
++        trainer.display = bool(n == args.epoch_size - 1 and args.display)
++        update_begin = time.monotonic()
++        fresh, cpu_peak, gpu_peak = trainer.train_batch(ep)
++        update_seconds = time.monotonic() - update_begin
++        update_work_seconds += update_seconds
++        episodes = fresh.pop('_episode_records')
++        trainer.display = False
++        progress.update(env_steps=progress['env_steps'] + int(fresh['num_steps']),
++                        episodes=progress['episodes'] + int(fresh['num_episodes']),
++                        updates=progress['updates'] + 1, epoch=ep + 1)
++        run_state['updates_in_epoch'] += 1
++        merge_stat(fresh, run_state['epoch_stat'])
++        if recorder:
++            recorder.add_batch(fresh)
++            recorder.record_update(fresh, episodes, progress, ep + 1,
++                                   run_state['updates_in_epoch'], update_seconds)
++        run_state['epoch_elapsed_seconds'] += time.monotonic() - update_begin
++        epoch_cpu_peak = np.maximum(epoch_cpu_peak, cpu_peak)
++        epoch_gpu_peak = np.maximum(epoch_gpu_peak, gpu_peak)
++        budget_reached = bool(args.max_env_steps and progress['env_steps'] >= args.max_env_steps)
++        full_epoch = run_state['updates_in_epoch'] == args.epoch_size
++        if full_epoch or budget_reached:
++            finish_epoch(ep + 1, epoch_cpu_peak, epoch_gpu_peak)
++        if full_epoch:
++            run_state.update(completed_epochs=ep + 1, updates_in_epoch=0,
++                             epoch_stat={}, epoch_elapsed_seconds=0.0)
++            epoch_cpu_peak[:] = 0
++            epoch_gpu_peak[:] = 0
++
++        # Every checkpoint observes the same completed optimizer update.  A
++        # milestone inside an epoch retains that epoch's sums for continuation.
++        crossed = [threshold for threshold in args.milestones
++                   if threshold <= progress['env_steps'] and threshold not in run_state['milestones_reached']]
++        # If one update crosses several thresholds, every snapshot must know
++        # about all of them.  The first saved snapshot serves every such target
++        # even if interruption prevents writing an additional duplicate file.
++        run_state['milestones_reached'].extend(crossed)
++        for threshold in crossed:
++            if args.save:
++                last_checkpoint = save_checkpoint('model_steps%i.pt' % threshold,
++                    'budget_completed' if budget_reached else 'milestone')
++        if budget_reached:
++            reason = 'budget_completed'
++            break
++        if full_epoch and run_state['completed_epochs'] == num_epochs:
++            reason = 'epoch_cap_completed'
++            break
++        if soft_stop_requested or (args.wall_seconds and time.monotonic() - run_begin >= args.wall_seconds):
++            reason = 'paused_signal' if soft_stop_requested else 'paused_wall_time'
++            break
++        if full_epoch and args.save_every and (ep + 1) % args.save_every == 0 and args.save:
++            last_checkpoint = save_checkpoint('model_ep%i.pt' % (ep + 1), 'periodic')
++
++    if args.save:
++        filename = ('model_paused.pt' if reason.startswith('paused_')
++                    else 'model_ep%i.pt' % progress['epoch'])
++        last_checkpoint = save_checkpoint(filename, reason)
++    if recorder:
++        status = {'schema_version': 1, 'stop_reason': reason, 'counts': dict(progress),
++                  'scientific_budget_completed': reason == 'budget_completed' or
++                      (reason == 'epoch_cap_completed' and not args.max_env_steps),
++                  'checkpoint': str(last_checkpoint.resolve()) if last_checkpoint else None,
++                  'segment_wall_time_seconds': time.monotonic() - run_begin,
++                  'startup_to_training_seconds': startup_seconds,
++                  'training_update_seconds': update_work_seconds,
++                  'checkpoint_seconds': checkpoint_seconds,
++                  'resources': {
++                      'collectors': trainer.collector_resources() if args.nprocesses > 1 else [process_resources()],
++                      'completed_children_only': process_resources(resource.RUSAGE_CHILDREN),
++                      'collector_count': args.nprocesses,
++                      'slurm_cpus_per_task': os.environ.get('SLURM_CPUS_PER_TASK')}}
++        write_json_new(recorder.path.parent / 'run_status.json', status)
++        print(json.dumps({'record_type': 'publication_status', **status}, sort_keys=True), flush=True)
++    return progress['epoch']
+ 
+ 
+ def load(path):
+@@ -543,6 +642,15 @@
+ signal.signal(signal.SIGINT, signal_handler)
+ signal.signal(signal.SIGTERM, signal_handler)
+ 
++
++def request_soft_stop(signum, frame):
++    global soft_stop_requested
++    soft_stop_requested = True
++
++
++if hasattr(signal, 'SIGUSR1'):
++    signal.signal(signal.SIGUSR1, request_soft_stop)
++
+ if __name__ == '__main__':
+     try:
+         if args.load != '':
+@@ -553,8 +661,6 @@
+         if args.display:
+             env.end_display()
+ 
+-        if args.save != '':
+-            save(completed_epochs, args)
+     finally:
+         if args.nprocesses > 1:
+             trainer.quit()
+--- 9a436e6d9f8d36c864c17744d4d55819f5e5e504/publication_reconstruction/runtime/multi_processing.py
++++ working/publication_reconstruction/runtime/multi_processing.py
+@@ -3,6 +3,7 @@
+ from utils import *
+ import torch
+ import torch.multiprocessing as mp
++from hetnet_ext.recovery import capture_rng, restore_rng, seed_stream, process_resources
+ 
+ 
+ class MultiProcessWorker(mp.Process):
+@@ -12,12 +13,16 @@
+         self.seed = seed
+         super(MultiProcessWorker, self).__init__()
+         self.trainer = trainer_maker()
++        self.trainer.collector_id = id + 1
+         self.comm = comm
+ 
+     def run(self):
+-        torch.manual_seed(self.seed + self.id + 1)
+-        np.random.seed(self.seed + self.id + 1)
+-        random.seed(self.seed + self.id + 1)
++        if getattr(self.trainer.args, 'model_spec', 'public-code-v1') == 'supplement-v1':
++            seed_stream(self.seed, self.id + 1)
++        else:
++            torch.manual_seed(self.seed + self.id + 1)
++            np.random.seed(self.seed + self.id + 1)
++            random.seed(self.seed + self.id + 1)
+ 
+         while True:
+             task = self.comm.recv()
+@@ -44,6 +49,13 @@
+                 self.comm.send((self.id, self.trainer.get_memory_peak()))
+             elif task == 'reset_gpu_mem':
+                 self.trainer.reset_memory_peak()
++            elif task == 'get_rng':
++                self.comm.send(capture_rng())
++            elif task == 'set_rng':
++                restore_rng(epoch)
++                self.comm.send(True)
++            elif task == 'get_resources':
++                self.comm.send(process_resources())
+ 
+ 
+ class MultiProcessTrainer(object):
+@@ -160,6 +172,26 @@
+     def load_state_dict(self, state):
+         self.trainer.load_state_dict(state)
+ 
++    def rng_states(self):
++        for comm in self.comms:
++            comm.send('get_rng')
++        return [capture_rng()] + [comm.recv() for comm in self.comms]
++
++    def restore_rng_states(self, states):
++        if len(states) != self.nworkers + 1:
++            raise ValueError('Recovery collector count differs')
++        for comm, state in zip(self.comms, states[1:]):
++            comm.send(['set_rng', state])
++        for comm in self.comms:
++            if comm.recv() is not True:
++                raise RuntimeError('Collector did not acknowledge RNG recovery')
++        restore_rng(states[0])
++
++    def collector_resources(self):
++        for comm in self.comms:
++            comm.send('get_resources')
++        return [process_resources()] + [comm.recv() for comm in self.comms]
++
+     def reset_mem_peak(self):
+         self.cpu_memory_peak = np.zeros((self.nworkers + 1))
+         self.gpu_memory_peak = np.zeros((self.nworkers + 1))
+--- 9a436e6d9f8d36c864c17744d4d55819f5e5e504/publication_reconstruction/runtime/trainer.py
++++ working/publication_reconstruction/runtime/trainer.py
+@@ -52,10 +52,16 @@
+                                                       lr=args.lrate, alpha=0.97, eps=1e-6)
+             self.params_action = [p for p in self.policy_action_net.parameters()]
+         else:
+-            self.optimizer = optim.RMSprop(policy_net.parameters(),
+-                lr = args.lrate, alpha=0.97, eps=1e-6)
++            if getattr(args, 'model_spec', 'public-code-v1') == 'supplement-v1':
++                self.optimizer = optim.Adam(policy_net.parameters(), lr=args.lrate,
++                    betas=(0.9, 0.999), eps=1e-8, weight_decay=0, amsgrad=False,
++                    foreach=False, fused=False)
++            else:
++                self.optimizer = optim.RMSprop(policy_net.parameters(),
++                    lr = args.lrate, alpha=0.97, eps=1e-6)
+             self.params = [p for p in self.policy_net.parameters()]
+         self.episode_counter = 0
++        self.collector_id = 0
+ 
+         # Allocation tracing is diagnostic only and expensive in the DGL hot path.
+         self.profile_memory = getattr(args, 'profile_memory', False)
+@@ -216,6 +222,7 @@
+             if hasattr(self.args, 'enemy_comm') and self.args.enemy_comm:
+                 stat['enemy_reward'] = stat.get('enemy_reward', 0) + reward[self.args.nfriendly:]
+ 
++            natural_done = bool(done)
+             done = done or t == self.args.max_steps - 1
+ 
+             episode_mask = np.ones(reward.shape)
+@@ -260,6 +267,14 @@
+ 
+         if hasattr(self.env, 'get_stat'):
+             merge_stat(self.env.get_stat(), stat)
++        self.last_episode_record = {
++            'collector': self.collector_id, 'steps': int(stat['num_steps']),
++            'success': bool(stat.get('success', False)), 'terminated': natural_done,
++            'num_agents': int(self.args.nfriendly),
++            'reward_per_agent': np.asarray(stat['reward'], dtype=np.float64).tolist(),
++            'team_return': float(np.asarray(stat['reward']).sum()),
++            'mean_agent_return': float(np.asarray(stat['reward']).mean()),
++        }
+         if self.args.hetcomm:
+             return ([episode_perception,episode_action], stat)
+         else:
+@@ -510,10 +525,13 @@
+ 
+             self.stats = dict()
+             self.stats['num_episodes'] = 0
++            episode_records = []
+             while len(batch) < self.args.batch_size:
+                 if self.args.batch_size - len(batch) <= self.args.max_steps:
+                     self.last_step = True
+                 episode, episode_stat = self.get_episode(epoch)
++                episode_records.append({**self.last_episode_record,
++                                        'collector_episode': len(episode_records)})
+                 merge_stat(episode_stat, self.stats)
+                 self.stats['num_episodes'] += 1
+                 if self.args.hetcomm:
+@@ -525,6 +543,7 @@
+             # TODO: a lot of this can be cut for hetgat
+             self.last_step = False
+             self.stats['num_steps'] = len(batch)
++            self.stats['_episode_records'] = episode_records
+             batch = Transition(*zip(*batch))
+ 
+             if self.args.hetcomm:

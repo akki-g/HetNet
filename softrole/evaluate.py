@@ -38,7 +38,8 @@ def evaluator_identity():
 
 
 def evaluate_checkpoint(checkpoint, scenarios, output, intervention="none",
-                        intervention_step=None, trace=False, sham=False):
+                        intervention_step=None, trace=False, sham=False,
+                        protocol=None, scenarios_sha256=None):
     from softrole.config import Config
     from softrole.env import make_env
     from softrole.model import SoftRoleNet
@@ -61,6 +62,12 @@ def evaluate_checkpoint(checkpoint, scenarios, output, intervention="none",
     scenarios = list(scenarios)
     if not scenarios:
         raise ValueError("Evaluation requires at least one scenario")
+    if protocol is not None:
+        from softrole.report import validate_evaluation_protocol
+        validate_evaluation_protocol(protocol, {"total_steps": saved.get("total_steps")},
+                                     [asdict(s) for s in scenarios], scenarios_sha256)
+        if protocol["distribution"]["task"] != config.task:
+            raise ValueError("Evaluation protocol task differs from checkpoint")
     ids = [str(scenario.scenario_id) for scenario in scenarios]
     if len(ids) != len(set(ids)):
         raise ValueError("Evaluation scenario IDs must be unique")
@@ -115,6 +122,10 @@ def evaluate_checkpoint(checkpoint, scenarios, output, intervention="none",
         "post_schedule_success_rate": sum(episode["success"] for episode in scheduled) / len(scheduled) if scheduled else None,
         "per_episode": episodes,
     }
+    if scenarios_sha256 is not None:
+        report["scenarios_sha256"] = scenarios_sha256
+    if protocol is not None:
+        report["evaluation_protocol"] = protocol
     destination.parent.mkdir(parents=True, exist_ok=True)
     with destination.open("x") as stream:
         json.dump(report, stream, indent=2, allow_nan=False)

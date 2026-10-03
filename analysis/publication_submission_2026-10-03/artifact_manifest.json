@@ -1,0 +1,27 @@
+{
+  "excludes_self": true,
+  "files": {
+    "archived_smoke.json": "fe7a021bf5e3b335643947e725342536c794c6ae9e80e65d98086d3bee36a533",
+    "compatibility.json": "28def30acfcb5ed0514823770620620113f66d8f04ba0777dfe23195c6d13e0d",
+    "compatibility.py": "365d457083d8c2fdbcaff0c93949d218e33c1dc8f926ad851f1bc1d60e415857",
+    "compatibility_final.json": "828c3320186d30da7e22dfe7a4f7b3fccac3c56158edd62794787249098bd403",
+    "evidence.json": "1ce795f8c850f2c1425e3e920caab61572ac091fe09d318a5fbe5e6c117f188d",
+    "provenance/ORIGINS.json": "038e5555e5ab007e794d41fc93b02789c0f7268b656ce623bc1911851e837884",
+    "provenance/audit.json": "6ef3a26e95441e1a7563df13fc1634b91a6a8a8aae560ad053517376ee4d185e",
+    "provenance/previous_ORIGINS.json": "988cf3a5295dc1e61ffd14ed97a35fd038b7263fcfdbc3693c8dabbafecb0c67",
+    "provenance/runtime_changes.patch": "ff8afb134eb37b4882d7b35634837b4728be62a6ee8b5c482a2b1ff7ad3480be",
+    "provenance_active_time/ORIGINS.json": "7d26df9c9d66b994b0cb295f3c693241ac8ede112a6046d17d7e07b9acb6c15f",
+    "provenance_active_time/audit.json": "7f1fbbd58bc1811fcfaaf600edfa5d7c6830e4408b5c431f1f9c301091904255",
+    "provenance_active_time/previous_ORIGINS.json": "13980b53fd1cca0d77b8b23b39ec9d17a7f12718cdcc4418781658640f21c0ba",
+    "provenance_active_time/runtime_changes.patch": "62ede14ca79718156f337209febcd4e9168a2f56cde2a6cf8c3243ffefe6f45d",
+    "provenance_final/ORIGINS.json": "13980b53fd1cca0d77b8b23b39ec9d17a7f12718cdcc4418781658640f21c0ba",
+    "provenance_final/audit.json": "545ea8d2f078d5820aa8002d9f9c46a76d4539ecd405bd94dae83b2c1d1a9bdd",
+    "provenance_final/previous_ORIGINS.json": "038e5555e5ab007e794d41fc93b02789c0f7268b656ce623bc1911851e837884",
+    "provenance_final/runtime_changes.patch": "6a51c0aea3f8ac07876a0c46ea04175d096a9dac233a7d47d5b26f65b2bb4fdc",
+    "pytest_final.log": "60fbafed36a399dfbaabec4c25cadec63d33f009c9c4cbca8e7894d970cf59cb",
+    "resolved_study.json": "568922aee25750f072c583f4f111bee66e05744d1456191b1e7fd0894ee0cfe5",
+    "validate_smoke.py": "0bdd199aef3a7796d300706a6e57323071d9be3866bbe27a965df4256d22068e",
+    "validation.json": "e61d610f26b36ea6a5188cf8fdd8a17ccd9736b31de04f3e4af523b37f24cffc"
+  },
+  "schema_version": 1
+}

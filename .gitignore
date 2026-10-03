@@ -36,3 +36,8 @@ analysis/
 
 
 *.pptx
+# Keep the October submission audit, without unignoring other analysis inputs.
+!analysis/
+analysis/*
+!analysis/publication_submission_2026-10-03/
+!analysis/publication_submission_2026-10-03/**

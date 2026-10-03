@@ -3,6 +3,7 @@ import random
 from utils import *
 import torch
 import torch.multiprocessing as mp
+from hetnet_ext.recovery import capture_rng, restore_rng, seed_stream, process_resources
 
 
 class MultiProcessWorker(mp.Process):
@@ -12,12 +13,16 @@ class MultiProcessWorker(mp.Process):
         self.seed = seed
         super(MultiProcessWorker, self).__init__()
         self.trainer = trainer_maker()
+        self.trainer.collector_id = id + 1
         self.comm = comm
 
     def run(self):
-        torch.manual_seed(self.seed + self.id + 1)
-        np.random.seed(self.seed + self.id + 1)
-        random.seed(self.seed + self.id + 1)
+        if getattr(self.trainer.args, 'model_spec', 'public-code-v1') == 'supplement-v1':
+            seed_stream(self.seed, self.id + 1)
+        else:
+            torch.manual_seed(self.seed + self.id + 1)
+            np.random.seed(self.seed + self.id + 1)
+            random.seed(self.seed + self.id + 1)
 
         while True:
             task = self.comm.recv()
@@ -44,6 +49,13 @@ class MultiProcessWorker(mp.Process):
                 self.comm.send((self.id, self.trainer.get_memory_peak()))
             elif task == 'reset_gpu_mem':
                 self.trainer.reset_memory_peak()
+            elif task == 'get_rng':
+                self.comm.send(capture_rng())
+            elif task == 'set_rng':
+                restore_rng(epoch)
+                self.comm.send(True)
+            elif task == 'get_resources':
+                self.comm.send(process_resources())
 
 
 class MultiProcessTrainer(object):
@@ -159,6 +171,26 @@ class MultiProcessTrainer(object):
 
     def load_state_dict(self, state):
         self.trainer.load_state_dict(state)
+
+    def rng_states(self):
+        for comm in self.comms:
+            comm.send('get_rng')
+        return [capture_rng()] + [comm.recv() for comm in self.comms]
+
+    def restore_rng_states(self, states):
+        if len(states) != self.nworkers + 1:
+            raise ValueError('Recovery collector count differs')
+        for comm, state in zip(self.comms, states[1:]):
+            comm.send(['set_rng', state])
+        for comm in self.comms:
+            if comm.recv() is not True:
+                raise RuntimeError('Collector did not acknowledge RNG recovery')
+        restore_rng(states[0])
+
+    def collector_resources(self):
+        for comm in self.comms:
+            comm.send('get_resources')
+        return [process_resources()] + [comm.recv() for comm in self.comms]
 
     def reset_mem_peak(self):
         self.cpu_memory_peak = np.zeros((self.nworkers + 1))

@@ -375,9 +375,10 @@ class A2CPolicy(object):
                  per_agent_critic=False, with_two_state=True, obs=None,
                  comm_range_P=-1, comm_range_A=-1, lossy_comm=False, tensor_obs=False,
                  min_comm_loss=0, max_comm_loss=0.3, total_state_action_in_batch=500,
-                 action_vision=-1):
+                 action_vision=-1, model_spec='public-code-v1'):
 
         self.device = device
+        self.model_spec = model_spec
         self.use_real = use_real
         self.per_class_critic = per_class_critic
         self.per_agent_critic = per_agent_critic
@@ -397,7 +398,8 @@ class A2CPolicy(object):
             with_two_state=with_two_state, obs=obs, comm_range_P=comm_range_P,
             comm_range_A=comm_range_A, lossy_comm=lossy_comm,
             min_comm_loss=min_comm_loss, max_comm_loss=max_comm_loss,
-            tensor_obs=tensor_obs, action_vision=action_vision).to(self.device)
+            tensor_obs=tensor_obs, action_vision=action_vision,
+            model_spec=model_spec).to(self.device)
 
         self.gamma = gamma
         self.lmbda = lmbda

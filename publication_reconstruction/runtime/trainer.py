@@ -52,10 +52,16 @@ class Trainer(object):
                                                       lr=args.lrate, alpha=0.97, eps=1e-6)
             self.params_action = [p for p in self.policy_action_net.parameters()]
         else:
-            self.optimizer = optim.RMSprop(policy_net.parameters(),
-                lr = args.lrate, alpha=0.97, eps=1e-6)
+            if getattr(args, 'model_spec', 'public-code-v1') == 'supplement-v1':
+                self.optimizer = optim.Adam(policy_net.parameters(), lr=args.lrate,
+                    betas=(0.9, 0.999), eps=1e-8, weight_decay=0, amsgrad=False,
+                    foreach=False, fused=False)
+            else:
+                self.optimizer = optim.RMSprop(policy_net.parameters(),
+                    lr = args.lrate, alpha=0.97, eps=1e-6)
             self.params = [p for p in self.policy_net.parameters()]
         self.episode_counter = 0
+        self.collector_id = 0
 
         # Allocation tracing is diagnostic only and expensive in the DGL hot path.
         self.profile_memory = getattr(args, 'profile_memory', False)
@@ -216,6 +222,7 @@ class Trainer(object):
             if hasattr(self.args, 'enemy_comm') and self.args.enemy_comm:
                 stat['enemy_reward'] = stat.get('enemy_reward', 0) + reward[self.args.nfriendly:]
 
+            natural_done = bool(done)
             done = done or t == self.args.max_steps - 1
 
             episode_mask = np.ones(reward.shape)
@@ -260,6 +267,14 @@ class Trainer(object):
 
         if hasattr(self.env, 'get_stat'):
             merge_stat(self.env.get_stat(), stat)
+        self.last_episode_record = {
+            'collector': self.collector_id, 'steps': int(stat['num_steps']),
+            'success': bool(stat.get('success', False)), 'terminated': natural_done,
+            'num_agents': int(self.args.nfriendly),
+            'reward_per_agent': np.asarray(stat['reward'], dtype=np.float64).tolist(),
+            'team_return': float(np.asarray(stat['reward']).sum()),
+            'mean_agent_return': float(np.asarray(stat['reward']).mean()),
+        }
         if self.args.hetcomm:
             return ([episode_perception,episode_action], stat)
         else:
@@ -510,10 +525,13 @@ class Trainer(object):
 
             self.stats = dict()
             self.stats['num_episodes'] = 0
+            episode_records = []
             while len(batch) < self.args.batch_size:
                 if self.args.batch_size - len(batch) <= self.args.max_steps:
                     self.last_step = True
                 episode, episode_stat = self.get_episode(epoch)
+                episode_records.append({**self.last_episode_record,
+                                        'collector_episode': len(episode_records)})
                 merge_stat(episode_stat, self.stats)
                 self.stats['num_episodes'] += 1
                 if self.args.hetcomm:
@@ -525,6 +543,7 @@ class Trainer(object):
             # TODO: a lot of this can be cut for hetgat
             self.last_step = False
             self.stats['num_steps'] = len(batch)
+            self.stats['_episode_records'] = episode_records
             batch = Transition(*zip(*batch))
 
             if self.args.hetcomm:

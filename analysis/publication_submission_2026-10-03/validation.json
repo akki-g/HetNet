@@ -1,0 +1,93 @@
+{
+  "archived_launcher_smoke": {
+    "artifact": "archived_smoke.json",
+    "passed": true
+  },
+  "base_commit": "9a436e6d9f8d36c864c17744d4d55819f5e5e504",
+  "changed_repository_files": {
+    ".gitignore": "8ec50a7e5fae0596194dc729dffa363496f4acfb89fc6cfa0821a78177d8b66a",
+    "AGENTS.md": "d9c4442e6498a36e9cf36b31d7ef4beb6efc06d8d099034d8951636a260c00f6",
+    "README.md": "bae70d9c7bb52d874fa76faa0c5064cad2c6cfc9e962bd9667908a30ead6272b",
+    "publication_reconstruction/ORIGINS.json": "7d26df9c9d66b994b0cb295f3c693241ac8ede112a6046d17d7e07b9acb6c15f",
+    "publication_reconstruction/README.md": "148be3fd6b941c2b7bc157fed292258c9f19d61904c5b6f78127b44ca67d17fe",
+    "publication_reconstruction/STUDY.json": "417ada810c26d133c8aac1638c57b35e7c8ab26f5ef1ddde82557bdc82c485f0",
+    "publication_reconstruction/__init__.py": "d63714e92f9516de5abd3b71576c2a616cf94cb5c4e13ab2d752f7c0e1f0ee85",
+    "publication_reconstruction/__main__.py": "be44457df7346293cedf3febbbba963240681cb45dc4781d3feabf6cdaab40af",
+    "publication_reconstruction/artifacts.py": "bf3fdcd65552ae8ad618737ed48862e31d545706dec132d7e7984fcd88c5e312",
+    "publication_reconstruction/evaluation.py": "44b43ddd9e30ee1a88b4e6eeb5e58d269103fbfa338475d8ff265a4a7f8724e6",
+    "publication_reconstruction/evaluation_worker.py": "3b680aa759eb5698ab4915509f822f2071e00b4771b7b5069645126ac0b3e18b",
+    "publication_reconstruction/runtime/hetgat/policy.py": "419d4e2ad999c111b64c97d69faaef30867dec3254b0e8efd4e9be6619af3d4c",
+    "publication_reconstruction/runtime/hetgat/uavnet.py": "82c72c62630a3f32d840f229cb0794628066184daba614139068390c0ff5088f",
+    "publication_reconstruction/runtime/hetnet_ext/recording.py": "ff268f87f8ff05832d446266654039fc16969ac05903bba217568fffb8cc130d",
+    "publication_reconstruction/runtime/hetnet_ext/recovery.py": "4c85f73c67b7ce839ef4340abab29a6b4631ee41bd1b541751a91311d595f1c4",
+    "publication_reconstruction/runtime/main.py": "4b3aa0f240be88f6bf5ef9869711bf6f3f59fa1bd9de5bdd3ca35a7c98c60bf1",
+    "publication_reconstruction/runtime/multi_processing.py": "2fa911d4b3a5adb0f1ab6d8ca8a60bec4264458d33270592427ae95bbbb96927",
+    "publication_reconstruction/runtime/trainer.py": "dcb4b68edb0ba04099ba93575bbc6dc02992c4706c6f69d379132a863a31e950",
+    "publication_reconstruction/study.py": "c533bbf1cfd35c8349e76b7e93eedda846aff14b74061238b86730854e19c35d",
+    "scripts/record_publication_sources.py": "04a2cc5df5279d94eca87ad2ebe6dd0af871ddbbb825d12cb4f44d2844b5121b",
+    "slurm/publication_evaluate.sbatch": "de721ad54b3af6e514a58c08fa1eeb60d6b2d895a7c8c893e82726069bc73c80",
+    "slurm/publication_preflight.sbatch": "24e43940e5f106c2745131655f401502cc338b9fcf67edf67aadd20614e88484",
+    "slurm/publication_prepare_evaluation.sbatch": "f398be49c9cb56c6aa3049792ae06ad3e2334da12813d1220de75ed0035d9f0a",
+    "slurm/publication_resume.sbatch": "9424d8073b8a49e11b4c40acbd6103e765504567d455ce679937dfb87e7ac92f",
+    "slurm/publication_train.sbatch": "0ab64703c960e60ac5d32a8e3bc95e2c71b76083f1da0100cc2f6eba4f253742",
+    "softrole/__main__.py": "0c547ad501242d5b760af0ca6a493215c8136b7ede9372d8ba0f7a8df9a88c31",
+    "softrole/evaluate.py": "a007a263cd6d7967e7bdedfa793d21f15ebeb7fe3c0395124edde42fe354198f",
+    "softrole/report.py": "4c2ab0f20ecb6f59629c29b8c46b111e2292b46da7c362c354fe5f2fc59f4495",
+    "tests/fixtures/publication_uavnet_public_v1.py": "8db99d5ee4be94836cee626a612977872ffe277a7824a6100afbc758961a01bd",
+    "tests/test_publication_artifacts.py": "d8e36c5586eb90bd42a56465b851280cbeb08810b7abeeff91a9e8e7cb25d882",
+    "tests/test_publication_evaluation.py": "b043aa51df1cb466b7f7db7167a392cfd047cc13291b6e7e4841a991e61d994f",
+    "tests/test_publication_recovery.py": "ef59a753d70bdc97dc9c2264eb5a6555bb2c469d2ee98fa81330d42eb4072461",
+    "tests/test_publication_slurm.py": "119b75c919d9851846954a63829996761276bee5d9a2c19bdb5810ee7b29d16a",
+    "tests/test_publication_spec.py": "5f020f867102783677eab05b0e4e965398f21bacd265ed72f8c9784adfb34bd4",
+    "tests/test_publication_study.py": "37a8c4f1b00cbf392356c3024108fe31e59e0d97b7e7387a819aadaa05e0f382",
+    "tests/test_softrole_report.py": "685666bf7f9c28946cca4850dcf122c6cc5566c646f84899c5d398873f6a8837"
+  },
+  "checks": {
+    "bash_syntax": {
+      "files": [
+        "slurm/publication_evaluate.sbatch",
+        "slurm/publication_preflight.sbatch",
+        "slurm/publication_prepare_evaluation.sbatch",
+        "slurm/publication_resume.sbatch",
+        "slurm/publication_train.sbatch"
+      ],
+      "passed": true
+    },
+    "git_diff_check": true,
+    "runtime_origin_inventory_files": 38,
+    "uv_lock_check": {
+      "packages": 59,
+      "passed": true
+    }
+  },
+  "commit_or_push": false,
+  "date": "2026-10-03",
+  "dependency_changes": false,
+  "full_suite": {
+    "command": ".venv/bin/python -m pytest -q",
+    "log": "pytest_final.log",
+    "log_sha256": "60fbafed36a399dfbaabec4c25cadec63d33f009c9c4cbca8e7894d970cf59cb",
+    "passed": 438,
+    "seconds": 153.44
+  },
+  "historical_compatibility": {
+    "all_checks_passed": true,
+    "artifact": "compatibility_final.json"
+  },
+  "provenance_final": "provenance_active_time/audit.json",
+  "readiness": {
+    "full_research_submitted": false,
+    "local_software_checks": true,
+    "remaining_gate": "Run four-workload 100-update Stokes preflight and inspect compatibility/resources/throughput/checkpoint probe before submitting 0-11%3 training.",
+    "stokes_preflight_run": false
+  },
+  "research_scope_exclusions": [
+    "failure training",
+    "mixed-roster training",
+    "SoftRole learner changes",
+    "bank-size search",
+    "GPU migration",
+    "corrected FC integration into SoftRole"
+  ],
+  "schema_version": 1
+}

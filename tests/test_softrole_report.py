@@ -128,3 +128,114 @@ def test_sham_and_physical_failure_are_separate_matched_strata(tmp_path):
     assert len(groups) == 2
     assert {group["sham"] for group in groups} == {False, True}
     assert all(group["scheduled_sensor_failure"] for group in groups)
+
+
+def protocol_panel():
+    from softrole.report import protocol_identity
+    from softrole.scenarios import make_scenarios
+    from dataclasses import asdict
+    import hashlib
+    scenarios = [asdict(s) for s in make_scenarios(31, 2, [(2, 1)], 1., (1, 3))]
+    panel_bytes = json.dumps(scenarios).encode()
+    selection = {"rule": "first_saved_at_or_above", "target_steps": 1000}
+    distribution = {"task": "pcp", "compositions": [[2, 1]], "episodes_per_composition": 2,
+                    "scenario_seed": 31, "failure_probability": 1., "failure_window": [1, 3],
+                    "victim_rule": "uniform_sensing_agent"}
+    protocol = {"selection": selection, "distribution": distribution,
+                "protocol_id": protocol_identity(selection, distribution),
+                "scenario_sha256": hashlib.sha256(panel_bytes).hexdigest()}
+    return scenarios, panel_bytes, protocol
+
+
+def protocol_report(tmp_path, seed, epoch, sham=False, rewards=(1., 3.), **overrides):
+    scenarios, _, protocol = protocol_panel()
+    outcomes = [episode(s["scenario_id"], bool(i), reward=rewards[i],
+                        **{k: v for k, v in s.items() if k != "scenario_id"})
+                for i, s in enumerate(scenarios)]
+    kwargs = dict(checkpoint_progress={"epoch": epoch, "updates": epoch * 10,
+                                      "total_steps": 1000 + epoch, "total_episodes": 100},
+                  scenarios=scenarios, scenarios_sha256=protocol["scenario_sha256"],
+                  evaluation_protocol=protocol, sham=sham, checkpoint_sha256=f"checkpoint{seed}")
+    kwargs.update(overrides)
+    return report_file(tmp_path, seed, outcomes, name=f"seed{seed}-{epoch}-{sham}.json", **kwargs)
+
+
+def test_explicit_budget_groups_different_epochs_and_retains_actual_progress(tmp_path):
+    files = [protocol_report(tmp_path, seed, epoch) for seed, epoch in enumerate((100, 150, 200))]
+    result = summarize_reports(files, bootstrap_samples=100)
+    assert len(result["groups"]) == 1
+    group = result["groups"][0]
+    assert group["training_seeds"] == 3
+    assert "checkpoint_epoch" not in group
+    assert [s["checkpoint"]["progress"]["epoch"] for s in group["per_seed"]] == [100, 150, 200]
+
+
+@pytest.mark.parametrize("damage", ["budget", "identity", "panel", "count", "episode"])
+def test_protocol_rejects_false_budget_and_panel_claims(tmp_path, damage):
+    path = protocol_report(tmp_path, 0, 100)
+    data = json.loads(path.read_text())
+    if damage == "budget":
+        data["checkpoint_progress"]["total_steps"] = 999
+    elif damage == "identity":
+        data["evaluation_protocol"]["protocol_id"] = "invented"
+    elif damage == "panel":
+        data["scenarios_sha256"] = "other"
+    elif damage == "count":
+        data["scenarios"].pop()
+    else:
+        data["per_episode"][0]["env_seed"] += 1
+    path.write_text(json.dumps(data))
+    with pytest.raises(ValueError):
+        summarize_reports(path, bootstrap_samples=50)
+
+
+def test_paired_failure_minus_sham_uses_complete_panel_and_seed_intervals(tmp_path):
+    files = []
+    for seed, fail, sham in [(0, (3., 7.), (1., 3.)), (1, (-3., -1.), (1., 3.))]:
+        files += [protocol_report(tmp_path, seed, 100 + seed, False, fail),
+                  protocol_report(tmp_path, seed, 100 + seed, True, sham)]
+    group = summarize_reports(files, bootstrap_samples=500, seed=4)["paired_groups"][0]
+    assert group["training_seeds"] == 2
+    assert group["episodes"] == 4
+    assert [r["team_return"] for r in group["per_seed"]] == [3., -4.]
+    assert group["metrics"]["team_return"] == {"mean": -.5, "ci95": [-4., 3.]}
+    assert group["metrics"]["mean_agent_return"]["mean"] == pytest.approx(-1 / 6)
+
+
+@pytest.mark.parametrize("damage", ["streams", "checkpoint", "prefix", "seed_set"])
+def test_pairing_requires_matched_streams_checkpoint_prefix_and_seeds(tmp_path, damage):
+    failure = protocol_report(tmp_path, 0, 100, False)
+    sham = protocol_report(tmp_path, 0, 100, True)
+    data = json.loads(sham.read_text())
+    if damage == "streams":
+        data["scenarios"][0]["message_seed"] += 1
+        data["per_episode"][0]["message_seed"] += 1
+    elif damage == "checkpoint":
+        data["checkpoint_sha256"] = "other"
+    elif damage == "prefix":
+        data["per_episode"][0]["pre_event_victim_reached"] = True
+    else:
+        data["config"]["seed"] = 1
+    sham.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match="pairs|pre-event"):
+        summarize_reports([failure, sham], bootstrap_samples=50)
+
+
+def test_legacy_sidecar_requires_exact_companion_panel_and_keeps_inputs_immutable(tmp_path):
+    source = protocol_report(tmp_path, 0, 100)
+    data = json.loads(source.read_text())
+    data.pop("evaluation_protocol")
+    data.pop("scenarios_sha256")
+    source.write_text(json.dumps(data))
+    original = source.read_bytes()
+    _, panel_bytes, protocol = protocol_panel()
+    panel_path = tmp_path / "scenarios.json"
+    panel_path.write_bytes(panel_bytes)
+    sidecar = tmp_path / "protocol.json"
+    sidecar.write_text(json.dumps(protocol))
+    result = summarize_reports(source, bootstrap_samples=50, protocol=sidecar)
+    assert result["groups"][0]["evaluation_protocol"]["protocol_id"] == protocol["protocol_id"]
+    assert source.read_bytes() == original
+    panel_path.write_bytes(panel_bytes + b" ")
+    with pytest.raises(ValueError, match="hash"):
+        summarize_reports(source, bootstrap_samples=50, protocol=sidecar)

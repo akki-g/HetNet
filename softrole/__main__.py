@@ -67,6 +67,7 @@ def parser():
         command.add_argument("--scenarios", type=Path, help="JSON list of explicit Scenario records")
         command.add_argument("--trace", action="store_true")
     evaluate.add_argument("--failure-prob", type=float, default=0)
+    evaluate.add_argument("--protocol", type=Path, help="declared selection/distribution sidecar; requires --scenarios")
     evaluate.add_argument("--failure-window", type=int, nargs=2, default=(10, 30))
     evaluate.add_argument("--intervention", choices=("none", "freeze_affected", "freeze_all", "comm_off"),
                           default="none")
@@ -94,6 +95,7 @@ def parser():
     report.add_argument("--output", type=Path)
     report.add_argument("--bootstrap-samples", type=int, default=10000)
     report.add_argument("--seed", type=int, default=0)
+    report.add_argument("--protocol", type=Path, help="validate a common protocol sidecar, including older reports")
     return cli
 
 
@@ -149,8 +151,14 @@ def main(argv=None):
             saved = torch.load(args.checkpoint, map_location="cpu", weights_only=False)
             config = Config(**saved["config"])
             scenarios = scenarios_for(args, config)
+            if args.protocol and not args.scenarios:
+                raise ValueError("--protocol requires an explicit --scenarios file")
+            import hashlib
             report = evaluate_checkpoint(args.checkpoint, scenarios, args.output,
-                         args.intervention, args.intervention_step, args.trace, sham=args.sham)
+                         args.intervention, args.intervention_step, args.trace, sham=args.sham,
+                         protocol=json.loads(args.protocol.read_text()) if args.protocol else None,
+                         scenarios_sha256=hashlib.sha256(args.scenarios.read_bytes()).hexdigest()
+                             if args.scenarios else None)
             print(json.dumps({key: value for key, value in report.items()
                               if key not in ("per_episode", "scenarios", "config", "model_config", "evaluator")}, indent=2))
         elif args.command == "evaluate-hetnet":
@@ -167,7 +175,8 @@ def main(argv=None):
             print(json.dumps(report, indent=2, allow_nan=False))
         else:
             from softrole.report import summarize_reports
-            report = summarize_reports(args.reports, args.output, args.bootstrap_samples, args.seed)
+            report = summarize_reports(args.reports, args.output, args.bootstrap_samples, args.seed,
+                                       protocol=args.protocol)
             print(json.dumps(report, indent=2, allow_nan=False))
     except (ValueError, FileExistsError) as error:
         cli.error(str(error))

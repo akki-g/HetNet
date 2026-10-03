@@ -1,9 +1,6 @@
 {
-  "current_audit": {
-    "base_commit": "9a436e6d9f8d36c864c17744d4d55819f5e5e504",
-    "evidence": "analysis/publication_submission_2026-10-03/provenance_active_time",
-    "previous_origins_sha256": "13980b53fd1cca0d77b8b23b39ec9d17a7f12718cdcc4418781658640f21c0ba"
-  },
+  "base_commit": "9a436e6d9f8d36c864c17744d4d55819f5e5e504",
+  "current_origins_sha256": "7d26df9c9d66b994b0cb295f3c693241ac8ede112a6046d17d7e07b9acb6c15f",
   "files": {
     "LICENSE": {
       "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
@@ -310,6 +307,7 @@
       "source_repository": "local reproduction"
     }
   },
-  "schema_version": 1,
-  "scope": "Exact file origins; not a verified publication training commit"
+  "historical_audit_preserved": "analysis/publication_reconstruction_2026-09-30/",
+  "patch_sha256": "62ede14ca79718156f337209febcd4e9168a2f56cde2a6cf8c3243ffefe6f45d",
+  "previous_origins_sha256": "13980b53fd1cca0d77b8b23b39ec9d17a7f12718cdcc4418781658640f21c0ba"
 }

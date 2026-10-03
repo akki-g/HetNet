@@ -1,3 +1,7 @@
+# Immutable public-code-v1 compatibility reference from 9a436e6d9f8d36c864c17744d4d55819f5e5e504.
+# Original path: publication_reconstruction/runtime/hetgat/uavnet.py
+# Original source SHA256: 14c0b428769176cb8b66e054e760c14b69eaba9109ebf38fe240e46f666fcb47
+# Everything after these four provenance lines is the unchanged source.
 # -*- coding: utf-8 -*-
 """
 Created on Tue Sep 15 17:00:23 2020
@@ -46,15 +50,9 @@ class UAVNetA2CEasy(nn.Module):
                  per_class_critic=False, per_agent_critic=False, device=None,
                  with_two_state=False, obs=1, comm_range_P=-1, comm_range_A=-1,
                  lossy_comm=False, min_comm_loss=0, max_comm_loss=0.3, tensor_obs=False, total_state_action_in_batch=500,
-                 action_vision=-1, model_spec='public-code-v1'):
+                 action_vision=-1):
         super(UAVNetA2CEasy, self).__init__()
 
-        if model_spec not in ('public-code-v1', 'supplement-v1'):
-            raise ValueError('Unknown HetNet model_spec: ' + str(model_spec))
-        if model_spec == 'supplement-v1' and (
-                num_heads != 4 or any(hid_dim.get(key) != 16 for key in ('P', 'A', 'state'))):
-            raise ValueError('supplement-v1 requires four heads and 16 hidden features per head')
-        self.model_spec = model_spec
         self.device = device
 
 
@@ -111,26 +109,14 @@ class UAVNetA2CEasy(nn.Module):
 
             self.layer1 = MultiHeteroGATLayerReal(in_dim, hid_dim,
                                                   num_heads)
-            if model_spec == 'supplement-v1':
-                self.layer2 = MultiHeteroGATLayerReal(hid_dim_input, hid_dim,
-                                                      num_heads)
-                self.layer3 = MultiHeteroGATLayerReal(hid_dim_input, out_dim,
-                                                      num_heads, merge='avg')
-            else:
-                self.layer2 = MultiHeteroGATLayerReal(hid_dim_input, out_dim,
-                                                      num_heads, merge='avg')
+            self.layer2 = MultiHeteroGATLayerReal(hid_dim_input, out_dim,
+                                                  num_heads, merge='avg')
         else:
 
             self.layer1 = MultiHeteroGATLayerBinary(in_dim, hid_dim,
                                                     num_heads, msg_dim)
-            if model_spec == 'supplement-v1':
-                self.layer2 = MultiHeteroGATLayerBinary(hid_dim_input, hid_dim,
-                                                        num_heads, msg_dim)
-                self.layer3 = MultiHeteroGATLayerBinary(hid_dim_input, out_dim,
-                                                        num_heads, msg_dim, merge='avg')
-            else:
-                self.layer2 = MultiHeteroGATLayerBinary(hid_dim_input, out_dim,
-                                                        num_heads, msg_dim, merge='avg')
+            self.layer2 = MultiHeteroGATLayerBinary(hid_dim_input, out_dim,
+                                                    num_heads, msg_dim, merge='avg')
 
         self.relu = nn.ReLU()
         self.use_tanh = use_tanh
@@ -385,8 +371,6 @@ class UAVNetA2CEasy(nn.Module):
 
         h1 = self.layer1(g, feat_dict)
         h2 = self.layer2(g, h1)
-        if self.model_spec == 'supplement-v1':
-            h2 = self.layer3(g, h2)
 
         # get critic prediction, 1x1
         if self.per_class_critic:
