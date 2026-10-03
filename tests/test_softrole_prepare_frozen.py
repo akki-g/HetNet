@@ -16,6 +16,10 @@ from softrole.config import Config
 from softrole.model import SoftRoleNet
 
 
+THREAD_VARIABLES = ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",
+                    "NUMEXPR_NUM_THREADS")
+
+
 @pytest.fixture
 def run_root(tmp_path):
     root = tmp_path / "runs with spaces"
@@ -179,17 +183,20 @@ def test_generated_slurm_array_routes_all_tasks_and_rejects_invalid_indices(run_
         assert "%A_%a" in directives[name]
     tools = tmp_path / "mock Slurm tools"
     tools.mkdir()
-    for name, body in {"module": "exit 0\n", "srun": 'exec "$@"\n'}.items():
+    srun_body = ''.join(f'[[ "${{{name}}}" == 1 ]] || exit 91\n' for name in THREAD_VARIABLES)
+    for name, body in {"module": "exit 0\n", "srun": srun_body + 'exec "$@"\n'}.items():
         stub = tools / name
         stub.write_text("#!/usr/bin/env bash\n" + body)
         stub.chmod(0o755)
     interpreter = tools / "capture python"
     interpreter.write_text(f"#!{sys.executable}\nimport json, os, sys\n"
         "print(json.dumps({'argv':sys.argv[1:], 'cwd':os.getcwd(), 'environment':"
-        "{key:os.environ.get(key) for key in ['OMP_NUM_THREADS','MKL_NUM_THREADS','DGLBACKEND','PYTHONUNBUFFERED']}}))\n")
+        "{key:os.environ.get(key) for key in ['OPENBLAS_NUM_THREADS','OMP_NUM_THREADS','MKL_NUM_THREADS',"
+        "'NUMEXPR_NUM_THREADS','DGLBACKEND','PYTHONUNBUFFERED']}}))\n")
     interpreter.chmod(0o755)
     env = {**os.environ, "PATH": str(tools) + os.pathsep + os.environ["PATH"],
-           "SLURM_SUBMIT_DIR": str(ROOT), "HETNET_PYTHON": str(interpreter)}
+           "SLURM_SUBMIT_DIR": str(ROOT), "HETNET_PYTHON": str(interpreter),
+           **dict.fromkeys(THREAD_VARIABLES, "64")}
     env.pop("SLURM_ARRAY_TASK_ID", None)
     for index, job in enumerate(manifest["jobs"]):
         result = subprocess.run(["bash", str(batch_script)], cwd=tmp_path,
@@ -204,7 +211,7 @@ def test_generated_slurm_array_routes_all_tasks_and_rejects_invalid_indices(run_
         expected += ["--checkpoint", job["checkpoint"], "--output", job["output"]]
         assert record["argv"] == expected
         assert record["cwd"] == str(ROOT)
-        assert record["environment"] == {"OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1",
+        assert record["environment"] == {**dict.fromkeys(THREAD_VARIABLES, "1"),
                                           "DGLBACKEND": "pytorch", "PYTHONUNBUFFERED": "1"}
     for index in (None, "", "-1", "18", "wrong", "1.5"):
         invalid_env = env if index is None else {**env, "SLURM_ARRAY_TASK_ID": index}
@@ -215,9 +222,75 @@ def test_generated_slurm_array_routes_all_tasks_and_rejects_invalid_indices(run_
     assert not (output / "results").exists() and not (output / "job_ids.tsv").exists()
 
 
+@pytest.mark.parametrize("inherited_threads", [None, "64"])
+def test_prepare_limits_threads_before_numerical_imports(tmp_path, inherited_threads):
+    # A fresh process observes the environment at the import boundary, before
+    # OpenBLAS could attempt to allocate the inherited number of threads.
+    probe = """
+import builtins, json, os, runpy, sys
+original_import = builtins.__import__
+def inspect_import(name, *args, **kwargs):
+    if name.split('.')[0] in ('torch', 'numpy'):
+        print(json.dumps({key: os.environ.get(key) for key in sys.argv[2:]}))
+        raise SystemExit(0)
+    return original_import(name, *args, **kwargs)
+builtins.__import__ = inspect_import
+runpy.run_path(sys.argv[1], run_name='__main__')
+raise SystemExit('Numerical import boundary was never reached')
+"""
+    env = dict(os.environ)
+    for name in THREAD_VARIABLES:
+        if inherited_threads is None:
+            env.pop(name, None)
+        else:
+            env[name] = inherited_threads
+    result = subprocess.run([sys.executable, "-c", probe,
+                             str(ROOT / "scripts/prepare_pcp_frozen.py"), *THREAD_VARIABLES],
+                            cwd=tmp_path, env=env, text=True, capture_output=True)
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == dict.fromkeys(THREAD_VARIABLES, "1")
+    assert not list(tmp_path.iterdir())
+
+
+@pytest.mark.parametrize("launcher", ["scripts/softrole_evaluate.sh", "slurm/softrole_evaluate.sbatch",
+                                      "slurm/softrole_prepare_frozen.sbatch"])
+def test_standalone_launchers_override_inherited_threads_and_forward_arguments(tmp_path, launcher):
+    checkpoint = tmp_path / "checkpoint.pt"
+    checkpoint.touch()  # Mock Python never reads or evaluates this file.
+    interpreter = tmp_path / "capture-python"
+    interpreter.write_text(f"#!{sys.executable}\nimport json, os, sys\n"
+                           "print(json.dumps({'argv': sys.argv[1:], 'cwd': os.getcwd(), 'environment': "
+                           f"{{key: os.environ.get(key) for key in {THREAD_VARIABLES!r}}}}}))\n")
+    interpreter.chmod(0o755)
+    srun_body = ''.join(f'[[ "${{{name}}}" == 1 ]] || exit 91\n' for name in THREAD_VARIABLES)
+    for name, body in {"module": "exit 0\n", "srun": srun_body + 'exec "$@"\n'}.items():
+        stub = tmp_path / name
+        stub.write_text("#!/usr/bin/env bash\n" + body)
+        stub.chmod(0o755)
+    env = {**os.environ, **dict.fromkeys(THREAD_VARIABLES, "64"),
+           "PATH": str(tmp_path) + os.pathsep + os.environ["PATH"],
+           "SLURM_SUBMIT_DIR": str(ROOT), "HETNET_PYTHON": str(interpreter)}
+    if launcher == "slurm/softrole_prepare_frozen.sbatch":
+        arguments = ["--run-root", str(tmp_path / "runs with spaces ' $(not-a-command)"),
+                     "--output", str(tmp_path / "prepared panel"), "--min-steps", "123"]
+        expected_argv = ["-u", "scripts/prepare_pcp_frozen.py", *arguments]
+    else:
+        arguments = [str(checkpoint), str(tmp_path / "result.json")]
+        expected_argv = ["-u", "-m", "softrole", "evaluate", "--checkpoint", arguments[0],
+                         "--output", arguments[1]]
+    result = subprocess.run(["bash", str(ROOT / launcher), *arguments],
+                            cwd=tmp_path, env=env, text=True, capture_output=True)
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {"argv": expected_argv, "cwd": str(ROOT),
+                                         "environment": dict.fromkeys(THREAD_VARIABLES, "1")}
+    assert not (tmp_path / "result.json").exists()
+    assert not (tmp_path / "prepared panel").exists()
+
+
 def test_prepare_cli_help_does_not_create_output(tmp_path):
     result = subprocess.run([sys.executable, str(ROOT / "scripts/prepare_pcp_frozen.py"), "--help"],
-                            cwd=tmp_path, text=True, capture_output=True)
-    assert result.returncode == 0
+                            cwd=tmp_path, env={**os.environ, **dict.fromkeys(THREAD_VARIABLES, "64")},
+                            text=True, capture_output=True)
+    assert result.returncode == 0, result.stderr
     assert "never submit jobs" in result.stdout and "--min-steps" in result.stdout
     assert not list(tmp_path.iterdir())

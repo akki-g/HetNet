@@ -7,6 +7,7 @@ from dataclasses import asdict
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import platform
 import shlex
@@ -14,6 +15,12 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+
+# NumPy/OpenBLAS can start threads while Torch is importing. Limit them before
+# any numerical imports, including when the login environment requests 64.
+for variable in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",
+                 "NUMEXPR_NUM_THREADS"):
+    os.environ[variable] = "1"
 
 import torch
 
@@ -133,7 +140,8 @@ def slurm_script(jobs):
         "index=${SLURM_ARRAY_TASK_ID:?Submit this file with sbatch as an array}",
         "module load anaconda/anaconda-2024.10",
         'export HETNET_PYTHON="${HETNET_PYTHON:-$PWD/.venv/bin/python}"',
-        "export OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONUNBUFFERED=1 DGLBACKEND=pytorch",
+        "export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1",
+        "export PYTHONUNBUFFERED=1 DGLBACKEND=pytorch",
         'case "$index" in']
     for index, job in enumerate(jobs):
         command = ["srun", "bash", str(ROOT / "scripts/softrole_evaluate.sh"),

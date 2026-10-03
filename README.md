@@ -316,17 +316,35 @@ checkpoints; it does not add evaluation support for publication reconstruction
 checkpoints. It does not submit training or change budgets/architectures.
 
 For the six existing primary PCP policies, prepare the matched frozen panel
-on Stokes after syncing this evaluator code. The preparation command submits
-nothing; it writes a proper `submit.sbatch` file with an 18-task Slurm array:
+on Stokes after syncing this evaluator code. Submit preparation itself as a
+Slurm job so checkpoint loading and validation run on a compute node:
 
 ```bash
-module load anaconda/anaconda-2024.10
-.venv/bin/python scripts/prepare_pcp_frozen.py \
-  --run-root runs/softrole_primary \
-  --output runs/frozen_pcp_30m_20261002_array
 mkdir -p logs_sr
-sbatch runs/frozen_pcp_30m_20261002_array/submit.sbatch
+sbatch slurm/softrole_prepare_frozen.sbatch \
+  --run-root runs/softrole_primary \
+  --output runs/frozen_pcp_30m_20261002_slurm
 ```
+
+Run this from the repository root. The preparation job requests one CPU, 4 GB
+and 30 minutes; these are provisional allocation limits. It uses the existing
+Anaconda module and repository virtual environment, limits numerical libraries
+to one thread before Python starts, and forwards the preparation CLI arguments.
+Logs are `logs_sr/pcp-prepare-JOBID.out` and `.err`. Preparation writes the
+18-task `submit.sbatch` array but does not execute or submit evaluations.
+
+After the preparation job finishes successfully and its stdout contains
+`"jobs_prepared": 18`, submit the evaluation array:
+
+```bash
+sbatch runs/frozen_pcp_30m_20261002_slurm/submit.sbatch
+```
+
+Use a fresh output directory for each preparation attempt. If direct execution
+is allowed, the same arguments can be passed to
+`.venv/bin/python scripts/prepare_pcp_frozen.py` instead of the batch launcher.
+The Python helper also enforces thread limits before importing Torch/NumPy,
+overriding inherited values such as 64.
 
 The array uses indices 0–17, with at most three tasks running concurrently.
 Each task executes one frozen evaluation through `srun`, with one CPU, 4 GB,

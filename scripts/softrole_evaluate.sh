@@ -14,5 +14,6 @@ root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$root"
 [[ -f "$checkpoint" ]] || { echo "Checkpoint not found: $checkpoint" >&2; exit 2; }
 python=${HETNET_PYTHON:-$root/.venv/bin/python}
-export OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONUNBUFFERED=1 DGLBACKEND=pytorch
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
+export PYTHONUNBUFFERED=1 DGLBACKEND=pytorch
 exec "$python" -u -m softrole evaluate "$@" --checkpoint "$checkpoint" --output "$output"

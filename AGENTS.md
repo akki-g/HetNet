@@ -1211,6 +1211,59 @@ one Torch thread. These are implementation checks, not estimates of task quality
   mutation, dependency change, training, evaluation, real sbatch submission,
   commit or push occurred. All pre-existing changes were preserved.
 
+### 2026-10-02 — limit OpenBLAS threads before frozen-panel preparation
+
+- The supplied Stokes terminal output reports OpenBLAS attempting 64 threads,
+  `pthread_create failed`, and `RLIMIT_NPROC 100 current, 105 max`. The helper
+  imported Torch before applying its later Torch thread limit, leaving numerical
+  library startup unconstrained. The pasted output has no final preparation
+  result or exit status, so it does not establish whether preparation completed.
+  The separate Gym maintenance warning does not establish a preparation failure.
+- Set `OPENBLAS_NUM_THREADS`, `OMP_NUM_THREADS`, `MKL_NUM_THREADS` and
+  `NUMEXPR_NUM_THREADS` to one before numerical imports. Apply the same forced
+  settings in the generated Slurm array, standalone evaluation batch file and
+  shell launcher, overriding inherited values such as 64. README includes the
+  pre-command exports, which also work with older copies before synchronization.
+  No dependency, policy, scenario, checkpoint-selection or budget change.
+- Files touched: `scripts/prepare_pcp_frozen.py`,
+  `scripts/softrole_evaluate.sh`, `slurm/softrole_evaluate.sbatch`,
+  `tests/test_softrole_prepare_frozen.py`, `README.md`, and this existing
+  uppercase `AGENTS.md`. Existing prepared plans and archived evidence remain
+  untouched; newly prepared plans contain the updated Slurm exports.
+- Validation: **16 focused tests passed in 3.82 seconds**. Fresh subprocesses
+  checked limits at the first numerical import with absent and inherited-64
+  settings; actual CLI help loaded successfully with inherited-64 settings.
+  All 18 generated array routes checked limits before mocked srun execution and
+  at the mock Python entrypoint. Both standalone launchers also overrode 64.
+  Generated/standalone shell syntax and `git diff --check` passed. No Stokes
+  process-limit reproduction, runtime speed measurement, full-suite rerun,
+  policy execution, training, real Slurm submission, commit or push occurred.
+
+### 2026-10-02 — run frozen-panel preparation through Slurm
+
+- Added `slurm/softrole_prepare_frozen.sbatch` so checkpoint loading, validation
+  and panel/source generation can run on a compute node rather than the login
+  node. It uses the existing account/partition/Anaconda module, one CPU, 4 GB
+  and a provisional 30-minute limit, changes to `SLURM_SUBMIT_DIR`, and forces
+  all four numerical-library thread limits to one before `srun` starts Python.
+  It forwards arguments directly to the existing helper and preserves its exit
+  status. It neither runs policies nor submits the generated evaluation array.
+- README now gives two explicit submission steps: create `logs_sr` and submit
+  preparation with a fresh output path, then submit the generated `submit.sbatch`
+  only after successful preparation with `jobs_prepared: 18`. This avoids Python
+  work on the login node and avoids assuming asynchronous preparation finished.
+  Checkpoint selection, evaluation panels, budgets and training remain unchanged.
+- Files touched for this request: new `slurm/softrole_prepare_frozen.sbatch`,
+  `tests/test_softrole_prepare_frozen.py`, `README.md`, and this existing
+  uppercase `AGENTS.md`. Earlier thread-limit changes were preserved.
+- Validation: **17 focused tests passed in 3.69 seconds**. The added batch route
+  was exercised with mocked module/srun/Python, inherited thread counts of 64,
+  paths containing spaces/shell metacharacters and explicit CLI overrides.
+  Checks verified thread limits before srun/Python, exact forwarded arguments
+  and repository working directory; the 18 evaluation-array routes still pass.
+  `bash -n` and `git diff --check` passed. No live scheduler validation, real
+  submission, training, policy evaluation, dependency edit, commit or push.
+
 ## Remaining research work and boundaries
 
 Run the locked research protocol and assess actual learning across independent
