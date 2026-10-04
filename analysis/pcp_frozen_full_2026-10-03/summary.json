@@ -1,0 +1,957 @@
+{
+  "input_root": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm",
+  "reports": [
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed0_nominal.json",
+      "model": "shared",
+      "seed": 0,
+      "condition": "nominal",
+      "episodes": 2500,
+      "successes": 2479,
+      "failures": 21,
+      "success_rate": 0.9916,
+      "mean_capped_steps": 7.86,
+      "mean_team_return": -0.8402599999999999,
+      "mean_agent_return": -0.23031699999999997
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed0_failure.json",
+      "model": "shared",
+      "seed": 0,
+      "condition": "failure",
+      "episodes": 100,
+      "successes": 99,
+      "failures": 1,
+      "success_rate": 0.99,
+      "mean_capped_steps": 6.93,
+      "mean_team_return": -0.6134999999999998,
+      "mean_agent_return": -0.20449999999999993
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed0_sham.json",
+      "model": "shared",
+      "seed": 0,
+      "condition": "sham",
+      "episodes": 100,
+      "successes": 99,
+      "failures": 1,
+      "success_rate": 0.99,
+      "mean_capped_steps": 6.93,
+      "mean_team_return": -0.6134999999999998,
+      "mean_agent_return": -0.20449999999999993
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed1_nominal.json",
+      "model": "shared",
+      "seed": 1,
+      "condition": "nominal",
+      "episodes": 2500,
+      "successes": 2500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 6.4756,
+      "mean_team_return": -0.6796,
+      "mean_agent_return": -0.18122166666666667
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed1_failure.json",
+      "model": "shared",
+      "seed": 1,
+      "condition": "failure",
+      "episodes": 100,
+      "successes": 100,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 5.76,
+      "mean_team_return": -0.4675,
+      "mean_agent_return": -0.15583333333333332
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed1_sham.json",
+      "model": "shared",
+      "seed": 1,
+      "condition": "sham",
+      "episodes": 100,
+      "successes": 100,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 5.76,
+      "mean_team_return": -0.4675,
+      "mean_agent_return": -0.15583333333333332
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed2_nominal.json",
+      "model": "shared",
+      "seed": 2,
+      "condition": "nominal",
+      "episodes": 2500,
+      "successes": 2500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 6.5504,
+      "mean_team_return": -0.68684,
+      "mean_agent_return": -0.18335200000000001
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed2_failure.json",
+      "model": "shared",
+      "seed": 2,
+      "condition": "failure",
+      "episodes": 100,
+      "successes": 100,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 5.82,
+      "mean_team_return": -0.47000000000000003,
+      "mean_agent_return": -0.15666666666666668
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed2_sham.json",
+      "model": "shared",
+      "seed": 2,
+      "condition": "sham",
+      "episodes": 100,
+      "successes": 100,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 5.82,
+      "mean_team_return": -0.47000000000000003,
+      "mean_agent_return": -0.15666666666666668
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed0_nominal.json",
+      "model": "banked",
+      "seed": 0,
+      "condition": "nominal",
+      "episodes": 2500,
+      "successes": 2498,
+      "failures": 2,
+      "success_rate": 0.9992,
+      "mean_capped_steps": 7.9228,
+      "mean_team_return": -0.81722,
+      "mean_agent_return": -0.21921933333333332
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed0_failure.json",
+      "model": "banked",
+      "seed": 0,
+      "condition": "failure",
+      "episodes": 100,
+      "successes": 100,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 7.16,
+      "mean_team_return": -0.5555,
+      "mean_agent_return": -0.18516666666666667
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed0_sham.json",
+      "model": "banked",
+      "seed": 0,
+      "condition": "sham",
+      "episodes": 100,
+      "successes": 100,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 7.16,
+      "mean_team_return": -0.5555,
+      "mean_agent_return": -0.18516666666666667
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed1_nominal.json",
+      "model": "banked",
+      "seed": 1,
+      "condition": "nominal",
+      "episodes": 2500,
+      "successes": 1878,
+      "failures": 622,
+      "success_rate": 0.7512,
+      "mean_capped_steps": 26.5768,
+      "mean_team_return": -2.696739999999997,
+      "mean_agent_return": -0.7218393333333325
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed1_failure.json",
+      "model": "banked",
+      "seed": 1,
+      "condition": "failure",
+      "episodes": 100,
+      "successes": 100,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 6.56,
+      "mean_team_return": -0.512,
+      "mean_agent_return": -0.17066666666666666
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed1_sham.json",
+      "model": "banked",
+      "seed": 1,
+      "condition": "sham",
+      "episodes": 100,
+      "successes": 100,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 6.56,
+      "mean_team_return": -0.512,
+      "mean_agent_return": -0.17066666666666666
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed2_nominal.json",
+      "model": "banked",
+      "seed": 2,
+      "condition": "nominal",
+      "episodes": 2500,
+      "successes": 2462,
+      "failures": 38,
+      "success_rate": 0.9848,
+      "mean_capped_steps": 9.3012,
+      "mean_team_return": -0.8837799999999999,
+      "mean_agent_return": -0.23968966666666663
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed2_failure.json",
+      "model": "banked",
+      "seed": 2,
+      "condition": "failure",
+      "episodes": 100,
+      "successes": 100,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 6.89,
+      "mean_team_return": -0.5365,
+      "mean_agent_return": -0.17883333333333334
+    },
+    {
+      "file": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed2_sham.json",
+      "model": "banked",
+      "seed": 2,
+      "condition": "sham",
+      "episodes": 100,
+      "successes": 100,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 6.89,
+      "mean_team_return": -0.5365,
+      "mean_agent_return": -0.17883333333333334
+    }
+  ],
+  "composition_seed_rows": [
+    {
+      "model": "shared",
+      "seed": 0,
+      "num_p": 2,
+      "num_a": 1,
+      "episodes": 500,
+      "successes": 497,
+      "failures": 3,
+      "success_rate": 0.994,
+      "mean_capped_steps": 6.5,
+      "mean_team_return": -0.5713999999999999,
+      "mean_agent_return": -0.19046666666666665
+    },
+    {
+      "model": "shared",
+      "seed": 0,
+      "num_p": 1,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 484,
+      "failures": 16,
+      "success_rate": 0.968,
+      "mean_capped_steps": 12.01,
+      "mean_team_return": -1.2039999999999995,
+      "mean_agent_return": -0.40133333333333315
+    },
+    {
+      "model": "shared",
+      "seed": 0,
+      "num_p": 2,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 499,
+      "failures": 1,
+      "success_rate": 0.998,
+      "mean_capped_steps": 7.632,
+      "mean_team_return": -0.8522,
+      "mean_agent_return": -0.21305
+    },
+    {
+      "model": "shared",
+      "seed": 0,
+      "num_p": 3,
+      "num_a": 1,
+      "episodes": 500,
+      "successes": 499,
+      "failures": 1,
+      "success_rate": 0.998,
+      "mean_capped_steps": 6.044,
+      "mean_team_return": -0.6398999999999999,
+      "mean_agent_return": -0.15997499999999998
+    },
+    {
+      "model": "shared",
+      "seed": 0,
+      "num_p": 3,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 7.114,
+      "mean_team_return": -0.9338,
+      "mean_agent_return": -0.18676
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "num_p": 2,
+      "num_a": 1,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 5.684,
+      "mean_team_return": -0.4722,
+      "mean_agent_return": -0.1574
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "num_p": 1,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 7.882,
+      "mean_team_return": -0.7273000000000001,
+      "mean_agent_return": -0.24243333333333333
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "num_p": 2,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 6.666,
+      "mean_team_return": -0.7447,
+      "mean_agent_return": -0.186175
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "num_p": 3,
+      "num_a": 1,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 5.65,
+      "mean_team_return": -0.5868,
+      "mean_agent_return": -0.1467
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "num_p": 3,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 6.496,
+      "mean_team_return": -0.867,
+      "mean_agent_return": -0.1734
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "num_p": 2,
+      "num_a": 1,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 5.694,
+      "mean_team_return": -0.4749,
+      "mean_agent_return": -0.1583
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "num_p": 1,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 8.084,
+      "mean_team_return": -0.7461,
+      "mean_agent_return": -0.2487
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "num_p": 2,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 6.776,
+      "mean_team_return": -0.7525000000000001,
+      "mean_agent_return": -0.18812500000000001
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "num_p": 3,
+      "num_a": 1,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 5.656,
+      "mean_team_return": -0.5899,
+      "mean_agent_return": -0.147475
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "num_p": 3,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 6.542,
+      "mean_team_return": -0.8708,
+      "mean_agent_return": -0.17416
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "num_p": 2,
+      "num_a": 1,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 7.024,
+      "mean_team_return": -0.5522,
+      "mean_agent_return": -0.18406666666666666
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "num_p": 1,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 498,
+      "failures": 2,
+      "success_rate": 0.996,
+      "mean_capped_steps": 9.964,
+      "mean_team_return": -0.9506999999999999,
+      "mean_agent_return": -0.31689999999999996
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "num_p": 2,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 8.058,
+      "mean_team_return": -0.8991,
+      "mean_agent_return": -0.224775
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "num_p": 3,
+      "num_a": 1,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 6.876,
+      "mean_team_return": -0.6707,
+      "mean_agent_return": -0.167675
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "num_p": 3,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 7.692,
+      "mean_team_return": -1.0134,
+      "mean_agent_return": -0.20268
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "num_p": 2,
+      "num_a": 1,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 6.672,
+      "mean_team_return": -0.5333,
+      "mean_agent_return": -0.17776666666666666
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "num_p": 1,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 249,
+      "failures": 251,
+      "success_rate": 0.498,
+      "mean_capped_steps": 46.254,
+      "mean_team_return": -4.6319999999999935,
+      "mean_agent_return": -1.5439999999999978
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "num_p": 2,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 307,
+      "failures": 193,
+      "success_rate": 0.614,
+      "mean_capped_steps": 37.27,
+      "mean_team_return": -3.826199999999995,
+      "mean_agent_return": -0.9565499999999988
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "num_p": 3,
+      "num_a": 1,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 6.57,
+      "mean_team_return": -0.6488,
+      "mean_agent_return": -0.1622
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "num_p": 3,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 322,
+      "failures": 178,
+      "success_rate": 0.644,
+      "mean_capped_steps": 36.118,
+      "mean_team_return": -3.8433999999999955,
+      "mean_agent_return": -0.7686799999999991
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "num_p": 2,
+      "num_a": 1,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 6.988,
+      "mean_team_return": -0.5463,
+      "mean_agent_return": -0.1821
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "num_p": 1,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 464,
+      "failures": 36,
+      "success_rate": 0.928,
+      "mean_capped_steps": 15.292,
+      "mean_team_return": -1.2111999999999994,
+      "mean_agent_return": -0.40373333333333317
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "num_p": 2,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 498,
+      "failures": 2,
+      "success_rate": 0.996,
+      "mean_capped_steps": 8.788,
+      "mean_team_return": -0.9229999999999999,
+      "mean_agent_return": -0.23074999999999998
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "num_p": 3,
+      "num_a": 1,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 7.044,
+      "mean_team_return": -0.6837,
+      "mean_agent_return": -0.170925
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "num_p": 3,
+      "num_a": 2,
+      "episodes": 500,
+      "successes": 500,
+      "failures": 0,
+      "success_rate": 1,
+      "mean_capped_steps": 8.394,
+      "mean_team_return": -1.0547,
+      "mean_agent_return": -0.21094
+    }
+  ],
+  "composition_means": [
+    {
+      "model": "shared",
+      "composition": [
+        2,
+        1
+      ],
+      "training_seeds": 3,
+      "episodes_per_seed": 500,
+      "metrics": {
+        "success_rate": {
+          "equal_seed_mean": 0.998,
+          "seed_min": 0.994,
+          "seed_max": 1
+        },
+        "mean_capped_steps": {
+          "equal_seed_mean": 5.959333333333333,
+          "seed_min": 5.684,
+          "seed_max": 6.5
+        },
+        "mean_team_return": {
+          "equal_seed_mean": -0.5061666666666667,
+          "seed_min": -0.5713999999999999,
+          "seed_max": -0.4722
+        },
+        "mean_agent_return": {
+          "equal_seed_mean": -0.16872222222222222,
+          "seed_min": -0.19046666666666665,
+          "seed_max": -0.1574
+        }
+      }
+    },
+    {
+      "model": "shared",
+      "composition": [
+        1,
+        2
+      ],
+      "training_seeds": 3,
+      "episodes_per_seed": 500,
+      "metrics": {
+        "success_rate": {
+          "equal_seed_mean": 0.9893333333333333,
+          "seed_min": 0.968,
+          "seed_max": 1
+        },
+        "mean_capped_steps": {
+          "equal_seed_mean": 9.325333333333333,
+          "seed_min": 7.882,
+          "seed_max": 12.01
+        },
+        "mean_team_return": {
+          "equal_seed_mean": -0.8924666666666665,
+          "seed_min": -1.2039999999999995,
+          "seed_max": -0.7273000000000001
+        },
+        "mean_agent_return": {
+          "equal_seed_mean": -0.2974888888888888,
+          "seed_min": -0.40133333333333315,
+          "seed_max": -0.24243333333333333
+        }
+      }
+    },
+    {
+      "model": "shared",
+      "composition": [
+        2,
+        2
+      ],
+      "training_seeds": 3,
+      "episodes_per_seed": 500,
+      "metrics": {
+        "success_rate": {
+          "equal_seed_mean": 0.9993333333333333,
+          "seed_min": 0.998,
+          "seed_max": 1
+        },
+        "mean_capped_steps": {
+          "equal_seed_mean": 7.024666666666667,
+          "seed_min": 6.666,
+          "seed_max": 7.632
+        },
+        "mean_team_return": {
+          "equal_seed_mean": -0.7831333333333333,
+          "seed_min": -0.8522,
+          "seed_max": -0.7447
+        },
+        "mean_agent_return": {
+          "equal_seed_mean": -0.19578333333333334,
+          "seed_min": -0.21305,
+          "seed_max": -0.186175
+        }
+      }
+    },
+    {
+      "model": "shared",
+      "composition": [
+        3,
+        1
+      ],
+      "training_seeds": 3,
+      "episodes_per_seed": 500,
+      "metrics": {
+        "success_rate": {
+          "equal_seed_mean": 0.9993333333333333,
+          "seed_min": 0.998,
+          "seed_max": 1
+        },
+        "mean_capped_steps": {
+          "equal_seed_mean": 5.783333333333333,
+          "seed_min": 5.65,
+          "seed_max": 6.044
+        },
+        "mean_team_return": {
+          "equal_seed_mean": -0.6055333333333333,
+          "seed_min": -0.6398999999999999,
+          "seed_max": -0.5868
+        },
+        "mean_agent_return": {
+          "equal_seed_mean": -0.15138333333333331,
+          "seed_min": -0.15997499999999998,
+          "seed_max": -0.1467
+        }
+      }
+    },
+    {
+      "model": "shared",
+      "composition": [
+        3,
+        2
+      ],
+      "training_seeds": 3,
+      "episodes_per_seed": 500,
+      "metrics": {
+        "success_rate": {
+          "equal_seed_mean": 1,
+          "seed_min": 1,
+          "seed_max": 1
+        },
+        "mean_capped_steps": {
+          "equal_seed_mean": 6.717333333333333,
+          "seed_min": 6.496,
+          "seed_max": 7.114
+        },
+        "mean_team_return": {
+          "equal_seed_mean": -0.8905333333333333,
+          "seed_min": -0.9338,
+          "seed_max": -0.867
+        },
+        "mean_agent_return": {
+          "equal_seed_mean": -0.17810666666666666,
+          "seed_min": -0.18676,
+          "seed_max": -0.1734
+        }
+      }
+    },
+    {
+      "model": "banked",
+      "composition": [
+        2,
+        1
+      ],
+      "training_seeds": 3,
+      "episodes_per_seed": 500,
+      "metrics": {
+        "success_rate": {
+          "equal_seed_mean": 1,
+          "seed_min": 1,
+          "seed_max": 1
+        },
+        "mean_capped_steps": {
+          "equal_seed_mean": 6.894666666666667,
+          "seed_min": 6.672,
+          "seed_max": 7.024
+        },
+        "mean_team_return": {
+          "equal_seed_mean": -0.5439333333333334,
+          "seed_min": -0.5522,
+          "seed_max": -0.5333
+        },
+        "mean_agent_return": {
+          "equal_seed_mean": -0.18131111111111112,
+          "seed_min": -0.18406666666666666,
+          "seed_max": -0.17776666666666666
+        }
+      }
+    },
+    {
+      "model": "banked",
+      "composition": [
+        1,
+        2
+      ],
+      "training_seeds": 3,
+      "episodes_per_seed": 500,
+      "metrics": {
+        "success_rate": {
+          "equal_seed_mean": 0.8073333333333333,
+          "seed_min": 0.498,
+          "seed_max": 0.996
+        },
+        "mean_capped_steps": {
+          "equal_seed_mean": 23.836666666666666,
+          "seed_min": 9.964,
+          "seed_max": 46.254
+        },
+        "mean_team_return": {
+          "equal_seed_mean": -2.264633333333331,
+          "seed_min": -4.6319999999999935,
+          "seed_max": -0.9506999999999999
+        },
+        "mean_agent_return": {
+          "equal_seed_mean": -0.754877777777777,
+          "seed_min": -1.5439999999999978,
+          "seed_max": -0.31689999999999996
+        }
+      }
+    },
+    {
+      "model": "banked",
+      "composition": [
+        2,
+        2
+      ],
+      "training_seeds": 3,
+      "episodes_per_seed": 500,
+      "metrics": {
+        "success_rate": {
+          "equal_seed_mean": 0.87,
+          "seed_min": 0.614,
+          "seed_max": 1
+        },
+        "mean_capped_steps": {
+          "equal_seed_mean": 18.038666666666668,
+          "seed_min": 8.058,
+          "seed_max": 37.27
+        },
+        "mean_team_return": {
+          "equal_seed_mean": -1.8827666666666651,
+          "seed_min": -3.826199999999995,
+          "seed_max": -0.8991
+        },
+        "mean_agent_return": {
+          "equal_seed_mean": -0.4706916666666663,
+          "seed_min": -0.9565499999999988,
+          "seed_max": -0.224775
+        }
+      }
+    },
+    {
+      "model": "banked",
+      "composition": [
+        3,
+        1
+      ],
+      "training_seeds": 3,
+      "episodes_per_seed": 500,
+      "metrics": {
+        "success_rate": {
+          "equal_seed_mean": 1,
+          "seed_min": 1,
+          "seed_max": 1
+        },
+        "mean_capped_steps": {
+          "equal_seed_mean": 6.83,
+          "seed_min": 6.57,
+          "seed_max": 7.044
+        },
+        "mean_team_return": {
+          "equal_seed_mean": -0.6677333333333333,
+          "seed_min": -0.6837,
+          "seed_max": -0.6488
+        },
+        "mean_agent_return": {
+          "equal_seed_mean": -0.16693333333333332,
+          "seed_min": -0.170925,
+          "seed_max": -0.1622
+        }
+      }
+    },
+    {
+      "model": "banked",
+      "composition": [
+        3,
+        2
+      ],
+      "training_seeds": 3,
+      "episodes_per_seed": 500,
+      "metrics": {
+        "success_rate": {
+          "equal_seed_mean": 0.8813333333333333,
+          "seed_min": 0.644,
+          "seed_max": 1
+        },
+        "mean_capped_steps": {
+          "equal_seed_mean": 17.401333333333334,
+          "seed_min": 7.692,
+          "seed_max": 36.118
+        },
+        "mean_team_return": {
+          "equal_seed_mean": -1.9704999999999986,
+          "seed_min": -3.8433999999999955,
+          "seed_max": -1.0134
+        },
+        "mean_agent_return": {
+          "equal_seed_mean": -0.39409999999999973,
+          "seed_min": -0.7686799999999991,
+          "seed_max": -0.20268
+        }
+      }
+    }
+  ],
+  "episodes": 16200,
+  "limitations": [
+    "Three independent training seeds per model, common scenario panels reused across seeds/models.",
+    "Descriptive seed ranges are not confidence intervals.",
+    "No selected epoch1500 checkpoint tensors are present in this sync.",
+    "No native HetNet result is part of this frozen SoftRole tranche."
+  ],
+  "checks": {
+    "report_count": 18,
+    "all_stdout_summaries_match": true,
+    "scenario_records_match_panels": true,
+    "all_returns_reconcile": true,
+    "all_unsuccessful_episodes_reach_horizon_80": true
+  }
+}

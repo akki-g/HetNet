@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "scope": "stdout-only analysis and local deployment-fix evidence; no full evaluation JSON analysis",
+  "artifacts": [
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/analyze.py",
+      "bytes": 7248,
+      "sha256": "ef3ae49b470f62ce972f020b0ad80202f5c30a9a8ba76c6e0714172b52ed0912"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/build_report.py",
+      "bytes": 13098,
+      "sha256": "307a8862eff087f280e2db4ec6d973acb3eb0c8a3635cda02b79ac947c2d5f07"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/independent_audit.json",
+      "bytes": 50505,
+      "sha256": "f60aede6aa7d0dfa2ddf3885eb5d1137abb22f42c1bb96977d0af70dbc4ecffd"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_1/hetnet-preflight-902621_0.err",
+      "bytes": 1170,
+      "sha256": "4428523b68cafd6eda382a4953ad11b5c7ffd18925823083e0649fbdaa99d75f"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_1/hetnet-preflight-902621_0.out",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_1/hetnet-preflight-902621_1.err",
+      "bytes": 1170,
+      "sha256": "8acdea899b60ce9071c8a7b9c62bbc6cf976f52d40f7f2b60a3e8a3dbbf8ffec"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_1/hetnet-preflight-902621_1.out",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_1/hetnet-preflight-902621_2.err",
+      "bytes": 1170,
+      "sha256": "8acdea899b60ce9071c8a7b9c62bbc6cf976f52d40f7f2b60a3e8a3dbbf8ffec"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_1/hetnet-preflight-902621_2.out",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_1/hetnet-preflight-902621_3.err",
+      "bytes": 1170,
+      "sha256": "8acdea899b60ce9071c8a7b9c62bbc6cf976f52d40f7f2b60a3e8a3dbbf8ffec"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_1/hetnet-preflight-902621_3.out",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_0.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_0.out",
+      "bytes": 965,
+      "sha256": "b7f06aa7e0576d8462448dc66b46246512c31fb726cd66edaaca58332de65ba5"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_1.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_1.out",
+      "bytes": 960,
+      "sha256": "8e5f46698cd0bac83620d55fd209f43f0b0f3ca4abde050b70830c9451fe3fe8"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_10.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_10.out",
+      "bytes": 949,
+      "sha256": "7b5cb04ffa0bc2709f3aee7cef98d1e097bfdb498d86278277b2d479b2aa95a2"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_11.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_11.out",
+      "bytes": 948,
+      "sha256": "cc72c5e653b97dfd2524e3e5bc2ba7be832da52f1ecb55e9625aeebda18fc4b6"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_12.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_12.out",
+      "bytes": 963,
+      "sha256": "d8e886cdfe842fb8432961edaac534de6e5c1359b0d8776334920faf24b2c33a"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_13.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_13.out",
+      "bytes": 948,
+      "sha256": "da83a3128dd4668193a54b58fd69a665b73b428bfbb6a7f42656ac852d589ff4"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_14.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_14.out",
+      "bytes": 947,
+      "sha256": "53d4ab7d00b695f424aeb41c60e14d85fc5c317e2fb0c81c14fb4bfcf3572615"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_15.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_15.out",
+      "bytes": 964,
+      "sha256": "6a8027a5dadc0c62c02449c951fe6317ab48d296a64f11cb0fc845506394a6b7"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_16.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_16.out",
+      "bytes": 949,
+      "sha256": "07a5c8aa41e58719b3b32e2a049c4d5b6f1e5d6fa3f31580a6b3abc906f4e468"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_17.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_17.out",
+      "bytes": 948,
+      "sha256": "eebd929f013f09b0e049553867824ca37aeb97f7ac6fd0bfffa9c79dfff9f19c"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_2.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_2.out",
+      "bytes": 960,
+      "sha256": "5fa0a2d5c3a3e9b86bd8a65ad3e8cce0275c517d0c6aaaa6fd8e57ddfa715aeb"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_3.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_3.out",
+      "bytes": 950,
+      "sha256": "6bb8c458f5ab03763c2ee0042e1bfc391d63e9d86d13652f25a8d8d9a714f8be"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_4.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_4.out",
+      "bytes": 949,
+      "sha256": "b50cf6c452014aff335c77092f6845c0160daa0932002f4d1a2979207294680b"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_5.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_5.out",
+      "bytes": 948,
+      "sha256": "a9e07cf59704fd358f4bf273f28236858e96ecf82c836953e50f832c2f45cf77"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_6.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_6.out",
+      "bytes": 940,
+      "sha256": "7bf834efdc49db6f65251297fb7c77248a3db179331fb50d8aa3cecf81769f6a"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_7.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_7.out",
+      "bytes": 947,
+      "sha256": "62dc27e0e3d16b04c48d70f4e4d02d5c0dfd1e8ead02f51e78c1e3b4dd175f51"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_8.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_8.out",
+      "bytes": 946,
+      "sha256": "a4bcaca6fe9b61c2e838af09dba9cad28802d9741cea9e64d081fa72e380c33e"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_9.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-frozen-902506_9.out",
+      "bytes": 954,
+      "sha256": "fc40ba7fb13993ff93de96bad188bd3b36eee52b1eb51dd30d3e9648c9a33f17"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-prepare-902504.err",
+      "bytes": 500,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/inputs/logs_sr/pcp-prepare-902504.out",
+      "bytes": 138,
+      "sha256": "a4c7da23b48f8f6c3e5d0f7415f9c3c899e20452429cdce0a4c0bd67343b4693"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/pdf_build.json",
+      "bytes": 346,
+      "sha256": "a0715b078687240be0b753866db591495f824f9d97973465fc3d93203639dec8"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/preflight_failure_audit.json",
+      "bytes": 46830,
+      "sha256": "3f2afb9ae57af9a241c9b15665d4df602e44eebf7d9f8172d7173c12d13e7914"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/pytest.log",
+      "bytes": 592,
+      "sha256": "9f0cf462bfae59b1f1ca9ca9824b8ed47715615c33bc5b181921a9c4fadf4174"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/report_text.txt",
+      "bytes": 6877,
+      "sha256": "e1ff182a19450c552993194e5c90f829e659cf3a979f3e89a3efeec415424bc3"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/summary.json",
+      "bytes": 36180,
+      "sha256": "50601f2ce82f882d0a1eb312afec7a78c8bf5823a289e5543f81b84ffd553088"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/summary_rows.csv",
+      "bytes": 2026,
+      "sha256": "3412bfe7044f7903fe112774945ea44f45e886c6d728fde87c328ff13da99f0a"
+    },
+    {
+      "path": "analysis/pcp_frozen_2026-10-03/validation.json",
+      "bytes": 1162,
+      "sha256": "1ebbf7316a09d47b148ecc139db5e68dbe692fdfa5e2c6446ae77f3562b49a65"
+    }
+  ],
+  "pdf": {
+    "path": "output/pdf/pcp_frozen_and_hetnet_preflight_2026-10-03.pdf",
+    "bytes": 96895,
+    "sha256": "3270f7e5535a88b20e149985efce2a677bcf88b6de62a82b65159ab86a2d9b26"
+  }
+}

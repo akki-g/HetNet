@@ -1,0 +1,491 @@
+{
+  "schema": 1,
+  "input_root": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm",
+  "scope": "Read-only audit of twelve existing failure/sham reports; no policy replay or training",
+  "input_sha256": {
+    "manifest.json": "bc4130ece6d7f14dd0a9f0f019155226db9be4cfecd35e0c4353a489895c3137",
+    "scenarios_failure.json": "bb394aa1af05b18190d021c9721018aa83e0b3486ee50e8f57a4021ee6a85e27",
+    "source/softrole/rollout.py": "f5beaa75cf54c079daaf7927c5723c970a606416fad827cb069897ef9952bcba",
+    "source/softrole/env.py": "d0c49b3fb10521946cc5501fc33af5b1a0c8e3c16c5e9231854f9aac3cf87cd1",
+    "source/softrole/evaluate.py": "6a152333c0286e9b72cd6790ade851ce3f40b4162015411a7355e82efcf7d0fa",
+    "source/softrole/scenarios.py": "c9f68a1cf7e4f9b4d2194478a783c0789fc2bd7741819613bbde6335d82cc503",
+    "source/envs/ic3net_envs/predator_capture_env.py": "935875ac665877965f86a2e12f5ef52669065d3a2a01ba11b0ed065bfac59583",
+    "results/shared_seed0_failure.json": "8cff6af49e805eeabbd0a0b4673ea55a5e2cea387a7011159d7e4e3d64a1cacb",
+    "results/shared_seed0_sham.json": "f269248bc5b233a7f572c4e763bad6f106bd467251eca1a9dfcf9e4184c596e2",
+    "results/shared_seed1_failure.json": "42cf3c173396a9658d22f4c9ce50cc221bea5dc15710c11d697a2347e24cab28",
+    "results/shared_seed1_sham.json": "b646159ca45de8c8885b4b444459327c3092e5f6e1feb170677196a8f30902fe",
+    "results/shared_seed2_failure.json": "c29de1d61e8cc07d5fbd441bdd162bb57251b5cf2f11e2bfecf4b6953b223c12",
+    "results/shared_seed2_sham.json": "06f1f93a863661e849e07a62ab290016db4e68f0827961c4e770940ff4070fcd",
+    "results/banked_seed0_failure.json": "5ddd6b16a8942b6e4befb3ec63ba326db29dc5b28d770cb2dae34f00bf9ed80f",
+    "results/banked_seed0_sham.json": "1f85afd1d932c2f8768d2dd95391d26602c8a1c0be55b072ca455985c5fc65e8",
+    "results/banked_seed1_failure.json": "303ee9e8566f4c5182f6d7273ce4cb798da06de18997a2e64d045c6bfa5e6243",
+    "results/banked_seed1_sham.json": "9bf07c545f960418dd9fa1b3bce84ba81de5503bd540e3a85bc8945b0d74e7be",
+    "results/banked_seed2_failure.json": "1a8cdb16769c6aefd10d770151940a1296196cb003d09d6f6bc8f89902373f3b",
+    "results/banked_seed2_sham.json": "35e93ef3650970c9d89e08d95cca2c587660ea5a7c1e61058f7b3e256db3d6cd"
+  },
+  "source_line_anchors": {
+    "source/softrole/rollout.py": {
+      "diagnostics_precede_event": [
+        112,
+        121
+      ],
+      "failure_before_actor": [
+        122,
+        148
+      ],
+      "trace_fields": [
+        164,
+        168
+      ],
+      "exposure_and_censoring": [
+        185,
+        194
+      ]
+    },
+    "source/softrole/env.py": {
+      "pure_persistent_sensory_mask": [
+        19,
+        38
+      ],
+      "cached_diagnostics": [
+        143,
+        158
+      ],
+      "environment_step_and_masked_next_view": [
+        160,
+        182
+      ]
+    },
+    "source/softrole/evaluate.py": {
+      "frozen_model_and_source_checks": [
+        73,
+        93
+      ],
+      "summary_reductions": [
+        94,
+        115
+      ]
+    },
+    "source/softrole/scenarios.py": {
+      "independent_seed_streams": [
+        45,
+        82
+      ]
+    },
+    "source/envs/ic3net_envs/predator_capture_env.py": {
+      "step_penalty": [
+        42,
+        45
+      ],
+      "individual_reward_reduction": [
+        487,
+        524
+      ]
+    }
+  },
+  "panel": {
+    "count": 100,
+    "composition": [
+      2,
+      1
+    ],
+    "event_step_histogram": {
+      "10": 4,
+      "11": 8,
+      "12": 4,
+      "13": 7,
+      "14": 6,
+      "15": 2,
+      "16": 6,
+      "17": 4,
+      "18": 5,
+      "19": 6,
+      "20": 5,
+      "21": 5,
+      "22": 4,
+      "23": 6,
+      "24": 5,
+      "25": 3,
+      "27": 5,
+      "28": 4,
+      "29": 6,
+      "30": 5
+    },
+    "victim_histogram": {
+      "0": 60,
+      "1": 40
+    },
+    "exact_manifest_hash_match": true
+  },
+  "rows": [
+    {
+      "model": "shared",
+      "seed": 0,
+      "episodes_per_condition": 100,
+      "actual_exposures_failure": 1,
+      "actual_exposures_sham": 0,
+      "scheduled_exposures_each_condition": 1,
+      "completed_before_scheduled_event_each_condition": 99,
+      "censored_after_scheduled_event_each_condition": 1,
+      "successes_failure": 99,
+      "successes_sham": 99,
+      "mean_steps_each_condition": 6.93,
+      "median_steps_each_condition": 6.0,
+      "min_steps": 3,
+      "max_steps": 80,
+      "episodes_completed_by_step_count_10": 96,
+      "mean_team_return_each_condition": -0.6134999999999998,
+      "mean_agent_return_each_condition": -0.20449999999999993,
+      "paired_failure_minus_sham": {
+        "success": 0,
+        "steps": 0,
+        "team_return": 0.0,
+        "mean_agent_return": 0.0
+      }
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "episodes_per_condition": 100,
+      "actual_exposures_failure": 0,
+      "actual_exposures_sham": 0,
+      "scheduled_exposures_each_condition": 0,
+      "completed_before_scheduled_event_each_condition": 100,
+      "censored_after_scheduled_event_each_condition": 0,
+      "successes_failure": 100,
+      "successes_sham": 100,
+      "mean_steps_each_condition": 5.76,
+      "median_steps_each_condition": 6.0,
+      "min_steps": 3,
+      "max_steps": 9,
+      "episodes_completed_by_step_count_10": 100,
+      "mean_team_return_each_condition": -0.4675,
+      "mean_agent_return_each_condition": -0.15583333333333332,
+      "paired_failure_minus_sham": {
+        "success": 0,
+        "steps": 0,
+        "team_return": 0.0,
+        "mean_agent_return": 0.0
+      }
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "episodes_per_condition": 100,
+      "actual_exposures_failure": 0,
+      "actual_exposures_sham": 0,
+      "scheduled_exposures_each_condition": 0,
+      "completed_before_scheduled_event_each_condition": 100,
+      "censored_after_scheduled_event_each_condition": 0,
+      "successes_failure": 100,
+      "successes_sham": 100,
+      "mean_steps_each_condition": 5.82,
+      "median_steps_each_condition": 6.0,
+      "min_steps": 3,
+      "max_steps": 10,
+      "episodes_completed_by_step_count_10": 100,
+      "mean_team_return_each_condition": -0.47000000000000003,
+      "mean_agent_return_each_condition": -0.15666666666666668,
+      "paired_failure_minus_sham": {
+        "success": 0,
+        "steps": 0,
+        "team_return": 0.0,
+        "mean_agent_return": 0.0
+      }
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "episodes_per_condition": 100,
+      "actual_exposures_failure": 0,
+      "actual_exposures_sham": 0,
+      "scheduled_exposures_each_condition": 0,
+      "completed_before_scheduled_event_each_condition": 100,
+      "censored_after_scheduled_event_each_condition": 0,
+      "successes_failure": 100,
+      "successes_sham": 100,
+      "mean_steps_each_condition": 7.16,
+      "median_steps_each_condition": 7.0,
+      "min_steps": 3,
+      "max_steps": 13,
+      "episodes_completed_by_step_count_10": 93,
+      "mean_team_return_each_condition": -0.5555,
+      "mean_agent_return_each_condition": -0.18516666666666667,
+      "paired_failure_minus_sham": {
+        "success": 0,
+        "steps": 0,
+        "team_return": 0.0,
+        "mean_agent_return": 0.0
+      }
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "episodes_per_condition": 100,
+      "actual_exposures_failure": 0,
+      "actual_exposures_sham": 0,
+      "scheduled_exposures_each_condition": 0,
+      "completed_before_scheduled_event_each_condition": 100,
+      "censored_after_scheduled_event_each_condition": 0,
+      "successes_failure": 100,
+      "successes_sham": 100,
+      "mean_steps_each_condition": 6.56,
+      "median_steps_each_condition": 6.0,
+      "min_steps": 3,
+      "max_steps": 12,
+      "episodes_completed_by_step_count_10": 95,
+      "mean_team_return_each_condition": -0.512,
+      "mean_agent_return_each_condition": -0.17066666666666666,
+      "paired_failure_minus_sham": {
+        "success": 0,
+        "steps": 0,
+        "team_return": 0.0,
+        "mean_agent_return": 0.0
+      }
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "episodes_per_condition": 100,
+      "actual_exposures_failure": 0,
+      "actual_exposures_sham": 0,
+      "scheduled_exposures_each_condition": 0,
+      "completed_before_scheduled_event_each_condition": 100,
+      "censored_after_scheduled_event_each_condition": 0,
+      "successes_failure": 100,
+      "successes_sham": 100,
+      "mean_steps_each_condition": 6.89,
+      "median_steps_each_condition": 7.0,
+      "min_steps": 4,
+      "max_steps": 12,
+      "episodes_completed_by_step_count_10": 92,
+      "mean_team_return_each_condition": -0.5365,
+      "mean_agent_return_each_condition": -0.17883333333333334,
+      "paired_failure_minus_sham": {
+        "success": 0,
+        "steps": 0,
+        "team_return": 0.0,
+        "mean_agent_return": 0.0
+      }
+    }
+  ],
+  "pair_checks": [
+    {
+      "model": "shared",
+      "seed": 0,
+      "pairs": 100,
+      "exact_pre_event_prefix_pairs": 100,
+      "exact_full_trace_pairs": 99,
+      "exact_outcome_pairs": 100
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "pairs": 100,
+      "exact_pre_event_prefix_pairs": 100,
+      "exact_full_trace_pairs": 100,
+      "exact_outcome_pairs": 100
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "pairs": 100,
+      "exact_pre_event_prefix_pairs": 100,
+      "exact_full_trace_pairs": 100,
+      "exact_outcome_pairs": 100
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "pairs": 100,
+      "exact_pre_event_prefix_pairs": 100,
+      "exact_full_trace_pairs": 100,
+      "exact_outcome_pairs": 100
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "pairs": 100,
+      "exact_pre_event_prefix_pairs": 100,
+      "exact_full_trace_pairs": 100,
+      "exact_outcome_pairs": 100
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "pairs": 100,
+      "exact_pre_event_prefix_pairs": 100,
+      "exact_full_trace_pairs": 100,
+      "exact_outcome_pairs": 100
+    }
+  ],
+  "exposed_details": [
+    {
+      "model": "shared",
+      "seed": 0,
+      "episode_index": 37,
+      "scenario": {
+        "action_seed": 2452877295,
+        "env_seed": 1175395171,
+        "event_step": 29,
+        "message_seed": 2151152225,
+        "num_a": 1,
+        "num_p": 2,
+        "scenario_id": "2106772258:37",
+        "victim": 1
+      },
+      "failure": {
+        "scenario_id": "2106772258:37",
+        "num_p": 2,
+        "env_seed": 1175395171,
+        "action_seed": 2452877295,
+        "message_seed": 2151152225,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -11.999999999999982,
+        "agent_returns": [
+          -3.999999999999994,
+          -3.999999999999994,
+          -3.999999999999994
+        ],
+        "mean_agent_return": -3.9999999999999942,
+        "return_nocap": -3.999999999999994,
+        "return_cap": -3.999999999999994,
+        "event_step": 29,
+        "victim": 1,
+        "sham": false,
+        "scheduled_event_exposed": true,
+        "event_exposed": true,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": true,
+        "post_schedule_steps": 51,
+        "recovery_steps": null,
+        "recovery_censored": true,
+        "post_event_steps": 51,
+        "intervention": "none",
+        "intervention_step": 29,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.15839781746350082,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 7680,
+        "environment_version": "corrected-observation-v1",
+        "pre_event_victim_reached": false,
+        "pre_event_victim_target_visible": false,
+        "pre_event_victim_target_seen": false
+      },
+      "sham": {
+        "scenario_id": "2106772258:37",
+        "num_p": 2,
+        "env_seed": 1175395171,
+        "action_seed": 2452877295,
+        "message_seed": 2151152225,
+        "num_a": 1,
+        "num_agents": 3,
+        "composition": [
+          2,
+          1
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -11.999999999999982,
+        "agent_returns": [
+          -3.999999999999994,
+          -3.999999999999994,
+          -3.999999999999994
+        ],
+        "mean_agent_return": -3.9999999999999942,
+        "return_nocap": -3.999999999999994,
+        "return_cap": -3.999999999999994,
+        "event_step": 29,
+        "victim": 1,
+        "sham": true,
+        "scheduled_event_exposed": true,
+        "event_exposed": false,
+        "pre_event_success": false,
+        "scheduled_completion_steps": null,
+        "scheduled_censored": true,
+        "post_schedule_steps": 51,
+        "recovery_steps": null,
+        "recovery_censored": false,
+        "post_event_steps": 0,
+        "intervention": "none",
+        "intervention_step": 29,
+        "intervention_exposed": false,
+        "gate_entropy": 0.0,
+        "expert_load": [
+          1.0
+        ],
+        "alpha_null": 0.1751193641664971,
+        "payload_bits_per_agent_step": 32,
+        "payload_bits_generated": 7680,
+        "environment_version": "corrected-observation-v1",
+        "pre_event_victim_reached": false,
+        "pre_event_victim_target_visible": false,
+        "pre_event_victim_target_seen": false
+      },
+      "first_trace_difference_step": 29,
+      "changed_trace_steps_by_field": {
+        "alpha_null": 51,
+        "actions": 44
+      },
+      "first_action_difference_step": 29,
+      "team_reward_histogram_failure": {
+        "-0.15000000000000002": 80
+      },
+      "team_reward_histogram_sham": {
+        "-0.15000000000000002": 80
+      }
+    }
+  ],
+  "totals": {
+    "policy_scenario_pairs": 600,
+    "episode_evaluations": 1200,
+    "actual_sensor_exposure_assignments": 1,
+    "completed_before_own_scheduled_event_assignments": 599,
+    "exact_pre_event_prefix_pairs": 600,
+    "exact_full_trace_pairs": 599,
+    "exact_outcome_pairs": 600,
+    "total_recorded_trace_steps_both_conditions": 7824,
+    "pre_event_trace_steps_compared": 3861
+  },
+  "conclusions": [
+    "All six policies use the exact common manifest-hashed scenario panel in both conditions.",
+    "All 600 failure/sham pairs agree exactly on every stored pre-event trace field.",
+    "Only one pair reaches its scheduled event; 599 complete before their own scheduled event.",
+    "The exposed pair changes attention and actions after masking but has identical failure/return/length outcomes.",
+    "The lone exposed victim had not reached, had no current target view, and had no prior direct target sight.",
+    "No banked policy physically experiences sensor loss in this panel; gate adaptation is untested here.",
+    "Equal outcome averages are insufficient evidence of sensor-loss robustness because exposure is nearly absent.",
+    "Both exposed-pair trajectories receive the floor reward -0.15 each step: 3 agents times -0.05, for 80 steps, equals -12 team return despite changed actions."
+  ],
+  "mathematical_interpretation": {
+    "exposure": "E_i = 1[T_i > t_i] for zero-based event time t_i and executed-step count T_i; the paired prefix is common.",
+    "dilution": "For n_exposed > 0 and unexposed paired outcomes equal, mean_i(Y_i^failure - Y_i^sham) = (n_exposed/M) * mean_exposed(Y_i^failure - Y_i^sham).",
+    "shared_seed0_success_contrast_resolution": "One exposed assignment among 100 limits the absolute full-panel paired success contrast to at most 1 percentage point.",
+    "zero_exposure": "For the other five policies the full-panel outcome contrast is identically zero because no event is reached, so no exposed-only contrast is defined.",
+    "inferential_unit": "Six policies from three training seeds per method; 600 assignments reuse 100 scenarios and are not 600 independent trained policies."
+  },
+  "limitations": [
+    "Traces contain gates, null weights, actions, and team rewards; they do not contain raw/actor observations, positions, hidden states, or RNG states.",
+    "Persistent victim-only sensory masking is supported by archived implementation; this audit cannot directly re-observe the unrecorded model inputs.",
+    "Matching stored prefixes proves agreement for stored fields, not bitwise identity of every internal tensor.",
+    "Reports record checkpoint hashes/model signatures and evaluator mutation checks; this audit does not rerun policies or independently load checkpoint tensors.",
+    "Direct target sight is a diagnostic, not proof of knowledge acquired through memory or communication.",
+    "No between-seed inferential interval or robustness claim is supported by one exposed policy-scenario assignment."
+  ],
+  "validation": {
+    "all_assertions_passed": true,
+    "input_bytes_unchanged_during_audit": true
+  }
+}

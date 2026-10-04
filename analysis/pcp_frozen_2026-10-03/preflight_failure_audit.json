@@ -1,0 +1,737 @@
+{
+  "checks": [
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_publication_source_audit.py tests/test_publication_lifecycle.py tests/test_publication_launcher.py",
+      "result": "28 passed in 1.24s (final focused rerun)"
+    },
+    {
+      "command": "bash -n slurm/publication_source_audit.sbatch",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed before final audit JSON"
+    }
+  ],
+  "cluster_actions": false,
+  "established_cause": "Every new preflight exits in the source-inventory guard before a run directory or training subprocess is created.",
+  "external_documentation": [
+    {
+      "supports": "Ignore patterns affect untracked files; a later ! negation re-includes a matching excluded file. Verified lines 226-248.",
+      "url": "https://git-scm.com/docs/gitignore"
+    },
+    {
+      "supports": "Git index/tracked inventory inspection; clean checkout was independently recreated from commit bytes.",
+      "url": "https://git-scm.com/docs/git-ls-files"
+    },
+    {
+      "supports": "Batch resource and stdout/stderr directives used in the read-only compute-node audit.",
+      "url": "https://slurm.schedmd.com/sbatch.html"
+    }
+  ],
+  "git_head": "e8bca439a19df3f5cca2f57039f40a1990cea0c6",
+  "interpretation_limit": "The archived errors do not list remote filenames. A checkout of this Git commit reproduces the failure exactly and copying its required license resolves that reproduction. Remote missing/extra inventory still requires source-audit output to confirm.",
+  "legacy_interpretation": "logs_1/prev extends PP seeds 0,1,2 to 1018,972,1321 complete epochs and records SIGTERM cancellation at 2026-10-03T01:25:44. It does not establish who requested cancellation or why. PCP/FC copies are duplicates ending at 2000/1400. Legacy cumulative stdout counters overcount; do not treat raw Total Steps as true sample counts.",
+  "legacy_runs": [
+    {
+      "array_index": 0,
+      "copies": [
+        {
+          "complete_epoch_records": 910,
+          "last_epoch": 910,
+          "last_epoch_line": 13920,
+          "last_epoch_text": "Epoch 910\tReward [-0.34 -0.34 -0.34]\tTime 226.28s, Episodes 6555359, Total Steps 102872624, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "301f5b746ce0196b965b6cac3015ab03e2f1d1f0f41bca3967639dfc840d26cf",
+          "stderr": "logs_1/reproduce-896848_0.err",
+          "stderr_lines": [],
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout": "logs_1/reproduce-896848_0.out"
+        },
+        {
+          "complete_epoch_records": 1018,
+          "last_epoch": 1018,
+          "last_epoch_line": 15542,
+          "last_epoch_text": "Epoch 1018\tReward [-0.32 -0.32 -0.32]\tTime 224.17s, Episodes 7918787, Total Steps 114878193, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "0cf3744c73e00bac1e338d1fae745b8df54ae351802d09f035a55abbe2a954c3",
+          "stderr": "logs_1/prev/reproduce-896848_0.err",
+          "stderr_lines": [
+            "srun: got SIGCONT",
+            "srun: Job step aborted: Waiting up to 32 seconds for job step to finish.",
+            "[2026-10-03T01:25:44.257] error: *** JOB 896849 ON ec50 CANCELLED AT 2026-10-03T01:25:44 DUE to SIGNAL Terminated ***",
+            "srun: forcing job termination",
+            "[2026-10-03T01:25:44.259] error: *** STEP 896849.0 ON ec50 CANCELLED AT 2026-10-03T01:25:44 DUE to SIGNAL Terminated ***",
+            "srun: error: ec50: task 0: Terminated"
+          ],
+          "stderr_sha256": "f847657e25d9d7d3d7be53abc5a2f2fd44a3a2ada817d2729779da077940f842",
+          "stdout": "logs_1/prev/reproduce-896848_0.out"
+        }
+      ],
+      "prefix_relation": "prev_extends_root",
+      "seed": 0,
+      "task": "pp"
+    },
+    {
+      "array_index": 1,
+      "copies": [
+        {
+          "complete_epoch_records": 866,
+          "last_epoch": 866,
+          "last_epoch_line": 13259,
+          "last_epoch_text": "Epoch 866\tReward [-0.35 -0.35 -0.35]\tTime 230.68s, Episodes 6148845, Total Steps 97864710, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "6a474653fc2fa6354ecbb0ac488a17806b51509722fe0863f4340abeed631d82",
+          "stderr": "logs_1/reproduce-896848_1.err",
+          "stderr_lines": [],
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout": "logs_1/reproduce-896848_1.out"
+        },
+        {
+          "complete_epoch_records": 972,
+          "last_epoch": 972,
+          "last_epoch_line": 14851,
+          "last_epoch_text": "Epoch 972\tReward [-0.34 -0.34 -0.34]\tTime 228.53s, Episodes 7440790, Total Steps 109657038, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "763f8e1e3df66c8bbccb3edc9477d0f704118b1168290d5139e902574d9b0d3e",
+          "stderr": "logs_1/prev/reproduce-896848_1.err",
+          "stderr_lines": [
+            "srun: got SIGCONT",
+            "[2026-10-03T01:25:44.250] error: *** JOB 896850 ON ec50 CANCELLED AT 2026-10-03T01:25:44 DUE to SIGNAL Terminated ***",
+            "srun: forcing job termination",
+            "[2026-10-03T01:25:44.262] error: *** STEP 896850.0 ON ec50 CANCELLED AT 2026-10-03T01:25:44 DUE to SIGNAL Terminated ***",
+            "srun: Job step aborted: Waiting up to 32 seconds for job step to finish.",
+            "srun: error: ec50: task 0: Terminated",
+            "srun: Force Terminated StepId=896850.0"
+          ],
+          "stderr_sha256": "215990d0bed93e524cbb538516925eb37be96684f14397facbcf2a9167831083",
+          "stdout": "logs_1/prev/reproduce-896848_1.out"
+        }
+      ],
+      "prefix_relation": "prev_extends_root",
+      "seed": 1,
+      "task": "pp"
+    },
+    {
+      "array_index": 2,
+      "copies": [
+        {
+          "complete_epoch_records": 1228,
+          "last_epoch": 1228,
+          "last_epoch_line": 18696,
+          "last_epoch_text": "Epoch 1228\tReward [-0.36 -0.36 -0.36]\tTime 257.58s, Episodes 8548949, Total Steps 138655291, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "7d4e1deb7cfdee102954dcb3f293024b80d5461ec2a5d6b90a4468527212ea96",
+          "stderr": "logs_1/reproduce-896848_2.err",
+          "stderr_lines": [],
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout": "logs_1/reproduce-896848_2.out"
+        },
+        {
+          "complete_epoch_records": 1321,
+          "last_epoch": 1321,
+          "last_epoch_line": 20093,
+          "last_epoch_text": "Epoch 1321\tReward [-0.34 -0.34 -0.34]\tTime 266.38s, Episodes 9671954, Total Steps 148995984, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "edbb21b2aec812f45ea280f996cb4c4a5c32f4f4be77e2c9b6fd671e815df5a1",
+          "stderr": "logs_1/prev/reproduce-896848_2.err",
+          "stderr_lines": [
+            "srun: got SIGCONT",
+            "[2026-10-03T01:25:44.292] error: *** STEP 896851.0 ON ec51 CANCELLED AT 2026-10-03T01:25:44 DUE to SIGNAL Terminated ***",
+            "[2026-10-03T01:25:44.312] error: *** JOB 896851 ON ec51 CANCELLED AT 2026-10-03T01:25:44 DUE to SIGNAL Terminated ***",
+            "srun: forcing job termination",
+            "srun: Job step aborted: Waiting up to 32 seconds for job step to finish.",
+            "srun: error: ec51: task 0: Terminated",
+            "srun: Force Terminated StepId=896851.0"
+          ],
+          "stderr_sha256": "a0d81e280bc872c5f56e78cba9b26c06109c19a6909dc76e9387f6dd9acebe60",
+          "stdout": "logs_1/prev/reproduce-896848_2.out"
+        }
+      ],
+      "prefix_relation": "prev_extends_root",
+      "seed": 2,
+      "task": "pp"
+    },
+    {
+      "array_index": 3,
+      "copies": [
+        {
+          "complete_epoch_records": 2000,
+          "last_epoch": 2000,
+          "last_epoch_line": 30283,
+          "last_epoch_text": "Epoch 2000\tReward [-0.56 -0.57 -0.67]\tTime 128.89s, Episodes 11565284, Total Steps 226345294, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "bd10e04bb5b3213769a1956ab5a26e25e5bc70a8fdfd79d767ff440538125736",
+          "stderr": "logs_1/reproduce-896848_3.err",
+          "stderr_lines": [
+            "/usr/bin/id: cannot find name for user ID 1227509832",
+            "/usr/bin/id: cannot find name for user ID 1227509832"
+          ],
+          "stderr_sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110",
+          "stdout": "logs_1/reproduce-896848_3.out"
+        },
+        {
+          "complete_epoch_records": 2000,
+          "last_epoch": 2000,
+          "last_epoch_line": 30283,
+          "last_epoch_text": "Epoch 2000\tReward [-0.56 -0.57 -0.67]\tTime 128.89s, Episodes 11565284, Total Steps 226345294, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "bd10e04bb5b3213769a1956ab5a26e25e5bc70a8fdfd79d767ff440538125736",
+          "stderr": "logs_1/prev/reproduce-896848_3.err",
+          "stderr_lines": [
+            "/usr/bin/id: cannot find name for user ID 1227509832",
+            "/usr/bin/id: cannot find name for user ID 1227509832"
+          ],
+          "stderr_sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110",
+          "stdout": "logs_1/prev/reproduce-896848_3.out"
+        }
+      ],
+      "prefix_relation": "identical",
+      "seed": 0,
+      "task": "pcp"
+    },
+    {
+      "array_index": 4,
+      "copies": [
+        {
+          "complete_epoch_records": 2000,
+          "last_epoch": 2000,
+          "last_epoch_line": 30283,
+          "last_epoch_text": "Epoch 2000\tReward [-0.55 -0.54 -0.65]\tTime 149.39s, Episodes 11665868, Total Steps 226130320, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "05c2ef57d3d3e223549a1fea34b4b00032bb4f24867898c514b625664c759fb6",
+          "stderr": "logs_1/reproduce-896848_4.err",
+          "stderr_lines": [
+            "/usr/bin/id: cannot find name for user ID 1227509832",
+            "/usr/bin/id: cannot find name for user ID 1227509832"
+          ],
+          "stderr_sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110",
+          "stdout": "logs_1/reproduce-896848_4.out"
+        },
+        {
+          "complete_epoch_records": 2000,
+          "last_epoch": 2000,
+          "last_epoch_line": 30283,
+          "last_epoch_text": "Epoch 2000\tReward [-0.55 -0.54 -0.65]\tTime 149.39s, Episodes 11665868, Total Steps 226130320, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "05c2ef57d3d3e223549a1fea34b4b00032bb4f24867898c514b625664c759fb6",
+          "stderr": "logs_1/prev/reproduce-896848_4.err",
+          "stderr_lines": [
+            "/usr/bin/id: cannot find name for user ID 1227509832",
+            "/usr/bin/id: cannot find name for user ID 1227509832"
+          ],
+          "stderr_sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110",
+          "stdout": "logs_1/prev/reproduce-896848_4.out"
+        }
+      ],
+      "prefix_relation": "identical",
+      "seed": 1,
+      "task": "pcp"
+    },
+    {
+      "array_index": 5,
+      "copies": [
+        {
+          "complete_epoch_records": 2000,
+          "last_epoch": 2000,
+          "last_epoch_line": 30283,
+          "last_epoch_text": "Epoch 2000\tReward [-0.57 -0.57 -0.67]\tTime 147.90s, Episodes 11201617, Total Steps 226657937, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "32df1668070f4e5293f7e86d2a8f54605baf4e0ef604e652efef756304ebb05b",
+          "stderr": "logs_1/reproduce-896848_5.err",
+          "stderr_lines": [],
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout": "logs_1/reproduce-896848_5.out"
+        },
+        {
+          "complete_epoch_records": 2000,
+          "last_epoch": 2000,
+          "last_epoch_line": 30283,
+          "last_epoch_text": "Epoch 2000\tReward [-0.57 -0.57 -0.67]\tTime 147.90s, Episodes 11201617, Total Steps 226657937, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "32df1668070f4e5293f7e86d2a8f54605baf4e0ef604e652efef756304ebb05b",
+          "stderr": "logs_1/prev/reproduce-896848_5.err",
+          "stderr_lines": [],
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout": "logs_1/prev/reproduce-896848_5.out"
+        }
+      ],
+      "prefix_relation": "identical",
+      "seed": 2,
+      "task": "pcp"
+    },
+    {
+      "array_index": 6,
+      "copies": [
+        {
+          "complete_epoch_records": 1400,
+          "last_epoch": 1400,
+          "last_epoch_line": 22670,
+          "last_epoch_text": "Epoch 1400\tReward [-79.26 -79.26 -75.12]\tTime 173.46s, Episodes 827963, Total Steps 192555734, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "cbac385a0e75dc80913d99aafa20e88d88ee522159a5323ea6777c2aec47bfd1",
+          "stderr": "logs_1/reproduce-896848_6.err",
+          "stderr_lines": [
+            "/usr/bin/id: cannot find name for user ID 1227509832",
+            "/usr/bin/id: cannot find name for user ID 1227509832"
+          ],
+          "stderr_sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110",
+          "stdout": "logs_1/reproduce-896848_6.out"
+        },
+        {
+          "complete_epoch_records": 1400,
+          "last_epoch": 1400,
+          "last_epoch_line": 22670,
+          "last_epoch_text": "Epoch 1400\tReward [-79.26 -79.26 -75.12]\tTime 173.46s, Episodes 827963, Total Steps 192555734, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "cbac385a0e75dc80913d99aafa20e88d88ee522159a5323ea6777c2aec47bfd1",
+          "stderr": "logs_1/prev/reproduce-896848_6.err",
+          "stderr_lines": [
+            "/usr/bin/id: cannot find name for user ID 1227509832",
+            "/usr/bin/id: cannot find name for user ID 1227509832"
+          ],
+          "stderr_sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110",
+          "stdout": "logs_1/prev/reproduce-896848_6.out"
+        }
+      ],
+      "prefix_relation": "identical",
+      "seed": 0,
+      "task": "fc"
+    },
+    {
+      "array_index": 7,
+      "copies": [
+        {
+          "complete_epoch_records": 1400,
+          "last_epoch": 1400,
+          "last_epoch_line": 22670,
+          "last_epoch_text": "Epoch 1400\tReward [-72.32 -72.32 -69.09]\tTime 163.31s, Episodes 876436, Total Steps 193895452, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "7688228547430e27a32c8c7a7b594d4dc2f744d6b3634b3311bd4fd6e647190a",
+          "stderr": "logs_1/reproduce-896848_7.err",
+          "stderr_lines": [
+            "/usr/bin/id: cannot find name for user ID 1227509832",
+            "/usr/bin/id: cannot find name for user ID 1227509832"
+          ],
+          "stderr_sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110",
+          "stdout": "logs_1/reproduce-896848_7.out"
+        },
+        {
+          "complete_epoch_records": 1400,
+          "last_epoch": 1400,
+          "last_epoch_line": 22670,
+          "last_epoch_text": "Epoch 1400\tReward [-72.32 -72.32 -69.09]\tTime 163.31s, Episodes 876436, Total Steps 193895452, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "7688228547430e27a32c8c7a7b594d4dc2f744d6b3634b3311bd4fd6e647190a",
+          "stderr": "logs_1/prev/reproduce-896848_7.err",
+          "stderr_lines": [
+            "/usr/bin/id: cannot find name for user ID 1227509832",
+            "/usr/bin/id: cannot find name for user ID 1227509832"
+          ],
+          "stderr_sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110",
+          "stdout": "logs_1/prev/reproduce-896848_7.out"
+        }
+      ],
+      "prefix_relation": "identical",
+      "seed": 1,
+      "task": "fc"
+    },
+    {
+      "array_index": 8,
+      "copies": [
+        {
+          "complete_epoch_records": 1400,
+          "last_epoch": 1400,
+          "last_epoch_line": 22670,
+          "last_epoch_text": "Epoch 1400\tReward [-70.   -70.   -66.34]\tTime 167.90s, Episodes 893978, Total Steps 193886494, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "c5b9acc353bc6372427f658d525dd7ed31bdc3dcc5bc64858ca29732a044919b",
+          "stderr": "logs_1/reproduce-896848_8.err",
+          "stderr_lines": [
+            "/usr/bin/id: cannot find name for user ID 1227509832",
+            "/usr/bin/id: cannot find name for user ID 1227509832"
+          ],
+          "stderr_sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110",
+          "stdout": "logs_1/reproduce-896848_8.out"
+        },
+        {
+          "complete_epoch_records": 1400,
+          "last_epoch": 1400,
+          "last_epoch_line": 22670,
+          "last_epoch_text": "Epoch 1400\tReward [-70.   -70.   -66.34]\tTime 167.90s, Episodes 893978, Total Steps 193886494, Python Allocation Peak disabled, GPU Memory Peak [0. 0. 0. 0.]MB",
+          "sha256": "c5b9acc353bc6372427f658d525dd7ed31bdc3dcc5bc64858ca29732a044919b",
+          "stderr": "logs_1/prev/reproduce-896848_8.err",
+          "stderr_lines": [
+            "/usr/bin/id: cannot find name for user ID 1227509832",
+            "/usr/bin/id: cannot find name for user ID 1227509832"
+          ],
+          "stderr_sha256": "d2f49969dc61f55f28c50244a22717c134e0ae174eeca51e59f5dc1cf70e4110",
+          "stdout": "logs_1/prev/reproduce-896848_8.out"
+        }
+      ],
+      "prefix_relation": "identical",
+      "seed": 2,
+      "task": "fc"
+    }
+  ],
+  "license_file_existing_bytes_exposed_for_distribution": "publication_reconstruction/runtime/envs/LICENSE.md",
+  "local_check": {
+    "actual_inventory": {
+      "LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "WildFire_Simulate_Original.py": "65c7e8fa57ad201b7ecf0860080236ae56e569d5f876ac6ebe68f20db8322e2c",
+      "action_utils.py": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd",
+      "comm.py": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf",
+      "data.py": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b",
+      "env_wrappers.py": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0",
+      "envs/.gitignore": "416e0945bd66e3167c148267c35e1edf8dbd47bb7182cdda3c7575db7f5ede97",
+      "envs/LICENSE.md": "8a166c9b1c9d6415bf89277474ff1033525ced55dd7bed45c3d95db12462afc9",
+      "envs/README.md": "c825c7fb50aaac2dd650a48d3fdccc4676f99037d3805db7ecc10f33c232d0db",
+      "envs/examples/random_agent.py": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221",
+      "envs/ic3net_envs/__init__.py": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3",
+      "envs/ic3net_envs/fire_commander_env.py": "aef3e55d85b2597a257490f0c71055f7adfb7fe71b7189f20803acb79fbc499e",
+      "envs/ic3net_envs/predator_capture_env.py": "f48dca463fbdb3c4b0407278b232cb2468b174ea0496aac511db9b5d2ff85198",
+      "envs/ic3net_envs/predator_prey_env.py": "5d61a1d996f4fec8620fa67521577bea468b14e0899a1009108ceb311ce04dd1",
+      "envs/ic3net_envs/traffic_helper.py": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d",
+      "envs/ic3net_envs/traffic_junction_env.py": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17",
+      "envs/setup.py": "5a251fe600b795e42c6c418dd7394a1e76aaaf96aeebd7b02d1cc81f1b01e300",
+      "eval_trainer.py": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939",
+      "hetgat/graph/fastbinary.py": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc",
+      "hetgat/graph/fastreal.py": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862",
+      "hetgat/graph/hetgat.py": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232",
+      "hetgat/graph/hetgata2c.py": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948",
+      "hetgat/graph/hetgatreal.py": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d",
+      "hetgat/policy.py": "419d4e2ad999c111b64c97d69faaef30867dec3254b0e8efd4e9be6619af3d4c",
+      "hetgat/policy_entropy.py": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895",
+      "hetgat/uavnet.py": "82c72c62630a3f32d840f229cb0794628066184daba614139068390c0ff5088f",
+      "hetgat/utils.py": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0",
+      "hetnet_ext/__init__.py": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9",
+      "hetnet_ext/progress.py": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507",
+      "hetnet_ext/recording.py": "ff268f87f8ff05832d446266654039fc16969ac05903bba217568fffb8cc130d",
+      "hetnet_ext/recovery.py": "4c85f73c67b7ce839ef4340abab29a6b4631ee41bd1b541751a91311d595f1c4",
+      "hetnet_ext/seeding.py": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc",
+      "hetnet_ext/signatures.py": "4f92b26e2cf4d4ad7fa6af8990adfed39b4293cc7ef91e0b258376d48cd7cf4a",
+      "main.py": "4b3aa0f240be88f6bf5ef9869711bf6f3f59fa1bd9de5bdd3ca35a7c98c60bf1",
+      "models.py": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7",
+      "multi_processing.py": "2fa911d4b3a5adb0f1ab6d8ca8a60bec4264458d33270592427ae95bbbb96927",
+      "trainer.py": "dcb4b68edb0ba04099ba93575bbc6dc02992c4706c6f69d379132a863a31e950",
+      "utils.py": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5"
+    },
+    "changed": {},
+    "expected_inventory": {
+      "LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "WildFire_Simulate_Original.py": "65c7e8fa57ad201b7ecf0860080236ae56e569d5f876ac6ebe68f20db8322e2c",
+      "action_utils.py": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd",
+      "comm.py": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf",
+      "data.py": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b",
+      "env_wrappers.py": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0",
+      "envs/.gitignore": "416e0945bd66e3167c148267c35e1edf8dbd47bb7182cdda3c7575db7f5ede97",
+      "envs/LICENSE.md": "8a166c9b1c9d6415bf89277474ff1033525ced55dd7bed45c3d95db12462afc9",
+      "envs/README.md": "c825c7fb50aaac2dd650a48d3fdccc4676f99037d3805db7ecc10f33c232d0db",
+      "envs/examples/random_agent.py": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221",
+      "envs/ic3net_envs/__init__.py": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3",
+      "envs/ic3net_envs/fire_commander_env.py": "aef3e55d85b2597a257490f0c71055f7adfb7fe71b7189f20803acb79fbc499e",
+      "envs/ic3net_envs/predator_capture_env.py": "f48dca463fbdb3c4b0407278b232cb2468b174ea0496aac511db9b5d2ff85198",
+      "envs/ic3net_envs/predator_prey_env.py": "5d61a1d996f4fec8620fa67521577bea468b14e0899a1009108ceb311ce04dd1",
+      "envs/ic3net_envs/traffic_helper.py": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d",
+      "envs/ic3net_envs/traffic_junction_env.py": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17",
+      "envs/setup.py": "5a251fe600b795e42c6c418dd7394a1e76aaaf96aeebd7b02d1cc81f1b01e300",
+      "eval_trainer.py": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939",
+      "hetgat/graph/fastbinary.py": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc",
+      "hetgat/graph/fastreal.py": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862",
+      "hetgat/graph/hetgat.py": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232",
+      "hetgat/graph/hetgata2c.py": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948",
+      "hetgat/graph/hetgatreal.py": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d",
+      "hetgat/policy.py": "419d4e2ad999c111b64c97d69faaef30867dec3254b0e8efd4e9be6619af3d4c",
+      "hetgat/policy_entropy.py": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895",
+      "hetgat/uavnet.py": "82c72c62630a3f32d840f229cb0794628066184daba614139068390c0ff5088f",
+      "hetgat/utils.py": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0",
+      "hetnet_ext/__init__.py": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9",
+      "hetnet_ext/progress.py": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507",
+      "hetnet_ext/recording.py": "ff268f87f8ff05832d446266654039fc16969ac05903bba217568fffb8cc130d",
+      "hetnet_ext/recovery.py": "4c85f73c67b7ce839ef4340abab29a6b4631ee41bd1b541751a91311d595f1c4",
+      "hetnet_ext/seeding.py": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc",
+      "hetnet_ext/signatures.py": "4f92b26e2cf4d4ad7fa6af8990adfed39b4293cc7ef91e0b258376d48cd7cf4a",
+      "main.py": "4b3aa0f240be88f6bf5ef9869711bf6f3f59fa1bd9de5bdd3ca35a7c98c60bf1",
+      "models.py": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7",
+      "multi_processing.py": "2fa911d4b3a5adb0f1ab6d8ca8a60bec4264458d33270592427ae95bbbb96927",
+      "trainer.py": "dcb4b68edb0ba04099ba93575bbc6dc02992c4706c6f69d379132a863a31e950",
+      "utils.py": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5"
+    },
+    "expected_runtime_files": 38,
+    "missing": [],
+    "origins_sha256": "7d26df9c9d66b994b0cb295f3c693241ac8ede112a6046d17d7e07b9acb6c15f",
+    "runtime_files": 38,
+    "runtime_root": "/Users/akshatguduru/Desktop/Thesis/HetNet/publication_reconstruction/runtime",
+    "schema_version": 1,
+    "unexpected": [],
+    "valid": true
+  },
+  "new_preflight": [
+    {
+      "array_index": 0,
+      "diagnostic_lines": [
+        13,
+        17
+      ],
+      "error": "RuntimeError: Runtime file inventory differs from ORIGINS.json; regenerate provenance",
+      "exit_line": "srun: error: ec52: task 0: Exited with exit code 1",
+      "inferred_updates_completed": 0,
+      "phase": "source validation before run creation and learner spawn",
+      "stderr": "logs_1/hetnet-preflight-902621_0.err",
+      "stderr_sha256": "4428523b68cafd6eda382a4953ad11b5c7ffd18925823083e0649fbdaa99d75f",
+      "stdout": "logs_1/hetnet-preflight-902621_0.out",
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "task": "pp",
+      "variant": "real"
+    },
+    {
+      "array_index": 1,
+      "diagnostic_lines": [
+        13,
+        17
+      ],
+      "error": "RuntimeError: Runtime file inventory differs from ORIGINS.json; regenerate provenance",
+      "exit_line": "srun: error: ec50: task 0: Exited with exit code 1",
+      "inferred_updates_completed": 0,
+      "phase": "source validation before run creation and learner spawn",
+      "stderr": "logs_1/hetnet-preflight-902621_1.err",
+      "stderr_sha256": "8acdea899b60ce9071c8a7b9c62bbc6cf976f52d40f7f2b60a3e8a3dbbf8ffec",
+      "stdout": "logs_1/hetnet-preflight-902621_1.out",
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "task": "pcp",
+      "variant": "real"
+    },
+    {
+      "array_index": 2,
+      "diagnostic_lines": [
+        13,
+        17
+      ],
+      "error": "RuntimeError: Runtime file inventory differs from ORIGINS.json; regenerate provenance",
+      "exit_line": "srun: error: ec50: task 0: Exited with exit code 1",
+      "inferred_updates_completed": 0,
+      "phase": "source validation before run creation and learner spawn",
+      "stderr": "logs_1/hetnet-preflight-902621_2.err",
+      "stderr_sha256": "8acdea899b60ce9071c8a7b9c62bbc6cf976f52d40f7f2b60a3e8a3dbbf8ffec",
+      "stdout": "logs_1/hetnet-preflight-902621_2.out",
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "task": "fc",
+      "variant": "real"
+    },
+    {
+      "array_index": 3,
+      "diagnostic_lines": [
+        13,
+        17
+      ],
+      "error": "RuntimeError: Runtime file inventory differs from ORIGINS.json; regenerate provenance",
+      "exit_line": "srun: error: ec50: task 0: Exited with exit code 1",
+      "inferred_updates_completed": 0,
+      "phase": "source validation before run creation and learner spawn",
+      "stderr": "logs_1/hetnet-preflight-902621_3.err",
+      "stderr_sha256": "8acdea899b60ce9071c8a7b9c62bbc6cf976f52d40f7f2b60a3e8a3dbbf8ffec",
+      "stdout": "logs_1/hetnet-preflight-902621_3.out",
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "task": "pcp",
+      "variant": "binary"
+    }
+  ],
+  "packaging_defect": {
+    "baseline_ignore_rule": ".gitignore:18 (*.md), observed via git check-ignore before narrow exception",
+    "expected_files": 38,
+    "license_sha256": "8a166c9b1c9d6415bf89277474ff1033525ced55dd7bed45c3d95db12462afc9",
+    "manifest_license_sha256": "8a166c9b1c9d6415bf89277474ff1033525ced55dd7bed45c3d95db12462afc9",
+    "missing_from_git": [
+      "envs/LICENSE.md"
+    ],
+    "tracked_checkout_reproduction": {
+      "after_copying_only_manifest_matching_license": {
+        "actual_inventory": {
+          "LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "WildFire_Simulate_Original.py": "65c7e8fa57ad201b7ecf0860080236ae56e569d5f876ac6ebe68f20db8322e2c",
+          "action_utils.py": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd",
+          "comm.py": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf",
+          "data.py": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b",
+          "env_wrappers.py": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0",
+          "envs/.gitignore": "416e0945bd66e3167c148267c35e1edf8dbd47bb7182cdda3c7575db7f5ede97",
+          "envs/LICENSE.md": "8a166c9b1c9d6415bf89277474ff1033525ced55dd7bed45c3d95db12462afc9",
+          "envs/README.md": "c825c7fb50aaac2dd650a48d3fdccc4676f99037d3805db7ecc10f33c232d0db",
+          "envs/examples/random_agent.py": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221",
+          "envs/ic3net_envs/__init__.py": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3",
+          "envs/ic3net_envs/fire_commander_env.py": "aef3e55d85b2597a257490f0c71055f7adfb7fe71b7189f20803acb79fbc499e",
+          "envs/ic3net_envs/predator_capture_env.py": "f48dca463fbdb3c4b0407278b232cb2468b174ea0496aac511db9b5d2ff85198",
+          "envs/ic3net_envs/predator_prey_env.py": "5d61a1d996f4fec8620fa67521577bea468b14e0899a1009108ceb311ce04dd1",
+          "envs/ic3net_envs/traffic_helper.py": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d",
+          "envs/ic3net_envs/traffic_junction_env.py": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17",
+          "envs/setup.py": "5a251fe600b795e42c6c418dd7394a1e76aaaf96aeebd7b02d1cc81f1b01e300",
+          "eval_trainer.py": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939",
+          "hetgat/graph/fastbinary.py": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc",
+          "hetgat/graph/fastreal.py": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862",
+          "hetgat/graph/hetgat.py": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232",
+          "hetgat/graph/hetgata2c.py": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948",
+          "hetgat/graph/hetgatreal.py": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d",
+          "hetgat/policy.py": "419d4e2ad999c111b64c97d69faaef30867dec3254b0e8efd4e9be6619af3d4c",
+          "hetgat/policy_entropy.py": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895",
+          "hetgat/uavnet.py": "82c72c62630a3f32d840f229cb0794628066184daba614139068390c0ff5088f",
+          "hetgat/utils.py": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0",
+          "hetnet_ext/__init__.py": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9",
+          "hetnet_ext/progress.py": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507",
+          "hetnet_ext/recording.py": "ff268f87f8ff05832d446266654039fc16969ac05903bba217568fffb8cc130d",
+          "hetnet_ext/recovery.py": "4c85f73c67b7ce839ef4340abab29a6b4631ee41bd1b541751a91311d595f1c4",
+          "hetnet_ext/seeding.py": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc",
+          "hetnet_ext/signatures.py": "4f92b26e2cf4d4ad7fa6af8990adfed39b4293cc7ef91e0b258376d48cd7cf4a",
+          "main.py": "4b3aa0f240be88f6bf5ef9869711bf6f3f59fa1bd9de5bdd3ca35a7c98c60bf1",
+          "models.py": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7",
+          "multi_processing.py": "2fa911d4b3a5adb0f1ab6d8ca8a60bec4264458d33270592427ae95bbbb96927",
+          "trainer.py": "dcb4b68edb0ba04099ba93575bbc6dc02992c4706c6f69d379132a863a31e950",
+          "utils.py": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5"
+        },
+        "changed": {},
+        "expected_inventory": {
+          "LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "WildFire_Simulate_Original.py": "65c7e8fa57ad201b7ecf0860080236ae56e569d5f876ac6ebe68f20db8322e2c",
+          "action_utils.py": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd",
+          "comm.py": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf",
+          "data.py": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b",
+          "env_wrappers.py": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0",
+          "envs/.gitignore": "416e0945bd66e3167c148267c35e1edf8dbd47bb7182cdda3c7575db7f5ede97",
+          "envs/LICENSE.md": "8a166c9b1c9d6415bf89277474ff1033525ced55dd7bed45c3d95db12462afc9",
+          "envs/README.md": "c825c7fb50aaac2dd650a48d3fdccc4676f99037d3805db7ecc10f33c232d0db",
+          "envs/examples/random_agent.py": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221",
+          "envs/ic3net_envs/__init__.py": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3",
+          "envs/ic3net_envs/fire_commander_env.py": "aef3e55d85b2597a257490f0c71055f7adfb7fe71b7189f20803acb79fbc499e",
+          "envs/ic3net_envs/predator_capture_env.py": "f48dca463fbdb3c4b0407278b232cb2468b174ea0496aac511db9b5d2ff85198",
+          "envs/ic3net_envs/predator_prey_env.py": "5d61a1d996f4fec8620fa67521577bea468b14e0899a1009108ceb311ce04dd1",
+          "envs/ic3net_envs/traffic_helper.py": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d",
+          "envs/ic3net_envs/traffic_junction_env.py": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17",
+          "envs/setup.py": "5a251fe600b795e42c6c418dd7394a1e76aaaf96aeebd7b02d1cc81f1b01e300",
+          "eval_trainer.py": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939",
+          "hetgat/graph/fastbinary.py": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc",
+          "hetgat/graph/fastreal.py": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862",
+          "hetgat/graph/hetgat.py": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232",
+          "hetgat/graph/hetgata2c.py": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948",
+          "hetgat/graph/hetgatreal.py": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d",
+          "hetgat/policy.py": "419d4e2ad999c111b64c97d69faaef30867dec3254b0e8efd4e9be6619af3d4c",
+          "hetgat/policy_entropy.py": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895",
+          "hetgat/uavnet.py": "82c72c62630a3f32d840f229cb0794628066184daba614139068390c0ff5088f",
+          "hetgat/utils.py": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0",
+          "hetnet_ext/__init__.py": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9",
+          "hetnet_ext/progress.py": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507",
+          "hetnet_ext/recording.py": "ff268f87f8ff05832d446266654039fc16969ac05903bba217568fffb8cc130d",
+          "hetnet_ext/recovery.py": "4c85f73c67b7ce839ef4340abab29a6b4631ee41bd1b541751a91311d595f1c4",
+          "hetnet_ext/seeding.py": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc",
+          "hetnet_ext/signatures.py": "4f92b26e2cf4d4ad7fa6af8990adfed39b4293cc7ef91e0b258376d48cd7cf4a",
+          "main.py": "4b3aa0f240be88f6bf5ef9869711bf6f3f59fa1bd9de5bdd3ca35a7c98c60bf1",
+          "models.py": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7",
+          "multi_processing.py": "2fa911d4b3a5adb0f1ab6d8ca8a60bec4264458d33270592427ae95bbbb96927",
+          "trainer.py": "dcb4b68edb0ba04099ba93575bbc6dc02992c4706c6f69d379132a863a31e950",
+          "utils.py": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5"
+        },
+        "expected_runtime_files": 38,
+        "missing": [],
+        "origins_sha256": "7d26df9c9d66b994b0cb295f3c693241ac8ede112a6046d17d7e07b9acb6c15f",
+        "runtime_files": 38,
+        "schema_version": 1,
+        "unexpected": [],
+        "valid": true
+      },
+      "before": {
+        "actual_inventory": {
+          "LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "WildFire_Simulate_Original.py": "65c7e8fa57ad201b7ecf0860080236ae56e569d5f876ac6ebe68f20db8322e2c",
+          "action_utils.py": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd",
+          "comm.py": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf",
+          "data.py": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b",
+          "env_wrappers.py": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0",
+          "envs/.gitignore": "416e0945bd66e3167c148267c35e1edf8dbd47bb7182cdda3c7575db7f5ede97",
+          "envs/README.md": "c825c7fb50aaac2dd650a48d3fdccc4676f99037d3805db7ecc10f33c232d0db",
+          "envs/examples/random_agent.py": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221",
+          "envs/ic3net_envs/__init__.py": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3",
+          "envs/ic3net_envs/fire_commander_env.py": "aef3e55d85b2597a257490f0c71055f7adfb7fe71b7189f20803acb79fbc499e",
+          "envs/ic3net_envs/predator_capture_env.py": "f48dca463fbdb3c4b0407278b232cb2468b174ea0496aac511db9b5d2ff85198",
+          "envs/ic3net_envs/predator_prey_env.py": "5d61a1d996f4fec8620fa67521577bea468b14e0899a1009108ceb311ce04dd1",
+          "envs/ic3net_envs/traffic_helper.py": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d",
+          "envs/ic3net_envs/traffic_junction_env.py": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17",
+          "envs/setup.py": "5a251fe600b795e42c6c418dd7394a1e76aaaf96aeebd7b02d1cc81f1b01e300",
+          "eval_trainer.py": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939",
+          "hetgat/graph/fastbinary.py": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc",
+          "hetgat/graph/fastreal.py": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862",
+          "hetgat/graph/hetgat.py": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232",
+          "hetgat/graph/hetgata2c.py": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948",
+          "hetgat/graph/hetgatreal.py": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d",
+          "hetgat/policy.py": "419d4e2ad999c111b64c97d69faaef30867dec3254b0e8efd4e9be6619af3d4c",
+          "hetgat/policy_entropy.py": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895",
+          "hetgat/uavnet.py": "82c72c62630a3f32d840f229cb0794628066184daba614139068390c0ff5088f",
+          "hetgat/utils.py": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0",
+          "hetnet_ext/__init__.py": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9",
+          "hetnet_ext/progress.py": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507",
+          "hetnet_ext/recording.py": "ff268f87f8ff05832d446266654039fc16969ac05903bba217568fffb8cc130d",
+          "hetnet_ext/recovery.py": "4c85f73c67b7ce839ef4340abab29a6b4631ee41bd1b541751a91311d595f1c4",
+          "hetnet_ext/seeding.py": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc",
+          "hetnet_ext/signatures.py": "4f92b26e2cf4d4ad7fa6af8990adfed39b4293cc7ef91e0b258376d48cd7cf4a",
+          "main.py": "4b3aa0f240be88f6bf5ef9869711bf6f3f59fa1bd9de5bdd3ca35a7c98c60bf1",
+          "models.py": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7",
+          "multi_processing.py": "2fa911d4b3a5adb0f1ab6d8ca8a60bec4264458d33270592427ae95bbbb96927",
+          "trainer.py": "dcb4b68edb0ba04099ba93575bbc6dc02992c4706c6f69d379132a863a31e950",
+          "utils.py": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5"
+        },
+        "changed": {},
+        "expected_inventory": {
+          "LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "WildFire_Simulate_Original.py": "65c7e8fa57ad201b7ecf0860080236ae56e569d5f876ac6ebe68f20db8322e2c",
+          "action_utils.py": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd",
+          "comm.py": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf",
+          "data.py": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b",
+          "env_wrappers.py": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0",
+          "envs/.gitignore": "416e0945bd66e3167c148267c35e1edf8dbd47bb7182cdda3c7575db7f5ede97",
+          "envs/LICENSE.md": "8a166c9b1c9d6415bf89277474ff1033525ced55dd7bed45c3d95db12462afc9",
+          "envs/README.md": "c825c7fb50aaac2dd650a48d3fdccc4676f99037d3805db7ecc10f33c232d0db",
+          "envs/examples/random_agent.py": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221",
+          "envs/ic3net_envs/__init__.py": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3",
+          "envs/ic3net_envs/fire_commander_env.py": "aef3e55d85b2597a257490f0c71055f7adfb7fe71b7189f20803acb79fbc499e",
+          "envs/ic3net_envs/predator_capture_env.py": "f48dca463fbdb3c4b0407278b232cb2468b174ea0496aac511db9b5d2ff85198",
+          "envs/ic3net_envs/predator_prey_env.py": "5d61a1d996f4fec8620fa67521577bea468b14e0899a1009108ceb311ce04dd1",
+          "envs/ic3net_envs/traffic_helper.py": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d",
+          "envs/ic3net_envs/traffic_junction_env.py": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17",
+          "envs/setup.py": "5a251fe600b795e42c6c418dd7394a1e76aaaf96aeebd7b02d1cc81f1b01e300",
+          "eval_trainer.py": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939",
+          "hetgat/graph/fastbinary.py": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc",
+          "hetgat/graph/fastreal.py": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862",
+          "hetgat/graph/hetgat.py": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232",
+          "hetgat/graph/hetgata2c.py": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948",
+          "hetgat/graph/hetgatreal.py": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d",
+          "hetgat/policy.py": "419d4e2ad999c111b64c97d69faaef30867dec3254b0e8efd4e9be6619af3d4c",
+          "hetgat/policy_entropy.py": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895",
+          "hetgat/uavnet.py": "82c72c62630a3f32d840f229cb0794628066184daba614139068390c0ff5088f",
+          "hetgat/utils.py": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0",
+          "hetnet_ext/__init__.py": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9",
+          "hetnet_ext/progress.py": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507",
+          "hetnet_ext/recording.py": "ff268f87f8ff05832d446266654039fc16969ac05903bba217568fffb8cc130d",
+          "hetnet_ext/recovery.py": "4c85f73c67b7ce839ef4340abab29a6b4631ee41bd1b541751a91311d595f1c4",
+          "hetnet_ext/seeding.py": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc",
+          "hetnet_ext/signatures.py": "4f92b26e2cf4d4ad7fa6af8990adfed39b4293cc7ef91e0b258376d48cd7cf4a",
+          "main.py": "4b3aa0f240be88f6bf5ef9869711bf6f3f59fa1bd9de5bdd3ca35a7c98c60bf1",
+          "models.py": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7",
+          "multi_processing.py": "2fa911d4b3a5adb0f1ab6d8ca8a60bec4264458d33270592427ae95bbbb96927",
+          "trainer.py": "dcb4b68edb0ba04099ba93575bbc6dc02992c4706c6f69d379132a863a31e950",
+          "utils.py": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5"
+        },
+        "expected_runtime_files": 38,
+        "missing": [
+          "envs/LICENSE.md"
+        ],
+        "origins_sha256": "7d26df9c9d66b994b0cb295f3c693241ac8ede112a6046d17d7e07b9acb6c15f",
+        "runtime_files": 37,
+        "schema_version": 1,
+        "unexpected": [],
+        "valid": false
+      },
+      "guard_error": "Runtime file inventory differs from ORIGINS.json: {\"changed\": {}, \"missing\": [\"envs/LICENSE.md\"], \"unexpected\": []}. Restore the approved source and matching manifest; do not regenerate provenance merely to accept an incomplete or unexpected transfer."
+    },
+    "tracked_runtime_files": 37
+  },
+  "patch_files": [
+    ".gitignore",
+    "publication_reconstruction/__main__.py",
+    "scripts/record_publication_sources.py",
+    "slurm/publication_source_audit.sbatch",
+    "tests/test_publication_source_audit.py"
+  ],
+  "runtime_or_origins_changed": false,
+  "schema_version": 1,
+  "scientific_changes": false,
+  "submission_commands": [
+    "mkdir -p logs_1",
+    "sbatch slurm/publication_source_audit.sbatch",
+    "sbatch slurm/publication_preflight.sbatch"
+  ],
+  "submission_gate": "Run source audit after transferring the corrected code including runtime/envs/LICENSE.md. Only if valid=true and exit code 0 rerun preflight; no research array until all four actual preflights pass. Every preflight job ID receives a fresh default run root.",
+  "training_started": false
+}

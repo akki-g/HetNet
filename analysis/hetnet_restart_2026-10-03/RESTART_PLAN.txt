@@ -1,0 +1,190 @@
+HetNet remedy and restart plan - 3 October 2026 (America/New_York)
+
+Decision
+========
+Use Stokes and the existing approved supplement-v1 research recipe. Repair the
+deployment, validate four compute-node preflights concurrently, then submit the
+existing 12-run training array. These failed preflights never started training;
+there is no checkpoint from them to recover. Do not change the model, optimizer,
+sample budgets, collector count or numerical precision to remedy this error.
+Starting tonight is contingent on queue availability and passing the checks.
+
+Confirmed cause and remaining uncertainty
+========================================
+All four new jobs (902621_0..3) stopped at validate_source_origins(). Stdout is
+empty. The traceback is before output/run creation or a training subprocess.
+The manifest expects 38 runtime files, but current Git HEAD tracks 37; the omitted
+file is publication_reconstruction/runtime/envs/LICENSE.md. A fresh Git export
+reproduces the original failure; adding only this exact license passes 38 hashes.
+License SHA256:
+8a166c9b1c9d6415bf89277474ff1033525ced55dd7bed45c3d95db12462afc9
+
+The local working tree already passes, but the license and source-audit script
+are untracked and the diagnostic edits are uncommitted. A plain Git pull will
+not deliver these changes yet. The old Stokes error did not list missing files;
+its precise inventory remains to confirm. This is a reproduced explanation for
+Git deployment, not proof of the current remote filesystem.
+
+The old PP cancellations in logs_1/prev are a separate event: SIGTERM, with no
+requester/cause established. Legacy weights cannot initialize a scientifically
+identical supplement-v1 continuation: the architecture/optimizer and recovery
+contract differ. Preserve those old runs as separately labelled evidence.
+
+1. Transfer the repair before submitting anything
+=================================================
+Minimum operational repair files, relative to the same current repository:
+  .gitignore
+  publication_reconstruction/runtime/envs/LICENSE.md
+  publication_reconstruction/__main__.py
+  scripts/record_publication_sources.py
+  slurm/publication_source_audit.sbatch
+Keep tests/test_publication_source_audit.py in version control with the fix.
+
+Git route: explicitly include the new license and batch script, as well as the
+modified files, in the code change delivered to Stokes. Neither a commit nor a
+push has been performed by this audit. Do not use git add . over the large synced
+results tree. File-copy route: copy these exact paths from the validated local
+checkout, including the license even if a sync filter excludes Markdown files.
+If the Stokes checkout differs substantially, deploy the complete matching code
+revision instead of combining old launcher files with a new runtime.
+
+Use an idle checkout; ongoing frozen jobs import live source. Keep ORIGINS.json
+and every runtime byte unchanged. Do not run the provenance refresh to hide a
+missing/extra/changed file. No dependency installation is indicated by this error.
+
+2. Run the existing source-audit Slurm job
+=========================================
+On Stokes, from the repository root:
+
+  mkdir -p logs_1
+  sbatch slurm/publication_source_audit.sbatch
+
+Expected stdout JSON: valid=true, runtime_files=38, expected_runtime_files=38,
+missing=[], unexpected=[], changed={}; Slurm exit 0. ORIGINS SHA256 must equal:
+7d26df9c9d66b994b0cb295f3c693241ac8ede112a6046d17d7e07b9acb6c15f
+
+Inspect logs_1/hetnet-source-audit-JOBID.out/.err. This job is read-only, uses the
+existing pinned .venv, requests one CPU/1GB/5min, and does not train or submit jobs.
+It checks inventory, not Torch/DGL runtime compatibility. If it fails:
+  missing: transfer the named approved file(s), preserving exact bytes;
+  unexpected: inspect and relocate accidental files outside runtime;
+  changed: restore the matching approved source and manifest together;
+  module/Python failure: repair the existing documented environment on a compute
+    node; avoid an unplanned dependency upgrade.
+Rerun this short audit after correction; do not submit another blind long run.
+
+3. Run all four bounded preflights concurrently
+==============================================
+After the source audit passes:
+
+  sbatch --array=0-3%4 slurm/publication_preflight.sbatch
+
+The command-line override raises independent job concurrency from the file's
+default %1 to %4. It does not change four collectors per job, the learner or RNG.
+Concurrent peak requested resources are 16 CPUs and 64GB across four allocations.
+The scheduler may still serialize them. Each allocation remains 2h/4 CPUs/16GB.
+
+Array mapping (seed 991, excluded from research results):
+  0 PP Real, H=80; 1 PCP Real, H=80;
+  2 FC Real, H=300; 3 PCP Binary-16, H=80.
+Every job uses 100 updates, 4 collectors and a 500-step floor per collector.
+Default fresh output: runs/hetnet_preflight_ARRAYJOBID/TASK_VARIANT/seed991/.
+Leave PUBLICATION_PREFLIGHT_ROOT unset unless an explicitly fresh root is needed.
+
+For C=4, b=500 and horizon H, each update collects between 4b and 4(b+H-1)
+steps. Therefore these 100-update checks collect 200000..231600 steps for PP/PCP
+and 200000..319600 for FC. They preserve production workload shape while keeping
+validation bounded. Training speed/convergence is not established by this bound.
+
+Required go/no-go evidence for EACH workload:
+  - Successful scheduler exit; exactly 100 updates in preflight.json.
+  - A validated model/optimizer checkpoint and frozen_checkpoint_probe with
+    episodes=1 and parameters_unchanged=true (strict archived loading exercised).
+  - Four collector records, one Torch thread each, SLURM allocation=4 CPUs;
+    inspect affinity to ensure collectors can use the assigned CPU set.
+  - No OOM/time-limit/worker exit; inspect Slurm memory accounting plus per-process
+    resource records. MaxRSS per task/process is not simultaneous whole-job RSS.
+  - Finite positive throughput and update/checkpoint times. Review
+    projected_segment_hours_including_logging_and_checkpoints_excluding_startup
+    as an estimate, not a full-budget runtime guarantee. If above 46h, plan a
+    continuation; do not silently reduce the scientific sample target.
+
+Scheduler check (replace PREFLIGHT_JOBID with the returned array ID):
+  sacct -j PREFLIGHT_JOBID --format=JobID,State,ExitCode,Elapsed,AllocCPUS,ReqMem,MaxRSS
+
+If an element hits the 2h allocation, the preflight is incomplete even if a
+periodic checkpoint exists. Diagnose the resource/runtime log, then rerun that
+bounded workload in a fresh directory with an appropriate allocation. Queue
+delay plus audit/preflight time prevents a guaranteed start time tonight.
+
+4. Submit the locked research array once all four workloads pass
+===============================================================
+Use a fresh run root to avoid collision with any earlier partial directories:
+
+  export PUBLICATION_RUN_ROOT=runs/hetnet_supplement_v1_restart_20261003
+  sbatch slurm/publication_train.sbatch
+
+The batch file contains the actual training command and locked array 0-11%3.
+It requests one task, four CPUs, 16GB and 48h per job; at most three jobs run
+concurrently. Do not reuse an existing output directory or preflight checkpoint.
+If this dated root already exists, choose another fresh segment/root explicitly.
+
+Research mapping, unchanged:
+  0..2   PP Real, seeds 0..2, 40M steps, H=80
+  3..5   PCP Real, seeds 0..2, 40M steps, H=80
+  6..8   FC Real, seeds 0..2, 28M steps, H=300
+  9..11  PCP Binary-16, seeds 0..2, 40M steps, H=80
+All use supplement-v1 (3 layers/4 heads, Adam 1e-3), corrected-v1, the inherited
+public-code-v1 learner, CPU float64 mode, four collectors, 500-step batch floors
+and 10 updates/epoch. Existing public attention dtype conventions are retained.
+40M/28M targets and 10M/20M/30M/40M or 10M/20M/28M milestones remain unchanged.
+
+5. Monitor progress and continue correctly
+==========================================
+Look for increasing update/step counts in tagged stdout and updates.jsonl. The
+first periodic checkpoint is after ten completed epochs (=100 updates). Preserve
+source archives and logs. Check scheduler accounting and run_status.json; exit 0
+or Slurm COMPLETED does not necessarily mean the sample budget is complete.
+
+At the internal 46h timer the learner completes its current update, saves recovery
+state, and returns normally with stop_reason=paused_wall_time and
+scientific_budget_completed=false. Resume from run_status.json's EXACT checkpoint
+path into a fresh segment using the already prepared batch file:
+
+  sbatch slurm/publication_resume.sbatch \
+    --run-dir ORIGINAL_RUN_DIRECTORY \
+    --checkpoint EXACT_RECORDED_CHECKPOINT_PATH \
+    --output FRESH_CONTINUATION_DIRECTORY
+
+The 46h clock starts after setup. The 48h allocation supplies a provisional 2h
+buffer for startup/remaining update/checkpointing, not an interruption guarantee.
+SIGTERM exits immediately; periodic checkpoints are the abrupt-stop fallback.
+Requeue/rerunning the training script does not restore Python state. Keep the
+scientific budget until status and actual counts confirm budget_completed.
+
+Local verification completed for this remedy
+============================================
+Read-only source audit: 38/38 exact hashes, no differences. Fresh clean-Git export
+failure and license-only restoration reproduced independently. Shell syntax for
+audit/preflight/train/resume passes. Focused source/lifecycle/launcher/study/Slurm
+suite: 95 passed in 14.22s. The earlier full suite passed 447 tests; that is prior
+validation, not a fresh full-suite run. No research job or remote command was run.
+
+Traceable evidence
+==================
+[1] logs_1/hetnet-preflight-902621_{0..3}.err:17; all corresponding .out empty.
+[2] packaging_audit.json in this folder: clean-export reproduction and exact hashes.
+    publication_reconstruction/ORIGINS.json:64; .gitignore:21.
+[3] publication_reconstruction/__main__.py:176-219: inventory and archived source;
+    scripts/record_publication_sources.py:72-97: read-only --check.
+[4] publication_reconstruction/study.py:34-102: array recipes, measured preflight,
+    strict optimizer validation and one-episode archived checkpoint probe.
+[5] slurm/publication_{source_audit,preflight,train,resume}.sbatch: resources/commands;
+    publication_reconstruction/README.md:148-180: compute-node readiness contract.
+[6] publication_reconstruction/runtime/main.py:594-654: budget/wall stop/status and
+    SIGTERM behavior; runtime/hetnet_ext/recovery.py:63-70: resource units.
+[7] Official Slurm sbatch documentation: option precedence, queue behavior and
+    percentage array concurrency: https://slurm.schedmd.com/sbatch.html
+    Array semantics: https://slurm.schedmd.com/job_array.html
+[8] Git ignore and tracking semantics: https://git-scm.com/docs/gitignore
+    https://git-scm.com/docs/git-ls-files

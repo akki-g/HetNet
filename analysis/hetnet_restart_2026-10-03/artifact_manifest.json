@@ -1,0 +1,27 @@
+[
+  {
+    "path": "analysis/hetnet_restart_2026-10-03/RESTART_PLAN.txt",
+    "sha256": "89e6d36c754b421e8c1f5bd5bff9fbbc54447712180049eee150d84535a54fbb",
+    "bytes": 10864
+  },
+  {
+    "path": "analysis/hetnet_restart_2026-10-03/deployment_inventory.json",
+    "sha256": "ea8e4c641325b6d9f2d53d4dc9857cb205e8772661d0c9715fc3eda31aeae20e",
+    "bytes": 785
+  },
+  {
+    "path": "analysis/hetnet_restart_2026-10-03/packaging_audit.json",
+    "sha256": "c17debee48bff63b1fd35e812922c822bef61abe8c0c123ce87397b4a422a61a",
+    "bytes": 8607
+  },
+  {
+    "path": "analysis/hetnet_restart_2026-10-03/source_audit.json",
+    "sha256": "4a2d2e2a7417b14fd1681b67a4a255681bda4c9f4ed3d5bcb14244de7b9a9e3e",
+    "bytes": 8071
+  },
+  {
+    "path": "analysis/hetnet_restart_2026-10-03/validation.json",
+    "sha256": "5f7c73246864e843d31bd4b135e5665e164a9f1c33c61c708ca2d3bfaab2552d",
+    "bytes": 789
+  }
+]

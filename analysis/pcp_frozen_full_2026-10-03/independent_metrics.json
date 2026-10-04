@@ -1,0 +1,1703 @@
+{
+  "checks": {
+    "episode_invariants": 15000
+  },
+  "code_evidence": [
+    {
+      "claim": "Default -.05 step cost, zero completion reward, no partial capture reward; P remains reached and A remains captured; success requires all P/A reached and all A captured.",
+      "lines": "42-44, 81-87, 416-420, 450-455, 486-545",
+      "path": "source/envs/ic3net_envs/predator_capture_env.py",
+      "sha256": "935875ac665877965f86a2e12f5ef52669065d3a2a01ba11b0ed065bfac59583"
+    },
+    {
+      "claim": "PCP uses default mixed reward, second_reward_scheme false; physical rewards unchanged; horizon80 truncates unsuccessful episodes.",
+      "lines": "55-71, 165-182",
+      "path": "source/softrole/env.py",
+      "sha256": "d0c49b3fb10521946cc5501fc33af5b1a0c8e3c16c5e9231854f9aac3cf87cd1"
+    },
+    {
+      "claim": "Episode rewards accumulate physical per-agent rewards; returns ordered P then A; steps count environment transitions.",
+      "lines": "148-153, 171-184",
+      "path": "source/softrole/rollout.py",
+      "sha256": "f5beaa75cf54c079daaf7927c5723c970a606416fad827cb069897ef9952bcba"
+    },
+    {
+      "claim": "Reported agent mean is episode average of team return divided by that episode's roster size.",
+      "lines": "108-116",
+      "path": "source/softrole/evaluate.py",
+      "sha256": "6a152333c0286e9b72cd6790ade851ce3f40b4162015411a7355e82efcf7d0fa"
+    },
+    {
+      "claim": "Reporting caps unsuccessful completions at horizon and keeps seed means separate.",
+      "lines": "100-111",
+      "path": "source/softrole/report.py",
+      "sha256": "0b7819dfde174fab3ff21ecaf12bc178603caae24d23fef923c0c45a2a0a14f0"
+    }
+  ],
+  "equal_seed_per_composition": [
+    {
+      "composition": [
+        1,
+        2
+      ],
+      "metrics": {
+        "horizon_capped_completion_steps": 23.836666666666662,
+        "mean_actuating_agent_return": -1.0657999999999987,
+        "mean_agent_return": -0.754877777777777,
+        "mean_sensing_agent_return": -0.13303333333333334,
+        "mean_steps": 23.836666666666662,
+        "mean_team_return": -2.264633333333331,
+        "success_rate": 0.8073333333333333,
+        "successful_only_steps": 10.730410146332455
+      },
+      "model": "banked",
+      "seed_ranges": {
+        "mean_steps": [
+          9.964,
+          46.254
+        ],
+        "mean_team_return": [
+          -4.6319999999999935,
+          -0.9506999999999999
+        ],
+        "success_rate": [
+          0.498,
+          0.996
+        ]
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "success_counts": [
+        498,
+        249,
+        464
+      ],
+      "success_rates": [
+        0.996,
+        0.498,
+        0.928
+      ]
+    },
+    {
+      "composition": [
+        2,
+        1
+      ],
+      "metrics": {
+        "horizon_capped_completion_steps": 6.894666666666667,
+        "mean_actuating_agent_return": -0.2924,
+        "mean_agent_return": -0.1813111111111111,
+        "mean_sensing_agent_return": -0.12576666666666667,
+        "mean_steps": 6.894666666666667,
+        "mean_team_return": -0.5439333333333334,
+        "success_rate": 1.0,
+        "successful_only_steps": 6.894666666666667
+      },
+      "model": "banked",
+      "seed_ranges": {
+        "mean_steps": [
+          6.672,
+          7.024
+        ],
+        "mean_team_return": [
+          -0.5522,
+          -0.5333
+        ],
+        "success_rate": [
+          1.0,
+          1.0
+        ]
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "success_counts": [
+        500,
+        500,
+        500
+      ],
+      "success_rates": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "composition": [
+        2,
+        2
+      ],
+      "metrics": {
+        "horizon_capped_completion_steps": 18.038666666666668,
+        "mean_actuating_agent_return": -0.8169333333333325,
+        "mean_agent_return": -0.4706916666666663,
+        "mean_sensing_agent_return": -0.12445,
+        "mean_steps": 18.038666666666668,
+        "mean_team_return": -1.8827666666666651,
+        "success_rate": 0.87,
+        "successful_only_steps": 8.989058051969005
+      },
+      "model": "banked",
+      "seed_ranges": {
+        "mean_steps": [
+          8.058,
+          37.27
+        ],
+        "mean_team_return": [
+          -3.826199999999995,
+          -0.8991
+        ],
+        "success_rate": [
+          0.614,
+          1.0
+        ]
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "success_counts": [
+        500,
+        307,
+        498
+      ],
+      "success_rates": [
+        1.0,
+        0.614,
+        0.996
+      ]
+    },
+    {
+      "composition": [
+        3,
+        1
+      ],
+      "metrics": {
+        "horizon_capped_completion_steps": 6.830000000000001,
+        "mean_actuating_agent_return": -0.2875,
+        "mean_agent_return": -0.16693333333333335,
+        "mean_sensing_agent_return": -0.12674444444444444,
+        "mean_steps": 6.830000000000001,
+        "mean_team_return": -0.6677333333333334,
+        "success_rate": 1.0,
+        "successful_only_steps": 6.830000000000001
+      },
+      "model": "banked",
+      "seed_ranges": {
+        "mean_steps": [
+          6.57,
+          7.044
+        ],
+        "mean_team_return": [
+          -0.6837000000000001,
+          -0.6488
+        ],
+        "success_rate": [
+          1.0,
+          1.0
+        ]
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "success_counts": [
+        500,
+        500,
+        500
+      ],
+      "success_rates": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "composition": [
+        3,
+        2
+      ],
+      "metrics": {
+        "horizon_capped_completion_steps": 17.401333333333334,
+        "mean_actuating_agent_return": -0.7889499999999993,
+        "mean_agent_return": -0.39409999999999973,
+        "mean_sensing_agent_return": -0.13086666666666666,
+        "mean_steps": 17.401333333333334,
+        "mean_team_return": -1.9704999999999986,
+        "success_rate": 0.8813333333333334,
+        "successful_only_steps": 9.315416149068323
+      },
+      "model": "banked",
+      "seed_ranges": {
+        "mean_steps": [
+          7.692,
+          36.118
+        ],
+        "mean_team_return": [
+          -3.8433999999999955,
+          -1.0134
+        ],
+        "success_rate": [
+          0.644,
+          1.0
+        ]
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "success_counts": [
+        500,
+        322,
+        500
+      ],
+      "success_rates": [
+        1.0,
+        0.644,
+        1.0
+      ]
+    },
+    {
+      "composition": [
+        1,
+        2
+      ],
+      "metrics": {
+        "horizon_capped_completion_steps": 9.325333333333333,
+        "mean_actuating_agent_return": -0.37046666666666656,
+        "mean_agent_return": -0.29748888888888886,
+        "mean_sensing_agent_return": -0.1515333333333333,
+        "mean_steps": 9.325333333333333,
+        "mean_team_return": -0.8924666666666665,
+        "success_rate": 0.9893333333333333,
+        "successful_only_steps": 8.576132231404959
+      },
+      "model": "shared",
+      "seed_ranges": {
+        "mean_steps": [
+          7.882,
+          12.01
+        ],
+        "mean_team_return": [
+          -1.2039999999999995,
+          -0.7273
+        ],
+        "success_rate": [
+          0.968,
+          1.0
+        ]
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "success_counts": [
+        484,
+        500,
+        500
+      ],
+      "success_rates": [
+        0.968,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "composition": [
+        2,
+        1
+      ],
+      "metrics": {
+        "horizon_capped_completion_steps": 5.959333333333333,
+        "mean_actuating_agent_return": -0.2421333333333333,
+        "mean_agent_return": -0.16872222222222222,
+        "mean_sensing_agent_return": -0.13201666666666667,
+        "mean_steps": 5.959333333333333,
+        "mean_team_return": -0.5061666666666667,
+        "success_rate": 0.9979999999999999,
+        "successful_only_steps": 5.811446009389672
+      },
+      "model": "shared",
+      "seed_ranges": {
+        "mean_steps": [
+          5.684,
+          6.5
+        ],
+        "mean_team_return": [
+          -0.5713999999999999,
+          -0.4722
+        ],
+        "success_rate": [
+          0.994,
+          1.0
+        ]
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "success_counts": [
+        497,
+        500,
+        500
+      ],
+      "success_rates": [
+        0.994,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "composition": [
+        2,
+        2
+      ],
+      "metrics": {
+        "horizon_capped_completion_steps": 7.024666666666666,
+        "mean_actuating_agent_return": -0.26663333333333333,
+        "mean_agent_return": -0.19578333333333334,
+        "mean_sensing_agent_return": -0.12493333333333333,
+        "mean_steps": 7.024666666666666,
+        "mean_team_return": -0.7831333333333333,
+        "success_rate": 0.9993333333333334,
+        "successful_only_steps": 6.976324649298597
+      },
+      "model": "shared",
+      "seed_ranges": {
+        "mean_steps": [
+          6.666,
+          7.632
+        ],
+        "mean_team_return": [
+          -0.8522,
+          -0.7447
+        ],
+        "success_rate": [
+          0.998,
+          1.0
+        ]
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "success_counts": [
+        499,
+        500,
+        500
+      ],
+      "success_rates": [
+        0.998,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "composition": [
+        3,
+        1
+      ],
+      "metrics": {
+        "horizon_capped_completion_steps": 5.783333333333334,
+        "mean_actuating_agent_return": -0.22686666666666666,
+        "mean_agent_return": -0.15138333333333334,
+        "mean_sensing_agent_return": -0.1262222222222222,
+        "mean_steps": 5.783333333333334,
+        "mean_team_return": -0.6055333333333334,
+        "success_rate": 0.9993333333333334,
+        "successful_only_steps": 5.733930527722111
+      },
+      "model": "shared",
+      "seed_ranges": {
+        "mean_steps": [
+          5.65,
+          6.044
+        ],
+        "mean_team_return": [
+          -0.6399,
+          -0.5868000000000001
+        ],
+        "success_rate": [
+          0.998,
+          1.0
+        ]
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "success_counts": [
+        499,
+        500,
+        500
+      ],
+      "success_rates": [
+        0.998,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "composition": [
+        3,
+        2
+      ],
+      "metrics": {
+        "horizon_capped_completion_steps": 6.717333333333333,
+        "mean_actuating_agent_return": -0.2538833333333333,
+        "mean_agent_return": -0.17810666666666666,
+        "mean_sensing_agent_return": -0.1275888888888889,
+        "mean_steps": 6.717333333333333,
+        "mean_team_return": -0.8905333333333334,
+        "success_rate": 1.0,
+        "successful_only_steps": 6.717333333333333
+      },
+      "model": "shared",
+      "seed_ranges": {
+        "mean_steps": [
+          6.496,
+          7.114
+        ],
+        "mean_team_return": [
+          -0.9338000000000001,
+          -0.867
+        ],
+        "success_rate": [
+          1.0,
+          1.0
+        ]
+      },
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "success_counts": [
+        500,
+        500,
+        500
+      ],
+      "success_rates": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "input_hashes": {
+    "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed0_nominal.json": "8781bd61ef13038263dfc9a8f6ecd12a45d31aa3fabdcaab742b1f80d4a18b6d",
+    "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed1_nominal.json": "db98498498dc41ef5d8df52ba13ccd19c0d45d3abfc7ec1bd07edd79b203ae24",
+    "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed2_nominal.json": "7b58b06f50fa6c3a4e126174a3d109f0abf206ee180b61b8fba89269955d1dc3",
+    "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed0_nominal.json": "5d7529e9c237a6c9a0c3749127e1722fb2532a55c7d095b0be5c3765082c9a52",
+    "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed1_nominal.json": "7fd2708cb7055eeb951e9f0db62dd9841a6d220415f7d84076f4cc75d8131c53",
+    "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed2_nominal.json": "3ead5acf0717aa93e2019ea7a43665753242f13089bb7dc2674496daf57c7550"
+  },
+  "limitations": [
+    "No new policy evaluation, no causal attribution of failure mechanism.",
+    "Three training seeds; seed ranges are descriptive, not confidence intervals.",
+    "Agent return means average within each episode then across episodes.",
+    "All unsuccessful episodes were observed to reach the 80-step horizon.",
+    "Successful-only completion means condition on success and can conceal failures."
+  ],
+  "per_seed": [
+    {
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 2507739,
+        "total_steps": 30728678,
+        "updates": 15000
+      },
+      "compositions": [
+        {
+          "alpha_null_episode_mean": 0.049819549347148995,
+          "composition": [
+            1,
+            2
+          ],
+          "episodes": 500,
+          "failures": 2,
+          "gate_entropy_episode_mean": 1.0332566735048982,
+          "horizon_capped_completion_steps": 9.964,
+          "mean_actuating_agent_return": -0.40929999999999994,
+          "mean_agent_return": -0.31689999999999996,
+          "mean_sensing_agent_return": -0.1321,
+          "mean_steps": 9.964,
+          "mean_team_return": -0.9506999999999999,
+          "model": "banked",
+          "seed": 0,
+          "success_rate": 0.996,
+          "successes": 498,
+          "successful_only_steps": 9.682730923694779,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": -3.999999999999994,
+            "failed_episode_mean_sensing_agent_return": -1.999999999999997,
+            "failed_episodes": 2,
+            "unfinished_actuating_agents_histogram": {
+              "2": 2
+            },
+            "unfinished_sensing_agents_histogram": {
+              "0": 1,
+              "1": 1
+            }
+          },
+          "unsuccessful_steps": {
+            "80": 2
+          }
+        },
+        {
+          "alpha_null_episode_mean": 0.0649057780334364,
+          "composition": [
+            2,
+            1
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.975095606329701,
+          "horizon_capped_completion_steps": 7.024,
+          "mean_actuating_agent_return": -0.3006,
+          "mean_agent_return": -0.18406666666666666,
+          "mean_sensing_agent_return": -0.12580000000000002,
+          "mean_steps": 7.024,
+          "mean_team_return": -0.5522,
+          "model": "banked",
+          "seed": 0,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 7.024,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.04892749245764967,
+          "composition": [
+            2,
+            2
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 1.0109893408283628,
+          "horizon_capped_completion_steps": 8.058,
+          "mean_actuating_agent_return": -0.32434999999999997,
+          "mean_agent_return": -0.224775,
+          "mean_sensing_agent_return": -0.1252,
+          "mean_steps": 8.058,
+          "mean_team_return": -0.8991,
+          "model": "banked",
+          "seed": 0,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 8.058,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.06229489333112233,
+          "composition": [
+            3,
+            1
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.9502439356225155,
+          "horizon_capped_completion_steps": 6.876,
+          "mean_actuating_agent_return": -0.291,
+          "mean_agent_return": -0.16767500000000002,
+          "mean_sensing_agent_return": -0.12656666666666666,
+          "mean_steps": 6.876,
+          "mean_team_return": -0.6707000000000001,
+          "model": "banked",
+          "seed": 0,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 6.876,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.049921438468373866,
+          "composition": [
+            3,
+            2
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.9872025290536429,
+          "horizon_capped_completion_steps": 7.692,
+          "mean_actuating_agent_return": -0.3118,
+          "mean_agent_return": -0.20268,
+          "mean_sensing_agent_return": -0.12993333333333335,
+          "mean_steps": 7.692,
+          "mean_team_return": -1.0134,
+          "model": "banked",
+          "seed": 0,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 7.692,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        }
+      ],
+      "metrics": {
+        "alpha_null_episode_mean": 0.05517383032754625,
+        "episodes": 2500,
+        "failures": 2,
+        "gate_entropy_episode_mean": 0.9913576170678241,
+        "horizon_capped_completion_steps": 7.9228,
+        "mean_actuating_agent_return": -0.32741,
+        "mean_agent_return": -0.21921933333333332,
+        "mean_sensing_agent_return": -0.12792,
+        "mean_steps": 7.9228,
+        "mean_team_return": -0.81722,
+        "success_rate": 0.9992,
+        "successes": 2498,
+        "successful_only_steps": 7.865092073658927,
+        "unsuccessful_steps": {
+          "80": 2
+        }
+      },
+      "model": "banked",
+      "path": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed0_nominal.json",
+      "seed": 0,
+      "unresolved_from_rewards": {
+        "failed_episode_mean_actuating_agent_return": -3.999999999999994,
+        "failed_episode_mean_sensing_agent_return": -1.999999999999997,
+        "failed_episodes": 2,
+        "unfinished_actuating_agents_histogram": {
+          "2": 2
+        },
+        "unfinished_sensing_agents_histogram": {
+          "0": 1,
+          "1": 1
+        }
+      }
+    },
+    {
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 2604257,
+        "total_steps": 30683393,
+        "updates": 15000
+      },
+      "compositions": [
+        {
+          "alpha_null_episode_mean": 0.07005999541749422,
+          "composition": [
+            1,
+            2
+          ],
+          "episodes": 500,
+          "failures": 251,
+          "gate_entropy_episode_mean": 0.509639252391723,
+          "horizon_capped_completion_steps": 46.254,
+          "mean_actuating_agent_return": -2.245799999999997,
+          "mean_agent_return": -1.543999999999998,
+          "mean_sensing_agent_return": -0.14039999999999997,
+          "mean_steps": 46.254,
+          "mean_team_return": -4.6319999999999935,
+          "model": "banked",
+          "seed": 1,
+          "success_rate": 0.498,
+          "successes": 249,
+          "successful_only_steps": 12.236947791164658,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": -3.9922310756972053,
+            "failed_episode_mean_sensing_agent_return": -0.1635458167330677,
+            "failed_episodes": 251,
+            "unfinished_actuating_agents_histogram": {
+              "1": 1,
+              "2": 250
+            },
+            "unfinished_sensing_agents_histogram": {
+              "0": 249,
+              "1": 2
+            }
+          },
+          "unsuccessful_steps": {
+            "80": 251
+          }
+        },
+        {
+          "alpha_null_episode_mean": 0.17053984234235628,
+          "composition": [
+            2,
+            1
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.7338000192091608,
+          "horizon_capped_completion_steps": 6.672,
+          "mean_actuating_agent_return": -0.2795,
+          "mean_agent_return": -0.17776666666666666,
+          "mean_sensing_agent_return": -0.1269,
+          "mean_steps": 6.672,
+          "mean_team_return": -0.5333,
+          "model": "banked",
+          "seed": 1,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 6.672,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.08715121752957893,
+          "composition": [
+            2,
+            2
+          ],
+          "episodes": 500,
+          "failures": 193,
+          "gate_entropy_episode_mean": 0.5853021444743377,
+          "horizon_capped_completion_steps": 37.27,
+          "mean_actuating_agent_return": -1.7877499999999975,
+          "mean_agent_return": -0.9565499999999988,
+          "mean_sensing_agent_return": -0.12535000000000002,
+          "mean_steps": 37.27,
+          "mean_team_return": -3.826199999999995,
+          "model": "banked",
+          "seed": 1,
+          "success_rate": 0.614,
+          "successes": 307,
+          "successful_only_steps": 10.407166123778502,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": -3.9902849740932576,
+            "failed_episode_mean_sensing_agent_return": -0.12590673575129535,
+            "failed_episodes": 193,
+            "unfinished_actuating_agents_histogram": {
+              "1": 1,
+              "2": 192
+            },
+            "unfinished_sensing_agents_histogram": {
+              "0": 193
+            }
+          },
+          "unsuccessful_steps": {
+            "80": 193
+          }
+        },
+        {
+          "alpha_null_episode_mean": 0.16676159923327824,
+          "composition": [
+            3,
+            1
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.7313524495988742,
+          "horizon_capped_completion_steps": 6.57,
+          "mean_actuating_agent_return": -0.2719,
+          "mean_agent_return": -0.1622,
+          "mean_sensing_agent_return": -0.12563333333333335,
+          "mean_steps": 6.57,
+          "mean_team_return": -0.6488,
+          "model": "banked",
+          "seed": 1,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 6.57,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.09505300010472204,
+          "composition": [
+            3,
+            2
+          ],
+          "episodes": 500,
+          "failures": 178,
+          "gate_entropy_episode_mean": 0.6160803672563799,
+          "horizon_capped_completion_steps": 36.118,
+          "mean_actuating_agent_return": -1.726599999999998,
+          "mean_agent_return": -0.7686799999999991,
+          "mean_sensing_agent_return": -0.13006666666666666,
+          "mean_steps": 36.118,
+          "mean_team_return": -3.8433999999999955,
+          "model": "banked",
+          "seed": 1,
+          "success_rate": 0.644,
+          "successes": 322,
+          "successful_only_steps": 11.860248447204969,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": -3.998876404494376,
+            "failed_episode_mean_sensing_agent_return": -0.13651685393258428,
+            "failed_episodes": 178,
+            "unfinished_actuating_agents_histogram": {
+              "1": 2,
+              "2": 176
+            },
+            "unfinished_sensing_agents_histogram": {
+              "0": 178
+            }
+          },
+          "unsuccessful_steps": {
+            "80": 178
+          }
+        }
+      ],
+      "metrics": {
+        "alpha_null_episode_mean": 0.11791313092548594,
+        "episodes": 2500,
+        "failures": 622,
+        "gate_entropy_episode_mean": 0.6352348465860952,
+        "horizon_capped_completion_steps": 26.5768,
+        "mean_actuating_agent_return": -1.2623099999999985,
+        "mean_agent_return": -0.7218393333333325,
+        "mean_sensing_agent_return": -0.12967,
+        "mean_steps": 26.5768,
+        "mean_team_return": -2.696739999999997,
+        "success_rate": 0.7512,
+        "successes": 1878,
+        "successful_only_steps": 8.882854100106496,
+        "unsuccessful_steps": {
+          "80": 622
+        }
+      },
+      "model": "banked",
+      "path": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed1_nominal.json",
+      "seed": 1,
+      "unresolved_from_rewards": {
+        "failed_episode_mean_actuating_agent_return": -3.9935289389067465,
+        "failed_episode_mean_sensing_agent_return": -0.14413183279742764,
+        "failed_episodes": 622,
+        "unfinished_actuating_agents_histogram": {
+          "1": 4,
+          "2": 618
+        },
+        "unfinished_sensing_agents_histogram": {
+          "0": 620,
+          "1": 2
+        }
+      }
+    },
+    {
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 2717080,
+        "total_steps": 30635286,
+        "updates": 15000
+      },
+      "compositions": [
+        {
+          "alpha_null_episode_mean": 0.10585200281477992,
+          "composition": [
+            1,
+            2
+          ],
+          "episodes": 500,
+          "failures": 36,
+          "gate_entropy_episode_mean": 0.666417649301433,
+          "horizon_capped_completion_steps": 15.292,
+          "mean_actuating_agent_return": -0.5422999999999998,
+          "mean_agent_return": -0.40373333333333317,
+          "mean_sensing_agent_return": -0.12660000000000002,
+          "mean_steps": 15.292,
+          "mean_team_return": -1.2111999999999996,
+          "model": "banked",
+          "seed": 2,
+          "success_rate": 0.928,
+          "successes": 464,
+          "successful_only_steps": 10.27155172413793,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": -2.4798611111111075,
+            "failed_episode_mean_sensing_agent_return": -0.18611111111111112,
+            "failed_episodes": 36,
+            "unfinished_actuating_agents_histogram": {
+              "1": 33,
+              "2": 3
+            },
+            "unfinished_sensing_agents_histogram": {
+              "0": 36
+            }
+          },
+          "unsuccessful_steps": {
+            "80": 36
+          }
+        },
+        {
+          "alpha_null_episode_mean": 0.16498017367838383,
+          "composition": [
+            2,
+            1
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.6492044584530317,
+          "horizon_capped_completion_steps": 6.988,
+          "mean_actuating_agent_return": -0.2971,
+          "mean_agent_return": -0.18209999999999998,
+          "mean_sensing_agent_return": -0.1246,
+          "mean_steps": 6.988,
+          "mean_team_return": -0.5463,
+          "model": "banked",
+          "seed": 2,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 6.988,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.11987541776963243,
+          "composition": [
+            2,
+            2
+          ],
+          "episodes": 500,
+          "failures": 2,
+          "gate_entropy_episode_mean": 0.6664398290525861,
+          "horizon_capped_completion_steps": 8.788,
+          "mean_actuating_agent_return": -0.3387,
+          "mean_agent_return": -0.23075,
+          "mean_sensing_agent_return": -0.1228,
+          "mean_steps": 8.788,
+          "mean_team_return": -0.923,
+          "model": "banked",
+          "seed": 2,
+          "success_rate": 0.996,
+          "successes": 498,
+          "successful_only_steps": 8.502008032128513,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": -2.224999999999997,
+            "failed_episode_mean_sensing_agent_return": -0.22499999999999998,
+            "failed_episodes": 2,
+            "unfinished_actuating_agents_histogram": {
+              "1": 2
+            },
+            "unfinished_sensing_agents_histogram": {
+              "0": 2
+            }
+          },
+          "unsuccessful_steps": {
+            "80": 2
+          }
+        },
+        {
+          "alpha_null_episode_mean": 0.15462015455293865,
+          "composition": [
+            3,
+            1
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.6341531306252284,
+          "horizon_capped_completion_steps": 7.044,
+          "mean_actuating_agent_return": -0.2996,
+          "mean_agent_return": -0.17092500000000002,
+          "mean_sensing_agent_return": -0.12803333333333333,
+          "mean_steps": 7.044,
+          "mean_team_return": -0.6837000000000001,
+          "model": "banked",
+          "seed": 2,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 7.044,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.11626126341253078,
+          "composition": [
+            3,
+            2
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.6533475143126077,
+          "horizon_capped_completion_steps": 8.394,
+          "mean_actuating_agent_return": -0.32844999999999996,
+          "mean_agent_return": -0.21094,
+          "mean_sensing_agent_return": -0.1326,
+          "mean_steps": 8.394,
+          "mean_team_return": -1.0547,
+          "model": "banked",
+          "seed": 2,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 8.394,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        }
+      ],
+      "metrics": {
+        "alpha_null_episode_mean": 0.1323178024456531,
+        "episodes": 2500,
+        "failures": 38,
+        "gate_entropy_episode_mean": 0.6539125163489774,
+        "horizon_capped_completion_steps": 9.3012,
+        "mean_actuating_agent_return": -0.36122999999999994,
+        "mean_agent_return": -0.2396896666666666,
+        "mean_sensing_agent_return": -0.12692666666666666,
+        "mean_steps": 9.3012,
+        "mean_team_return": -0.8837799999999999,
+        "success_rate": 0.9848,
+        "successes": 2462,
+        "successful_only_steps": 8.209991876523151,
+        "unsuccessful_steps": {
+          "80": 38
+        }
+      },
+      "model": "banked",
+      "path": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/banked_seed2_nominal.json",
+      "seed": 2,
+      "unresolved_from_rewards": {
+        "failed_episode_mean_actuating_agent_return": -2.4664473684210493,
+        "failed_episode_mean_sensing_agent_return": -0.1881578947368421,
+        "failed_episodes": 38,
+        "unfinished_actuating_agents_histogram": {
+          "1": 35,
+          "2": 3
+        },
+        "unfinished_sensing_agents_histogram": {
+          "0": 38
+        }
+      }
+    },
+    {
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 3273528,
+        "total_steps": 30552489,
+        "updates": 15000
+      },
+      "compositions": [
+        {
+          "alpha_null_episode_mean": 0.2532970091450369,
+          "composition": [
+            1,
+            2
+          ],
+          "episodes": 500,
+          "failures": 16,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 12.01,
+          "mean_actuating_agent_return": -0.5012999999999997,
+          "mean_agent_return": -0.40133333333333315,
+          "mean_sensing_agent_return": -0.20139999999999988,
+          "mean_steps": 12.01,
+          "mean_team_return": -1.2039999999999995,
+          "model": "shared",
+          "seed": 0,
+          "success_rate": 0.968,
+          "successes": 484,
+          "successful_only_steps": 9.762396694214877,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": -3.996874999999994,
+            "failed_episode_mean_sensing_agent_return": -2.559374999999996,
+            "failed_episodes": 16,
+            "unfinished_actuating_agents_histogram": {
+              "1": 1,
+              "2": 15
+            },
+            "unfinished_sensing_agents_histogram": {
+              "0": 6,
+              "1": 10
+            }
+          },
+          "unsuccessful_steps": {
+            "80": 16
+          }
+        },
+        {
+          "alpha_null_episode_mean": 0.3680159556487559,
+          "composition": [
+            2,
+            1
+          ],
+          "episodes": 500,
+          "failures": 3,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 6.5,
+          "mean_actuating_agent_return": -0.2709,
+          "mean_agent_return": -0.19046666666666665,
+          "mean_sensing_agent_return": -0.15024999999999997,
+          "mean_steps": 6.5,
+          "mean_team_return": -0.5713999999999999,
+          "model": "shared",
+          "seed": 0,
+          "success_rate": 0.994,
+          "successes": 497,
+          "successful_only_steps": 6.056338028169014,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": -3.9999999999999942,
+            "failed_episode_mean_sensing_agent_return": -3.9999999999999942,
+            "failed_episodes": 3,
+            "unfinished_actuating_agents_histogram": {
+              "1": 3
+            },
+            "unfinished_sensing_agents_histogram": {
+              "2": 3
+            }
+          },
+          "unsuccessful_steps": {
+            "80": 3
+          }
+        },
+        {
+          "alpha_null_episode_mean": 0.2856907372533187,
+          "composition": [
+            2,
+            2
+          ],
+          "episodes": 500,
+          "failures": 1,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 7.632,
+          "mean_actuating_agent_return": -0.2953,
+          "mean_agent_return": -0.21305,
+          "mean_sensing_agent_return": -0.13079999999999997,
+          "mean_steps": 7.632,
+          "mean_team_return": -0.8522,
+          "model": "shared",
+          "seed": 0,
+          "success_rate": 0.998,
+          "successes": 499,
+          "successful_only_steps": 7.486973947895792,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": -3.999999999999994,
+            "failed_episode_mean_sensing_agent_return": -3.999999999999994,
+            "failed_episodes": 1,
+            "unfinished_actuating_agents_histogram": {
+              "2": 1
+            },
+            "unfinished_sensing_agents_histogram": {
+              "2": 1
+            }
+          },
+          "unsuccessful_steps": {
+            "80": 1
+          }
+        },
+        {
+          "alpha_null_episode_mean": 0.3636942544411309,
+          "composition": [
+            3,
+            1
+          ],
+          "episodes": 500,
+          "failures": 1,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 6.044,
+          "mean_actuating_agent_return": -0.24209999999999998,
+          "mean_agent_return": -0.159975,
+          "mean_sensing_agent_return": -0.1326,
+          "mean_steps": 6.044,
+          "mean_team_return": -0.6399,
+          "model": "shared",
+          "seed": 0,
+          "success_rate": 0.998,
+          "successes": 499,
+          "successful_only_steps": 5.895791583166333,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": -3.999999999999994,
+            "failed_episode_mean_sensing_agent_return": -3.9999999999999942,
+            "failed_episodes": 1,
+            "unfinished_actuating_agents_histogram": {
+              "1": 1
+            },
+            "unfinished_sensing_agents_histogram": {
+              "3": 1
+            }
+          },
+          "unsuccessful_steps": {
+            "80": 1
+          }
+        },
+        {
+          "alpha_null_episode_mean": 0.30001069713566736,
+          "composition": [
+            3,
+            2
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 7.114,
+          "mean_actuating_agent_return": -0.27305,
+          "mean_agent_return": -0.18675999999999998,
+          "mean_sensing_agent_return": -0.12923333333333334,
+          "mean_steps": 7.114,
+          "mean_team_return": -0.9338000000000001,
+          "model": "shared",
+          "seed": 0,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 7.114,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        }
+      ],
+      "metrics": {
+        "alpha_null_episode_mean": 0.31414173072478196,
+        "episodes": 2500,
+        "failures": 21,
+        "gate_entropy_episode_mean": 0.0,
+        "horizon_capped_completion_steps": 7.86,
+        "mean_actuating_agent_return": -0.3165299999999999,
+        "mean_agent_return": -0.23031699999999997,
+        "mean_sensing_agent_return": -0.14885666666666664,
+        "mean_steps": 7.86,
+        "mean_team_return": -0.8402599999999999,
+        "success_rate": 0.9916,
+        "successes": 2479,
+        "successful_only_steps": 7.248890681726502,
+        "unsuccessful_steps": {
+          "80": 21
+        }
+      },
+      "model": "shared",
+      "path": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed0_nominal.json",
+      "seed": 0,
+      "unresolved_from_rewards": {
+        "failed_episode_mean_actuating_agent_return": -3.997619047619042,
+        "failed_episode_mean_sensing_agent_return": -2.9023809523809483,
+        "failed_episodes": 21,
+        "unfinished_actuating_agents_histogram": {
+          "1": 5,
+          "2": 16
+        },
+        "unfinished_sensing_agents_histogram": {
+          "0": 6,
+          "1": 10,
+          "2": 4,
+          "3": 1
+        }
+      }
+    },
+    {
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 3456693,
+        "total_steps": 30508112,
+        "updates": 15000
+      },
+      "compositions": [
+        {
+          "alpha_null_episode_mean": 0.21978873311524705,
+          "composition": [
+            1,
+            2
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 7.882,
+          "mean_actuating_agent_return": -0.30035,
+          "mean_agent_return": -0.24243333333333333,
+          "mean_sensing_agent_return": -0.12660000000000002,
+          "mean_steps": 7.882,
+          "mean_team_return": -0.7273,
+          "model": "shared",
+          "seed": 1,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 7.882,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.30204709921206896,
+          "composition": [
+            2,
+            1
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 5.684,
+          "mean_actuating_agent_return": -0.22640000000000002,
+          "mean_agent_return": -0.1574,
+          "mean_sensing_agent_return": -0.12290000000000001,
+          "mean_steps": 5.684,
+          "mean_team_return": -0.4722,
+          "model": "shared",
+          "seed": 1,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 5.684,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.23428035846281037,
+          "composition": [
+            2,
+            2
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 6.666,
+          "mean_actuating_agent_return": -0.25085,
+          "mean_agent_return": -0.186175,
+          "mean_sensing_agent_return": -0.1215,
+          "mean_steps": 6.666,
+          "mean_team_return": -0.7447,
+          "model": "shared",
+          "seed": 1,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 6.666,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.29346903151084625,
+          "composition": [
+            3,
+            1
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 5.65,
+          "mean_actuating_agent_return": -0.21930000000000002,
+          "mean_agent_return": -0.14670000000000002,
+          "mean_sensing_agent_return": -0.1225,
+          "mean_steps": 5.65,
+          "mean_team_return": -0.5868000000000001,
+          "model": "shared",
+          "seed": 1,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 5.65,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.2404778877788567,
+          "composition": [
+            3,
+            2
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 6.496,
+          "mean_actuating_agent_return": -0.24359999999999998,
+          "mean_agent_return": -0.1734,
+          "mean_sensing_agent_return": -0.12660000000000002,
+          "mean_steps": 6.496,
+          "mean_team_return": -0.867,
+          "model": "shared",
+          "seed": 1,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 6.496,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        }
+      ],
+      "metrics": {
+        "alpha_null_episode_mean": 0.25801262201596586,
+        "episodes": 2500,
+        "failures": 0,
+        "gate_entropy_episode_mean": 0.0,
+        "horizon_capped_completion_steps": 6.4756,
+        "mean_actuating_agent_return": -0.2481,
+        "mean_agent_return": -0.18122166666666667,
+        "mean_sensing_agent_return": -0.12402,
+        "mean_steps": 6.4756,
+        "mean_team_return": -0.6796,
+        "success_rate": 1.0,
+        "successes": 2500,
+        "successful_only_steps": 6.4756,
+        "unsuccessful_steps": {}
+      },
+      "model": "shared",
+      "path": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed1_nominal.json",
+      "seed": 1,
+      "unresolved_from_rewards": {
+        "failed_episode_mean_actuating_agent_return": null,
+        "failed_episode_mean_sensing_agent_return": null,
+        "failed_episodes": 0,
+        "unfinished_actuating_agents_histogram": {},
+        "unfinished_sensing_agents_histogram": {}
+      }
+    },
+    {
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 3370835,
+        "total_steps": 30536475,
+        "updates": 15000
+      },
+      "compositions": [
+        {
+          "alpha_null_episode_mean": 0.2684595120164189,
+          "composition": [
+            1,
+            2
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 8.084,
+          "mean_actuating_agent_return": -0.30975,
+          "mean_agent_return": -0.24869999999999998,
+          "mean_sensing_agent_return": -0.12660000000000002,
+          "mean_steps": 8.084,
+          "mean_team_return": -0.7461,
+          "model": "shared",
+          "seed": 2,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 8.084,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.37204540985553636,
+          "composition": [
+            2,
+            1
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 5.694,
+          "mean_actuating_agent_return": -0.2291,
+          "mean_agent_return": -0.15830000000000002,
+          "mean_sensing_agent_return": -0.12290000000000001,
+          "mean_steps": 5.694,
+          "mean_team_return": -0.47490000000000004,
+          "model": "shared",
+          "seed": 2,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 5.694,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.2943606312799635,
+          "composition": [
+            2,
+            2
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 6.776,
+          "mean_actuating_agent_return": -0.25375,
+          "mean_agent_return": -0.188125,
+          "mean_sensing_agent_return": -0.1225,
+          "mean_steps": 6.776,
+          "mean_team_return": -0.7525,
+          "model": "shared",
+          "seed": 2,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 6.776,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.36839569800585187,
+          "composition": [
+            3,
+            1
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 5.656,
+          "mean_actuating_agent_return": -0.2192,
+          "mean_agent_return": -0.147475,
+          "mean_sensing_agent_return": -0.12356666666666666,
+          "mean_steps": 5.656,
+          "mean_team_return": -0.5899,
+          "model": "shared",
+          "seed": 2,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 5.656,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        },
+        {
+          "alpha_null_episode_mean": 0.3069282872966923,
+          "composition": [
+            3,
+            2
+          ],
+          "episodes": 500,
+          "failures": 0,
+          "gate_entropy_episode_mean": 0.0,
+          "horizon_capped_completion_steps": 6.542,
+          "mean_actuating_agent_return": -0.245,
+          "mean_agent_return": -0.17416,
+          "mean_sensing_agent_return": -0.12693333333333334,
+          "mean_steps": 6.542,
+          "mean_team_return": -0.8708,
+          "model": "shared",
+          "seed": 2,
+          "success_rate": 1.0,
+          "successes": 500,
+          "successful_only_steps": 6.542,
+          "unresolved_from_rewards": {
+            "failed_episode_mean_actuating_agent_return": null,
+            "failed_episode_mean_sensing_agent_return": null,
+            "failed_episodes": 0,
+            "unfinished_actuating_agents_histogram": {},
+            "unfinished_sensing_agents_histogram": {}
+          },
+          "unsuccessful_steps": {}
+        }
+      ],
+      "metrics": {
+        "alpha_null_episode_mean": 0.3220379076908926,
+        "episodes": 2500,
+        "failures": 0,
+        "gate_entropy_episode_mean": 0.0,
+        "horizon_capped_completion_steps": 6.5504,
+        "mean_actuating_agent_return": -0.25136,
+        "mean_agent_return": -0.183352,
+        "mean_sensing_agent_return": -0.1245,
+        "mean_steps": 6.5504,
+        "mean_team_return": -0.68684,
+        "success_rate": 1.0,
+        "successes": 2500,
+        "successful_only_steps": 6.5504,
+        "unsuccessful_steps": {}
+      },
+      "model": "shared",
+      "path": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/results/shared_seed2_nominal.json",
+      "seed": 2,
+      "unresolved_from_rewards": {
+        "failed_episode_mean_actuating_agent_return": null,
+        "failed_episode_mean_sensing_agent_return": null,
+        "failed_episodes": 0,
+        "unfinished_actuating_agents_histogram": {},
+        "unfinished_sensing_agents_histogram": {}
+      }
+    }
+  ],
+  "reward_inference": "For each agent r_t=-.05 until its post-action completion, then0. Hence return=-.05 times number of unfinished post-action transitions. In an80-step failed episode, return=-4 implies no completion by horizon. For P completion is arrival; for A it is successful capture. A return alone cannot distinguish never arriving from arriving but not capturing."
+}

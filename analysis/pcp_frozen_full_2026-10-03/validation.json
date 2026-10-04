@@ -1,0 +1,49 @@
+{
+  "analysis_checks": {
+    "report_count": 18,
+    "all_stdout_summaries_match": true,
+    "scenario_records_match_panels": true,
+    "all_returns_reconcile": true,
+    "all_unsuccessful_episodes_reach_horizon_80": true
+  },
+  "independent_metric_comparisons": 210,
+  "source_provenance_audit_passed": true,
+  "failure_audit_validation": {
+    "all_assertions_passed": true,
+    "input_bytes_unchanged_during_audit": true
+  },
+  "all_147_input_hashes_unchanged": true,
+  "prior_stdout_pdf_unchanged": true,
+  "pdf": {
+    "pdf": "output/pdf/pcp_frozen_full_results_2026-10-03.pdf",
+    "pages": 2,
+    "sha256": "aa31ddda52ab9b78e34ab4ef985af2ec7142a2f78abec0a598f478a49189d936",
+    "builder_sha256": "fccbd46db5850d2e35374c2c90674ee8952aefbc7050ebd6e63038b8de2568b7",
+    "python": "3.12.13",
+    "packages": {
+      "reportlab": "4.4.4",
+      "pypdf": "6.1.1"
+    }
+  },
+  "pdf_visual_qa": "Both final pages rendered with Poppler at 1500px and visually inspected; no overflow, clipping or overlap.",
+  "commands": [
+    {
+      "command": "python3 analysis/pcp_frozen_full_2026-10-03/analyze.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python analysis/pcp_frozen_full_2026-10-03/provenance_audit.py",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 analysis/pcp_frozen_full_2026-10-03/failure_audit.py",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 analysis/pcp_frozen_full_2026-10-03/independent_metrics.py",
+      "exit_code": 0
+    }
+  ],
+  "resolved_tooling_issue": "System python3 lacks NumPy; provenance audit rerun successfully with existing .venv/bin/python, which README specifies.",
+  "scope": "Analysis only. No training/evaluation, source-runtime changes, dependency changes, remote submission, commit or push. Prior 447-test fix validation cited rather than rerun."
+}

@@ -4,7 +4,10 @@ import argparse
 import difflib
 import hashlib
 import json
+import os
 from pathlib import Path
+import platform
+import socket
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -68,16 +71,26 @@ def main():
     args = parser.parse_args()
     if args.check:
         import sys
+        sys.dont_write_bytecode = True
         sys.path.insert(0, str(ROOT))
-        from publication_reconstruction.__main__ import validate_source_origins
-        payloads, _ = validate_source_origins()
-        print(json.dumps({"valid": True, "runtime_files": len(payloads)}))
+        from publication_reconstruction.__main__ import inspect_source_origins
+        _, _, audit = inspect_source_origins()
+        head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True)
+        audit["execution"] = {"hostname": socket.gethostname(), "platform": platform.platform(),
+                              "python": sys.version, "git_head": head.stdout.strip() if head.returncode == 0 else None,
+                              "cpu_count": os.cpu_count(),
+                              "cpu_affinity": sorted(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else None,
+                              "slurm_job_id": os.environ.get("SLURM_JOB_ID"),
+                              "slurm_cpus_per_task": os.environ.get("SLURM_CPUS_PER_TASK")}
+        print(json.dumps(audit, sort_keys=True))
+        return 0 if audit["valid"] else 1
     elif args.output is None:
         parser.error("--output is required unless --check is used")
     else:
         result = refresh(args.output)
         print(json.dumps({"output": str(args.output), "current_origins_sha256": result["current_origins_sha256"]}))
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

@@ -1,0 +1,11 @@
+{
+  "purpose": "Exact local repair-file hashes; files are not deployed or committed by this audit.",
+  "files": {
+    ".gitignore": "c8fd4b24339a6769ce574d7a30f34478a208234fef849b8fa57f8bc719b77cc8",
+    "publication_reconstruction/runtime/envs/LICENSE.md": "8a166c9b1c9d6415bf89277474ff1033525ced55dd7bed45c3d95db12462afc9",
+    "publication_reconstruction/__main__.py": "cb6a39a41eae4bad78c1978d3e3694c779cbe25d804f1e4d750ac3f7204152ab",
+    "scripts/record_publication_sources.py": "3b9a52c6bf0f36b30de0bbbbaf14515864559ffbb33ed4c51470bccdf5c7b901",
+    "slurm/publication_source_audit.sbatch": "9e62c50e27e4f7a0125e3c8af82ef23e3d88b63d460c1b9a542af3cac765c0c9",
+    "tests/test_publication_source_audit.py": "73b0e1b77eeebb4213895d3bb51c6ef8e29ff51f6e2e3b28e0f0ef6126120841"
+  }
+}

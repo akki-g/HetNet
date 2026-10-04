@@ -1,0 +1,124 @@
+{
+  "clean_git_export_reproduction": {
+    "after_restoring_only_envs_LICENSE_md": {
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "38\n"
+    },
+    "archive_command": [
+      "git",
+      "archive",
+      "e8bca439a19df3f5cca2f57039f40a1990cea0c6",
+      "publication_reconstruction"
+    ],
+    "before_restore": {
+      "returncode": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/private/var/folders/pt/3qwxgvrn3hj1gxglr17zdy3c0000gn/T/hetnet_packaging_audit_5x2c9aby/publication_reconstruction/__main__.py\", line 183, in validate_source_origins\n    raise RuntimeError(\"Runtime file inventory differs from ORIGINS.json; regenerate provenance\")\nRuntimeError: Runtime file inventory differs from ORIGINS.json; regenerate provenance\n",
+      "stdout": ""
+    }
+  },
+  "conclusion": "All four preflights stop at inventory validation before training. A clean export of current HEAD reproduces the same inventory error; restoring only the approved license fixes it. Current working tree passes all 38 source hashes. Remote exact difference remains unconfirmed without new source-audit output. No scientific code or ORIGINS change is required.",
+  "currently_ignored_runtime_files": [],
+  "date_local": "2026-10-03",
+  "expected_but_not_tracked": [
+    "envs/LICENSE.md"
+  ],
+  "expected_runtime_files": 38,
+  "git_head": "e8bca439a19df3f5cca2f57039f40a1990cea0c6",
+  "git_tracked_runtime_files": 37,
+  "license_sha256": "8a166c9b1c9d6415bf89277474ff1033525ced55dd7bed45c3d95db12462afc9",
+  "live_runtime_files": 38,
+  "live_runtime_valid": true,
+  "log_evidence": [
+    {
+      "error_line_17": "RuntimeError: Runtime file inventory differs from ORIGINS.json; regenerate provenance",
+      "sha256": "4428523b68cafd6eda382a4953ad11b5c7ffd18925823083e0649fbdaa99d75f",
+      "stderr": "logs_1/hetnet-preflight-902621_0.err",
+      "stdout_bytes": 0
+    },
+    {
+      "error_line_17": "RuntimeError: Runtime file inventory differs from ORIGINS.json; regenerate provenance",
+      "sha256": "8acdea899b60ce9071c8a7b9c62bbc6cf976f52d40f7f2b60a3e8a3dbbf8ffec",
+      "stderr": "logs_1/hetnet-preflight-902621_1.err",
+      "stdout_bytes": 0
+    },
+    {
+      "error_line_17": "RuntimeError: Runtime file inventory differs from ORIGINS.json; regenerate provenance",
+      "sha256": "8acdea899b60ce9071c8a7b9c62bbc6cf976f52d40f7f2b60a3e8a3dbbf8ffec",
+      "stderr": "logs_1/hetnet-preflight-902621_2.err",
+      "stdout_bytes": 0
+    },
+    {
+      "error_line_17": "RuntimeError: Runtime file inventory differs from ORIGINS.json; regenerate provenance",
+      "sha256": "8acdea899b60ce9071c8a7b9c62bbc6cf976f52d40f7f2b60a3e8a3dbbf8ffec",
+      "stderr": "logs_1/hetnet-preflight-902621_3.err",
+      "stdout_bytes": 0
+    }
+  ],
+  "no_runtime_or_origins_tracked_diff": true,
+  "origins_sha256": "7d26df9c9d66b994b0cb295f3c693241ac8ede112a6046d17d7e07b9acb6c15f",
+  "synced_evaluator_archive": {
+    "ORIGINS_in_inventory": false,
+    "git_commit": "9a436e6d9f8d36c864c17744d4d55819f5e5e504",
+    "license_in_inventory": false,
+    "limitation": "softrole/train.py:58-65 filters tracked paths by suffix; .md and .json are excluded except explicit AGENTS/RESEARCH additions. Thus absent license/ORIGINS in this evaluator archive cannot establish absence on Stokes.",
+    "manifest": "stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/source_manifest.json",
+    "reconstruction_status_lines": [
+      " D analysis/publication_reconstruction_2026-09-30/artifact_manifest.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/FINDINGS.txt",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/artifact_manifest.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/collect_public.py",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/evidence_checks.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/fetch_manifest.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/probe_evidence.py",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/core_repos.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/daniel_page.html",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/daniel_profile.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/daniel_repos.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/esiseraj_profile.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/esiseraj_repos.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/fc_base_oct2021.py",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/fc_cmplx1_oct2021.py",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/fc_cmplx1_utilities_oct2021.py",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/fc_cmplx2_oct2021.py",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/fc_cmplx2_utilities_oct2021.py",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/fc_tree_nov2020.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/fc_tree_oct2021.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/fc_utilities_oct2021.py",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/fc_wildfire_oct2021.py",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/firecommander2020.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/firecommander2020_commits.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/gatech_distributed_control.html",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/magic_metadata.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/magic_pp_source.py",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/magic_tree.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/patel_profile.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/patel_repos.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/rohan_page.html",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/rohan_profile.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/rohan_repos.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/sklar_profile.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/sklar_repos.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/sklar_user_search.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/wang_page.html",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/wang_profile.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/public/wang_repos.json",
+      " D analysis/publication_reconstruction_2026-09-30/author_search/wildfire_lineage.diff",
+      " D analysis/publication_reconstruction_2026-09-30/budgets/FINDINGS.txt",
+      " D analysis/publication_reconstruction_2026-09-30/budgets/analyze.py",
+      " D analysis/publication_reconstruction_2026-09-30/budgets/results.json",
+      " D analysis/publication_reconstruction_2026-09-30/budgets/validation.json",
+      " D analysis/publication_reconstruction_2026-09-30/budgets/windows.csv",
+      " D analysis/publication_reconstruction_2026-09-30/finalize.py",
+      " D analysis/publication_reconstruction_2026-09-30/lock_check.txt",
+      " D analysis/publication_reconstruction_2026-09-30/record_sources.py",
+      " D analysis/publication_reconstruction_2026-09-30/runtime_changes.patch",
+      " D analysis/publication_reconstruction_2026-09-30/smoke_artifact_manifest.json",
+      " D analysis/publication_reconstruction_2026-09-30/smoke_runs.json",
+      " D analysis/publication_reconstruction_2026-09-30/test_suite.txt",
+      " D analysis/publication_reconstruction_2026-09-30/validate_runs.py",
+      " D analysis/publication_reconstruction_2026-09-30/validation.json"
+    ],
+    "sha256": "ca0a07f49239fc61e48313d37fdaaae7aebc294ef3f7068684cd854cbd28a2d0"
+  }
+}

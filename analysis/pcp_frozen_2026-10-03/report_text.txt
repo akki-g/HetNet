@@ -1,0 +1,119 @@
+STDOUT-ONLY AUDIT  |  3 OCT 2026 (ET)  |  Full JSON verification pending
+1 / 2
+PCP frozen evaluation
+and HetNet preflight
+Preliminary research note | Summary stdout from arrays 902506 and 902621 | Source commit e8bca43
+Main finding: shared policies have strong pooled success; banked performance varies substantially by seed. The sensor-loss
+panel has almost no event exposure, so equal failure/sham scores do not demonstrate fault tolerance.
+1. What the frozen runs show
+All 18 jobs printed complete evaluation summaries, covering 16,200 episode evaluations: 15,000 nominal, 600 failure and 600
+sham. Their stderr contains the Gym maintenance warning, with no traceback. This supports application completion;
+scheduler exit states were not supplied. [1]
+Nominal results below are pooled across the preparer's five declared compositions, 500 episodes each: 2P1A, 1P2A, 2P2A,
+3P1A and 3P2A. The manifest is outside this stdout-only audit, so the panel mapping remains to be verified. Higher return
+(less negative) is better. [1,2]
+Policy
+Seed
+Success
+Team return
+Agent return
+Shared
+0
+99.16%
+-0.8403
+-0.2303
+Shared
+1
+100.00%
+-0.6796
+-0.1812
+Shared
+2
+100.00%
+-0.6868
+-0.1834
+Banked
+0
+99.92%
+-0.8172
+-0.2192
+Banked
+1
+75.12%
+-2.6967
+-0.7218
+Banked
+2
+98.48%
+-0.8838
+-0.2397
+Shared mean
+0-2
+99.72%
+-0.7356
+-0.1983
+Banked mean
+0-2
+91.17%
+-1.4659
+-0.3936
+Positive: shared averages 99.72% success; its seed range is 99.16-100%. Banked seeds 0 and 2 also perform well, and
+banked seed 0 exceeds shared seed 0. These are promising frozen-policy results on the assigned aggregate panel.
+Negative: banked averages 91.17%, with a 75.12-99.92% seed range. Seed 1 accounts for 622 of its 662 failures (93.96%).
+Under the declared 500-episode-per-composition panel, at least 122 of those 622 failures must be in transferred compositions,
+since the native block contains only 500. Which composition fails is not identifiable from stdout. Retain this seed; the data do
+not diagnose gate collapse or an unsuitable bank count. [1,2]
+2. Sensor-loss result: an exposure limitation
+Only 1 of 600 policy-scenario assignments reached a sensor-loss event (shared seed 0: 1/100; the other five policies:
+0/100). The other 599 ended before their own scheduled event in steps 10-30, not necessarily before step 10. All six
+failure/sham pairs have identical aggregate success and returns; the sole exposed trial fails in both conditions. [1,2]
+For nonzero exposure and verified pre-event coupling, unexposed outcomes match and:
+ mean(failure - sham) = (exposed / assigned) x mean(exposed-pair differences)
+Thus shared seed 0's success-rate effect can be at most 1 percentage point on this panel; the zero-exposure pairs never test physical sensor
+loss. Full JSON traces are required to verify coupling. Exposure is policy-dependent, so exposed-only results are not a common cross-policy test
+population. [3]
+
+STDOUT-ONLY AUDIT  |  3 OCT 2026 (ET)  |  Full JSON verification pending
+2 / 2
+Failure diagnosis and next actions
+Engineering cause, scientific limits, and immediate priorities
+3. Why HetNet did not start
+All four new preflight jobs stopped in validate_source_origins() with Runtime file inventory differs from
+ORIGINS.json. All four stdout files are empty. The guard runs before run-directory creation and training, so this is not evidence
+of an optimizer, model or memory failure; it yields no Stokes throughput measurement. [4]
+Reproduced packaging bug: the manifest expects 38 runtime files, but Git commit e8bca43 contains 37. The missing file is
+runtime/envs/LICENSE.md, excluded by the blanket Markdown ignore rule. A clean tracked export reproduces the failure;
+restoring only the existing, hash-matching license makes validation pass. This explains a Git-based deployment. The copied
+remote error did not identify its missing file, so the Stokes inventory still needs confirmation. [4,5]
+Fix: the license now has a narrow ignore exception; diagnostics name missing, unexpected and modified files. A read-only
+Slurm source audit was added. Runtime/model/optimizer code and ORIGINS hashes were preserved. The focused fix tests
+passed (28 tests). After syncing the fix including the license, run:
+mkdir -p logs_1
+sbatch slurm/publication_source_audit.sbatch
+# After the audit passes:
+sbatch slurm/publication_preflight.sbatch
+Separate legacy PP logs under logs_1/prev/ end at epochs 1018/972/1321 after SIGTERM cancellation. Those newer logs extend the root
+copies. They do not state who cancelled the jobs or why; they must not be conflated with the new preflight inventory error. The Gym warning in
+frozen-evaluation stderr is not its cause. [4,5]
+4. What can be written now, and what must wait
+Write now: the all-seed aggregate table, banked variability, low failure exposure and this execution diagnosis. Use descriptive
+seed means/ranges: 7,500 evaluations per model do not provide 7,500 independently trained models. There are three training
+seeds per model. [6]
+Do not claim yet: native PCP superiority to the paper, faster capture, failure robustness or a gate mechanism. The nominal
+table mixes team sizes. Reported agent return is meanepisodes(Rteam/N), not mean(Rteam)/mean(N). Average steps and
+composition-specific scores are absent. All checkpoints are epoch 1500/update 15,000, with 30.508-30.729M actual steps;
+stdout does not verify the first-saved selection or evaluator source identity. [1-3]
+Next: (1) audit the incoming manifest, panels and 18 full JSONs; split results by composition and inspect banked seed 1. (2)
+Pass the source audit and four-workload preflight before long HetNet training. (3) Preserve this reference failure panel;
+prerecord an earlier supplemental event on training/native compositions with fresh scenarios and matched HetNet/sham
+controls. Choose timing for measurable exposure, not for which model wins.
+Traceable evidence
+[1] logs_sr/pcp-frozen-902506_{0..17}.out, lines 11-28; nominal indices 0,3,6,9,12,15; preparation: pcp-prepare-902504.out. Copied inputs,
+hashes and exact calculations: analysis/pcp_frozen_2026-10-03/summary.json and summary_rows.csv.
+[2] scripts/prepare_pcp_frozen.py:193-194,203-210,224-240 (panels, mapping, selector). [3] softrole/evaluate.py:111-123;
+softrole/__main__.py:162-163 (stdout omissions); softrole/rollout.py:111-127,169-193 (event and paired-stream semantics).
+[4] logs_1/hetnet-preflight-902621_{0..3}.err:1-18; original guard: commit e8bca43, publication_reconstruction/__main__.py:177-186,290. [5]
+analysis/pcp_frozen_2026-10-03/preflight_failure_audit.json: clean-export reproduction, input/code hashes and legacy
+endpoint references.
+[6] Agarwal et al., NeurIPS 2021, Deep RL at the Edge of the Statistical Precipice; Henderson et al., AAAI 2018, Deep RL that Matters. Both
+motivate careful treatment of variation across training runs; neither establishes significance of this three-seed comparison.

@@ -1,0 +1,1073 @@
+{
+  "actual_failure_exposures": 1,
+  "application_completion_summaries": 18,
+  "assigned_failure_episodes": 600,
+  "base_commit": "e8bca439a19df3f5cca2f57039f40a1990cea0c6",
+  "checkpoint_steps_range": [
+    30508112,
+    30728678
+  ],
+  "conditional_panel": {
+    "basis": "repository preparation and array mapping; manifest not synced",
+    "episodes_each": 500,
+    "failure_seed": 2701,
+    "failure_window": [
+      10,
+      30
+    ],
+    "nominal_seed": 2700,
+    "teams": [
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        2
+      ]
+    ]
+  },
+  "failure_sham_pairs": [
+    {
+      "aggregate_deltas": {
+        "mean_agent_return": 0.0,
+        "mean_team_return": 0.0,
+        "success_rate": 0.0
+      },
+      "assigned": 100,
+      "exposed": 1,
+      "failure_successes": 99,
+      "model": "shared",
+      "scheduled_exposed_sham": 1,
+      "seed": 0,
+      "sham_successes": 99,
+      "unexposed": 99
+    },
+    {
+      "aggregate_deltas": {
+        "mean_agent_return": 0.0,
+        "mean_team_return": 0.0,
+        "success_rate": 0.0
+      },
+      "assigned": 100,
+      "exposed": 0,
+      "failure_successes": 100,
+      "model": "shared",
+      "scheduled_exposed_sham": 0,
+      "seed": 1,
+      "sham_successes": 100,
+      "unexposed": 100
+    },
+    {
+      "aggregate_deltas": {
+        "mean_agent_return": 0.0,
+        "mean_team_return": 0.0,
+        "success_rate": 0.0
+      },
+      "assigned": 100,
+      "exposed": 0,
+      "failure_successes": 100,
+      "model": "shared",
+      "scheduled_exposed_sham": 0,
+      "seed": 2,
+      "sham_successes": 100,
+      "unexposed": 100
+    },
+    {
+      "aggregate_deltas": {
+        "mean_agent_return": 0.0,
+        "mean_team_return": 0.0,
+        "success_rate": 0.0
+      },
+      "assigned": 100,
+      "exposed": 0,
+      "failure_successes": 100,
+      "model": "banked",
+      "scheduled_exposed_sham": 0,
+      "seed": 0,
+      "sham_successes": 100,
+      "unexposed": 100
+    },
+    {
+      "aggregate_deltas": {
+        "mean_agent_return": 0.0,
+        "mean_team_return": 0.0,
+        "success_rate": 0.0
+      },
+      "assigned": 100,
+      "exposed": 0,
+      "failure_successes": 100,
+      "model": "banked",
+      "scheduled_exposed_sham": 0,
+      "seed": 1,
+      "sham_successes": 100,
+      "unexposed": 100
+    },
+    {
+      "aggregate_deltas": {
+        "mean_agent_return": 0.0,
+        "mean_team_return": 0.0,
+        "success_rate": 0.0
+      },
+      "assigned": 100,
+      "exposed": 0,
+      "failure_successes": 100,
+      "model": "banked",
+      "scheduled_exposed_sham": 0,
+      "seed": 2,
+      "sham_successes": 100,
+      "unexposed": 100
+    }
+  ],
+  "input_manifest": {
+    "logs_1/hetnet-preflight-902621_0.err": {
+      "bytes": 1170,
+      "lines": 18,
+      "sha256": "4428523b68cafd6eda382a4953ad11b5c7ffd18925823083e0649fbdaa99d75f"
+    },
+    "logs_1/hetnet-preflight-902621_0.out": {
+      "bytes": 0,
+      "lines": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs_1/hetnet-preflight-902621_1.err": {
+      "bytes": 1170,
+      "lines": 18,
+      "sha256": "8acdea899b60ce9071c8a7b9c62bbc6cf976f52d40f7f2b60a3e8a3dbbf8ffec"
+    },
+    "logs_1/hetnet-preflight-902621_1.out": {
+      "bytes": 0,
+      "lines": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs_1/hetnet-preflight-902621_2.err": {
+      "bytes": 1170,
+      "lines": 18,
+      "sha256": "8acdea899b60ce9071c8a7b9c62bbc6cf976f52d40f7f2b60a3e8a3dbbf8ffec"
+    },
+    "logs_1/hetnet-preflight-902621_2.out": {
+      "bytes": 0,
+      "lines": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs_1/hetnet-preflight-902621_3.err": {
+      "bytes": 1170,
+      "lines": 18,
+      "sha256": "8acdea899b60ce9071c8a7b9c62bbc6cf976f52d40f7f2b60a3e8a3dbbf8ffec"
+    },
+    "logs_1/hetnet-preflight-902621_3.out": {
+      "bytes": 0,
+      "lines": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs_sr/pcp-frozen-902506_0.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_0.out": {
+      "bytes": 965,
+      "lines": 26,
+      "sha256": "b7f06aa7e0576d8462448dc66b46246512c31fb726cd66edaaca58332de65ba5"
+    },
+    "logs_sr/pcp-frozen-902506_1.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_1.out": {
+      "bytes": 960,
+      "lines": 26,
+      "sha256": "8e5f46698cd0bac83620d55fd209f43f0b0f3ca4abde050b70830c9451fe3fe8"
+    },
+    "logs_sr/pcp-frozen-902506_10.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_10.out": {
+      "bytes": 949,
+      "lines": 26,
+      "sha256": "7b5cb04ffa0bc2709f3aee7cef98d1e097bfdb498d86278277b2d479b2aa95a2"
+    },
+    "logs_sr/pcp-frozen-902506_11.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_11.out": {
+      "bytes": 948,
+      "lines": 26,
+      "sha256": "cc72c5e653b97dfd2524e3e5bc2ba7be832da52f1ecb55e9625aeebda18fc4b6"
+    },
+    "logs_sr/pcp-frozen-902506_12.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_12.out": {
+      "bytes": 963,
+      "lines": 26,
+      "sha256": "d8e886cdfe842fb8432961edaac534de6e5c1359b0d8776334920faf24b2c33a"
+    },
+    "logs_sr/pcp-frozen-902506_13.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_13.out": {
+      "bytes": 948,
+      "lines": 26,
+      "sha256": "da83a3128dd4668193a54b58fd69a665b73b428bfbb6a7f42656ac852d589ff4"
+    },
+    "logs_sr/pcp-frozen-902506_14.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_14.out": {
+      "bytes": 947,
+      "lines": 26,
+      "sha256": "53d4ab7d00b695f424aeb41c60e14d85fc5c317e2fb0c81c14fb4bfcf3572615"
+    },
+    "logs_sr/pcp-frozen-902506_15.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_15.out": {
+      "bytes": 964,
+      "lines": 26,
+      "sha256": "6a8027a5dadc0c62c02449c951fe6317ab48d296a64f11cb0fc845506394a6b7"
+    },
+    "logs_sr/pcp-frozen-902506_16.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_16.out": {
+      "bytes": 949,
+      "lines": 26,
+      "sha256": "07a5c8aa41e58719b3b32e2a049c4d5b6f1e5d6fa3f31580a6b3abc906f4e468"
+    },
+    "logs_sr/pcp-frozen-902506_17.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_17.out": {
+      "bytes": 948,
+      "lines": 26,
+      "sha256": "eebd929f013f09b0e049553867824ca37aeb97f7ac6fd0bfffa9c79dfff9f19c"
+    },
+    "logs_sr/pcp-frozen-902506_2.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_2.out": {
+      "bytes": 960,
+      "lines": 26,
+      "sha256": "5fa0a2d5c3a3e9b86bd8a65ad3e8cce0275c517d0c6aaaa6fd8e57ddfa715aeb"
+    },
+    "logs_sr/pcp-frozen-902506_3.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_3.out": {
+      "bytes": 950,
+      "lines": 26,
+      "sha256": "6bb8c458f5ab03763c2ee0042e1bfc391d63e9d86d13652f25a8d8d9a714f8be"
+    },
+    "logs_sr/pcp-frozen-902506_4.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_4.out": {
+      "bytes": 949,
+      "lines": 26,
+      "sha256": "b50cf6c452014aff335c77092f6845c0160daa0932002f4d1a2979207294680b"
+    },
+    "logs_sr/pcp-frozen-902506_5.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_5.out": {
+      "bytes": 948,
+      "lines": 26,
+      "sha256": "a9e07cf59704fd358f4bf273f28236858e96ecf82c836953e50f832c2f45cf77"
+    },
+    "logs_sr/pcp-frozen-902506_6.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_6.out": {
+      "bytes": 940,
+      "lines": 26,
+      "sha256": "7bf834efdc49db6f65251297fb7c77248a3db179331fb50d8aa3cecf81769f6a"
+    },
+    "logs_sr/pcp-frozen-902506_7.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_7.out": {
+      "bytes": 947,
+      "lines": 26,
+      "sha256": "62dc27e0e3d16b04c48d70f4e4d02d5c0dfd1e8ead02f51e78c1e3b4dd175f51"
+    },
+    "logs_sr/pcp-frozen-902506_8.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_8.out": {
+      "bytes": 946,
+      "lines": 26,
+      "sha256": "a4bcaca6fe9b61c2e838af09dba9cad28802d9741cea9e64d081fa72e380c33e"
+    },
+    "logs_sr/pcp-frozen-902506_9.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-frozen-902506_9.out": {
+      "bytes": 954,
+      "lines": 26,
+      "sha256": "fc40ba7fb13993ff93de96bad188bd3b36eee52b1eb51dd30d3e9648c9a33f17"
+    },
+    "logs_sr/pcp-prepare-902504.err": {
+      "bytes": 500,
+      "lines": 4,
+      "sha256": "31e9e55c7c34f2e946aac190a7699de04de6549778b12199f2621663a69df0bc"
+    },
+    "logs_sr/pcp-prepare-902504.out": {
+      "bytes": 138,
+      "lines": 1,
+      "sha256": "a4c7da23b48f8f6c3e5d0f7415f9c3c899e20452429cdce0a4c0bd67343b4693"
+    }
+  },
+  "nominal": {
+    "banked": {
+      "episodes": 7500,
+      "failures": 662,
+      "metrics": {
+        "mean_agent_return": {
+          "equal_seed_mean": -0.3935827777777775,
+          "max": -0.21921933333333332,
+          "min": -0.7218393333333325,
+          "sample_sd": 0.28446270992098827,
+          "seed_values": [
+            -0.21921933333333332,
+            -0.7218393333333325,
+            -0.2396896666666666
+          ]
+        },
+        "mean_team_return": {
+          "equal_seed_mean": -1.4659133333333323,
+          "max": -0.81722,
+          "min": -2.696739999999997,
+          "sample_sd": 1.0664465626243678,
+          "seed_values": [
+            -0.81722,
+            -2.696739999999997,
+            -0.8837799999999999
+          ]
+        },
+        "success_rate": {
+          "equal_seed_mean": 0.9117333333333333,
+          "max": 0.9992,
+          "min": 0.7512,
+          "sample_sd": 0.1392122599965008,
+          "seed_values": [
+            0.9992,
+            0.7512,
+            0.9848
+          ]
+        }
+      },
+      "training_seeds": 3
+    },
+    "shared": {
+      "episodes": 7500,
+      "failures": 21,
+      "metrics": {
+        "mean_agent_return": {
+          "equal_seed_mean": -0.19829688888888888,
+          "max": -0.18122166666666667,
+          "min": -0.23031699999999997,
+          "sample_sd": 0.02775067957192585,
+          "seed_values": [
+            -0.23031699999999997,
+            -0.18122166666666667,
+            -0.183352
+          ]
+        },
+        "mean_team_return": {
+          "equal_seed_mean": -0.7355666666666666,
+          "max": -0.6796,
+          "min": -0.8402599999999999,
+          "sample_sd": 0.09073932407359735,
+          "seed_values": [
+            -0.8402599999999999,
+            -0.6796,
+            -0.68684
+          ]
+        },
+        "success_rate": {
+          "equal_seed_mean": 0.9972,
+          "max": 1.0,
+          "min": 0.9916,
+          "sample_sd": 0.004849742261192835,
+          "seed_values": [
+            0.9916,
+            1.0,
+            1.0
+          ]
+        }
+      },
+      "training_seeds": 3
+    }
+  },
+  "nominal_banked_minus_shared": {
+    "mean_agent_return": -0.19528588888888862,
+    "mean_team_return": -0.7303466666666657,
+    "success_rate": -0.08546666666666669
+  },
+  "preflight": [
+    {
+      "error": "logs_1/hetnet-preflight-902621_0.err",
+      "index": 0,
+      "reached_training": false,
+      "stdout_bytes": 0
+    },
+    {
+      "error": "logs_1/hetnet-preflight-902621_1.err",
+      "index": 1,
+      "reached_training": false,
+      "stdout_bytes": 0
+    },
+    {
+      "error": "logs_1/hetnet-preflight-902621_2.err",
+      "index": 2,
+      "reached_training": false,
+      "stdout_bytes": 0
+    },
+    {
+      "error": "logs_1/hetnet-preflight-902621_3.err",
+      "index": 3,
+      "reached_training": false,
+      "stdout_bytes": 0
+    }
+  ],
+  "records": [
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_shared/seed0/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 3273528,
+        "total_steps": 30552489,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "fa75518461b4256f0d3a5a094e881a86d37d7d67a6fff21acb21dc568def9444",
+      "condition": "nominal",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 2500,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 21,
+      "format_version": 1,
+      "index": 0,
+      "intervention": "none",
+      "mean_agent_return": -0.23031699999999997,
+      "mean_team_return": -0.8402599999999999,
+      "model": "shared",
+      "model_signature": "a9015036edb1f931dc6053bec8a79bb7d8e9be0ad7c941f635e26bc4a0ff18f1",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": false,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_0.out",
+      "success_rate": 0.9916,
+      "successes": 2479,
+      "training_seed": 0
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_shared/seed0/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 3273528,
+        "total_steps": 30552489,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "fa75518461b4256f0d3a5a094e881a86d37d7d67a6fff21acb21dc568def9444",
+      "condition": "failure",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 100,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 1,
+      "failures": 1,
+      "format_version": 1,
+      "index": 1,
+      "intervention": "none",
+      "mean_agent_return": -0.20449999999999996,
+      "mean_team_return": -0.6134999999999998,
+      "model": "shared",
+      "model_signature": "a9015036edb1f931dc6053bec8a79bb7d8e9be0ad7c941f635e26bc4a0ff18f1",
+      "post_event_success_rate": 0.0,
+      "post_schedule_success_rate": 0.0,
+      "scheduled_event_exposed_episodes": 1,
+      "sham": false,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_1.out",
+      "success_rate": 0.99,
+      "successes": 99,
+      "training_seed": 0
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_shared/seed0/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 3273528,
+        "total_steps": 30552489,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "fa75518461b4256f0d3a5a094e881a86d37d7d67a6fff21acb21dc568def9444",
+      "condition": "sham",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 100,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 1,
+      "format_version": 1,
+      "index": 2,
+      "intervention": "none",
+      "mean_agent_return": -0.20449999999999996,
+      "mean_team_return": -0.6134999999999998,
+      "model": "shared",
+      "model_signature": "a9015036edb1f931dc6053bec8a79bb7d8e9be0ad7c941f635e26bc4a0ff18f1",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": 0.0,
+      "scheduled_event_exposed_episodes": 1,
+      "sham": true,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_2.out",
+      "success_rate": 0.99,
+      "successes": 99,
+      "training_seed": 0
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_shared/seed1/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 3456693,
+        "total_steps": 30508112,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "ae74f9f722c74bbb34d44ecae04b2eb75acdc18d1a5bfa8d7d926f1f26148f65",
+      "condition": "nominal",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 2500,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 0,
+      "format_version": 1,
+      "index": 3,
+      "intervention": "none",
+      "mean_agent_return": -0.18122166666666667,
+      "mean_team_return": -0.6796,
+      "model": "shared",
+      "model_signature": "86398ce711cf94649e03e3060b986fe7a486b5febe055b1d2d81039b93afac0a",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": false,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_3.out",
+      "success_rate": 1.0,
+      "successes": 2500,
+      "training_seed": 1
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_shared/seed1/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 3456693,
+        "total_steps": 30508112,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "ae74f9f722c74bbb34d44ecae04b2eb75acdc18d1a5bfa8d7d926f1f26148f65",
+      "condition": "failure",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 100,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 0,
+      "format_version": 1,
+      "index": 4,
+      "intervention": "none",
+      "mean_agent_return": -0.15583333333333335,
+      "mean_team_return": -0.4675,
+      "model": "shared",
+      "model_signature": "86398ce711cf94649e03e3060b986fe7a486b5febe055b1d2d81039b93afac0a",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": false,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_4.out",
+      "success_rate": 1.0,
+      "successes": 100,
+      "training_seed": 1
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_shared/seed1/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 3456693,
+        "total_steps": 30508112,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "ae74f9f722c74bbb34d44ecae04b2eb75acdc18d1a5bfa8d7d926f1f26148f65",
+      "condition": "sham",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 100,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 0,
+      "format_version": 1,
+      "index": 5,
+      "intervention": "none",
+      "mean_agent_return": -0.15583333333333335,
+      "mean_team_return": -0.4675,
+      "model": "shared",
+      "model_signature": "86398ce711cf94649e03e3060b986fe7a486b5febe055b1d2d81039b93afac0a",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": true,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_5.out",
+      "success_rate": 1.0,
+      "successes": 100,
+      "training_seed": 1
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_shared/seed2/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 3370835,
+        "total_steps": 30536475,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "f280d10521755bc050367a5451ae26f41033de9dd2b39ecc6bda77360ccaa67a",
+      "condition": "nominal",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 2500,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 0,
+      "format_version": 1,
+      "index": 6,
+      "intervention": "none",
+      "mean_agent_return": -0.183352,
+      "mean_team_return": -0.68684,
+      "model": "shared",
+      "model_signature": "cf8dda54d25d5519abc1c788303579c2585160de22f4f4b662e53b3a2538b2d9",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": false,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_6.out",
+      "success_rate": 1.0,
+      "successes": 2500,
+      "training_seed": 2
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_shared/seed2/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 3370835,
+        "total_steps": 30536475,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "f280d10521755bc050367a5451ae26f41033de9dd2b39ecc6bda77360ccaa67a",
+      "condition": "failure",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 100,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 0,
+      "format_version": 1,
+      "index": 7,
+      "intervention": "none",
+      "mean_agent_return": -0.15666666666666665,
+      "mean_team_return": -0.47,
+      "model": "shared",
+      "model_signature": "cf8dda54d25d5519abc1c788303579c2585160de22f4f4b662e53b3a2538b2d9",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": false,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_7.out",
+      "success_rate": 1.0,
+      "successes": 100,
+      "training_seed": 2
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_shared/seed2/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 3370835,
+        "total_steps": 30536475,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "f280d10521755bc050367a5451ae26f41033de9dd2b39ecc6bda77360ccaa67a",
+      "condition": "sham",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 100,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 0,
+      "format_version": 1,
+      "index": 8,
+      "intervention": "none",
+      "mean_agent_return": -0.15666666666666665,
+      "mean_team_return": -0.47,
+      "model": "shared",
+      "model_signature": "cf8dda54d25d5519abc1c788303579c2585160de22f4f4b662e53b3a2538b2d9",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": true,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_8.out",
+      "success_rate": 1.0,
+      "successes": 100,
+      "training_seed": 2
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_banked/seed0/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 2507739,
+        "total_steps": 30728678,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "748e761c3d6e33040f481c577f45062f5b1f285257f523c0cfb14d918ac5c0f7",
+      "condition": "nominal",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 2500,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 2,
+      "format_version": 1,
+      "index": 9,
+      "intervention": "none",
+      "mean_agent_return": -0.21921933333333332,
+      "mean_team_return": -0.81722,
+      "model": "banked",
+      "model_signature": "ce542d261d0c162e9e38b17650b6aea23a32fa6f5cbc0ffeee7eee20c5a3868e",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": false,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_9.out",
+      "success_rate": 0.9992,
+      "successes": 2498,
+      "training_seed": 0
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_banked/seed0/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 2507739,
+        "total_steps": 30728678,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "748e761c3d6e33040f481c577f45062f5b1f285257f523c0cfb14d918ac5c0f7",
+      "condition": "failure",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 100,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 0,
+      "format_version": 1,
+      "index": 10,
+      "intervention": "none",
+      "mean_agent_return": -0.18516666666666665,
+      "mean_team_return": -0.5555,
+      "model": "banked",
+      "model_signature": "ce542d261d0c162e9e38b17650b6aea23a32fa6f5cbc0ffeee7eee20c5a3868e",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": false,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_10.out",
+      "success_rate": 1.0,
+      "successes": 100,
+      "training_seed": 0
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_banked/seed0/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 2507739,
+        "total_steps": 30728678,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "748e761c3d6e33040f481c577f45062f5b1f285257f523c0cfb14d918ac5c0f7",
+      "condition": "sham",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 100,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 0,
+      "format_version": 1,
+      "index": 11,
+      "intervention": "none",
+      "mean_agent_return": -0.18516666666666665,
+      "mean_team_return": -0.5555,
+      "model": "banked",
+      "model_signature": "ce542d261d0c162e9e38b17650b6aea23a32fa6f5cbc0ffeee7eee20c5a3868e",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": true,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_11.out",
+      "success_rate": 1.0,
+      "successes": 100,
+      "training_seed": 0
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_banked/seed1/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 2604257,
+        "total_steps": 30683393,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "54f681164a8de35a2cc0a5c7f999555ddcd0a46640985f630d9a27b877b89488",
+      "condition": "nominal",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 2500,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 622,
+      "format_version": 1,
+      "index": 12,
+      "intervention": "none",
+      "mean_agent_return": -0.7218393333333325,
+      "mean_team_return": -2.696739999999997,
+      "model": "banked",
+      "model_signature": "4c6bb85ad013dd9faf72c9e361d30dc3f6c438eaab170c5b5f5fbfdb3fe77b68",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": false,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_12.out",
+      "success_rate": 0.7512,
+      "successes": 1878,
+      "training_seed": 1
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_banked/seed1/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 2604257,
+        "total_steps": 30683393,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "54f681164a8de35a2cc0a5c7f999555ddcd0a46640985f630d9a27b877b89488",
+      "condition": "failure",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 100,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 0,
+      "format_version": 1,
+      "index": 13,
+      "intervention": "none",
+      "mean_agent_return": -0.17066666666666666,
+      "mean_team_return": -0.512,
+      "model": "banked",
+      "model_signature": "4c6bb85ad013dd9faf72c9e361d30dc3f6c438eaab170c5b5f5fbfdb3fe77b68",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": false,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_13.out",
+      "success_rate": 1.0,
+      "successes": 100,
+      "training_seed": 1
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_banked/seed1/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 2604257,
+        "total_steps": 30683393,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "54f681164a8de35a2cc0a5c7f999555ddcd0a46640985f630d9a27b877b89488",
+      "condition": "sham",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 100,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 0,
+      "format_version": 1,
+      "index": 14,
+      "intervention": "none",
+      "mean_agent_return": -0.17066666666666666,
+      "mean_team_return": -0.512,
+      "model": "banked",
+      "model_signature": "4c6bb85ad013dd9faf72c9e361d30dc3f6c438eaab170c5b5f5fbfdb3fe77b68",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": true,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_14.out",
+      "success_rate": 1.0,
+      "successes": 100,
+      "training_seed": 1
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_banked/seed2/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 2717080,
+        "total_steps": 30635286,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "f0a95ba1344a99c051961e8ed309e302d1e7226fea029f5d5a42e49475230f81",
+      "condition": "nominal",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 2500,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 38,
+      "format_version": 1,
+      "index": 15,
+      "intervention": "none",
+      "mean_agent_return": -0.2396896666666666,
+      "mean_team_return": -0.8837799999999999,
+      "model": "banked",
+      "model_signature": "553c330fd18828d7e5dc8c11d6d1c72b09600ff585626312d1ee6abbf59736f4",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": false,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_15.out",
+      "success_rate": 0.9848,
+      "successes": 2462,
+      "training_seed": 2
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_banked/seed2/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 2717080,
+        "total_steps": 30635286,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "f0a95ba1344a99c051961e8ed309e302d1e7226fea029f5d5a42e49475230f81",
+      "condition": "failure",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 100,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 0,
+      "format_version": 1,
+      "index": 16,
+      "intervention": "none",
+      "mean_agent_return": -0.17883333333333332,
+      "mean_team_return": -0.5365,
+      "model": "banked",
+      "model_signature": "553c330fd18828d7e5dc8c11d6d1c72b09600ff585626312d1ee6abbf59736f4",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": false,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_16.out",
+      "success_rate": 1.0,
+      "successes": 100,
+      "training_seed": 2
+    },
+    {
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_banked/seed2/checkpoints/epoch1500.pt",
+      "checkpoint_progress": {
+        "epoch": 1500,
+        "total_episodes": 2717080,
+        "total_steps": 30635286,
+        "updates": 15000
+      },
+      "checkpoint_sha256": "f0a95ba1344a99c051961e8ed309e302d1e7226fea029f5d5a42e49475230f81",
+      "condition": "sham",
+      "environment_version": "corrected-observation-v1",
+      "episodes": 100,
+      "evaluation_version": 2,
+      "event_exposed_episodes": 0,
+      "failures": 0,
+      "format_version": 1,
+      "index": 17,
+      "intervention": "none",
+      "mean_agent_return": -0.17883333333333332,
+      "mean_team_return": -0.5365,
+      "model": "banked",
+      "model_signature": "553c330fd18828d7e5dc8c11d6d1c72b09600ff585626312d1ee6abbf59736f4",
+      "post_event_success_rate": null,
+      "post_schedule_success_rate": null,
+      "scheduled_event_exposed_episodes": 0,
+      "sham": true,
+      "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+      "stdout": "logs_sr/pcp-frozen-902506_17.out",
+      "success_rate": 1.0,
+      "successes": 100,
+      "training_seed": 2
+    }
+  ],
+  "schema_version": 1,
+  "scope": "stdout summary audit; full evaluation JSONs unavailable locally",
+  "total_reported_evaluation_episodes": 16200,
+  "training_source_hashes": [
+    "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163"
+  ],
+  "unavailable": [
+    "per-composition outcome rows",
+    "episode completion lengths",
+    "paired traces",
+    "victim diagnostics",
+    "evaluator source hash",
+    "scenario panel identity",
+    "scheduler accounting",
+    "observed Stokes throughput"
+  ]
+}

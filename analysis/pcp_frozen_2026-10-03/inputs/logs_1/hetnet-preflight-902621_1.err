@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/lustre/fs1/home/ak565492/HetNet/publication_reconstruction/__main__.py", line 326, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/lustre/fs1/home/ak565492/HetNet/publication_reconstruction/__main__.py", line 276, in main
+    result = dispatch(args)
+             ^^^^^^^^^^^^^^
+  File "/lustre/fs1/home/ak565492/HetNet/publication_reconstruction/study.py", line 262, in dispatch
+    code = main(argv + (["--dry-run"] if args.dry_run else []))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/lustre/fs1/home/ak565492/HetNet/publication_reconstruction/__main__.py", line 290, in main
+    validate_source_origins()
+  File "/lustre/fs1/home/ak565492/HetNet/publication_reconstruction/__main__.py", line 183, in validate_source_origins
+    raise RuntimeError("Runtime file inventory differs from ORIGINS.json; regenerate provenance")
+RuntimeError: Runtime file inventory differs from ORIGINS.json; regenerate provenance
+srun: error: ec50: task 0: Exited with exit code 1

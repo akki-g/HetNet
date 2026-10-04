@@ -1,0 +1,26 @@
+{
+  "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/softrole_primary/pcp_banked/seed2/checkpoints/epoch1500.pt",
+  "model_signature": "553c330fd18828d7e5dc8c11d6d1c72b09600ff585626312d1ee6abbf59736f4",
+  "checkpoint_sha256": "f0a95ba1344a99c051961e8ed309e302d1e7226fea029f5d5a42e49475230f81",
+  "format_version": 1,
+  "training_seed": 2,
+  "evaluation_version": 2,
+  "environment_version": "corrected-observation-v1",
+  "source_sha256": "35e7fc3a53d6ad4ba1cc5342a977f9ad4568b79de24a9cb53027c20aced07163",
+  "checkpoint_progress": {
+    "epoch": 1500,
+    "updates": 15000,
+    "total_steps": 30635286,
+    "total_episodes": 2717080
+  },
+  "intervention": "none",
+  "sham": false,
+  "episodes": 2500,
+  "success_rate": 0.9848,
+  "mean_team_return": -0.8837799999999999,
+  "mean_agent_return": -0.2396896666666666,
+  "event_exposed_episodes": 0,
+  "post_event_success_rate": null,
+  "scheduled_event_exposed_episodes": 0,
+  "post_schedule_success_rate": null
+}

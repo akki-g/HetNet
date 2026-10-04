@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "artifacts": [
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/README.txt",
+      "bytes": 1782,
+      "sha256": "ef157f15f7ffd70b36075ae7a01934e552391fc005317794c8c3589a2ca7a80a"
+    },
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/analyze.py",
+      "bytes": 6511,
+      "sha256": "89efaa9123bcfb04ab2d571f9e5ee16e5ed58cfb2d346d8b969c6dc7a782d371"
+    },
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/build_report.py",
+      "bytes": 13380,
+      "sha256": "fccbd46db5850d2e35374c2c90674ee8952aefbc7050ebd6e63038b8de2568b7"
+    },
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/composition_seed_metrics.csv",
+      "bytes": 1916,
+      "sha256": "99a090803d2f7871fe05407ed4555614ff40cea31755952d202bace6822ebc19"
+    },
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/failure_audit.json",
+      "bytes": 16894,
+      "sha256": "48f7674e1a7189cf2e208c8a2f77abae17d342edb3c0e74773d7c0013713f119"
+    },
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/failure_audit.py",
+      "bytes": 16947,
+      "sha256": "7e470ff3ea61d34ee0b1e3925220190a2cf9c588ce206d6bea03f4eda9a77a54"
+    },
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/independent_metrics.json",
+      "bytes": 54488,
+      "sha256": "eebca345614a7843aecdea6840ba6f56a33c29778c1981d69524fb0f614bafbd"
+    },
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/independent_metrics.py",
+      "bytes": 9174,
+      "sha256": "9a2b6e10a5a20516dbb6de8510f978afa25778d85752252373f7481289cd4073"
+    },
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/input_manifest.json",
+      "bytes": 32402,
+      "sha256": "d19af749924945a0adcc5fef41a90ab83586dcaa8713a54f86e8911777787c37"
+    },
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/pdf_build.json",
+      "bytes": 338,
+      "sha256": "36ab05d1703d39e952e13f678a054297f2bfae42c986393c8f330dd77d3cb63d"
+    },
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/provenance_audit.json",
+      "bytes": 47731,
+      "sha256": "c2349c14438d45b65b45221fac722a140e994f1a67400613e1dd5f32aca2db8c"
+    },
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/provenance_audit.py",
+      "bytes": 10708,
+      "sha256": "f91109db6927d8fd18d53ce1831a7b097a799cf0e0d468b09d9740214eeb60a5"
+    },
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/report_text.txt",
+      "bytes": 7193,
+      "sha256": "9502d9568574e0dfeee3aeb25a3ec077bc63ca1ea280e53970df84af277c185d"
+    },
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/summary.json",
+      "bytes": 24869,
+      "sha256": "4f45a0608bb77d021fb5719b9addfd4fe9a4353303b8510054321107ade3a03f"
+    },
+    {
+      "path": "analysis/pcp_frozen_full_2026-10-03/validation.json",
+      "bytes": 1837,
+      "sha256": "1288ee051da3467f28d724e11e13af962dcd0f7806cd9b0c752b3933e7618500"
+    }
+  ],
+  "pdf": {
+    "path": "output/pdf/pcp_frozen_full_results_2026-10-03.pdf",
+    "sha256": "aa31ddda52ab9b78e34ab4ef985af2ec7142a2f78abec0a598f478a49189d936"
+  }
+}

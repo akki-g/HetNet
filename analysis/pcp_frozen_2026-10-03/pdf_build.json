@@ -1,0 +1,11 @@
+{
+  "builder_sha256": "307a8862eff087f280e2db4ec6d973acb3eb0c8a3635cda02b79ac947c2d5f07",
+  "packages": {
+    "pypdf": "6.1.1",
+    "reportlab": "4.4.4"
+  },
+  "pages": 2,
+  "pdf": "output/pdf/pcp_frozen_and_hetnet_preflight_2026-10-03.pdf",
+  "python": "3.12.13",
+  "sha256": "3270f7e5535a88b20e149985efce2a677bcf88b6de62a82b65159ab86a2d9b26"
+}

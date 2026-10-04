@@ -17,6 +17,8 @@ slurm-*.err
 *.pdf
 *.md
 !README.md
+# Required by the reconstruction source manifest and upstream license terms.
+!publication_reconstruction/runtime/envs/LICENSE.md
 research/
 evidence/
 logs/
@@ -41,3 +43,19 @@ analysis/
 analysis/*
 !analysis/publication_submission_2026-10-03/
 !analysis/publication_submission_2026-10-03/**
+
+# Retain the requested stdout-only report and its reproducible evidence.
+!analysis/pcp_frozen_2026-10-03/
+!analysis/pcp_frozen_2026-10-03/**
+!output/pdf/pcp_frozen_and_hetnet_preflight_2026-10-03.pdf
+
+# Full synced PCP evaluation audit, preserving the stdout-only snapshot.
+!analysis/pcp_frozen_full_2026-10-03/
+!analysis/pcp_frozen_full_2026-10-03/**
+!output/pdf/pcp_frozen_full_results_2026-10-03.pdf
+
+# HetNet deployment and restart investigation.
+!analysis/hetnet_restart_2026-10-03/
+!analysis/hetnet_restart_2026-10-03/**
+
+stokes_runs/

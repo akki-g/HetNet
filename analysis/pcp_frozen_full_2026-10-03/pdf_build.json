@@ -1,0 +1,11 @@
+{
+  "pdf": "output/pdf/pcp_frozen_full_results_2026-10-03.pdf",
+  "pages": 2,
+  "sha256": "aa31ddda52ab9b78e34ab4ef985af2ec7142a2f78abec0a598f478a49189d936",
+  "builder_sha256": "fccbd46db5850d2e35374c2c90674ee8952aefbc7050ebd6e63038b8de2568b7",
+  "python": "3.12.13",
+  "packages": {
+    "reportlab": "4.4.4",
+    "pypdf": "6.1.1"
+  }
+}

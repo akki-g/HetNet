@@ -1392,3 +1392,151 @@ The optional Slurm memory/time requests are unmeasured starting settings.
   serialization of that same checkpoint. Final shell syntax, lock and whitespace
   checks passed. All local software gates passed; live compute-node preflight
   compatibility/resource/timing validation has not been run or claimed.
+
+
+### 2026-10-03 — stdout-only frozen PCP report and HetNet deployment diagnosis
+
+- Audited all18 `pcp-frozen-902506` stdout/stderr pairs and preparation902504,
+  plus four `hetnet-preflight-902621` failures and the legacy reproduction
+  root/`prev` copies. The user confirmed full JSONs were not initially synced,
+  then explicitly restricted this deliverable to a short two-page stdout report
+  while they copied them. No full-report outcomes, composition-specific scores,
+  completion times or evaluator-source identities were invented from summaries.
+- Observed18 application-completion summaries totaling16200 episode evaluations.
+  Equal-seed pooled nominal success: shared99.72%, banked91.1733%; mean-agent
+  return: -0.1982969/-0.3935828. Banked seed1 contributes622/662 banked failures.
+  Under the preparer's declared five500-episode composition blocks, at least122
+  seed1 failures occur in transfer teams; the specific teams remain unidentified.
+  The one exposed failure assignment out of600 (six policies, same100 assigned
+  scenarios) and zero aggregate failure-minus-sham differences do not establish
+  fault tolerance. Distinguished policy-scenario assignments from independent
+  scenarios, and equal updates from actual30.508112–30.728678M training steps.
+- New HetNet preflights fail before run creation/training at the inventory guard;
+  every stdout is empty. Reproduced a concrete Git packaging defect at inspected
+  HEAD `e8bca439a19df3f5cca2f57039f40a1990cea0c6`: ORIGINS requires38 runtime
+  files but only37 were tracked. The existing `runtime/envs/LICENSE.md` was ignored
+  by `*.md`. A clean tracked export fails; copying only that manifest-matching
+  license makes validation pass. This explains Git-based deployment, but the old
+  remote error lacks filenames, so the exact Stokes inventory remains to confirm.
+  Do not regenerate ORIGINS to silently accept an incomplete transfer.
+- Added a narrow license ignore exception, precise missing/unexpected/hash-drift
+  diagnostics, a read-only JSON source audit and a proper Slurm audit batch file.
+  The guard remains strict. Runtime/model/optimizer/environment files and ORIGINS
+  bytes are unchanged. Existing license bytes are preserved and made distributable.
+- Separate legacy evidence: `logs_1/prev` extends PP seeds0/1/2 to1018/972/1321
+  completed epochs and records SIGTERM cancellations, without stating requester
+  or cause. PCP/FC copies duplicate their2000/1400-epoch endpoints. These events
+  are separate from the new preflight defect; legacy cumulative counters retain
+  their previously documented overcount issue.
+- Produced exactly two pages at
+  `output/pdf/pcp_frozen_and_hetnet_preflight_2026-10-03.pdf`, with all-seed table,
+  means/ranges, failure-exposure derivation, bugs/fixes, exact Slurm commands and
+  traceable log/code/research citations. Both pages were rendered with Poppler and
+  visually checked; text/page-count checks passed. ReportLab4.4.4/pypdf6.1.1 ran
+  through isolated `uv run --no-project`; training dependencies were untouched.
+- Files changed: `.gitignore` (license/report/evidence exceptions),
+  `publication_reconstruction/__main__.py` (inspection/strict diagnostic guard),
+  `scripts/record_publication_sources.py` (read-only --check JSON/exit status),
+  `slurm/publication_source_audit.sbatch` (new),
+  `tests/test_publication_source_audit.py` (new), distribution eligibility of
+  `publication_reconstruction/runtime/envs/LICENSE.md` (unchanged existing bytes),
+  and this existing uppercase `AGENTS.md`. New analysis files live in
+  `analysis/pcp_frozen_2026-10-03/`: analyzer, PDF builder, exact copied summary inputs,
+  independent audits, row CSV/summary JSON, PDF build/text records, test log,
+  validation record and artifact manifest (full inventory/hashes, excludes itself).
+- Validation:28 focused launcher/lifecycle/source-audit tests passed in1.24s;
+  full suite **447 passed in150.80s**. Shell syntax and whitespace checks passed.
+  New tests cover exact missing/extra/modified inventories, immutable manifests,
+  nonzero failure exit, read-only behavior, Git ignore eligibility, and mocked
+  Slurm argument forwarding. Independent agents recalculated all18 summaries and
+  checked mathematical/statistical interpretation. No logs/checkpoints/old analyses
+  were edited, no jobs or research training were launched, and no commit/push
+  occurred. Concurrent user synchronization under `stokes_runs/` was preserved
+  and excluded from this explicitly stdout-only report.
+
+### 2026-10-03 — synced full PCP frozen-evaluation audit
+
+- The user supplied the full evaluation bundle under
+  `stokes_runs/frozen_pcp_30m/frozen_pcp_30m_20261002_slurm/`. Audited all18 JSON
+  reports and16200 episode evaluations, preserving the previous stdout-only
+  report and every synced input. All stdout aggregates agree with recomputation;
+  all30 nominal model/seed/composition cells contain500 assigned scenarios.
+- Native2P1A equal-seed success is99.8% shared and100% banked, mean capped steps
+  5.9593/6.8947, mean-agent return -0.168722/-0.181311. Across four transfer
+  compositions, macro success is99.70%/88.9667%. All662 banked failures occur
+  with two A agents. Seed1 contributes622:251 in1P2A,193 in2P2A,178 in3P2A;
+  none occur in its native2P1A or3P1A trials. All seeds remain in reporting.
+- Derived individual return R_i=-0.05 U_i from the archived reward and absorbing
+  completion rules. Every banked seed1 failure has an A return of-4 at H=80:
+  both A agents remain unfinished in618 cases and one in4. All P agents reach
+  in620/622. This supports an A completion limitation; absent nominal trajectories
+  prevent distinguishing navigation failure from failing to execute capture.
+  No causal gate/bank-count claim or held-out tuning was performed.
+- All600 failure/sham pairs have exactly matching recorded pre-event prefixes;
+  599 finish before their own events and have identical entire traces. Only
+  shared seed0 scenario2106772258:37 reaches sensor loss at zero-based t=29,
+  victim1. The victim had not reached/currently seen/previously directly seen
+  the target. Both conditions fail at80 steps with team return-12, but null
+  attention differs on all51 post-event steps and actions on44, starting at29.
+  Equal outcomes are not unchanged behavior. All banked policies have zero
+  exposure, so no comparative robustness/adaptation conclusion is supported.
+- Provenance checks passed:122 evaluator source hashes and combined digest,
+  exact regeneration of both panels from archived scenario code,18 generated
+  Slurm command mappings,16200 episode assignments, and report/manifest identity
+  and runtime consistency. Selected epoch1500 weights are absent; local training
+  ledgers are older snapshots. Recorded identities match, but selected weight
+  bytes, a new replay and first-available>=30M selection cannot be reverified.
+  The earlier HetNet packaging diagnosis remains conditional on remote inventory;
+  the new evaluation sync does not establish a new Stokes source-audit result.
+- Created `analysis/pcp_frozen_full_2026-10-03/` with `analyze.py`,
+  `summary.json`, `composition_seed_metrics.csv`, `input_manifest.json`,
+  independent `provenance_audit.py`/`.json`, `failure_audit.py`/`.json`,
+  `independent_metrics.py`/`.json`, `build_report.py`, `report_text.txt`,
+  `pdf_build.json`, `README.txt`, `validation.json`, and `artifact_manifest.json`.
+  Created `output/pdf/pcp_frozen_full_results_2026-10-03.pdf` (exactly two pages).
+  Changed only `.gitignore` for narrow artifact exceptions and this existing
+  uppercase `AGENTS.md`, in addition to the new artifacts/scripts. The prior
+  report PDF remains byte-identical. Source/runtime/model files were not edited.
+- Validation: all four analysis/audit scripts passed;210 independent nominal
+  metric comparisons agree; all147 supplied bundle file hashes remain unchanged.
+  Audited1200 failure/sham episodes and7824 recorded trace steps, including3861
+  compared pre-event steps. Rendered and visually reviewed both final PDF pages;
+  page count, extracted key values and embedded-font layout checks passed.
+  The system Python lacks NumPy; the provenance audit passed with the existing
+  pinned `.venv/bin/python`, documented in README. PDF dependencies were isolated
+  with `uv run --no-project`. No dependency change, policy execution, training,
+  cluster submission, commit or push. The earlier447-test runtime validation is
+  cited as prior work; no runtime suite rerun was needed for this analysis.
+
+### 2026-10-03 — HetNet restart remedy for tonight
+
+- Rechecked all four902621 failures and independently repeated clean-Git-export
+  reproduction: expected38 runtime files versus37 tracked, missing only the
+  manifest-approved `runtime/envs/LICENSE.md`. Restoring that exact file makes
+  validation pass. Current local38-file source audit passes with zero drift;
+  runtime and ORIGINS remain unchanged. The repair is still uncommitted and the
+  license/source-audit batch file untracked, so ordinary Git pull would not
+  transport it yet. The exact remote inventory still needs the compute-node audit.
+- Reviewed launch/preflight/continuation code and official Slurm documentation.
+  Prepared a concrete source-sync -> source-audit -> four concurrent100-update
+  preflights ->12-job production-array sequence. Command-line `--array=0-3%4`
+  changes only independent preflight concurrency; each job retains four collectors,
+  500-step floors and production horizons. The training file remains0-11%3 and
+  unchanged40M PP/PCP and28M FC budgets, with a fresh output root.
+- Documented exact readiness fields, scheduler/resource review, expected package
+  inventory/hashes, runtime projections, likely blockers and explicit continuation.
+  Clarified that paused_wall_time can exit0 without completing the budget; the
+ 46h timer starts after setup, SIGTERM exits immediately, and periodic snapshots
+  remain the abrupt-stop fallback. Old PP SIGTERM logs and legacy checkpoints
+  are separate from these preflight failures and new supplementary runs.
+- Created `analysis/hetnet_restart_2026-10-03/RESTART_PLAN.txt`,
+  `packaging_audit.json`, `source_audit.json`, `deployment_inventory.json`,
+  `validation.json` and `artifact_manifest.json`. Changed `.gitignore` only for
+  this evidence directory and appended this existing uppercase `AGENTS.md`.
+  No runtime/learner/Slurm file changes were needed during this follow-up.
+- Fresh validation:95 focused source/lifecycle/launcher/study/Slurm tests passed
+  in14.22s; the four relevant batch files pass bash syntax; all38 source hashes
+  and clean-export license-only remedy passed. Earlier447-test full-suite result
+  is identified as prior validation. No remote command, submission, training,
+  policy evaluation, commit or push occurred. Queue availability and successful
+  compute-node preflight remain conditions on starting tonight, not guarantees.

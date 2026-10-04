@@ -173,17 +173,34 @@ def write_json(path, value):
         stream.write("\n")
 
 
-def validate_source_origins():
+def inspect_source_origins():
+    """Read the complete inventory without changing or accepting local provenance."""
     origins_bytes = (HERE / "ORIGINS.json").read_bytes()
     origins = json.loads(origins_bytes)["files"]
     paths = [p for p in sorted((HERE / "runtime").rglob("*"))
              if p.is_file() and "__pycache__" not in p.parts and p.suffix != ".pyc"]
     payloads = {p.relative_to(HERE / "runtime").as_posix(): p.read_bytes() for p in paths}
-    if payloads.keys() != origins.keys():
-        raise RuntimeError("Runtime file inventory differs from ORIGINS.json; regenerate provenance")
-    for name, payload in payloads.items():
-        if hashlib.sha256(payload).hexdigest() != origins[name]["current_sha256"]:
-            raise RuntimeError(f"Runtime source differs from ORIGINS.json: {name}")
+    expected = {name: row["current_sha256"] for name, row in origins.items()}
+    actual = {name: hashlib.sha256(payload).hexdigest() for name, payload in payloads.items()}
+    missing, unexpected = sorted(expected.keys() - actual.keys()), sorted(actual.keys() - expected.keys())
+    changed = {name: {"expected_sha256": expected[name], "actual_sha256": actual[name]}
+               for name in sorted(expected.keys() & actual.keys()) if actual[name] != expected[name]}
+    audit = {"schema_version": 1, "valid": not (missing or unexpected or changed),
+             "runtime_root": str(HERE / "runtime"), "runtime_files": len(actual),
+             "expected_runtime_files": len(expected), "origins_sha256": hashlib.sha256(origins_bytes).hexdigest(),
+             "missing": missing, "unexpected": unexpected, "changed": changed,
+             "expected_inventory": expected, "actual_inventory": actual}
+    return payloads, origins_bytes, audit
+
+
+def validate_source_origins():
+    payloads, origins_bytes, audit = inspect_source_origins()
+    if not audit["valid"]:
+        kind = "Runtime file inventory differs" if audit["missing"] or audit["unexpected"] else "Runtime source differs"
+        differences = {key: audit[key] for key in ("missing", "unexpected", "changed")}
+        raise RuntimeError(f"{kind} from ORIGINS.json: {json.dumps(differences, sort_keys=True)}. "
+                           "Restore the approved source and matching manifest; do not regenerate "
+                           "provenance merely to accept an incomplete or unexpected transfer.")
     return payloads, origins_bytes
 
 
