@@ -1540,3 +1540,686 @@ The optional Slurm memory/time requests are unmeasured starting settings.
   is identified as prior validation. No remote command, submission, training,
   policy evaluation, commit or push occurred. Queue availability and successful
   compute-node preflight remain conditions on starting tonight, not guarantees.
+
+### 2026-10-03 — Stokes preflight903502 readiness check
+
+- Checked all four synced `stokes_runs/hetnet_preflight_903502/` workloads.
+  Each completed100 updates/10 epochs, returned0, reconciled step/episode counts,
+  saved a finite model/active Adam optimizer checkpoint and passed an immutable
+  one-episode frozen checkpoint probe. Strict archived source/checkpoint checks
+  passed locally; the required license is present in all source manifests.
+  Completed preflight epoch budgets are deliberately ineligible for resume as
+  research runs. No new policy execution was performed during this check.
+- Four collectors each use one Torch thread and have four assigned CPUs in
+  affinity. Recorded per-process peaks show ample headroom relative to16GB, but
+  sums of individual peaks are not measured simultaneous whole-job peaks; no
+  scheduler accounting was supplied. Torch2.2.1/DGL2.1.0/NumPy1.26.4 match the
+  pinned core packages. Source archives and checkpoint hashes agree with probes.
+- Full-budget segment projections: PP66.25h, PCP Real114.15h, FC76.67h,
+  PCP Binary287.25h. At unchanged early throughput, they need2/3/2/7 nominal
+  46h segments respectively. All12 runs at concurrency3 imply about22.68days
+  of idealized capacity before queues/continuation delays. Recommended prioritizing
+  the three PCP Real runs tonight and addressing Binary throughput before it
+  occupies the first study wave. These are projections, not runtime guarantees;
+  no scientific budget was reduced and no experimental performance inferred.
+- Created only `analysis/hetnet_restart_2026-10-03/preflight_903502_audit.json`,
+  updated its existing artifact manifest, and appended this existing uppercase
+  `AGENTS.md`. No runtime edits, tests, training, evaluation, remote actions,
+  submissions, commit or push. Independent read-only audit confirmed readiness
+  and timing values; all synced inputs were preserved.
+
+### 2026-10-03 — local concurrent preflight command and printed episode timing
+
+- The user initially requested running the four Stokes preflights concurrently
+  on the Mac, then changed scope before any training started: prepare the command
+  and add logging, including terminal printing. No actual preflight or research
+  training was launched. Inspected the Apple M5 Max host (18 CPU cores, 36 GiB)
+  and pinned Torch2.2.1/DGL2.1.0/NumPy1.26.4 environment. All45 archived Stokes
+  source files matched before this logging-only change.
+- Added `scripts/publication_preflight_local.py`: the existing locked indices0–3,
+  concurrently by default, with four collectors each and unchanged100-update
+  recipes. It uses a fresh timestamped directory, supports no-write dry runs,
+  separate raw/episode/progress logs, exact command records, per-job status and
+  elapsed times. Terminal output identifies each workload and prints individual
+  episode steps, success, mean-agent return and rollout duration, followed by
+  update summaries. Episode records become available after the update completes.
+  Interrupt handling stops launcher groups, including frozen-probe descendants;
+  the existing training launcher cleans its separately grouped collectors.
+- Added two monotonic clock reads around `get_episode` in training collection.
+  `rollout_wall_time_seconds` includes reset, inference, environment and scheduling
+  delays, excluding batch gradients/optimization/IPC. Durations overlap across
+  collectors and are not summed as elapsed job time. Existing update/epoch loss
+  and timing records remain available. No policy, reward, RNG or learner math
+  changed; original reproduction entrypoints and old run archives are untouched.
+- Refreshed the strict source inventory using the existing provenance tool,
+  preserving previous ORIGINS bytes and the timer diff. Only the runtime
+  `trainer.py` hash changed. The38-file audit passes. Prior Stokes results keep
+  their original identity; new timing runs have a distinct recorded source hash.
+- Files touched: `scripts/publication_preflight_local.py` (new local launcher),
+  `publication_reconstruction/runtime/trainer.py` (episode timer),
+  `publication_reconstruction/ORIGINS.json` (new intentional source identity),
+  `publication_reconstruction/README.md` (command/logging/timing definitions),
+  `tests/test_publication_episode_timing.py` (new mocked collector/RNG test),
+  `tests/test_publication_preflight_local.py` (new mocked local execution tests),
+  `tests/test_publication_recovery.py` (ignore only nondeterministic episode time
+  in cross-run record comparisons; verify stdout/file preservation), and this
+  existing uppercase `AGENTS.md`. New provenance files under
+  `analysis/publication_submission_2026-10-03/provenance_episode_timing/` are
+  `previous_ORIGINS.json`, `ORIGINS.json`, `runtime_changes.patch` and `audit.json`.
+- Validation:97 focused source/launcher/lifecycle/Slurm/study/timing/recording
+  checks passed in15.32s. Final local-launcher/timing/recording checks passed8 tests
+  in1.11s (six new local tests plus two repeated timer/recorder checks). Actual
+  mock subprocess barriers prove four-job overlap; mock failure and cancellation
+  checks confirm exit propagation and parent/probe cleanup. Printed per-episode
+  values match saved records, and timer reads preserve Python/NumPy/Torch random
+  draws. These checks use mocks or dry runs, without training. Dry-run commands
+  preserve all four workload mappings and create no run directory. Syntax and
+  whitespace checks pass; the full training/recovery integration suite was not run.
+  Existing Stokes-readiness edits were preserved; no dependency change, scheduler
+  action, commit or push occurred.
+
+### 2026-10-04 — completed Mac concurrent preflight analysis
+
+- Analyzed the user's completed `runs/hetnet_preflight_mac_20261003_234455_727228/`
+  against `stokes_runs/hetnet_preflight_903502/`, without running any new policies.
+  All four jobs returned 0, completed 100 updates/10 epochs, and passed their
+  recorded frozen checkpoint probes. Reconciled all 10,950 local episode records,
+  893,647 steps, 400 updates, 40 epoch rows and printed-progress data against both
+  stdout copies. Every numeric metric is finite; all episode timers are positive.
+- Full local job times were PP 9m18s, PCP Real 16m22s, FC 18m24s, PCP Binary 17m01s.
+  Total batch elapsed time was 18m24s. Starts were within 4.5ms; all four launchers
+  overlapped for 9m18s, with four one-thread collectors each. Mac/Slurm update
+  throughput ratios were 2.33/2.26/2.26/5.48 in that workload order. Episode mean
+  rollout times were 0.403/0.749/2.185/0.789s; timers exclude batch optimization.
+- Independently loaded all eight local/reference checkpoints and verified source,
+  scientific command, counts, finite model/active Adam tensors, optimizer step 100,
+  checkpoint/sidecar/probe identities and archived evaluators. Only documentation,
+  provenance and the intended episode-timer source addition differ. Cross-platform
+  initial models differ in 36 float32 attention tensor hashes per workload; all
+  initial float64 hashes and shapes/dtypes agree. This is matching-recipe timing,
+  not a controlled hardware-only or bitwise-identical training comparison.
+- Recorded declining contention as jobs finished: FC throughput in wholly included
+  updates was 197/234/335/411 steps/s across four/three/two/one-launcher phases.
+  Four-job execution is viable for this test; optimal concurrency and multi-day
+  throughput remain unmeasured. Sum of individual collector RSS peaks is 11.54 GiB,
+  not simultaneous system memory; no power/temperature/swap trace was recorded.
+  Full-budget linear Mac projections are 28.35/50.24/33.81/52.27h per run, conditional
+  on these mixed-concurrency rates. Early training changes remain descriptive
+  single-seed diagnostics; no research performance or convergence inference.
+- Files touched: only this existing uppercase `AGENTS.md` and the new sibling
+  `runs/hetnet_preflight_mac_20261003_234455_727228_analysis/`, containing `analyze.py`,
+  `report.txt`, `checkpoint_audit.json`, `timing_audit.json`, `metrics/summary.json`,
+  `metrics/input_hashes.json`, and `artifact_manifest.json` (hashes all other
+  analysis files, excludes itself). The main analysis checks all 639 non-bytecode
+  input file hashes unchanged. Independent numerical and checkpoint/source audits
+  agree; whitespace checks pass. No runtime edit, training/evaluation, dependency
+  change, scheduler action, commit or push; all pre-existing edits were preserved.
+
+### 2026-10-04 — evidence-backed HetNet performance plan
+
+- Wrote `publication_reconstruction/PERFORMANCE_PLAN.md` at the user's request.
+  The ten recommendations link to the authors' paper/supplement, inspected
+  executable code, completed Mac/Stokes preflights, existing tests and official
+  versioned PyTorch/DGL or Slurm documentation. Observations, unmeasured candidate
+  benefits and proposed lab acceptance rules are explicitly distinguished.
+- Defined the preservation target as the selected `supplement-v1` /
+  `corrected-v1` October reconstruction, retaining its actual learner, mixed
+  tensor dtypes, Gumbel draw order, typed graphs, recurrence, four collectors,
+  horizons and sample budgets. Documented the existing FC paper/reconstruction
+  differences and the unavailable verified publication-producing checkout.
+  No exact reproduction or demonstrated acceleration is claimed.
+- Proposed profiling PCP Real/Binary on Stokes before choosing an optimization,
+  with actual CPU topology/affinity evidence, bounded optional traces, unchanged
+  trajectories and profiling-overhead controls. Candidates come from observed
+  repeated relation views, feature-copy loops and repeated graph construction;
+  smaller allocation/learner/environment edits remain deferred. Every candidate is conditional on measurement
+  and complete baseline-versus-candidate equivalence checks.
+- Specified independent archived-reference, environment/model/RNG/gradient/Adam,
+  multi-update and lifecycle gates; three alternating paired 20-update timings
+  per workload; and final official preflights. Benchmark windows and the rule
+  requiring improvement in all three pairs are lab choices, not author settings
+  or statistical guarantees. Preserved source guards
+  and required intentional candidate provenance before any launcher-based check.
+- Added `analysis/hetnet_performance_plan_2026-10-04/evidence.json` with 78 file
+  hashes, 27 evidence entries, eight primary URLs, recommendation-to-evidence
+  mappings and independently recomputed timing/signature/resource metadata.
+  Added its standard-library, read-only `verify_evidence.py`; large local run
+  archives and paper copies remain separate required inputs. The verifier does
+  not import training or claim to repeat the earlier checkpoint tensor audit.
+- Validation: verifier passed for all 78 direct file identities, all 639 archived
+  run inputs, all 38 runtime provenance entries, all local links, four workload
+  pairs and eight checkpoint byte identities. Table rates/projections, sample
+  counts, launcher timestamps and initial signature differences reconcile with
+  raw artifacts. Three independent read-only reviews checked technical source
+  claims, paper attribution and measurement/gate design; their corrections were
+  incorporated. Runtime hashes still match the pre-existing source manifest.
+- Files touched in this task: `publication_reconstruction/PERFORMANCE_PLAN.md`
+  (new), `publication_reconstruction/README.md` (discovery link), `.gitignore`
+  (narrow plan/evidence exceptions and cache exclusion), this existing uppercase
+  `AGENTS.md`, and `analysis/hetnet_performance_plan_2026-10-04/{evidence.json,
+  verify_evidence.py,validation.json,artifact_manifest.json}` (new evidence,
+  validation record and final deliverable hashes). Concurrently added
+  `check_external_sources.py`, `external_sources.json` and `verification.json`
+  were inspected and preserved; corrected their local-PDF availability wording.
+  No runtime, optimizer, environment, dependency, checkpoint or input change;
+  no profiling, training/evaluation, cluster action, full test-suite rerun,
+  commit or push. All earlier working-tree changes were preserved.
+
+### 2026-10-04 — exact-first plan and comparison evidence finalization
+
+- Completed the performance plan around the approved three opt-in changes:
+  per-layer relation views, guarded per-collector topology reuse and exact bulk
+  feature copies. Defined the proposed `reference|cached-v1` interface, reference
+  default, profiling option and fresh-run-only rollout. Environment/wrapper
+  bytes, learner formulas, gradient storage and archived continuation remain
+  preservation requirements. Other visible redundancies are deferred.
+- Added the scientific purpose and comparison contract: twelve locked HetNet
+  runs, original/supplement attribution, outcome-independent checkpoint rules,
+  common PCP panel bytes, seed-weighted reporting, information/health-input and
+  learner differences, and the unmatched existing FC environment boundary.
+  This does not certify the unavailable publication-producing checkout.
+- Final benchmark specification is three matched pairs of 20 complete updates
+  per workload, alternating order, with update 1 and startup reported separately.
+  It supersedes the initial draft's 30-update/A-B-B-A and 10%/5% proposal.
+  Require exactness independently of speed; report each timing pair and retain
+  reference mode when the proposed workload-level rollout test is inconclusive.
+- Excluded conversation-only microbenchmark speedup/equality numbers from the
+  accepted evidence: their full scripts/raw samples were not retained. Added
+  source-level index/topology reasoning and explicit byte/dtype/shape/gradient
+  None checks to the required future tests, without claiming they already pass.
+- Finalized local evidence inventory and read-only verifier, including a check
+  that its 27 source-register entries match the document. Independently verified
+  78 direct file hashes, 639 archived inputs, 38 runtime manifest files, eight
+  checkpoint byte/probe identities and all four Mac/Stokes workload pairs.
+  This is not a new checkpoint tensor audit or policy execution.
+- Added `check_external_sources.py` and `external_sources.json`: eight primary
+  references fetched successfully; publisher/pinned supplement PDF hashes match
+  the prior manifest. Located and rehashed the existing PDFs in `docs/papers/`
+  too; the previously inspected `research/papers/` filenames are absent. The
+  pinned profiler/timer source hashes also match their installed Torch copies.
+  Source text interpretation and prior experimental audits remain distinguished
+  from these byte-identity checks.
+- Files finalized: `publication_reconstruction/PERFORMANCE_PLAN.md`, its README
+  discovery paragraph, this existing uppercase `AGENTS.md`, the narrow plan
+  exceptions in `.gitignore`, and
+  `analysis/hetnet_performance_plan_2026-10-04/{evidence.json,verify_evidence.py,
+  verification.json,validation.json,artifact_manifest.json,check_external_sources.py,
+  external_sources.json}`. Final validation/artifact records identify exact
+  counts and hashes; the artifact manifest excludes itself.
+- No runtime/environment/dependency/checkpoint edit, training, evaluation,
+  performance experiment, cluster submission, full test-suite rerun, commit or
+  push was performed by this documentation finalization. Pre-existing work,
+  including episode timers, launchers, source provenance and reports, was kept.
+
+### 2026-10-04 — shared performance-plan review and validity guards
+
+- Located `publication_reconstruction/PERFORMANCE_PLAN.md` as the current shared
+  plan; the restart and older architecture/evaluation plans have different
+  scopes. Reviewed it with the three reachable source/learner/operations agents.
+  Direct cross-session contact with its other author was not available; the
+  user subsequently said that agent was finished. Continued against the shared
+  file, without creating a competing acceleration proposal or claiming the
+  other author's approval.
+- Retained exact-first R5–R7 as candidates conditional on phase measurements and
+  complete equivalence. Added a linked review, explicitly separated completed
+  guard work from proposed execution-mode/profiling/harness work, and recorded
+  benchmark work bounds: 24 runs, 480 updates, 960,000–1,217,280 steps. Documented
+  the alternating-order imbalance and the future old-command compatibility
+  test required when the execution-mode flag is introduced. No speedup claim.
+- Reproduced and fixed outer validity gaps: direct resume and preflight readiness
+  now bind checkpoint bytes/length/progress to recorded checkpoint entries;
+  existing optimizer state checks include step, moment shape/dtype and
+  nonnegative second moments while allowing legitimately unused parameters;
+  schema-2 scientific validation checks relevant saved defaults and rejects
+  missing fields; selected parent checkpoints are rechecked against the locked
+  protocol and actual seed; preflight update ledgers reconcile sequence, epoch
+  positions, finite timing and cumulative work with segment/status/checkpoint
+  counts. These are malformed-input acceptance defects, not demonstrated damage
+  to the archived experiments.
+- Added a fail-fast launcher guard for PCP/FC horizon 1 with collector batch
+  floor 1. The frozen per-class learner's singleton A advantage has undefined
+  sample standard deviation; eight synthetic PCP/FC × Real/Binary × model-spec
+  forward/backward probes reproduced nonfinite losses and gradients. Preserved
+  the learner formula; production horizons/floors remain unchanged.
+- Changed code/tests: `publication_reconstruction/__main__.py` (tiny-config
+  guard), `publication_reconstruction/artifacts.py` (configuration/optimizer/
+  recorded-byte guards), `publication_reconstruction/study.py` (ledger/readiness
+  and selected-parent guards), `tests/test_publication_artifacts.py` (realistic
+  schema-2 fixture and ledger), `tests/test_publication_launcher.py` (boundary
+  cases), `tests/test_publication_study.py` (malformed ledger/byte/continuation
+  cases), and new `tests/test_publication_recovery_integrity.py` and
+  `tests/test_publication_validity.py` (corrupt-state/default/label regressions).
+- Changed documentation/evidence: `publication_reconstruction/PERFORMANCE_PLAN.md`,
+  this existing uppercase `AGENTS.md`, and
+  `analysis/hetnet_performance_plan_2026-10-04/{evidence.json,verify_evidence.py,
+  verification.json,validation.json,artifact_manifest.json}`. New
+  `validity_review/` contains `README.md`, `check_archives.py`,
+  `archive_checks.json`, `probe_singleton.py`, `singleton_probe.json`,
+  `pytest_full.txt`, `pytest_guards.txt`, `validation.json`,
+  `baseline_manifest.json`, `prior_evidence.json`, `prior_performance_plan.md`,
+  `prior_validation.json`, `prior_artifact_manifest.json`, `source_revision.json`,
+  `guard_changes.patch`, and `baseline/` with the 54 exact paths/hashes listed in
+  its manifest. The outer artifact manifest enumerates all final deliverables.
+- Before guard edits, froze all 38 runtime files and 16 additional source/test
+  files against the existing evidence inventory. Retained prior plan/inventory
+  and explicit before/after receipts rather than silently replacing hashes.
+  The updated verifier checks 83 direct inputs, four reviewed source revisions,
+  all 54 frozen copies, 639 archived run inputs, 38 runtime provenance entries,
+  eight checkpoint byte identities and unchanged four-workload timing results.
+  Deliberately corrupted transition metadata was rejected.
+- Validation: `.venv/bin/python -m pytest -q` passed **524 tests in 150.64s**.
+  After the final preflight checkpoint-ledger binding call and its new test,
+  the affected five-file guard suite passed **171 tests in 1.45s**. These are
+  separate scopes, not a claim of a second full-suite run. Read-only actual
+  artifact checks accepted 33 existing checkpoints (Adam/RMSprop, mixed dtypes,
+  unused parameters), eight genuine Mac/Stokes ledgers with unchanged rates,
+  and two paused-checkpoint resume resolutions. No archive bytes changed.
+  `uv lock --check` resolved 59 packages unchanged; syntax for all six
+  publication Slurm files, Python parsing, document links, source audit and
+  `git diff --check` passed. Tests used bounded training/evaluation fixtures;
+  no research/performance run, cluster submission, commit or push.
+- Deferred a separate report-parser hardening issue: synthetic inconsistent
+  composition/sham fields and string success can be accepted by
+  `softrole/report.py`. All four supplied Stokes probe reports passed the
+  corresponding consistency checks; no result corruption was observed.
+  Full reproduction fidelity and the documented corrected-FC comparison limit
+  remain as stated in the plan. Binary's Stokes slowdown is still unexplained.
+- Training runtime, environment/wrapper sources, learning formulas, parameter
+  dtypes, RNG order, collector partitioning, gradient storage, optimizer settings
+  and budgets were unchanged by this review. Existing concurrent timer,
+  launcher, provenance and documentation changes were preserved. Runtime
+  `ORIGINS.json` remained valid without refresh; new outer-helper/evaluator
+  snapshots receive their own hashes through the existing archive mechanism.
+
+### 2026-10-04 — DGL cost, Binary slowdown, communication radius and dense/CUDA implications
+
+- Scope: answered the user's questions on communication radius, the Stokes Binary
+  slowdown, replacing DGL with plain PyTorch, and CUDA on Newton. No runtime, test,
+  protocol, Slurm or dependency file changed; no cluster action. The requested
+  Stokes benchmark is described below but deliberately not written. Measurements
+  first ran in a temporary scratchpad; scripts and raw outputs were copied unchanged
+  into `analysis/dgl_profile_2026-10-04/`. Its `scripts/summarize.py` recomputes
+  every number in this entry into `summary.json`, hashing all 132 inputs. A 6.4x
+  microbenchmark ratio quoted in conversation came from an unsaved first run and is
+  superseded by the saved rerun (6.20x).
+- Current experiments enforce no communication radius. Defaults of -1 mean all
+  pairs: `softrole/config.py:30`, `softrole/rollout.py:44-50`, reconstruction
+  `runtime/main.py:124-127` (`:222` also disables lossy communication) and
+  `runtime/hetgat/utils.py:71,86`; the reconstruction frozen evaluator rejects other
+  ranges (`publication_reconstruction/evaluation_worker.py:79`). Recorded values:
+  all 18 SoftRole primary configs -1.0; all 8 Mac/Stokes reconstruction preflights
+  -1/-1 with lossy false; all 18 frozen PCP 30M result reports -1.0; all 144
+  `logs_1` argument records -1. Edge distances are stored but read only by lossy
+  layers (`fastreal.py:747`, `fastbinary.py:513`), which are inactive.
+- Authors' radius. The paper motivates limited-range communication and adds edges
+  "within communication range" (`research/papers/HetNet.txt:231,265`), but Table 1
+  (`:514`) states no radius. The only range experiment is Ablation #2, section 6.3.3 /
+  Fig. 5a, PCP only: Full, Half ("i.e., limited range") and No communication
+  (`:547-556`, `:577`). No radius value or definition of Half is given; the
+  supplement text has zero matches for "communication range", "radius" or "half".
+  The nine training command lines in public upstream READMEs (snapshots 6b09d36,
+  bff9f7f, f54ca5a) set no range, and the parser default is -1. Inference: Table 1
+  most likely used full communication, as we do. This is unconfirmed because the
+  authors' training commands are unavailable (prior author-search audit).
+  Reproducing Fig. 5a would require choosing an undocumented radius.
+- Binary versus Real. Binarization arithmetic is small. Mac, same code, one
+  collector, uninstrumented: Real 122.4 versus Binary 113.4 steps/s (Binary 7.95%
+  slower). `gumbel_softmax` is 0.58% of cProfile time. The archived Mac four-collector
+  preflight shows 1.036x collector CPU-seconds per step for Binary. Stokes 903502
+  shows 2.518x lower throughput (97.72 versus 38.81 steps/s) and 2.573x CPU-seconds
+  per step. Collectors were 86-95% CPU-busy in both jobs (CPU-bound, not waiting),
+  and Binary was already slow in updates 1-10 (85.8 versus 44.0 steps/s). The jobs
+  had different logical CPU sets (Real 33/35/37/39, Binary 3/5/7/9). No
+  non-source file in either preflight archive records a host or node. Unresolved,
+  untested candidates: node/core placement or co-tenancy, or an x86-specific slow
+  path in a Binary-only operation (for example subnormal arithmetic). The evidence
+  rules out the binarization networks' extra arithmetic as the main cause.
+- DGL share. Mac, PCP Real, one collector, four updates, seed 991, supplement-v1,
+  corrected-v1: DGL takes 69.4% of update time (Binary 66.8%):
+  - forward message passing and graph data: 39.2%;
+  - DGL autograd backward: 22.4%;
+  - per-step graph construction: 7.8%.
+
+  The environment step is 0.7%. By method: `update_all` 12.6%, `apply_edges` 10.2%,
+  relation slicing 7.2% (141 calls/step), node-data writes 4.3%, `edge_softmax`
+  3.0%. Timers add 5.2%/0.7% overhead and leave update records and parameter
+  signatures identical to the uninstrumented runs in all five comparisons.
+  cProfile inflates Python overhead and is used only for named-function shares.
+- Dense microbenchmark of the replaced portion. Same 2P/1A/two-state topology as
+  `build_hetgraph`, three layers x five non-empty relations, 4x16 heads, float64
+  features with float32 attention vectors, 80 steps then backward, six alternating
+  repetitions. Result: DGL 5.64 versus dense PyTorch 0.91 ms/step (6.20x). This is
+  not a numerical-equivalence test.
+- Estimate, not measured end to end: replacing the measured in-situ DGL time
+  (5.98 of 8.62 ms/step) with 0.91 ms gives 3.55 ms/step, about 2.43x on this Mac.
+  The ceiling is 3.27x if DGL cost were zero. The plan's R5+R7 address only relation
+  slicing plus graph construction (15.1%), so at most 1.18x. Stokes, multi-collector
+  aggregation and later-training behavior are unmeasured. Conditional arithmetic
+  only: if the 2.4306x ratio held on Stokes for every workload (unmeasured), the
+  903502 projections would become PP 27.3, PCP Real 47.0, FC 31.5 and PCP Binary
+  118.2 h. That is 1/2/1/3 nominal 46-hour segments instead of 2/3/2/7, and the
+  idealized 12-run wave at concurrency 3 would drop from 22.68 to 9.33 days.
+- Effects of DGL -> dense PyTorch (analysis only; not adopted):
+  - Unaffected. SoftRole's model/learner imports no DGL and already uses dense masked
+    attention (contract item 5): its 18 primary runs, the frozen PCP 30M panel and the
+    sensor pilot stay valid. Also unaffected: legacy root reproduction runs (root
+    `hetgat/` DGL code stays unchanged) and the root-DGL `softrole evaluate-hetnet`
+    path.
+  - Reconstruction. No research-run artifacts exist locally and this record shows no
+    launch. Adoption would supersede the 903502/Mac throughput projections
+    (66.25/114.15/76.67/287.25 h) and require fresh preflights for the new source
+    identity; DGL stays as the reference oracle. All 12 first-wave runs must use one
+    implementation, and DGL checkpoints are not continued under different source
+    (existing guard). If DGL research runs were launched after 903502, either finish
+    all 12 on DGL or restart all on dense. Follow-up: the user confirmed on
+    4 Oct that no Stokes runs were launched after the preflight, so no DGL
+    reconstruction research runs exist to finish or discard.
+  - Numerics. Same equations and parameters but a different reduction order, so
+    results are not bitwise identical and per-seed trajectories diverge; comparison
+    is at the seed-distribution level. Precedent: Mac and Stokes initial models
+    already differ in 36 float32 tensors per workload
+    (`runs/hetnet_preflight_mac_20261003_234455_727228_analysis/checkpoint_audit.json`),
+    and PyTorch gives no cross-platform bitwise guarantee (plan W2).
+  - Required before use:
+    - fixed-input forward/hidden/value/gradient agreement within declared tolerances
+      for PP/PCP/FC x Real/Binary x both model specifications, including empty
+      relations and zero-A cases;
+    - unchanged Gumbel RNG consumption order, with any flipped hard bits or actions
+      counted;
+    - identical state_dict names, shapes and dtypes so checkpoints cross-load;
+    - DGL-trained checkpoints reproduce their action distributions within tolerance
+      under dense evaluation.
+  - Plan conflict. `PERFORMANCE_PLAN.md` requires exact equality for its strict route
+    (R9, lines 152-156) and lists dense replacement of typed DGL message passing as
+    outside the plan (line 196). Adoption needs an explicit amendment adding a
+    tolerance-gated opt-in execution mode. Root reproduction defaults stay unchanged.
+  - Contribution. SoftRole's contribution is the capability-conditioned,
+    label-independent architecture and its composition and sensor-failure
+    evaluation. The baseline's graph library is an implementation detail to report
+    in the experimental setup, together with the equivalence evidence. It would
+    matter only for an exact-reproduction claim, which the protocol `claim` field
+    already disclaims. Neither version supports compute-efficiency comparisons with
+    SoftRole, since the learners differ.
+- CUDA on Newton. The ARCC page (retrieved 4 Oct 2026) lists 10 nodes with 2x V100
+  16 GB, 11 with 2x V100 32 GB, 29 with 2x H100 80 GB and 4 with 8x H100 80 GB.
+  Removing DGL is not what enables CUDA:
+  - the code already moves graphs to `self.device` (`runtime/hetgat/policy.py:528`);
+  - the Stokes Torch 2.2.1 install includes CUDA 12.1 libraries (preflight
+    `environment.json`);
+  - CUDA support in the installed DGL wheel is unverified;
+  - the current blocker is our guard at `runtime/main.py:219`.
+
+  The expected benefit is low and unmeasured. Inference is batch-1 per step on tiny
+  tensors, and sampled actions are copied to CPU every step
+  (`runtime/action_utils.py:40,51`) for the NumPy environment
+  (`runtime/trainer.py:192-194`); PyTorch documents that CPU-GPU copies synchronize.
+  A material GPU benefit would plausibly require batched or vectorized environments,
+  a collection redesign that needs its own protocol and RNG review.
+- CUDA follow-up (the user asked why a PyTorch port could not use CUDA). A port
+  could run on CUDA. The evidence predicts no speedup, but this is unmeasured.
+  - Operation counts. `scripts/count_ops.py` profiled one PCP Real update (557
+    steps); its non-timing records equal base_real's first update. Even excluding
+    DGL's own kernels, each environment step issues about 2,795 forward and 1,543
+    backward top-level PyTorch ops. Excluding listed view/allocation ops, that is
+    about 1,138 and 757 compute-type leaf ops, an overestimate of GPU kernels.
+  - Operation sizes. The median largest input is 64 elements, and about 80% of
+    leaf ops touch at most 1,024 elements. The dense message-passing part alone
+    issues about 1,429 forward and 754 backward top-level ops per step, with
+    median 8 and maximum 128 elements.
+  - Mechanism. PyTorch documents that GPU operations are enqueued asynchronously
+    and that CPU-GPU copies synchronize. The CPU-side issue cost of every op
+    therefore remains on GPU, and every step's sampled action is copied to CPU
+    (`runtime/action_utils.py:40,51`). The arithmetic a GPU accelerates is
+    negligible at these sizes. Whether net time rises or falls on Newton is
+    untested.
+  - Port requirements beyond dropping DGL:
+    - remove the CPU-only guard (`runtime/main.py:219-220`) and the CPU double
+      default tensor type (`runtime/main.py:55`);
+    - capture CUDA RNG for pause/resume, since `recovery.py:50-52` saves only
+      Python, NumPy and CPU Torch states;
+    - adapt gradient sharing across spawned collectors: raw `p._grad.data`
+      pointers (`multi_processing.py:45,123`) with spawn (`main.py:50`). The
+      PyTorch 2.2 multiprocessing notes require senders to keep shared CUDA
+      tensors alive;
+    - accept that seeds become non-comparable. PyTorch 2.2's randomness notes
+      say CPU and GPU results may differ even with identical seeds, and CUDA
+      sampling uses a separate generator. All 12 runs would need one device.
+  - Option. A CUDA arm on Newton can measure this after Stokes Phase A/B.
+    Batched multi-environment collection is the plausible route to GPU benefit,
+    but it is a separate design and protocol decision.
+- Proposed Stokes benchmark (not written; one task, four CPUs, no research runs):
+  - Phase A, needs no model code:
+    - record node identity: hostname, `lscpu`, `lscpu -e`, `scontrol show job`,
+      affinity, Torch configuration, package and source hashes;
+    - run `dense_vs_dgl.py` for at least three alternating repetitions;
+    - run instrumented and uninstrumented one-collector PCP Real and Binary
+      back-to-back in one allocation, with the identity check. This measures the
+      x86 DGL share and tests whether Binary's gap persists on the same CPUs.
+  - Phase B, only after a dense implementation passes equivalence: the plan's R10
+    paired harness (three pairs x 20 updates, four collectors, alternating order),
+    then the official preflights.
+  - An optional Newton CUDA arm comes only after A and B.
+- Files touched:
+  - `AGENTS.md` (this entry);
+  - `.gitignore` (narrow folder exception excluding caches, the runtime copy and
+    rerun outputs);
+  - new `analysis/dgl_profile_2026-10-04/`:
+    - `README.txt`, `summary.json`, `runtime_identity.json`, `artifact_manifest.json`;
+    - `scripts/{instrument.py, instrument_detail.py, run.sh, run_detail.sh,
+      analyze.py, dense_vs_dgl.py, summarize.py, count_ops.py, manifest.json}`;
+    - `raw/{base_real, base_binary, ins_real, ins_binary, det_real, cprofile_real,
+      cprofile_binary}/` (run records, logs, timers, `.prof`),
+      `raw/dense_vs_dgl.txt`, `raw/op_counts_{insitu_real,dense}.json`,
+      `raw/op_counts_dense_stdout.log` and `raw/op_counts_insitu_run/`.
+
+  The manifest hashes all 96 other files after the CUDA follow-up.
+- Validation:
+  - `summarize.py` reran end to end; the executed runtime copy matched all 38
+    working-tree runtime files.
+  - Scripts compile; shell syntax and `git diff --check` pass.
+  - Fetched the external ARCC Newton page and PyTorch 2.2 CUDA-semantics page on
+    4 Oct 2026; neither page is archived.
+  - No tests reran because no runtime source changed.
+  - All earlier working-tree changes were preserved; no commit or push.
+
+### 2026-10-04 — paper-v1 reconciliation and PyTorch implementation (in progress)
+
+- User approved a new paper-aligned baseline before acceleration, small numerical
+  differences between equivalent backends, matched FC rerun preparation, and a
+  target of completing core implementation in this session. This supersedes the
+  earlier environment-fixed/exact-backend performance proposal for NEW runs only.
+- Explicit user choices: correct paper conflicts before acceleration; retain
+  documented public-source defaults for unspecified details; Binary has 64 bits
+  per independent head (four heads = 256 payload bits per sender/round). This is
+  a declared interpretation, not verified recovery of the paper's 64-bit result.
+- Frozen the 38 pre-change runtime files and launcher/validator/evaluator/study
+  sources in analysis/paper_v1_2026-10-04/baseline; baseline_manifest.json records
+  SHA256 identities. All runtime bytes matched the existing ORIGINS inventory.
+  initial_status.txt preserves the pre-existing dirty-tree inventory.
+- Evidence: main paper §§4–5 and Algorithm 1 (research/papers/HetNet.txt),
+  supplement §§1–2 (research/papers/HetNet_Supplementary.txt), active public
+  runtime and older independent-head implementation. New architecture, learner,
+  FC semantics and implementation-backend changes will be validated separately.
+- Work split: independent class preprocessing and head channels plus Torch
+  backend; equation-aligned learner; shared paper-FC environment/SoftRole adapter;
+  launcher/checkpoint/frozen-evaluation/profiling/benchmark/provenance integration.
+  Existing archives and continuations retain their original source. No cluster
+  submission or full research sweep is part of the implementation validation.
+
+- Core implementation progress: added the coherent paper-v1 launcher preset,
+  backend/learner/checkpoint metadata and source-bound evaluation dispatch. The
+  new benchmark keeps24 sequential20-update runs distinct from100-update
+  preflights; phase diagnostics are optional and separate. Added Stokes batch
+  files for the benchmark, paper preflights, fresh HetNet wave and matched
+  SoftRole FC. No script has been submitted.
+- Added publication_reconstruction/FIDELITY.md with primary-paper/supplement
+  links, equation-to-code/test mapping, all declared defaults,256-bit aggregate
+  Binary accounting and the boundary between backend equivalence and scientific
+  fidelity. Amended PERFORMANCE_PLAN.md and README.md without deleting earlier
+  evidence. Corrected README attribution: per-class critics are supplement-backed;
+  the8-wide state output is the public-source choice.
+- First integration checks:47 launcher/benchmark/legacy-launcher tests passed
+  (0.29s; the archive-hash test was deferred until intentional provenance refresh).
+  Benchmark and study dry runs resolve without creating training outputs. New
+  model, learner and environment tests are being independently reviewed; final
+  consolidated results will be recorded below, not inferred from these checks.
+
+### 2026-10-04 — paper-v1 implementation completed and launch checks
+
+- Implemented the approved reconciliation as an opt-in, coherent
+  `--reconstruction-spec paper-v1` with `--message-backend dgl|torch-v1` (DGL
+  default). Legacy defaults and archived continuation sources remain preserved.
+  This is a fresh baseline, not a migration of prior trained weights. The
+  [fidelity contract](publication_reconstruction/FIDELITY.md) maps each change to
+  primary evidence, declared choices and independent tests. Local primary text
+  and available PDF identities are in
+  `analysis/paper_v1_2026-10-04/primary_evidence.json`.
+- Architecture: separate P/A status preprocessing and recurrence; three layers;
+  four independent heads; 16-wide hidden heads concatenated, final heads averaged;
+  independent Binary encoders/binarizers/decoders; class-routed SENs and critics.
+  SEN time now uses actual zero-based episode time. No SEN information reaches
+  the actor. Paper Fig. 1/§4 and supplement §2.1 support these structural choices;
+  the two SENs, width eight and unspecified defaults are explicitly attributed to
+  public source. The selected 64 bits/head means 256 payload bits/sender/round,
+  not a verified reconstruction of the publication's reported 64-bit setting.
+- Backend: shared parameters and sender computations, with DGL reference relation
+  aggregation versus a new receiver-by-sender masked Torch implementation.
+  Each typed relation keeps its own incoming softmax; relation results are added
+  to self features in order. Empty neighborhoods contribute zero without NaNs.
+  Only topology is cached; no feature, gradient or learned tensor is cached.
+  CPU, unlimited non-lossy communication and fixed within-episode teams are
+  enforced for this initial backend. Old fastreal/fastbinary/uavnet files were
+  not changed. Mixed parameter dtypes and independent-head random draw order
+  are preserved between the two new backends.
+- Learner: individual GAE actor advantages, separate Monte-Carlo rewards-to-go
+  for class-average critic targets, total-team-N weighting, global completed-
+  episode average, one global .75 clip and one Adam 1e-3 step. No padded
+  advantage standardization, actor multiplier 50, critic time averaging, local
+  clipping or final environment-step division enters this new learner. These
+  choices follow paper §5.2/Algorithm 1 where specified; the remaining defaults
+  and the combined shared-backbone objective are declared in FIDELITY.md.
+- FC: paper-only branch implements four movement actions for P, movement plus
+  extinguish for A, prior discovery before extinction, and additive temporal,
+  unique ignition/extinction and false-drop rewards from supplement §1.3.
+  Corrected FARSITE propagation/boundary handling is retained. PP/PCP retain
+  corrected-v1 physical behavior. SoftRole's opt-in paper-FC adapter loads the
+  same verified archived simulator bytes, masks stay and maps internal extinguish
+  action 5 to native action 4. Its own actor/critic/learner remain its existing
+  method; older FC results must remain a separate environment stratum.
+- Checkpoint/evaluation: protocol and checkpoint identities include model,
+  environment, learner and backend. Continuation inherits archived bytes and
+  backend without an override. Frozen evaluation instantiates the archived
+  model/backend and verifies checkpoint immutability. Phase profiling defaults
+  off and is separated from unprofiled throughput runs; summed collector wall
+  intervals overlap, while parent wait/aggregation/optimizer intervals are separate.
+- Benchmark: 24 sequential runs, four workloads, three alternating backend pairs,
+  20 updates each, four collectors, 500-step floors, production horizons and
+  seed 991. It records startup, updates, process/segment rates, CPU intervals,
+  memory units, topology/affinity, package and source/dependency/launcher hashes.
+  Optional eight three-update phase runs are separate. The speed gate requires
+  all three post-first-update improvements and higher median segment throughput.
+  Normal episode logs lack full trajectory hashes, so all current workloads
+  require fixed-rollout compute replay. Replay excludes environment/IPC, includes
+  RNG restoration/Python iteration, and checks model/hidden/gradient/loss/Adam/RNG
+  agreement before timing. Diagnostic cloning and per-update model copying were
+  removed from its timed path; non-finite comparisons fail explicitly.
+- Review fixes: incomplete/empty episode ledgers now fail rather than vacuously
+  certifying identical trajectories. Benchmark updates, episode order, collector
+  floors and final checkpoint bytes/counts are reconciled. Segment gating uses
+  the ratio of median throughputs, not the median of pair ratios. Process timing
+  begins before process creation. These integrity checks prevent unsupported
+  performance claims; they do not imply a measured speed improvement.
+
+Files touched by this implementation (pre-existing changes were preserved):
+
+- Reconstruction model: new `publication_reconstruction/runtime/hetgat/paper.py`,
+  `runtime/hetgat/graph/paper.py`, `runtime/hetgat/graph/torch_backend.py`.
+- Reconstruction learner/runtime, relative to `publication_reconstruction/`:
+  new `runtime/hetnet_ext/paper_learning.py` and `paper_replay.py`;
+  changed `runtime/hetgat/policy.py`, `runtime/trainer.py`,
+  `runtime/multi_processing.py`, `runtime/main.py`,
+  `runtime/hetnet_ext/{recording,recovery,signatures}.py`.
+- Versioned simulator branches, same prefix:
+  `runtime/envs/ic3net_envs/{fire_commander_env,predator_capture_env}.py`,
+  `runtime/WildFire_Simulate_Original.py`.
+- Reconstruction integration: `__main__.py`, `artifacts.py`,
+  `evaluation_worker.py`, `study.py`; new `benchmark.py`, `paper_study.py`;
+  `ORIGINS.json` refreshed through the existing audit command.
+- SoftRole: `softrole/{__main__,config,env,evaluate,model,train}.py` and new
+  `softrole/publication_env.py` for versioned simulator selection/source binding.
+- New batch scripts: `slurm/publication_backend_benchmark.sbatch`,
+  `publication_paper_preflight.sbatch`, `publication_paper_train.sbatch`,
+  `softrole_paper_fc.sbatch`. No submission command was executed.
+- New tests: `tests/test_publication_paper_{model,learning,training,replay,
+  launcher,benchmark,study}.py` and `tests/test_softrole_paper.py`.
+- Documentation/provenance: `.gitignore`, `AGENTS.md`, reconstruction `README.md`,
+  amendment to existing `PERFORMANCE_PLAN.md`, new `FIDELITY.md`; fresh
+  `analysis/paper_v1_2026-10-04/` (reference snapshot, audit records, reproducible
+  validation scripts, exact commands, reports and hashes). Its final artifact
+  manifest inventories these files individually. Prior performance reports,
+  local preflight launcher, episode timers and existing regression edits remain.
+
+Validation and measured results:
+
+- Full integrated suite: **610 passed in 278.26 s**, recorded in
+  `pytest_full_01.txt`. After final replay/benchmark hardening: **173 passed in
+  10.72 s** (`pytest_final_focused.txt`), plus three study-provenance tests in
+  0.76 s. These suites overlap and their counts are not additive. Focused replay
+  tests exercise actual fixed-rollout recording and final DGL model/Adam identity.
+- Legacy environments: 30 fixed-action traces across PP/PCP/FC and both old
+  environment versions; 600 steps in each source matched exactly, including
+  observations, rewards, physical state and final NumPy RNG. Evidence:
+  `legacy_environment_replay.json`, using the immutable pre-change snapshot.
+- Archived training/frozen loading matrix: 24 fresh runs across all three tasks,
+  both message variants, one/four collectors and both backends; 72 complete
+  updates, horizon six/floor seven, and 24 frozen one-episode evaluations.
+  All model/active-Adam comparisons passed fixed dtype tolerances; initial
+  model/optimizer/RNG, final RNG and counts matched across all 12 pairs. Largest
+  model absolute difference was 4.659640728821302e-13 (float64); float32 model
+  parameters were exact. Frozen checkpoints remained unchanged. Scripts and
+  results: `validate_integration.py`, `compare_integration.py`,
+  `integration_validation.json`, `integration_numerical_recheck.json`.
+- Actual outer-CLI continuation: DGL and Torch PCP Binary, four collectors,
+  resumed a first-update checkpoint within a three-update epoch. Model, active
+  Adam, logs, recorder/milestone state, counts, retained episode order and all
+  collector Python/NumPy/Torch RNG states matched uninterrupted execution
+  exactly. Backend/source inheritance and selected checkpoint immutability
+  passed. Four segments executed ten new updates, 480 steps and 80 episodes;
+  do not double-count retained prefixes. `continuation_validation.json` and its
+  298-file artifact manifest bind the evidence.
+- Production-shaped functional checks: eight updates (four workloads × two
+  backends), four collectors/floor 500/H80 or H300, **18,766 steps / 206 episodes**.
+  Paired counts, episode summaries, initial identities, source manifests and final
+  RNG matched; model/Adam comparisons passed. Maximum model difference was
+  4.44e-15. Complete action/observation traces were not recorded, so equal episode
+  summaries are not called identical trajectories. `production_shape_02.json`
+  and `production_shape_02_numerical_comparison.json` contain exact commands.
+- Both SoftRole paper-FC variants additionally trained eight steps/two episodes/
+  one update each and completed one frozen evaluation each. Model and RMSprop
+  states were finite and changed; archived simulator bytes matched HetNet;
+  evaluation checkpoint bytes were unchanged. The first production attempt
+  completed an extra PP DGL update (2,194 steps/32 episodes) before a harness
+  error requested resume eligibility for an exhausted epoch budget. That error
+  and its completed valid checkpoint were preserved and independently rechecked;
+  no runtime fix was needed. Including the extra run and SoftRole checks, this
+  validation tranche executed 11 updates/20,976 steps/242 episodes plus two frozen
+  evaluations. Its artifact manifest hashes 1,901 files.
+- Twelve real four-collector ledgers passed the new benchmark validator and
+  correctly required replay. **39 actual batch-script/CLI dry runs** with mocked
+  module/srun commands passed without training outputs or submissions. Shell
+  syntax, `git diff --check` and `uv lock --check` passed; no dependencies changed.
+- Runtime provenance was refreshed twice, preserving both reviews. Final
+  ORIGINS SHA256 is
+  `d79894723efbf40812232e53e5cf684eacecbdf8916ad4012fb1cfe20410589a`.
+  The final prepared study and benchmark plans carry source/dependency identities
+  and the common 500-scenario FC panel; they do not authorize or submit jobs.
+
+Remaining scientific/operational gates: run the paired compute-node benchmark,
+review resource evidence and fixed-rollout comparisons, then run the separate
+official 100-update preflights before choosing a backend for fresh research runs.
+No new Stokes speedup or learned-performance result has been measured. Earlier
+Mac timings concern a different model/learner. No full sweep, cluster job, commit
+or push occurred. Automatic paper-specific final checkpoint selection/manifests
+remain unimplemented; the README gives the predeclared first-saved-at-28M rule
+and working manual frozen-evaluation commands using the shared panel. Do not use
+the legacy `prepare-evaluation` route for paper-v1 or pool unmatched old FC runs.

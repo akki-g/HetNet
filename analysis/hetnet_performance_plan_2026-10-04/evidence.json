@@ -1,0 +1,1078 @@
+{
+  "archived_run_input_count": 639,
+  "archived_run_input_inventory": "runs/hetnet_preflight_mac_20261003_234455_727228_analysis/metrics/input_hashes.json",
+  "date": "2026-10-04",
+  "evidence_register": {
+    "C1": {
+      "description": "[main.py](runtime/main.py), lines 561\u2013576, and [trainer.py](runtime/trainer.py), lines 529\u2013539: actual timing scopes. [Recorder](runtime/hetnet_ext/recording.py), lines 84\u2013120: recorded quantities.",
+      "external_urls": [],
+      "local_paths": [
+        "publication_reconstruction/runtime/main.py",
+        "publication_reconstruction/runtime/trainer.py",
+        "publication_reconstruction/runtime/hetnet_ext/recording.py"
+      ]
+    },
+    "C10": {
+      "description": "[main.py](runtime/main.py), lines 20\u201335 and 77\u201378; [trainer.py](runtime/trainer.py), lines 649\u2013669; [recorder](runtime/hetnet_ext/recording.py), lines 92\u2013101; environment `_set_grid`/`_get_obs` pairs in C6: optimizations already present and actual imported policy.",
+      "external_urls": [],
+      "local_paths": [
+        "publication_reconstruction/runtime/main.py",
+        "publication_reconstruction/runtime/trainer.py",
+        "publication_reconstruction/runtime/hetnet_ext/recording.py"
+      ]
+    },
+    "C11": {
+      "description": "[policy.py](runtime/hetgat/policy.py), lines 569\u2013589: discarded duplicate action-agent log probability.",
+      "external_urls": [],
+      "local_paths": [
+        "publication_reconstruction/runtime/hetgat/policy.py"
+      ]
+    },
+    "C12": {
+      "description": "[policy.py](runtime/hetgat/policy.py), lines 518\u2013528; [graph helper](runtime/hetgat/utils.py), lines 49\u2013159: repeated construction, range predicates, distance calculation and typed edge order.",
+      "external_urls": [],
+      "local_paths": [
+        "publication_reconstruction/runtime/hetgat/policy.py",
+        "publication_reconstruction/runtime/hetgat/utils.py"
+      ]
+    },
+    "C13": {
+      "description": "[Frozen preparation](study.py), `select_checkpoint` and `prepare_evaluation`; [locked SoftRole panel preparation](../scripts/prepare_pcp_frozen.py); [native evaluator](evaluation_worker.py); [SoftRole research contract](../softrole/RESEARCH.md), especially observation/capability, evaluation and comparison sections; [SoftRole observation adapter](../softrole/env.py) and [reporting](../softrole/report.py); reconstruction README sections Frozen panels and reporting and source limitations. These establish panel/budget rules, information differences, reporting strata and the FC comparison boundary.",
+      "external_urls": [],
+      "local_paths": [
+        "publication_reconstruction/study.py",
+        "scripts/prepare_pcp_frozen.py",
+        "publication_reconstruction/evaluation_worker.py",
+        "softrole/RESEARCH.md",
+        "softrole/env.py",
+        "softrole/report.py"
+      ]
+    },
+    "C14": {
+      "description": "[Training CLI](__main__.py), `parser`, `resolve` and `resolve_resume`; [study launcher](study.py), `add_commands` and `train_arguments`; [local preflight launcher](../scripts/publication_preflight_local.py). These are the current extension points; `--execution-mode` and `--profile-timing` are proposed rather than existing interfaces.",
+      "external_urls": [],
+      "local_paths": [
+        "publication_reconstruction/__main__.py",
+        "publication_reconstruction/study.py",
+        "scripts/publication_preflight_local.py"
+      ]
+    },
+    "C2": {
+      "description": "[Reconstruction README](README.md), opening provenance statement, environment-version differences, recipe table and final interpretation boundary; [ORIGINS.json](ORIGINS.json) records researcher environment commit `d57da0717d5564027df7e8ba75614feca8006960` and local scaffold `0ee9ceb38b6133866e9c1db40bed2c6caa3b842d`. Prior bounded [author-source search findings](../analysis/publication_reconstruction_2026-09-30/author_search/FINDINGS.txt) explain the unverified publication checkout; this is not a claim that no such checkout exists anywhere.",
+      "external_urls": [],
+      "local_paths": [
+        "publication_reconstruction/README.md",
+        "publication_reconstruction/ORIGINS.json",
+        "analysis/publication_reconstruction_2026-09-30/author_search/FINDINGS.txt"
+      ]
+    },
+    "C3": {
+      "description": "[STUDY.json](STUDY.json), [study.py](study.py), lines 35\u201346 and 62\u2013105, [preflight batch file](../slurm/publication_preflight.sbatch), [training batch file](../slurm/publication_train.sbatch): locked workload shape, budgets and actual preflight/probe contract.",
+      "external_urls": [],
+      "local_paths": [
+        "publication_reconstruction/STUDY.json",
+        "publication_reconstruction/study.py",
+        "slurm/publication_preflight.sbatch",
+        "slurm/publication_train.sbatch"
+      ]
+    },
+    "C4": {
+      "description": "[uavnet.py](runtime/hetgat/uavnet.py), lines 110\u2013130, 189\u2013242, 307\u2013412; [trainer.py](runtime/trainer.py), lines 55\u201358 and 164\u2013175: architecture, feature extraction, active optimizer and recurrence truncation.",
+      "external_urls": [],
+      "local_paths": [
+        "publication_reconstruction/runtime/hetgat/uavnet.py",
+        "publication_reconstruction/runtime/trainer.py"
+      ]
+    },
+    "C5": {
+      "description": "[fastbinary.py](runtime/hetgat/graph/fastbinary.py), lines 48\u201360, 70\u201387, 147\u2013220 and 227\u2013329; [fastreal.py](runtime/hetgat/graph/fastreal.py), forward feature assignments and repeated relation lookups from line 198: actual parameters, messages, graph mutation and view reuse candidates.",
+      "external_urls": [],
+      "local_paths": [
+        "publication_reconstruction/runtime/hetgat/graph/fastbinary.py",
+        "publication_reconstruction/runtime/hetgat/graph/fastreal.py"
+      ]
+    },
+    "C6": {
+      "description": "[PCP environment](runtime/envs/ic3net_envs/predator_capture_env.py), lines 268\u2013314; [FC environment](runtime/envs/ic3net_envs/fire_commander_env.py), lines 312\u2013357; [wrapper](runtime/env_wrappers.py), lines 81\u2013109: counts, copies, sentinels, FC side effects and tensor conversion.",
+      "external_urls": [],
+      "local_paths": [
+        "publication_reconstruction/runtime/envs/ic3net_envs/predator_capture_env.py",
+        "publication_reconstruction/runtime/envs/ic3net_envs/fire_commander_env.py",
+        "publication_reconstruction/runtime/env_wrappers.py"
+      ]
+    },
+    "C7": {
+      "description": "[policy.py](runtime/hetgat/policy.py), lines 788\u2013911; [multi_processing.py](runtime/multi_processing.py), lines 119\u2013160: active loss/GAE/gradient pipeline. Do not substitute `policy_entropy.py` or SoftRole's learner.",
+      "external_urls": [],
+      "local_paths": [
+        "publication_reconstruction/runtime/hetgat/policy.py",
+        "publication_reconstruction/runtime/multi_processing.py"
+      ]
+    },
+    "C8": {
+      "description": "[main.py](runtime/main.py), lines 20\u201355 and 561\u2013635; [recovery.py](runtime/hetnet_ext/recovery.py), lines 31\u201372: thread/default dtype/spawn, counts and per-collector RNG/resources.",
+      "external_urls": [],
+      "local_paths": [
+        "publication_reconstruction/runtime/main.py",
+        "publication_reconstruction/runtime/hetnet_ext/recovery.py"
+      ]
+    },
+    "C9": {
+      "description": "[artifacts.py](artifacts.py), [recovery.py](runtime/hetnet_ext/recovery.py), especially source validation at lines 100\u2013108, [signatures.py](runtime/hetnet_ext/signatures.py), lines 25\u201329, [launcher](__main__.py), [provenance recorder](../scripts/record_publication_sources.py): source, checkpoint, buffer and continuation contracts.",
+      "external_urls": [],
+      "local_paths": [
+        "publication_reconstruction/artifacts.py",
+        "publication_reconstruction/runtime/hetnet_ext/recovery.py",
+        "publication_reconstruction/runtime/hetnet_ext/signatures.py",
+        "publication_reconstruction/__main__.py",
+        "scripts/record_publication_sources.py"
+      ]
+    },
+    "E1": {
+      "description": "[Stokes preflight audit](../analysis/hetnet_restart_2026-10-03/preflight_903502_audit.json), backed by [the four archived Stokes runs](../stokes_runs/hetnet_preflight_903502/), each `preflight.json`, `updates.jsonl`, checkpoint and source archive.",
+      "external_urls": [],
+      "local_paths": [
+        "analysis/hetnet_restart_2026-10-03/preflight_903502_audit.json",
+        "stokes_runs/hetnet_preflight_903502"
+      ]
+    },
+    "E2": {
+      "description": "[Mac reconciled metrics](../runs/hetnet_preflight_mac_20261003_234455_727228_analysis/metrics/summary.json), [checkpoint/source audit](../runs/hetnet_preflight_mac_20261003_234455_727228_analysis/checkpoint_audit.json), [timing audit](../runs/hetnet_preflight_mac_20261003_234455_727228_analysis/timing_audit.json), and [639-file input inventory](../runs/hetnet_preflight_mac_20261003_234455_727228_analysis/metrics/input_hashes.json). Existing evidence; not rerun performance experiments.",
+      "external_urls": [],
+      "local_paths": [
+        "runs/hetnet_preflight_mac_20261003_234455_727228_analysis/metrics/summary.json",
+        "runs/hetnet_preflight_mac_20261003_234455_727228_analysis/checkpoint_audit.json",
+        "runs/hetnet_preflight_mac_20261003_234455_727228_analysis/timing_audit.json",
+        "runs/hetnet_preflight_mac_20261003_234455_727228_analysis/metrics/input_hashes.json"
+      ]
+    },
+    "P1": {
+      "description": "Seraj et al., [Learning Efficient Diverse Communication for Cooperative Heterogeneous Teaming](https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf), AAMAS 2022, \u00a7\u00a74.2\u20135.2, pp.1175\u20131178. Available [local PDF](../docs/papers/Seraj_2022_HetNet.pdf) and [extracted text](../research/papers/HetNet.txt). The local PDF was rehashed on 4 October and matches the [training paper manifest](../research/papers/TRAINING_PAPER_MANIFEST.json); its current path/hash is recorded in the plan evidence inventory.",
+      "external_urls": [
+        "https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf"
+      ],
+      "local_paths": [
+        "docs/papers/Seraj_2022_HetNet.pdf",
+        "research/papers/HetNet.txt",
+        "research/papers/TRAINING_PAPER_MANIFEST.json"
+      ]
+    },
+    "P2": {
+      "description": "Authors' [supplement at pinned repository commit](https://github.com/CORE-Robotics-Lab/HetNet/blob/bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec/AAMAS_22___HetNet_Supplementary.pdf), \u00a72.1 architecture/training and \u00a72.2 Binary ablations. Available [local PDF](../docs/papers/Seraj_2022_HetNet_Supplementary.pdf) and [extracted text](../research/papers/HetNet_Supplementary.txt), especially lines 109\u2013122. The local PDF was rehashed on 4 October and matches the prior manifest; the plan inventory records that verification.",
+      "external_urls": [
+        "https://github.com/CORE-Robotics-Lab/HetNet/blob/bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec/AAMAS_22___HetNet_Supplementary.pdf"
+      ],
+      "local_paths": [
+        "docs/papers/Seraj_2022_HetNet_Supplementary.pdf",
+        "research/papers/HetNet_Supplementary.txt"
+      ]
+    },
+    "T1": {
+      "description": "[Model specification tests](../tests/test_publication_spec.py), lines 106\u2013145 and 264\u2013277; [model tests](../tests/test_publication_model.py), lines 117\u2013140; [reference model fixture](../tests/fixtures/publication_uavnet_public_v1.py): existing compatibility coverage and its limits.",
+      "external_urls": [],
+      "local_paths": [
+        "tests/test_publication_spec.py",
+        "tests/test_publication_model.py",
+        "tests/fixtures/publication_uavnet_public_v1.py"
+      ]
+    },
+    "T2": {
+      "description": "[Environment tests](../tests/test_publication_envs.py): original/corrected branch behaviors and observation fixtures.",
+      "external_urls": [],
+      "local_paths": [
+        "tests/test_publication_envs.py"
+      ]
+    },
+    "T3": {
+      "description": "[Recovery tests](../tests/test_publication_recovery.py), lines 87\u2013143; [artifact tests](../tests/test_publication_artifacts.py); [source audit tests](../tests/test_publication_source_audit.py); [lifecycle tests](../tests/test_publication_lifecycle.py), from line 26; [local-launcher cleanup tests](../tests/test_publication_preflight_local.py), from line 170. [Root gradient probe](../tests/helpers/hetnet_gradient_probe.py), lines 20\u201342, imports the root runtime and is not proof for a candidate reconstruction.",
+      "external_urls": [],
+      "local_paths": [
+        "tests/test_publication_recovery.py",
+        "tests/test_publication_artifacts.py",
+        "tests/test_publication_source_audit.py",
+        "tests/test_publication_lifecycle.py",
+        "tests/test_publication_preflight_local.py",
+        "tests/helpers/hetnet_gradient_probe.py"
+      ]
+    },
+    "W1": {
+      "description": "PyTorch **v2.2.1** [profiler source/documentation](https://github.com/pytorch/pytorch/blob/v2.2.1/torch/profiler/profiler.py), including overhead/reference-retention notes. Checked against the installed 2.2.1 source; no upgrade is proposed.",
+      "external_urls": [
+        "https://github.com/pytorch/pytorch/blob/v2.2.1/torch/profiler/profiler.py"
+      ],
+      "local_paths": []
+    },
+    "W2": {
+      "description": "PyTorch **v2.2.1** [reproducibility documentation](https://github.com/pytorch/pytorch/blob/v2.2.1/docs/source/notes/randomness.rst): platform/version limits and RNG control.",
+      "external_urls": [
+        "https://github.com/pytorch/pytorch/blob/v2.2.1/docs/source/notes/randomness.rst"
+      ],
+      "local_paths": []
+    },
+    "W3": {
+      "description": "Official Slurm [CPU management documentation](https://slurm.schedmd.com/cpu_management.html), allocation versus affinity, topology, `scontrol` and verbose binding. Current web documentation is guidance, not evidence of Stokes configuration; record the installed version and allocation.",
+      "external_urls": [
+        "https://slurm.schedmd.com/cpu_management.html"
+      ],
+      "local_paths": []
+    },
+    "W4": {
+      "description": "Official Slurm [sacct documentation](https://slurm.schedmd.com/sacct.html), accounting fields and their task/plugin limitations.",
+      "external_urls": [
+        "https://slurm.schedmd.com/sacct.html"
+      ],
+      "local_paths": []
+    },
+    "W5": {
+      "description": "DGL **2.1.0** [`local_scope` documentation](https://www.dgl.ai/dgl_docs/en/2.1.x/generated/dgl.DGLGraph.local_scope.html): out-of-place isolation and in-place exception.",
+      "external_urls": [
+        "https://www.dgl.ai/dgl_docs/en/2.1.x/generated/dgl.DGLGraph.local_scope.html"
+      ],
+      "local_paths": []
+    },
+    "W6": {
+      "description": "PyTorch **v2.2.1** [benchmark timer source/documentation](https://github.com/pytorch/pytorch/blob/v2.2.1/torch/utils/benchmark/utils/timer.py): warmups, replicated measurements and thread control.",
+      "external_urls": [
+        "https://github.com/pytorch/pytorch/blob/v2.2.1/torch/utils/benchmark/utils/timer.py"
+      ],
+      "local_paths": []
+    }
+  },
+  "external_sources": {
+    "retrieval_record": "analysis/hetnet_performance_plan_2026-10-04/external_sources.json",
+    "urls": [
+      "https://github.com/CORE-Robotics-Lab/HetNet/blob/bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec/AAMAS_22___HetNet_Supplementary.pdf",
+      "https://github.com/pytorch/pytorch/blob/v2.2.1/docs/source/notes/randomness.rst",
+      "https://github.com/pytorch/pytorch/blob/v2.2.1/torch/profiler/profiler.py",
+      "https://github.com/pytorch/pytorch/blob/v2.2.1/torch/utils/benchmark/utils/timer.py",
+      "https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf",
+      "https://slurm.schedmd.com/cpu_management.html",
+      "https://slurm.schedmd.com/sacct.html",
+      "https://www.dgl.ai/dgl_docs/en/2.1.x/generated/dgl.DGLGraph.local_scope.html"
+    ],
+    "verification_boundary": "Offline verification checks local evidence only. check_external_sources.py independently retrieved the primary URLs; external_sources.json records current byte identities, paper-manifest equality and retrieval scope."
+  },
+  "limitations": [
+    "Single 100-update seed991 execution per workload/platform; no speedup uncertainty or sustained-rate claim.",
+    "Initial float32 hashes differ; matching-recipe timing is not a hardware-only or bitwise-paired comparison.",
+    "Mac contention declines as workloads finish; no sequential-concurrency control.",
+    "No new policy/model/backward/optimizer execution."
+  ],
+  "local_sha256": {
+    "analysis/hetnet_performance_plan_2026-10-04/validity_review/source_revision.json": "a2e2874d75b466eab317dd53c1fa9479f0495248c27c979c5073ad4c6f618dd2",
+    "analysis/hetnet_restart_2026-10-03/preflight_903502_audit.json": "e5244394be0520b27c8c93bf591ad309355af032cea79ea96ecf2144eb674d39",
+    "analysis/publication_reconstruction_2026-09-30/author_search/FINDINGS.txt": "6a4c644f561fb93a8103b24f0e8a701db3a59cfb2ae7f9ca69b91bc5c989baf8",
+    "docs/papers/Seraj_2022_HetNet.pdf": "c4f7d8d45d2414ee9ef025ebb16b2a8303b40a9ea434bb5b57cb6ed8698ac723",
+    "docs/papers/Seraj_2022_HetNet_Supplementary.pdf": "22262845fe6f8e1b6aa6f66f970c176a27c9a9f0550b4fc62066c7d99a928696",
+    "publication_reconstruction/ORIGINS.json": "1420d6f2311f91bfcd1a554782e400a4c1e187a46e69ae38690b75ce5c57d114",
+    "publication_reconstruction/STUDY.json": "417ada810c26d133c8aac1638c57b35e7c8ab26f5ef1ddde82557bdc82c485f0",
+    "publication_reconstruction/__main__.py": "4d1ab2af621af010fda70eaf39b09919b6966e9017611fea127ff9f1f74481b8",
+    "publication_reconstruction/artifacts.py": "fe0f31d3a840a61f6196a0781f78cc4fe08833dc23f8f065909439ac6d26345c",
+    "publication_reconstruction/evaluation_worker.py": "3b680aa759eb5698ab4915509f822f2071e00b4771b7b5069645126ac0b3e18b",
+    "publication_reconstruction/runtime/LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "publication_reconstruction/runtime/WildFire_Simulate_Original.py": "65c7e8fa57ad201b7ecf0860080236ae56e569d5f876ac6ebe68f20db8322e2c",
+    "publication_reconstruction/runtime/action_utils.py": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd",
+    "publication_reconstruction/runtime/comm.py": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf",
+    "publication_reconstruction/runtime/data.py": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b",
+    "publication_reconstruction/runtime/env_wrappers.py": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0",
+    "publication_reconstruction/runtime/envs/.gitignore": "416e0945bd66e3167c148267c35e1edf8dbd47bb7182cdda3c7575db7f5ede97",
+    "publication_reconstruction/runtime/envs/LICENSE.md": "8a166c9b1c9d6415bf89277474ff1033525ced55dd7bed45c3d95db12462afc9",
+    "publication_reconstruction/runtime/envs/README.md": "c825c7fb50aaac2dd650a48d3fdccc4676f99037d3805db7ecc10f33c232d0db",
+    "publication_reconstruction/runtime/envs/examples/random_agent.py": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221",
+    "publication_reconstruction/runtime/envs/ic3net_envs/__init__.py": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3",
+    "publication_reconstruction/runtime/envs/ic3net_envs/fire_commander_env.py": "aef3e55d85b2597a257490f0c71055f7adfb7fe71b7189f20803acb79fbc499e",
+    "publication_reconstruction/runtime/envs/ic3net_envs/predator_capture_env.py": "f48dca463fbdb3c4b0407278b232cb2468b174ea0496aac511db9b5d2ff85198",
+    "publication_reconstruction/runtime/envs/ic3net_envs/predator_prey_env.py": "5d61a1d996f4fec8620fa67521577bea468b14e0899a1009108ceb311ce04dd1",
+    "publication_reconstruction/runtime/envs/ic3net_envs/traffic_helper.py": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d",
+    "publication_reconstruction/runtime/envs/ic3net_envs/traffic_junction_env.py": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17",
+    "publication_reconstruction/runtime/envs/setup.py": "5a251fe600b795e42c6c418dd7394a1e76aaaf96aeebd7b02d1cc81f1b01e300",
+    "publication_reconstruction/runtime/eval_trainer.py": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939",
+    "publication_reconstruction/runtime/hetgat/graph/fastbinary.py": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc",
+    "publication_reconstruction/runtime/hetgat/graph/fastreal.py": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862",
+    "publication_reconstruction/runtime/hetgat/graph/hetgat.py": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232",
+    "publication_reconstruction/runtime/hetgat/graph/hetgata2c.py": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948",
+    "publication_reconstruction/runtime/hetgat/graph/hetgatreal.py": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d",
+    "publication_reconstruction/runtime/hetgat/policy.py": "419d4e2ad999c111b64c97d69faaef30867dec3254b0e8efd4e9be6619af3d4c",
+    "publication_reconstruction/runtime/hetgat/policy_entropy.py": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895",
+    "publication_reconstruction/runtime/hetgat/uavnet.py": "82c72c62630a3f32d840f229cb0794628066184daba614139068390c0ff5088f",
+    "publication_reconstruction/runtime/hetgat/utils.py": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0",
+    "publication_reconstruction/runtime/hetnet_ext/__init__.py": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9",
+    "publication_reconstruction/runtime/hetnet_ext/progress.py": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507",
+    "publication_reconstruction/runtime/hetnet_ext/recording.py": "ff268f87f8ff05832d446266654039fc16969ac05903bba217568fffb8cc130d",
+    "publication_reconstruction/runtime/hetnet_ext/recovery.py": "4c85f73c67b7ce839ef4340abab29a6b4631ee41bd1b541751a91311d595f1c4",
+    "publication_reconstruction/runtime/hetnet_ext/seeding.py": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc",
+    "publication_reconstruction/runtime/hetnet_ext/signatures.py": "4f92b26e2cf4d4ad7fa6af8990adfed39b4293cc7ef91e0b258376d48cd7cf4a",
+    "publication_reconstruction/runtime/main.py": "4b3aa0f240be88f6bf5ef9869711bf6f3f59fa1bd9de5bdd3ca35a7c98c60bf1",
+    "publication_reconstruction/runtime/models.py": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7",
+    "publication_reconstruction/runtime/multi_processing.py": "2fa911d4b3a5adb0f1ab6d8ca8a60bec4264458d33270592427ae95bbbb96927",
+    "publication_reconstruction/runtime/trainer.py": "f511a85f288968d807b877ed5d133b3d44d4b6eb9479a110c5e281f85daeb62d",
+    "publication_reconstruction/runtime/utils.py": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5",
+    "publication_reconstruction/study.py": "0e95260706034f4b8b7d4a6dc951489e64189a671f0b2e38a17e0cca601c388a",
+    "pyproject.toml": "8de36bc7ee1eb6de2f71f5c26733182c3a5dd08de6b1758195ae25d676cb1b4b",
+    "research/papers/HetNet.txt": "805bea9baafe8b2c61a952ad6dd972ccc957e32663b7803937e56ec114f8e413",
+    "research/papers/HetNet_Supplementary.txt": "92086b9896541cbdf1ff1aa513fd075de936cdffe2efdb77e855ce7dafdef57f",
+    "research/papers/TRAINING_PAPER_MANIFEST.json": "9e00b5a389b984735d8f251ac8f7032a338292e4e977f4fae77e9704a7f9a481",
+    "runs/hetnet_preflight_mac_20261003_234455_727228/local_launch.json": "640f6148c231ba1eccf064837b53a43ddb4d01db848e5113fb9924c37fd6fdd8",
+    "runs/hetnet_preflight_mac_20261003_234455_727228/local_summary.json": "d1e5e82516ddc501714b337b44d2c847aafd40388e0c0d183495338dd049c4eb",
+    "runs/hetnet_preflight_mac_20261003_234455_727228_analysis/checkpoint_audit.json": "9881a4ed6f521c4a85ae4ca911dcc46201873061dc2ba7cc9d30aab5a300927e",
+    "runs/hetnet_preflight_mac_20261003_234455_727228_analysis/metrics/input_hashes.json": "99437c846b23f5acac6d11719d829d0909e70e430d9ff7527b196d32c11e2eea",
+    "runs/hetnet_preflight_mac_20261003_234455_727228_analysis/metrics/summary.json": "3d56875d5d710873a43761e2157a335934a041f89297ce0929ec057b8aa14b45",
+    "runs/hetnet_preflight_mac_20261003_234455_727228_analysis/timing_audit.json": "b435d327dadceb1c10039da5da41182c09273ea25b0cbaf75b4d538c6fe19e7e",
+    "scripts/prepare_pcp_frozen.py": "d95857ad02c24ae8e20df31a4fec90141b1be8560e90071842ccb6991edeb12e",
+    "scripts/publication_preflight_local.py": "dadde36fdc53010850a471d1a95d92cad5fb28dc3951907ae59d81bdecef6951",
+    "scripts/record_publication_sources.py": "3b9a52c6bf0f36b30de0bbbbaf14515864559ffbb33ed4c51470bccdf5c7b901",
+    "slurm/publication_preflight.sbatch": "24e43940e5f106c2745131655f401502cc338b9fcf67edf67aadd20614e88484",
+    "slurm/publication_train.sbatch": "0ab64703c960e60ac5d32a8e3bc95e2c71b76083f1da0100cc2f6eba4f253742",
+    "softrole/RESEARCH.md": "c146046c187b173da02b683ffb4f97fdf7ab52eddfffedae051f00909aba0fbb",
+    "softrole/env.py": "d0c49b3fb10521946cc5501fc33af5b1a0c8e3c16c5e9231854f9aac3cf87cd1",
+    "softrole/model.py": "b8fda50bf8d9fb39c44689720042775eaab37a04da04080c7ef3a514c6c1069a",
+    "softrole/report.py": "4c2ab0f20ecb6f59629c29b8c46b111e2292b46da7c362c354fe5f2fc59f4495",
+    "tests/fixtures/publication_uavnet_public_v1.py": "8db99d5ee4be94836cee626a612977872ffe277a7824a6100afbc758961a01bd",
+    "tests/helpers/hetnet_gradient_probe.py": "6d09b6bd4691de487e7902bf412d57f924b8daaae2e87f8f4785c05bbc50aa5a",
+    "tests/test_publication_artifacts.py": "1e9e3e9e1898eb989b52b7a3c7354ae36df5143dd4a5aaa8c7b21273fc95096b",
+    "tests/test_publication_envs.py": "b7c381bda35ca3524a404bacf2ba319e40bb86c35a275393acd2af2c6f5a5409",
+    "tests/test_publication_launcher.py": "e38ec17cb3913bb4209770800e8e0faef2750eb38f919434d24aa255644b519c",
+    "tests/test_publication_lifecycle.py": "caad0e2c58a601e171135df391e52e9cf718f4a08c8c2e198221ba7423374272",
+    "tests/test_publication_model.py": "26bc8c721b409203fddd71405e500f6560e6f78196adb82d53e396d8499ed057",
+    "tests/test_publication_preflight_local.py": "dd2f7f01b8f8d16edea345fa6aea0493bbc6b492fc557eaf028651aa1afece35",
+    "tests/test_publication_recovery.py": "41616a2980a87c01719654dbcff648c9b2d478cd99fd15be57fa4f24451b5e27",
+    "tests/test_publication_recovery_integrity.py": "b4c74cdd8efb45d9ec3257b42c20e651f22ff58c696d5ee205133561830c3e52",
+    "tests/test_publication_source_audit.py": "73b0e1b77eeebb4213895d3bb51c6ef8e29ff51f6e2e3b28e0f0ef6126120841",
+    "tests/test_publication_spec.py": "5f020f867102783677eab05b0e4e965398f21bacd265ed72f8c9784adfb34bd4",
+    "tests/test_publication_study.py": "d8d8a69778f93af68329f709b115423082acbe40254396e3a522558e1638743e",
+    "tests/test_publication_validity.py": "c5b30decfda5ed8feb2500a0961d8bf1e0c550aaf37a14776a6449ebfb9b7f5c",
+    "uv.lock": "f99af776e743cadb7fe8d648c431f92f200b6710f7417490844b1ff1183a6c4b"
+  },
+  "measurement_definitions": {
+    "checkpoint_timers": "full_checkpoint_seconds is from run_status and includes the complete save/signature/record path. checkpoint_record_seconds sums preflight record timing, a narrower scope.",
+    "cpu": "Collector user/system CPU times are cumulative getrusage values including startup CPU; segment wall time excludes startup. Their ratio is approximate capacity use, not interval utilization or Slurm accounting.",
+    "fractions": "All *_fraction_of_segment values use active segment wall seconds. remaining_outside_update_seconds subtracts update and full checkpoint wall time only.",
+    "initial_signature": "Existing named parameter signature metadata, shapes and dtypes are compared without loading a policy. Exactly 36 float32 attention tensor hashes differ per workload; initial float64 hashes match.",
+    "launcher": "Mac timestamps describe launcher lifetime including frozen probes. Stokes archive has no absolute job timestamps or node/CPU model/topology; overlap is not inferred.",
+    "projected_budget_hours": "40M PP/PCP or 28M FC budget times active segment seconds / recorded environment steps / 3600. Excludes startup and future queue/downtime; assumes unchanged throughput.",
+    "rss": "Sum of individual lifetime collector RSS peaks after converting Linux KiB or macOS bytes; not simultaneous process/job/system memory.",
+    "update_steps_per_second": "Sum of joint environment steps divided by sum of 100 recorded train_batch wall times; includes rollout, backward, IPC, waiting, aggregation and optimizer work."
+  },
+  "mutable_document_policy": "Current plan/README/AGENTS are deliverables being edited; final document hashes are maintained separately. Prior archived README files remain covered by the 639-file run input inventory.",
+  "mutable_documents_excluded_from_input_hashes": [
+    "AGENTS.md",
+    "README.md",
+    "publication_reconstruction/PERFORMANCE_PLAN.md",
+    "publication_reconstruction/README.md"
+  ],
+  "paper_manifest_records": [
+    {
+      "bytes": 4898022,
+      "file": "Seraj_2022_HetNet.pdf",
+      "local_extracted_text": "research/papers/HetNet.txt",
+      "local_pdf_present": true,
+      "pdf_hash_freshly_verified": true,
+      "relative_pdf_path": "docs/papers/Seraj_2022_HetNet.pdf",
+      "sha256": "c4f7d8d45d2414ee9ef025ebb16b2a8303b40a9ea434bb5b57cb6ed8698ac723",
+      "source_url": "https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf",
+      "status": "available",
+      "title": "Learning Efficient Diverse Communication for Cooperative Heterogeneous Teaming"
+    },
+    {
+      "bytes": 319697,
+      "file": "Seraj_2022_HetNet_Supplementary.pdf",
+      "local_extracted_text": "research/papers/HetNet_Supplementary.txt",
+      "local_pdf_present": true,
+      "pdf_hash_freshly_verified": true,
+      "relative_pdf_path": "docs/papers/Seraj_2022_HetNet_Supplementary.pdf",
+      "sha256": "22262845fe6f8e1b6aa6f66f970c176a27c9a9f0550b4fc62066c7d99a928696",
+      "source_url": "https://github.com/CORE-Robotics-Lab/HetNet/blob/bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec/AAMAS_22___HetNet_Supplementary.pdf",
+      "status": "available",
+      "title": "Learning Efficient Diverse Communication for Cooperative Heterogeneous Teaming \u2013 Supplementary"
+    }
+  ],
+  "purpose": "Local provenance and independently recomputed numeric support for the HetNet performance plan; not an optimization benchmark.",
+  "recommendation_basis": {
+    "R1": {
+      "sources": [
+        "E1",
+        "E2",
+        "C3"
+      ],
+      "status": "Measurement priority; cause unknown."
+    },
+    "R10": {
+      "sources": [
+        "E2",
+        "C1",
+        "C3",
+        "C8",
+        "C9",
+        "W2",
+        "W3",
+        "W6"
+      ],
+      "status": "Matched benchmark proposal; windows/order/thresholds are lab choices."
+    },
+    "R2": {
+      "sources": [
+        "C9",
+        "T3"
+      ],
+      "status": "Preserve auditable source identity and executable baseline."
+    },
+    "R3": {
+      "sources": [
+        "C3",
+        "C8",
+        "W3",
+        "W4"
+      ],
+      "status": "Inspect site allocation; binding benefit unestablished."
+    },
+    "R4": {
+      "sources": [
+        "C1",
+        "C6",
+        "C7",
+        "W1"
+      ],
+      "status": "Missing component attribution motivates profiling."
+    },
+    "R5": {
+      "sources": [
+        "C5"
+      ],
+      "status": "Repeated relation views observed; proposed reuse benefit and exact equivalence untested."
+    },
+    "R6": {
+      "sources": [
+        "C4"
+      ],
+      "status": "Observed copy loops; benefit/equivalence untested."
+    },
+    "R7": {
+      "sources": [
+        "C5",
+        "C12",
+        "W5"
+      ],
+      "status": "Restricted topology candidate with mutation constraints; benefit unmeasured."
+    },
+    "R8": {
+      "sources": [
+        "C4",
+        "C6",
+        "C7",
+        "C9",
+        "C11"
+      ],
+      "status": "Secondary candidates deferred to keep the first patch narrow; any later change requires measured benefit and equivalence."
+    },
+    "R9": {
+      "sources": [
+        "T1",
+        "T2",
+        "T3",
+        "C7",
+        "C8",
+        "C9",
+        "W2"
+      ],
+      "status": "Conservative lab gate based on actual learner/state contracts and missing coverage."
+    }
+  },
+  "recomputed_launcher_measurements": {
+    "four_launcher_overlap_seconds_from_iso_timestamps": 558.1658771038055,
+    "overall_seconds_from_iso_timestamps": 1103.5090870857239,
+    "start_spread_seconds_from_iso_timestamps": 0.004518032073974609
+  },
+  "recomputed_measurements": {
+    "fc_real": {
+      "initial_differing_float32_parameter_names": [
+        "layer1.gat_conv.a2a_dst",
+        "layer1.gat_conv.a2a_src",
+        "layer1.gat_conv.a2p_dst",
+        "layer1.gat_conv.a2p_src",
+        "layer1.gat_conv.a2s_dst",
+        "layer1.gat_conv.a2s_src",
+        "layer1.gat_conv.p2a_dst",
+        "layer1.gat_conv.p2a_src",
+        "layer1.gat_conv.p2p_dst",
+        "layer1.gat_conv.p2p_src",
+        "layer1.gat_conv.p2s_dst",
+        "layer1.gat_conv.p2s_src",
+        "layer2.gat_conv.a2a_dst",
+        "layer2.gat_conv.a2a_src",
+        "layer2.gat_conv.a2p_dst",
+        "layer2.gat_conv.a2p_src",
+        "layer2.gat_conv.a2s_dst",
+        "layer2.gat_conv.a2s_src",
+        "layer2.gat_conv.p2a_dst",
+        "layer2.gat_conv.p2a_src",
+        "layer2.gat_conv.p2p_dst",
+        "layer2.gat_conv.p2p_src",
+        "layer2.gat_conv.p2s_dst",
+        "layer2.gat_conv.p2s_src",
+        "layer3.gat_conv.a2a_dst",
+        "layer3.gat_conv.a2a_src",
+        "layer3.gat_conv.a2p_dst",
+        "layer3.gat_conv.a2p_src",
+        "layer3.gat_conv.a2s_dst",
+        "layer3.gat_conv.a2s_src",
+        "layer3.gat_conv.p2a_dst",
+        "layer3.gat_conv.p2a_src",
+        "layer3.gat_conv.p2p_dst",
+        "layer3.gat_conv.p2p_src",
+        "layer3.gat_conv.p2s_dst",
+        "layer3.gat_conv.p2s_src"
+      ],
+      "mac": {
+        "approximate_fraction_of_four_cpu_capacity": 0.858455284909821,
+        "checkpoint_bytes": 4054498,
+        "checkpoint_record_seconds": 0.024486790993250906,
+        "checkpoint_sha256": "98aca2d6be4d33208ccfe5ec60f6fcf4993aa7524285be816d1a5a199f2db455",
+        "collector_affinity_masks": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "collector_cpu_seconds_over_segment_seconds": 3.433821139639284,
+        "collector_cpu_seconds_per_joint_step": 0.014926987841328341,
+        "collector_system_cpu_seconds": 89.795954,
+        "collector_user_cpu_seconds": 3660.7739380000003,
+        "episodes": 1149,
+        "first20_update_steps_per_second": 216.98692240898743,
+        "full_checkpoint_fraction_of_segment": 2.4030043199270115e-05,
+        "full_checkpoint_seconds": 0.0262466659914935,
+        "last20_update_steps_per_second": 352.6953367575434,
+        "outside_update_fraction_of_segment": 0.0002845190456751644,
+        "outside_update_seconds": 0.3107641670940211,
+        "projected_budget_hours": 33.8103790500977,
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "remaining_outside_update_seconds": 0.2845175011025276,
+        "segment_seconds": 1092.2438122079911,
+        "source_manifest_sha256": "972b59f90e7f19d7bb9e214a5f7f8f62d4a60e01cb6a5d93f09303e535614f3f",
+        "startup_seconds": 2.183786292007426,
+        "steps": 251261,
+        "sum_individual_peak_rss_gib_not_simultaneous_peak": 3.3421478271484375,
+        "summed_update_seconds": 1091.9330480408971,
+        "system_fraction_of_collector_cpu": 0.02394194924657599,
+        "update_fraction_of_segment": 0.9997154809543248,
+        "update_steps_per_second": 230.1065989813226,
+        "updates": 100
+      },
+      "mac_to_stokes_update_rate_ratio": 2.2646648191004073,
+      "stokes": {
+        "approximate_fraction_of_four_cpu_capacity": 0.8546651760084694,
+        "checkpoint_bytes": 4050530,
+        "checkpoint_record_seconds": 0.18224534392356873,
+        "checkpoint_sha256": "4ca4cbcd65e6cc6c155f6affef6016e6be005b958a4967e885853f97e0d44e87",
+        "collector_affinity_masks": [
+          [
+            41,
+            43,
+            45,
+            47
+          ],
+          [
+            41,
+            43,
+            45,
+            47
+          ],
+          [
+            41,
+            43,
+            45,
+            47
+          ],
+          [
+            41,
+            43,
+            45,
+            47
+          ]
+        ],
+        "collector_cpu_seconds_over_segment_seconds": 3.4186607040338775,
+        "collector_cpu_seconds_per_joint_step": 0.03369808335538821,
+        "collector_system_cpu_seconds": 60.300663,
+        "collector_user_cpu_seconds": 8343.259968,
+        "episodes": 1137,
+        "first20_update_steps_per_second": 93.76287799078487,
+        "full_checkpoint_fraction_of_segment": 8.75508578762033e-05,
+        "full_checkpoint_seconds": 0.2152126245200634,
+        "last20_update_steps_per_second": 107.030615047098,
+        "outside_update_fraction_of_segment": 0.0015515209444730016,
+        "outside_update_seconds": 3.8138620518147945,
+        "projected_budget_hours": 76.66633999857869,
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "remaining_outside_update_seconds": 3.598649427294731,
+        "segment_seconds": 2458.144097507,
+        "source_manifest_sha256": "47eaa7b980b7ed3f4afc2189e6786e7367d12b1ad06cbecdb706584ce85c182a",
+        "startup_seconds": 131.05433665961027,
+        "steps": 249378,
+        "sum_individual_peak_rss_gib_not_simultaneous_peak": 4.107364654541016,
+        "summed_update_seconds": 2454.330235455185,
+        "system_fraction_of_collector_cpu": 0.007175608726800414,
+        "update_fraction_of_segment": 0.998448479055527,
+        "update_steps_per_second": 101.60735356534033,
+        "updates": 100
+      }
+    },
+    "pcp_binary": {
+      "initial_differing_float32_parameter_names": [
+        "layer1.gat_conv.a2a_dst",
+        "layer1.gat_conv.a2a_src",
+        "layer1.gat_conv.a2p_dst",
+        "layer1.gat_conv.a2p_src",
+        "layer1.gat_conv.a2s_dst",
+        "layer1.gat_conv.a2s_src",
+        "layer1.gat_conv.p2a_dst",
+        "layer1.gat_conv.p2a_src",
+        "layer1.gat_conv.p2p_dst",
+        "layer1.gat_conv.p2p_src",
+        "layer1.gat_conv.p2s_dst",
+        "layer1.gat_conv.p2s_src",
+        "layer2.gat_conv.a2a_dst",
+        "layer2.gat_conv.a2a_src",
+        "layer2.gat_conv.a2p_dst",
+        "layer2.gat_conv.a2p_src",
+        "layer2.gat_conv.a2s_dst",
+        "layer2.gat_conv.a2s_src",
+        "layer2.gat_conv.p2a_dst",
+        "layer2.gat_conv.p2a_src",
+        "layer2.gat_conv.p2p_dst",
+        "layer2.gat_conv.p2p_src",
+        "layer2.gat_conv.p2s_dst",
+        "layer2.gat_conv.p2s_src",
+        "layer3.gat_conv.a2a_dst",
+        "layer3.gat_conv.a2a_src",
+        "layer3.gat_conv.a2p_dst",
+        "layer3.gat_conv.a2p_src",
+        "layer3.gat_conv.a2s_dst",
+        "layer3.gat_conv.a2s_src",
+        "layer3.gat_conv.p2a_dst",
+        "layer3.gat_conv.p2a_src",
+        "layer3.gat_conv.p2p_dst",
+        "layer3.gat_conv.p2p_src",
+        "layer3.gat_conv.p2s_dst",
+        "layer3.gat_conv.p2s_src"
+      ],
+      "mac": {
+        "approximate_fraction_of_four_cpu_capacity": 0.9233993620994447,
+        "checkpoint_bytes": 12578958,
+        "checkpoint_record_seconds": 0.014304334006737918,
+        "checkpoint_sha256": "a4de56f05cab89d33eedb6294ce0e1a92c2724644a8eed050662587f8ff116cb",
+        "collector_affinity_masks": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "collector_cpu_seconds_over_segment_seconds": 3.693597448397779,
+        "collector_cpu_seconds_per_joint_step": 0.017377338982814027,
+        "collector_system_cpu_seconds": 96.48755,
+        "collector_user_cpu_seconds": 3634.600903,
+        "episodes": 3055,
+        "first20_update_steps_per_second": 208.75258988429886,
+        "full_checkpoint_fraction_of_segment": 2.0057040668123323e-05,
+        "full_checkpoint_seconds": 0.0202606250095414,
+        "last20_update_steps_per_second": 243.3253295655409,
+        "outside_update_fraction_of_segment": 0.0003571791647406834,
+        "outside_update_seconds": 0.3608046290464699,
+        "projected_budget_hours": 52.2746582298092,
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "remaining_outside_update_seconds": 0.3405440040369285,
+        "segment_seconds": 1010.1502681670099,
+        "source_manifest_sha256": "972b59f90e7f19d7bb9e214a5f7f8f62d4a60e01cb6a5d93f09303e535614f3f",
+        "startup_seconds": 2.1847659579943866,
+        "steps": 214710,
+        "sum_individual_peak_rss_gib_not_simultaneous_peak": 3.2278594970703125,
+        "summed_update_seconds": 1009.7894635379635,
+        "system_fraction_of_collector_cpu": 0.025860429527586975,
+        "update_fraction_of_segment": 0.9996428208352593,
+        "update_steps_per_second": 212.6284812358095,
+        "updates": 100
+      },
+      "mac_to_stokes_update_rate_ratio": 5.47804814075521,
+      "stokes": {
+        "approximate_fraction_of_four_cpu_capacity": 0.935698786060018,
+        "checkpoint_bytes": 12578958,
+        "checkpoint_record_seconds": 0.17220837622880936,
+        "checkpoint_sha256": "0621b476b5f5ee3623c6a76d9b0cddb7aea41601a3a82d24ceacab8206f2e5ec",
+        "collector_affinity_masks": [
+          [
+            3,
+            5,
+            7,
+            9
+          ],
+          [
+            3,
+            5,
+            7,
+            9
+          ],
+          [
+            3,
+            5,
+            7,
+            9
+          ],
+          [
+            3,
+            5,
+            7,
+            9
+          ]
+        ],
+        "collector_cpu_seconds_over_segment_seconds": 3.742795144240072,
+        "collector_cpu_seconds_per_joint_step": 0.09675977105879625,
+        "collector_system_cpu_seconds": 141.790088,
+        "collector_user_cpu_seconds": 20717.197558,
+        "episodes": 3016,
+        "first20_update_steps_per_second": 44.34955508591632,
+        "full_checkpoint_fraction_of_segment": 4.459279253384797e-05,
+        "full_checkpoint_seconds": 0.2485202830284834,
+        "last20_update_steps_per_second": 37.91965156858031,
+        "outside_update_fraction_of_segment": 0.0034349949038741164,
+        "outside_update_seconds": 19.143584808334708,
+        "projected_budget_hours": 287.2475051097796,
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "remaining_outside_update_seconds": 18.895064525306225,
+        "segment_seconds": 5573.104282263666,
+        "source_manifest_sha256": "47eaa7b980b7ed3f4afc2189e6786e7367d12b1ad06cbecdb706584ce85c182a",
+        "startup_seconds": 152.3066576588899,
+        "steps": 215575,
+        "sum_individual_peak_rss_gib_not_simultaneous_peak": 4.022335052490234,
+        "summed_update_seconds": 5553.960697455332,
+        "system_fraction_of_collector_cpu": 0.006797553668775014,
+        "update_fraction_of_segment": 0.9965650050961259,
+        "update_steps_per_second": 38.81464269251498,
+        "updates": 100
+      }
+    },
+    "pcp_real": {
+      "initial_differing_float32_parameter_names": [
+        "layer1.gat_conv.a2a_dst",
+        "layer1.gat_conv.a2a_src",
+        "layer1.gat_conv.a2p_dst",
+        "layer1.gat_conv.a2p_src",
+        "layer1.gat_conv.a2s_dst",
+        "layer1.gat_conv.a2s_src",
+        "layer1.gat_conv.p2a_dst",
+        "layer1.gat_conv.p2a_src",
+        "layer1.gat_conv.p2p_dst",
+        "layer1.gat_conv.p2p_src",
+        "layer1.gat_conv.p2s_dst",
+        "layer1.gat_conv.p2s_src",
+        "layer2.gat_conv.a2a_dst",
+        "layer2.gat_conv.a2a_src",
+        "layer2.gat_conv.a2p_dst",
+        "layer2.gat_conv.a2p_src",
+        "layer2.gat_conv.a2s_dst",
+        "layer2.gat_conv.a2s_src",
+        "layer2.gat_conv.p2a_dst",
+        "layer2.gat_conv.p2a_src",
+        "layer2.gat_conv.p2p_dst",
+        "layer2.gat_conv.p2p_src",
+        "layer2.gat_conv.p2s_dst",
+        "layer2.gat_conv.p2s_src",
+        "layer3.gat_conv.a2a_dst",
+        "layer3.gat_conv.a2a_src",
+        "layer3.gat_conv.a2p_dst",
+        "layer3.gat_conv.a2p_src",
+        "layer3.gat_conv.a2s_dst",
+        "layer3.gat_conv.a2s_src",
+        "layer3.gat_conv.p2a_dst",
+        "layer3.gat_conv.p2a_src",
+        "layer3.gat_conv.p2p_dst",
+        "layer3.gat_conv.p2p_src",
+        "layer3.gat_conv.p2s_dst",
+        "layer3.gat_conv.p2s_src"
+      ],
+      "mac": {
+        "approximate_fraction_of_four_cpu_capacity": 0.9272449690795774,
+        "checkpoint_bytes": 12913634,
+        "checkpoint_record_seconds": 0.017536333005409688,
+        "checkpoint_sha256": "f18d67f4ff7835fc7c3515a1e634ca27fce27ee5093b41f512036869e1f44ef6",
+        "collector_affinity_masks": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "collector_cpu_seconds_over_segment_seconds": 3.7089798763183097,
+        "collector_cpu_seconds_per_joint_step": 0.016771576491710773,
+        "collector_system_cpu_seconds": 85.842653,
+        "collector_user_cpu_seconds": 3510.5703519999997,
+        "episodes": 3150,
+        "first20_update_steps_per_second": 223.36202523774108,
+        "full_checkpoint_fraction_of_segment": 2.6230550486115514e-05,
+        "full_checkpoint_seconds": 0.025434458002564497,
+        "last20_update_steps_per_second": 242.36771757233092,
+        "outside_update_fraction_of_segment": 0.0003836626410743271,
+        "outside_update_seconds": 0.37201854900922626,
+        "projected_budget_hours": 50.24315475469154,
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "remaining_outside_update_seconds": 0.34658409100666177,
+        "segment_seconds": 969.6501800840051,
+        "source_manifest_sha256": "972b59f90e7f19d7bb9e214a5f7f8f62d4a60e01cb6a5d93f09303e535614f3f",
+        "startup_seconds": 2.1848708749894286,
+        "steps": 214435,
+        "sum_individual_peak_rss_gib_not_simultaneous_peak": 2.90020751953125,
+        "summed_update_seconds": 969.2781615349959,
+        "system_fraction_of_collector_cpu": 0.023868964126382366,
+        "update_fraction_of_segment": 0.9996163373589256,
+        "update_steps_per_second": 221.23164279324146,
+        "updates": 100
+      },
+      "mac_to_stokes_update_rate_ratio": 2.2640254334910876,
+      "stokes": {
+        "approximate_fraction_of_four_cpu_capacity": 0.9149761571365158,
+        "checkpoint_bytes": 12913634,
+        "checkpoint_record_seconds": 0.14048252627253532,
+        "checkpoint_sha256": "3d82b159e85390ed9ed36379872ef99e752bf555f1689a9ea33e9ac3f74710e1",
+        "collector_affinity_masks": [
+          [
+            33,
+            35,
+            37,
+            39
+          ],
+          [
+            33,
+            35,
+            37,
+            39
+          ],
+          [
+            33,
+            35,
+            37,
+            39
+          ],
+          [
+            33,
+            35,
+            37,
+            39
+          ]
+        ],
+        "collector_cpu_seconds_over_segment_seconds": 3.6599046285460632,
+        "collector_cpu_seconds_per_joint_step": 0.037599857100971745,
+        "collector_system_cpu_seconds": 48.23886,
+        "collector_user_cpu_seconds": 8030.917635,
+        "episodes": 3124,
+        "first20_update_steps_per_second": 91.27592464468607,
+        "full_checkpoint_fraction_of_segment": 0.00010394222646616964,
+        "full_checkpoint_seconds": 0.22945010848343372,
+        "last20_update_steps_per_second": 101.33010754809811,
+        "outside_update_fraction_of_segment": 0.0038663039945121395,
+        "outside_update_seconds": 8.534778416156769,
+        "projected_budget_hours": 114.14947448419257,
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "remaining_outside_update_seconds": 8.305328307673335,
+        "segment_seconds": 2207.4773293230683,
+        "source_manifest_sha256": "47eaa7b980b7ed3f4afc2189e6786e7367d12b1ad06cbecdb706584ce85c182a",
+        "startup_seconds": 131.0462226178497,
+        "steps": 214872,
+        "sum_individual_peak_rss_gib_not_simultaneous_peak": 3.750286102294922,
+        "summed_update_seconds": 2198.9425509069115,
+        "system_fraction_of_collector_cpu": 0.005970779255217286,
+        "update_fraction_of_segment": 0.9961336960054878,
+        "update_steps_per_second": 97.71605898088615,
+        "updates": 100
+      }
+    },
+    "pp_real": {
+      "initial_differing_float32_parameter_names": [
+        "layer1.gat_conv.a2a_dst",
+        "layer1.gat_conv.a2a_src",
+        "layer1.gat_conv.a2p_dst",
+        "layer1.gat_conv.a2p_src",
+        "layer1.gat_conv.a2s_dst",
+        "layer1.gat_conv.a2s_src",
+        "layer1.gat_conv.p2a_dst",
+        "layer1.gat_conv.p2a_src",
+        "layer1.gat_conv.p2p_dst",
+        "layer1.gat_conv.p2p_src",
+        "layer1.gat_conv.p2s_dst",
+        "layer1.gat_conv.p2s_src",
+        "layer2.gat_conv.a2a_dst",
+        "layer2.gat_conv.a2a_src",
+        "layer2.gat_conv.a2p_dst",
+        "layer2.gat_conv.a2p_src",
+        "layer2.gat_conv.a2s_dst",
+        "layer2.gat_conv.a2s_src",
+        "layer2.gat_conv.p2a_dst",
+        "layer2.gat_conv.p2a_src",
+        "layer2.gat_conv.p2p_dst",
+        "layer2.gat_conv.p2p_src",
+        "layer2.gat_conv.p2s_dst",
+        "layer2.gat_conv.p2s_src",
+        "layer3.gat_conv.a2a_dst",
+        "layer3.gat_conv.a2a_src",
+        "layer3.gat_conv.a2p_dst",
+        "layer3.gat_conv.a2p_src",
+        "layer3.gat_conv.a2s_dst",
+        "layer3.gat_conv.a2s_src",
+        "layer3.gat_conv.p2a_dst",
+        "layer3.gat_conv.p2a_src",
+        "layer3.gat_conv.p2p_dst",
+        "layer3.gat_conv.p2p_src",
+        "layer3.gat_conv.p2s_dst",
+        "layer3.gat_conv.p2s_src"
+      ],
+      "mac": {
+        "approximate_fraction_of_four_cpu_capacity": 0.9194072893710787,
+        "checkpoint_bytes": 12390250,
+        "checkpoint_record_seconds": 0.02214154100511223,
+        "checkpoint_sha256": "c0eb5ff8204a6b69252ec8d98aee7b7ad91aa9e4344ef8bd61ebcf912888e9de",
+        "collector_affinity_masks": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "collector_cpu_seconds_over_segment_seconds": 3.677629157484315,
+        "collector_cpu_seconds_per_joint_step": 0.00938501125018172,
+        "collector_system_cpu_seconds": 47.747956,
+        "collector_user_cpu_seconds": 1953.521228,
+        "episodes": 3596,
+        "first20_update_steps_per_second": 461.15113999662634,
+        "full_checkpoint_fraction_of_segment": 5.4763530930053974e-05,
+        "full_checkpoint_seconds": 0.029800875010550953,
+        "last20_update_steps_per_second": 378.701234839172,
+        "outside_update_fraction_of_segment": 0.0005682843376369804,
+        "outside_update_seconds": 0.30924540892010555,
+        "projected_budget_hours": 28.35465413025175,
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "remaining_outside_update_seconds": 0.2794445339095546,
+        "segment_seconds": 544.1737321250112,
+        "source_manifest_sha256": "972b59f90e7f19d7bb9e214a5f7f8f62d4a60e01cb6a5d93f09303e535614f3f",
+        "startup_seconds": 2.1849262499890756,
+        "steps": 213241,
+        "sum_individual_peak_rss_gib_not_simultaneous_peak": 2.0701446533203125,
+        "summed_update_seconds": 543.864486716091,
+        "system_fraction_of_collector_cpu": 0.023858837372674,
+        "update_fraction_of_segment": 0.999431715662363,
+        "update_steps_per_second": 392.0848027558681,
+        "updates": 100
+      },
+      "mac_to_stokes_update_rate_ratio": 2.325089379213357,
+      "stokes": {
+        "approximate_fraction_of_four_cpu_capacity": 0.9056655549934165,
+        "checkpoint_bytes": 12390058,
+        "checkpoint_record_seconds": 0.36152514442801476,
+        "checkpoint_sha256": "aa92741c1fa39e92a78c9b5506e5169aee159986eadc1f297ffbae5af8000278",
+        "collector_affinity_masks": [
+          [
+            25,
+            27,
+            29,
+            31
+          ],
+          [
+            25,
+            27,
+            29,
+            31
+          ],
+          [
+            25,
+            27,
+            29,
+            31
+          ],
+          [
+            25,
+            27,
+            29,
+            31
+          ]
+        ],
+        "collector_cpu_seconds_over_segment_seconds": 3.622662219973666,
+        "collector_cpu_seconds_per_joint_step": 0.021600602515181453,
+        "collector_system_cpu_seconds": 23.718287,
+        "collector_user_cpu_seconds": 4589.8032,
+        "episodes": 3560,
+        "first20_update_steps_per_second": 155.03802471039205,
+        "full_checkpoint_fraction_of_segment": 0.00037032309784746135,
+        "full_checkpoint_seconds": 0.4716127160936594,
+        "last20_update_steps_per_second": 171.92088157528192,
+        "outside_update_fraction_of_segment": 0.005461454822603563,
+        "outside_update_seconds": 6.955254904925823,
+        "projected_budget_hours": 66.25146923437757,
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "remaining_outside_update_seconds": 6.483642188832164,
+        "segment_seconds": 1273.5168798137456,
+        "source_manifest_sha256": "47eaa7b980b7ed3f4afc2189e6786e7367d12b1ad06cbecdb706584ce85c182a",
+        "startup_seconds": 131.0627503786236,
+        "steps": 213583,
+        "sum_individual_peak_rss_gib_not_simultaneous_peak": 2.9322547912597656,
+        "summed_update_seconds": 1266.5616249088198,
+        "system_fraction_of_collector_cpu": 0.005141037506129209,
+        "update_fraction_of_segment": 0.9945385451773965,
+        "update_steps_per_second": 168.63214217103405,
+        "updates": 100
+      }
+    }
+  },
+  "repository_head_at_inventory": "e0e22136e7f80054552f08b95588d8a64e92802c",
+  "revision_record": "analysis/hetnet_performance_plan_2026-10-04/validity_review/source_revision.json",
+  "run_identities": {
+    "fc_real": {
+      "mac": {
+        "checkpoint_sha256": "98aca2d6be4d33208ccfe5ec60f6fcf4993aa7524285be816d1a5a199f2db455",
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "source_manifest_sha256": "972b59f90e7f19d7bb9e214a5f7f8f62d4a60e01cb6a5d93f09303e535614f3f"
+      },
+      "stokes": {
+        "checkpoint_sha256": "4ca4cbcd65e6cc6c155f6affef6016e6be005b958a4967e885853f97e0d44e87",
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "source_manifest_sha256": "47eaa7b980b7ed3f4afc2189e6786e7367d12b1ad06cbecdb706584ce85c182a"
+      }
+    },
+    "pcp_binary": {
+      "mac": {
+        "checkpoint_sha256": "a4de56f05cab89d33eedb6294ce0e1a92c2724644a8eed050662587f8ff116cb",
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "source_manifest_sha256": "972b59f90e7f19d7bb9e214a5f7f8f62d4a60e01cb6a5d93f09303e535614f3f"
+      },
+      "stokes": {
+        "checkpoint_sha256": "0621b476b5f5ee3623c6a76d9b0cddb7aea41601a3a82d24ceacab8206f2e5ec",
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "source_manifest_sha256": "47eaa7b980b7ed3f4afc2189e6786e7367d12b1ad06cbecdb706584ce85c182a"
+      }
+    },
+    "pcp_real": {
+      "mac": {
+        "checkpoint_sha256": "f18d67f4ff7835fc7c3515a1e634ca27fce27ee5093b41f512036869e1f44ef6",
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "source_manifest_sha256": "972b59f90e7f19d7bb9e214a5f7f8f62d4a60e01cb6a5d93f09303e535614f3f"
+      },
+      "stokes": {
+        "checkpoint_sha256": "3d82b159e85390ed9ed36379872ef99e752bf555f1689a9ea33e9ac3f74710e1",
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "source_manifest_sha256": "47eaa7b980b7ed3f4afc2189e6786e7367d12b1ad06cbecdb706584ce85c182a"
+      }
+    },
+    "pp_real": {
+      "mac": {
+        "checkpoint_sha256": "c0eb5ff8204a6b69252ec8d98aee7b7ad91aa9e4344ef8bd61ebcf912888e9de",
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "source_manifest_sha256": "972b59f90e7f19d7bb9e214a5f7f8f62d4a60e01cb6a5d93f09303e535614f3f"
+      },
+      "stokes": {
+        "checkpoint_sha256": "aa92741c1fa39e92a78c9b5506e5169aee159986eadc1f297ffbae5af8000278",
+        "recorded_git_head": "e0e22136e7f80054552f08b95588d8a64e92802c",
+        "source_manifest_sha256": "47eaa7b980b7ed3f4afc2189e6786e7367d12b1ad06cbecdb706584ce85c182a"
+      }
+    }
+  },
+  "run_roots": {
+    "mac": "runs/hetnet_preflight_mac_20261003_234455_727228",
+    "stokes": "stokes_runs/hetnet_preflight_903502"
+  },
+  "schema_version": 1,
+  "scope": "Reads files and signature metadata only. Existing checkpoint tensor/frozen-probe audits are preserved as prior evidence, not repeated by this verifier.",
+  "verification_command": "python3 analysis/hetnet_performance_plan_2026-10-04/verify_evidence.py"
+}

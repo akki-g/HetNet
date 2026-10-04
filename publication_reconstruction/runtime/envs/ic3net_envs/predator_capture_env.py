@@ -89,7 +89,7 @@ class PredatorCaptureEnv(gym.Env):
     def multi_agent_init(self, args):
 
         self.publication_env_version = getattr(args, 'publication_env_version', 'historical-2022')
-        if self.publication_env_version not in ('historical-2022', 'corrected-v1'):
+        if self.publication_env_version not in ('historical-2022', 'corrected-v1', 'paper-v1'):
             raise ValueError('Unsupported publication_env_version: ' + str(self.publication_env_version))
 
         # General variables defining the environment : CONFIG
@@ -282,13 +282,13 @@ class PredatorCaptureEnv(gym.Env):
             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
             view = self.bool_base_grid[slice_y, slice_x]
-            obs.append(view.copy() if self.publication_env_version == 'corrected-v1' else view)
+            obs.append(view.copy() if self.publication_env_version in ('corrected-v1', 'paper-v1') else view)
 
         for p in self.predator_capture_loc:
             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
             view = self.bool_base_grid[slice_y, slice_x]
-            obs.append(view.copy() if self.publication_env_version == 'corrected-v1' else view)
+            obs.append(view.copy() if self.publication_env_version in ('corrected-v1', 'paper-v1') else view)
             # x,y,z = self.bool_base_grid[slice_y, slice_x].shape
             # obs.append(np.arange(x*y*z).reshape(x,y,z))
 

@@ -56,11 +56,15 @@ torch.set_default_tensor_type('torch.DoubleTensor')
 
 parser = argparse.ArgumentParser(description='Isolated historical HetNet reconstruction')
 parser.add_argument('--publication_env_version', required=True,
-                    choices=['historical-2022', 'corrected-v1'])
+                    choices=['historical-2022', 'corrected-v1', 'paper-v1'])
 parser.add_argument('--max_env_steps', type=int, default=0,
                     help='stop after a complete update reaching this total; zero disables')
 parser.add_argument('--source_manifest', required=True)
-parser.add_argument('--model_spec', choices=['public-code-v1', 'supplement-v1'], default='public-code-v1')
+parser.add_argument('--model_spec', choices=['public-code-v1', 'supplement-v1', 'paper-v1'], default='public-code-v1')
+parser.add_argument('--reconstruction_spec', choices=['legacy', 'paper-v1'], default='legacy')
+parser.add_argument('--learner_spec', choices=['public-code-v1', 'paper-equations-v1'], default='public-code-v1')
+parser.add_argument('--message_backend', choices=['dgl', 'torch-v1'], default='dgl')
+parser.add_argument('--profile_phases', action='store_true')
 parser.add_argument('--milestones', nargs='*', type=int, default=[])
 parser.add_argument('--resume_checkpoint', default='')
 parser.add_argument('--wall_seconds', type=float, default=0,
@@ -204,7 +208,7 @@ parser.add_argument('--share_weights', default=False, action='store_true',
 # Deviation B: even the environment used to register CLI arguments is constructed
 # after seeding. Worker run() subsequently retains its seed + id + 1 stream.
 resolved_seed = seed_everything(parser.parse_known_args()[0].seed)
-if parser.parse_known_args()[0].model_spec == 'supplement-v1':
+if parser.parse_known_args()[0].model_spec in ('supplement-v1', 'paper-v1'):
     seed_stream(resolved_seed)
 init_args_for_env(parser)
 args = parser.parse_args()
@@ -216,8 +220,17 @@ if any(value <= 0 for value in args.milestones) or args.milestones != sorted(set
     raise ValueError('milestones must be positive, strictly increasing step thresholds')
 if args.resume_checkpoint and args.load:
     raise ValueError('Use resume_checkpoint without legacy load')
-if args.model_spec == 'supplement-v1' and (not args.hetgat_a2c or args.use_cuda):
-    raise ValueError('supplement-v1 requires the CPU HetGAT A2C runtime')
+if args.model_spec in ('supplement-v1', 'paper-v1') and (not args.hetgat_a2c or args.use_cuda):
+    raise ValueError('Supplement/paper models require the CPU HetGAT A2C runtime')
+if args.reconstruction_spec == 'paper-v1':
+    if (args.model_spec != 'paper-v1' or args.publication_env_version != 'paper-v1'
+            or args.learner_spec != 'paper-equations-v1' or args.lrate != .001
+            or args.lossy_comm or args.comm_range_P != -1 or args.comm_range_A != -1
+            or (args.use_binary and args.msg_dim != 64)):
+        raise ValueError('paper-v1 requires its matched components, Adam1e-3, 64 bits/head and unlimited non-lossy communication')
+elif (args.model_spec == 'paper-v1' or args.publication_env_version == 'paper-v1'
+      or args.learner_spec != 'public-code-v1' or args.message_backend != 'dgl'):
+    raise ValueError('Paper components require reconstruction_spec=paper-v1')
 
 if args.comm_range_P == -1 or args.comm_range_A == -1:
     args.lossy_comm = False
@@ -295,6 +308,8 @@ elif args.hetgat:
     out_dim = {'P': 5,
                'A': 6,
                'state': 8}
+    if args.model_spec == 'paper-v1' and args.env_name == 'fire_commander':
+        out_dim.update(P=4, A=5)
     with_two_state = True
     # if with_two_state:
     #     in_dim['state'] = SSN_state_len
@@ -316,6 +331,8 @@ elif args.hetgat:
                            per_agent_critic=False, with_two_state=with_two_state, obs=obs,
                            comm_range_P=args.comm_range_P, comm_range_A=args.comm_range_A,
                            model_spec=args.model_spec,
+                           message_backend=args.message_backend, learner_spec=args.learner_spec,
+                           profile_phases=args.profile_phases,
                            lossy_comm=args.lossy_comm, min_comm_loss=args.min_comm_loss,
                            max_comm_loss=args.max_comm_loss, tensor_obs=tensor_obs, action_vision=args.A_vision)
     else:
@@ -463,6 +480,8 @@ def save_checkpoint(filename, reason):
              trainer=trainer.state_dict(), seed=args.seed, recovery=recovery)
     d['reconstruction'] = dict(schema_version=2, env_version=args.publication_env_version,
         model_spec=args.model_spec, rng_scheme=args.rng_scheme,
+        reconstruction_spec=args.reconstruction_spec, learner_spec=args.learner_spec,
+        message_backend=args.message_backend,
         resolved_args=vars(args), counts=dict(progress), source_manifest_sha256=source_sha256)
     checkpoint = run_dir / ('model_update%08i_%s' % (progress['updates'], filename.removeprefix('model_')))
     checkpoint_begin_time = time.monotonic()
@@ -530,12 +549,19 @@ def run(num_epochs):
             raise ValueError('Recovery requires the structured training recorder')
         recorder.load_state_dict(resumed['recorder_state'])
         restore_all_rng_states(resumed['rng_states'])
-    elif args.model_spec == 'supplement-v1':
+    elif args.model_spec in ('supplement-v1', 'paper-v1'):
         # Initialization has a distinct stream; the parent is collector zero.
         seed_stream(args.seed, 0)
     if args.save:
         run_dir.mkdir(parents=True, exist_ok=True)
     if recorder:
+        if args.model_spec == 'paper-v1':
+            from hetnet_ext.signatures import tree_signature
+            write_json_new(recorder.path.parent / 'initial_training_identity.json', {
+                'model': tree_signature(policy_net.state_dict()),
+                'optimizer': tree_signature(trainer.state_dict()),
+                'rng': tree_signature(all_rng_states()),
+                'resources': trainer.collector_resources() if args.nprocesses > 1 else [process_resources()]})
         write_json_new(recorder.path.parent / 'training_segment.json', {
             'schema_version': 1, 'resume_checkpoint': args.resume_checkpoint or None,
             'resume_checkpoint_sha256': hashlib.sha256(Path(args.resume_checkpoint).read_bytes()).hexdigest()

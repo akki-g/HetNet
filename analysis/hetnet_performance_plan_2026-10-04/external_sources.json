@@ -1,0 +1,109 @@
+{
+  "command": "python3 analysis/hetnet_performance_plan_2026-10-04/check_external_sources.py",
+  "retrieved_at": "2026-10-04T01:08:25.737822-04:00",
+  "schema_version": 1,
+  "scope": "Primary-source byte retrieval and markers; paper hashes match the prior manifest. This checker does not inspect local PDF copies. Documentation content must still be interpreted at the cited sections; markers and hashes alone do not prove any scientific claim. Live Slurm documentation can change.",
+  "sources": [
+    {
+      "bytes": 4898022,
+      "content_type": "application/pdf",
+      "expected_content_markers_present": true,
+      "http_status": 200,
+      "matches_prior_manifest": true,
+      "passed": true,
+      "prior_manifest_sha256": "c4f7d8d45d2414ee9ef025ebb16b2a8303b40a9ea434bb5b57cb6ed8698ac723",
+      "reference": "P1",
+      "resolved_url": "https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf",
+      "sha256": "c4f7d8d45d2414ee9ef025ebb16b2a8303b40a9ea434bb5b57cb6ed8698ac723",
+      "url": "https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf",
+      "version": "paper"
+    },
+    {
+      "bytes": 319697,
+      "content_type": "application/octet-stream",
+      "expected_content_markers_present": true,
+      "http_status": 200,
+      "matches_prior_manifest": true,
+      "passed": true,
+      "prior_manifest_sha256": "22262845fe6f8e1b6aa6f66f970c176a27c9a9f0550b4fc62066c7d99a928696",
+      "reference": "P2",
+      "resolved_url": "https://raw.githubusercontent.com/CORE-Robotics-Lab/HetNet/bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec/AAMAS_22___HetNet_Supplementary.pdf",
+      "sha256": "22262845fe6f8e1b6aa6f66f970c176a27c9a9f0550b4fc62066c7d99a928696",
+      "url": "https://raw.githubusercontent.com/CORE-Robotics-Lab/HetNet/bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec/AAMAS_22___HetNet_Supplementary.pdf",
+      "version": "pinned-paper"
+    },
+    {
+      "bytes": 29815,
+      "content_type": "text/plain; charset=utf-8",
+      "expected_content_markers_present": true,
+      "http_status": 200,
+      "passed": true,
+      "reference": "W1",
+      "resolved_url": "https://raw.githubusercontent.com/pytorch/pytorch/v2.2.1/torch/profiler/profiler.py",
+      "sha256": "aef265c855e9f086ab17763a7d54d9f8be1982c73168106ad95f912cbce7d1c1",
+      "url": "https://raw.githubusercontent.com/pytorch/pytorch/v2.2.1/torch/profiler/profiler.py",
+      "version": "v2.2.1"
+    },
+    {
+      "bytes": 8157,
+      "content_type": "text/plain; charset=utf-8",
+      "expected_content_markers_present": true,
+      "http_status": 200,
+      "passed": true,
+      "reference": "W2",
+      "resolved_url": "https://raw.githubusercontent.com/pytorch/pytorch/v2.2.1/docs/source/notes/randomness.rst",
+      "sha256": "983dcac9c6477988c034a32acce61a7bec42d05c8627afb91ee3cbf385fbe471",
+      "url": "https://raw.githubusercontent.com/pytorch/pytorch/v2.2.1/docs/source/notes/randomness.rst",
+      "version": "v2.2.1"
+    },
+    {
+      "bytes": 145635,
+      "content_type": "text/html",
+      "expected_content_markers_present": true,
+      "http_status": 200,
+      "passed": true,
+      "reference": "W3",
+      "resolved_url": "https://slurm.schedmd.com/cpu_management.html",
+      "sha256": "f9c647ad9af331b3729513559c098e344d3a6d44d82dae0a83879b9114d9b688",
+      "url": "https://slurm.schedmd.com/cpu_management.html",
+      "version": "live-documentation"
+    },
+    {
+      "bytes": 76552,
+      "content_type": "text/html",
+      "expected_content_markers_present": true,
+      "http_status": 200,
+      "passed": true,
+      "reference": "W4",
+      "resolved_url": "https://slurm.schedmd.com/sacct.html",
+      "sha256": "13b0880f2c242e993ecb55fe797ddc0db7f380aa0a030b361f655fa4cde9206f",
+      "url": "https://slurm.schedmd.com/sacct.html",
+      "version": "live-documentation"
+    },
+    {
+      "bytes": 23260,
+      "content_type": "text/html; charset=utf-8",
+      "expected_content_markers_present": true,
+      "http_status": 200,
+      "passed": true,
+      "reference": "W5",
+      "resolved_url": "https://www.dgl.ai/dgl_docs/en/2.1.x/generated/dgl.DGLGraph.local_scope.html",
+      "sha256": "030ee1c7ebe51f59b1bc3f1e71c392235827cd027be1b2d52483cf503be06e38",
+      "url": "https://www.dgl.ai/dgl_docs/en/2.1.x/generated/dgl.DGLGraph.local_scope.html",
+      "version": "2.1.x"
+    },
+    {
+      "bytes": 21064,
+      "content_type": "text/plain; charset=utf-8",
+      "expected_content_markers_present": true,
+      "http_status": 200,
+      "passed": true,
+      "reference": "W6",
+      "resolved_url": "https://raw.githubusercontent.com/pytorch/pytorch/v2.2.1/torch/utils/benchmark/utils/timer.py",
+      "sha256": "0b686423c79b13c8efeb15b4bb7e29c14a70a5c8ec06c1dc45268788b5ff9931",
+      "url": "https://raw.githubusercontent.com/pytorch/pytorch/v2.2.1/torch/utils/benchmark/utils/timer.py",
+      "version": "v2.2.1"
+    }
+  ],
+  "status": "passed"
+}

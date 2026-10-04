@@ -1,0 +1,37 @@
+{
+  "active_time_seconds": 60.426903707993915,
+  "checkpoint": "/Users/akshatguduru/Desktop/Thesis/HetNet/analysis/dgl_profile_2026-10-04/scripts/out_ops/ckpt/ops/run1/model_update00000001_ep1.pt",
+  "checkpoint_seconds": 0.020028041006298736,
+  "counts": {
+    "env_steps": 557,
+    "episodes": 7,
+    "epoch": 1,
+    "updates": 1
+  },
+  "resources": {
+    "collector_count": 1,
+    "collectors": [
+      {
+        "cpu_affinity": null,
+        "max_rss": 8727248896,
+        "max_rss_unit": "bytes",
+        "system_cpu_seconds": 4.337427,
+        "torch_threads": 1,
+        "user_cpu_seconds": 55.674338
+      }
+    ],
+    "completed_children_only": {
+      "max_rss": 4308992,
+      "max_rss_unit": "bytes",
+      "system_cpu_seconds": 0.001263,
+      "user_cpu_seconds": 0.000367
+    },
+    "slurm_cpus_per_task": null
+  },
+  "schema_version": 1,
+  "scientific_budget_completed": true,
+  "segment_wall_time_seconds": 60.426903707993915,
+  "startup_to_training_seconds": 1.0022890000254847,
+  "stop_reason": "epoch_cap_completed",
+  "training_update_seconds": 60.39915179199306
+}

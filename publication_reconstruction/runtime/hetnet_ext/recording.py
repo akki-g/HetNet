@@ -69,6 +69,7 @@ class TrainingRecorder:
         self.total_episodes = 0
         self.last_epoch = 0
         self.episode_log = getattr(args, "episode_log", "file")
+        self.paper = getattr(args, "learner_spec", "public-code-v1") == "paper-equations-v1"
         self._reset_epoch()
 
     def state_dict(self):
@@ -108,9 +109,16 @@ class TrainingRecorder:
                "success_rate": float(fresh["success"]) / len(records),
                "reward_per_agent": reward.tolist(), "team_return": float(reward.sum()),
                "mean_agent_return": float(np.mean([r["mean_agent_return"] for r in records])),
-               "policy_loss": float(fresh["action_loss"]) / fresh["num_steps"],
-               "value_loss": float(fresh["value_loss"]) / fresh["num_steps"],
+               "policy_loss": float(fresh["action_loss"]) / (len(records) if self.paper else fresh["num_steps"]),
+               "value_loss": float(fresh["value_loss"]) / (len(records) if self.paper else fresh["num_steps"]),
                "wall_time_seconds": float(wall_seconds)}
+        if self.paper:
+            row["loss_units"] = "global completed-episode mean of total-N weighted sums"
+            row["gradient_norm_preclip"] = float(fresh["gradient_norm_preclip"])
+        phases = {k: float(v) for k, v in fresh.items() if k.startswith("phase_") and k.endswith("_seconds")}
+        if phases:
+            row["phases"] = phases
+            row["phase_semantics"] = "collector wall intervals are summed and overlap; wait/aggregation/optimizer are parent intervals"
         with (self.path.parent / "updates.jsonl").open("a") as stream:
             stream.write(json.dumps(row, sort_keys=True, allow_nan=False) + "\n")
 
@@ -153,8 +161,8 @@ class TrainingRecorder:
             "reward_per_agent": (self.reward / self.episodes).tolist(),
             "team_return": float(self.reward.sum() / self.episodes),
             "mean_agent_return": float(self.reward.mean() / self.episodes),
-            "policy_loss": self.policy_loss / self.steps,
-            "value_loss": self.value_loss / self.steps,
+            "policy_loss": self.policy_loss / (self.episodes if self.paper else self.steps),
+            "value_loss": self.value_loss / (self.episodes if self.paper else self.steps),
         }
         if updates is not None:
             metrics["updates"] = int(updates)

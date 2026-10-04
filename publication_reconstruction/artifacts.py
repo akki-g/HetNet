@@ -67,13 +67,16 @@ def _validate_scientific_protocol(protocol, args):
     from .__main__ import resolve
     try:
         choices = {"task": ("pp", "pcp", "fc"), "variant": ("real", "binary"),
-                   "model_spec": ("public-code-v1", "supplement-v1"),
-                   "env_version": ("historical-2022", "corrected-v1"),
+                   "model_spec": ("public-code-v1", "supplement-v1", "paper-v1"),
+                   "env_version": ("historical-2022", "corrected-v1", "paper-v1"),
                    "recipe": ("june-2022", "october-2022")}
         if any(protocol[key] not in values for key, values in choices.items()):
             raise ValueError("Unknown scientific protocol version or domain")
         expected = resolve(SimpleNamespace(
             task=protocol["task"], variant=protocol["variant"], model_spec=protocol["model_spec"],
+            reconstruction_spec=protocol.get("reconstruction_spec", "legacy"),
+            message_backend=protocol.get("message_backend", "dgl"),
+            profile_phases=protocol.get("profile_phases", False),
             seed=protocol["seed"], env_version=protocol["env_version"], recipe=protocol["recipe"],
             output=Path(protocol["output"]), epochs=protocol["epochs"], collectors=protocol["collectors"],
             updates_per_epoch=protocol["updates_per_epoch"], batch_steps=protocol["batch_step_floor_per_collector"],
@@ -83,6 +86,13 @@ def _validate_scientific_protocol(protocol, args):
         for key in ("model_spec", "optimizer", "rng_scheme", "learner_spec"):
             if protocol[key] != expected[key]:
                 raise ValueError(f"Scientific protocol mismatch: {key}")
+        for key, default in (("message_backend", "dgl"), ("reconstruction_spec", "legacy")):
+            if protocol.get(key, default) != expected[key] or args.get(key, default) != expected[key]:
+                raise ValueError(f"Scientific protocol mismatch: {key}")
+        if protocol["model_spec"] == "paper-v1":
+            for key in ("binary_bandwidth", "action_dimensions", "loss_normalization"):
+                if protocol.get(key) != expected[key]:
+                    raise ValueError(f"Scientific protocol mismatch: {key}")
         command = _scientific_command(protocol["command"])
         if command != _scientific_command(expected["command"]):
             raise ValueError("Scientific command differs from its declared protocol")
@@ -98,6 +108,31 @@ def _validate_scientific_protocol(protocol, args):
                 matches = values == [str(value)]
             if not matches:
                 raise ValueError(f"Scientific command/checkpoint mismatch: {key}")
+        # These reconstructed recipes rely on parser defaults as well as their
+        # explicit command flags. These defaults come from runtime/main.py and
+        # the selected environment's init_args. Schema-2 checkpoints save the
+        # complete resolved namespace; missing fields cannot establish identity.
+        # Do not import/execute the archived learner. Schema-1 skips this check.
+        defaults = dict(gamma=1.0, tau=1.0, normalize_rewards=False, entr=0,
+            value_coeff=.01, comm_range_P=-1, comm_range_A=-1, lossy_comm=False,
+            min_comm_loss=0, max_comm_loss=.3, recurrent=False, commnet=False,
+            hetcomm=False, ic3net=False, use_cuda=False, random=False, eval=False,
+            msg_dim=16, action_scale=1, nactions='1', rnn_type='MLP',
+            total_state_action_in_batch=500, no_stay=False, mode='mixed',
+            tensor_obs=False, A_vision=-1)
+        if protocol['task'] == 'fc':
+            defaults.update(fire_spread_off=False, max_wind_speed=None)
+        else:
+            defaults.update(nenemies=1, moving_prey=False, enemy_comm=False,
+                            second_reward_scheme=False)
+        if protocol['model_spec'] == 'paper-v1' and protocol['variant'] == 'binary':
+            defaults['msg_dim'] = 64
+        for key, expected_default in defaults.items():
+            if key not in args:
+                raise ValueError(f'Scientific checkpoint default is missing: {key}')
+            if (args[key] != expected_default or
+                    (isinstance(expected_default, bool) and type(args[key]) is not bool)):
+                raise ValueError(f"Scientific checkpoint default differs from recipe: {key}")
     except (KeyError, TypeError, AttributeError) as error:
         raise ValueError("Incomplete scientific protocol or checkpoint arguments") from error
 
@@ -138,6 +173,60 @@ def _validate_optimizer(saved, protocol, updates):
     if updates and (not optimizer["state"] or any(not isinstance(state, dict) or not moment_keys.issubset(state)
                                                  for state in optimizer["state"].values())):
         raise ValueError("Checkpoint optimizer moments are missing")
+    # The supported UAVNet models have parameters only (no registered buffers),
+    # and Trainer constructs one optimizer from model.parameters() in state_dict
+    # order. Some fixed empty relations legitimately never acquire optimizer
+    # state; validate existing states rather than requiring every parameter.
+    model = saved.get('policy_net', {})
+    if len(parameters) != len(model):
+        raise ValueError('Checkpoint optimizer/model parameter inventory differs')
+    parameter_tensors = dict(zip(parameters, model.values()))
+    for parameter, state in optimizer['state'].items():
+        step = state.get('step')
+        if torch.is_tensor(step):
+            if step.ndim != 0:
+                raise ValueError('Checkpoint optimizer step must be a scalar')
+            step = step.item()
+        if type(step) not in (int, float) or not math.isfinite(step) or step != updates:
+            raise ValueError('Checkpoint optimizer step differs from completed updates')
+        for key in moment_keys:
+            moment, tensor = state[key], parameter_tensors[parameter]
+            if (not torch.is_tensor(moment) or moment.shape != tensor.shape
+                    or moment.dtype != tensor.dtype):
+                raise ValueError(f'Checkpoint optimizer moment shape/dtype differs: {key}')
+            if key in {'exp_avg_sq', 'square_avg'} and bool((moment < 0).any()):
+                raise ValueError(f'Checkpoint optimizer second moment is negative: {key}')
+
+
+def _validate_recorded_checkpoint(run, checkpoint, payload, saved, protocol):
+    """Bind continuation to bytes published by this run, allowing moved archives.
+
+    Stop at the selected record: a later interrupted ledger suffix is abandoned
+    when resuming this checkpoint. An externally copied checkpoint is acceptable
+    only if its exact bytes occur in the original run's ledger.
+    """
+    run, checkpoint = Path(run).resolve(), Path(checkpoint).resolve()
+    checksum = hashlib.sha256(payload).hexdigest()
+    relative = checkpoint.relative_to(run) if checkpoint.is_relative_to(run) else None
+    try:
+        with (run / 'checkpoint_records.jsonl').open() as stream:
+            for line in stream:
+                row = json.loads(line)
+                recorded = Path(row['path']).relative_to(Path(protocol['output']))
+                if '..' in recorded.parts:
+                    raise ValueError('Recorded checkpoint path escapes the run')
+                if (relative is not None and recorded != relative) or (
+                        relative is None and row.get('checkpoint_sha256') != checksum):
+                    continue
+                counts = saved['reconstruction']['counts']
+                if (row.get('checkpoint_sha256') != checksum or row.get('bytes') != len(payload)
+                        or row.get('counts') != counts or row.get('update') != counts['updates']
+                        or row.get('epoch') != counts['epoch']):
+                    raise ValueError('Checkpoint differs from its recorded bytes or progress')
+                return
+    except (OSError, KeyError, TypeError, json.JSONDecodeError) as error:
+        raise ValueError('Checkpoint continuation requires a valid recorded checkpoint prefix') from error
+    raise ValueError('Checkpoint is not recorded in this run checkpoint ledger')
 
 
 def _validate_recovery(saved, protocol):
@@ -218,6 +307,11 @@ def load_checkpoint(run, checkpoint, require_recovery=False):
             args.get("model_spec", "public-code-v1") != protocol.get("model_spec", "public-code-v1") or
             args.get("max_env_steps", 0) != (protocol.get("max_env_steps") or 0)):
         raise ValueError("Checkpoint scientific configuration differs from run protocol")
+    for field, default in (("message_backend", "dgl"), ("reconstruction_spec", "legacy"),
+                           ("learner_spec", "public-code-v1")):
+        if (meta.get(field, default) != protocol.get(field, default)
+                or args.get(field, default) != protocol.get(field, default)):
+            raise ValueError(f"Checkpoint scientific configuration differs: {field}")
     counts = meta.get("counts", {})
     if not isinstance(counts, dict) or any(type(counts.get(k)) is not int or counts[k] < 0
            for k in ("env_steps", "episodes", "updates", "epoch")):
@@ -229,6 +323,7 @@ def load_checkpoint(run, checkpoint, require_recovery=False):
         _validate_scientific_protocol(protocol, args)
     if require_recovery:
         _validate_recovery(saved, protocol)
+        _validate_recorded_checkpoint(run, checkpoint, payload, saved, protocol)
     return saved
 
 

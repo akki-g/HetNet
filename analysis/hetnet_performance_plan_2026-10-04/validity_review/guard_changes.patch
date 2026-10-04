@@ -1,0 +1,712 @@
+--- a/publication_reconstruction/__main__.py
++++ b/publication_reconstruction/__main__.py
+@@ -84,6 +84,11 @@
+     epochs = args.epochs or (1400 if fc else 2000)
+     horizon = args.horizon or (300 if fc else 80)
+     collectors = args.collectors or (4 if fc or args.recipe == "october-2022" else 1)
++    # The preserved per-class learner uses sample std over each collector's
++    # padded advantages. One one-step episode gives the sole A agent only one
++    # value, whose sample std is undefined. More collectors cannot repair it.
++    if args.task != "pp" and horizon == 1 and args.batch_steps == 1:
++        raise ValueError("PCP/FC need --horizon > 1 or --batch-steps > 1 for finite per-class advantage normalization")
+     if args.seed + collectors >= 2**32:
+         raise ValueError("seed plus collector count exceeds NumPy seed range")
+     run = (args.output or ROOT / "runs/publication_reconstruction" / args.model_spec / args.env_version /
+--- a/publication_reconstruction/artifacts.py
++++ b/publication_reconstruction/artifacts.py
+@@ -98,6 +98,29 @@
+                 matches = values == [str(value)]
+             if not matches:
+                 raise ValueError(f"Scientific command/checkpoint mismatch: {key}")
++        # These reconstructed recipes rely on parser defaults as well as their
++        # explicit command flags. These defaults come from runtime/main.py and
++        # the selected environment's init_args. Schema-2 checkpoints save the
++        # complete resolved namespace; missing fields cannot establish identity.
++        # Do not import/execute the archived learner. Schema-1 skips this check.
++        defaults = dict(gamma=1.0, tau=1.0, normalize_rewards=False, entr=0,
++            value_coeff=.01, comm_range_P=-1, comm_range_A=-1, lossy_comm=False,
++            min_comm_loss=0, max_comm_loss=.3, recurrent=False, commnet=False,
++            hetcomm=False, ic3net=False, use_cuda=False, random=False, eval=False,
++            msg_dim=16, action_scale=1, nactions='1', rnn_type='MLP',
++            total_state_action_in_batch=500, no_stay=False, mode='mixed',
++            tensor_obs=False, A_vision=-1)
++        if protocol['task'] == 'fc':
++            defaults.update(fire_spread_off=False, max_wind_speed=None)
++        else:
++            defaults.update(nenemies=1, moving_prey=False, enemy_comm=False,
++                            second_reward_scheme=False)
++        for key, expected_default in defaults.items():
++            if key not in args:
++                raise ValueError(f'Scientific checkpoint default is missing: {key}')
++            if (args[key] != expected_default or
++                    (isinstance(expected_default, bool) and type(args[key]) is not bool)):
++                raise ValueError(f"Scientific checkpoint default differs from recipe: {key}")
+     except (KeyError, TypeError, AttributeError) as error:
+         raise ValueError("Incomplete scientific protocol or checkpoint arguments") from error
+ 
+@@ -138,6 +161,60 @@
+     if updates and (not optimizer["state"] or any(not isinstance(state, dict) or not moment_keys.issubset(state)
+                                                  for state in optimizer["state"].values())):
+         raise ValueError("Checkpoint optimizer moments are missing")
++    # The supported UAVNet models have parameters only (no registered buffers),
++    # and Trainer constructs one optimizer from model.parameters() in state_dict
++    # order. Some fixed empty relations legitimately never acquire optimizer
++    # state; validate existing states rather than requiring every parameter.
++    model = saved.get('policy_net', {})
++    if len(parameters) != len(model):
++        raise ValueError('Checkpoint optimizer/model parameter inventory differs')
++    parameter_tensors = dict(zip(parameters, model.values()))
++    for parameter, state in optimizer['state'].items():
++        step = state.get('step')
++        if torch.is_tensor(step):
++            if step.ndim != 0:
++                raise ValueError('Checkpoint optimizer step must be a scalar')
++            step = step.item()
++        if type(step) not in (int, float) or not math.isfinite(step) or step != updates:
++            raise ValueError('Checkpoint optimizer step differs from completed updates')
++        for key in moment_keys:
++            moment, tensor = state[key], parameter_tensors[parameter]
++            if (not torch.is_tensor(moment) or moment.shape != tensor.shape
++                    or moment.dtype != tensor.dtype):
++                raise ValueError(f'Checkpoint optimizer moment shape/dtype differs: {key}')
++            if key in {'exp_avg_sq', 'square_avg'} and bool((moment < 0).any()):
++                raise ValueError(f'Checkpoint optimizer second moment is negative: {key}')
++
++
++def _validate_recorded_checkpoint(run, checkpoint, payload, saved, protocol):
++    """Bind continuation to bytes published by this run, allowing moved archives.
++
++    Stop at the selected record: a later interrupted ledger suffix is abandoned
++    when resuming this checkpoint. An externally copied checkpoint is acceptable
++    only if its exact bytes occur in the original run's ledger.
++    """
++    run, checkpoint = Path(run).resolve(), Path(checkpoint).resolve()
++    checksum = hashlib.sha256(payload).hexdigest()
++    relative = checkpoint.relative_to(run) if checkpoint.is_relative_to(run) else None
++    try:
++        with (run / 'checkpoint_records.jsonl').open() as stream:
++            for line in stream:
++                row = json.loads(line)
++                recorded = Path(row['path']).relative_to(Path(protocol['output']))
++                if '..' in recorded.parts:
++                    raise ValueError('Recorded checkpoint path escapes the run')
++                if (relative is not None and recorded != relative) or (
++                        relative is None and row.get('checkpoint_sha256') != checksum):
++                    continue
++                counts = saved['reconstruction']['counts']
++                if (row.get('checkpoint_sha256') != checksum or row.get('bytes') != len(payload)
++                        or row.get('counts') != counts or row.get('update') != counts['updates']
++                        or row.get('epoch') != counts['epoch']):
++                    raise ValueError('Checkpoint differs from its recorded bytes or progress')
++                return
++    except (OSError, KeyError, TypeError, json.JSONDecodeError) as error:
++        raise ValueError('Checkpoint continuation requires a valid recorded checkpoint prefix') from error
++    raise ValueError('Checkpoint is not recorded in this run checkpoint ledger')
+ 
+ 
+ def _validate_recovery(saved, protocol):
+@@ -229,6 +306,7 @@
+         _validate_scientific_protocol(protocol, args)
+     if require_recovery:
+         _validate_recovery(saved, protocol)
++        _validate_recorded_checkpoint(run, checkpoint, payload, saved, protocol)
+     return saved
+ 
+ 
+--- a/publication_reconstruction/study.py
++++ b/publication_reconstruction/study.py
+@@ -5,6 +5,7 @@
+ from dataclasses import asdict
+ import hashlib
+ import json
++import math
+ from pathlib import Path
+ import shlex
+ import sys
+@@ -66,29 +67,35 @@
+     status = json.loads((run / "run_status.json").read_text())
+     updates = [json.loads(line) for line in (run / "updates.jsonl").read_text().splitlines()]
+     records = [json.loads(line) for line in (run / "checkpoint_records.jsonl").read_text().splitlines()]
++    if len(updates) != 100:
++        raise ValueError("Preflight did not finish its prescribed 100 updates")
++    protocol = json.loads((run / "protocol.json").read_text())
++    segment = json.loads((run / "training_segment.json").read_text())
+     checkpoint = Path(status["checkpoint"])
+     saved = load_checkpoint(run, checkpoint)
+-    elapsed = sum(row["wall_time_seconds"] for row in updates)
+-    protocol = json.loads((run / "protocol.json").read_text())
+-    from .artifacts import _validate_optimizer
++    elapsed, steps = _validate_preflight_ledger(updates, status, segment, protocol, saved)
++    if not records or any(type(row.get("wall_time_seconds")) not in (int, float)
++                          or not math.isfinite(row["wall_time_seconds"])
++                          or row["wall_time_seconds"] < 0 for row in records):
++        raise ValueError("Preflight checkpoint timings must be finite and nonnegative")
++    from .artifacts import _validate_optimizer, _validate_recorded_checkpoint
++    _validate_recorded_checkpoint(run, checkpoint, checkpoint.read_bytes(), saved, protocol)
+     _validate_optimizer(saved, protocol, status["counts"]["updates"])
+     target = next(target for task, variant, target in WORKLOADS
+                   if (task, variant) == (protocol["task"], protocol["variant"]))
+     result = {"schema_version": 1, "usable_checkpoint": str(checkpoint), "updates": len(updates),
+               "counts": status["counts"], "update_seconds": [row["wall_time_seconds"] for row in updates],
+               "checkpoint_seconds": [row["wall_time_seconds"] for row in records],
+-              "measured_update_steps_per_second": sum(row["steps"] for row in updates) / elapsed,
++              "measured_update_steps_per_second": steps / elapsed,
+               "projected_update_work_hours_excluding_startup_logging_and_checkpoints":
+-                  target * elapsed / sum(row["steps"] for row in updates) / 3600,
++                  target * elapsed / steps / 3600,
+               "projected_segment_hours_including_logging_and_checkpoints_excluding_startup":
+-                  target * status["segment_wall_time_seconds"] / sum(row["steps"] for row in updates) / 3600,
++                  target * status["segment_wall_time_seconds"] / steps / 3600,
+               "runtime": json.loads((run / "environment.json").read_text()),
+               "resources": status["resources"],
+               "startup_seconds": status["startup_to_training_seconds"],
+               "segment_wall_seconds": status["segment_wall_time_seconds"],
+               "limitations": "Timing projection only; convergence and cluster runtime are not guaranteed."}
+-    if len(updates) != 100:
+-        raise ValueError("Preflight did not finish its prescribed 100 updates")
+     from .__main__ import write_json
+     # Exercise strict archived loading on the compute node as well as inspecting
+     # tensor/optimizer structure. One native episode is an engineering probe.
+@@ -104,6 +111,61 @@
+         "episodes": evaluated["episodes"], "parameters_unchanged": evaluated["parameters_unchanged"]}
+     write_json(run / "preflight.json", result)
+     return result
++
++
++def _validate_preflight_ledger(updates, status, segment, protocol, saved):
++    """Reconcile one segment's work against its absolute completed-update counts."""
++    def counts(value):
++        fields = {"env_steps", "episodes", "updates", "epoch"}
++        if (not isinstance(value, dict) or set(value) != fields
++                or any(type(value[key]) is not int or value[key] < 0 for key in fields)):
++            raise ValueError("Preflight progress must contain nonnegative integer counts")
++        return dict(value)
++
++    def seconds(value, positive=False):
++        if (type(value) not in (int, float) or not math.isfinite(value)
++                or value < 0 or (positive and value == 0)):
++            raise ValueError("Preflight timing must be finite and positive for updates")
++        return value
++
++    try:
++        initial = counts(segment["starting_counts"])
++        total = dict(initial)
++        final = counts(status["counts"])
++        checkpoint_counts = counts(saved["reconstruction"]["counts"])
++        per_epoch = protocol["updates_per_epoch"]
++        if type(per_epoch) is not int or per_epoch <= 0:
++            raise ValueError("Preflight updates per epoch must be a positive integer")
++        if initial["epoch"] != (initial["updates"] + per_epoch - 1) // per_epoch:
++            raise ValueError("Preflight starting epoch disagrees with its update count")
++        elapsed = 0.0
++        for row in updates:
++            for key in ("steps", "episodes"):
++                if type(row[key]) is not int or row[key] <= 0:
++                    raise ValueError("Preflight update step/episode counts must be positive integers")
++            if row["episodes"] > row["steps"]:
++                raise ValueError("Preflight update has more episodes than environment steps")
++            total["updates"] += 1
++            total["env_steps"] += row["steps"]
++            total["episodes"] += row["episodes"]
++            total["epoch"] = (total["updates"] - 1) // per_epoch + 1
++            expected = {"update": total["updates"], "epoch": total["epoch"],
++                        "update_in_epoch": (total["updates"] - 1) % per_epoch + 1,
++                        "total_steps": total["env_steps"], "total_episodes": total["episodes"]}
++            if any(type(row[key]) is not int or row[key] != value for key, value in expected.items()):
++                raise ValueError("Preflight update order or cumulative counters disagree")
++            elapsed += seconds(row["wall_time_seconds"], positive=True)
++        if total != final or total != checkpoint_counts:
++            raise ValueError("Preflight ledger, status and checkpoint progress disagree")
++        recorded_elapsed = seconds(status["training_update_seconds"], positive=True)
++        if not math.isclose(elapsed, recorded_elapsed, rel_tol=1e-12, abs_tol=1e-9):
++            raise ValueError("Preflight summed update time disagrees with run status")
++        if seconds(status["segment_wall_time_seconds"], positive=True) < elapsed:
++            raise ValueError("Preflight segment time is shorter than its update work")
++        seconds(status["startup_to_training_seconds"])
++    except (KeyError, TypeError) as error:
++        raise ValueError("Incomplete preflight ledger or progress metadata") from error
++    return elapsed, total["env_steps"] - initial["env_steps"]
+ 
+ 
+ def panel(task, compositions, episodes, seed, failure=0):
+@@ -149,18 +211,25 @@
+ 
+ def select_checkpoint(run, expected, target):
+     from .artifacts import digest, load_checkpoint, verify_run
+-    protocol, _ = verify_run(run)
+-    for field in ("task", "variant", "seed", "model_spec", "env_version", "recipe", "collectors",
+-                  "updates_per_epoch", "batch_step_floor_per_collector", "episode_horizon", "max_env_steps"):
+-        if protocol[field] != expected[field]:
+-            raise ValueError(f"Study run differs from locked {field}: {run}")
++    def validate_study_run(candidate):
++        protocol, _ = verify_run(candidate)
++        for field in ("task", "variant", "seed", "model_spec", "env_version", "recipe", "collectors",
++                      "updates_per_epoch", "batch_step_floor_per_collector", "episode_horizon", "max_env_steps"):
++            if protocol[field] != expected[field]:
++                raise ValueError(f"Study run differs from locked {field}: {candidate}")
++
++    validate_study_run(run)
+     eligible = [row for row in checkpoint_candidates(run) if row["counts"]["env_steps"] >= target]
+     if not eligible:
+         raise ValueError(f"No completed-update checkpoint reaches {target}: {run}")
+     row = eligible[0]
++    # The first eligible checkpoint may belong to a retained parent segment.
++    validate_study_run(row["run_dir"])
+     if digest(row["path"]) != row["checkpoint_sha256"]:
+         raise ValueError("Checkpoint differs from its recorded bytes")
+     saved = load_checkpoint(row["run_dir"], row["path"])
++    if saved.get("seed") != expected["seed"]:
++        raise ValueError("Selected checkpoint training seed differs from the locked study")
+     if saved["reconstruction"]["counts"] != row["counts"]:
+         raise ValueError("Checkpoint index disagrees with checkpoint progress")
+     return {**row, "selection_target": target, "task": expected["task"],
+--- a/tests/test_publication_artifacts.py
++++ b/tests/test_publication_artifacts.py
+@@ -42,7 +42,15 @@
+         model_spec="supplement-v1", max_env_steps=100, lrate=.001, env_name="predator_capture",
+         nfriendly_P=2, nfriendly_A=1, nagents=3, dim=5, vision=2, detach_gap=5,
+         hid_size=128, hetgat=True, hetgat_a2c=True, milestones=[50, 100],
+-        rng_scheme="seedsequence-v1", save_every=1, episode_log="file", wall_seconds=0)
++        rng_scheme="seedsequence-v1", save_every=1, episode_log="file", wall_seconds=0,
++        gamma=1.0, tau=1.0, normalize_rewards=False, entr=0., value_coeff=.01,
++        comm_range_P=-1, comm_range_A=-1, lossy_comm=False,
++        min_comm_loss=0., max_comm_loss=.3, recurrent=False,
++        commnet=False, hetcomm=False, ic3net=False, use_cuda=False,
++        random=False, eval=False, msg_dim=16, action_scale=1., nactions='1',
++        rnn_type='MLP', total_state_action_in_batch=500,
++        no_stay=False, mode='mixed', tensor_obs=False, A_vision=-1,
++        nenemies=1, moving_prey=False, enemy_comm=False, second_reward_scheme=False)
+     parameter = torch.nn.Parameter(torch.tensor([.25], dtype=torch.float64))
+     optimizer = torch.optim.Adam([parameter], lr=.001, foreach=False, fused=False)
+     parameter.grad = torch.ones_like(parameter)
+@@ -61,6 +69,10 @@
+                 "steps": 12, "episodes": 2, "success": 0., "steps_taken": 12.,
+                 "reward": [-1., -1., -1.], "policy_loss": 1., "value_loss": 1.}}}
+     torch.save(saved, checkpoint)
++    (run / 'checkpoint_records.jsonl').write_text(json.dumps({
++        'path': str(checkpoint), 'checkpoint_sha256': hashlib.sha256(checkpoint.read_bytes()).hexdigest(),
++        'bytes': checkpoint.stat().st_size, 'counts': counts, 'update': counts['updates'],
++        'epoch': counts['epoch']}) + '\n')
+     return SimpleNamespace(run=run, checkpoint=checkpoint, saved=saved, protocol=protocol, manifest=manifest)
+ 
+ 
+--- a/tests/test_publication_launcher.py
++++ b/tests/test_publication_launcher.py
+@@ -69,3 +69,24 @@
+ def test_invalid_budgets_rejected_before_run_creation(flag, value):
+     with pytest.raises(SystemExit):
+         parser().parse_args(["train", "--task", "pp", "--seed", "0", flag, value])
++
++
++@pytest.mark.parametrize("task", ["pcp", "fc"])
++@pytest.mark.parametrize("model_spec", ["public-code-v1", "supplement-v1"])
++@pytest.mark.parametrize("collectors", [1, 4])
++def test_singleton_a_advantage_rejected_before_run_creation(tmp_path, task, model_spec, collectors):
++    output = tmp_path / "invalid"
++    args = parser().parse_args(["train", "--task", task, "--seed", "0",
++        "--model-spec", model_spec, "--collectors", str(collectors),
++        "--horizon", "1", "--batch-steps", "1", "--output", str(output)])
++    with pytest.raises(ValueError, match="per-class advantage normalization"):
++        resolve(args)
++    assert not output.exists()
++
++
++@pytest.mark.parametrize("task,horizon,batch_steps", [
++    ("pp", 1, 1), ("pcp", 2, 1), ("pcp", 1, 2), ("fc", 2, 1), ("fc", 1, 2)])
++def test_small_configs_with_multiple_class_advantages_remain_available(task, horizon, batch_steps):
++    args = parser().parse_args(["train", "--task", task, "--seed", "0",
++        "--horizon", str(horizon), "--batch-steps", str(batch_steps)])
++    assert resolve(args)["episode_horizon"] == horizon
+--- a/tests/test_publication_study.py
++++ b/tests/test_publication_study.py
+@@ -116,7 +116,8 @@
+     monkeypatch.setattr(artifacts, "verify_run", lambda run: (expected, {}))
+     monkeypatch.setattr(study, "checkpoint_candidates", lambda run: rows)
+     monkeypatch.setattr(artifacts, "digest", lambda path: "a")
+-    monkeypatch.setattr(artifacts, "load_checkpoint", lambda run, path: {"reconstruction": {"counts": rows[0]["counts"]}})
++    monkeypatch.setattr(artifacts, "load_checkpoint", lambda run, path: {
++        "seed": expected["seed"], "reconstruction": {"counts": rows[0]["counts"]}})
+     selected = study.select_checkpoint(tmp_path, expected, 30_000_000)
+     assert selected["path"] == "early"
+ 
+@@ -130,27 +131,53 @@
+     assert not (tmp_path / "missing").exists()
+ 
+ 
++@pytest.fixture
++def preflight_evidence(tmp_path, monkeypatch):
++    from publication_reconstruction import artifacts, evaluation
++    def create(updates=100, starting_updates=0):
++        initial = {"env_steps": starting_updates * 2000, "episodes": starting_updates * 10,
++                   "updates": starting_updates, "epoch": (starting_updates + 9) // 10}
++        rows = [{"steps": 2000, "episodes": 10, "wall_time_seconds": 2,
++                 "update": i, "epoch": (i - 1) // 10 + 1, "update_in_epoch": (i - 1) % 10 + 1,
++                 "total_steps": i * 2000, "total_episodes": i * 10}
++                for i in range(starting_updates + 1, starting_updates + updates + 1)]
++        final_update = starting_updates + updates
++        final = {"env_steps": final_update * 2000, "episodes": final_update * 10,
++                 "updates": final_update, "epoch": (final_update + 9) // 10}
++        status = {"checkpoint": str(tmp_path / "checkpoint.pt"), "counts": final,
++                  "resources": {"slurm_cpus_per_task": "4"}, "startup_to_training_seconds": 5,
++                  "training_update_seconds": updates * 2, "segment_wall_time_seconds": 300}
++        (tmp_path / "run_status.json").write_text(json.dumps(status))
++        (tmp_path / "training_segment.json").write_text(json.dumps({"starting_counts": initial}))
++        (tmp_path / "updates.jsonl").write_text("".join(json.dumps(row) + "\n" for row in rows))
++        checkpoint = tmp_path / "checkpoint.pt"
++        checkpoint.write_bytes(b"mocked checkpoint; policy loading is tested separately")
++        (tmp_path / "checkpoint_records.jsonl").write_text(json.dumps({
++            "wall_time_seconds": .2, "path": str(checkpoint), "counts": final,
++            "epoch": final["epoch"], "update": final["updates"],
++            "bytes": checkpoint.stat().st_size,
++            "checkpoint_sha256": artifacts.digest(checkpoint)}) + "\n")
++        (tmp_path / "protocol.json").write_text(json.dumps({"task": "pp", "variant": "real",
++            "updates_per_epoch": 10, "output": str(tmp_path)}))
++        (tmp_path / "environment.json").write_text(json.dumps({"packages": {"torch": "2.2.1"}}))
++        saved = {"reconstruction": {"counts": dict(final)}}
++        monkeypatch.setattr(artifacts, "load_checkpoint", lambda *args: saved)
++        validated = []
++        monkeypatch.setattr(artifacts, "_validate_optimizer", lambda *args: validated.append(args))
++        probes = []
++        def probe(args):
++            probes.append(args)
++            assert len(json.loads(args.scenarios.read_text())) == 1
++            assert args.checkpoint == Path(status["checkpoint"])
++            return {"episodes": 1, "parameters_unchanged": True}
++        monkeypatch.setattr(evaluation, "evaluate", probe)
++        return rows, status, saved, validated, probes
++    return create
++
++
+ @pytest.mark.parametrize("updates", [99, 100])
+-def test_preflight_summary_requires_full_panel_and_separates_time_costs(tmp_path, monkeypatch, updates):
+-    from publication_reconstruction import artifacts, evaluation
+-    status = {"checkpoint": str(tmp_path / "checkpoint.pt"), "counts": {"updates": updates},
+-              "resources": {"slurm_cpus_per_task": "4"}, "startup_to_training_seconds": 5,
+-              "segment_wall_time_seconds": 300}
+-    (tmp_path / "run_status.json").write_text(json.dumps(status))
+-    (tmp_path / "updates.jsonl").write_text((json.dumps({"steps": 2000, "wall_time_seconds": 2}) + "\n") * updates)
+-    (tmp_path / "checkpoint_records.jsonl").write_text(json.dumps({"wall_time_seconds": .2}) + "\n")
+-    (tmp_path / "protocol.json").write_text(json.dumps({"task": "pp", "variant": "real"}))
+-    (tmp_path / "environment.json").write_text(json.dumps({"packages": {"torch": "2.2.1"}}))
+-    monkeypatch.setattr(artifacts, "load_checkpoint", lambda *args: {})
+-    validated = []
+-    monkeypatch.setattr(artifacts, "_validate_optimizer", lambda *args: validated.append(args))
+-    probes = []
+-    def probe(args):
+-        probes.append(args)
+-        assert len(json.loads(args.scenarios.read_text())) == 1
+-        assert args.checkpoint == Path(status["checkpoint"])
+-        return {"episodes": 1, "parameters_unchanged": True}
+-    monkeypatch.setattr(evaluation, "evaluate", probe)
++def test_preflight_summary_requires_full_panel_and_separates_time_costs(tmp_path, preflight_evidence, updates):
++    _, _, _, validated, probes = preflight_evidence(updates=updates)
+     if updates == 99:
+         with pytest.raises(ValueError, match="100 updates"):
+             study.preflight_summary(tmp_path)
+@@ -162,3 +189,66 @@
+         assert report["projected_update_work_hours_excluding_startup_logging_and_checkpoints"] == pytest.approx(40_000 / 3600)
+         assert report["projected_segment_hours_including_logging_and_checkpoints_excluding_startup"] == pytest.approx(60_000 / 3600)
+         assert report["resources"]["slurm_cpus_per_task"] == "4"
++
++
++@pytest.mark.parametrize("field,value", [
++    ("steps", 0), ("steps", True), ("steps", 1.5), ("episodes", -1), ("episodes", 2001),
++    ("wall_time_seconds", 0), ("wall_time_seconds", -1),
++    ("wall_time_seconds", float("nan")), ("wall_time_seconds", float("inf")),
++    ("update", 1), ("update", True), ("epoch", 2), ("update_in_epoch", 1),
++    ("total_steps", 0), ("total_episodes", 0),
++])
++def test_preflight_rejects_invalid_update_before_probe(tmp_path, preflight_evidence, field, value):
++    rows, _, _, _, probes = preflight_evidence()
++    rows[1][field] = value
++    (tmp_path / "updates.jsonl").write_text("".join(json.dumps(row) + "\n" for row in rows))
++    with pytest.raises(ValueError, match="Preflight"):
++        study.preflight_summary(tmp_path)
++    assert not probes and not (tmp_path / "checkpoint_probe").exists()
++    assert not (tmp_path / "preflight.json").exists()
++
++
++def test_preflight_rejects_100_duplicate_rows(tmp_path, preflight_evidence):
++    rows, _, _, _, probes = preflight_evidence()
++    (tmp_path / "updates.jsonl").write_text((json.dumps(rows[0]) + "\n") * 100)
++    with pytest.raises(ValueError, match="order or cumulative"):
++        study.preflight_summary(tmp_path)
++    assert not probes
++
++
++@pytest.mark.parametrize("where,field,value", [
++    ("status", "env_steps", 200001), ("checkpoint", "episodes", 1001),
++    ("status", "updates", 101), ("checkpoint", "epoch", 11),
++    ("status_timing", "training_update_seconds", 201),
++    ("status_timing", "segment_wall_time_seconds", 199),
++    ("status_timing", "startup_to_training_seconds", float("nan")),
++])
++def test_preflight_reconciles_status_and_checkpoint(tmp_path, preflight_evidence, where, field, value):
++    _, status, saved, _, probes = preflight_evidence()
++    if where == "checkpoint":
++        saved["reconstruction"]["counts"][field] = value
++    elif where == "status":
++        status["counts"][field] = value
++    else:
++        status[field] = value
++    (tmp_path / "run_status.json").write_text(json.dumps(status))
++    with pytest.raises(ValueError, match="Preflight"):
++        study.preflight_summary(tmp_path)
++    assert not probes and not (tmp_path / "preflight.json").exists()
++
++
++def test_preflight_accounts_for_continuation_starting_counts(tmp_path, preflight_evidence):
++    preflight_evidence(starting_updates=37)
++    report = study.preflight_summary(tmp_path)
++    assert report["updates"] == 100 and report["counts"]["updates"] == 137
++    assert report["counts"]["env_steps"] == 274000
++    assert report["measured_update_steps_per_second"] == 1000
++    assert report["projected_segment_hours_including_logging_and_checkpoints_excluding_startup"] == pytest.approx(60_000 / 3600)
++
++
++def test_preflight_rejects_changed_checkpoint_bytes_before_probe(tmp_path, preflight_evidence):
++    _, _, _, _, probes = preflight_evidence()
++    (tmp_path / "checkpoint.pt").write_bytes(b"changed")
++    with pytest.raises(ValueError, match="recorded bytes"):
++        study.preflight_summary(tmp_path)
++    assert not probes and not (tmp_path / "checkpoint_probe").exists()
+--- a/tests/test_publication_recovery_integrity.py
++++ b/tests/test_publication_recovery_integrity.py
+@@ -0,0 +1,113 @@
++"""Continuation accepts recorded bytes and valid optimizer state, without training."""
++import copy
++import hashlib
++import json
++import shutil
++
++import pytest
++import torch
++
++from test_publication_artifacts import archived_run, resume_args
++from publication_reconstruction import __main__ as launcher
++from publication_reconstruction.artifacts import _validate_optimizer
++
++
++def test_resume_rejects_finite_weight_change_against_recorded_checkpoint(archived_run, tmp_path):
++    archive = archived_run
++    archive.saved['policy_net']['weight'][0] += 1
++    torch.save(archive.saved, archive.checkpoint)
++    destination = tmp_path / 'continued'
++    with pytest.raises(ValueError, match='recorded bytes'):
++        launcher.resolve_resume(resume_args(archive, destination))
++    assert not destination.exists()
++
++
++@pytest.mark.parametrize('problem', ['missing_ledger', 'unrecorded_copy', 'recorded_counts', 'bad_prefix'])
++def test_resume_requires_checkpoint_ledger_binding(archived_run, tmp_path, problem):
++    archive = archived_run
++    ledger = archive.run / 'checkpoint_records.jsonl'
++    if problem == 'missing_ledger':
++        ledger.unlink()
++    elif problem == 'unrecorded_copy':
++        archive.checkpoint = tmp_path / 'unrecorded.pt'
++        saved = copy.deepcopy(archive.saved)
++        saved['policy_net']['weight'][0] += 1
++        torch.save(saved, archive.checkpoint)
++    elif problem == 'recorded_counts':
++        row = json.loads(ledger.read_text())
++        row['counts']['env_steps'] += 1
++        ledger.write_text(json.dumps(row) + '\n')
++    else:
++        ledger.write_text('{"incomplete":\n' + ledger.read_text())
++    with pytest.raises(ValueError, match='recorded|ledger'):
++        launcher.resolve_resume(resume_args(archive, tmp_path / 'continued'))
++    assert not (tmp_path / 'continued').exists()
++
++
++@pytest.mark.parametrize('location', ['moved_archive', 'external_copy'])
++def test_resume_accepts_recorded_bytes_after_copy(archived_run, tmp_path, location):
++    archive = archived_run
++    expected = hashlib.sha256(archive.checkpoint.read_bytes()).hexdigest()
++    if location == 'moved_archive':
++        copied = tmp_path / 'copied run'
++        shutil.copytree(archive.run, copied)
++        archive.run = copied
++        archive.checkpoint = copied / 'checkpoint.pt'
++    else:
++        copied = tmp_path / 'copied checkpoint.pt'
++        shutil.copy2(archive.checkpoint, copied)
++        archive.checkpoint = copied
++    result = launcher.resolve_resume(resume_args(archive, tmp_path / 'continued'))
++    assert result['continuation']['checkpoint_sha256'] == expected
++    assert not (tmp_path / 'continued').exists()
++
++
++def test_resume_ignores_abandoned_ledger_suffix_after_selected_checkpoint(archived_run, tmp_path):
++    ledger = archived_run.run / 'checkpoint_records.jsonl'
++    with ledger.open('a') as stream:
++        stream.write('{"interrupted":')
++    result = launcher.resolve_resume(resume_args(archived_run, tmp_path / 'continued'))
++    assert result['continuation']['counts']['updates'] == 1
++
++
++@pytest.mark.parametrize('problem', ['wrong_step', 'missing_step', 'nonscalar_step',
++    'wrong_shape', 'wrong_dtype', 'negative_variance', 'parameter_inventory'])
++def test_optimizer_validation_rejects_invalid_existing_state(archived_run, problem):
++    saved = copy.deepcopy(archived_run.saved)
++    state = saved['trainer']['state'][0]
++    if problem == 'wrong_step':
++        state['step'].fill_(999)
++    elif problem == 'missing_step':
++        del state['step']
++    elif problem == 'nonscalar_step':
++        state['step'] = torch.ones(1)
++    elif problem == 'wrong_shape':
++        state['exp_avg'] = torch.zeros(2, dtype=torch.float64)
++    elif problem == 'wrong_dtype':
++        state['exp_avg'] = state['exp_avg'].float()
++    elif problem == 'negative_variance':
++        state['exp_avg_sq'].fill_(-1)
++    else:
++        saved['trainer']['param_groups'][0]['params'].append(1)
++    with pytest.raises(ValueError, match='optimizer'):
++        _validate_optimizer(saved, archived_run.protocol, 1)
++
++
++@pytest.mark.parametrize('optimizer_kind', ['Adam', 'RMSprop'])
++def test_optimizer_validation_allows_legitimately_unused_parameters(optimizer_kind):
++    active = torch.nn.Parameter(torch.tensor([.25], dtype=torch.float64))
++    unused = torch.nn.Parameter(torch.tensor([.75], dtype=torch.float32))
++    if optimizer_kind == 'Adam':
++        optimizer = torch.optim.Adam([active, unused], lr=.001, foreach=False, fused=False)
++        specification = dict(name='Adam', lr=.001, betas=[.9, .999], epsilon=1e-8,
++            weight_decay=0, amsgrad=False, foreach=False, fused=False)
++    else:
++        optimizer = torch.optim.RMSprop([active, unused], lr=.0001, alpha=.97, eps=1e-6)
++        specification = dict(name='RMSprop', lr=.0001, alpha=.97, epsilon=1e-6)
++    for _ in range(3):
++        active.grad = torch.ones_like(active)
++        optimizer.step()
++    saved = {'policy_net': {'active': active.detach(), 'unused': unused.detach()},
++             'trainer': optimizer.state_dict()}
++    assert len(saved['trainer']['state']) == 1
++    _validate_optimizer(saved, {'optimizer': specification}, 3)
+--- a/tests/test_publication_validity.py
++++ b/tests/test_publication_validity.py
+@@ -0,0 +1,121 @@
++"""Reject metadata that could silently mislabel a reconstruction comparison.
++
++These are synthetic corruption/misconfiguration cases, not findings of damage
++in the archived research runs. No policy or environment is executed here.
++"""
++from copy import deepcopy
++
++import pytest
++
++from publication_reconstruction import artifacts, study
++from publication_reconstruction.__main__ import parser, resolve
++
++
++def locked_metadata(tmp_path, task="pcp"):
++    index = {"pp": 0, "pcp": 3, "fc": 6}[task]
++    protocol = resolve(parser().parse_args(study.train_arguments(index, tmp_path)))
++    # Recorded scientific defaults matter even when the launcher does not spell
++    # them out as command-line options. This fixture contains no trained weights.
++    arguments = dict(
++        seed=0, nprocesses=4, epoch_size=10, batch_size=500,
++        max_steps=300 if task == "fc" else 80,
++        num_epochs=1400 if task == "fc" else 2000,
++        publication_env_version="corrected-v1", use_binary=False,
++        model_spec="supplement-v1", max_env_steps=protocol["max_env_steps"],
++        lrate=.001, env_name="fire_commander" if task == "fc" else "predator_capture",
++        nfriendly_P=3 if task == "pp" else 2, nfriendly_A=0 if task == "pp" else 1,
++        nagents=3, dim=5, vision=1 if task == "fc" else 2, detach_gap=5,
++        hid_size=128, hetgat=True, hetgat_a2c=True,
++        milestones=protocol["milestones"], rng_scheme="seedsequence-v1",
++        save_every=10, episode_log="stdout", wall_seconds=165600,
++        gamma=1.0, tau=1.0, normalize_rewards=False, entr=0., value_coeff=.01,
++        comm_range_P=-1, comm_range_A=-1, lossy_comm=False,
++        min_comm_loss=0., max_comm_loss=.3, recurrent=False,
++        commnet=False, hetcomm=False, ic3net=False, use_cuda=False,
++        random=False, eval=False, msg_dim=16, action_scale=1., nactions="1",
++        rnn_type="MLP", total_state_action_in_batch=500,
++        no_stay=False, mode="mixed", tensor_obs=False, A_vision=-1,
++    )
++    if task == "fc":
++        arguments.update(nfires=1, reward_type=3,
++                         fire_spread_off=False, max_wind_speed=None)
++    else:
++        arguments.update(nenemies=1, moving_prey=False,
++                         enemy_comm=False, second_reward_scheme=False)
++    return protocol, arguments
++
++
++@pytest.mark.parametrize("task", ["pp", "pcp", "fc"])
++def test_locked_recorded_defaults_remain_accepted(tmp_path, task):
++    protocol, arguments = locked_metadata(tmp_path, task)
++    artifacts._validate_scientific_protocol(protocol, arguments)
++
++
++@pytest.mark.parametrize("task,field,value", [
++    ("pcp", "gamma", .5),
++    ("pcp", "second_reward_scheme", True),
++    ("pcp", "nenemies", 2),
++    ("pcp", "comm_range_P", 0),
++    ("fc", "fire_spread_off", True),
++    ("fc", "max_wind_speed", 7.),
++])
++def test_scientific_defaults_cannot_drift_behind_unchanged_command(
++        tmp_path, task, field, value):
++    protocol, arguments = locked_metadata(tmp_path, task)
++    artifacts._validate_scientific_protocol(protocol, arguments)
++    changed = {**arguments, field: value}
++    with pytest.raises(ValueError, match=field):
++        artifacts._validate_scientific_protocol(protocol, changed)
++
++
++@pytest.mark.parametrize("task,field", [
++    ("pcp", "gamma"),
++    ("pcp", "nenemies"),
++    ("fc", "fire_spread_off"),
++    ("fc", "max_wind_speed"),
++])
++def test_schema_two_cannot_certify_missing_scientific_defaults(tmp_path, task, field):
++    protocol, arguments = locked_metadata(tmp_path, task)
++    del arguments[field]
++    with pytest.raises(ValueError, match=field):
++        artifacts._validate_scientific_protocol(protocol, arguments)
++
++
++def candidate_dependencies(tmp_path, monkeypatch):
++    expected, arguments = locked_metadata(tmp_path)
++    final_run, parent_run = tmp_path / "final", tmp_path / "parent"
++    parent_protocol = deepcopy(expected)
++    counts = dict(updates=15000, env_steps=30_000_001,
++                  episodes=1_000_000, epoch=1500)
++    row = dict(run_dir=str(parent_run), path=str(parent_run / "checkpoint.pt"),
++               checkpoint_sha256="recorded-hash", counts=counts)
++    saved = dict(seed=0, reconstruction=dict(counts=counts, resolved_args=arguments))
++
++    def verify(run):
++        return (parent_protocol if str(run) == str(parent_run) else expected), {}
++
++    monkeypatch.setattr(artifacts, "verify_run", verify)
++    monkeypatch.setattr(study, "checkpoint_candidates", lambda _run: [row])
++    monkeypatch.setattr(artifacts, "digest", lambda _path: "recorded-hash")
++    monkeypatch.setattr(artifacts, "load_checkpoint", lambda *_args: saved)
++    return expected, final_run, parent_protocol, saved
++
++
++def test_selected_parent_protocol_must_match_expected_training_seed(tmp_path, monkeypatch):
++    expected, run, parent_protocol, _ = candidate_dependencies(tmp_path, monkeypatch)
++    parent_protocol["seed"] = 2
++    with pytest.raises(ValueError, match="locked seed"):
++        study.select_checkpoint(run, expected, 30_000_000)
++
++
++def test_selected_checkpoint_seed_is_not_relabelled_from_expected_metadata(tmp_path, monkeypatch):
++    expected, run, _, saved = candidate_dependencies(tmp_path, monkeypatch)
++    saved["seed"] = 2
++    with pytest.raises(ValueError, match="training seed"):
++        study.select_checkpoint(run, expected, 30_000_000)
++
++
++def test_valid_parent_candidate_retains_its_real_seed(tmp_path, monkeypatch):
++    expected, run, _, saved = candidate_dependencies(tmp_path, monkeypatch)
++    selected = study.select_checkpoint(run, expected, 30_000_000)
++    assert selected["training_seed"] == saved["seed"] == expected["seed"]

@@ -1,0 +1,15 @@
+{
+  "model_spec": "supplement-v1",
+  "resume_checkpoint": null,
+  "resume_checkpoint_sha256": null,
+  "rng_scheme": "seedsequence-v1",
+  "schema_version": 1,
+  "source_manifest_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+  "starting_active_time_seconds": 0.0,
+  "starting_counts": {
+    "env_steps": 0,
+    "episodes": 0,
+    "epoch": 0,
+    "updates": 0
+  }
+}

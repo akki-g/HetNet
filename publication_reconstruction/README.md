@@ -1,5 +1,89 @@
 # HetNet reconstruction: training and frozen evaluation
 
+## Paper-v1 reconciliation and PyTorch backend (4 October 2026)
+
+The opt-in `--reconstruction-spec paper-v1` reconciles explicit paper/code
+differences before comparing DGL with `--message-backend torch-v1`. Read the
+[evidence and mathematical contract](FIDELITY.md) before selecting it. It changes
+class preprocessing, Binary head channels, the learner and FC semantics, so it
+requires fresh runs. Existing defaults/archives remain the legacy reconstruction
+described below. Binary uses the selected 64 bits **per head**, 256 total per round;
+this convention is not certified as the publication's 64-bit configuration.
+
+```bash
+# Dry runs create no training outputs and submit no jobs.
+.venv/bin/python -m publication_reconstruction train \
+  --reconstruction-spec paper-v1 --task pcp --variant binary \
+  --message-backend torch-v1 --seed 0 --dry-run
+.venv/bin/python -m publication_reconstruction benchmark \
+  --output runs/paper_backend_benchmark --dry-run
+.venv/bin/python -m publication_reconstruction paper-study-plan \
+  --run-root runs/paper_study --output runs/paper_study_preparation --dry-run
+```
+
+The bounded benchmark uses 24 sequential 20-update runs in one allocation, four
+collectors, floor 500/production horizons and three alternating pairs per workload.
+`--diagnostics` adds separate paired three-update phase-timing runs. It records
+hardware/affinity/source identities, startup, whole-process and update throughput,
+CPU intervals and memory units. A 20-update run cannot pass the 100-update preflight
+validator. Prior Mac speed estimates concern a different baseline.
+
+Prepared Stokes commands, to run **after** local correctness/source checks:
+
+```bash
+mkdir -p logs_1 logs_sr
+sbatch slurm/publication_backend_benchmark.sbatch
+# After reviewing same-spec paired correctness/performance and resources:
+PUBLICATION_MESSAGE_BACKEND=torch-v1 sbatch slurm/publication_paper_preflight.sbatch
+# After all four official 100-update preflights pass:
+.venv/bin/python -m publication_reconstruction paper-study-plan \
+  --message-backend torch-v1 --run-root runs/paper_study \
+  --output runs/paper_study_preparation
+PUBLICATION_MESSAGE_BACKEND=torch-v1 PUBLICATION_RUN_ROOT=runs/paper_study/hetnet \
+  sbatch slurm/publication_paper_train.sbatch
+SOFTROLE_PAPER_RUN_ROOT=runs/paper_study/softrole_fc \
+  sbatch slurm/softrole_paper_fc.sbatch
+```
+
+These files do not submit other jobs. The benchmark's 24-hour ceiling is a bound,
+not a runtime estimate. Select one backend for the fresh HetNet wave; retain DGL
+if Torch is slower, inconclusive or fails a gate. Cluster execution is not implied
+by the presence of a script. `AGENTS.md` records the checks actually performed.
+
+`paper-study-plan` prepares 12 HetNet protocols and 6 fresh SoftRole FC protocols
+(shared/banked, seeds 0–2), plus their common 500-scenario nominal FC panel. Both use
+the same archived paper-FC simulator. Old SoftRole FC results must stay separate.
+The existing `resume` command inherits backend and source; there is no checkpoint
+migration from old models to paper-v1. Profiling is off by default.
+
+For the later matched FC evaluation, select each model/seed's first saved
+complete-update checkpoint at or above 28M steps, in update order along its
+retained continuation lineage. Use checkpoint counters, not epoch filenames:
+HetNet stores `reconstruction.counts.env_steps`; SoftRole stores `total_steps`.
+Before inspecting evaluation outcomes, record the selected checkpoint hashes and
+verify task, seed, paper environment, model/backend and shared simulator identity
+against the preparation. The existing `prepare-evaluation` command is the legacy
+study route; automatic paper-specific selection and manifests are not implemented.
+
+These manual templates use the prepared common panel for all three seeds and
+both SoftRole models. `HETNET_RUN` is the archive owning the selected checkpoint,
+including a retained parent when applicable; `MODEL` is `shared` or `banked`.
+Use fresh result paths. The scenario file fixes all 500 cases, so no additional
+scenario seed, episode count or composition override is needed.
+
+```bash
+.venv/bin/python -m publication_reconstruction evaluate \
+  --run-dir "$HETNET_RUN" --checkpoint "$HETNET_CHECKPOINT" \
+  --scenarios "$PREPARATION/fc_scenarios.json" \
+  --output "$RESULTS/hetnet_real_seed${SEED}.json"
+.venv/bin/python -m softrole evaluate \
+  --checkpoint "$SOFTROLE_CHECKPOINT" \
+  --scenarios "$PREPARATION/fc_scenarios.json" \
+  --output "$RESULTS/softrole_${MODEL}_seed${SEED}.json"
+```
+
+## Legacy reconstruction
+
 This separate source tree reconstructs the **public February 2022 environment
 family**, with explicit public-code and supplement-aligned model specifications. It is
 **not a verified publication training checkout**. The actual source and commands
@@ -7,10 +91,17 @@ behind the AAMAS results remain unavailable. `--model-spec public-code-v1` is th
 compatibility default (two layers, RMSprop). `--model-spec supplement-v1` selects
 three layers and the active trainer's Adam optimizer. Both retain the public learner.
 
-The existing `main.py`, `envs/`, `softrole/`, launchers, checkpoints and logs remain
-unchanged. The new launcher uses `runs/publication_reconstruction/` by default,
+Legacy entrypoints and their default numerical behavior are preserved. SoftRole's
+new environment path is opt-in; existing archives and logs are unchanged.
+The reconstruction launcher uses `runs/publication_reconstruction/` by default,
 refuses existing output directories, and executes a source archive inside each
 new run. Repository edits during training cannot change those archived files.
+
+For proposed training speed work, see the [evidence-backed performance plan](PERFORMANCE_PLAN.md).
+It ties the three opt-in graph/model changes to the original study reconstruction
+and the frozen SoftRole comparison, with code references, hashed evidence, exact
+equivalence checks and matched Stokes benchmarks. The flags and optimizations in
+that plan are proposed; they have not yet demonstrated an end-to-end speedup.
 
 ## Two environment versions
 
@@ -162,6 +253,37 @@ Per-process peaks are not simultaneous job memory; compare Slurm accounting too.
 These are fresh timing policies, never research seeds or usable performance results.
 Requests of 16GB/2h for preflight and 16GB/48h for training are provisional.
 
+To run the same four preflights concurrently on the Mac, from the repository root:
+
+```bash
+caffeinate -i .venv/bin/python scripts/publication_preflight_local.py
+```
+
+This uses a fresh timestamped `runs/hetnet_preflight_mac_*` directory and four
+collectors per job (16 total). `caffeinate -i` prevents idle sleep while the command
+runs. Add `--dry-run` to inspect commands without starting jobs, or
+`--concurrency 1` to run the same workloads sequentially. `--run-root PATH` selects
+a fresh output directory; existing directories are rejected. Ctrl-C stops the
+local jobs and their collectors.
+
+The terminal prints every episode's steps, success, mean-agent return and measured
+rollout seconds, labelled by workload and collector. Episode lines are buffered
+until their update completes. Each update also prints its success rate, mean-agent
+return, mean episode length and mean rollout seconds per episode. Separate
+`logs/WORKLOAD.log`, `.episodes.jsonl` and `.progress.jsonl` files retain raw output,
+individual episode records and these summaries. `local_launch.json` records the
+commands; `local_summary.json` records status, elapsed time and final throughput.
+Each workload also retains its usual `updates.jsonl` (losses and full update time),
+`metrics.jsonl` (epoch metrics), checkpoints and `preflight.json` validation.
+
+`rollout_wall_time_seconds` measures each collector's call to `get_episode`,
+including reset, policy inference, environment steps and scheduling delays. It
+excludes batch backpropagation, optimizer work and collector communication.
+Parallel episodes overlap, so adding their durations does not give job wall time;
+the existing update and run timers measure that separately. Timing reads do not
+change the training recipe or random streams. Earlier archived Stokes runs lack
+this new episode field and retain their original source identity.
+
 **Compute-node readiness remains a gate:** all four preflights must finish, produce
 usable checkpoints and show suitable memory/CPU allocation and throughput. Inspect
 their JSON and Slurm accounting before submitting the long array. No engineering
@@ -309,9 +431,10 @@ that adapter/training integration remains outside this implementation.
 | Budget and paired reporting | `study.py`, `softrole/report.py`; accounting/selection/grouping tests | Complete-episode overshoot derivation above; [RL evaluation](https://proceedings.neurips.cc/paper/2021/hash/f514cec81cb148559cf475e7426eed5e-Abstract.html) motivates independent-seed uncertainty. |
 | Threads, array and manual continuation | `slurm/publication_*.sbatch`; shell/mapping/quoting tests | [OpenBLAS](https://www.openmathlib.org/OpenBLAS/docs/faq/), [Slurm sbatch](https://slurm.schedmd.com/sbatch.html), [arrays](https://slurm.schedmd.com/job_array.html) |
 
-The scientific label is **supplement-aligned HetNet architecture/optimizer with
+The legacy scientific label is **supplement-aligned HetNet architecture/optimizer with
 documented public-code learner and corrected environment**. The state output
-width8 and per-class critics remain public-code choices. The learner does not
+width8 remains a public-code choice; per-class critics are explicitly supported
+by the paper and supplement. The learner does not
 adopt SoftRole's team-credit, null attention, banks or gradient aggregation.
 Failure training, mixed rosters during training, bank search, GPU migration and
 corrected-FC integration into SoftRole remain excluded.

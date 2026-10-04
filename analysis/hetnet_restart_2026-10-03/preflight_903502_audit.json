@@ -1,0 +1,122 @@
+{
+  "array_job_id": 903502,
+  "operational_checks_passed": true,
+  "rows": [
+    {
+      "workload": "fc_real",
+      "counts": {
+        "env_steps": 249378,
+        "episodes": 1137,
+        "epoch": 10,
+        "updates": 100
+      },
+      "steps_per_second": 101.60735356534033,
+      "preflight_minutes_including_startup": 43.15330723611017,
+      "projected_budget_hours": 76.66633999857869,
+      "projected_46h_segments": 2,
+      "sum_individual_peak_rss_gib_not_simultaneous_peak": 4.107364654541016,
+      "checkpoint_sha256": "4ca4cbcd65e6cc6c155f6affef6016e6be005b958a4967e885853f97e0d44e87",
+      "checkpoint_model_optimizer_and_source_checks_pass": true,
+      "probe_immutable": true,
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "evidence": {
+        "stokes_runs/hetnet_preflight_903502/fc_real/seed991/preflight.json": "c48889b9dae8c34f0e9d82bcbf29805e51a39c23a8866d527ce7e0131c90e6cb",
+        "stokes_runs/hetnet_preflight_903502/fc_real/seed991/run_status.json": "fa04ef6f16c3f2ee037c0f441ca917a55cb63949d77474af5abec936eb15fee7",
+        "stokes_runs/hetnet_preflight_903502/fc_real/seed991/protocol.json": "3e52fd5826b09fcddc9f00fe38f634ab18853dbf60c5c3e04884c18023ae9746",
+        "stokes_runs/hetnet_preflight_903502/fc_real/seed991/source_manifest.json": "47eaa7b980b7ed3f4afc2189e6786e7367d12b1ad06cbecdb706584ce85c182a",
+        "stokes_runs/hetnet_preflight_903502/fc_real/seed991/checkpoint_probe/report.json": "e907f8cf8ced9f3eb40f2101f952a24282b313276ece50d49b0340ed534dafc4",
+        "stokes_runs/hetnet_preflight_903502/fc_real/seed991/updates.jsonl": "49b3263f2c42fca35ab5e36475d8e006a81d4d56e7e36c8473a8843cae55be54"
+      }
+    },
+    {
+      "workload": "pcp_binary",
+      "counts": {
+        "env_steps": 215575,
+        "episodes": 3016,
+        "epoch": 10,
+        "updates": 100
+      },
+      "steps_per_second": 38.81464269251498,
+      "preflight_minutes_including_startup": 95.42351566537594,
+      "projected_budget_hours": 287.2475051097796,
+      "projected_46h_segments": 7,
+      "sum_individual_peak_rss_gib_not_simultaneous_peak": 4.022335052490234,
+      "checkpoint_sha256": "0621b476b5f5ee3623c6a76d9b0cddb7aea41601a3a82d24ceacab8206f2e5ec",
+      "checkpoint_model_optimizer_and_source_checks_pass": true,
+      "probe_immutable": true,
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "evidence": {
+        "stokes_runs/hetnet_preflight_903502/pcp_binary/seed991/preflight.json": "9b8ba2a1b9b2f7d7ab627259d7b4adf024c058e3850d0b86007ce079c08dfe92",
+        "stokes_runs/hetnet_preflight_903502/pcp_binary/seed991/run_status.json": "864439b86364cdae685922745583967b5000e7377a0b456a7ba4057734e33d62",
+        "stokes_runs/hetnet_preflight_903502/pcp_binary/seed991/protocol.json": "3938e8f0d2031eb4837fc817989557ab7e4a55fc6e9332893921082e3b88976f",
+        "stokes_runs/hetnet_preflight_903502/pcp_binary/seed991/source_manifest.json": "47eaa7b980b7ed3f4afc2189e6786e7367d12b1ad06cbecdb706584ce85c182a",
+        "stokes_runs/hetnet_preflight_903502/pcp_binary/seed991/checkpoint_probe/report.json": "c4033c2f7daad447c4500d3481c938d6fef9901b2dd5adc0dae5d7eb54394a44",
+        "stokes_runs/hetnet_preflight_903502/pcp_binary/seed991/updates.jsonl": "94786554f8c8245d40d430d70e431963a7bf47b8f60a22756fabe559ee1aa14e"
+      }
+    },
+    {
+      "workload": "pcp_real",
+      "counts": {
+        "env_steps": 214872,
+        "episodes": 3124,
+        "epoch": 10,
+        "updates": 100
+      },
+      "steps_per_second": 97.71605898088615,
+      "preflight_minutes_including_startup": 38.975392532348636,
+      "projected_budget_hours": 114.14947448419257,
+      "projected_46h_segments": 3,
+      "sum_individual_peak_rss_gib_not_simultaneous_peak": 3.750286102294922,
+      "checkpoint_sha256": "3d82b159e85390ed9ed36379872ef99e752bf555f1689a9ea33e9ac3f74710e1",
+      "checkpoint_model_optimizer_and_source_checks_pass": true,
+      "probe_immutable": true,
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "evidence": {
+        "stokes_runs/hetnet_preflight_903502/pcp_real/seed991/preflight.json": "4f5b70b48b34f2e052589bcb1edbae25380f527a65ae70656078f9027bd2bbbb",
+        "stokes_runs/hetnet_preflight_903502/pcp_real/seed991/run_status.json": "521b857c4f940cb78d6128ae525debe9fbc6d785c1f34d3eec651fc6c64975e1",
+        "stokes_runs/hetnet_preflight_903502/pcp_real/seed991/protocol.json": "27d096582d010018818818e3a1c276f5f80fc3d3f9e8666b02756a3c1d853dc0",
+        "stokes_runs/hetnet_preflight_903502/pcp_real/seed991/source_manifest.json": "47eaa7b980b7ed3f4afc2189e6786e7367d12b1ad06cbecdb706584ce85c182a",
+        "stokes_runs/hetnet_preflight_903502/pcp_real/seed991/checkpoint_probe/report.json": "76cf06a086635bea126f6cd754e7e90ccd91c2b72f27b9591362ebce3b62de2a",
+        "stokes_runs/hetnet_preflight_903502/pcp_real/seed991/updates.jsonl": "ebf00b3748f435ec7484e89ba2f858a28265c6944162d994e90dd5c89772f2d3"
+      }
+    },
+    {
+      "workload": "pp_real",
+      "counts": {
+        "env_steps": 213583,
+        "episodes": 3560,
+        "epoch": 10,
+        "updates": 100
+      },
+      "steps_per_second": 168.63214217103405,
+      "preflight_minutes_including_startup": 23.409660503206155,
+      "projected_budget_hours": 66.25146923437757,
+      "projected_46h_segments": 2,
+      "sum_individual_peak_rss_gib_not_simultaneous_peak": 2.9322547912597656,
+      "checkpoint_sha256": "aa92741c1fa39e92a78c9b5506e5169aee159986eadc1f297ffbae5af8000278",
+      "checkpoint_model_optimizer_and_source_checks_pass": true,
+      "probe_immutable": true,
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "evidence": {
+        "stokes_runs/hetnet_preflight_903502/pp_real/seed991/preflight.json": "50c07489311de1d45435713bd0b459fbb371eaa88d08b4b9f9a158a705b4059c",
+        "stokes_runs/hetnet_preflight_903502/pp_real/seed991/run_status.json": "7506ac786e3dd9a1baf36979e3c3283d76f36932cc0994f5a0770e09841b3238",
+        "stokes_runs/hetnet_preflight_903502/pp_real/seed991/protocol.json": "dcf712c325f242dd6fe9bc0bfd12ab2d9cfc30a6e22a696fa73514d7c314c38a",
+        "stokes_runs/hetnet_preflight_903502/pp_real/seed991/source_manifest.json": "47eaa7b980b7ed3f4afc2189e6786e7367d12b1ad06cbecdb706584ce85c182a",
+        "stokes_runs/hetnet_preflight_903502/pp_real/seed991/checkpoint_probe/report.json": "b2fdbd3308958920c9f02a3419283777f669ec45ffeff4cc5678ae85bc587bd3",
+        "stokes_runs/hetnet_preflight_903502/pp_real/seed991/updates.jsonl": "fcf8c9feddd93808be3e6e769bf3297cd2a7bea4c57e3f14450d5cc33b8de7fd"
+      }
+    }
+  ],
+  "ideal_full_12_run_makespan_hours_at_concurrency_3_using_same_throughput": 544.3147888269284,
+  "recommendation": "Prioritize PCP Real indices3-5 tonight; binary throughput needs attention. Keep scientific budgets. All four software/resource preflights pass.",
+  "limitations": [
+    "Early-training throughput extrapolation; later speed and convergence may change.",
+    "Scheduler accounting/whole-job peak memory not in supplied bundle.",
+    "Preflight seed991 is not a research result or initial research checkpoint.",
+    "Expected continuation segments assume constant measured throughput and exclude queue waits."
+  ]
+}

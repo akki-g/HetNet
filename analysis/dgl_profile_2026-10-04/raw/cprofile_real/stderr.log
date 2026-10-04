@@ -1,0 +1,32 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/torch/__init__.py:696: UserWarning: torch.set_default_tensor_type() is deprecated as of PyTorch 2.1, please use torch.set_default_dtype() and torch.set_default_device() as alternatives. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/torch/csrc/tensor/python_tensor.cpp:453.)
+  _C._set_default_tensor_type(t)
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment PredatorPrey-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment PredatorCapture-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment FireCommander-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment TrafficJunction-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+       37.68 real        36.77 user         0.44 sys
+           731611136  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               79032  page reclaims
+                 524  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                 212  messages sent
+                 106  messages received
+                   0  signals received
+                 947  voluntary context switches
+                4695  involuntary context switches
+        560870392345  instructions retired
+        167530006336  cycles elapsed
+           633308360  peak memory footprint

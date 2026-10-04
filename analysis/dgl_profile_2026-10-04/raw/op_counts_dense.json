@@ -1,0 +1,58 @@
+{
+ "label": "dense message-passing microbenchmark (3 layers x 5 relations)",
+ "environment_steps": 80,
+ "forward": {
+  "top_level_ops_per_step": 1429.3625,
+  "leaf_ops_per_step": 1861.325,
+  "leaf_largest_input_numel_median": 8,
+  "leaf_largest_input_numel_p90": 128,
+  "leaf_largest_input_numel_p99": 128,
+  "leaf_largest_input_numel_max": 128,
+  "leaf_ops_with_largest_input_le_1024_fraction": 1.0,
+  "compute_leaf_ops_per_step": 686.2125,
+  "top_compute_ops_per_step": {
+   "aten::copy_": 122.9875,
+   "aten::fill_": 76.975,
+   "aten::add_": 58.85,
+   "aten::sum": 39.0875,
+   "aten::_to_copy": 35.25,
+   "aten::to": 35.2125,
+   "aten::add": 30.7125,
+   "aten::resolve_conj": 29.225,
+   "aten::zero_": 26.7875,
+   "aten::masked_fill_": 24.7375,
+   "aten::nan_to_num": 23.6875,
+   "aten::_local_scalar_dense": 18.0,
+   "aten::item": 17.95,
+   "aten::clone": 17.3,
+   "aten::any": 15.575
+  }
+ },
+ "backward": {
+  "top_level_ops_per_step": 753.7625,
+  "leaf_ops_per_step": 1033.725,
+  "leaf_largest_input_numel_median": 8,
+  "leaf_largest_input_numel_p90": 128,
+  "leaf_largest_input_numel_p99": 128,
+  "leaf_largest_input_numel_max": 128,
+  "leaf_ops_with_largest_input_le_1024_fraction": 1.0,
+  "compute_leaf_ops_per_step": 598.825,
+  "top_compute_ops_per_step": {
+   "aten::copy_": 86.0125,
+   "aten::_to_copy": 67.4375,
+   "aten::to": 67.2875,
+   "aten::mul": 56.2875,
+   "aten::sum": 45.1375,
+   "aten::zeros": 43.6625,
+   "aten::fill_": 37.0375,
+   "aten::zero_": 33.2125,
+   "aten::abs": 27.25,
+   "aten::resolve_conj": 24.775,
+   "aten::clone": 19.0,
+   "aten::bmm": 14.85,
+   "aten::eq": 14.0125,
+   "aten::ne": 13.8625,
+   "aten::add_": 11.15
+  }
+ }
+}

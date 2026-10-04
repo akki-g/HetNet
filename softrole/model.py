@@ -129,8 +129,11 @@ class SoftRoleNet(nn.Module):
     def __init__(self, base: int = 25, n_squares: int = 25, mode: str = "banked",
                  experts: int = 4, pre_dim: int = 128, hidden_dim: int = 64,
                  heads: int = 4, head_dim: int = 16, msg_dim: int = 16,
-                 feedback: bool = True):
+                 feedback: bool = True, allow_stay: bool = True):
         super().__init__()
+        if type(allow_stay) is not bool:
+            raise ValueError("allow_stay must be boolean")
+        self.allow_stay = allow_stay
         if mode not in {"banked", "shared", "capability", "constant"}:
             raise ValueError(f"Unknown gate mode: {mode}")
         dimensions = (base, n_squares, experts, pre_dim, hidden_dim, heads, head_dim, msg_dim)
@@ -224,6 +227,7 @@ class SoftRoleNet(nn.Module):
             alpha_null.append(null)
         logits = self.output(features)
         feasible = torch.ones_like(logits, dtype=torch.bool)
+        feasible[:, 4] = self.allow_stay
         feasible[:, 5] = kappa[:, 1] > 0
         logits = logits.masked_fill(~feasible, -torch.inf)
 

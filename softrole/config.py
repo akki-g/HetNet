@@ -12,6 +12,7 @@ EXTRAPOLATION_TEST = ((4, 1), (4, 2))
 @dataclass
 class Config:
     task: str = "pcp"
+    env_version: str = "corrected-observation-v1"
     num_p: int = 2
     num_a: int = 1
     dim: int = 5
@@ -58,10 +59,14 @@ class Config:
         return self.compositions or ((self.num_p, self.num_a),)
 
     def model_kwargs(self):
-        return dict(base=self.dim ** 2, n_squares=(2 * self.vision + 1) ** 2,
+        settings = dict(base=self.dim ** 2, n_squares=(2 * self.vision + 1) ** 2,
                     mode=self.model, experts=self.experts, pre_dim=self.pre_dim,
                     hidden_dim=self.hidden_dim, heads=self.heads,
                     head_dim=self.head_dim, msg_dim=self.msg_dim, feedback=self.feedback)
+        # Missing fields in old checkpoint model_config retain the old layout.
+        if self.task == "fc" and self.env_version == "paper-v1":
+            settings["allow_stay"] = False
+        return settings
 
     def to_dict(self):
         return asdict(self)
@@ -69,6 +74,10 @@ class Config:
     def validate(self):
         if self.task not in ("pp", "pcp", "fc"):
             raise ValueError("task must be pp, pcp, or fc")
+        if self.env_version not in ("corrected-observation-v1", "paper-v1"):
+            raise ValueError("unknown SoftRole environment version")
+        if self.task == "fc" and self.env_version == "paper-v1" and self.reward_type != 3:
+            raise ValueError("paper-v1 FC uses the fixed paper reward (reward_type=3)")
         if self.model not in ("banked", "shared", "capability", "constant"):
             raise ValueError("unknown deterministic model variant")
         for name in ("dim", "max_steps", "nfires", "experts", "pre_dim", "hidden_dim",

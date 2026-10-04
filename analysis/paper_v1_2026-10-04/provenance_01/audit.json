@@ -1,0 +1,353 @@
+{
+  "base_commit": "e0e22136e7f80054552f08b95588d8a64e92802c",
+  "current_origins_sha256": "47f155c38d324311af93617cc2e9b7faaf2a6d14e9c104ab474d72f75df691c2",
+  "files": {
+    "LICENSE": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "modified": false,
+      "original_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "path": "LICENSE",
+      "source_repository": "local reproduction"
+    },
+    "WildFire_Simulate_Original.py": {
+      "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+      "current_sha256": "77bcbcd0b5ade90f53a3adee420b29f9883f1a51102454edde4c209929208380",
+      "modified": true,
+      "original_sha256": "825001e5a5d274e6396bc902576760a1fda838268ad6e2d4be1a6c02bf520b04",
+      "path": "WildFire_Simulate_Original.py",
+      "source_repository": "CORE-Robotics-Lab/HetNet"
+    },
+    "action_utils.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd",
+      "modified": false,
+      "original_sha256": "bd448073b04ea7964a58ea695f79fb8e95c994807e234d571aa719b95255e3bd",
+      "path": "action_utils.py",
+      "source_repository": "local reproduction"
+    },
+    "comm.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf",
+      "modified": false,
+      "original_sha256": "5bedea0aeca2b29589bb3162d0d5380db5e8cbd4783214d5b36406dc699069bf",
+      "path": "comm.py",
+      "source_repository": "local reproduction"
+    },
+    "data.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b",
+      "modified": false,
+      "original_sha256": "6a8039214ae1653f612f02d253605959fe52902b93a2d4a34db5c9aae41e438b",
+      "path": "data.py",
+      "source_repository": "local reproduction"
+    },
+    "env_wrappers.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0",
+      "modified": false,
+      "original_sha256": "a9723f644c7b400e96a4188f6ea21f9eeb7634a05e0d0f1d213e87a6e97e6ec0",
+      "path": "env_wrappers.py",
+      "source_repository": "local reproduction"
+    },
+    "envs/.gitignore": {
+      "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+      "current_sha256": "416e0945bd66e3167c148267c35e1edf8dbd47bb7182cdda3c7575db7f5ede97",
+      "modified": false,
+      "original_sha256": "416e0945bd66e3167c148267c35e1edf8dbd47bb7182cdda3c7575db7f5ede97",
+      "path": "envs/.gitignore",
+      "source_repository": "CORE-Robotics-Lab/HetNet"
+    },
+    "envs/LICENSE.md": {
+      "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+      "current_sha256": "8a166c9b1c9d6415bf89277474ff1033525ced55dd7bed45c3d95db12462afc9",
+      "modified": false,
+      "original_sha256": "8a166c9b1c9d6415bf89277474ff1033525ced55dd7bed45c3d95db12462afc9",
+      "path": "envs/LICENSE.md",
+      "source_repository": "CORE-Robotics-Lab/HetNet"
+    },
+    "envs/README.md": {
+      "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+      "current_sha256": "c825c7fb50aaac2dd650a48d3fdccc4676f99037d3805db7ecc10f33c232d0db",
+      "modified": false,
+      "original_sha256": "c825c7fb50aaac2dd650a48d3fdccc4676f99037d3805db7ecc10f33c232d0db",
+      "path": "envs/README.md",
+      "source_repository": "CORE-Robotics-Lab/HetNet"
+    },
+    "envs/examples/random_agent.py": {
+      "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+      "current_sha256": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221",
+      "modified": false,
+      "original_sha256": "7349a07e8ccee87f4315cf820e4a2fe8bd38345e3194272b370a95e21b62e221",
+      "path": "envs/examples/random_agent.py",
+      "source_repository": "CORE-Robotics-Lab/HetNet"
+    },
+    "envs/ic3net_envs/__init__.py": {
+      "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+      "current_sha256": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3",
+      "modified": false,
+      "original_sha256": "e05466c45ad0b21914e49ee21117fe340ef0a9a3e9d837ecacfb8807ae1271e3",
+      "path": "envs/ic3net_envs/__init__.py",
+      "source_repository": "CORE-Robotics-Lab/HetNet"
+    },
+    "envs/ic3net_envs/fire_commander_env.py": {
+      "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+      "current_sha256": "7f785a34e871837849d192046529f1c87377bdf7ad4c86b428df470acde496c1",
+      "modified": true,
+      "original_sha256": "12cbf94ac2ce1157aeea457ef3d5ad168181cb5dfc1c8963ed508ca8f210c439",
+      "path": "envs/ic3net_envs/fire_commander_env.py",
+      "source_repository": "CORE-Robotics-Lab/HetNet"
+    },
+    "envs/ic3net_envs/predator_capture_env.py": {
+      "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+      "current_sha256": "626705141e976c33e7d60deadc116e4fdbb2519dadf0a865b8002d00a76cdff3",
+      "modified": true,
+      "original_sha256": "5cbacd28f4f851a44bdf0f71b9e76b85a87ef1bb8d5e58418a0ffbcffbbaf853",
+      "path": "envs/ic3net_envs/predator_capture_env.py",
+      "source_repository": "CORE-Robotics-Lab/HetNet"
+    },
+    "envs/ic3net_envs/predator_prey_env.py": {
+      "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+      "current_sha256": "5d61a1d996f4fec8620fa67521577bea468b14e0899a1009108ceb311ce04dd1",
+      "modified": true,
+      "original_sha256": "cfb96417c3c2200471ae02a159809a0092f36df6e97b66e1cb4cf74898de516e",
+      "path": "envs/ic3net_envs/predator_prey_env.py",
+      "source_repository": "CORE-Robotics-Lab/HetNet"
+    },
+    "envs/ic3net_envs/traffic_helper.py": {
+      "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+      "current_sha256": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d",
+      "modified": false,
+      "original_sha256": "5f353887432fde8cab7a4229efc6bdfa296aabfc8dc0f4cb06338068883bb28d",
+      "path": "envs/ic3net_envs/traffic_helper.py",
+      "source_repository": "CORE-Robotics-Lab/HetNet"
+    },
+    "envs/ic3net_envs/traffic_junction_env.py": {
+      "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+      "current_sha256": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17",
+      "modified": false,
+      "original_sha256": "09f35f150549864983166c132d5329ef6834a641ac6a300fe99cb5eaa3eb5d17",
+      "path": "envs/ic3net_envs/traffic_junction_env.py",
+      "source_repository": "CORE-Robotics-Lab/HetNet"
+    },
+    "envs/setup.py": {
+      "commit": "d57da0717d5564027df7e8ba75614feca8006960",
+      "current_sha256": "5a251fe600b795e42c6c418dd7394a1e76aaaf96aeebd7b02d1cc81f1b01e300",
+      "modified": false,
+      "original_sha256": "5a251fe600b795e42c6c418dd7394a1e76aaaf96aeebd7b02d1cc81f1b01e300",
+      "path": "envs/setup.py",
+      "source_repository": "CORE-Robotics-Lab/HetNet"
+    },
+    "eval_trainer.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939",
+      "modified": false,
+      "original_sha256": "249841743b9f227c6252243b1787ed34f026bdcc21d995409e3e4120eea37939",
+      "path": "eval_trainer.py",
+      "source_repository": "local reproduction"
+    },
+    "hetgat/graph/fastbinary.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc",
+      "modified": false,
+      "original_sha256": "192193ffb49059ec392d8ac826c0fa476d6e2827a0926492adb8ffbb758b15cc",
+      "path": "hetgat/graph/fastbinary.py",
+      "source_repository": "local reproduction"
+    },
+    "hetgat/graph/fastreal.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862",
+      "modified": false,
+      "original_sha256": "716ec8f651290ab3002a426ac7528be397bd5d9c87fa4bd5015fd51a8787c862",
+      "path": "hetgat/graph/fastreal.py",
+      "source_repository": "local reproduction"
+    },
+    "hetgat/graph/hetgat.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232",
+      "modified": false,
+      "original_sha256": "eaf3e1a1b72825c74c9258ca91d452f9252ffed846806d7169d2485705caa232",
+      "path": "hetgat/graph/hetgat.py",
+      "source_repository": "local reproduction"
+    },
+    "hetgat/graph/hetgata2c.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948",
+      "modified": false,
+      "original_sha256": "d1fe3b1f62198f69fa3c1daf65ce8feff548c7e484b93b53cde57a7a1c17d948",
+      "path": "hetgat/graph/hetgata2c.py",
+      "source_repository": "local reproduction"
+    },
+    "hetgat/graph/hetgatreal.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d",
+      "modified": false,
+      "original_sha256": "91095754c6b797cc1192cc53caf0942f17a6fd1554ef2b9d02312e53d7c3cc7d",
+      "path": "hetgat/graph/hetgatreal.py",
+      "source_repository": "local reproduction"
+    },
+    "hetgat/graph/paper.py": {
+      "commit": null,
+      "current_sha256": "9d7442e1d79e693951c903f8256b144efdb124572f2ccfcee762ab63e487cae0",
+      "modified": true,
+      "original_sha256": null,
+      "path": null,
+      "source_repository": "local addition"
+    },
+    "hetgat/graph/torch_backend.py": {
+      "commit": null,
+      "current_sha256": "d5d7f85ac28e20d0d91391f45cac671b4c7b555dbed938dd49ad149a004e1d1d",
+      "modified": true,
+      "original_sha256": null,
+      "path": null,
+      "source_repository": "local addition"
+    },
+    "hetgat/paper.py": {
+      "commit": null,
+      "current_sha256": "26d8e0710112b92a50aebde1ae293c4e24583891a732c4e64ba7c9df2949ed5c",
+      "modified": true,
+      "original_sha256": null,
+      "path": null,
+      "source_repository": "local addition"
+    },
+    "hetgat/policy.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "2fd959b31025a4005f6eeea2bbcfe0f957ee7de7ee16c8d3cc147f89b40ee6ea",
+      "modified": true,
+      "original_sha256": "3b4a16a2bb2673139e6d67e6b0617dfde95e4d8537e2059a5ba87950bb6311e6",
+      "path": "hetgat/policy.py",
+      "source_repository": "local reproduction"
+    },
+    "hetgat/policy_entropy.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895",
+      "modified": false,
+      "original_sha256": "8ea466e0b93dcdbfd0fddc14727cbc11b8aed349e5df16ba3405f2aeb913b895",
+      "path": "hetgat/policy_entropy.py",
+      "source_repository": "local reproduction"
+    },
+    "hetgat/uavnet.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "82c72c62630a3f32d840f229cb0794628066184daba614139068390c0ff5088f",
+      "modified": true,
+      "original_sha256": "343e1df3337723d1323d687e4c94d48b31011ab8890fbd8f196d948d02ff5f55",
+      "path": "hetgat/uavnet.py",
+      "source_repository": "local reproduction"
+    },
+    "hetgat/utils.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0",
+      "modified": false,
+      "original_sha256": "7c1a63dae3734f3a1b0b9fd678a5d71a9e24816a360581f2e4eac551d4100ba0",
+      "path": "hetgat/utils.py",
+      "source_repository": "local reproduction"
+    },
+    "hetnet_ext/__init__.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9",
+      "modified": false,
+      "original_sha256": "60dd2bf75d04f9e79443fa84b05c09d6077868edcb7ea8303ece58d86a1565c9",
+      "path": "hetnet_ext/__init__.py",
+      "source_repository": "local reproduction"
+    },
+    "hetnet_ext/paper_learning.py": {
+      "commit": null,
+      "current_sha256": "fdbf36169ce3aa3ed249c58e28ae767e80ce49a27c7967eb777bb511588c9ce3",
+      "modified": true,
+      "original_sha256": null,
+      "path": null,
+      "source_repository": "local addition"
+    },
+    "hetnet_ext/paper_replay.py": {
+      "commit": null,
+      "current_sha256": "4c3557ac2b6c077ae5a80e61f50c226cf75bb4ea8e79706b2ac5fcfe2a6150c9",
+      "modified": true,
+      "original_sha256": null,
+      "path": null,
+      "source_repository": "local addition"
+    },
+    "hetnet_ext/progress.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507",
+      "modified": false,
+      "original_sha256": "df101b18102e2a26a98fcf2fa9ba4d08510cd623b686674b27c5b9a9b8ff6507",
+      "path": "hetnet_ext/progress.py",
+      "source_repository": "local reproduction"
+    },
+    "hetnet_ext/recording.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "230155a31c2898e21eaf9567a5cffc04bdf96bfb0bda5e8a97497cf1a258d04b",
+      "modified": true,
+      "original_sha256": "893265d85b7de7fc572a5faf32c2a0c5778bd14d59b3e8e400241c4c36c61561",
+      "path": "hetnet_ext/recording.py",
+      "source_repository": "local reproduction"
+    },
+    "hetnet_ext/recovery.py": {
+      "commit": null,
+      "current_sha256": "214358dae41c94abd00d42526a233b7fa2d48d6f80a46a023c88339b41f04fb1",
+      "modified": true,
+      "original_sha256": null,
+      "path": null,
+      "source_repository": "local addition"
+    },
+    "hetnet_ext/seeding.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc",
+      "modified": false,
+      "original_sha256": "c8cc75bfe88336c9b9d235c64b81bc6ecc4718431b9234041078fa9f40d351bc",
+      "path": "hetnet_ext/seeding.py",
+      "source_repository": "local reproduction"
+    },
+    "hetnet_ext/signatures.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "8c29c9f2305f35f110edcaa55283106989ffc121cdf5d11084c0a08769b55e3e",
+      "modified": true,
+      "original_sha256": "4f92b26e2cf4d4ad7fa6af8990adfed39b4293cc7ef91e0b258376d48cd7cf4a",
+      "path": "hetnet_ext/signatures.py",
+      "source_repository": "local reproduction"
+    },
+    "main.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "c8b60250fa80e91d06fe9d5be8fc2842cb540f622f42305cd13d0fdc39f1f3ca",
+      "modified": true,
+      "original_sha256": "18dd0c445fe8c596898334751a5a8884803e3c85c521eee74c2b89b25aa1bb7b",
+      "path": "main.py",
+      "source_repository": "local reproduction"
+    },
+    "models.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7",
+      "modified": false,
+      "original_sha256": "b4186a19ef345a90699ed161df2e3b875b64fd55ff63a1c112f855866acf4cc7",
+      "path": "models.py",
+      "source_repository": "local reproduction"
+    },
+    "multi_processing.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "c21bc7392848878c1bb42fa99cb007b178dc96a1d2f65d2a0224b44c77594ea6",
+      "modified": true,
+      "original_sha256": "16f90c3c9c5a5141aeb27716c02e819875a0284b0fd4cfa60d320548e0157474",
+      "path": "multi_processing.py",
+      "source_repository": "local reproduction"
+    },
+    "trainer.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "f5388bb2ef0be3c0c7a03e3b409c4f0da737d781d5142aab227c32e4e60ca2a1",
+      "modified": true,
+      "original_sha256": "ca98a4dfc928c637aa57fe88e4779753837f4982bd93370307cb51171cebf557",
+      "path": "trainer.py",
+      "source_repository": "local reproduction"
+    },
+    "utils.py": {
+      "commit": "0ee9ceb38b6133866e9c1db40bed2c6caa3b842d",
+      "current_sha256": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5",
+      "modified": false,
+      "original_sha256": "3a4c1caceec503ca1c4e777446141bb8fa2037f95fb3deb2e506f1035952b9b5",
+      "path": "utils.py",
+      "source_repository": "local reproduction"
+    }
+  },
+  "historical_audit_preserved": "analysis/publication_reconstruction_2026-09-30/",
+  "patch_sha256": "eda6d1d659d52e96d81f4f50d5607cec50abd559d748e42c7e536f697b37824b",
+  "previous_origins_sha256": "1420d6f2311f91bfcd1a554782e400a4c1e187a46e69ae38690b75ce5c57d114"
+}

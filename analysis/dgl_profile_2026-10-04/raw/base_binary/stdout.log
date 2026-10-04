@@ -1,0 +1,93 @@
+Namespace(publication_env_version='corrected-v1', max_env_steps=0, source_manifest='/private/tmp/claude-501/-Users-akshatguduru-Desktop-Thesis-HetNet/1e21565b-2cce-41a1-a570-f0ebf97f8f54/scratchpad/prof/manifest.json', model_spec='supplement-v1', milestones=[], resume_checkpoint='', wall_seconds=0.0, episode_log='stdout', experiment_name='p_base_binary', save_dir='/private/tmp/claude-501/-Users-akshatguduru-Desktop-Thesis-HetNet/1e21565b-2cce-41a1-a570-f0ebf97f8f54/scratchpad/prof/out_base_binary/ckpt', metrics_file='/private/tmp/claude-501/-Users-akshatguduru-Desktop-Thesis-HetNet/1e21565b-2cce-41a1-a570-f0ebf97f8f54/scratchpad/prof/out_base_binary/metrics.jsonl', profile_memory=False, num_epochs=1, epoch_size=4, batch_size=500, nprocesses=1, hid_size=128, recurrent=False, use_binary=True, msg_dim=16, gamma=1.0, tau=1.0, seed=991, normalize_rewards=False, lrate=0.001, entr=0, value_coeff=0.01, env_name='predator_capture', max_steps=80, nactions='1', action_scale=1.0, comm_range_P=-1, comm_range_A=-1, lossy_comm=False, min_comm_loss=0.0, max_comm_loss=0.3, plot=False, plot_env='main', save='tst', save_every=100, load='', display=False, random=False, use_cuda=False, hetgat=True, lr_gamma=0.1, hetgat_a2c=True, eval=False, eval_string='', eval_config='', commnet=False, hetcomm=False, ic3net=False, nagents=3, comm_mode='avg', comm_passes=1, comm_mask_zero=False, mean_ratio=1.0, rnn_type='MLP', detach_gap=5, total_state_action_in_batch=500, comm_init='uniform', hard_attn=False, comm_action_one=False, advantages_per_action=False, share_weights=False, nenemies=1, dim=5, vision=2, moving_prey=False, no_stay=False, mode='mixed', enemy_comm=False, nfriendly_P=2, nfriendly_A=1, tensor_obs=False, second_reward_scheme=False, A_vision=-1, rng_scheme='seedsequence-v1', nfriendly=3, num_actions=[6], dim_actions=1, num_inputs=725, continuous=False, naction_heads=[6])
+====================================================================================================
+Model log:
+
+UAVNetA2CEasy(
+  (prepro_obs): Linear(in_features=100, out_features=100, bias=True)
+  (prepro_stat): Linear(in_features=625, out_features=625, bias=True)
+  (f_module_obs): LSTMCell(100, 4)
+  (f_module_stat): LSTMCell(625, 25)
+  (layer1): MultiHeteroGATLayerBinary(
+    (gat_conv): HeteroGATLayerBinary(
+      (fc): ModuleDict(
+        (P): Linear(in_features=29, out_features=64, bias=True)
+        (A): Linear(in_features=25, out_features=64, bias=True)
+        (p2s): Linear(in_features=29, out_features=64, bias=True)
+        (a2s): Linear(in_features=25, out_features=64, bias=True)
+        (in): Linear(in_features=4, out_features=64, bias=True)
+      )
+      (encoder): ModuleDict(
+        (P): Linear(in_features=29, out_features=16, bias=True)
+        (A): Linear(in_features=25, out_features=16, bias=True)
+      )
+      (decoder): ModuleDict(
+        (P): Linear(in_features=16, out_features=64, bias=True)
+        (A): Linear(in_features=16, out_features=64, bias=True)
+      )
+      (binarize): Linear(in_features=1, out_features=2, bias=True)
+      (leaky_relu): LeakyReLU(negative_slope=0.2)
+      (relu): ReLU()
+    )
+  )
+  (layer2): MultiHeteroGATLayerBinary(
+    (gat_conv): HeteroGATLayerBinary(
+      (fc): ModuleDict(
+        (P): Linear(in_features=64, out_features=64, bias=True)
+        (A): Linear(in_features=64, out_features=64, bias=True)
+        (p2s): Linear(in_features=64, out_features=64, bias=True)
+        (a2s): Linear(in_features=64, out_features=64, bias=True)
+        (in): Linear(in_features=64, out_features=64, bias=True)
+      )
+      (encoder): ModuleDict(
+        (P): Linear(in_features=64, out_features=16, bias=True)
+        (A): Linear(in_features=64, out_features=16, bias=True)
+      )
+      (decoder): ModuleDict(
+        (P): Linear(in_features=16, out_features=64, bias=True)
+        (A): Linear(in_features=16, out_features=64, bias=True)
+      )
+      (binarize): Linear(in_features=1, out_features=2, bias=True)
+      (leaky_relu): LeakyReLU(negative_slope=0.2)
+      (relu): ReLU()
+    )
+  )
+  (layer3): MultiHeteroGATLayerBinary(
+    (gat_conv): HeteroGATLayerBinary(
+      (fc): ModuleDict(
+        (P): Linear(in_features=64, out_features=20, bias=True)
+        (A): Linear(in_features=64, out_features=24, bias=True)
+        (p2s): Linear(in_features=64, out_features=32, bias=True)
+        (a2s): Linear(in_features=64, out_features=32, bias=True)
+        (in): Linear(in_features=64, out_features=32, bias=True)
+      )
+      (encoder): ModuleDict(
+        (P): Linear(in_features=64, out_features=16, bias=True)
+        (A): Linear(in_features=64, out_features=16, bias=True)
+      )
+      (decoder): ModuleDict(
+        (P): Linear(in_features=16, out_features=20, bias=True)
+        (A): Linear(in_features=16, out_features=24, bias=True)
+      )
+      (binarize): Linear(in_features=1, out_features=2, bias=True)
+      (leaky_relu): LeakyReLU(negative_slope=0.2)
+    )
+  )
+  (relu): ReLU()
+  (P_critic_head): Linear(in_features=8, out_features=1, bias=True)
+  (A_critic_head): Linear(in_features=8, out_features=1, bias=True)
+)
+====================================================================================================
+
+[Epoch] batch 0
+{"episodes": [{"collector": 0, "collector_episode": 0, "episode": 1, "epoch": 1, "mean_agent_return": -3.4333333333333287, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.599999999999995, -2.6999999999999984], "rollout_wall_time_seconds": 0.6660757079953328, "steps": 80, "success": false, "team_return": -10.299999999999986, "terminated": false, "update": 1}, {"collector": 0, "collector_episode": 1, "episode": 2, "epoch": 1, "mean_agent_return": -1.3333333333333337, "num_agents": 3, "reward_per_agent": [-0.15000000000000002, -2.25, -1.6000000000000008], "rollout_wall_time_seconds": 0.2846001659927424, "steps": 46, "success": true, "team_return": -4.000000000000001, "terminated": true, "update": 1}, {"collector": 0, "collector_episode": 2, "episode": 3, "epoch": 1, "mean_agent_return": -2.6999999999999957, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -0.1, -3.999999999999994], "rollout_wall_time_seconds": 0.47897500000544824, "steps": 80, "success": false, "team_return": -8.099999999999987, "terminated": false, "update": 1}, {"collector": 0, "collector_episode": 3, "episode": 4, "epoch": 1, "mean_agent_return": -1.6166666666666647, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -0.44999999999999996, -0.39999999999999997], "rollout_wall_time_seconds": 0.42885645799105987, "steps": 80, "success": false, "team_return": -4.849999999999994, "terminated": false, "update": 1}, {"collector": 0, "collector_episode": 4, "episode": 5, "epoch": 1, "mean_agent_return": -0.7666666666666669, "num_agents": 3, "reward_per_agent": [-0.39999999999999997, -1.6500000000000008, -0.25], "rollout_wall_time_seconds": 0.17845429200679064, "steps": 34, "success": true, "team_return": -2.3000000000000007, "terminated": true, "update": 1}, {"collector": 0, "collector_episode": 5, "episode": 6, "epoch": 1, "mean_agent_return": -2.6999999999999957, "num_agents": 3, "reward_per_agent": [-0.1, -3.999999999999994, -3.999999999999994], "rollout_wall_time_seconds": 0.5288556250161491, "steps": 80, "success": false, "team_return": -8.099999999999987, "terminated": false, "update": 1}, {"collector": 0, "collector_episode": 6, "episode": 7, "epoch": 1, "mean_agent_return": -0.5166666666666667, "num_agents": 3, "reward_per_agent": [-0.2, -0.65, -0.7000000000000001], "rollout_wall_time_seconds": 0.07991516700712964, "steps": 15, "success": true, "team_return": -1.5500000000000003, "terminated": true, "update": 1}, {"collector": 0, "collector_episode": 7, "episode": 8, "epoch": 1, "mean_agent_return": -2.1999999999999975, "num_agents": 3, "reward_per_agent": [-0.1, -3.999999999999994, -2.499999999999999], "rollout_wall_time_seconds": 0.4290585840062704, "steps": 80, "success": false, "team_return": -6.5999999999999925, "terminated": false, "update": 1}, {"collector": 0, "collector_episode": 8, "episode": 9, "epoch": 1, "mean_agent_return": -3.9999999999999942, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.999999999999994, -3.999999999999994], "rollout_wall_time_seconds": 0.4208941670076456, "steps": 80, "success": false, "team_return": -11.999999999999982, "terminated": false, "update": 1}], "record_type": "publication_episode_batch", "schema_version": 1, "update": 1}
+[Epoch] batch 1
+{"episodes": [{"collector": 0, "collector_episode": 0, "episode": 10, "epoch": 1, "mean_agent_return": -3.9999999999999942, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.999999999999994, -3.999999999999994], "rollout_wall_time_seconds": 0.43182629099464975, "steps": 80, "success": false, "team_return": -11.999999999999982, "terminated": false, "update": 2}, {"collector": 0, "collector_episode": 1, "episode": 11, "epoch": 1, "mean_agent_return": -1.3000000000000007, "num_agents": 3, "reward_per_agent": [-1.850000000000001, -1.6000000000000008, -0.44999999999999996], "rollout_wall_time_seconds": 0.19130162498913705, "steps": 38, "success": true, "team_return": -3.900000000000002, "terminated": true, "update": 2}, {"collector": 0, "collector_episode": 2, "episode": 12, "epoch": 1, "mean_agent_return": -3.299999999999996, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -2.25, -3.649999999999995], "rollout_wall_time_seconds": 0.43027120901388116, "steps": 80, "success": false, "team_return": -9.899999999999988, "terminated": false, "update": 2}, {"collector": 0, "collector_episode": 3, "episode": 13, "epoch": 1, "mean_agent_return": -3.649999999999995, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.999999999999994, -2.9499999999999975], "rollout_wall_time_seconds": 0.3949352920171805, "steps": 80, "success": false, "team_return": -10.949999999999985, "terminated": false, "update": 2}, {"collector": 0, "collector_episode": 4, "episode": 14, "epoch": 1, "mean_agent_return": -3.4333333333333287, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.999999999999994, -2.3], "rollout_wall_time_seconds": 0.43430487500154413, "steps": 80, "success": false, "team_return": -10.299999999999986, "terminated": false, "update": 2}, {"collector": 0, "collector_episode": 5, "episode": 15, "epoch": 1, "mean_agent_return": -3.9999999999999942, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.999999999999994, -3.999999999999994], "rollout_wall_time_seconds": 0.3984878750052303, "steps": 80, "success": false, "team_return": -11.999999999999982, "terminated": false, "update": 2}, {"collector": 0, "collector_episode": 6, "episode": 16, "epoch": 1, "mean_agent_return": -3.9999999999999942, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.999999999999994, -3.999999999999994], "rollout_wall_time_seconds": 0.3920208750059828, "steps": 80, "success": false, "team_return": -11.999999999999982, "terminated": false, "update": 2}], "record_type": "publication_episode_batch", "schema_version": 1, "update": 2}
+[Epoch] batch 2
+{"episodes": [{"collector": 0, "collector_episode": 0, "episode": 17, "epoch": 1, "mean_agent_return": -2.083333333333332, "num_agents": 3, "reward_per_agent": [-1.950000000000001, -0.8500000000000002, -3.4499999999999957], "rollout_wall_time_seconds": 0.3818133329914417, "steps": 70, "success": true, "team_return": -6.2499999999999964, "terminated": true, "update": 3}, {"collector": 0, "collector_episode": 1, "episode": 18, "epoch": 1, "mean_agent_return": -3.7166666666666615, "num_agents": 3, "reward_per_agent": [-3.149999999999997, -3.999999999999994, -3.999999999999994], "rollout_wall_time_seconds": 0.403543833992444, "steps": 80, "success": false, "team_return": -11.149999999999984, "terminated": false, "update": 3}, {"collector": 0, "collector_episode": 2, "episode": 19, "epoch": 1, "mean_agent_return": -3.9999999999999942, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.999999999999994, -3.999999999999994], "rollout_wall_time_seconds": 0.4301610420225188, "steps": 80, "success": false, "team_return": -11.999999999999982, "terminated": false, "update": 3}, {"collector": 0, "collector_episode": 3, "episode": 20, "epoch": 1, "mean_agent_return": -2.2333333333333307, "num_agents": 3, "reward_per_agent": [-2.9999999999999973, -3.649999999999995, -0.05], "rollout_wall_time_seconds": 0.3722014589875471, "steps": 74, "success": true, "team_return": -6.699999999999992, "terminated": true, "update": 3}, {"collector": 0, "collector_episode": 4, "episode": 21, "epoch": 1, "mean_agent_return": -3.3666666666666623, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.999999999999994, -2.1000000000000005], "rollout_wall_time_seconds": 0.44712799999979325, "steps": 80, "success": false, "team_return": -10.099999999999987, "terminated": false, "update": 3}, {"collector": 0, "collector_episode": 5, "episode": 22, "epoch": 1, "mean_agent_return": -0.6666666666666666, "num_agents": 3, "reward_per_agent": [-0.7500000000000001, -0.5499999999999999, -0.7000000000000001], "rollout_wall_time_seconds": 0.0817103750014212, "steps": 16, "success": true, "team_return": -2.0, "terminated": true, "update": 3}, {"collector": 0, "collector_episode": 6, "episode": 23, "epoch": 1, "mean_agent_return": -3.9999999999999942, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.999999999999994, -3.999999999999994], "rollout_wall_time_seconds": 0.43158874998334795, "steps": 80, "success": false, "team_return": -11.999999999999982, "terminated": false, "update": 3}, {"collector": 0, "collector_episode": 7, "episode": 24, "epoch": 1, "mean_agent_return": -2.9833333333333307, "num_agents": 3, "reward_per_agent": [-2.8999999999999977, -3.999999999999994, -2.0500000000000007], "rollout_wall_time_seconds": 0.4179832919908222, "steps": 80, "success": false, "team_return": -8.949999999999992, "terminated": false, "update": 3}], "record_type": "publication_episode_batch", "schema_version": 1, "update": 3}
+[Epoch] batch 3
+{"episodes": [{"collector": 0, "collector_episode": 0, "episode": 25, "epoch": 1, "mean_agent_return": -3.9999999999999942, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.999999999999994, -3.999999999999994], "rollout_wall_time_seconds": 0.44385895802406594, "steps": 80, "success": false, "team_return": -11.999999999999982, "terminated": false, "update": 4}, {"collector": 0, "collector_episode": 1, "episode": 26, "epoch": 1, "mean_agent_return": -3.633333333333328, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.999999999999994, -2.8999999999999977], "rollout_wall_time_seconds": 0.41092824999941513, "steps": 80, "success": false, "team_return": -10.899999999999984, "terminated": false, "update": 4}, {"collector": 0, "collector_episode": 2, "episode": 27, "epoch": 1, "mean_agent_return": -3.1499999999999964, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.999999999999994, -1.4500000000000006], "rollout_wall_time_seconds": 0.47635562499635853, "steps": 80, "success": false, "team_return": -9.449999999999989, "terminated": false, "update": 4}, {"collector": 0, "collector_episode": 3, "episode": 28, "epoch": 1, "mean_agent_return": -2.0833333333333326, "num_agents": 3, "reward_per_agent": [-2.3, -2.8999999999999977, -1.0500000000000003], "rollout_wall_time_seconds": 0.29730512501555495, "steps": 59, "success": true, "team_return": -6.249999999999998, "terminated": true, "update": 4}, {"collector": 0, "collector_episode": 4, "episode": 29, "epoch": 1, "mean_agent_return": -3.633333333333328, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.999999999999994, -2.8999999999999977], "rollout_wall_time_seconds": 0.44792483298806474, "steps": 80, "success": false, "team_return": -10.899999999999984, "terminated": false, "update": 4}, {"collector": 0, "collector_episode": 5, "episode": 30, "epoch": 1, "mean_agent_return": -3.9999999999999942, "num_agents": 3, "reward_per_agent": [-3.999999999999994, -3.999999999999994, -3.999999999999994], "rollout_wall_time_seconds": 0.4512752919981722, "steps": 80, "success": false, "team_return": -11.999999999999982, "terminated": false, "update": 4}, {"collector": 0, "collector_episode": 6, "episode": 31, "epoch": 1, "mean_agent_return": -1.9499999999999982, "num_agents": 3, "reward_per_agent": [-1.5000000000000007, -0.35, -3.999999999999994], "rollout_wall_time_seconds": 0.4025500410061795, "steps": 80, "success": false, "team_return": -5.849999999999994, "terminated": false, "update": 4}], "record_type": "publication_episode_batch", "schema_version": 1, "update": 4}
+{"episodes": 31, "epoch": 1, "mean_agent_return": -2.853225806451609, "policy_loss": -0.10208020457939034, "record_type": "publication_epoch", "reward_per_agent": [-2.9145161290322537, -2.9951612903225766, -2.6499999999999972], "steps": 2192, "steps_taken": 70.70967741935483, "success_rate": 0.25806451612903225, "team_return": -8.559677419354829, "total_episodes": 31, "total_steps": 2192, "updates": 4, "updates_in_epoch": 4, "value_loss": 0.003641663783073052, "wall_time_seconds": 19.338138499006163}
+Epoch 1	Reward [-2.91 -3.   -2.65]	Time 19.34s, Episodes 31, Total Steps 2192, Python Allocation Peak disabled, GPU Memory Peak [0.]MB
+Success: 0.25806451612903225
+Steps-taken: 70.70967741935483
+{"active_time_seconds": 19.355712874996243, "checkpoint": "/private/tmp/claude-501/-Users-akshatguduru-Desktop-Thesis-HetNet/1e21565b-2cce-41a1-a570-f0ebf97f8f54/scratchpad/prof/out_base_binary/ckpt/p_base_binary/run1/model_update00000004_ep1.pt", "checkpoint_seconds": 0.015057041018735617, "counts": {"env_steps": 2192, "episodes": 31, "epoch": 1, "updates": 4}, "record_type": "publication_status", "resources": {"collector_count": 1, "collectors": [{"cpu_affinity": null, "max_rss": 776765440, "max_rss_unit": "bytes", "system_cpu_seconds": 0.42339099999999996, "torch_threads": 1, "user_cpu_seconds": 19.85053}], "completed_children_only": {"max_rss": 4456448, "max_rss_unit": "bytes", "system_cpu_seconds": 0.00147, "user_cpu_seconds": 0.00037299999999999996}, "slurm_cpus_per_task": null}, "schema_version": 1, "scientific_budget_completed": true, "segment_wall_time_seconds": 19.355712874996243, "startup_to_training_seconds": 1.3093728750245646, "stop_reason": "epoch_cap_completed", "training_update_seconds": 19.336574666027445}

@@ -1,0 +1,12 @@
+{
+  "checkpoint_byte_identities": 8,
+  "evidence_references": 27,
+  "guard_source_revisions_with_frozen_predecessors": 4,
+  "hashed_files": 83,
+  "local_links": 66,
+  "runtime_manifest_files": 38,
+  "scope": "File identity, local links, ledger/resource arithmetic, launcher timestamps and initial signature metadata; no policy execution or new checkpoint tensor audit.",
+  "status": "passed",
+  "unchanged_archived_run_inputs": 639,
+  "workload_pairs": 4
+}

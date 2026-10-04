@@ -1,0 +1,23 @@
+ M .gitignore
+ M AGENTS.md
+ M analysis/hetnet_restart_2026-10-03/artifact_manifest.json
+ M publication_reconstruction/ORIGINS.json
+ M publication_reconstruction/README.md
+ M publication_reconstruction/__main__.py
+ M publication_reconstruction/artifacts.py
+ M publication_reconstruction/runtime/trainer.py
+ M publication_reconstruction/study.py
+ M tests/test_publication_artifacts.py
+ M tests/test_publication_launcher.py
+ M tests/test_publication_recovery.py
+ M tests/test_publication_study.py
+?? analysis/dgl_profile_2026-10-04/
+?? analysis/hetnet_performance_plan_2026-10-04/
+?? analysis/hetnet_restart_2026-10-03/preflight_903502_audit.json
+?? analysis/publication_submission_2026-10-03/provenance_episode_timing/
+?? publication_reconstruction/PERFORMANCE_PLAN.md
+?? scripts/publication_preflight_local.py
+?? tests/test_publication_episode_timing.py
+?? tests/test_publication_preflight_local.py
+?? tests/test_publication_recovery_integrity.py
+?? tests/test_publication_validity.py

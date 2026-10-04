@@ -67,7 +67,7 @@ def run(request):
         raise ValueError("Checkpoint does not identify the supplied run's source manifest")
     values = meta.get("resolved_args", {})
     version = meta.get("env_version")
-    if version not in ("historical-2022", "corrected-v1") or values.get("publication_env_version") != version:
+    if version not in ("historical-2022", "corrected-v1", "paper-v1") or values.get("publication_env_version") != version:
         raise ValueError("Checkpoint environment version is missing or inconsistent")
     if not isinstance(saved.get("seed"), int) or saved["seed"] != values.get("seed"):
         raise ValueError("Checkpoint training seed is missing or inconsistent")
@@ -99,11 +99,20 @@ def run(request):
     if any(type(value) is not int or value < 0 for value in progress.values()):
         raise ValueError("Checkpoint needs nonnegative integer training counts")
     model_spec = meta.get("model_spec", values.get("model_spec", "public-code-v1"))
-    if model_spec not in ("public-code-v1", "supplement-v1"):
+    if model_spec not in ("public-code-v1", "supplement-v1", "paper-v1"):
         raise ValueError("Unsupported checkpoint model specification")
     if values.get("model_spec", model_spec) != model_spec:
         raise ValueError("Inconsistent checkpoint model specification")
     config["model_spec"] = model_spec
+    config["message_backend"] = values.get("message_backend", "dgl")
+    if model_spec == "paper-v1":
+        from hetgat.paper import PaperNet
+        imported["PaperNet"] = str(Path(inspect.getfile(PaperNet)).resolve())
+        if not Path(imported["PaperNet"]).is_relative_to(runtime):
+            raise ValueError("Paper model was not imported from its source archive")
+        config["binary_bandwidth"] = {"bits_per_head": 64, "heads": 4, "bits_per_sender_per_round": 256}
+    else:
+        PaperNet = None
     protocol = json.loads((Path(request["run_dir"]) / "protocol.json").read_text())
     if protocol.get("task") != task:
         raise ValueError("Checkpoint task differs from the run protocol")
@@ -115,7 +124,7 @@ def run(request):
         config["learner_spec"] = protocol.get("learner_spec", "public-code-v1")
         config["rng_scheme"] = meta.get("rng_scheme", protocol.get("rng_scheme"))
         config["version_metadata_basis"] = "checkpoint and run protocol"
-        if config["learner_spec"] != "public-code-v1" or config["rng_scheme"] not in ("seedsequence-v1", "legacy-offset-v1"):
+        if config["learner_spec"] not in ("public-code-v1", "paper-equations-v1") or config["rng_scheme"] not in ("seedsequence-v1", "legacy-offset-v1"):
             raise ValueError("Unsupported checkpoint learner/RNG specification")
         if (protocol.get("rng_scheme", config["rng_scheme"]) != config["rng_scheme"]
                 or meta.get("learner_spec", config["learner_spec"]) != config["learner_spec"]):
@@ -159,26 +168,31 @@ def run(request):
 
     def model_for(team):
         base = config["dim"] ** 2
+        model_type = PaperNet if model_spec == "paper-v1" else UAVNetA2CEasy
         kwargs = dict(num_P=team[0], num_A=team[1], num_heads=4, msg_dim=config["msg_dim"],
                       use_CNN=False, use_real=not values.get("use_binary", False), use_tanh=False,
                       per_class_critic=True, per_agent_critic=False, device=torch.device("cpu"),
                       with_two_state=True, obs=(2 * config["vision"] + 1) ** 2, action_vision=-1)
-        if "model_spec" in inspect.signature(UAVNetA2CEasy).parameters:
+        if "model_spec" in inspect.signature(model_type).parameters:
             kwargs["model_spec"] = model_spec
         elif model_spec != "public-code-v1":
             raise ValueError("Archived model does not accept its recorded model_spec")
         with torch.random.fork_rng(devices=[]):
             torch.manual_seed(0)
-            model = UAVNetA2CEasy(dict(vision=config["vision"], P=base + 4, A=base, state=4),
+            if model_spec == "paper-v1":
+                kwargs["message_backend"] = config["message_backend"]
+            model = model_type(dict(vision=config["vision"], P=base + 4, A=base, state=4),
                                  dict(P=base + 4, A=base, state=4), dict(P=16, A=16, state=16),
-                                 dict(P=5, A=6, state=8), **kwargs)
+                                 dict(P=4, A=5, state=8) if model_spec == "paper-v1" and task == "fc"
+                                 else dict(P=5, A=6, state=8), **kwargs)
         model.load_state_dict(saved["policy_net"], strict=True)
         for name, tensor in model.state_dict().items():
             original = saved["policy_net"][name]
             if tensor.dtype != original.dtype or not torch.equal(tensor, original) or not torch.isfinite(tensor).all():
                 raise ValueError("Checkpoint tensors must remain finite and exactly unchanged")
-        model.f_module_stat.register_forward_pre_hook(singleton_batch)
-        model.f_module_obs.register_forward_pre_hook(singleton_batch)
+        if model_spec != "paper-v1":
+            model.f_module_stat.register_forward_pre_hook(singleton_batch)
+            model.f_module_obs.register_forward_pre_hook(singleton_batch)
         return model.eval()
 
     with torch.no_grad():
@@ -226,8 +240,12 @@ def run(request):
                 obs = sensory_mask(raw, scenario.victim, config["dim"] ** 2) if exposed else raw.copy()
                 positions = np.vstack((env.predator_loc, getattr(env, "predator_capture_loc", np.empty((0, 2), dtype=int))))
                 one_hot = np.eye(config["dim"] ** 2)[(positions[:, 0] * config["dim"] + positions[:, 1]).astype(int)]
-                graph = build_hetgraph(one_hot, num_P=team[0], num_A=team[1], with_state=True,
-                                      with_two_state=True, with_self_loop=False, comm_range_P=-1, comm_range_A=-1)
+                graph = None
+                if config["message_backend"] == "dgl":
+                    graph = build_hetgraph(one_hot, num_P=team[0], num_A=team[1], with_state=True,
+                                          with_two_state=True, with_self_loop=False, comm_range_P=-1, comm_range_A=-1)
+                if model_spec == "paper-v1":
+                    model.set_episode_step(step)
                 key = np.random.SeedSequence([scenario.message_seed, step])
                 with torch.random.fork_rng(devices=[]):
                     torch.manual_seed(int(key.generate_state(1, dtype=np.uint64)[0]) % (2 ** 63 - 1))

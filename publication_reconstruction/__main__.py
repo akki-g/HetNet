@@ -47,10 +47,13 @@ def parser():
     train = commands.add_parser("train", help="separate reconstruction run; never overwrites")
     train.add_argument("--task", choices=["pp", "pcp", "fc"], required=True)
     train.add_argument("--variant", choices=["real", "binary"], default="real")
-    train.add_argument("--model-spec", choices=["public-code-v1", "supplement-v1"], default="public-code-v1")
+    train.add_argument("--reconstruction-spec", choices=["legacy", "paper-v1"], default="legacy")
+    train.add_argument("--model-spec", choices=["public-code-v1", "supplement-v1", "paper-v1"])
+    train.add_argument("--message-backend", choices=["dgl", "torch-v1"], default="dgl")
+    train.add_argument("--profile-phases", action="store_true", help="diagnostic phase timers; off for throughput runs")
     train.add_argument("--seed", type=seed_value, required=True)
-    train.add_argument("--env-version", choices=["historical-2022", "corrected-v1"], default="historical-2022")
-    train.add_argument("--recipe", choices=["june-2022", "october-2022"], default="june-2022")
+    train.add_argument("--env-version", choices=["historical-2022", "corrected-v1", "paper-v1"])
+    train.add_argument("--recipe", choices=["june-2022", "october-2022"])
     train.add_argument("--output", type=Path)
     train.add_argument("--epochs", type=positive)
     train.add_argument("--collectors", type=positive)
@@ -76,26 +79,49 @@ def parser():
     add_arguments(commands.add_parser("evaluate", help="frozen archived-runtime evaluation"))
     from .study import add_commands
     add_commands(commands)
+    from .benchmark import add_commands as add_benchmark_commands
+    add_benchmark_commands(commands)
+    from .paper_study import add_commands as add_paper_commands
+    add_paper_commands(commands)
     return p
 
 
 def resolve(args):
+    args = argparse.Namespace(**vars(args))
+    paper = getattr(args, "reconstruction_spec", "legacy") == "paper-v1"
+    args.message_backend = getattr(args, "message_backend", "dgl")
+    args.profile_phases = getattr(args, "profile_phases", False)
+    args.recipe = args.recipe or ("october-2022" if paper else "june-2022")
+    if paper:
+        if args.model_spec not in (None, "paper-v1") or args.env_version not in (None, "paper-v1"):
+            raise ValueError("paper-v1 requires its matched model, environment and learner specifications")
+        args.model_spec = args.env_version = "paper-v1"
+    else:
+        args.model_spec = args.model_spec or "public-code-v1"
+        args.env_version = args.env_version or "historical-2022"
+        if "paper-v1" in (args.model_spec, args.env_version) or args.message_backend != "dgl":
+            raise ValueError("paper-v1 components and torch-v1 require --reconstruction-spec paper-v1")
     fc = args.task == "fc"
     epochs = args.epochs or (1400 if fc else 2000)
     horizon = args.horizon or (300 if fc else 80)
-    collectors = args.collectors or (4 if fc or args.recipe == "october-2022" else 1)
+    collectors = args.collectors or (4 if paper or fc or args.recipe == "october-2022" else 1)
+    # The preserved per-class learner uses sample std over each collector's
+    # padded advantages. One one-step episode gives the sole A agent only one
+    # value, whose sample std is undefined. More collectors cannot repair it.
+    if not paper and args.task != "pp" and horizon == 1 and args.batch_steps == 1:
+        raise ValueError("PCP/FC need --horizon > 1 or --batch-steps > 1 for finite per-class advantage normalization")
     if args.seed + collectors >= 2**32:
         raise ValueError("seed plus collector count exceeds NumPy seed range")
     run = (args.output or ROOT / "runs/publication_reconstruction" / args.model_spec / args.env_version /
            args.recipe / f"{args.task}_{args.variant}" / f"seed{args.seed}").resolve()
-    supplement = args.model_spec == "supplement-v1"
+    supplement = args.model_spec in ("supplement-v1", "paper-v1")
     if args.milestones != sorted(set(args.milestones)):
         raise ValueError("Milestones must be unique and increasing")
     if args.milestones and args.max_env_steps is not None and args.milestones[-1] > args.max_env_steps:
         raise ValueError("Milestones cannot exceed the scientific step target")
     # The June PP wrapper needs --nagents3, absent from the released example.
     environment = "fire_commander" if fc else (
-        "predator_prey" if args.task == "pp" and args.recipe == "june-2022" else "predator_capture")
+        "predator_prey" if not paper and args.task == "pp" and args.recipe == "june-2022" else "predator_capture")
     command = [sys.executable, "-u", str(run / "source/runtime/main.py"),
         "--env_name", environment, "--nfriendly_P", "3" if args.task == "pp" else "2",
         "--nfriendly_A", "0" if args.task == "pp" else "1", "--nagents", "3",
@@ -111,10 +137,15 @@ def resolve(args):
         "--wall_seconds", str(args.wall_seconds), "--episode_log", args.episode_log]
     if args.milestones:
         command += ["--milestones", *map(str, args.milestones)]
+    if paper:
+        command += ["--reconstruction_spec", "paper-v1", "--learner_spec", "paper-equations-v1",
+                    "--message_backend", args.message_backend]
+    if args.profile_phases:
+        command += ["--profile_phases"]
     if fc:
         command += ["--nfires", "1", "--reward_type", "3"]
     if args.variant == "binary":
-        command += ["--use_binary", "--msg_dim", "16"]
+        command += ["--use_binary", "--msg_dim", "64" if paper else "16"]
     floor = epochs * args.updates_per_epoch * collectors * args.batch_steps
     if args.max_env_steps is not None and floor < args.max_env_steps:
         raise ValueError("Epoch cap cannot guarantee the requested step target at the batch floor")
@@ -127,10 +158,17 @@ def resolve(args):
             "max_env_steps": args.max_env_steps, "max_overshoot_steps": batch_max - 1,
             "upstream_reference": UPSTREAM_REFERENCE, "runtime_scaffold_reference": SCAFFOLD_REFERENCE,
             "model_spec": args.model_spec,
-            "learner_spec": "public-code-v1", "rng_scheme": "seedsequence-v1" if supplement else "legacy-offset-v1",
+            "reconstruction_spec": "paper-v1" if paper else "legacy", "message_backend": args.message_backend,
+            "profile_phases": args.profile_phases,
+            "learner_spec": "paper-equations-v1" if paper else "public-code-v1",
+            "rng_scheme": "seedsequence-v1" if supplement else "legacy-offset-v1",
             "milestones": args.milestones, "episode_log": args.episode_log,
             "wall_seconds": args.wall_seconds,
-            "claim": "supplement-aligned architecture/optimizer; public-code learner; not a verified publication training commit" if supplement else "runnable reconstruction, not a verified publication training commit",
+            "claim": ("paper-aligned reconstruction with declared implementation choices; Binary64 per head/256 total is a chosen interpretation, not verified publication settings" if paper else
+                      "supplement-aligned architecture/optimizer; public-code learner; not a verified publication training commit" if supplement else "runnable reconstruction, not a verified publication training commit"),
+            **({"binary_bandwidth": {"bits_per_head": 64, "heads": 4, "bits_per_sender_per_round": 256},
+                "action_dimensions": {"P": 4 if fc else 5, "A": 5 if fc else 6},
+                "loss_normalization": "global completed-episode mean; total-team-N agent weighting"} if paper else {}),
             "architecture": f"{'three' if supplement else 'two'} HetGAT layers; four heads; per-class critics",
             "optimizer": ({"name": "Adam", "lr": .001, "betas": [.9, .999], "epsilon": 1e-8,
                            "weight_decay": 0, "amsgrad": False, "foreach": False, "fused": False}
@@ -208,7 +246,8 @@ def archive_source(run):
     runtime, origins_bytes = validate_source_origins()
     payloads = {f"runtime/{name}": payload for name, payload in runtime.items()}
     payloads["ORIGINS.json"] = origins_bytes
-    for name in ["__init__.py", "__main__.py", "README.md", "artifacts.py", "study.py", "STUDY.json"]:
+    for name in ["__init__.py", "__main__.py", "README.md", "artifacts.py", "study.py", "STUDY.json",
+                 "benchmark.py", "paper_study.py", "FIDELITY.md"]:
         payloads[name] = (HERE / name).read_bytes()
     files = {}
     for name, payload in payloads.items():
@@ -282,6 +321,12 @@ def terminate_launcher(signum, frame):
 def main(argv=None):
     cli = parser()
     args = cli.parse_args(argv)
+    if args.command == "benchmark":
+        from .benchmark import run_benchmark
+        return run_benchmark(args)
+    if args.command == "paper-study-plan":
+        from .paper_study import prepare
+        return prepare(args)
     if args.command == "evaluate":
         from .evaluation import evaluate
         report = evaluate(args)

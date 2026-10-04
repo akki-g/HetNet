@@ -1,0 +1,37 @@
+{
+  "active_time_seconds": 35.65474091700162,
+  "checkpoint": "/private/tmp/claude-501/-Users-akshatguduru-Desktop-Thesis-HetNet/1e21565b-2cce-41a1-a570-f0ebf97f8f54/scratchpad/prof/out_real/ckpt/prof_real/run1/model_update00000004_ep1.pt",
+  "checkpoint_seconds": 0.022677166009088978,
+  "counts": {
+    "env_steps": 2178,
+    "episodes": 28,
+    "epoch": 1,
+    "updates": 4
+  },
+  "resources": {
+    "collector_count": 1,
+    "collectors": [
+      {
+        "cpu_affinity": null,
+        "max_rss": 731185152,
+        "max_rss_unit": "bytes",
+        "system_cpu_seconds": 0.420857,
+        "torch_threads": 1,
+        "user_cpu_seconds": 36.540419
+      }
+    ],
+    "completed_children_only": {
+      "max_rss": 4358144,
+      "max_rss_unit": "bytes",
+      "system_cpu_seconds": 0.001255,
+      "user_cpu_seconds": 0.000376
+    },
+    "slurm_cpus_per_task": null
+  },
+  "schema_version": 1,
+  "scientific_budget_completed": true,
+  "segment_wall_time_seconds": 35.65474091700162,
+  "startup_to_training_seconds": 1.7367370410065632,
+  "stop_reason": "epoch_cap_completed",
+  "training_update_seconds": 35.624926540011074
+}

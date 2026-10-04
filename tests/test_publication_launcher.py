@@ -69,3 +69,24 @@ def test_existing_evidence_is_never_overwritten(tmp_path):
 def test_invalid_budgets_rejected_before_run_creation(flag, value):
     with pytest.raises(SystemExit):
         parser().parse_args(["train", "--task", "pp", "--seed", "0", flag, value])
+
+
+@pytest.mark.parametrize("task", ["pcp", "fc"])
+@pytest.mark.parametrize("model_spec", ["public-code-v1", "supplement-v1"])
+@pytest.mark.parametrize("collectors", [1, 4])
+def test_singleton_a_advantage_rejected_before_run_creation(tmp_path, task, model_spec, collectors):
+    output = tmp_path / "invalid"
+    args = parser().parse_args(["train", "--task", task, "--seed", "0",
+        "--model-spec", model_spec, "--collectors", str(collectors),
+        "--horizon", "1", "--batch-steps", "1", "--output", str(output)])
+    with pytest.raises(ValueError, match="per-class advantage normalization"):
+        resolve(args)
+    assert not output.exists()
+
+
+@pytest.mark.parametrize("task,horizon,batch_steps", [
+    ("pp", 1, 1), ("pcp", 2, 1), ("pcp", 1, 2), ("fc", 2, 1), ("fc", 1, 2)])
+def test_small_configs_with_multiple_class_advantages_remain_available(task, horizon, batch_steps):
+    args = parser().parse_args(["train", "--task", task, "--seed", "0",
+        "--horizon", str(horizon), "--batch-steps", str(batch_steps)])
+    assert resolve(args)["episode_horizon"] == horizon

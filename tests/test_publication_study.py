@@ -116,7 +116,8 @@ def test_select_first_saved_not_best_performance(tmp_path, monkeypatch):
     monkeypatch.setattr(artifacts, "verify_run", lambda run: (expected, {}))
     monkeypatch.setattr(study, "checkpoint_candidates", lambda run: rows)
     monkeypatch.setattr(artifacts, "digest", lambda path: "a")
-    monkeypatch.setattr(artifacts, "load_checkpoint", lambda run, path: {"reconstruction": {"counts": rows[0]["counts"]}})
+    monkeypatch.setattr(artifacts, "load_checkpoint", lambda run, path: {
+        "seed": expected["seed"], "reconstruction": {"counts": rows[0]["counts"]}})
     selected = study.select_checkpoint(tmp_path, expected, 30_000_000)
     assert selected["path"] == "early"
 
@@ -130,27 +131,53 @@ def test_preparation_rejects_dangling_output_symlink(tmp_path):
     assert not (tmp_path / "missing").exists()
 
 
-@pytest.mark.parametrize("updates", [99, 100])
-def test_preflight_summary_requires_full_panel_and_separates_time_costs(tmp_path, monkeypatch, updates):
+@pytest.fixture
+def preflight_evidence(tmp_path, monkeypatch):
     from publication_reconstruction import artifacts, evaluation
-    status = {"checkpoint": str(tmp_path / "checkpoint.pt"), "counts": {"updates": updates},
-              "resources": {"slurm_cpus_per_task": "4"}, "startup_to_training_seconds": 5,
-              "segment_wall_time_seconds": 300}
-    (tmp_path / "run_status.json").write_text(json.dumps(status))
-    (tmp_path / "updates.jsonl").write_text((json.dumps({"steps": 2000, "wall_time_seconds": 2}) + "\n") * updates)
-    (tmp_path / "checkpoint_records.jsonl").write_text(json.dumps({"wall_time_seconds": .2}) + "\n")
-    (tmp_path / "protocol.json").write_text(json.dumps({"task": "pp", "variant": "real"}))
-    (tmp_path / "environment.json").write_text(json.dumps({"packages": {"torch": "2.2.1"}}))
-    monkeypatch.setattr(artifacts, "load_checkpoint", lambda *args: {})
-    validated = []
-    monkeypatch.setattr(artifacts, "_validate_optimizer", lambda *args: validated.append(args))
-    probes = []
-    def probe(args):
-        probes.append(args)
-        assert len(json.loads(args.scenarios.read_text())) == 1
-        assert args.checkpoint == Path(status["checkpoint"])
-        return {"episodes": 1, "parameters_unchanged": True}
-    monkeypatch.setattr(evaluation, "evaluate", probe)
+    def create(updates=100, starting_updates=0):
+        initial = {"env_steps": starting_updates * 2000, "episodes": starting_updates * 10,
+                   "updates": starting_updates, "epoch": (starting_updates + 9) // 10}
+        rows = [{"steps": 2000, "episodes": 10, "wall_time_seconds": 2,
+                 "update": i, "epoch": (i - 1) // 10 + 1, "update_in_epoch": (i - 1) % 10 + 1,
+                 "total_steps": i * 2000, "total_episodes": i * 10}
+                for i in range(starting_updates + 1, starting_updates + updates + 1)]
+        final_update = starting_updates + updates
+        final = {"env_steps": final_update * 2000, "episodes": final_update * 10,
+                 "updates": final_update, "epoch": (final_update + 9) // 10}
+        status = {"checkpoint": str(tmp_path / "checkpoint.pt"), "counts": final,
+                  "resources": {"slurm_cpus_per_task": "4"}, "startup_to_training_seconds": 5,
+                  "training_update_seconds": updates * 2, "segment_wall_time_seconds": 300}
+        (tmp_path / "run_status.json").write_text(json.dumps(status))
+        (tmp_path / "training_segment.json").write_text(json.dumps({"starting_counts": initial}))
+        (tmp_path / "updates.jsonl").write_text("".join(json.dumps(row) + "\n" for row in rows))
+        checkpoint = tmp_path / "checkpoint.pt"
+        checkpoint.write_bytes(b"mocked checkpoint; policy loading is tested separately")
+        (tmp_path / "checkpoint_records.jsonl").write_text(json.dumps({
+            "wall_time_seconds": .2, "path": str(checkpoint), "counts": final,
+            "epoch": final["epoch"], "update": final["updates"],
+            "bytes": checkpoint.stat().st_size,
+            "checkpoint_sha256": artifacts.digest(checkpoint)}) + "\n")
+        (tmp_path / "protocol.json").write_text(json.dumps({"task": "pp", "variant": "real",
+            "updates_per_epoch": 10, "output": str(tmp_path)}))
+        (tmp_path / "environment.json").write_text(json.dumps({"packages": {"torch": "2.2.1"}}))
+        saved = {"reconstruction": {"counts": dict(final)}}
+        monkeypatch.setattr(artifacts, "load_checkpoint", lambda *args: saved)
+        validated = []
+        monkeypatch.setattr(artifacts, "_validate_optimizer", lambda *args: validated.append(args))
+        probes = []
+        def probe(args):
+            probes.append(args)
+            assert len(json.loads(args.scenarios.read_text())) == 1
+            assert args.checkpoint == Path(status["checkpoint"])
+            return {"episodes": 1, "parameters_unchanged": True}
+        monkeypatch.setattr(evaluation, "evaluate", probe)
+        return rows, status, saved, validated, probes
+    return create
+
+
+@pytest.mark.parametrize("updates", [99, 100])
+def test_preflight_summary_requires_full_panel_and_separates_time_costs(tmp_path, preflight_evidence, updates):
+    _, _, _, validated, probes = preflight_evidence(updates=updates)
     if updates == 99:
         with pytest.raises(ValueError, match="100 updates"):
             study.preflight_summary(tmp_path)
@@ -162,3 +189,66 @@ def test_preflight_summary_requires_full_panel_and_separates_time_costs(tmp_path
         assert report["projected_update_work_hours_excluding_startup_logging_and_checkpoints"] == pytest.approx(40_000 / 3600)
         assert report["projected_segment_hours_including_logging_and_checkpoints_excluding_startup"] == pytest.approx(60_000 / 3600)
         assert report["resources"]["slurm_cpus_per_task"] == "4"
+
+
+@pytest.mark.parametrize("field,value", [
+    ("steps", 0), ("steps", True), ("steps", 1.5), ("episodes", -1), ("episodes", 2001),
+    ("wall_time_seconds", 0), ("wall_time_seconds", -1),
+    ("wall_time_seconds", float("nan")), ("wall_time_seconds", float("inf")),
+    ("update", 1), ("update", True), ("epoch", 2), ("update_in_epoch", 1),
+    ("total_steps", 0), ("total_episodes", 0),
+])
+def test_preflight_rejects_invalid_update_before_probe(tmp_path, preflight_evidence, field, value):
+    rows, _, _, _, probes = preflight_evidence()
+    rows[1][field] = value
+    (tmp_path / "updates.jsonl").write_text("".join(json.dumps(row) + "\n" for row in rows))
+    with pytest.raises(ValueError, match="Preflight"):
+        study.preflight_summary(tmp_path)
+    assert not probes and not (tmp_path / "checkpoint_probe").exists()
+    assert not (tmp_path / "preflight.json").exists()
+
+
+def test_preflight_rejects_100_duplicate_rows(tmp_path, preflight_evidence):
+    rows, _, _, _, probes = preflight_evidence()
+    (tmp_path / "updates.jsonl").write_text((json.dumps(rows[0]) + "\n") * 100)
+    with pytest.raises(ValueError, match="order or cumulative"):
+        study.preflight_summary(tmp_path)
+    assert not probes
+
+
+@pytest.mark.parametrize("where,field,value", [
+    ("status", "env_steps", 200001), ("checkpoint", "episodes", 1001),
+    ("status", "updates", 101), ("checkpoint", "epoch", 11),
+    ("status_timing", "training_update_seconds", 201),
+    ("status_timing", "segment_wall_time_seconds", 199),
+    ("status_timing", "startup_to_training_seconds", float("nan")),
+])
+def test_preflight_reconciles_status_and_checkpoint(tmp_path, preflight_evidence, where, field, value):
+    _, status, saved, _, probes = preflight_evidence()
+    if where == "checkpoint":
+        saved["reconstruction"]["counts"][field] = value
+    elif where == "status":
+        status["counts"][field] = value
+    else:
+        status[field] = value
+    (tmp_path / "run_status.json").write_text(json.dumps(status))
+    with pytest.raises(ValueError, match="Preflight"):
+        study.preflight_summary(tmp_path)
+    assert not probes and not (tmp_path / "preflight.json").exists()
+
+
+def test_preflight_accounts_for_continuation_starting_counts(tmp_path, preflight_evidence):
+    preflight_evidence(starting_updates=37)
+    report = study.preflight_summary(tmp_path)
+    assert report["updates"] == 100 and report["counts"]["updates"] == 137
+    assert report["counts"]["env_steps"] == 274000
+    assert report["measured_update_steps_per_second"] == 1000
+    assert report["projected_segment_hours_including_logging_and_checkpoints_excluding_startup"] == pytest.approx(60_000 / 3600)
+
+
+def test_preflight_rejects_changed_checkpoint_bytes_before_probe(tmp_path, preflight_evidence):
+    _, _, _, _, probes = preflight_evidence()
+    (tmp_path / "checkpoint.pt").write_bytes(b"changed")
+    with pytest.raises(ValueError, match="recorded bytes"):
+        study.preflight_summary(tmp_path)
+    assert not probes and not (tmp_path / "checkpoint_probe").exists()

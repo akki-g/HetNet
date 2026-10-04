@@ -17,7 +17,7 @@ class MultiProcessWorker(mp.Process):
         self.comm = comm
 
     def run(self):
-        if getattr(self.trainer.args, 'model_spec', 'public-code-v1') == 'supplement-v1':
+        if getattr(self.trainer.args, 'model_spec', 'public-code-v1') in ('supplement-v1', 'paper-v1'):
             seed_stream(self.seed, self.id + 1)
         else:
             torch.manual_seed(self.seed + self.id + 1)
@@ -146,18 +146,32 @@ class MultiProcessTrainer(object):
         merge_stat(s, stat)
 
         # check if workers are finished
+        wait_begin = time.perf_counter() if self.trainer.profile_phases else None
         for comm in self.comms:
             s = comm.recv()
             merge_stat(s, stat)
 
         # add gradients of workers
+        if self.trainer.profile_phases:
+            stat['phase_collector_wait_seconds'] = time.perf_counter() - wait_begin
+            aggregation_begin = time.perf_counter()
         self.obtain_grad_pointers()
         for i in range(len(self.grads)):
             for g in self.worker_grads:
                 self.grads[i] += g[i]
-            self.grads[i] /= stat['num_steps']
+            if not self.trainer.paper_learner:
+                self.grads[i] /= stat['num_steps']
+        if self.trainer.paper_learner:
+            from hetnet_ext.paper_learning import normalize_and_clip_gradients
+            norm = normalize_and_clip_gradients(self.trainer.params, stat['num_episodes'])
+            stat['gradient_norm_preclip'] = float(norm)
+        if self.trainer.profile_phases:
+            stat['phase_aggregation_seconds'] = time.perf_counter() - aggregation_begin
+            optimizer_begin = time.perf_counter()
 
         self.trainer.optimizer.step()
+        if self.trainer.profile_phases:
+            stat['phase_optimizer_seconds'] = time.perf_counter() - optimizer_begin
 
         for comm in self.comms:
             comm.send('get_gpu_mem')

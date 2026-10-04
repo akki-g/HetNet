@@ -5,6 +5,7 @@ import argparse
 from dataclasses import asdict
 import hashlib
 import json
+import math
 from pathlib import Path
 import shlex
 import sys
@@ -20,6 +21,8 @@ def add_commands(commands):
     run.add_argument("--run-root", type=Path, required=True)
     run.add_argument("--preflight", action="store_true")
     run.add_argument("--dry-run", action="store_true")
+    run.add_argument("--reconstruction-spec", choices=["legacy", "paper-v1"], default="legacy")
+    run.add_argument("--message-backend", choices=["dgl", "torch-v1"], default="dgl")
     plan = commands.add_parser("study-plan", help="write all twelve resolved protocols; no training")
     plan.add_argument("--run-root", type=Path, required=True)
     plan.add_argument("--output", type=Path, required=True)
@@ -32,18 +35,21 @@ def add_commands(commands):
     prepare.add_argument("--output", type=Path, required=True)
 
 
-def train_arguments(index, run_root, preflight=False):
+def train_arguments(index, run_root, preflight=False, reconstruction_spec="legacy", message_backend="dgl"):
     if type(index) is not int or not 0 <= index < (4 if preflight else 12):
         raise ValueError("Array index must be 0..3 for preflight or 0..11 for training")
     task, variant, target = WORKLOADS[index if preflight else index // 3]
     seed = 991 if preflight else index % 3
     output = Path(run_root).resolve() / f"{task}_{variant}" / f"seed{seed}"
     args = ["train", "--task", task, "--variant", variant, "--seed", str(seed),
-            "--model-spec", "supplement-v1", "--env-version", "corrected-v1",
+            "--model-spec", "paper-v1" if reconstruction_spec == "paper-v1" else "supplement-v1",
+            "--env-version", "paper-v1" if reconstruction_spec == "paper-v1" else "corrected-v1",
             "--recipe", "october-2022", "--collectors", "4", "--batch-steps", "500",
             "--updates-per-epoch", "10", "--horizon", "300" if task == "fc" else "80",
             "--epochs", "10" if preflight else ("1400" if task == "fc" else "2000"),
             "--save-every", "10", "--episode-log", "stdout", "--output", str(output)]
+    if reconstruction_spec != "legacy" or message_backend != "dgl":
+        args += ["--reconstruction-spec", reconstruction_spec, "--message-backend", message_backend]
     if not preflight:
         milestones = [10_000_000, 20_000_000, target] if task == "fc" else [10_000_000, 20_000_000, 30_000_000, target]
         args += ["--max-env-steps", str(target), "--milestones", *map(str, milestones),
@@ -66,29 +72,35 @@ def preflight_summary(run):
     status = json.loads((run / "run_status.json").read_text())
     updates = [json.loads(line) for line in (run / "updates.jsonl").read_text().splitlines()]
     records = [json.loads(line) for line in (run / "checkpoint_records.jsonl").read_text().splitlines()]
+    if len(updates) != 100:
+        raise ValueError("Preflight did not finish its prescribed 100 updates")
+    protocol = json.loads((run / "protocol.json").read_text())
+    segment = json.loads((run / "training_segment.json").read_text())
     checkpoint = Path(status["checkpoint"])
     saved = load_checkpoint(run, checkpoint)
-    elapsed = sum(row["wall_time_seconds"] for row in updates)
-    protocol = json.loads((run / "protocol.json").read_text())
-    from .artifacts import _validate_optimizer
+    elapsed, steps = _validate_preflight_ledger(updates, status, segment, protocol, saved)
+    if not records or any(type(row.get("wall_time_seconds")) not in (int, float)
+                          or not math.isfinite(row["wall_time_seconds"])
+                          or row["wall_time_seconds"] < 0 for row in records):
+        raise ValueError("Preflight checkpoint timings must be finite and nonnegative")
+    from .artifacts import _validate_optimizer, _validate_recorded_checkpoint
+    _validate_recorded_checkpoint(run, checkpoint, checkpoint.read_bytes(), saved, protocol)
     _validate_optimizer(saved, protocol, status["counts"]["updates"])
     target = next(target for task, variant, target in WORKLOADS
                   if (task, variant) == (protocol["task"], protocol["variant"]))
     result = {"schema_version": 1, "usable_checkpoint": str(checkpoint), "updates": len(updates),
               "counts": status["counts"], "update_seconds": [row["wall_time_seconds"] for row in updates],
               "checkpoint_seconds": [row["wall_time_seconds"] for row in records],
-              "measured_update_steps_per_second": sum(row["steps"] for row in updates) / elapsed,
+              "measured_update_steps_per_second": steps / elapsed,
               "projected_update_work_hours_excluding_startup_logging_and_checkpoints":
-                  target * elapsed / sum(row["steps"] for row in updates) / 3600,
+                  target * elapsed / steps / 3600,
               "projected_segment_hours_including_logging_and_checkpoints_excluding_startup":
-                  target * status["segment_wall_time_seconds"] / sum(row["steps"] for row in updates) / 3600,
+                  target * status["segment_wall_time_seconds"] / steps / 3600,
               "runtime": json.loads((run / "environment.json").read_text()),
               "resources": status["resources"],
               "startup_seconds": status["startup_to_training_seconds"],
               "segment_wall_seconds": status["segment_wall_time_seconds"],
               "limitations": "Timing projection only; convergence and cluster runtime are not guaranteed."}
-    if len(updates) != 100:
-        raise ValueError("Preflight did not finish its prescribed 100 updates")
     from .__main__ import write_json
     # Exercise strict archived loading on the compute node as well as inspecting
     # tensor/optimizer structure. One native episode is an engineering probe.
@@ -104,6 +116,61 @@ def preflight_summary(run):
         "episodes": evaluated["episodes"], "parameters_unchanged": evaluated["parameters_unchanged"]}
     write_json(run / "preflight.json", result)
     return result
+
+
+def _validate_preflight_ledger(updates, status, segment, protocol, saved):
+    """Reconcile one segment's work against its absolute completed-update counts."""
+    def counts(value):
+        fields = {"env_steps", "episodes", "updates", "epoch"}
+        if (not isinstance(value, dict) or set(value) != fields
+                or any(type(value[key]) is not int or value[key] < 0 for key in fields)):
+            raise ValueError("Preflight progress must contain nonnegative integer counts")
+        return dict(value)
+
+    def seconds(value, positive=False):
+        if (type(value) not in (int, float) or not math.isfinite(value)
+                or value < 0 or (positive and value == 0)):
+            raise ValueError("Preflight timing must be finite and positive for updates")
+        return value
+
+    try:
+        initial = counts(segment["starting_counts"])
+        total = dict(initial)
+        final = counts(status["counts"])
+        checkpoint_counts = counts(saved["reconstruction"]["counts"])
+        per_epoch = protocol["updates_per_epoch"]
+        if type(per_epoch) is not int or per_epoch <= 0:
+            raise ValueError("Preflight updates per epoch must be a positive integer")
+        if initial["epoch"] != (initial["updates"] + per_epoch - 1) // per_epoch:
+            raise ValueError("Preflight starting epoch disagrees with its update count")
+        elapsed = 0.0
+        for row in updates:
+            for key in ("steps", "episodes"):
+                if type(row[key]) is not int or row[key] <= 0:
+                    raise ValueError("Preflight update step/episode counts must be positive integers")
+            if row["episodes"] > row["steps"]:
+                raise ValueError("Preflight update has more episodes than environment steps")
+            total["updates"] += 1
+            total["env_steps"] += row["steps"]
+            total["episodes"] += row["episodes"]
+            total["epoch"] = (total["updates"] - 1) // per_epoch + 1
+            expected = {"update": total["updates"], "epoch": total["epoch"],
+                        "update_in_epoch": (total["updates"] - 1) % per_epoch + 1,
+                        "total_steps": total["env_steps"], "total_episodes": total["episodes"]}
+            if any(type(row[key]) is not int or row[key] != value for key, value in expected.items()):
+                raise ValueError("Preflight update order or cumulative counters disagree")
+            elapsed += seconds(row["wall_time_seconds"], positive=True)
+        if total != final or total != checkpoint_counts:
+            raise ValueError("Preflight ledger, status and checkpoint progress disagree")
+        recorded_elapsed = seconds(status["training_update_seconds"], positive=True)
+        if not math.isclose(elapsed, recorded_elapsed, rel_tol=1e-12, abs_tol=1e-9):
+            raise ValueError("Preflight summed update time disagrees with run status")
+        if seconds(status["segment_wall_time_seconds"], positive=True) < elapsed:
+            raise ValueError("Preflight segment time is shorter than its update work")
+        seconds(status["startup_to_training_seconds"])
+    except (KeyError, TypeError) as error:
+        raise ValueError("Incomplete preflight ledger or progress metadata") from error
+    return elapsed, total["env_steps"] - initial["env_steps"]
 
 
 def panel(task, compositions, episodes, seed, failure=0):
@@ -149,18 +216,25 @@ def checkpoint_candidates(run, seen=None, update_limit=None):
 
 def select_checkpoint(run, expected, target):
     from .artifacts import digest, load_checkpoint, verify_run
-    protocol, _ = verify_run(run)
-    for field in ("task", "variant", "seed", "model_spec", "env_version", "recipe", "collectors",
-                  "updates_per_epoch", "batch_step_floor_per_collector", "episode_horizon", "max_env_steps"):
-        if protocol[field] != expected[field]:
-            raise ValueError(f"Study run differs from locked {field}: {run}")
+    def validate_study_run(candidate):
+        protocol, _ = verify_run(candidate)
+        for field in ("task", "variant", "seed", "model_spec", "env_version", "recipe", "collectors",
+                      "updates_per_epoch", "batch_step_floor_per_collector", "episode_horizon", "max_env_steps"):
+            if protocol[field] != expected[field]:
+                raise ValueError(f"Study run differs from locked {field}: {candidate}")
+
+    validate_study_run(run)
     eligible = [row for row in checkpoint_candidates(run) if row["counts"]["env_steps"] >= target]
     if not eligible:
         raise ValueError(f"No completed-update checkpoint reaches {target}: {run}")
     row = eligible[0]
+    # The first eligible checkpoint may belong to a retained parent segment.
+    validate_study_run(row["run_dir"])
     if digest(row["path"]) != row["checkpoint_sha256"]:
         raise ValueError("Checkpoint differs from its recorded bytes")
     saved = load_checkpoint(row["run_dir"], row["path"])
+    if saved.get("seed") != expected["seed"]:
+        raise ValueError("Selected checkpoint training seed differs from the locked study")
     if saved["reconstruction"]["counts"] != row["counts"]:
         raise ValueError("Checkpoint index disagrees with checkpoint progress")
     return {**row, "selection_target": target, "task": expected["task"],
@@ -258,7 +332,8 @@ def prepare_evaluation(args):
 def dispatch(args):
     from .__main__ import main, write_json
     if args.command == "run-index":
-        argv = train_arguments(args.index, args.run_root, args.preflight)
+        argv = train_arguments(args.index, args.run_root, args.preflight,
+                               args.reconstruction_spec, args.message_backend)
         code = main(argv + (["--dry-run"] if args.dry_run else []))
         if args.preflight and not args.dry_run and code == 0:
             preflight_summary(Path(argv[argv.index("--output") + 1]))

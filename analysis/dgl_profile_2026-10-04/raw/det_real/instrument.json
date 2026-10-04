@@ -1,0 +1,38 @@
+{
+ "seconds": {
+  "graph_build": 1.481621656101197,
+  "dgl_fwd:HeteroNodeView.__getitem__": 0.07434263511095196,
+  "dgl_fwd:HeteroNodeDataView.__setitem__": 0.8005934596585575,
+  "dgl_fwd:graph.__getitem__": 1.3598099426017143,
+  "dgl_fwd:graph.number_of_edges": 0.11923937452957034,
+  "dgl_fwd:graph.apply_edges": 1.926772313163383,
+  "dgl_fwd:HeteroEdgeDataView.__getitem__": 0.011079371528467163,
+  "dgl_fwd:HeteroEdgeDataView.__delitem__": 0.015924766194075346,
+  "dgl_fwd:edge_softmax": 0.5656394347897731,
+  "dgl_fwd:HeteroEdgeDataView.__setitem__": 0.1848826049536001,
+  "dgl_fwd:graph.update_all": 2.3732396444829646,
+  "dgl_fwd:HeteroNodeDataView.__getitem__": 0.01651777813094668,
+  "model_forward_total": 9.95577230420895,
+  "env_step": 0.14209901486174203,
+  "dgl_backward_ops": 4.123313644755399,
+  "autograd_backward_total": 6.585562251013471
+ },
+ "calls": {
+  "graph_build": 2178,
+  "dgl_fwd:HeteroNodeView.__getitem__": 150282,
+  "dgl_fwd:HeteroNodeDataView.__setitem__": 143748,
+  "dgl_fwd:graph.__getitem__": 307098,
+  "dgl_fwd:graph.number_of_edges": 78408,
+  "dgl_fwd:graph.apply_edges": 32670,
+  "dgl_fwd:HeteroEdgeDataView.__getitem__": 32670,
+  "dgl_fwd:HeteroEdgeDataView.__delitem__": 32670,
+  "dgl_fwd:edge_softmax": 32670,
+  "dgl_fwd:HeteroEdgeDataView.__setitem__": 32670,
+  "dgl_fwd:graph.update_all": 32670,
+  "dgl_fwd:HeteroNodeDataView.__getitem__": 71874,
+  "model_forward_total": 2178,
+  "env_step": 2178,
+  "dgl_backward_ops": 98010,
+  "autograd_backward_total": 4
+ }
+}

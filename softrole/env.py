@@ -41,7 +41,7 @@ def adapt_observation(raw_obs, kappa, base):
 class EnvironmentAdapter:
     environment_version = ENVIRONMENT_VERSION
 
-    def __init__(self, config):
+    def __init__(self, config, environment_source=None):
         self.task = _option(config, "task", "pcp")
         if self.task not in ("pp", "pcp", "fc"):
             raise ValueError("task must be pp, pcp, or fc")
@@ -54,7 +54,16 @@ class EnvironmentAdapter:
             raise ValueError("dim/max_steps must be positive and vision nonnegative")
         self.base = self.dim ** 2
         self.observation_dim = (2 * self.vision + 1) ** 2 * (self.base + 3) + 2
-        self.raw = FireCommanderEnv() if self.task == "fc" else PredatorCaptureEnv()
+        self.environment_version = _option(config, "env_version", ENVIRONMENT_VERSION)
+        if self.environment_version not in (ENVIRONMENT_VERSION, "paper-v1"):
+            raise ValueError("Unknown SoftRole environment version")
+        if self.environment_version == "paper-v1":
+            from .publication_env import load_environment_class
+            self.raw = load_environment_class(self.task, environment_source)()
+        else:
+            if environment_source is not None:
+                raise ValueError("An archived paper simulator requires env_version=paper-v1")
+            self.raw = FireCommanderEnv() if self.task == "fc" else PredatorCaptureEnv()
         parser = argparse.ArgumentParser(add_help=False)
         self.raw.init_args(parser)
         self.args = parser.parse_args([])
@@ -62,6 +71,8 @@ class EnvironmentAdapter:
         self.args.max_steps = self.max_steps
         self.args.nfriendly_P, self.args.nfriendly_A = self.num_p, self.num_a
         self.args.eval = False
+        if self.environment_version == "paper-v1":
+            self.args.publication_env_version = "paper-v1"
         if self.task == "fc":
             self.args.nfires = int(_option(config, "nfires", 1))
             self.args.reward_type = int(_option(config, "reward_type", 3))
@@ -168,8 +179,13 @@ class EnvironmentAdapter:
             raise ValueError("actions must be in [0,5]")
         if np.any((actions == 5) & (kappa[:, 1] == 0)):
             raise ValueError("actuation action is unavailable to this agent")
+        native_actions = actions.astype(int)
+        if self.task == "fc" and self.environment_version == "paper-v1":
+            if np.any(native_actions == 4):
+                raise ValueError("stay action is unavailable in paper-v1 FC")
+            native_actions[native_actions == 5] = 4
         with self._rng.use():
-            obs, rewards, terminated, info = self.raw.step(actions.astype(int))
+            obs, rewards, terminated, info = self.raw.step(native_actions)
         self._raw_obs = np.array(obs, copy=True)
         self._steps += 1
         self._done = bool(terminated or self._steps >= self.max_steps)
@@ -182,5 +198,5 @@ class EnvironmentAdapter:
         return self.observe(kappa), np.asarray(rewards, dtype=np.float64), self._done, info
 
 
-def make_env(config):
-    return EnvironmentAdapter(config)
+def make_env(config, environment_source=None):
+    return EnvironmentAdapter(config, environment_source)

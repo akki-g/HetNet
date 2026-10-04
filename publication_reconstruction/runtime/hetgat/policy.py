@@ -375,10 +375,20 @@ class A2CPolicy(object):
                  per_agent_critic=False, with_two_state=True, obs=None,
                  comm_range_P=-1, comm_range_A=-1, lossy_comm=False, tensor_obs=False,
                  min_comm_loss=0, max_comm_loss=0.3, total_state_action_in_batch=500,
-                 action_vision=-1, model_spec='public-code-v1'):
+                 action_vision=-1, model_spec='public-code-v1',
+                 message_backend='dgl', learner_spec=None, profile_phases=False):
 
         self.device = device
         self.model_spec = model_spec
+        self.message_backend = message_backend
+        self.learner_spec = learner_spec or (
+            'paper-equations-v1' if model_spec == 'paper-v1' else 'public-code-v1')
+        if (self.learner_spec == 'paper-equations-v1') != (model_spec == 'paper-v1'):
+            raise ValueError('The paper learner requires the paper-v1 model specification')
+        if model_spec != 'paper-v1' and message_backend != 'dgl':
+            raise ValueError('The Torch message backend requires model_spec=paper-v1')
+        self.profile_phases = profile_phases
+        self.phase_seconds = {}
         self.use_real = use_real
         self.per_class_critic = per_class_critic
         self.per_agent_critic = per_agent_critic
@@ -391,7 +401,13 @@ class A2CPolicy(object):
         self.in_dim = in_dim
         self.tensor_obs = tensor_obs
 
-        self.model = UAVNetA2CEasy(in_dim_raw, in_dim, hid_dim, out_dim,
+        model_class = UAVNetA2CEasy
+        model_options = {}
+        if model_spec == 'paper-v1':
+            from hetgat.paper import PaperNet
+            model_class = PaperNet
+            model_options['message_backend'] = message_backend
+        self.model = model_class(in_dim_raw, in_dim, hid_dim, out_dim,
             num_P, num_A, num_heads, msg_dim=msg_dim, use_CNN=use_CNN,
             use_real=use_real, use_tanh=use_tanh, per_class_critic=per_class_critic,
             per_agent_critic=per_agent_critic, device=device,
@@ -399,7 +415,7 @@ class A2CPolicy(object):
             comm_range_A=comm_range_A, lossy_comm=lossy_comm,
             min_comm_loss=min_comm_loss, max_comm_loss=max_comm_loss,
             tensor_obs=tensor_obs, action_vision=action_vision,
-            model_spec=model_spec).to(self.device)
+            model_spec=model_spec, **model_options).to(self.device)
 
         self.gamma = gamma
         self.lmbda = lmbda
@@ -519,13 +535,21 @@ class A2CPolicy(object):
         """
         A2C version
         """
-        # construct heterograph
-        pos = [p[:self.in_dim['A']] for p in x[0][0]]
-
-        g = build_hetgraph(pos, num_P=self.num_P, num_A=self.num_A, with_state=True,
-            with_self_loop=False, with_two_state=self.with_two_state,
-            comm_range_P=self.comm_range_P, comm_range_A=self.comm_range_A)
-        g = g.to(self.device)
+        graph_begin = time.perf_counter() if self.profile_phases else None
+        if self.message_backend == 'torch-v1':
+            # PaperNet owns immutable topology; no DGL graph or relation view
+            # is constructed in this path.
+            g = None
+        else:
+            pos = [p[:self.in_dim['A']] for p in x[0][0]]
+            g = build_hetgraph(pos, num_P=self.num_P, num_A=self.num_A, with_state=True,
+                with_self_loop=False, with_two_state=self.with_two_state,
+                comm_range_P=self.comm_range_P, comm_range_A=self.comm_range_A)
+            g = g.to(self.device)
+        if self.profile_phases:
+            self.phase_seconds['phase_graph_preparation_seconds'] = self.phase_seconds.get(
+                'phase_graph_preparation_seconds', 0.0) + time.perf_counter() - graph_begin
+            inference_begin = time.perf_counter()
 
         # sample actions
         actions = {}
@@ -535,6 +559,9 @@ class A2CPolicy(object):
             results, c_v, a_v, prev_hid = self.model(x, g)
         else:
             results, c_v, prev_hid = self.model(x, g)
+        if self.profile_phases:
+            self.phase_seconds['phase_model_inference_seconds'] = self.phase_seconds.get(
+                'phase_model_inference_seconds', 0.0) + time.perf_counter() - inference_begin
         self.results = results
 
         self.i_b = i_b
@@ -778,6 +805,8 @@ class A2CPolicy(object):
     Batch version, use GAE by default, per-class critic version
     '''
     def batch_finish_per_class(self, batch_size, sim_time, num_P=2, num_A=1, use_GAE = True):
+        if self.learner_spec == 'paper-equations-v1':
+            return self.batch_finish_paper(batch_size)
         if not self.per_class_critic:
             print('Error, wrong function called. This is for per-class critic')
             return -1.0
@@ -876,6 +905,42 @@ class A2CPolicy(object):
             del self.batch_P_critics[i_b][:]
             del self.batch_A_critics[i_b][:]
 
+        return loss_np
+
+    def batch_finish_paper(self, batch_size):
+        """Backpropagate episode sums; the parent owns averaging and clipping."""
+        from hetnet_ext.paper_learning import episode_losses
+
+        if not self.per_class_critic or batch_size <= 0:
+            raise ValueError('The paper learner requires nonempty per-class episodes')
+        policy_losses, value_losses = [], []
+        for index in range(batch_size):
+            log_probs = [torch.stack(self.batch_P_log_probs[index])]
+            values = [torch.stack(self.batch_P_critics[index]).reshape(-1)]
+            if self.num_A:
+                log_probs.append(torch.stack(self.batch_A_log_probs[index]))
+                values.append(torch.stack(self.batch_A_critics[index]).reshape(-1))
+            actor, critic = episode_losses(
+                np.asarray(self.batch_rewards[index]), log_probs, values,
+                gamma=self.gamma, gae_lambda=self.lmbda)
+            policy_losses.append(actor)
+            value_losses.append(critic)
+        policy_loss = torch.stack(policy_losses).sum()
+        value_loss = torch.stack(value_losses).sum()
+        total_loss = policy_loss + value_loss
+        if not torch.isfinite(total_loss):
+            raise FloatingPointError('Non-finite paper learner loss')
+        # Preserve allocated gradient storage for multiprocessing pointers.
+        self.optimizer.zero_grad(set_to_none=False)
+        total_loss.backward()
+        loss_np = {'total': total_loss.detach().cpu().numpy(),
+                   'policy': policy_loss.detach().cpu().numpy(),
+                   'critic': value_loss.detach().cpu().numpy()}
+        for index in range(batch_size):
+            for buffer in (self.batch_rewards, self.batch_P_log_probs,
+                           self.batch_A_log_probs, self.batch_P_critics,
+                           self.batch_A_critics):
+                buffer[index].clear()
         return loss_np
 
     '''

@@ -1,0 +1,662 @@
+{
+  "audit_script_sha256": "927202bec5c8d2d1c5e973e7b860fac93e4cb23c9e170b4614a912480f0404f4",
+  "failed_harness_report": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_production_shape_20261004_01/validation.json",
+  "failed_harness_report_sha256": "9ef5c4e722b5d281db25bba02825295b18d09d59ae3661a006494215678ae649",
+  "failed_harness_script_sha256": "b7184158b9471ac0ae73c6db79e28b6d02a1f983835fbff57476c502aa25e8d6",
+  "limitation": "Extra bounded engineering update, not throughput or learning evidence.",
+  "reason": "First training run completed; validation harness incorrectly required continuation eligibility for an exhausted one-epoch budget. No runtime failure. Attempt remains preserved.",
+  "row": {
+    "backend": "dgl",
+    "checkpoint": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_production_shape_20261004_01/pp_real_dgl/checkpoints/pp_real/run1/model_update00000001_ep1.pt",
+    "checkpoint_counts_rng_and_record_binding_valid": true,
+    "checkpoint_sha256": "8b42813696b27ff84d32cc93163ae0693daba5fef1dd34a74c042ae6fd6cd17e",
+    "command": [
+      "/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/bin/python",
+      "-u",
+      "-m",
+      "publication_reconstruction",
+      "train",
+      "--reconstruction-spec",
+      "paper-v1",
+      "--task",
+      "pp",
+      "--variant",
+      "real",
+      "--message-backend",
+      "dgl",
+      "--recipe",
+      "october-2022",
+      "--seed",
+      "991",
+      "--epochs",
+      "1",
+      "--updates-per-epoch",
+      "1",
+      "--collectors",
+      "4",
+      "--batch-steps",
+      "500",
+      "--horizon",
+      "80",
+      "--save-every",
+      "10",
+      "--episode-log",
+      "stdout",
+      "--output",
+      "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_production_shape_20261004_01/pp_real_dgl"
+    ],
+    "counts": {
+      "env_steps": 2194,
+      "episodes": 32,
+      "epoch": 1,
+      "updates": 1
+    },
+    "episode_records": [
+      {
+        "collector": 0,
+        "collector_episode": 0,
+        "episode": 1,
+        "epoch": 1,
+        "mean_agent_return": -1.8499999999999999,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -2.7499999999999982,
+          -1.900000000000001,
+          -0.9000000000000002
+        ],
+        "steps": 56,
+        "success": true,
+        "team_return": -5.55,
+        "terminated": true,
+        "update": 1
+      },
+      {
+        "collector": 0,
+        "collector_episode": 1,
+        "episode": 2,
+        "epoch": 1,
+        "mean_agent_return": -2.53333333333333,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -2.9999999999999973,
+          -3.999999999999994,
+          -0.6
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -7.599999999999991,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 0,
+        "collector_episode": 2,
+        "episode": 3,
+        "epoch": 1,
+        "mean_agent_return": -1.7666666666666646,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -3.999999999999994,
+          -0.49999999999999994,
+          -0.8000000000000002
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -5.299999999999994,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 0,
+        "collector_episode": 3,
+        "episode": 4,
+        "epoch": 1,
+        "mean_agent_return": -1.4333333333333311,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -3.999999999999994,
+          -0.3,
+          0.0
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -4.299999999999994,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 0,
+        "collector_episode": 4,
+        "episode": 5,
+        "epoch": 1,
+        "mean_agent_return": -2.466666666666665,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -3.999999999999994,
+          -1.3000000000000005,
+          -2.1000000000000005
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -7.399999999999995,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 0,
+        "collector_episode": 5,
+        "episode": 6,
+        "epoch": 1,
+        "mean_agent_return": -0.7333333333333335,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -1.6000000000000008,
+          -0.49999999999999994,
+          -0.1
+        ],
+        "steps": 33,
+        "success": true,
+        "team_return": -2.2000000000000006,
+        "terminated": true,
+        "update": 1
+      },
+      {
+        "collector": 0,
+        "collector_episode": 6,
+        "episode": 7,
+        "epoch": 1,
+        "mean_agent_return": -2.199999999999998,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -1.6000000000000008,
+          -1.0000000000000002,
+          -3.999999999999994
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -6.599999999999994,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 0,
+        "collector_episode": 7,
+        "episode": 8,
+        "epoch": 1,
+        "mean_agent_return": -2.116666666666665,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -0.44999999999999996,
+          -1.900000000000001,
+          -3.999999999999994
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -6.349999999999994,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 1,
+        "collector_episode": 0,
+        "episode": 9,
+        "epoch": 1,
+        "mean_agent_return": -3.516666666666662,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -2.549999999999999,
+          -3.999999999999994,
+          -3.999999999999994
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -10.549999999999986,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 1,
+        "collector_episode": 1,
+        "episode": 10,
+        "epoch": 1,
+        "mean_agent_return": -0.8333333333333335,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -0.3,
+          -0.05,
+          -2.1500000000000004
+        ],
+        "steps": 44,
+        "success": true,
+        "team_return": -2.5000000000000004,
+        "terminated": true,
+        "update": 1
+      },
+      {
+        "collector": 1,
+        "collector_episode": 2,
+        "episode": 11,
+        "epoch": 1,
+        "mean_agent_return": -3.08333333333333,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -3.999999999999994,
+          -1.2500000000000004,
+          -3.999999999999994
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -9.24999999999999,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 1,
+        "collector_episode": 3,
+        "episode": 12,
+        "epoch": 1,
+        "mean_agent_return": -2.6666666666666625,
+        "num_agents": 3,
+        "reward_per_agent": [
+          0.0,
+          -3.999999999999994,
+          -3.999999999999994
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -7.999999999999988,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 1,
+        "collector_episode": 4,
+        "episode": 13,
+        "epoch": 1,
+        "mean_agent_return": -1.9833333333333318,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -2.6499999999999986,
+          -2.9499999999999975,
+          -0.35
+        ],
+        "steps": 60,
+        "success": true,
+        "team_return": -5.949999999999996,
+        "terminated": true,
+        "update": 1
+      },
+      {
+        "collector": 1,
+        "collector_episode": 5,
+        "episode": 14,
+        "epoch": 1,
+        "mean_agent_return": -2.4166666666666656,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -1.6000000000000008,
+          -3.149999999999997,
+          -2.499999999999999
+        ],
+        "steps": 64,
+        "success": true,
+        "team_return": -7.2499999999999964,
+        "terminated": true,
+        "update": 1
+      },
+      {
+        "collector": 1,
+        "collector_episode": 6,
+        "episode": 15,
+        "epoch": 1,
+        "mean_agent_return": -2.6666666666666625,
+        "num_agents": 3,
+        "reward_per_agent": [
+          0.0,
+          -3.999999999999994,
+          -3.999999999999994
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -7.999999999999988,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 1,
+        "collector_episode": 7,
+        "episode": 16,
+        "epoch": 1,
+        "mean_agent_return": -3.9999999999999942,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -3.999999999999994,
+          -3.999999999999994,
+          -3.999999999999994
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -11.999999999999982,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 2,
+        "collector_episode": 0,
+        "episode": 17,
+        "epoch": 1,
+        "mean_agent_return": -2.966666666666663,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -3.999999999999994,
+          -0.9000000000000002,
+          -3.999999999999994
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -8.899999999999988,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 2,
+        "collector_episode": 1,
+        "episode": 18,
+        "epoch": 1,
+        "mean_agent_return": -2.6833333333333287,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -3.999999999999994,
+          -0.05,
+          -3.999999999999994
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -8.049999999999986,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 2,
+        "collector_episode": 2,
+        "episode": 19,
+        "epoch": 1,
+        "mean_agent_return": -0.5666666666666667,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -0.49999999999999994,
+          -0.7000000000000001,
+          -0.49999999999999994
+        ],
+        "steps": 15,
+        "success": true,
+        "team_return": -1.7,
+        "terminated": true,
+        "update": 1
+      },
+      {
+        "collector": 2,
+        "collector_episode": 3,
+        "episode": 20,
+        "epoch": 1,
+        "mean_agent_return": -2.8166666666666624,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -3.999999999999994,
+          -3.999999999999994,
+          -0.44999999999999996
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -8.449999999999987,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 2,
+        "collector_episode": 4,
+        "episode": 21,
+        "epoch": 1,
+        "mean_agent_return": -3.483333333333329,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -3.999999999999994,
+          -3.999999999999994,
+          -2.4499999999999993
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -10.449999999999987,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 2,
+        "collector_episode": 5,
+        "episode": 22,
+        "epoch": 1,
+        "mean_agent_return": -1.1666666666666672,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -1.0000000000000002,
+          -1.7000000000000008,
+          -0.8000000000000002
+        ],
+        "steps": 35,
+        "success": true,
+        "team_return": -3.5000000000000013,
+        "terminated": true,
+        "update": 1
+      },
+      {
+        "collector": 2,
+        "collector_episode": 6,
+        "episode": 23,
+        "epoch": 1,
+        "mean_agent_return": -2.7499999999999964,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -0.7000000000000001,
+          -3.999999999999994,
+          -3.5499999999999954
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -8.24999999999999,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 2,
+        "collector_episode": 7,
+        "episode": 24,
+        "epoch": 1,
+        "mean_agent_return": -3.9999999999999942,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -3.999999999999994,
+          -3.999999999999994,
+          -3.999999999999994
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -11.999999999999982,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 3,
+        "collector_episode": 0,
+        "episode": 25,
+        "epoch": 1,
+        "mean_agent_return": -3.066666666666663,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -1.2000000000000004,
+          -3.999999999999994,
+          -3.999999999999994
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -9.199999999999989,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 3,
+        "collector_episode": 1,
+        "episode": 26,
+        "epoch": 1,
+        "mean_agent_return": -3.9999999999999942,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -3.999999999999994,
+          -3.999999999999994,
+          -3.999999999999994
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -11.999999999999982,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 3,
+        "collector_episode": 2,
+        "episode": 27,
+        "epoch": 1,
+        "mean_agent_return": -3.066666666666663,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -1.2000000000000004,
+          -3.999999999999994,
+          -3.999999999999994
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -9.199999999999989,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 3,
+        "collector_episode": 3,
+        "episode": 28,
+        "epoch": 1,
+        "mean_agent_return": -0.916666666666667,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -1.7000000000000008,
+          -0.05,
+          -1.0000000000000002
+        ],
+        "steps": 35,
+        "success": true,
+        "team_return": -2.750000000000001,
+        "terminated": true,
+        "update": 1
+      },
+      {
+        "collector": 3,
+        "collector_episode": 4,
+        "episode": 29,
+        "epoch": 1,
+        "mean_agent_return": -2.2333333333333316,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -0.7500000000000001,
+          -3.999999999999994,
+          -1.950000000000001
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -6.699999999999995,
+        "terminated": false,
+        "update": 1
+      },
+      {
+        "collector": 3,
+        "collector_episode": 5,
+        "episode": 30,
+        "epoch": 1,
+        "mean_agent_return": -1.4333333333333318,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -0.15000000000000002,
+          -0.6,
+          -3.5499999999999954
+        ],
+        "steps": 72,
+        "success": true,
+        "team_return": -4.299999999999995,
+        "terminated": true,
+        "update": 1
+      },
+      {
+        "collector": 3,
+        "collector_episode": 6,
+        "episode": 31,
+        "epoch": 1,
+        "mean_agent_return": -0.5666666666666668,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -0.3,
+          -0.44999999999999996,
+          -0.9500000000000003
+        ],
+        "steps": 20,
+        "success": true,
+        "team_return": -1.7000000000000002,
+        "terminated": true,
+        "update": 1
+      },
+      {
+        "collector": 3,
+        "collector_episode": 7,
+        "episode": 32,
+        "epoch": 1,
+        "mean_agent_return": -3.2333333333333294,
+        "num_agents": 3,
+        "reward_per_agent": [
+          -3.999999999999994,
+          -1.7000000000000008,
+          -3.999999999999994
+        ],
+        "steps": 80,
+        "success": false,
+        "team_return": -9.699999999999989,
+        "terminated": false,
+        "update": 1
+      }
+    ],
+    "episode_semantic_sha256": "a025cb5a2f61f81d6b1b2a511cdb7f4cdeb49adf2b5dafd34da9a33bfbcb9d2f",
+    "final_identity": {
+      "model": "37c19dc711941915b276f05b07bfcf6aa3a630b9e2131ee72f85e911a58ac6a9",
+      "optimizer": "f3f2425d81c702cb63dedf1de2aae16d1b430d6cf0136a6fc00b6d2ef48b5264",
+      "rng": "19bb3dfc9d1cc964a9a383a246ee7bb247a571b5a4a78b330cd989865c7e310e"
+    },
+    "finite_model_optimizer": true,
+    "gradient_norm_preclip": 1374.6348966564415,
+    "initial_identity": {
+      "model": "d8b262b585e58b90f8c4ae3730924164255326f79c6fc9a8a5680787b5f97146",
+      "optimizer": "a91fdb33526048b83ab06c2637a65dc8430dd87d7b1e32395ff40bc733a3a589",
+      "rng": "edcc6ac9d098a8bd96d50535d48ecc6aa5fb79e5214dcdbc6428fa100b4b0846"
+    },
+    "losses": {
+      "loss_units": "global completed-episode mean of total-N weighted sums",
+      "policy_loss": -65.04276623177734,
+      "value_loss": 254.27079529924134
+    },
+    "name": "pp_real_dgl",
+    "parameters_changed": true,
+    "protocol_sha256": "ede36d047ead9725c70ce9a4a641c81c50b0b197cdb29a4a06cbed5c4ecfd7a4",
+    "run": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_production_shape_20261004_01/pp_real_dgl",
+    "source_manifest_sha256": "8eb769134fec83051f8efe44322d1efb3ab7a50257dd91bb79b2b8add2d6df28",
+    "task": "pp",
+    "trajectory_identity_complete": false,
+    "trajectory_records": [],
+    "variant": "real"
+  },
+  "schema_version": 1,
+  "source_unchanged_since_failed_attempt": true
+}

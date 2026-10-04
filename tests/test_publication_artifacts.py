@@ -42,7 +42,15 @@ def archived_run(tmp_path):
         model_spec="supplement-v1", max_env_steps=100, lrate=.001, env_name="predator_capture",
         nfriendly_P=2, nfriendly_A=1, nagents=3, dim=5, vision=2, detach_gap=5,
         hid_size=128, hetgat=True, hetgat_a2c=True, milestones=[50, 100],
-        rng_scheme="seedsequence-v1", save_every=1, episode_log="file", wall_seconds=0)
+        rng_scheme="seedsequence-v1", save_every=1, episode_log="file", wall_seconds=0,
+        gamma=1.0, tau=1.0, normalize_rewards=False, entr=0., value_coeff=.01,
+        comm_range_P=-1, comm_range_A=-1, lossy_comm=False,
+        min_comm_loss=0., max_comm_loss=.3, recurrent=False,
+        commnet=False, hetcomm=False, ic3net=False, use_cuda=False,
+        random=False, eval=False, msg_dim=16, action_scale=1., nactions='1',
+        rnn_type='MLP', total_state_action_in_batch=500,
+        no_stay=False, mode='mixed', tensor_obs=False, A_vision=-1,
+        nenemies=1, moving_prey=False, enemy_comm=False, second_reward_scheme=False)
     parameter = torch.nn.Parameter(torch.tensor([.25], dtype=torch.float64))
     optimizer = torch.optim.Adam([parameter], lr=.001, foreach=False, fused=False)
     parameter.grad = torch.ones_like(parameter)
@@ -61,6 +69,10 @@ def archived_run(tmp_path):
                 "steps": 12, "episodes": 2, "success": 0., "steps_taken": 12.,
                 "reward": [-1., -1., -1.], "policy_loss": 1., "value_loss": 1.}}}
     torch.save(saved, checkpoint)
+    (run / 'checkpoint_records.jsonl').write_text(json.dumps({
+        'path': str(checkpoint), 'checkpoint_sha256': hashlib.sha256(checkpoint.read_bytes()).hexdigest(),
+        'bytes': checkpoint.stat().st_size, 'counts': counts, 'update': counts['updates'],
+        'epoch': counts['epoch']}) + '\n')
     return SimpleNamespace(run=run, checkpoint=checkpoint, saved=saved, protocol=protocol, manifest=manifest)
 
 

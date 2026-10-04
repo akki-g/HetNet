@@ -1,0 +1,58 @@
+{
+ "label": "reconstruction PCP one update, non-DGL aten ops",
+ "environment_steps": 557,
+ "forward": {
+  "top_level_ops_per_step": 2795.064631956912,
+  "leaf_ops_per_step": 3322.337522441652,
+  "leaf_largest_input_numel_median": 64,
+  "leaf_largest_input_numel_p90": 2175,
+  "leaf_largest_input_numel_p99": 4096,
+  "leaf_largest_input_numel_max": 390625,
+  "leaf_ops_with_largest_input_le_1024_fraction": 0.8109326889095195,
+  "compute_leaf_ops_per_step": 1137.9820466786355,
+  "top_compute_ops_per_step": {
+   "aten::copy_": 244.31777378815082,
+   "aten::to": 118.49371633752244,
+   "aten::add_": 110.47755834829444,
+   "aten::resolve_conj": 86.00179533213644,
+   "aten::fill_": 60.1113105924596,
+   "aten::_to_copy": 54.95332136445242,
+   "aten::as_strided_": 48.0,
+   "aten::zero_": 39.32315978456015,
+   "aten::_local_scalar_dense": 35.1310592459605,
+   "aten::item": 35.02872531418313,
+   "aten::sum": 24.299820466786354,
+   "aten::squeeze_": 23.734290843806104,
+   "aten::unsqueeze_": 23.594254937163374,
+   "aten::zeros": 22.51346499102334,
+   "aten::leaky_relu": 15.0
+  }
+ },
+ "backward": {
+  "top_level_ops_per_step": 1542.879712746858,
+  "leaf_ops_per_step": 1702.003590664273,
+  "leaf_largest_input_numel_median": 64,
+  "leaf_largest_input_numel_p90": 2048,
+  "leaf_largest_input_numel_p99": 62500,
+  "leaf_largest_input_numel_max": 390625,
+  "leaf_ops_with_largest_input_le_1024_fraction": 0.7991183693102226,
+  "compute_leaf_ops_per_step": 756.818671454219,
+  "top_compute_ops_per_step": {
+   "aten::resolve_conj": 163.30341113105925,
+   "aten::zero_": 65.71633752244165,
+   "aten::copy_": 64.31059245960503,
+   "aten::mul": 63.021543985637344,
+   "aten::_to_copy": 60.34649910233393,
+   "aten::fill_": 56.86535008976661,
+   "aten::add_": 56.31597845601436,
+   "aten::to": 55.048473967684025,
+   "aten::sum": 51.96229802513465,
+   "aten::zeros": 47.94254937163375,
+   "aten::mm": 16.06104129263914,
+   "aten::zeros_like": 14.213644524236983,
+   "aten::leaky_relu_backward": 10.470377019748653,
+   "aten::threshold_backward": 7.619389587073608,
+   "aten::sigmoid_backward": 3.423698384201077
+  }
+ }
+}

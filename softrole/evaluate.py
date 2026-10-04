@@ -74,7 +74,11 @@ def evaluate_checkpoint(checkpoint, scenarios, output, intervention="none",
     for scenario in scenarios:
         config.validate_composition((scenario.num_p, scenario.num_a))
         validate_scenario(config, scenario, intervention, intervention_step, sham)
-    adapter = make_env(config)
+    environment_source = None
+    if config.env_version == "paper-v1":
+        from softrole.publication_env import checkpoint_binding
+        environment_source = checkpoint_binding(checkpoint, saved)
+    adapter = make_env(config, environment_source)
     if saved.get("environment_version") != adapter.environment_version:
         raise ValueError("Checkpoint environment version differs from the evaluation adapter")
     model = SoftRoleNet(**saved["model_config"]).double()
@@ -98,6 +102,9 @@ def evaluate_checkpoint(checkpoint, scenarios, output, intervention="none",
         raise RuntimeError("Evaluator source changed during evaluation; keep the checkout fixed")
     if hashlib.sha256(Path(checkpoint).read_bytes()).hexdigest() != checkpoint_sha256:
         raise RuntimeError("Checkpoint file changed during frozen evaluation")
+    if environment_source is not None:
+        # Verify the archive again before publishing the evaluation record.
+        checkpoint_binding(checkpoint, saved)
     exposed = [episode for episode in episodes if episode["event_exposed"]]
     scheduled = [episode for episode in episodes if episode["scheduled_event_exposed"]]
     report = {
@@ -107,6 +114,7 @@ def evaluate_checkpoint(checkpoint, scenarios, output, intervention="none",
         "evaluation_version": EVALUATION_VERSION, "evaluator": evaluator,
         "config": config.to_dict(), "model_config": saved["model_config"],
         "environment_version": adapter.environment_version,
+        "simulator_source": saved.get("simulator_source"),
         "source_sha256": saved.get("source_sha256"),
         "checkpoint_progress": {key: saved.get(key) for key in
                                 ("epoch", "updates", "total_steps", "total_episodes")},

@@ -1,0 +1,479 @@
+{
+  "checkpoints": [
+    {
+      "counts": {
+        "env_steps": 213583,
+        "episodes": 3560,
+        "epoch": 10,
+        "updates": 100
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "stokes_runs/hetnet_preflight_903502/pp_real/seed991/checkpoints/pp_real/run1/model_update00000100_ep10.pt",
+      "sha256": "aa92741c1fa39e92a78c9b5506e5169aee159986eadc1f297ffbae5af8000278"
+    },
+    {
+      "counts": {
+        "env_steps": 214872,
+        "episodes": 3124,
+        "epoch": 10,
+        "updates": 100
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "stokes_runs/hetnet_preflight_903502/pcp_real/seed991/checkpoints/pcp_real/run1/model_update00000100_ep10.pt",
+      "sha256": "3d82b159e85390ed9ed36379872ef99e752bf555f1689a9ea33e9ac3f74710e1"
+    },
+    {
+      "counts": {
+        "env_steps": 249378,
+        "episodes": 1137,
+        "epoch": 10,
+        "updates": 100
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "stokes_runs/hetnet_preflight_903502/fc_real/seed991/checkpoints/fc_real/run1/model_update00000100_ep10.pt",
+      "sha256": "4ca4cbcd65e6cc6c155f6affef6016e6be005b958a4967e885853f97e0d44e87"
+    },
+    {
+      "counts": {
+        "env_steps": 215575,
+        "episodes": 3016,
+        "epoch": 10,
+        "updates": 100
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "stokes_runs/hetnet_preflight_903502/pcp_binary/seed991/checkpoints/pcp_binary/run1/model_update00000100_ep10.pt",
+      "sha256": "0621b476b5f5ee3623c6a76d9b0cddb7aea41601a3a82d24ceacab8206f2e5ec"
+    },
+    {
+      "counts": {
+        "env_steps": 213241,
+        "episodes": 3596,
+        "epoch": 10,
+        "updates": 100
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "runs/hetnet_preflight_mac_20261003_234455_727228/pp_real/seed991/checkpoints/pp_real/run1/model_update00000100_ep10.pt",
+      "sha256": "c0eb5ff8204a6b69252ec8d98aee7b7ad91aa9e4344ef8bd61ebcf912888e9de"
+    },
+    {
+      "counts": {
+        "env_steps": 214435,
+        "episodes": 3150,
+        "epoch": 10,
+        "updates": 100
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "runs/hetnet_preflight_mac_20261003_234455_727228/pcp_real/seed991/checkpoints/pcp_real/run1/model_update00000100_ep10.pt",
+      "sha256": "f18d67f4ff7835fc7c3515a1e634ca27fce27ee5093b41f512036869e1f44ef6"
+    },
+    {
+      "counts": {
+        "env_steps": 251261,
+        "episodes": 1149,
+        "epoch": 10,
+        "updates": 100
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "runs/hetnet_preflight_mac_20261003_234455_727228/fc_real/seed991/checkpoints/fc_real/run1/model_update00000100_ep10.pt",
+      "sha256": "98aca2d6be4d33208ccfe5ec60f6fcf4993aa7524285be816d1a5a199f2db455"
+    },
+    {
+      "counts": {
+        "env_steps": 214710,
+        "episodes": 3055,
+        "epoch": 10,
+        "updates": 100
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "runs/hetnet_preflight_mac_20261003_234455_727228/pcp_binary/seed991/checkpoints/pcp_binary/run1/model_update00000100_ep10.pt",
+      "sha256": "a4de56f05cab89d33eedb6294ce0e1a92c2724644a8eed050662587f8ff116cb"
+    },
+    {
+      "counts": {
+        "env_steps": 8,
+        "episodes": 2,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/fc_binary_corrected-v1_1collector/checkpoints/fc_binary/run1/model_ep1.pt",
+      "sha256": "8da83c7aebe1160a9a9c32672d57546b6a030dadfff515dbc865aab5af6a7075"
+    },
+    {
+      "counts": {
+        "env_steps": 8,
+        "episodes": 2,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/fc_binary_historical-2022_1collector/checkpoints/fc_binary/run1/model_ep1.pt",
+      "sha256": "ddbcabef15f4325b1312cf45406bc70cac5ae33090d3e10763d894cc139cc7c9"
+    },
+    {
+      "counts": {
+        "env_steps": 8,
+        "episodes": 2,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/fc_real_corrected-v1_1collector/checkpoints/fc_real/run1/model_ep1.pt",
+      "sha256": "1f4744e3404425d0a2e68a00869d85d934e6815f5332ba536908f5979ce2086f"
+    },
+    {
+      "counts": {
+        "env_steps": 14,
+        "episodes": 4,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/fc_real_corrected-v1_2collector/checkpoints/fc_real/run1/model_ep1.pt",
+      "sha256": "a15827abd67fb6efcd254a2564c724fd84bed8b9a83056cc1cf15e7817cf1341"
+    },
+    {
+      "counts": {
+        "env_steps": 8,
+        "episodes": 2,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/fc_real_historical-2022_1collector/checkpoints/fc_real/run1/model_ep1.pt",
+      "sha256": "4257ab1d5606d6426aedb48d712715b2823b63d5f4e9ab70277167d5fde44bc7"
+    },
+    {
+      "counts": {
+        "env_steps": 16,
+        "episodes": 4,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/fc_real_historical-2022_2collector/checkpoints/fc_real/run1/model_ep1.pt",
+      "sha256": "1d4d9dddecc63e732450dc62ca2455e62dd205ae0c6f61667b375f54c1a322ec"
+    },
+    {
+      "counts": {
+        "env_steps": 8,
+        "episodes": 2,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/pcp_binary_corrected-v1_1collector/checkpoints/pcp_binary/run1/model_ep1.pt",
+      "sha256": "6761c403cad536b16136f9978d243e2e1b01187def1df11bf3677154b7bc3168"
+    },
+    {
+      "counts": {
+        "env_steps": 8,
+        "episodes": 2,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/pcp_binary_historical-2022_1collector/checkpoints/pcp_binary/run1/model_ep1.pt",
+      "sha256": "1e6fce7120bb5ae4514daa929b950884422f8ea7bdbe725430f555821f4a3998"
+    },
+    {
+      "counts": {
+        "env_steps": 8,
+        "episodes": 2,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/pcp_real_corrected-v1_1collector/checkpoints/pcp_real/run1/model_ep1.pt",
+      "sha256": "10e21da8dcc74ee37fd4fadb2019bac6c788950fe7824ed9f66ba01e61d45c22"
+    },
+    {
+      "counts": {
+        "env_steps": 16,
+        "episodes": 4,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/pcp_real_corrected-v1_2collector/checkpoints/pcp_real/run1/model_ep1.pt",
+      "sha256": "a5cd814a5315918aa55ec9182213daf8d1c36ec0bb640a74eb89f09d31bea279"
+    },
+    {
+      "counts": {
+        "env_steps": 8,
+        "episodes": 2,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/pcp_real_historical-2022_1collector/checkpoints/pcp_real/run1/model_ep1.pt",
+      "sha256": "b81abb5ad2a8208adae89063d46a3f4323edd83aca3060b33ae75e1daadc9303"
+    },
+    {
+      "counts": {
+        "env_steps": 16,
+        "episodes": 4,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/pcp_real_historical-2022_2collector/checkpoints/pcp_real/run1/model_ep1.pt",
+      "sha256": "afb389bea74aac29a2e638e18485639e5c551ca00fd840fdc89f4194bef292ea"
+    },
+    {
+      "counts": {
+        "env_steps": 8,
+        "episodes": 2,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/pp_binary_corrected-v1_1collector/checkpoints/pp_binary/run1/model_ep1.pt",
+      "sha256": "9147e7801eea25ce5f2bf9e187e0bf05da18f446a40d0d57fd9f02c44ca375d6"
+    },
+    {
+      "counts": {
+        "env_steps": 16,
+        "episodes": 4,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/pp_binary_corrected-v1_2collector/checkpoints/pp_binary/run1/model_ep1.pt",
+      "sha256": "812bbd7819f808f947d811c3401093ba73229b65b2dd7223115a6a4a0e162c3f"
+    },
+    {
+      "counts": {
+        "env_steps": 8,
+        "episodes": 2,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/pp_binary_historical-2022_1collector/checkpoints/pp_binary/run1/model_ep1.pt",
+      "sha256": "2d153e3f4a12c42fd887ccd502d1d060b6ca425983ffb8d27c70349f70fb47dc"
+    },
+    {
+      "counts": {
+        "env_steps": 16,
+        "episodes": 4,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/pp_binary_historical-2022_2collector/checkpoints/pp_binary/run1/model_ep1.pt",
+      "sha256": "aa4e2072c60bc66298c210795290b4c5f0d72bcbf928692a47c6271cd2780e7c"
+    },
+    {
+      "counts": {
+        "env_steps": 8,
+        "episodes": 2,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/pp_real_corrected-v1_1collector/checkpoints/pp_real/run1/model_ep1.pt",
+      "sha256": "04cdbf3620672655f249de507024f33bfac67620e388e2473e2ca27ac753acf6"
+    },
+    {
+      "counts": {
+        "env_steps": 8,
+        "episodes": 2,
+        "epoch": 1,
+        "updates": 2
+      },
+      "model_spec": "public-code-v1",
+      "optimizer": "RMSprop",
+      "path": "runs/publication_reconstruction_validation_final_20260930/pp_real_historical-2022_1collector/checkpoints/pp_real/run1/model_ep1.pt",
+      "sha256": "ab92593d585c2b7b619dda9b9b4b8c27abe8e672f8879d7ef5a08cd28534c66d"
+    },
+    {
+      "counts": {
+        "env_steps": 24,
+        "episodes": 8,
+        "epoch": 1,
+        "updates": 1
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "runs/publication_submission_validation_20261003/paused/checkpoints/pcp_binary/run1/model_update00000001_paused.pt",
+      "sha256": "eb9da3f445332a654869801322241b0fa1b817d0bd6f002d4dba4a43978d67ed"
+    },
+    {
+      "counts": {
+        "env_steps": 24,
+        "episodes": 8,
+        "epoch": 1,
+        "updates": 1
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "runs/publication_submission_validation_20261003/paused/checkpoints/pcp_binary/run1/model_update00000001_steps1.pt",
+      "sha256": "80a29f8aee54c1a32f691201754f5451e53d6fce444a49ed4b9f10bf37db48d6"
+    },
+    {
+      "counts": {
+        "env_steps": 72,
+        "episodes": 24,
+        "epoch": 1,
+        "updates": 3
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "runs/publication_submission_validation_20261003/continued/checkpoints/pcp_binary/run1/model_update00000003_ep1.pt",
+      "sha256": "aff0fd9db86f58c34ec6f92461c7b8cb40a6acd5c05ff17680b902b66386a34e"
+    },
+    {
+      "counts": {
+        "env_steps": 144,
+        "episodes": 48,
+        "epoch": 2,
+        "updates": 6
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "runs/publication_submission_validation_20261003/continued/checkpoints/pcp_binary/run1/model_update00000006_ep2.pt",
+      "sha256": "995112c4bb78187946b3fc8748aedc9d8cd64c1aa0d3f7f1dcdb220b756565ac"
+    },
+    {
+      "counts": {
+        "env_steps": 24,
+        "episodes": 8,
+        "epoch": 1,
+        "updates": 1
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "runs/publication_submission_validation_20261003/uninterrupted/checkpoints/pcp_binary/run1/model_update00000001_steps1.pt",
+      "sha256": "3252f553715094bf813c71a3365f06409ef055023df4799a9b35fa5cc86f088c"
+    },
+    {
+      "counts": {
+        "env_steps": 72,
+        "episodes": 24,
+        "epoch": 1,
+        "updates": 3
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "runs/publication_submission_validation_20261003/uninterrupted/checkpoints/pcp_binary/run1/model_update00000003_ep1.pt",
+      "sha256": "f6171c9151f64c19faacad62b146c8b9f9dcac8b4db7f188afb1d3ac6de56a7e"
+    },
+    {
+      "counts": {
+        "env_steps": 144,
+        "episodes": 48,
+        "epoch": 2,
+        "updates": 6
+      },
+      "model_spec": "supplement-v1",
+      "optimizer": "Adam",
+      "path": "runs/publication_submission_validation_20261003/uninterrupted/checkpoints/pcp_binary/run1/model_update00000006_ep2.pt",
+      "sha256": "6dee4b3a35ef6e1806bf9bbfbf140cb1fe2677acd46fb9b7107df43d37da1e80"
+    }
+  ],
+  "preflight_ledgers": [
+    {
+      "run": "stokes_runs/hetnet_preflight_903502/pp_real/seed991",
+      "steps": 213583,
+      "steps_per_second": 168.63214217103405,
+      "updates": 100
+    },
+    {
+      "run": "stokes_runs/hetnet_preflight_903502/pcp_real/seed991",
+      "steps": 214872,
+      "steps_per_second": 97.71605898088615,
+      "updates": 100
+    },
+    {
+      "run": "stokes_runs/hetnet_preflight_903502/fc_real/seed991",
+      "steps": 249378,
+      "steps_per_second": 101.60735356534033,
+      "updates": 100
+    },
+    {
+      "run": "stokes_runs/hetnet_preflight_903502/pcp_binary/seed991",
+      "steps": 215575,
+      "steps_per_second": 38.81464269251498,
+      "updates": 100
+    },
+    {
+      "run": "runs/hetnet_preflight_mac_20261003_234455_727228/pp_real/seed991",
+      "steps": 213241,
+      "steps_per_second": 392.0848027558681,
+      "updates": 100
+    },
+    {
+      "run": "runs/hetnet_preflight_mac_20261003_234455_727228/pcp_real/seed991",
+      "steps": 214435,
+      "steps_per_second": 221.23164279324146,
+      "updates": 100
+    },
+    {
+      "run": "runs/hetnet_preflight_mac_20261003_234455_727228/fc_real/seed991",
+      "steps": 251261,
+      "steps_per_second": 230.1065989813226,
+      "updates": 100
+    },
+    {
+      "run": "runs/hetnet_preflight_mac_20261003_234455_727228/pcp_binary/seed991",
+      "steps": 214710,
+      "steps_per_second": 212.6284812358095,
+      "updates": 100
+    }
+  ],
+  "resume": [
+    {
+      "checkpoint": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/publication_submission_validation_20261003/paused/checkpoints/pcp_binary/run1/model_update00000001_paused.pt",
+      "checkpoint_sha256": "eb9da3f445332a654869801322241b0fa1b817d0bd6f002d4dba4a43978d67ed",
+      "completed_epochs": 0,
+      "counts": {
+        "env_steps": 24,
+        "episodes": 8,
+        "epoch": 1,
+        "updates": 1
+      },
+      "run_dir": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/publication_submission_validation_20261003/paused"
+    },
+    {
+      "checkpoint": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/publication_submission_validation_20261003/paused/checkpoints/pcp_binary/run1/model_update00000001_steps1.pt",
+      "checkpoint_sha256": "80a29f8aee54c1a32f691201754f5451e53d6fce444a49ed4b9f10bf37db48d6",
+      "completed_epochs": 0,
+      "counts": {
+        "env_steps": 24,
+        "episodes": 8,
+        "epoch": 1,
+        "updates": 1
+      },
+      "run_dir": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/publication_submission_validation_20261003/paused"
+    }
+  ],
+  "runtime_origins_valid": true,
+  "scope": "actual checkpoint decoding, optimizer/default validation and ledger reconciliation; no policy execution",
+  "status": "passed"
+}

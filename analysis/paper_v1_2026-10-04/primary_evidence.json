@@ -1,0 +1,41 @@
+{
+  "papers": [
+    {
+      "original_manifest_entry": {
+        "file": "Seraj_2022_HetNet.pdf",
+        "title": "Learning Efficient Diverse Communication for Cooperative Heterogeneous Teaming",
+        "source_url": "https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf",
+        "sha256": "c4f7d8d45d2414ee9ef025ebb16b2a8303b40a9ea434bb5b57cb6ed8698ac723",
+        "bytes": 4898022,
+        "status": "available"
+      },
+      "text_path": "research/papers/HetNet.txt",
+      "text_sha256": "805bea9baafe8b2c61a952ad6dd972ccc957e32663b7803937e56ec114f8e413",
+      "used_for": [
+        "Section4/Figure1: class preprocessing; equations2\u20135: relation attention and SEN",
+        "Section4.3: independent parallel heads",
+        "Section5.2/Algorithm1: per-class average returns critic and GAE",
+        "Section3.1: N denotes total team size; publication reports 64-bit messaging"
+      ],
+      "pdf_present": false
+    },
+    {
+      "original_manifest_entry": {
+        "file": "Seraj_2022_HetNet_Supplementary.pdf",
+        "title": "Learning Efficient Diverse Communication for Cooperative Heterogeneous Teaming \u2013 Supplementary",
+        "source_url": "https://github.com/CORE-Robotics-Lab/HetNet/blob/bff9f7f9a9e905d96c6d9762c2c853c9ee2f96ec/AAMAS_22___HetNet_Supplementary.pdf",
+        "sha256": "22262845fe6f8e1b6aa6f66f970c176a27c9a9f0550b4fc62066c7d99a928696",
+        "bytes": 319697,
+        "status": "available"
+      },
+      "text_path": "research/papers/HetNet_Supplementary.txt",
+      "text_sha256": "92086b9896541cbdf1ff1aa513fd075de936cdffe2efdb77e855ce7dafdef57f",
+      "used_for": [
+        "Section2.1: three layers; four16-wide hidden heads; concatenate then average; per-class critics; Adam1e-3",
+        "Section1.3: FC4/5 actions, prior discovery, time/new-fire/extinction/false-drop rewards"
+      ],
+      "pdf_present": false
+    }
+  ],
+  "interpretation_boundary": "Publications do not resolve all implementation choices. 64 bits per independent head is the selected reconstruction convention, not a recovered publication configuration."
+}

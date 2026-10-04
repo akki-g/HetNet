@@ -20,12 +20,12 @@ import torch
 RECOVERY_VERSION = 1
 RUNTIME_ARGUMENTS = {
     "metrics_file", "save_dir", "source_manifest", "resume_checkpoint",
-    "wall_seconds", "episode_log", "save_every", "experiment_name", "load",
+    "wall_seconds", "episode_log", "save_every", "experiment_name", "load", "profile_phases",
 }
 
 
 def rng_scheme(model_spec):
-    return "seedsequence-v1" if model_spec == "supplement-v1" else "legacy-offset-v1"
+    return "seedsequence-v1" if model_spec in ("supplement-v1", "paper-v1") else "legacy-offset-v1"
 
 
 def seed_stream(seed, collector_id=None):

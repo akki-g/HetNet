@@ -1,0 +1,41 @@
+{
+  "checkpoint_byte_identities": 8,
+  "corrupt_hash_rejection": "passed",
+  "evidence_references": 27,
+  "external_primary_sources": 8,
+  "full_test_suite_rerun": false,
+  "git_diff_check": "passed",
+  "hashed_files": 78,
+  "independent_reviews": [
+    "active source and candidate constraints",
+    "paper/supplement attribution",
+    "measured artifacts and benchmark/correctness gates"
+  ],
+  "installed_pytorch_sources": [
+    {
+      "matches_remote": true,
+      "path": ".venv/lib/python3.12/site-packages/torch/profiler/profiler.py",
+      "reference": "W1",
+      "sha256": "aef265c855e9f086ab17763a7d54d9f8be1982c73168106ad95f912cbce7d1c1"
+    },
+    {
+      "matches_remote": true,
+      "path": ".venv/lib/python3.12/site-packages/torch/utils/benchmark/utils/timer.py",
+      "reference": "W6",
+      "sha256": "0b686423c79b13c8efeb15b4bb7e29c14a70a5c8ec06c1dc45268788b5ff9931"
+    }
+  ],
+  "local_links": 65,
+  "new_performance_experiments": 0,
+  "policy_executions_performed": 0,
+  "publisher_and_pinned_supplement_hash_match": true,
+  "python_sources_parse": "passed",
+  "review_date": "2026-10-04",
+  "review_scope": "Final exact-first plan and SoftRole comparison contract; independent read-only source/fidelity reviews incorporated.",
+  "runtime_manifest_files": 38,
+  "scope": "File identity, local links, ledger/resource arithmetic, launcher timestamps and initial signature metadata; no policy execution or new checkpoint tensor audit.",
+  "status": "passed",
+  "unchanged_archived_run_inputs": 639,
+  "verification_invocations": "system Python, arbitrary cwd, -O and pinned project Python agree",
+  "workload_pairs": 4
+}

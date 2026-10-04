@@ -26,6 +26,7 @@ def parser():
                        help="episode records: buffered JSONL file or tagged stdout batch per update")
     train.add_argument("--dry-run", action="store_true")
     train.add_argument("--task", choices=("pp", "pcp", "fc"))
+    train.add_argument("--env-version", choices=("corrected-observation-v1", "paper-v1"))
     train.add_argument("--study", choices=("fixed", "composition", "failure"))
     train.add_argument("--model", choices=("banked", "shared", "capability", "constant"))
     # Familiar release spellings are aliases, not a second set of defaults.

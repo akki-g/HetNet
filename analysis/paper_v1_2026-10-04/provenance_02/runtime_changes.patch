@@ -1,0 +1,1509 @@
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/WildFire_Simulate_Original.py
++++ working/publication_reconstruction/runtime/WildFire_Simulate_Original.py
+@@ -23,7 +23,7 @@
+                  time_step=1, radiation_radius=10, weak_fire_threshold=0.5, flame_height=3, flame_angle=np.pi/3,
+                  publication_env_version='historical-2022'):
+ 
+-        if publication_env_version not in ('historical-2022', 'corrected-v1'):
++        if publication_env_version not in ('historical-2022', 'corrected-v1', 'paper-v1'):
+             raise ValueError('Unsupported publication_env_version: ' + str(publication_env_version))
+         self.publication_env_version = publication_env_version
+ 
+@@ -180,7 +180,7 @@
+         for point in ign_points_all:
+             # extracting the data
+             x, y = point[0], point[1]
+-            if self.publication_env_version == 'corrected-v1':
++            if self.publication_env_version in ('corrected-v1', 'paper-v1'):
+                 if not (0 <= x <= world_Size - 1 and 0 <= y <= world_Size - 1):
+                     raise ValueError('corrected-v1 requires in-bounds fire fronts')
+                 if x == 0 or y == 0:
+@@ -213,7 +213,7 @@
+                 if [int(x), int(y)] not in pruned_List:
+                     x_new = x + x_diff * self.time_step
+                     y_new = y + y_diff * self.time_step
+-                    if self.publication_env_version == 'corrected-v1' and not (
++                    if self.publication_env_version in ('corrected-v1', 'paper-v1') and not (
+                             0 <= x_new <= world_Size - 1 and 0 <= y_new <= world_Size - 1):
+                         # Explicit reconstruction choice: a proposed exit keeps
+                         # the previous source position instead of clipping it.
+@@ -240,7 +240,7 @@
+ 
+                 counter += 1
+ 
+-        if self.publication_env_version == 'corrected-v1':
++        if self.publication_env_version in ('corrected-v1', 'paper-v1'):
+             return new_fire_front[:counter], current_geo_phys_info[:counter]
+         return new_fire_front, current_geo_phys_info
+ 
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/envs/ic3net_envs/fire_commander_env.py
++++ working/publication_reconstruction/runtime/envs/ic3net_envs/fire_commander_env.py
+@@ -89,7 +89,7 @@
+ 
+     def multi_agent_init(self, args):
+         self.publication_env_version = getattr(args, 'publication_env_version', 'historical-2022')
+-        if self.publication_env_version not in ('historical-2022', 'corrected-v1'):
++        if self.publication_env_version not in ('historical-2022', 'corrected-v1', 'paper-v1'):
+             raise ValueError('Unsupported publication_env_version: ' + str(self.publication_env_version))
+         # General variables defining the environment : CONFIG
+         params = ['dim', 'vision', 'fire_spread_off', 'mode', 'nfriendly_P', 'nfriendly_A', 'max_wind_speed', 'tensor_obs', 'reward_type', 'A_vision']
+@@ -105,6 +105,10 @@
+         self.captured_fire_index = self.npredator + self.npredator_capture
+         self.dims = dims = (self.dim, self.dim)
+         self.stay = not args.no_stay
++        if self.publication_env_version == 'paper-v1':
++            self.stay = False
++            if self.reward_type != 3:
++                raise ValueError('paper-v1 uses the fixed paper reward, with reward_type=3')
+         self.duration = args.max_steps
+ 
+         if self.reward_type == 0:
+@@ -162,6 +166,16 @@
+         if self.episode_over:
+             raise RuntimeError("Episode is done")
+ 
++        if self.publication_env_version == 'paper-v1':
++            action = np.asarray(action)
++            limits = np.array([4] * self.npredator + [5] * self.npredator_capture)
++            if (action.shape != limits.shape or not np.isfinite(action).all()
++                    or np.any(action != action.astype(int))
++                    or np.any(action < 0) or np.any(action >= limits)):
++                raise ValueError('paper-v1 requires one valid native action per agent (P:0..3, A:0..4)')
++            self._paper_extinctions = set()
++            self._paper_new_ignitions = set()
++
+         self.false_water_drop = np.zeros(self.npredator_capture)    # if the A agents dropped water not on a fire
+         self.fire_extinguished = np.zeros(self.npredator_capture)   # if the A agent dropped water on a fire (0 -> no fire, 1 -> normal fire, 2 -> fire source)
+         self.extinguishing = np.zeros(self.npredator_capture)       # if the A agent took the extinguish action
+@@ -176,8 +190,14 @@
+             self._take_action(i, a)
+ 
+         # Propagate fire
++        if self.publication_env_version == 'paper-v1':
++            before_spread = {tuple(map(int, point)) for point in self.fire_loc}
+         if not self.fire_spread_off:
+             self._fire_propagation()
++        if self.publication_env_version == 'paper-v1':
++            after_spread = {tuple(map(int, point)) for point in self.fire_loc}
++            self._paper_new_ignitions = after_spread - before_spread
++            self.fire_out = not after_spread
+ 
+         assert np.all(action <= self.naction), "Actions should be in the range [0,naction)."
+ 
+@@ -189,6 +209,12 @@
+             'predator_capture_locs' : self.predator_capture_loc,
+             'fire_locs' : self.fire_loc
+         }
++        if self.publication_env_version == 'paper-v1':
++            debug['paper_events'] = {
++                'new_ignitions': len(self._paper_new_ignitions),
++                'extinctions': len(self._paper_extinctions),
++                'false_drops': self.false_water_drop.astype(int).tolist(),
++            }
+ 
+         return self.obs, self._get_reward(), self.episode_over, debug
+ 
+@@ -205,6 +231,9 @@
+         self.nfire = self.nfire_start   # reset fire count
+         self.extinguishing = np.zeros(self.npredator_capture)
+         self.discovered_fire = []
++        if self.publication_env_version == 'paper-v1':
++            self._paper_extinctions = set()
++            self._paper_new_ignitions = set()
+         self.just_discovered_source = np.zeros(self.npredator)
+         self.just_discovered_nonsource = np.zeros(self.npredator)
+ 
+@@ -304,7 +333,7 @@
+         if len(positions) == 0:
+             return False
+         positions = np.asarray(positions)
+-        if self.publication_env_version == 'corrected-v1':
++        if self.publication_env_version in ('corrected-v1', 'paper-v1'):
+             # Coordinates match only when both components belong to one row.
+             return bool(np.any(np.all(positions == point, axis=1)))
+         return point in positions
+@@ -327,7 +356,7 @@
+             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
+             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
+             view = self.bool_base_grid[slice_y, slice_x]
+-            obs.append(view.copy() if self.publication_env_version == 'corrected-v1' else view)
++            obs.append(view.copy() if self.publication_env_version in ('corrected-v1', 'paper-v1') else view)
+ 
+             for fire in self.fire_loc:
+                 if self._contains_fire_position(fire, self.discovered_fire):
+@@ -347,7 +376,7 @@
+             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
+             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
+             view = self.bool_base_grid[slice_y, slice_x]
+-            obs.append(view.copy() if self.publication_env_version == 'corrected-v1' else view)
++            obs.append(view.copy() if self.publication_env_version in ('corrected-v1', 'paper-v1') else view)
+ 
+             if self.action_blind:
+                 obs[-1][:, :, self.BASE:] = np.zeros(shape=obs[-1][:, :, self.BASE:].shape)
+@@ -357,6 +386,22 @@
+         return obs
+ 
+     def _take_action(self, idx, act):
++        if self.publication_env_version == 'paper-v1':
++            limit = 4 if idx < self.predator_capture_index else 5
++            if not 0 <= act < limit or int(act) != act:
++                raise ValueError('Invalid paper-v1 native action')
++            if idx >= self.predator_capture_index and act == 4:
++                # Eligibility uses discovery from the previous observation:
++                # all actions/suppression precede propagation and new sensing.
++                position = self.predator_capture_loc[idx - self.npredator]
++                active = bool(np.any(np.all(self.fire_loc == position, axis=1)))
++                discovered = self._contains_fire_position(position, self.discovered_fire)
++                if not (active and discovered):
++                    self.extinguishing[idx - self.npredator] = 1
++                    self.false_water_drop[idx - self.npredator] = 1
++                    return
++                self._paper_extinctions.add(tuple(map(int, position)))
++                act = 5  # Reuse the physical removal, without a native stay action.
+         # STAY action
+         if act==4:
+             return
+@@ -466,7 +511,14 @@
+         elif self.mode == 'competitive':
+             raise NotImplementedError('>>> Reward not implemented for competitive Fire Commander')
+         elif self.mode == 'mixed':
+-            if self.TEMP_REWARD_TYPE == 'NEG_PER_FIRE':
++            if self.publication_env_version == 'paper-v1':
++                # Counts are unique events of this transition, not active fire
++                # count or front/source identity. The final step still costs .1.
++                shared = (-0.1 - 0.1 * len(self._paper_new_ignitions)
++                          + 10.0 * len(self._paper_extinctions))
++                reward = np.full(self.captured_fire_index, shared)
++                reward[self.npredator:] -= 0.1 * self.false_water_drop
++            elif self.TEMP_REWARD_TYPE == 'NEG_PER_FIRE':
+                 reward_val = self.nfire * self.FIRE_PENALTY
+                 reward = np.full(self.captured_fire_index, reward_val)
+             elif self.TEMP_REWARD_TYPE == 'NEG_TIMESTEP_BIG_POS_CAPTURE':
+@@ -515,6 +567,8 @@
+         return reward
+ 
+     def reward_terminal(self):
++        if self.publication_env_version == 'paper-v1':
++            return np.zeros(self.captured_fire_index)
+         return np.zeros_like(self._get_reward())
+ 
+     def _onehot_initialization(self, a):
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/envs/ic3net_envs/predator_capture_env.py
++++ working/publication_reconstruction/runtime/envs/ic3net_envs/predator_capture_env.py
+@@ -89,7 +89,7 @@
+     def multi_agent_init(self, args):
+ 
+         self.publication_env_version = getattr(args, 'publication_env_version', 'historical-2022')
+-        if self.publication_env_version not in ('historical-2022', 'corrected-v1'):
++        if self.publication_env_version not in ('historical-2022', 'corrected-v1', 'paper-v1'):
+             raise ValueError('Unsupported publication_env_version: ' + str(self.publication_env_version))
+ 
+         # General variables defining the environment : CONFIG
+@@ -282,13 +282,13 @@
+             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
+             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
+             view = self.bool_base_grid[slice_y, slice_x]
+-            obs.append(view.copy() if self.publication_env_version == 'corrected-v1' else view)
++            obs.append(view.copy() if self.publication_env_version in ('corrected-v1', 'paper-v1') else view)
+ 
+         for p in self.predator_capture_loc:
+             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
+             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
+             view = self.bool_base_grid[slice_y, slice_x]
+-            obs.append(view.copy() if self.publication_env_version == 'corrected-v1' else view)
++            obs.append(view.copy() if self.publication_env_version in ('corrected-v1', 'paper-v1') else view)
+             # x,y,z = self.bool_base_grid[slice_y, slice_x].shape
+             # obs.append(np.arange(x*y*z).reshape(x,y,z))
+ 
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/hetgat/graph/paper.py
++++ working/publication_reconstruction/runtime/hetgat/graph/paper.py
+@@ -0,0 +1,143 @@
++"""Independent-head HetGAT for the explicitly reconciled paper-v1 model.
++
++The paper's Eq. 2--5 and section 4.3 specify typed attention and independent
++parallel heads. Unlike fastbinary's shared payload, each Binary head here owns
++its encoder, categorical binarizer and receiver-class decoder. The chosen
++study convention is 64 bits PER HEAD, or 256 bits per sender per round; this is
++an explicit reconstruction choice, not an identified publication checkpoint.
++
++Both backends use the same parameter containers and sender computations. DGL
++and torch-v1 differ only in the relation aggregation implementation.
++"""
++import torch
++from torch import nn
++from torch.nn import functional as F
++
++from hetgat.graph.torch_backend import RELATIONS, aggregate
++
++
++class PaperHead(nn.Module):
++    def __init__(self, in_dim, out_dim, binary, msg_dim):
++        super().__init__()
++        transforms = {
++            "P": ("P", "P"), "A": ("A", "A"),
++            "p2s": ("P", "state"), "a2s": ("A", "state"),
++            "in": ("state", "state"),
++        }
++        if not binary:
++            transforms.update({name: (src, dst) for src, name, dst in RELATIONS[:4]})
++        self.fc = nn.ModuleDict({name: nn.Linear(in_dim[src], out_dim[dst])
++                                for name, (src, dst) in transforms.items()})
++        self.binary = binary
++        if binary:
++            self.encoder = nn.ModuleDict({key: nn.Linear(in_dim[key], msg_dim)
++                                          for key in ("P", "A")})
++            self.binarize = nn.Linear(1, 2)
++            self.decoder = nn.ModuleDict({key: nn.Linear(msg_dim, out_dim[key])
++                                          for key in ("P", "A")})
++        # Preserve the reconstruction's explicitly mixed attention dtype.
++        self.attention = nn.ParameterDict()
++        for _, name, target in RELATIONS:
++            for side in ("src", "dst"):
++                parameter = nn.Parameter(torch.empty(1, out_dim[target], dtype=torch.float32))
++                nn.init.xavier_normal_(parameter, gain=nn.init.calculate_gain("relu"))
++                self.attention[name + "_" + side] = parameter
++
++    def payloads(self, features):
++        """Draw P then A once per head, broadcasting each bit vector to neighbors."""
++        bits = {}
++        for key in ("P", "A"):
++            encoded = self.encoder[key](features[key])
++            logits = self.binarize(encoded.unsqueeze(-1))
++            categorical = F.gumbel_softmax(logits, tau=1, hard=True, dim=-1)
++            bits[key] = categorical @ categorical.new_tensor([0, 1])
++        return bits
++
++
++class PaperLayer(nn.Module):
++    def __init__(self, in_dim, out_dim, num_heads=4, msg_dim=64,
++                 use_real=True, merge="cat", message_backend="dgl"):
++        super().__init__()
++        if message_backend not in ("dgl", "torch-v1"):
++            raise ValueError("Unknown message backend: " + str(message_backend))
++        if merge not in ("cat", "avg"):
++            raise ValueError("Head merge must be cat or avg")
++        self.in_dim, self.out_dim = dict(in_dim), dict(out_dim)
++        self.num_heads, self.msg_dim = num_heads, msg_dim
++        self.use_real, self.merge = use_real, merge
++        self.message_backend = message_backend
++        self.heads = nn.ModuleList([
++            PaperHead(in_dim, out_dim, not use_real, msg_dim) for _ in range(num_heads)])
++
++    def transformed_features(self, features):
++        own, messages = {key: [] for key in ("P", "A", "state")}, {}
++        for head in self.heads:
++            own["P"].append(head.fc["P"](features["P"]))
++            own["A"].append(head.fc["A"](features["A"]))
++            own["state"].append(head.fc["in"](features["state"]))
++            payloads = None if self.use_real else head.payloads(features)
++            for source, name, target in RELATIONS:
++                value = (head.fc[name](features[source])
++                         if self.use_real or target == "state"
++                         else head.decoder[target](payloads[source]))
++                messages.setdefault(name, []).append(value)
++        return ({key: torch.stack(values, dim=1) for key, values in own.items()},
++                {key: torch.stack(values, dim=1) for key, values in messages.items()})
++
++    def forward(self, graph, features, topology=None):
++        own, messages = self.transformed_features(features)
++        if self.message_backend == "dgl":
++            if graph is None:
++                raise ValueError("DGL paper-v1 forward requires a graph")
++            received = self._dgl(graph, own, messages)
++        else:
++            if topology is None:
++                raise ValueError("torch-v1 forward requires static topology")
++            received = {}
++            for _, name, target in RELATIONS:
++                if topology.nonempty[name]:
++                    received[name] = aggregate(messages[name], own[target],
++                        self._attention(name, "src"), self._attention(name, "dst"),
++                        topology.masks[name])
++        outputs = {}
++        for target, incoming in (("P", ("p2p", "a2p")),
++                                 ("A", ("p2a", "a2a")),
++                                 ("state", ("p2s", "a2s"))):
++            value = own[target]
++            for name in incoming:
++                if name in received:
++                    value = value + received[name]
++            if self.merge == "cat":
++                outputs[target] = F.relu(value).flatten(1)
++            else:
++                outputs[target] = value.mean(dim=1)
++        return outputs
++
++    def _attention(self, relation, side):
++        return torch.stack([head.attention[relation + "_" + side][0]
++                            for head in self.heads], dim=0)
++
++    def _dgl(self, graph, own, messages):
++        # Import only on the reference path. local_scope prevents learned tensors
++        # from surviving in a supplied graph after this forward returns.
++        import dgl.function as fn
++        from dgl.ops import edge_softmax
++        received = {}
++        with graph.local_scope():
++            for _, name, target in RELATIONS:
++                relation = graph[name]
++                if not relation.num_edges():
++                    continue
++                with relation.local_scope():
++                    relation.srcdata["paper_message"] = messages[name]
++                    relation.srcdata["paper_source"] = (
++                        messages[name] * self._attention(name, "src")).sum(-1, keepdim=True)
++                    relation.dstdata["paper_target"] = (
++                        own[target] * self._attention(name, "dst")).sum(-1, keepdim=True)
++                    relation.apply_edges(fn.u_add_v("paper_source", "paper_target", "paper_score"))
++                    scores = F.leaky_relu(relation.edata["paper_score"], negative_slope=0.2)
++                    relation.edata["paper_weight"] = edge_softmax(relation, scores)
++                    relation.update_all(fn.u_mul_e("paper_message", "paper_weight", "paper_m"),
++                                        fn.sum("paper_m", "paper_result"))
++                    received[name] = relation.dstdata["paper_result"]
++        return received
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/hetgat/graph/torch_backend.py
++++ working/publication_reconstruction/runtime/hetgat/graph/torch_backend.py
+@@ -0,0 +1,67 @@
++"""Small-team, unlimited-communication HetGAT aggregation in plain PyTorch.
++
++Only topology is cached. Learned features, scores and aggregates are new tensors
++on every call. Each relation has its own receiver-normalized softmax (paper
++Eq. 2/4); combining all agent classes into one softmax would change HetNet.
++"""
++from dataclasses import dataclass
++
++import torch
++import torch.nn.functional as F
++
++
++RELATIONS = (
++    ("P", "p2p", "P"), ("P", "p2a", "A"),
++    ("A", "a2p", "P"), ("A", "a2a", "A"),
++    ("P", "p2s", "state"), ("A", "a2s", "state"),
++)
++
++
++@dataclass(frozen=True)
++class StaticTopology:
++    """Receiver-by-sender masks, deliberately outside model state_dict/buffers."""
++
++    num_P: int
++    num_A: int
++    with_two_state: bool = True
++
++    def __post_init__(self):
++        if self.num_P < 0 or self.num_A < 0:
++            raise ValueError("Agent counts must be nonnegative")
++        counts = {"P": self.num_P, "A": self.num_A,
++                  "state": 2 if self.with_two_state else 1}
++        masks = {}
++        for source, name, target in RELATIONS:
++            mask = torch.ones(counts[target], counts[source], dtype=torch.bool)
++            if source == target:
++                mask.fill_diagonal_(False)
++            if target == "state" and self.with_two_state:
++                mask.zero_()
++                mask[0 if source == "P" else 1, :] = True
++            masks[name] = mask
++        object.__setattr__(self, "counts", counts)
++        object.__setattr__(self, "masks", masks)
++        object.__setattr__(self, "nonempty", {
++            name: bool(mask.any()) for name, mask in masks.items()})
++
++
++def aggregate(messages, receiver, source_attention, target_attention, mask,
++              negative_slope=0.2):
++    """Apply one typed attention relation; inputs have shape (nodes,heads,width).
++
++    Empty neighborhoods yield zero with no null/self candidate. Softmax is over
++    permitted senders only. Empty rows are made finite before softmax so their
++    backward pass cannot propagate NaNs from an all-minus-infinity row.
++    """
++    if not mask.numel() or not bool(mask.any()):
++        return receiver.new_zeros(receiver.shape)
++    source_score = (messages * source_attention).sum(-1)
++    target_score = (receiver * target_attention).sum(-1)
++    scores = F.leaky_relu(target_score[:, None, :] + source_score[None, :, :],
++                          negative_slope=negative_slope)
++    allowed = mask[:, :, None]
++    has_sender = allowed.any(dim=1, keepdim=True)
++    scores = scores.masked_fill(~allowed, -torch.inf)
++    scores = torch.where(has_sender, scores, torch.zeros_like(scores))
++    weights = scores.softmax(dim=1).masked_fill(~allowed, 0)
++    return (weights[:, :, :, None] * messages[None, :, :, :]).sum(dim=1)
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/hetgat/paper.py
++++ working/publication_reconstruction/runtime/hetgat/paper.py
+@@ -0,0 +1,131 @@
++"""Reconciled, separately versioned paper-v1 HetNet architecture.
++
++Paper figure 1/section 4.2: independent class status preprocessing/recurrence.
++Supplement section 2.1: three rounds, four 16-wide hidden heads, final averaging.
++Public-source interpretation: two class-routed SENs and FC plus ReLU/LSTM input
++branches. SEN metadata is [N_P,N_A,world_width,zero_based_episode_step].
++"""
++import math
++import operator
++
++import torch
++from torch import nn
++
++from hetgat.uavnet import UAVNetA2CEasy
++from hetgat.graph.paper import PaperLayer
++from hetgat.graph.torch_backend import StaticTopology
++
++
++class PaperNet(nn.Module):
++    # Retain the established typed observation layout and independent copy/cast
++    # semantics. These helpers neither construct graphs nor run learned modules.
++    remove_excess_action_features_from_all = UAVNetA2CEasy.remove_excess_action_features_from_all
++    get_obs_features = UAVNetA2CEasy.get_obs_features
++
++    def __init__(self, in_dim_raw, in_dim, hid_dim, out_dim, num_P, num_A,
++                 num_heads, msg_dim=64, use_CNN=True, use_real=True, use_tanh=False,
++                 per_class_critic=False, per_agent_critic=False, device=None,
++                 with_two_state=False, obs=1, comm_range_P=-1, comm_range_A=-1,
++                 lossy_comm=False, min_comm_loss=0, max_comm_loss=0.3,
++                 tensor_obs=False, total_state_action_in_batch=500,
++                 action_vision=-1, model_spec="paper-v1", message_backend="dgl"):
++        super().__init__()
++        if model_spec != "paper-v1":
++            raise ValueError("PaperNet requires model_spec=paper-v1")
++        if num_heads != 4 or any(hid_dim.get(key) != 16 for key in ("P", "A", "state")):
++            raise ValueError("paper-v1 requires four 16-wide hidden heads")
++        if not use_real and msg_dim != 64:
++            raise ValueError("paper-v1 fixes 64 bits per head (256 per sender per round)")
++        if not per_class_critic or per_agent_critic or not with_two_state:
++            raise ValueError("paper-v1 requires per-class critics and two state nodes")
++        if tensor_obs or action_vision != -1 or lossy_comm or use_tanh:
++            raise ValueError("Unsupported paper-v1 observation, loss or critic configuration")
++        if message_backend not in ("dgl", "torch-v1"):
++            raise ValueError("Unknown message backend: " + str(message_backend))
++        if message_backend == "torch-v1" and (comm_range_P != -1 or comm_range_A != -1):
++            raise ValueError("torch-v1 requires unlimited, non-lossy communication")
++        self.device = torch.device("cpu") if device is None else torch.device(device)
++        if self.device.type != "cpu":
++            raise ValueError("paper-v1 currently supports the pinned CPU runtime only")
++        if num_P < 1 or num_A < 0:
++            raise ValueError("paper-v1 requires at least one P agent and nonnegative A count")
++        self.model_spec, self.message_backend = model_spec, message_backend
++        self.num_P, self.num_A = num_P, num_A
++        self.in_dim, self.vision = dict(in_dim), in_dim_raw["vision"]
++        self.P_s = in_dim["P"] - in_dim["state"]
++        self.world_dim = math.isqrt(self.P_s)
++        self.obs_squares = 1 if obs is None else obs
++        self.per_class_critic, self.per_agent_critic = True, False
++        self.with_two_state, self.use_real = True, use_real
++        self.use_CNN, self.use_tanh, self.tensor_obs = False, False, False
++        self.episode_step = 0
++        self._topology = None
++        self.prepro_stat = nn.ModuleDict({
++            key: nn.Linear(self.P_s * self.obs_squares, self.P_s * self.obs_squares)
++            for key in ("P", "A")})
++        self.f_module_stat = nn.ModuleDict({
++            key: nn.LSTMCell(self.P_s * self.obs_squares, self.P_s)
++            for key in ("P", "A")})
++        self.prepro_obs = nn.Linear(in_dim["state"] * self.obs_squares,
++                                    in_dim["state"] * self.obs_squares)
++        self.f_module_obs = nn.LSTMCell(in_dim["state"] * self.obs_squares, in_dim["state"])
++        hidden_inputs = {key: 16 * num_heads for key in ("P", "A", "state")}
++        layer_args = dict(num_heads=num_heads, msg_dim=msg_dim, use_real=use_real,
++                          message_backend=message_backend)
++        self.layer1 = PaperLayer(in_dim, hid_dim, **layer_args)
++        self.layer2 = PaperLayer(hidden_inputs, hid_dim, **layer_args)
++        self.layer3 = PaperLayer(hidden_inputs, out_dim, merge="avg", **layer_args)
++        self.P_critic_head = nn.Linear(out_dim["state"], 1)
++        self.A_critic_head = nn.Linear(out_dim["state"], 1)
++        self.relu = nn.ReLU()
++
++    def set_episode_step(self, step):
++        if isinstance(step, bool):
++            raise ValueError("Episode step must be a nonnegative integer")
++        try:
++            step = operator.index(step)
++        except TypeError as error:
++            raise ValueError("Episode step must be a nonnegative integer") from error
++        if step < 0:
++            raise ValueError("Episode step must be a nonnegative integer")
++        self.episode_step = step
++
++    def init_hidden(self, batch_size):
++        if batch_size != 1:
++            raise ValueError("paper-v1 processes one team at a time")
++        return {key: tuple(torch.zeros(count, width, requires_grad=True, device=self.device)
++                           for _ in range(2))
++                for key, count, width in (("P_s", self.num_P, self.P_s),
++                                           ("P_o", self.num_P, self.in_dim["state"]),
++                                           ("A_s", self.num_A, self.in_dim["A"]))}
++
++    def forward(self, x, g=None, episode_step=None):
++        if episode_step is not None:
++            self.set_episode_step(episode_step)
++        observations, previous = x
++        p_status, a_status = self.remove_excess_action_features_from_all(observations)
++        p_observation = self.get_obs_features(observations)
++        h = {}
++        p_status = self.relu(self.prepro_stat["P"](p_status.clone().detach()))
++        h["P_s"] = self.f_module_stat["P"](p_status, previous["P_s"])
++        p_observation = self.relu(self.prepro_obs(p_observation))
++        h["P_o"] = self.f_module_obs(p_observation, previous["P_o"])
++        if self.num_A:
++            a_status = self.relu(self.prepro_stat["A"](torch.Tensor(a_status)))
++            h["A_s"] = self.f_module_stat["A"](a_status, previous["A_s"])
++        else:
++            h["A_s"] = previous["A_s"]
++        features = {
++            "P": torch.cat([h["P_s"][0], h["P_o"][0]], dim=1),
++            "A": h["A_s"][0],
++            "state": p_status.new_tensor([
++                [self.num_P, self.num_A, self.world_dim, self.episode_step],
++                [self.num_P, self.num_A, self.world_dim, self.episode_step]]),
++        }
++        if self.message_backend == "torch-v1" and self._topology is None:
++            self._topology = StaticTopology(self.num_P, self.num_A, with_two_state=True)
++        for layer in (self.layer1, self.layer2, self.layer3):
++            features = layer(g, features, topology=self._topology)
++        p_value = self.P_critic_head(self.relu(features["state"][:1]))
++        a_value = self.A_critic_head(self.relu(features["state"][1:]))
++        return features, p_value, a_value, h
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/hetgat/policy.py
++++ working/publication_reconstruction/runtime/hetgat/policy.py
+@@ -375,10 +375,20 @@
+                  per_agent_critic=False, with_two_state=True, obs=None,
+                  comm_range_P=-1, comm_range_A=-1, lossy_comm=False, tensor_obs=False,
+                  min_comm_loss=0, max_comm_loss=0.3, total_state_action_in_batch=500,
+-                 action_vision=-1, model_spec='public-code-v1'):
++                 action_vision=-1, model_spec='public-code-v1',
++                 message_backend='dgl', learner_spec=None, profile_phases=False):
+ 
+         self.device = device
+         self.model_spec = model_spec
++        self.message_backend = message_backend
++        self.learner_spec = learner_spec or (
++            'paper-equations-v1' if model_spec == 'paper-v1' else 'public-code-v1')
++        if (self.learner_spec == 'paper-equations-v1') != (model_spec == 'paper-v1'):
++            raise ValueError('The paper learner requires the paper-v1 model specification')
++        if model_spec != 'paper-v1' and message_backend != 'dgl':
++            raise ValueError('The Torch message backend requires model_spec=paper-v1')
++        self.profile_phases = profile_phases
++        self.phase_seconds = {}
+         self.use_real = use_real
+         self.per_class_critic = per_class_critic
+         self.per_agent_critic = per_agent_critic
+@@ -391,7 +401,13 @@
+         self.in_dim = in_dim
+         self.tensor_obs = tensor_obs
+ 
+-        self.model = UAVNetA2CEasy(in_dim_raw, in_dim, hid_dim, out_dim,
++        model_class = UAVNetA2CEasy
++        model_options = {}
++        if model_spec == 'paper-v1':
++            from hetgat.paper import PaperNet
++            model_class = PaperNet
++            model_options['message_backend'] = message_backend
++        self.model = model_class(in_dim_raw, in_dim, hid_dim, out_dim,
+             num_P, num_A, num_heads, msg_dim=msg_dim, use_CNN=use_CNN,
+             use_real=use_real, use_tanh=use_tanh, per_class_critic=per_class_critic,
+             per_agent_critic=per_agent_critic, device=device,
+@@ -399,7 +415,7 @@
+             comm_range_A=comm_range_A, lossy_comm=lossy_comm,
+             min_comm_loss=min_comm_loss, max_comm_loss=max_comm_loss,
+             tensor_obs=tensor_obs, action_vision=action_vision,
+-            model_spec=model_spec).to(self.device)
++            model_spec=model_spec, **model_options).to(self.device)
+ 
+         self.gamma = gamma
+         self.lmbda = lmbda
+@@ -519,13 +535,21 @@
+         """
+         A2C version
+         """
+-        # construct heterograph
+-        pos = [p[:self.in_dim['A']] for p in x[0][0]]
+-
+-        g = build_hetgraph(pos, num_P=self.num_P, num_A=self.num_A, with_state=True,
+-            with_self_loop=False, with_two_state=self.with_two_state,
+-            comm_range_P=self.comm_range_P, comm_range_A=self.comm_range_A)
+-        g = g.to(self.device)
++        graph_begin = time.perf_counter() if self.profile_phases else None
++        if self.message_backend == 'torch-v1':
++            # PaperNet owns immutable topology; no DGL graph or relation view
++            # is constructed in this path.
++            g = None
++        else:
++            pos = [p[:self.in_dim['A']] for p in x[0][0]]
++            g = build_hetgraph(pos, num_P=self.num_P, num_A=self.num_A, with_state=True,
++                with_self_loop=False, with_two_state=self.with_two_state,
++                comm_range_P=self.comm_range_P, comm_range_A=self.comm_range_A)
++            g = g.to(self.device)
++        if self.profile_phases:
++            self.phase_seconds['phase_graph_preparation_seconds'] = self.phase_seconds.get(
++                'phase_graph_preparation_seconds', 0.0) + time.perf_counter() - graph_begin
++            inference_begin = time.perf_counter()
+ 
+         # sample actions
+         actions = {}
+@@ -535,6 +559,9 @@
+             results, c_v, a_v, prev_hid = self.model(x, g)
+         else:
+             results, c_v, prev_hid = self.model(x, g)
++        if self.profile_phases:
++            self.phase_seconds['phase_model_inference_seconds'] = self.phase_seconds.get(
++                'phase_model_inference_seconds', 0.0) + time.perf_counter() - inference_begin
+         self.results = results
+ 
+         self.i_b = i_b
+@@ -778,6 +805,8 @@
+     Batch version, use GAE by default, per-class critic version
+     '''
+     def batch_finish_per_class(self, batch_size, sim_time, num_P=2, num_A=1, use_GAE = True):
++        if self.learner_spec == 'paper-equations-v1':
++            return self.batch_finish_paper(batch_size)
+         if not self.per_class_critic:
+             print('Error, wrong function called. This is for per-class critic')
+             return -1.0
+@@ -876,6 +905,42 @@
+             del self.batch_P_critics[i_b][:]
+             del self.batch_A_critics[i_b][:]
+ 
++        return loss_np
++
++    def batch_finish_paper(self, batch_size):
++        """Backpropagate episode sums; the parent owns averaging and clipping."""
++        from hetnet_ext.paper_learning import episode_losses
++
++        if not self.per_class_critic or batch_size <= 0:
++            raise ValueError('The paper learner requires nonempty per-class episodes')
++        policy_losses, value_losses = [], []
++        for index in range(batch_size):
++            log_probs = [torch.stack(self.batch_P_log_probs[index])]
++            values = [torch.stack(self.batch_P_critics[index]).reshape(-1)]
++            if self.num_A:
++                log_probs.append(torch.stack(self.batch_A_log_probs[index]))
++                values.append(torch.stack(self.batch_A_critics[index]).reshape(-1))
++            actor, critic = episode_losses(
++                np.asarray(self.batch_rewards[index]), log_probs, values,
++                gamma=self.gamma, gae_lambda=self.lmbda)
++            policy_losses.append(actor)
++            value_losses.append(critic)
++        policy_loss = torch.stack(policy_losses).sum()
++        value_loss = torch.stack(value_losses).sum()
++        total_loss = policy_loss + value_loss
++        if not torch.isfinite(total_loss):
++            raise FloatingPointError('Non-finite paper learner loss')
++        # Preserve allocated gradient storage for multiprocessing pointers.
++        self.optimizer.zero_grad(set_to_none=False)
++        total_loss.backward()
++        loss_np = {'total': total_loss.detach().cpu().numpy(),
++                   'policy': policy_loss.detach().cpu().numpy(),
++                   'critic': value_loss.detach().cpu().numpy()}
++        for index in range(batch_size):
++            for buffer in (self.batch_rewards, self.batch_P_log_probs,
++                           self.batch_A_log_probs, self.batch_P_critics,
++                           self.batch_A_critics):
++                buffer[index].clear()
+         return loss_np
+ 
+     '''
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/hetnet_ext/paper_learning.py
++++ working/publication_reconstruction/runtime/hetnet_ext/paper_learning.py
+@@ -0,0 +1,91 @@
++"""Equation-led per-class learner, separate from the archived public learner.
++
++HetNet Eq. 6 uses individual rewards and total team-size normalization.
++Section 5.2 and Algorithm 1 use class-average rewards-to-go for the critic;
++GAE is used only for the actor. Episode averaging, gamma/lambda, truncation,
++and global gradient clipping are declared reconstruction choices.
++"""
++from __future__ import annotations
++
++import torch
++
++
++LEARNER_SPEC = "paper-equations-v1"
++
++
++def returns_and_advantages(rewards, values, *, gamma=1.0, gae_lambda=0.95):
++    """Return detached Monte-Carlo targets and GAE for one complete episode.
++
++    ``rewards`` is [time, agents in class]; ``values`` is [time]. Both natural
++    termination and the finite task horizon have zero terminal bootstrap.
++    """
++    if rewards.ndim != 2 or values.ndim != 1 or rewards.shape[0] != values.shape[0]:
++        raise ValueError("Expected rewards [time, agents] and class values [time]")
++    if rewards.shape[0] == 0 or rewards.shape[1] == 0:
++        raise ValueError("Returns require a nonempty class and episode")
++    if not 0 <= gamma <= 1 or not 0 <= gae_lambda <= 1:
++        raise ValueError("gamma and GAE lambda must lie in [0, 1]")
++    with torch.no_grad():
++        rewards = rewards.detach()
++        values = values.detach()
++        returns = torch.empty_like(rewards)
++        advantages = torch.empty_like(rewards)
++        future_return = torch.zeros_like(rewards[0])
++        gae = torch.zeros_like(rewards[0])
++        next_value = values.new_zeros(())
++        for step in reversed(range(rewards.shape[0])):
++            future_return = rewards[step] + gamma * future_return
++            delta = rewards[step] + gamma * next_value - values[step]
++            gae = delta + gamma * gae_lambda * gae
++            returns[step] = future_return
++            advantages[step] = gae
++            next_value = values[step]
++    return returns, advantages
++
++
++def episode_losses(rewards, class_log_probs, class_values, *, gamma=1.0, gae_lambda=0.95):
++    """Unnormalized episode losses, with total-N weighting from Algorithm 1.
++
++    Classes appear in physical agent order; an absent class is omitted. The
++    caller sums episodes before backward and averages gradients globally once.
++    No padded timesteps, advantage standardization, or team-reward substitution
++    enter either loss.
++    """
++    if len(class_log_probs) != len(class_values) or not class_values:
++        raise ValueError("Each present class needs log probabilities and a critic")
++    first = class_values[0]
++    rewards = torch.as_tensor(rewards, dtype=first.dtype, device=first.device)
++    if rewards.ndim != 2 or rewards.shape[0] == 0 or rewards.shape[1] == 0:
++        raise ValueError("Expected a nonempty [time, total agents] reward array")
++    total_agents = rewards.shape[1]
++    policy_loss = first.new_zeros(())
++    value_loss = first.new_zeros(())
++    offset = 0
++    for log_probs, values in zip(class_log_probs, class_values):
++        if log_probs.ndim != 2 or log_probs.shape[0] != rewards.shape[0]:
++            raise ValueError("Expected log probabilities [time, agents in class]")
++        count = log_probs.shape[1]
++        if count == 0 or offset + count > total_agents:
++            raise ValueError("Class counts must partition the reward columns")
++        targets, advantages = returns_and_advantages(
++            rewards[:, offset:offset + count], values,
++            gamma=gamma, gae_lambda=gae_lambda)
++        policy_loss = policy_loss - (log_probs * advantages).sum() / total_agents
++        value_loss = value_loss + count / total_agents * (
++            values - targets.mean(dim=1)).square().sum()
++        offset += count
++    if offset != total_agents:
++        raise ValueError("Class counts must partition the reward columns")
++    return policy_loss, value_loss
++
++
++def normalize_and_clip_gradients(parameters, episode_count, max_norm=0.75):
++    """Average the global episode-gradient sum, then clip exactly once."""
++    if isinstance(episode_count, bool) or int(episode_count) != episode_count or episode_count <= 0:
++        raise ValueError("A positive global episode count is required")
++    parameters = list(parameters)
++    with torch.no_grad():
++        for parameter in parameters:
++            if parameter.grad is not None:
++                parameter.grad.div_(episode_count)
++    return torch.nn.utils.clip_grad_norm_(parameters, max_norm, error_if_nonfinite=True)
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/hetnet_ext/paper_replay.py
++++ working/publication_reconstruction/runtime/hetnet_ext/paper_replay.py
+@@ -0,0 +1,342 @@
++"""Recorded-trajectory compute comparison for paper-v1 DGL and Torch backends.
++
++This is a SERIAL replay of one/four collector partitions, not a multiprocessing
++throughput benchmark. Real DGL collection creates the fixed trajectories before
++timing. Replay excludes environment/action sampling/IPC; each forward restores
++its recorded RNG boundary so Binary messages receive identical random draws.
++"""
++from __future__ import annotations
++
++import argparse
++import copy
++import hashlib
++import json
++import platform
++from pathlib import Path
++import sys
++import time
++from types import SimpleNamespace
++
++RUNTIME = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(RUNTIME / "envs"))
++sys.path.insert(0, str(RUNTIME))
++
++import numpy as np
++import torch
++
++from hetgat.policy import A2CPolicy
++from hetnet_ext.paper_learning import normalize_and_clip_gradients
++from hetnet_ext.recovery import capture_rng, restore_rng, seed_stream, process_resources
++from trainer import Trainer
++
++
++def clone(value):
++    if isinstance(value, torch.Tensor):
++        return value.detach().clone()
++    if isinstance(value, np.ndarray):
++        return value.copy()
++    if isinstance(value, dict):
++        return {key: clone(item) for key, item in value.items()}
++    if isinstance(value, (tuple, list)):
++        return type(value)(clone(item) for item in value)
++    return copy.deepcopy(value)
++
++
++def compare(left, right, path="root", *, exact=False, maxima=None):
++    """Fail closed; tolerances are fixed before measurements, never adjusted."""
++    maxima = {} if maxima is None else maxima
++    if isinstance(left, torch.Tensor):
++        if left.dtype != right.dtype or left.shape != right.shape:
++            raise AssertionError(f"Tensor schema differs: {path}")
++        if left.is_floating_point() and (
++                not torch.isfinite(left).all() or not torch.isfinite(right).all()):
++            raise AssertionError(f"Non-finite tensor: {path}")
++        if exact or not left.is_floating_point():
++            if not torch.equal(left, right):
++                raise AssertionError(f"Exact tensor mismatch: {path}")
++        else:
++            tolerances = dict(atol=1e-6, rtol=1e-5) if left.dtype == torch.float32 else dict(atol=1e-10, rtol=1e-8)
++            torch.testing.assert_close(left, right, **tolerances, msg=path)
++            if left.numel():
++                key = str(left.dtype)
++                maxima[key] = max(maxima.get(key, 0.0), float((left - right).abs().max()))
++    elif isinstance(left, np.ndarray):
++        if not np.array_equal(left, right):
++            raise AssertionError(f"Array mismatch: {path}")
++    elif isinstance(left, dict):
++        if left.keys() != right.keys():
++            raise AssertionError(f"Dictionary schema differs: {path}")
++        for key in left:
++            compare(left[key], right[key], f"{path}.{key}", exact=exact, maxima=maxima)
++    elif isinstance(left, (tuple, list)):
++        if len(left) != len(right):
++            raise AssertionError(f"Sequence length differs: {path}")
++        for index, (a, b) in enumerate(zip(left, right)):
++            compare(a, b, f"{path}[{index}]", exact=exact, maxima=maxima)
++    elif left != right:
++        raise AssertionError(f"Value mismatch: {path}")
++    return maxima
++
++
++def configuration(task, variant, collectors, batch_steps, horizon, seed):
++    from ic3net_envs.predator_capture_env import PredatorCaptureEnv
++    from ic3net_envs.fire_commander_env import FireCommanderEnv
++    parser = argparse.ArgumentParser(add_help=False)
++    (FireCommanderEnv if task == 'fc' else PredatorCaptureEnv)().init_args(parser)
++    args = parser.parse_args([])
++    vars(args).update(model_spec='paper-v1', reconstruction_spec='paper-v1',
++        publication_env_version='paper-v1', learner_spec='paper-equations-v1',
++        message_backend='dgl', nprocesses=collectors, batch_size=batch_steps,
++        max_steps=horizon, seed=seed, use_binary=variant == 'binary',
++        nfriendly_P=3 if task == 'pp' else 2, nfriendly_A=0 if task == 'pp' else 1,
++        nfriendly=3, nagents=3, dim=5, vision=1 if task == 'fc' else 2,
++        env_name='fire_commander' if task == 'fc' else 'predator_capture',
++        hetcomm=False, recurrent=False, hetgat=True, hetgat_a2c=True, hard_attn=False,
++        commnet=False, display=False, eval=False, tensor_obs=False, profile_phases=False,
++        profile_memory=False, hid_size=128, lrate=.001, detach_gap=5, continuous=False,
++        num_actions=[5 if task == 'fc' else 6], dim_actions=1, enemy_comm=False)
++    return args
++
++
++def make_trainer(args, backend, *, environment=False):
++    if environment:
++        import data
++        env = data.init(args.env_name, args, False)
++    else:
++        env = None
++    policy = A2CPolicy(dict(vision=args.vision, P=29, A=25, state=4),
++        dict(P=29, A=25, state=4), dict(P=16, A=16, state=16),
++        dict(P=4 if args.env_name == 'fire_commander' else 5,
++             A=5 if args.env_name == 'fire_commander' else 6, state=8),
++        args.nfriendly_P, args.nfriendly_A, num_heads=4, msg_dim=64,
++        device=torch.device('cpu'), gamma=1, lr=.001, weight_decay=0,
++        use_real=not args.use_binary, use_CNN=False, per_class_critic=True,
++        with_two_state=True, obs=(2 * args.vision + 1) ** 2, tensor_obs=False,
++        model_spec='paper-v1', message_backend=backend, learner_spec='paper-equations-v1',
++        total_state_action_in_batch=max(500, args.batch_size))
++    return Trainer(args, policy.model, env, policy)
++
++
++def share_parameter_storage(trainers):
++    """Match live shared weights while retaining independent collector grads.
++
++    Configure storage before any forward/timing. These models have no buffers;
++    cached topology belongs to each model and is neither learned nor shared.
++    """
++    parent = dict(trainers[0].policy_net.named_parameters())
++    for trainer in trainers:
++        if list(trainer.policy_net.buffers()):
++            raise ValueError('Replay sharing needs an explicit policy for model buffers')
++    for trainer in trainers[1:]:
++        parameters = dict(trainer.policy_net.named_parameters())
++        if parent.keys() != parameters.keys():
++            raise ValueError('Replay collector parameter schemas differ')
++        for name, parameter in parameters.items():
++            reference = parent[name]
++            if parameter.shape != reference.shape or parameter.dtype != reference.dtype:
++                raise ValueError('Replay collector parameter tensor schemas differ')
++            parameter.data = reference.detach()
++
++
++def finish_update(trainers, batches, *, capture=False):
++    gradients, losses = [], []
++    for trainer, episodes in zip(trainers, batches):
++        loss = trainer.policy.batch_finish_per_class(len(episodes), trainer.args.max_steps,
++                    trainer.args.nfriendly_P, trainer.args.nfriendly_A)
++        if capture:
++            gradients.append([None if p.grad is None else p.grad.detach().clone()
++                              for p in trainer.params])
++            losses.append({key: torch.as_tensor(value).clone() for key, value in loss.items()})
++    parent = trainers[0]
++    for index, parameter in enumerate(parent.params):
++        pieces = [trainer.params[index].grad for trainer in trainers]
++        if all(piece is None for piece in pieces):
++            parameter.grad = None
++        elif any(piece is None for piece in pieces):
++            raise AssertionError('Collector gradient presence differs')
++        else:
++            # Same collector order as the live parent; maintain grad storage.
++            for piece in pieces[1:]:
++                parameter.grad.add_(piece)
++    norm = normalize_and_clip_gradients(parent.params, sum(map(len, batches)))
++    clipped = [None if p.grad is None else p.grad.detach().clone()
++               for p in parent.params] if capture else None
++    parent.optimizer.step()
++    if capture:
++        return dict(collector_losses=losses, collector_gradients=gradients,
++                    clipped_gradients=clipped, gradient_norm=norm.detach().clone(),
++                    model=clone(parent.policy_net.state_dict()),
++                    optimizer=clone(parent.optimizer.state_dict()))
++
++
++def record_fixture(args, updates):
++    seed_stream(args.seed)
++    trainers = [make_trainer(args, 'dgl', environment=True) for _ in range(args.nprocesses)]
++    initial = clone(trainers[0].policy_net.state_dict())
++    initial_optimizer = clone(trainers[0].optimizer.state_dict())
++    streams = []
++    for trainer in trainers:
++        trainer.policy_net.load_state_dict(initial, strict=True)
++        seed_stream(args.seed, len(streams))
++        streams.append(capture_rng())
++    share_parameter_storage(trainers)
++    records = []
++    for update in range(updates):
++        batches = []
++        for collector, trainer in enumerate(trainers):
++            restore_rng(streams[collector])
++            steps = []
++            select, append = trainer.policy.batch_select_action_universal, trainer.policy.append_log_probs_properly
++
++            def recording_select(x, index):
++                steps.append(dict(observation=clone(x[0]), rng_before=capture_rng()))
++                output = select(x, index)
++                steps[-1]['rng_after_forward'] = capture_rng()
++                return output
++
++            def recording_append(actual):
++                steps[-1].update(action=clone(actual),
++                    reward=clone(trainer.policy.batch_rewards[trainer.policy.i_b][-1]))
++                return append(actual)
++
++            trainer.policy.batch_select_action_universal = recording_select
++            trainer.policy.append_log_probs_properly = recording_append
++            try:
++                _, stat = trainer.run_batch(update // 10)
++            finally:
++                trainer.policy.batch_select_action_universal = select
++                trainer.policy.append_log_probs_properly = append
++            streams[collector] = capture_rng()
++            episodes, offset = [], 0
++            for row in stat['_episode_records']:
++                episodes.append(steps[offset:offset + row['steps']])
++                offset += row['steps']
++            assert offset == len(steps)
++            batches.append(episodes)
++        finish_update(trainers, batches)
++        records.append(batches)
++    return dict(args=vars(args), initial_model=initial,
++                initial_optimizer=initial_optimizer, updates=records, final_model=clone(trainers[0].policy_net.state_dict()),
++                final_optimizer=clone(trainers[0].optimizer.state_dict()), final_environment_streams=streams)
++
++
++def replay(fixture, backend, *, capture=False):
++    args = SimpleNamespace(**fixture['args'])
++    trainers = [make_trainer(args, backend) for _ in range(args.nprocesses)]
++    for trainer in trainers:
++        trainer.policy_net.load_state_dict(fixture['initial_model'], strict=True)
++        trainer.optimizer.load_state_dict(fixture['initial_optimizer'])
++        assert not trainer.optimizer.state
++    share_parameter_storage(trainers)
++    trace, intervals = [], []
++    before = process_resources()
++    start = time.perf_counter()
++    for batches in fixture['updates']:
++        update_begin = time.perf_counter()
++        forwards = []
++        for trainer, episodes in zip(trainers, batches):
++            for episode_index, episode in enumerate(episodes):
++                hidden = trainer.policy_net.init_hidden(1)
++                for step_index, step in enumerate(episode):
++                    restore_rng(step['rng_before'])
++                    trainer.policy_net.set_episode_step(step_index)
++                    logits, value, hidden = trainer.policy.batch_select_action_universal(
++                        [step['observation'], hidden], episode_index)
++                    if capture:
++                        # Compare all random libraries at the forward boundary;
++                        # action/environment draws are fixed inputs, outside replay.
++                        compare(step['rng_after_forward'], capture_rng(), exact=True)
++                        forwards.append(clone((logits, value,
++                            trainer.policy.batch_A_critics[episode_index][-1], hidden)))
++                    if (step_index + 1) % args.detach_gap == 0:
++                        hidden = {key: tuple(value.detach() for value in pair)
++                                  for key, pair in hidden.items()}
++                    trainer.policy.batch_rewards[episode_index].append(step['reward'])
++                    trainer.policy.append_log_probs_properly(step['action'])
++        update = finish_update(trainers, batches, capture=capture)
++        intervals.append(time.perf_counter() - update_begin)
++        if capture:
++            update['forwards'] = forwards
++            trace.append(update)
++    elapsed = time.perf_counter() - start
++    after = process_resources()
++    steps = sum(len(episode) for batches in fixture['updates'] for episodes in batches for episode in episodes)
++    summary = dict(backend=backend, wall_seconds=elapsed, update_seconds=intervals,
++        first_update_seconds=intervals[0], steps=steps, steps_per_second=steps / elapsed,
++        user_cpu_seconds=after['user_cpu_seconds'] - before['user_cpu_seconds'],
++        system_cpu_seconds=after['system_cpu_seconds'] - before['system_cpu_seconds'],
++        max_rss=after['max_rss'], max_rss_unit=after['max_rss_unit'])
++    return trace, summary
++
++
++def run_replay(output, task, variant, collectors=4, updates=3, batch_steps=500,
++               horizon=None, timing_repeats=3, seed=991):
++    if task not in ('pp', 'pcp', 'fc') or variant not in ('real', 'binary'):
++        raise ValueError('Unsupported replay workload')
++    if collectors not in (1, 4) or updates < 3 or batch_steps < 1 or timing_repeats < 1:
++        raise ValueError('Replay requires one/four collectors, at least three updates and positive budgets')
++    horizon = (300 if task == 'fc' else 80) if horizon is None else horizon
++    if horizon < 1:
++        raise ValueError('Replay horizon must be positive')
++    output = Path(output)
++    output.mkdir(parents=True, exist_ok=False)
++    torch.set_num_threads(1)
++    torch.set_default_dtype(torch.float64)
++    args = configuration(task, variant, collectors, batch_steps, horizon, seed)
++    source = {path.relative_to(RUNTIME).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
++              for path in sorted(RUNTIME.rglob('*.py'))}
++    started = time.perf_counter()
++    fixture = record_fixture(args, updates)
++    fixture_seconds = time.perf_counter() - started
++    fixture_path = output / 'fixture.pt'
++    torch.save(fixture, fixture_path)
++    dgl, _ = replay(fixture, 'dgl', capture=True)
++    compare(fixture['final_model'], dgl[-1]['model'], exact=True)
++    compare(fixture['final_optimizer'], dgl[-1]['optimizer'], exact=True)
++    accelerated, _ = replay(fixture, 'torch-v1', capture=True)
++    maxima = compare(dgl, accelerated)
++    del dgl, accelerated
++    pairs = []
++    for repetition in range(timing_repeats):
++        order = ('dgl', 'torch-v1') if repetition % 2 == 0 else ('torch-v1', 'dgl')
++        rows = {}
++        for backend in order:
++            _, rows[backend] = replay(fixture, backend)
++        pairs.append(dict(repetition=repetition + 1, order=list(order), runs=rows,
++                          speedup=rows['dgl']['wall_seconds'] / rows['torch-v1']['wall_seconds']))
++    current = {path.relative_to(RUNTIME).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
++               for path in sorted(RUNTIME.rglob('*.py'))}
++    if source != current:
++        raise RuntimeError('Runtime source changed during replay validation')
++    report = dict(schema_version=1, task=task, variant=variant, collectors=collectors,
++        updates=updates, batch_step_floor_per_collector=batch_steps, horizon=horizon, seed=seed,
++        semantics='serial collector compute replay; fixed observations/actions/rewards; excludes environment, action sampling and IPC',
++        timing_overhead='includes per-forward RNG restoration and Python replay iteration; weights share storage before timing; no diagnostic tensor copies or per-update weight broadcasts',
++        rng_semantics='all RNG libraries restored before each forward and compared after forward in correctness runs',
++        tolerances={'float64': dict(atol=1e-10, rtol=1e-8), 'float32': dict(atol=1e-6, rtol=1e-5)},
++        correctness_passed=True, maximum_absolute_differences=maxima, fixture_generation_seconds=fixture_seconds,
++        fixture_sha256=hashlib.sha256(fixture_path.read_bytes()).hexdigest(), source_sha256=source,
++        python=sys.version, torch=torch.__version__, numpy=np.__version__, platform=platform.platform(),
++        resources=process_resources(), pairs=pairs)
++    (output / 'summary.json').write_text(json.dumps(report, indent=2, sort_keys=True, allow_nan=False) + '\n')
++    return report
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--task', choices=['pp', 'pcp', 'fc'], required=True)
++    parser.add_argument('--variant', choices=['real', 'binary'], required=True)
++    parser.add_argument('--collectors', type=int, choices=[1, 4], default=4)
++    parser.add_argument('--updates', type=int, default=3)
++    parser.add_argument('--batch-steps', type=int, default=500)
++    parser.add_argument('--horizon', type=int)
++    parser.add_argument('--timing-repeats', type=int, default=3)
++    parser.add_argument('--seed', type=int, default=991)
++    report = run_replay(**vars(parser.parse_args()))
++    print(json.dumps({'correctness_passed': report['correctness_passed'],
++                      'speedups': [pair['speedup'] for pair in report['pairs']]}, sort_keys=True))
++
++
++if __name__ == '__main__':
++    main()
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/hetnet_ext/recording.py
++++ working/publication_reconstruction/runtime/hetnet_ext/recording.py
+@@ -69,6 +69,7 @@
+         self.total_episodes = 0
+         self.last_epoch = 0
+         self.episode_log = getattr(args, "episode_log", "file")
++        self.paper = getattr(args, "learner_spec", "public-code-v1") == "paper-equations-v1"
+         self._reset_epoch()
+ 
+     def state_dict(self):
+@@ -108,9 +109,16 @@
+                "success_rate": float(fresh["success"]) / len(records),
+                "reward_per_agent": reward.tolist(), "team_return": float(reward.sum()),
+                "mean_agent_return": float(np.mean([r["mean_agent_return"] for r in records])),
+-               "policy_loss": float(fresh["action_loss"]) / fresh["num_steps"],
+-               "value_loss": float(fresh["value_loss"]) / fresh["num_steps"],
++               "policy_loss": float(fresh["action_loss"]) / (len(records) if self.paper else fresh["num_steps"]),
++               "value_loss": float(fresh["value_loss"]) / (len(records) if self.paper else fresh["num_steps"]),
+                "wall_time_seconds": float(wall_seconds)}
++        if self.paper:
++            row["loss_units"] = "global completed-episode mean of total-N weighted sums"
++            row["gradient_norm_preclip"] = float(fresh["gradient_norm_preclip"])
++        phases = {k: float(v) for k, v in fresh.items() if k.startswith("phase_") and k.endswith("_seconds")}
++        if phases:
++            row["phases"] = phases
++            row["phase_semantics"] = "collector wall intervals are summed and overlap; wait/aggregation/optimizer are parent intervals"
+         with (self.path.parent / "updates.jsonl").open("a") as stream:
+             stream.write(json.dumps(row, sort_keys=True, allow_nan=False) + "\n")
+ 
+@@ -153,8 +161,8 @@
+             "reward_per_agent": (self.reward / self.episodes).tolist(),
+             "team_return": float(self.reward.sum() / self.episodes),
+             "mean_agent_return": float(self.reward.mean() / self.episodes),
+-            "policy_loss": self.policy_loss / self.steps,
+-            "value_loss": self.value_loss / self.steps,
++            "policy_loss": self.policy_loss / (self.episodes if self.paper else self.steps),
++            "value_loss": self.value_loss / (self.episodes if self.paper else self.steps),
+         }
+         if updates is not None:
+             metrics["updates"] = int(updates)
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/hetnet_ext/recovery.py
++++ working/publication_reconstruction/runtime/hetnet_ext/recovery.py
+@@ -20,12 +20,12 @@
+ RECOVERY_VERSION = 1
+ RUNTIME_ARGUMENTS = {
+     "metrics_file", "save_dir", "source_manifest", "resume_checkpoint",
+-    "wall_seconds", "episode_log", "save_every", "experiment_name", "load",
++    "wall_seconds", "episode_log", "save_every", "experiment_name", "load", "profile_phases",
+ }
+ 
+ 
+ def rng_scheme(model_spec):
+-    return "seedsequence-v1" if model_spec == "supplement-v1" else "legacy-offset-v1"
++    return "seedsequence-v1" if model_spec in ("supplement-v1", "paper-v1") else "legacy-offset-v1"
+ 
+ 
+ def seed_stream(seed, collector_id=None):
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/hetnet_ext/signatures.py
++++ working/publication_reconstruction/runtime/hetnet_ext/signatures.py
+@@ -28,3 +28,29 @@
+     canonical = json.dumps(signature, sort_keys=True, separators=(",", ":")).encode()
+     signature["sha256"] = hashlib.sha256(canonical).hexdigest()
+     return signature
++
++
++def tree_signature(value):
++    """Stable value identity for model/optimizer/RNG trees, independent of pickle."""
++    import numpy as np
++    import torch
++
++    def canonical(item):
++        if torch.is_tensor(item):
++            return {"tensor": _entries([("", item)])[0]}
++        if isinstance(item, np.ndarray):
++            return {"ndarray": str(item.dtype), "shape": list(item.shape),
++                    "sha256": hashlib.sha256(item.tobytes(order="C")).hexdigest()}
++        if isinstance(item, dict):
++            return {"dict": [[canonical(k), canonical(v)] for k, v in
++                             sorted(item.items(), key=lambda pair: (type(pair[0]).__name__, str(pair[0])))]}
++        if isinstance(item, (tuple, list)):
++            return {type(item).__name__: [canonical(v) for v in item]}
++        if isinstance(item, np.generic):
++            return canonical(item.item())
++        if item is None or isinstance(item, (bool, int, float, str)):
++            return {type(item).__name__: item}
++        raise TypeError(f"Unsupported identity value: {type(item).__name__}")
++
++    return hashlib.sha256(json.dumps(canonical(value), sort_keys=True,
++                                    separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/main.py
++++ working/publication_reconstruction/runtime/main.py
+@@ -56,11 +56,15 @@
+ 
+ parser = argparse.ArgumentParser(description='Isolated historical HetNet reconstruction')
+ parser.add_argument('--publication_env_version', required=True,
+-                    choices=['historical-2022', 'corrected-v1'])
++                    choices=['historical-2022', 'corrected-v1', 'paper-v1'])
+ parser.add_argument('--max_env_steps', type=int, default=0,
+                     help='stop after a complete update reaching this total; zero disables')
+ parser.add_argument('--source_manifest', required=True)
+-parser.add_argument('--model_spec', choices=['public-code-v1', 'supplement-v1'], default='public-code-v1')
++parser.add_argument('--model_spec', choices=['public-code-v1', 'supplement-v1', 'paper-v1'], default='public-code-v1')
++parser.add_argument('--reconstruction_spec', choices=['legacy', 'paper-v1'], default='legacy')
++parser.add_argument('--learner_spec', choices=['public-code-v1', 'paper-equations-v1'], default='public-code-v1')
++parser.add_argument('--message_backend', choices=['dgl', 'torch-v1'], default='dgl')
++parser.add_argument('--profile_phases', action='store_true')
+ parser.add_argument('--milestones', nargs='*', type=int, default=[])
+ parser.add_argument('--resume_checkpoint', default='')
+ parser.add_argument('--wall_seconds', type=float, default=0,
+@@ -204,7 +208,7 @@
+ # Deviation B: even the environment used to register CLI arguments is constructed
+ # after seeding. Worker run() subsequently retains its seed + id + 1 stream.
+ resolved_seed = seed_everything(parser.parse_known_args()[0].seed)
+-if parser.parse_known_args()[0].model_spec == 'supplement-v1':
++if parser.parse_known_args()[0].model_spec in ('supplement-v1', 'paper-v1'):
+     seed_stream(resolved_seed)
+ init_args_for_env(parser)
+ args = parser.parse_args()
+@@ -216,8 +220,17 @@
+     raise ValueError('milestones must be positive, strictly increasing step thresholds')
+ if args.resume_checkpoint and args.load:
+     raise ValueError('Use resume_checkpoint without legacy load')
+-if args.model_spec == 'supplement-v1' and (not args.hetgat_a2c or args.use_cuda):
+-    raise ValueError('supplement-v1 requires the CPU HetGAT A2C runtime')
++if args.model_spec in ('supplement-v1', 'paper-v1') and (not args.hetgat_a2c or args.use_cuda):
++    raise ValueError('Supplement/paper models require the CPU HetGAT A2C runtime')
++if args.reconstruction_spec == 'paper-v1':
++    if (args.model_spec != 'paper-v1' or args.publication_env_version != 'paper-v1'
++            or args.learner_spec != 'paper-equations-v1' or args.lrate != .001
++            or args.lossy_comm or args.comm_range_P != -1 or args.comm_range_A != -1
++            or (args.use_binary and args.msg_dim != 64)):
++        raise ValueError('paper-v1 requires its matched components, Adam1e-3, 64 bits/head and unlimited non-lossy communication')
++elif (args.model_spec == 'paper-v1' or args.publication_env_version == 'paper-v1'
++      or args.learner_spec != 'public-code-v1' or args.message_backend != 'dgl'):
++    raise ValueError('Paper components require reconstruction_spec=paper-v1')
+ 
+ if args.comm_range_P == -1 or args.comm_range_A == -1:
+     args.lossy_comm = False
+@@ -295,6 +308,8 @@
+     out_dim = {'P': 5,
+                'A': 6,
+                'state': 8}
++    if args.model_spec == 'paper-v1' and args.env_name == 'fire_commander':
++        out_dim.update(P=4, A=5)
+     with_two_state = True
+     # if with_two_state:
+     #     in_dim['state'] = SSN_state_len
+@@ -316,6 +331,8 @@
+                            per_agent_critic=False, with_two_state=with_two_state, obs=obs,
+                            comm_range_P=args.comm_range_P, comm_range_A=args.comm_range_A,
+                            model_spec=args.model_spec,
++                           message_backend=args.message_backend, learner_spec=args.learner_spec,
++                           profile_phases=args.profile_phases,
+                            lossy_comm=args.lossy_comm, min_comm_loss=args.min_comm_loss,
+                            max_comm_loss=args.max_comm_loss, tensor_obs=tensor_obs, action_vision=args.A_vision)
+     else:
+@@ -463,6 +480,8 @@
+              trainer=trainer.state_dict(), seed=args.seed, recovery=recovery)
+     d['reconstruction'] = dict(schema_version=2, env_version=args.publication_env_version,
+         model_spec=args.model_spec, rng_scheme=args.rng_scheme,
++        reconstruction_spec=args.reconstruction_spec, learner_spec=args.learner_spec,
++        message_backend=args.message_backend,
+         resolved_args=vars(args), counts=dict(progress), source_manifest_sha256=source_sha256)
+     checkpoint = run_dir / ('model_update%08i_%s' % (progress['updates'], filename.removeprefix('model_')))
+     checkpoint_begin_time = time.monotonic()
+@@ -530,12 +549,19 @@
+             raise ValueError('Recovery requires the structured training recorder')
+         recorder.load_state_dict(resumed['recorder_state'])
+         restore_all_rng_states(resumed['rng_states'])
+-    elif args.model_spec == 'supplement-v1':
++    elif args.model_spec in ('supplement-v1', 'paper-v1'):
+         # Initialization has a distinct stream; the parent is collector zero.
+         seed_stream(args.seed, 0)
+     if args.save:
+         run_dir.mkdir(parents=True, exist_ok=True)
+     if recorder:
++        if args.model_spec == 'paper-v1':
++            from hetnet_ext.signatures import tree_signature
++            write_json_new(recorder.path.parent / 'initial_training_identity.json', {
++                'model': tree_signature(policy_net.state_dict()),
++                'optimizer': tree_signature(trainer.state_dict()),
++                'rng': tree_signature(all_rng_states()),
++                'resources': trainer.collector_resources() if args.nprocesses > 1 else [process_resources()]})
+         write_json_new(recorder.path.parent / 'training_segment.json', {
+             'schema_version': 1, 'resume_checkpoint': args.resume_checkpoint or None,
+             'resume_checkpoint_sha256': hashlib.sha256(Path(args.resume_checkpoint).read_bytes()).hexdigest()
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/multi_processing.py
++++ working/publication_reconstruction/runtime/multi_processing.py
+@@ -17,7 +17,7 @@
+         self.comm = comm
+ 
+     def run(self):
+-        if getattr(self.trainer.args, 'model_spec', 'public-code-v1') == 'supplement-v1':
++        if getattr(self.trainer.args, 'model_spec', 'public-code-v1') in ('supplement-v1', 'paper-v1'):
+             seed_stream(self.seed, self.id + 1)
+         else:
+             torch.manual_seed(self.seed + self.id + 1)
+@@ -146,18 +146,32 @@
+         merge_stat(s, stat)
+ 
+         # check if workers are finished
++        wait_begin = time.perf_counter() if self.trainer.profile_phases else None
+         for comm in self.comms:
+             s = comm.recv()
+             merge_stat(s, stat)
+ 
+         # add gradients of workers
++        if self.trainer.profile_phases:
++            stat['phase_collector_wait_seconds'] = time.perf_counter() - wait_begin
++            aggregation_begin = time.perf_counter()
+         self.obtain_grad_pointers()
+         for i in range(len(self.grads)):
+             for g in self.worker_grads:
+                 self.grads[i] += g[i]
+-            self.grads[i] /= stat['num_steps']
++            if not self.trainer.paper_learner:
++                self.grads[i] /= stat['num_steps']
++        if self.trainer.paper_learner:
++            from hetnet_ext.paper_learning import normalize_and_clip_gradients
++            norm = normalize_and_clip_gradients(self.trainer.params, stat['num_episodes'])
++            stat['gradient_norm_preclip'] = float(norm)
++        if self.trainer.profile_phases:
++            stat['phase_aggregation_seconds'] = time.perf_counter() - aggregation_begin
++            optimizer_begin = time.perf_counter()
+ 
+         self.trainer.optimizer.step()
++        if self.trainer.profile_phases:
++            stat['phase_optimizer_seconds'] = time.perf_counter() - optimizer_begin
+ 
+         for comm in self.comms:
+             comm.send('get_gpu_mem')
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/trainer.py
++++ working/publication_reconstruction/runtime/trainer.py
+@@ -44,6 +44,11 @@
+         self.display = False
+         self.last_step = False
+         self.policy = policy
++        self.paper_learner = getattr(args, 'learner_spec', None) == 'paper-equations-v1'
++        self.profile_phases = getattr(args, 'profile_phases', False)
++        self.environment_seconds = 0.0
++        if policy is not None:
++            policy.profile_phases = self.profile_phases
+         if args.hetcomm:
+             self.optimizer_perception = optim.RMSprop(self.policy_perception_net.parameters(),
+                                            lr=args.lrate, alpha=0.97, eps=1e-6)
+@@ -52,7 +57,7 @@
+                                                       lr=args.lrate, alpha=0.97, eps=1e-6)
+             self.params_action = [p for p in self.policy_action_net.parameters()]
+         else:
+-            if getattr(args, 'model_spec', 'public-code-v1') == 'supplement-v1':
++            if getattr(args, 'model_spec', 'public-code-v1') in ('supplement-v1', 'paper-v1'):
+                 self.optimizer = optim.Adam(policy_net.parameters(), lr=args.lrate,
+                     betas=(0.9, 0.999), eps=1e-8, weight_decay=0, amsgrad=False,
+                     foreach=False, fused=False)
+@@ -75,6 +80,7 @@
+         else:
+             episode = []
+ 
++        environment_begin = time.perf_counter() if self.profile_phases else None
+         reset_args = getargspec(self.env.reset).args
+ 
+         if 'epoch' in reset_args:
+@@ -99,6 +105,8 @@
+             else: 
+                 state = self.env.reset()
+         
++        if self.profile_phases:
++            self.environment_seconds += time.perf_counter() - environment_begin
+         should_display = self.display and self.last_step
+ 
+         if should_display:
+@@ -162,6 +170,8 @@
+                         x = [old_form_state, state, prev_hid]
+                     else:
+                         x = [state, prev_hid]
++                    if self.paper_learner:
++                        self.policy_net.set_episode_step(t)
+                     action_out, value, prev_hid = self.policy.batch_select_action_universal(x, self.stats['num_episodes'])
+                     # value hardcoded for trainer bookkeeping
+                     value = torch.tensor([[0], [0], [0]])
+@@ -191,7 +201,10 @@
+ 
+             action = select_action(self.args, action_out)
+             action, actual = translate_action(self.args, self.env, action)
++            environment_begin = time.perf_counter() if self.profile_phases else None
+             next_state, reward, done, info = self.env.step(actual)
++            if self.profile_phases:
++                self.environment_seconds += time.perf_counter() - environment_begin
+ 
+             if self.args.display:
+                 self.env.display()
+@@ -489,6 +502,7 @@
+                 return stat
+ 
+         if self.args.hetgat:
++            loss_begin = time.perf_counter() if self.profile_phases else None
+             if self.policy.per_class_critic:
+                 loss = self.policy.batch_finish_per_class(
+                     self.stats['num_episodes'], num_P=self.args.nfriendly_P,
+@@ -507,13 +521,20 @@
+                 stat['value_loss'] = loss['critic'].item()
+             else:
+                 stat['action_loss'] = loss.item()
++            if self.profile_phases:
++                stat.update(self.policy.phase_seconds)
++                stat['phase_environment_seconds'] = self.environment_seconds
++                stat['phase_loss_backward_seconds'] = time.perf_counter() - loss_begin
+         else:
+             loss.backward()
+ 
+         return stat
+ 
+     def run_batch(self, epoch):
+-
++        if getattr(self, 'profile_phases', False):
++            self.environment_seconds = 0.0
++            if self.policy is not None:
++                self.policy.phase_seconds = {}
+ 
+         if not self.args.eval:
+ 
+@@ -529,9 +550,14 @@
+             while len(batch) < self.args.batch_size:
+                 if self.args.batch_size - len(batch) <= self.args.max_steps:
+                     self.last_step = True
++                # Collector elapsed rollout time includes reset and environment
++                # steps, but excludes batch backpropagation and optimization.
++                episode_begin = time.monotonic()
+                 episode, episode_stat = self.get_episode(epoch)
++                episode_seconds = time.monotonic() - episode_begin
+                 episode_records.append({**self.last_episode_record,
+-                                        'collector_episode': len(episode_records)})
++                                        'collector_episode': len(episode_records),
++                                        'rollout_wall_time_seconds': episode_seconds})
+                 merge_stat(episode_stat, self.stats)
+                 self.stats['num_episodes'] += 1
+                 if self.args.hetcomm:
+@@ -627,11 +653,23 @@
+         merge_stat(s, stat)
+         # is not self.args.hetgat and not self.args.hetcomm:
+         if not self.args.hetcomm:
+-            for p in self.params:
+-                if p._grad is not None:
+-                    p._grad.data /= stat['num_steps']
++            aggregation_begin = time.perf_counter() if self.profile_phases else None
++            if self.paper_learner:
++                from hetnet_ext.paper_learning import normalize_and_clip_gradients
++                norm = normalize_and_clip_gradients(self.params, stat['num_episodes'])
++                stat['gradient_norm_preclip'] = float(norm)
++            else:
++                for p in self.params:
++                    if p._grad is not None:
++                        p._grad.data /= stat['num_steps']
++            if self.profile_phases:
++                stat['phase_collector_wait_seconds'] = 0.0
++                stat['phase_aggregation_seconds'] = time.perf_counter() - aggregation_begin
++                optimizer_begin = time.perf_counter()
+ 
+             self.optimizer.step()
++            if self.profile_phases:
++                stat['phase_optimizer_seconds'] = time.perf_counter() - optimizer_begin
+ 
+         return stat, np.array([self.cpu_memory_peak]), np.array([self.gpu_memory_peak])
+ 

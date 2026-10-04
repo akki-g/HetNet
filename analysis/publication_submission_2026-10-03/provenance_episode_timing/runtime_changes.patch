@@ -1,0 +1,18 @@
+--- e0e22136e7f80054552f08b95588d8a64e92802c/publication_reconstruction/runtime/trainer.py
++++ working/publication_reconstruction/runtime/trainer.py
+@@ -529,9 +529,14 @@
+             while len(batch) < self.args.batch_size:
+                 if self.args.batch_size - len(batch) <= self.args.max_steps:
+                     self.last_step = True
++                # Collector elapsed rollout time includes reset and environment
++                # steps, but excludes batch backpropagation and optimization.
++                episode_begin = time.monotonic()
+                 episode, episode_stat = self.get_episode(epoch)
++                episode_seconds = time.monotonic() - episode_begin
+                 episode_records.append({**self.last_episode_record,
+-                                        'collector_episode': len(episode_records)})
++                                        'collector_episode': len(episode_records),
++                                        'rollout_wall_time_seconds': episode_seconds})
+                 merge_stat(episode_stat, self.stats)
+                 self.stats['num_episodes'] += 1
+                 if self.args.hetcomm:

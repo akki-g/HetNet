@@ -44,6 +44,11 @@ class Trainer(object):
         self.display = False
         self.last_step = False
         self.policy = policy
+        self.paper_learner = getattr(args, 'learner_spec', None) == 'paper-equations-v1'
+        self.profile_phases = getattr(args, 'profile_phases', False)
+        self.environment_seconds = 0.0
+        if policy is not None:
+            policy.profile_phases = self.profile_phases
         if args.hetcomm:
             self.optimizer_perception = optim.RMSprop(self.policy_perception_net.parameters(),
                                            lr=args.lrate, alpha=0.97, eps=1e-6)
@@ -52,7 +57,7 @@ class Trainer(object):
                                                       lr=args.lrate, alpha=0.97, eps=1e-6)
             self.params_action = [p for p in self.policy_action_net.parameters()]
         else:
-            if getattr(args, 'model_spec', 'public-code-v1') == 'supplement-v1':
+            if getattr(args, 'model_spec', 'public-code-v1') in ('supplement-v1', 'paper-v1'):
                 self.optimizer = optim.Adam(policy_net.parameters(), lr=args.lrate,
                     betas=(0.9, 0.999), eps=1e-8, weight_decay=0, amsgrad=False,
                     foreach=False, fused=False)
@@ -75,6 +80,7 @@ class Trainer(object):
         else:
             episode = []
 
+        environment_begin = time.perf_counter() if self.profile_phases else None
         reset_args = getargspec(self.env.reset).args
 
         if 'epoch' in reset_args:
@@ -99,6 +105,8 @@ class Trainer(object):
             else: 
                 state = self.env.reset()
         
+        if self.profile_phases:
+            self.environment_seconds += time.perf_counter() - environment_begin
         should_display = self.display and self.last_step
 
         if should_display:
@@ -162,6 +170,8 @@ class Trainer(object):
                         x = [old_form_state, state, prev_hid]
                     else:
                         x = [state, prev_hid]
+                    if self.paper_learner:
+                        self.policy_net.set_episode_step(t)
                     action_out, value, prev_hid = self.policy.batch_select_action_universal(x, self.stats['num_episodes'])
                     # value hardcoded for trainer bookkeeping
                     value = torch.tensor([[0], [0], [0]])
@@ -191,7 +201,10 @@ class Trainer(object):
 
             action = select_action(self.args, action_out)
             action, actual = translate_action(self.args, self.env, action)
+            environment_begin = time.perf_counter() if self.profile_phases else None
             next_state, reward, done, info = self.env.step(actual)
+            if self.profile_phases:
+                self.environment_seconds += time.perf_counter() - environment_begin
 
             if self.args.display:
                 self.env.display()
@@ -489,6 +502,7 @@ class Trainer(object):
                 return stat
 
         if self.args.hetgat:
+            loss_begin = time.perf_counter() if self.profile_phases else None
             if self.policy.per_class_critic:
                 loss = self.policy.batch_finish_per_class(
                     self.stats['num_episodes'], num_P=self.args.nfriendly_P,
@@ -507,13 +521,20 @@ class Trainer(object):
                 stat['value_loss'] = loss['critic'].item()
             else:
                 stat['action_loss'] = loss.item()
+            if self.profile_phases:
+                stat.update(self.policy.phase_seconds)
+                stat['phase_environment_seconds'] = self.environment_seconds
+                stat['phase_loss_backward_seconds'] = time.perf_counter() - loss_begin
         else:
             loss.backward()
 
         return stat
 
     def run_batch(self, epoch):
-
+        if getattr(self, 'profile_phases', False):
+            self.environment_seconds = 0.0
+            if self.policy is not None:
+                self.policy.phase_seconds = {}
 
         if not self.args.eval:
 
@@ -529,9 +550,14 @@ class Trainer(object):
             while len(batch) < self.args.batch_size:
                 if self.args.batch_size - len(batch) <= self.args.max_steps:
                     self.last_step = True
+                # Collector elapsed rollout time includes reset and environment
+                # steps, but excludes batch backpropagation and optimization.
+                episode_begin = time.monotonic()
                 episode, episode_stat = self.get_episode(epoch)
+                episode_seconds = time.monotonic() - episode_begin
                 episode_records.append({**self.last_episode_record,
-                                        'collector_episode': len(episode_records)})
+                                        'collector_episode': len(episode_records),
+                                        'rollout_wall_time_seconds': episode_seconds})
                 merge_stat(episode_stat, self.stats)
                 self.stats['num_episodes'] += 1
                 if self.args.hetcomm:
@@ -627,11 +653,23 @@ class Trainer(object):
         merge_stat(s, stat)
         # is not self.args.hetgat and not self.args.hetcomm:
         if not self.args.hetcomm:
-            for p in self.params:
-                if p._grad is not None:
-                    p._grad.data /= stat['num_steps']
+            aggregation_begin = time.perf_counter() if self.profile_phases else None
+            if self.paper_learner:
+                from hetnet_ext.paper_learning import normalize_and_clip_gradients
+                norm = normalize_and_clip_gradients(self.params, stat['num_episodes'])
+                stat['gradient_norm_preclip'] = float(norm)
+            else:
+                for p in self.params:
+                    if p._grad is not None:
+                        p._grad.data /= stat['num_steps']
+            if self.profile_phases:
+                stat['phase_collector_wait_seconds'] = 0.0
+                stat['phase_aggregation_seconds'] = time.perf_counter() - aggregation_begin
+                optimizer_begin = time.perf_counter()
 
             self.optimizer.step()
+            if self.profile_phases:
+                stat['phase_optimizer_seconds'] = time.perf_counter() - optimizer_begin
 
         return stat, np.array([self.cpu_memory_peak]), np.array([self.gpu_memory_peak])
 

@@ -59,3 +59,23 @@ analysis/*
 !analysis/hetnet_restart_2026-10-03/**
 
 stokes_runs/
+
+# Evidence-backed HetNet performance plan; keep other research inputs excluded.
+!publication_reconstruction/PERFORMANCE_PLAN.md
+!analysis/hetnet_performance_plan_2026-10-04/
+!analysis/hetnet_performance_plan_2026-10-04/**
+analysis/hetnet_performance_plan_2026-10-04/__pycache__/
+
+# DGL cost profile and timing evidence; keep raw inputs and caches excluded elsewhere.
+!analysis/dgl_profile_2026-10-04/
+!analysis/dgl_profile_2026-10-04/**
+analysis/dgl_profile_2026-10-04/**/__pycache__/
+analysis/dgl_profile_2026-10-04/scripts/runtime/
+analysis/dgl_profile_2026-10-04/scripts/out_*/
+
+# Paper reconciliation, numerical backend validation and source audit evidence.
+!publication_reconstruction/FIDELITY.md
+!analysis/paper_v1_2026-10-04/
+!analysis/paper_v1_2026-10-04/**
+analysis/paper_v1_2026-10-04/**/__pycache__/
+analysis/paper_v1_2026-10-04/**/*.pyc

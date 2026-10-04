@@ -1,0 +1,18 @@
+{
+ "seconds": {
+  "graph_build": 1.4943545382120647,
+  "dgl_forward_ops": 7.321521066332934,
+  "model_forward_total": 10.112531550461426,
+  "env_step": 0.1403348593157716,
+  "dgl_backward_ops": 4.189122784562642,
+  "autograd_backward_total": 7.054025499994168
+ },
+ "calls": {
+  "graph_build": 2192,
+  "dgl_forward_ops": 979824,
+  "model_forward_total": 2192,
+  "env_step": 2192,
+  "dgl_backward_ops": 98640,
+  "autograd_backward_total": 4
+ }
+}

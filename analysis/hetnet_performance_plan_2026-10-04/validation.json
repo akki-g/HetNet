@@ -1,0 +1,45 @@
+{
+  "checkpoint_byte_identities": 8,
+  "corrupt_hash_rejection": "passed",
+  "evidence_references": 27,
+  "evidence_verifier_scope": "File identity, local links, ledger/resource arithmetic, launcher timestamps and initial signature metadata; no policy execution or new checkpoint tensor audit.",
+  "external_primary_sources": 8,
+  "full_test_suite_rerun": true,
+  "git_diff_check": "passed",
+  "guard_source_revisions_with_frozen_predecessors": 4,
+  "hashed_files": 83,
+  "independent_reviews": [
+    "active source and candidate constraints",
+    "paper/supplement attribution",
+    "measured artifacts and benchmark/correctness gates"
+  ],
+  "installed_pytorch_sources": [
+    {
+      "matches_remote": true,
+      "path": ".venv/lib/python3.12/site-packages/torch/profiler/profiler.py",
+      "reference": "W1",
+      "sha256": "aef265c855e9f086ab17763a7d54d9f8be1982c73168106ad95f912cbce7d1c1"
+    },
+    {
+      "matches_remote": true,
+      "path": ".venv/lib/python3.12/site-packages/torch/utils/benchmark/utils/timer.py",
+      "reference": "W6",
+      "sha256": "0b686423c79b13c8efeb15b4bb7e29c14a70a5c8ec06c1dc45268788b5ff9931"
+    }
+  ],
+  "local_links": 66,
+  "new_performance_experiments": 0,
+  "policy_execution_scope": "Bounded test fixtures and eight synthetic forward/backward diagnostics; no new research or performance run.",
+  "prior_document_only_record": "validity_review/prior_validation.json",
+  "publisher_and_pinned_supplement_hash_match": true,
+  "python_sources_parse": "passed",
+  "review_date": "2026-10-04",
+  "review_scope": "Shared plan review, validity guard changes and regression/actual-archive validation",
+  "runtime_manifest_files": 38,
+  "scope": "Shared plan source review, intentional outer validation guards, bounded regressions and read-only archived checkpoint checks. No accelerator or performance measurement.",
+  "status": "passed",
+  "unchanged_archived_run_inputs": 639,
+  "validity_review_record": "validity_review/validation.json",
+  "verification_invocations": "system Python, arbitrary cwd, -O and pinned project Python agree",
+  "workload_pairs": 4
+}

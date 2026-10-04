@@ -1,0 +1,141 @@
+{
+  "scope": "synthetic one-step forward/backward; no environment or optimizer step",
+  "cases": [
+    {
+      "task": "pcp",
+      "model_spec": "public-code-v1",
+      "binary": false,
+      "loss_finite": {
+        "total": false,
+        "policy": false,
+        "critic": true
+      },
+      "gradients_present": 68,
+      "nonfinite_gradients": 68,
+      "warnings": [
+        "std(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/native/ReduceOps.cpp:1760.)",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size."
+      ]
+    },
+    {
+      "task": "pcp",
+      "model_spec": "public-code-v1",
+      "binary": true,
+      "loss_finite": {
+        "total": false,
+        "policy": false,
+        "critic": true
+      },
+      "gradients_present": 76,
+      "nonfinite_gradients": 76,
+      "warnings": [
+        "std(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/native/ReduceOps.cpp:1760.)",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size."
+      ]
+    },
+    {
+      "task": "pcp",
+      "model_spec": "supplement-v1",
+      "binary": false,
+      "loss_finite": {
+        "total": false,
+        "policy": false,
+        "critic": true
+      },
+      "gradients_present": 94,
+      "nonfinite_gradients": 94,
+      "warnings": [
+        "std(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/native/ReduceOps.cpp:1760.)",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size."
+      ]
+    },
+    {
+      "task": "pcp",
+      "model_spec": "supplement-v1",
+      "binary": true,
+      "loss_finite": {
+        "total": false,
+        "policy": false,
+        "critic": true
+      },
+      "gradients_present": 106,
+      "nonfinite_gradients": 106,
+      "warnings": [
+        "std(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/native/ReduceOps.cpp:1760.)",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size."
+      ]
+    },
+    {
+      "task": "fc",
+      "model_spec": "public-code-v1",
+      "binary": false,
+      "loss_finite": {
+        "total": false,
+        "policy": false,
+        "critic": true
+      },
+      "gradients_present": 68,
+      "nonfinite_gradients": 68,
+      "warnings": [
+        "std(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/native/ReduceOps.cpp:1760.)",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size."
+      ]
+    },
+    {
+      "task": "fc",
+      "model_spec": "public-code-v1",
+      "binary": true,
+      "loss_finite": {
+        "total": false,
+        "policy": false,
+        "critic": true
+      },
+      "gradients_present": 76,
+      "nonfinite_gradients": 76,
+      "warnings": [
+        "std(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/native/ReduceOps.cpp:1760.)",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size."
+      ]
+    },
+    {
+      "task": "fc",
+      "model_spec": "supplement-v1",
+      "binary": false,
+      "loss_finite": {
+        "total": false,
+        "policy": false,
+        "critic": true
+      },
+      "gradients_present": 94,
+      "nonfinite_gradients": 94,
+      "warnings": [
+        "std(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/native/ReduceOps.cpp:1760.)",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size."
+      ]
+    },
+    {
+      "task": "fc",
+      "model_spec": "supplement-v1",
+      "binary": true,
+      "loss_finite": {
+        "total": false,
+        "policy": false,
+        "critic": true
+      },
+      "gradients_present": 106,
+      "nonfinite_gradients": 106,
+      "warnings": [
+        "std(): degrees of freedom is <= 0. Correction should be strictly less than the reduction factor (input numel divided by output numel). (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/aten/src/ATen/native/ReduceOps.cpp:1760.)",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.",
+        "Using a target size (torch.Size([1])) that is different to the input size (torch.Size([])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size."
+      ]
+    }
+  ]
+}

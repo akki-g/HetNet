@@ -1,0 +1,42 @@
+{
+  "all_changed_guard_and_test_files": [
+    "publication_reconstruction/__main__.py",
+    "publication_reconstruction/artifacts.py",
+    "publication_reconstruction/study.py",
+    "tests/test_publication_artifacts.py",
+    "tests/test_publication_launcher.py",
+    "tests/test_publication_study.py",
+    "tests/test_publication_recovery_integrity.py",
+    "tests/test_publication_validity.py"
+  ],
+  "baseline_manifest": "analysis/hetnet_performance_plan_2026-10-04/validity_review/baseline_manifest.json",
+  "baseline_root": "analysis/hetnet_performance_plan_2026-10-04/validity_review/baseline",
+  "change_patch": "analysis/hetnet_performance_plan_2026-10-04/validity_review/guard_changes.patch",
+  "change_patch_sha256": "c14dc223d473ed7bffb8ffd3e21262f91d1563be86f18419ba3d7ec93d779062",
+  "date": "2026-10-04",
+  "files": {
+    "publication_reconstruction/__main__.py": {
+      "after_sha256": "4d1ab2af621af010fda70eaf39b09919b6966e9017611fea127ff9f1f74481b8",
+      "before_sha256": "cb6a39a41eae4bad78c1978d3e3694c779cbe25d804f1e4d750ac3f7204152ab",
+      "before_snapshot": "analysis/hetnet_performance_plan_2026-10-04/validity_review/baseline/publication_reconstruction/__main__.py"
+    },
+    "publication_reconstruction/artifacts.py": {
+      "after_sha256": "fe0f31d3a840a61f6196a0781f78cc4fe08833dc23f8f065909439ac6d26345c",
+      "before_sha256": "bf3fdcd65552ae8ad618737ed48862e31d545706dec132d7e7984fcd88c5e312",
+      "before_snapshot": "analysis/hetnet_performance_plan_2026-10-04/validity_review/baseline/publication_reconstruction/artifacts.py"
+    },
+    "publication_reconstruction/study.py": {
+      "after_sha256": "0e95260706034f4b8b7d4a6dc951489e64189a671f0b2e38a17e0cca601c388a",
+      "before_sha256": "c533bbf1cfd35c8349e76b7e93eedda846aff14b74061238b86730854e19c35d",
+      "before_snapshot": "analysis/hetnet_performance_plan_2026-10-04/validity_review/baseline/publication_reconstruction/study.py"
+    },
+    "tests/test_publication_artifacts.py": {
+      "after_sha256": "1e9e3e9e1898eb989b52b7a3c7354ae36df5143dd4a5aaa8c7b21273fc95096b",
+      "before_sha256": "d8e36c5586eb90bd42a56465b851280cbeb08810b7abeeff91a9e8e7cb25d882",
+      "before_snapshot": "analysis/hetnet_performance_plan_2026-10-04/validity_review/baseline/tests/test_publication_artifacts.py"
+    }
+  },
+  "prior_inventory": "analysis/hetnet_performance_plan_2026-10-04/validity_review/prior_evidence.json",
+  "prior_inventory_sha256": "7bdf88778745d87d09450351a5a47b3a063de6304acb84ec3db28fd053679f3d",
+  "scope": "Intentional outer guard changes only; archived/runtime bytes and timing measurements preserved."
+}

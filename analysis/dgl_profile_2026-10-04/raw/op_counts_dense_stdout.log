@@ -1,0 +1,7 @@
+STAGE:2026-10-04 18:03:31 8876:2900977 ActivityProfilerController.cpp:314] Completed Stage: Warm Up
+STAGE:2026-10-04 18:03:32 8876:2900977 ActivityProfilerController.cpp:320] Completed Stage: Collection
+STAGE:2026-10-04 18:03:32 8876:2900977 ActivityProfilerController.cpp:324] Completed Stage: Post Processing
+dgl    per step: graph build 0.452 ms, message passing forward 3.179 ms, backward 2.142 ms, total 5.773 ms
+dense  per step: graph build 0.000 ms, message passing forward 0.357 ms, backward 0.542 ms, total 0.899 ms
+dgl    per step: graph build 0.458 ms, message passing forward 3.215 ms, backward 2.116 ms, total 5.789 ms
+dense  per step: graph build 0.000 ms, message passing forward 0.360 ms, backward 0.549 ms, total 0.909 ms

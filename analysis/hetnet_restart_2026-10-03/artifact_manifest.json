@@ -15,6 +15,11 @@
     "bytes": 8607
   },
   {
+    "path": "analysis/hetnet_restart_2026-10-03/preflight_903502_audit.json",
+    "sha256": "e5244394be0520b27c8c93bf591ad309355af032cea79ea96ecf2144eb674d39",
+    "bytes": 7217
+  },
+  {
     "path": "analysis/hetnet_restart_2026-10-03/source_audit.json",
     "sha256": "4a2d2e2a7417b14fd1681b67a4a255681bda4c9f4ed3d5bcb14244de7b9a9e3e",
     "bytes": 8071

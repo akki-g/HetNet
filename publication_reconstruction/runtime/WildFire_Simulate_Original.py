@@ -23,7 +23,7 @@ class WildFire(object):
                  time_step=1, radiation_radius=10, weak_fire_threshold=0.5, flame_height=3, flame_angle=np.pi/3,
                  publication_env_version='historical-2022'):
 
-        if publication_env_version not in ('historical-2022', 'corrected-v1'):
+        if publication_env_version not in ('historical-2022', 'corrected-v1', 'paper-v1'):
             raise ValueError('Unsupported publication_env_version: ' + str(publication_env_version))
         self.publication_env_version = publication_env_version
 
@@ -180,7 +180,7 @@ class WildFire(object):
         for point in ign_points_all:
             # extracting the data
             x, y = point[0], point[1]
-            if self.publication_env_version == 'corrected-v1':
+            if self.publication_env_version in ('corrected-v1', 'paper-v1'):
                 if not (0 <= x <= world_Size - 1 and 0 <= y <= world_Size - 1):
                     raise ValueError('corrected-v1 requires in-bounds fire fronts')
                 if x == 0 or y == 0:
@@ -213,7 +213,7 @@ class WildFire(object):
                 if [int(x), int(y)] not in pruned_List:
                     x_new = x + x_diff * self.time_step
                     y_new = y + y_diff * self.time_step
-                    if self.publication_env_version == 'corrected-v1' and not (
+                    if self.publication_env_version in ('corrected-v1', 'paper-v1') and not (
                             0 <= x_new <= world_Size - 1 and 0 <= y_new <= world_Size - 1):
                         # Explicit reconstruction choice: a proposed exit keeps
                         # the previous source position instead of clipping it.
@@ -240,7 +240,7 @@ class WildFire(object):
 
                 counter += 1
 
-        if self.publication_env_version == 'corrected-v1':
+        if self.publication_env_version in ('corrected-v1', 'paper-v1'):
             return new_fire_front[:counter], current_geo_phys_info[:counter]
         return new_fire_front, current_geo_phys_info
 

@@ -15,7 +15,7 @@ import numpy as np
 import torch
 
 from hetnet_ext.signatures import model_signature
-from softrole import CHECKPOINT_VERSION, ENVIRONMENT_VERSION
+from softrole import CHECKPOINT_VERSION
 from softrole.config import Config
 from softrole.env import make_env
 from softrole.learning import loss_sum
@@ -63,6 +63,8 @@ def source_snapshot(output=None):
     files.update((root / "scripts").glob("softrole*"))
     files.update((root / "slurm").glob("softrole*"))
     files.update([root / "AGENTS.md", root / "softrole" / "RESEARCH.md"])
+    from softrole.publication_env import SIMULATOR_FILES
+    files.update(root / name for name in SIMULATOR_FILES)
     manifest = {}
     for path in sorted(files):
         if not path.is_file():
@@ -83,11 +85,11 @@ def source_snapshot(output=None):
     return record
 
 
-def collect_batch(model, config, collector, update):
+def collect_batch(model, config, collector, update, environment_source=None):
     """Return *sums*, never locally normalized or clipped gradients."""
     model.train()
     model.zero_grad(set_to_none=True)
-    adapter = make_env(config)
+    adapter = make_env(config, environment_source)
     # Seed coordinates describe work, not process scheduling. Restarts and different
     # executor scheduling therefore do not alter a collector's scenario sequence.
     seed = int(np.random.SeedSequence([config.seed, update, collector, 2026]).generate_state(1)[0])
@@ -116,13 +118,13 @@ def collect_batch(model, config, collector, update):
             "value_loss_sum": value_sum, "collector": collector}
 
 
-def worker_collect(state, model_config, config_dict, collector, update):
+def worker_collect(state, model_config, config_dict, collector, update, environment_source=None):
     torch.set_num_threads(1)
     # Construction randomness is irrelevant after strict loading; communication and
     # actions use explicit scenario streams rather than Torch's global stream.
     model = SoftRoleNet(**model_config).double()
     model.load_state_dict(state, strict=True)
-    return collect_batch(model, Config(**config_dict), collector, update)
+    return collect_batch(model, Config(**config_dict), collector, update, environment_source)
 
 
 def apply_gradients(model, optimizer, batches, max_grad_norm):
@@ -185,7 +187,7 @@ def train(config, output, resume=None, episode_log="file"):
         checkpoint = torch.load(resume, map_location="cpu", weights_only=False)
         if checkpoint.get("format_version") != CHECKPOINT_VERSION:
             raise ValueError("unsupported checkpoint format")
-        if checkpoint.get("environment_version") != ENVIRONMENT_VERSION:
+        if checkpoint.get("environment_version") != config.env_version:
             raise ValueError("cannot resume a different environment version")
         previous = Config(**checkpoint["config"]).to_dict()
         current = config.to_dict()
@@ -194,6 +196,11 @@ def train(config, output, resume=None, episode_log="file"):
             current.pop(key)
         if previous != current:
             raise ValueError("resume may change only epochs, total_steps, and save_every")
+        if config.env_version == "paper-v1":
+            from softrole.publication_env import checkpoint_binding, simulator_identity
+            checkpoint_binding(resume, checkpoint)
+            if simulator_identity() != checkpoint["simulator_source"]:
+                raise ValueError("Resume requires unchanged paper simulator source")
         model.load_state_dict(checkpoint["model_state"], strict=True)
         optimizer.load_state_dict(checkpoint["optimizer_state"])
         completed_updates = checkpoint["updates"]
@@ -204,9 +211,18 @@ def train(config, output, resume=None, episode_log="file"):
     output.mkdir(parents=True)
     (output / "checkpoints").mkdir()
     provenance = source_snapshot(output)
+    environment_source = simulator_source = None
+    if config.env_version == "paper-v1":
+        from softrole.publication_env import source_binding, SIMULATOR_FILES
+        environment_source = source_binding(output / "source")
+        simulator_source = {key: environment_source[key] for key in ("sha256", "files")}
+        if any(provenance["files"].get(name) != simulator_source["files"][name]
+               for name in SIMULATOR_FILES):
+            raise ValueError("Archived paper simulator differs from the source manifest")
     write_json(output / "config.json", config.to_dict())
     write_json(output / "initial_signature.json", model_signature(model))
-    write_json(output / "run.json", {"environment_version": ENVIRONMENT_VERSION,
+    write_json(output / "run.json", {"environment_version": config.env_version,
+               "simulator_source": simulator_source,
                "source_sha256": provenance["sha256"], "resume": str(resume) if resume else None,
                "parent_source_sha256": checkpoint["source_sha256"] if resume else None,
                "torch": torch.__version__, "numpy": np.__version__, "dtype": "float64",
@@ -216,15 +232,19 @@ def train(config, output, resume=None, episode_log="file"):
                "approximations": ["straight-through bits", "GAE with learned critic", "truncated BPTT"]})
 
     def save(epoch):
+        if environment_source is not None:
+            source_binding(environment_source["root"], simulator_source)
         path = output / "checkpoints" / f"epoch{epoch:04d}.pt"
         payload = {"format_version": CHECKPOINT_VERSION, "config": config.to_dict(),
                    "model_config": config.model_kwargs(), "model_state": model.state_dict(),
                    "optimizer_state": optimizer.state_dict(), "epoch": epoch,
                    "updates": completed_updates, "total_steps": total_steps,
-                   "total_episodes": total_episodes, "environment_version": ENVIRONMENT_VERSION,
+                   "total_episodes": total_episodes, "environment_version": config.env_version,
                    "completed_epochs": completed_updates // config.updates_per_epoch,
                    "updates_in_partial_epoch": completed_updates % config.updates_per_epoch,
                    "source_sha256": provenance["sha256"], "signature": model_signature(model)}
+        if simulator_source is not None:
+            payload["simulator_source"] = simulator_source
         with path.open("xb") as stream:
             torch.save(payload, stream)
         write_json(Path(str(path) + ".signature.json"), payload["signature"])
@@ -243,11 +263,12 @@ def train(config, output, resume=None, episode_log="file"):
             remaining_updates = config.updates_per_epoch - completed_updates % config.updates_per_epoch
             for _ in range(remaining_updates):
                 if executor is None:
-                    batches = [collect_batch(model, config, 0, completed_updates)]
+                    batches = [collect_batch(model, config, 0, completed_updates, environment_source)]
                 else:
                     state = {key: value.detach().cpu().clone() for key, value in model.state_dict().items()}
                     futures = [executor.submit(worker_collect, state, config.model_kwargs(),
-                               config.to_dict(), rank, completed_updates) for rank in range(config.nprocesses)]
+                               config.to_dict(), rank, completed_updates, environment_source)
+                               for rank in range(config.nprocesses)]
                     batches = [future.result() for future in futures]
                 norm = apply_gradients(model, optimizer, batches, config.max_grad_norm)
                 completed_updates += 1

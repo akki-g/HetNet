@@ -28,3 +28,29 @@ def model_signature(model):
     canonical = json.dumps(signature, sort_keys=True, separators=(",", ":")).encode()
     signature["sha256"] = hashlib.sha256(canonical).hexdigest()
     return signature
+
+
+def tree_signature(value):
+    """Stable value identity for model/optimizer/RNG trees, independent of pickle."""
+    import numpy as np
+    import torch
+
+    def canonical(item):
+        if torch.is_tensor(item):
+            return {"tensor": _entries([("", item)])[0]}
+        if isinstance(item, np.ndarray):
+            return {"ndarray": str(item.dtype), "shape": list(item.shape),
+                    "sha256": hashlib.sha256(item.tobytes(order="C")).hexdigest()}
+        if isinstance(item, dict):
+            return {"dict": [[canonical(k), canonical(v)] for k, v in
+                             sorted(item.items(), key=lambda pair: (type(pair[0]).__name__, str(pair[0])))]}
+        if isinstance(item, (tuple, list)):
+            return {type(item).__name__: [canonical(v) for v in item]}
+        if isinstance(item, np.generic):
+            return canonical(item.item())
+        if item is None or isinstance(item, (bool, int, float, str)):
+            return {type(item).__name__: item}
+        raise TypeError(f"Unsupported identity value: {type(item).__name__}")
+
+    return hashlib.sha256(json.dumps(canonical(value), sort_keys=True,
+                                    separators=(",", ":"), allow_nan=False).encode()).hexdigest()

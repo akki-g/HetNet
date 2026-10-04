@@ -89,7 +89,7 @@ class FireCommanderEnv(gym.Env):
 
     def multi_agent_init(self, args):
         self.publication_env_version = getattr(args, 'publication_env_version', 'historical-2022')
-        if self.publication_env_version not in ('historical-2022', 'corrected-v1'):
+        if self.publication_env_version not in ('historical-2022', 'corrected-v1', 'paper-v1'):
             raise ValueError('Unsupported publication_env_version: ' + str(self.publication_env_version))
         # General variables defining the environment : CONFIG
         params = ['dim', 'vision', 'fire_spread_off', 'mode', 'nfriendly_P', 'nfriendly_A', 'max_wind_speed', 'tensor_obs', 'reward_type', 'A_vision']
@@ -105,6 +105,10 @@ class FireCommanderEnv(gym.Env):
         self.captured_fire_index = self.npredator + self.npredator_capture
         self.dims = dims = (self.dim, self.dim)
         self.stay = not args.no_stay
+        if self.publication_env_version == 'paper-v1':
+            self.stay = False
+            if self.reward_type != 3:
+                raise ValueError('paper-v1 uses the fixed paper reward, with reward_type=3')
         self.duration = args.max_steps
 
         if self.reward_type == 0:
@@ -162,6 +166,16 @@ class FireCommanderEnv(gym.Env):
         if self.episode_over:
             raise RuntimeError("Episode is done")
 
+        if self.publication_env_version == 'paper-v1':
+            action = np.asarray(action)
+            limits = np.array([4] * self.npredator + [5] * self.npredator_capture)
+            if (action.shape != limits.shape or not np.isfinite(action).all()
+                    or np.any(action != action.astype(int))
+                    or np.any(action < 0) or np.any(action >= limits)):
+                raise ValueError('paper-v1 requires one valid native action per agent (P:0..3, A:0..4)')
+            self._paper_extinctions = set()
+            self._paper_new_ignitions = set()
+
         self.false_water_drop = np.zeros(self.npredator_capture)    # if the A agents dropped water not on a fire
         self.fire_extinguished = np.zeros(self.npredator_capture)   # if the A agent dropped water on a fire (0 -> no fire, 1 -> normal fire, 2 -> fire source)
         self.extinguishing = np.zeros(self.npredator_capture)       # if the A agent took the extinguish action
@@ -176,8 +190,14 @@ class FireCommanderEnv(gym.Env):
             self._take_action(i, a)
 
         # Propagate fire
+        if self.publication_env_version == 'paper-v1':
+            before_spread = {tuple(map(int, point)) for point in self.fire_loc}
         if not self.fire_spread_off:
             self._fire_propagation()
+        if self.publication_env_version == 'paper-v1':
+            after_spread = {tuple(map(int, point)) for point in self.fire_loc}
+            self._paper_new_ignitions = after_spread - before_spread
+            self.fire_out = not after_spread
 
         assert np.all(action <= self.naction), "Actions should be in the range [0,naction)."
 
@@ -189,6 +209,12 @@ class FireCommanderEnv(gym.Env):
             'predator_capture_locs' : self.predator_capture_loc,
             'fire_locs' : self.fire_loc
         }
+        if self.publication_env_version == 'paper-v1':
+            debug['paper_events'] = {
+                'new_ignitions': len(self._paper_new_ignitions),
+                'extinctions': len(self._paper_extinctions),
+                'false_drops': self.false_water_drop.astype(int).tolist(),
+            }
 
         return self.obs, self._get_reward(), self.episode_over, debug
 
@@ -205,6 +231,9 @@ class FireCommanderEnv(gym.Env):
         self.nfire = self.nfire_start   # reset fire count
         self.extinguishing = np.zeros(self.npredator_capture)
         self.discovered_fire = []
+        if self.publication_env_version == 'paper-v1':
+            self._paper_extinctions = set()
+            self._paper_new_ignitions = set()
         self.just_discovered_source = np.zeros(self.npredator)
         self.just_discovered_nonsource = np.zeros(self.npredator)
 
@@ -304,7 +333,7 @@ class FireCommanderEnv(gym.Env):
         if len(positions) == 0:
             return False
         positions = np.asarray(positions)
-        if self.publication_env_version == 'corrected-v1':
+        if self.publication_env_version in ('corrected-v1', 'paper-v1'):
             # Coordinates match only when both components belong to one row.
             return bool(np.any(np.all(positions == point, axis=1)))
         return point in positions
@@ -327,7 +356,7 @@ class FireCommanderEnv(gym.Env):
             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
             view = self.bool_base_grid[slice_y, slice_x]
-            obs.append(view.copy() if self.publication_env_version == 'corrected-v1' else view)
+            obs.append(view.copy() if self.publication_env_version in ('corrected-v1', 'paper-v1') else view)
 
             for fire in self.fire_loc:
                 if self._contains_fire_position(fire, self.discovered_fire):
@@ -347,7 +376,7 @@ class FireCommanderEnv(gym.Env):
             slice_y = slice(p[0], p[0] + (2 * self.vision) + 1)
             slice_x = slice(p[1], p[1] + (2 * self.vision) + 1)
             view = self.bool_base_grid[slice_y, slice_x]
-            obs.append(view.copy() if self.publication_env_version == 'corrected-v1' else view)
+            obs.append(view.copy() if self.publication_env_version in ('corrected-v1', 'paper-v1') else view)
 
             if self.action_blind:
                 obs[-1][:, :, self.BASE:] = np.zeros(shape=obs[-1][:, :, self.BASE:].shape)
@@ -357,6 +386,22 @@ class FireCommanderEnv(gym.Env):
         return obs
 
     def _take_action(self, idx, act):
+        if self.publication_env_version == 'paper-v1':
+            limit = 4 if idx < self.predator_capture_index else 5
+            if not 0 <= act < limit or int(act) != act:
+                raise ValueError('Invalid paper-v1 native action')
+            if idx >= self.predator_capture_index and act == 4:
+                # Eligibility uses discovery from the previous observation:
+                # all actions/suppression precede propagation and new sensing.
+                position = self.predator_capture_loc[idx - self.npredator]
+                active = bool(np.any(np.all(self.fire_loc == position, axis=1)))
+                discovered = self._contains_fire_position(position, self.discovered_fire)
+                if not (active and discovered):
+                    self.extinguishing[idx - self.npredator] = 1
+                    self.false_water_drop[idx - self.npredator] = 1
+                    return
+                self._paper_extinctions.add(tuple(map(int, position)))
+                act = 5  # Reuse the physical removal, without a native stay action.
         # STAY action
         if act==4:
             return
@@ -466,7 +511,14 @@ class FireCommanderEnv(gym.Env):
         elif self.mode == 'competitive':
             raise NotImplementedError('>>> Reward not implemented for competitive Fire Commander')
         elif self.mode == 'mixed':
-            if self.TEMP_REWARD_TYPE == 'NEG_PER_FIRE':
+            if self.publication_env_version == 'paper-v1':
+                # Counts are unique events of this transition, not active fire
+                # count or front/source identity. The final step still costs .1.
+                shared = (-0.1 - 0.1 * len(self._paper_new_ignitions)
+                          + 10.0 * len(self._paper_extinctions))
+                reward = np.full(self.captured_fire_index, shared)
+                reward[self.npredator:] -= 0.1 * self.false_water_drop
+            elif self.TEMP_REWARD_TYPE == 'NEG_PER_FIRE':
                 reward_val = self.nfire * self.FIRE_PENALTY
                 reward = np.full(self.captured_fire_index, reward_val)
             elif self.TEMP_REWARD_TYPE == 'NEG_TIMESTEP_BIG_POS_CAPTURE':
@@ -515,6 +567,8 @@ class FireCommanderEnv(gym.Env):
         return reward
 
     def reward_terminal(self):
+        if self.publication_env_version == 'paper-v1':
+            return np.zeros(self.captured_fire_index)
         return np.zeros_like(self._get_reward())
 
     def _onehot_initialization(self, a):

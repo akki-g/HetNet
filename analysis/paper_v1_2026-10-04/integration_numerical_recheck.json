@@ -1,0 +1,185 @@
+{
+  "passed": true,
+  "pairs": [
+    {
+      "task": "pp",
+      "variant": "real",
+      "collectors": 1,
+      "model_max_absolute_error": {
+        "torch.float64": 4.107825191113079e-14,
+        "torch.float32": 0
+      },
+      "optimizer_max_absolute_error": {
+        "torch.float32": 1.5260538798717167e-20,
+        "torch.float64": 2.2551405187698492e-17
+      },
+      "final_rng_equal": true,
+      "counts_equal": true
+    },
+    {
+      "task": "pp",
+      "variant": "real",
+      "collectors": 4,
+      "model_max_absolute_error": {
+        "torch.float64": 1.4960255256823984e-14,
+        "torch.float32": 0
+      },
+      "optimizer_max_absolute_error": {
+        "torch.float32": 7.965201614847267e-21,
+        "torch.float64": 1.5323842455366998e-16
+      },
+      "final_rng_equal": true,
+      "counts_equal": true
+    },
+    {
+      "task": "pp",
+      "variant": "binary",
+      "collectors": 1,
+      "model_max_absolute_error": {
+        "torch.float64": 4.659640728821302e-13,
+        "torch.float32": 0
+      },
+      "optimizer_max_absolute_error": {
+        "torch.float32": 1.2476307018000496e-20,
+        "torch.float64": 1.391573488385145e-15
+      },
+      "final_rng_equal": true,
+      "counts_equal": true
+    },
+    {
+      "task": "pp",
+      "variant": "binary",
+      "collectors": 4,
+      "model_max_absolute_error": {
+        "torch.float64": 3.044786645034492e-14,
+        "torch.float32": 0
+      },
+      "optimizer_max_absolute_error": {
+        "torch.float32": 3.296376779569757e-20,
+        "torch.float64": 3.5475095083725705e-16
+      },
+      "final_rng_equal": true,
+      "counts_equal": true
+    },
+    {
+      "task": "pcp",
+      "variant": "real",
+      "collectors": 1,
+      "model_max_absolute_error": {
+        "torch.float64": 1.465841337200402e-14,
+        "torch.float32": 0
+      },
+      "optimizer_max_absolute_error": {
+        "torch.float32": 1.9075720350423342e-20,
+        "torch.float64": 4.163336342344337e-17
+      },
+      "final_rng_equal": true,
+      "counts_equal": true
+    },
+    {
+      "task": "pcp",
+      "variant": "real",
+      "collectors": 4,
+      "model_max_absolute_error": {
+        "torch.float64": 1.6917023337725823e-14,
+        "torch.float32": 0
+      },
+      "optimizer_max_absolute_error": {
+        "torch.float32": 7.402212311744733e-21,
+        "torch.float64": 1.6306400674181987e-16
+      },
+      "final_rng_equal": true,
+      "counts_equal": true
+    },
+    {
+      "task": "pcp",
+      "variant": "binary",
+      "collectors": 1,
+      "model_max_absolute_error": {
+        "torch.float64": 1.1931601540116077e-13,
+        "torch.float32": 0
+      },
+      "optimizer_max_absolute_error": {
+        "torch.float32": 5.77106400413716e-20,
+        "torch.float64": 2.706168622523819e-16
+      },
+      "final_rng_equal": true,
+      "counts_equal": true
+    },
+    {
+      "task": "pcp",
+      "variant": "binary",
+      "collectors": 4,
+      "model_max_absolute_error": {
+        "torch.float64": 8.571095222453806e-14,
+        "torch.float32": 0
+      },
+      "optimizer_max_absolute_error": {
+        "torch.float32": 1.6002988328446062e-20,
+        "torch.float64": 2.949029909160572e-17
+      },
+      "final_rng_equal": true,
+      "counts_equal": true
+    },
+    {
+      "task": "fc",
+      "variant": "real",
+      "collectors": 1,
+      "model_max_absolute_error": {
+        "torch.float64": 5.3061721683178575e-14,
+        "torch.float32": 0
+      },
+      "optimizer_max_absolute_error": {
+        "torch.float32": 1.8228062170948225e-20,
+        "torch.float64": 1.3877787807814457e-17
+      },
+      "final_rng_equal": true,
+      "counts_equal": true
+    },
+    {
+      "task": "fc",
+      "variant": "real",
+      "collectors": 4,
+      "model_max_absolute_error": {
+        "torch.float64": 2.278038868652743e-14,
+        "torch.float32": 0
+      },
+      "optimizer_max_absolute_error": {
+        "torch.float32": 1.5411830455870543e-20,
+        "torch.float64": 1.3877787807814457e-17
+      },
+      "final_rng_equal": true,
+      "counts_equal": true
+    },
+    {
+      "task": "fc",
+      "variant": "binary",
+      "collectors": 1,
+      "model_max_absolute_error": {
+        "torch.float64": 5.320049956125672e-14,
+        "torch.float32": 0
+      },
+      "optimizer_max_absolute_error": {
+        "torch.float32": 5.487550434124024e-20,
+        "torch.float64": 1.367161998845276e-16
+      },
+      "final_rng_equal": true,
+      "counts_equal": true
+    },
+    {
+      "task": "fc",
+      "variant": "binary",
+      "collectors": 4,
+      "model_max_absolute_error": {
+        "torch.float64": 9.617306950815419e-14,
+        "torch.float32": 0
+      },
+      "optimizer_max_absolute_error": {
+        "torch.float32": 2.8216442550936495e-20,
+        "torch.float64": 8.297365344713675e-17
+      },
+      "final_rng_equal": true,
+      "counts_equal": true
+    }
+  ]
+}

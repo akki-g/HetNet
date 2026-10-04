@@ -1,0 +1,108 @@
+{
+  "comparison_implementation_sha256": "f4a0d687b0db219ffe699e0b789f6cc209e0fce676736d8ebff4f87a2d4bebcd",
+  "limitation": "One update per backend/workload. Equal episode summaries and RNG states do not prove action/observation trajectory equality; those full traces were not recorded. No throughput or learning-quality conclusion.",
+  "pairs": [
+    {
+      "checkpoint_sha256": [
+        "8fdf240a62760fc5248237c0e4a59788a005ddb80d7bd28a54431c3175d77762",
+        "f2ec69a323065422a1a258396e329d51c6985e12d92d2bedc1c6cc03e32b94ae"
+      ],
+      "collectors": 4,
+      "counts_equal": true,
+      "episode_semantics_equal": true,
+      "final_rng_equal": true,
+      "full_trajectory_identity_available": false,
+      "model_max_absolute_error": {
+        "torch.float32": 0,
+        "torch.float64": 1.4085954624931674e-15
+      },
+      "model_optimizer_within_tolerance": true,
+      "optimizer_max_absolute_error": {
+        "torch.float32": 6.378632344389068e-22,
+        "torch.float64": 8.673617379884035e-19
+      },
+      "task": "pp",
+      "variant": "real"
+    },
+    {
+      "checkpoint_sha256": [
+        "47561aea2e500abc6b643589d92ece48153c8202710a31ebae17008d7ce88113",
+        "4fb847a6210be746ba55168919d1a6b04072f71a54e044c091f6a3572eece5e9"
+      ],
+      "collectors": 4,
+      "counts_equal": true,
+      "episode_semantics_equal": true,
+      "final_rng_equal": true,
+      "full_trajectory_identity_available": false,
+      "model_max_absolute_error": {
+        "torch.float32": 0,
+        "torch.float64": 3.469446951953614e-15
+      },
+      "model_optimizer_within_tolerance": true,
+      "optimizer_max_absolute_error": {
+        "torch.float32": 1.7838384169840456e-21,
+        "torch.float64": 8.673617379884035e-19
+      },
+      "task": "pcp",
+      "variant": "real"
+    },
+    {
+      "checkpoint_sha256": [
+        "66aed428f9f10b0cd832b8d5de6e732a1a04cfa7fa99f2d17c69c06066df3051",
+        "56e520b14020b87a7bf2bbb40702084fab00556748360adbe79a6e563b2176b3"
+      ],
+      "collectors": 4,
+      "counts_equal": true,
+      "episode_semantics_equal": true,
+      "final_rng_equal": true,
+      "full_trajectory_identity_available": false,
+      "model_max_absolute_error": {
+        "torch.float32": 0,
+        "torch.float64": 2.914335439641036e-15
+      },
+      "model_optimizer_within_tolerance": true,
+      "optimizer_max_absolute_error": {
+        "torch.float32": 4.510173613273757e-21,
+        "torch.float64": 4.336808689942018e-19
+      },
+      "task": "fc",
+      "variant": "real"
+    },
+    {
+      "checkpoint_sha256": [
+        "128cf9db8ba86b767e165fc60829c9e21851ab28157404536e737c1802d40c2d",
+        "74355d35c1426637f2ff027ccd1a18b82b6dcb02885e66e165d6d38f118fc7e6"
+      ],
+      "collectors": 4,
+      "counts_equal": true,
+      "episode_semantics_equal": true,
+      "final_rng_equal": true,
+      "full_trajectory_identity_available": false,
+      "model_max_absolute_error": {
+        "torch.float32": 0,
+        "torch.float64": 4.440892098500626e-15
+      },
+      "model_optimizer_within_tolerance": true,
+      "optimizer_max_absolute_error": {
+        "torch.float32": 2.2640363515650766e-21,
+        "torch.float64": 8.673617379884035e-19
+      },
+      "task": "pcp",
+      "variant": "binary"
+    }
+  ],
+  "passed": true,
+  "schema_version": 1,
+  "script_sha256": "e80e1987744845cbea901776f95d5cbed9f2c0765de106f306771270d4fa4eff",
+  "tolerances": {
+    "other": {
+      "atol": 1e-10,
+      "rtol": 1e-08
+    },
+    "torch.float32": {
+      "atol": 1e-06,
+      "rtol": 1e-05
+    }
+  },
+  "validation_sha256": "9c9054bd02ef21898876887c0fdc8fc2803b1cd8b4d9d84211db07fc9c04a53d"
+}

@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-04",
+  "files": {
+    ".gitignore": "a7be87494335c8d675e4b9ac17acb70d29eb524e6c45b1df1174386abebf12a8",
+    "AGENTS.md": "d11eb03d80e3037c8a9aee3f933af679b7948a5f1a400b1c1f7df226c4139008",
+    "analysis/hetnet_performance_plan_2026-10-04/check_external_sources.py": "00329fdb4bbc1687f403d70a59a945238a7bfc6f59b6b722bda2e5fd7419b800",
+    "analysis/hetnet_performance_plan_2026-10-04/evidence.json": "7bdf88778745d87d09450351a5a47b3a063de6304acb84ec3db28fd053679f3d",
+    "analysis/hetnet_performance_plan_2026-10-04/external_sources.json": "cc24e34a80184275625a7e8d015a7304402e53bf7adcead0af804baf42660507",
+    "analysis/hetnet_performance_plan_2026-10-04/validation.json": "faf1435a43de2fa4fa4c0e8e5327b726c01f8d6e736985085626a3132ee31a16",
+    "analysis/hetnet_performance_plan_2026-10-04/verification.json": "ad28748d49a11cf83d6a4bb4339a22f8116b73f36cec19a43ca4747e2e7fc48b",
+    "analysis/hetnet_performance_plan_2026-10-04/verify_evidence.py": "2c9622510d9a342ce8eeea974f75ce315e7d5563d4f0a1519f1f1765b237ac9c",
+    "publication_reconstruction/PERFORMANCE_PLAN.md": "37c4d47e9a96e6d8bb78839f3a3713526f1e631f53a888619b4139c7f4152d7b",
+    "publication_reconstruction/README.md": "5375129cb6069c01fd73f203046c2c35edb48b34d1dd0c841bfa5029a961aa7c"
+  },
+  "schema_version": 1,
+  "scope": "Final plan, documentation and evidence artifacts; excludes this manifest itself. Full document hashes include preserved earlier edits."
+}

@@ -1,0 +1,134 @@
+[
+  {
+    "run": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_validation_20261004/pp_real_4_dgl",
+    "counts": {
+      "env_steps": 144,
+      "episodes": 24,
+      "epoch": 1,
+      "updates": 3
+    },
+    "episodes_validated": true,
+    "requires_replay": true
+  },
+  {
+    "run": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_validation_20261004/pp_real_4_torch-v1",
+    "counts": {
+      "env_steps": 144,
+      "episodes": 24,
+      "epoch": 1,
+      "updates": 3
+    },
+    "episodes_validated": true,
+    "requires_replay": true
+  },
+  {
+    "run": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_validation_20261004/pp_binary_4_dgl",
+    "counts": {
+      "env_steps": 144,
+      "episodes": 24,
+      "epoch": 1,
+      "updates": 3
+    },
+    "episodes_validated": true,
+    "requires_replay": true
+  },
+  {
+    "run": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_validation_20261004/pp_binary_4_torch-v1",
+    "counts": {
+      "env_steps": 144,
+      "episodes": 24,
+      "epoch": 1,
+      "updates": 3
+    },
+    "episodes_validated": true,
+    "requires_replay": true
+  },
+  {
+    "run": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_validation_20261004/pcp_real_4_dgl",
+    "counts": {
+      "env_steps": 144,
+      "episodes": 24,
+      "epoch": 1,
+      "updates": 3
+    },
+    "episodes_validated": true,
+    "requires_replay": true
+  },
+  {
+    "run": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_validation_20261004/pcp_real_4_torch-v1",
+    "counts": {
+      "env_steps": 144,
+      "episodes": 24,
+      "epoch": 1,
+      "updates": 3
+    },
+    "episodes_validated": true,
+    "requires_replay": true
+  },
+  {
+    "run": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_validation_20261004/pcp_binary_4_dgl",
+    "counts": {
+      "env_steps": 144,
+      "episodes": 24,
+      "epoch": 1,
+      "updates": 3
+    },
+    "episodes_validated": true,
+    "requires_replay": true
+  },
+  {
+    "run": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_validation_20261004/pcp_binary_4_torch-v1",
+    "counts": {
+      "env_steps": 144,
+      "episodes": 24,
+      "epoch": 1,
+      "updates": 3
+    },
+    "episodes_validated": true,
+    "requires_replay": true
+  },
+  {
+    "run": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_validation_20261004/fc_real_4_dgl",
+    "counts": {
+      "env_steps": 144,
+      "episodes": 24,
+      "epoch": 1,
+      "updates": 3
+    },
+    "episodes_validated": true,
+    "requires_replay": true
+  },
+  {
+    "run": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_validation_20261004/fc_real_4_torch-v1",
+    "counts": {
+      "env_steps": 144,
+      "episodes": 24,
+      "epoch": 1,
+      "updates": 3
+    },
+    "episodes_validated": true,
+    "requires_replay": true
+  },
+  {
+    "run": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_validation_20261004/fc_binary_4_dgl",
+    "counts": {
+      "env_steps": 144,
+      "episodes": 24,
+      "epoch": 1,
+      "updates": 3
+    },
+    "episodes_validated": true,
+    "requires_replay": true
+  },
+  {
+    "run": "/Users/akshatguduru/Desktop/Thesis/HetNet/runs/paper_v1_validation_20261004/fc_binary_4_torch-v1",
+    "counts": {
+      "env_steps": 144,
+      "episodes": 24,
+      "epoch": 1,
+      "updates": 3
+    },
+    "episodes_validated": true,
+    "requires_replay": true
+  }
+]

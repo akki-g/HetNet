@@ -1,0 +1,17 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/torch/__init__.py:696: UserWarning: torch.set_default_tensor_type() is deprecated as of PyTorch 2.1, please use torch.set_default_dtype() and torch.set_default_device() as alternatives. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/torch/csrc/tensor/python_tensor.cpp:453.)
+  _C._set_default_tensor_type(t)
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment PredatorPrey-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment PredatorCapture-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment FireCommander-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/Users/akshatguduru/Desktop/Thesis/HetNet/.venv/lib/python3.12/site-packages/gym/envs/registration.py:498: UserWarning: [33mWARN: Overriding environment TrafficJunction-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+STAGE:2026-10-04 18:02:02 8752:2898532 ActivityProfilerController.cpp:314] Completed Stage: Warm Up
+STAGE:2026-10-04 18:02:10 8752:2898532 ActivityProfilerController.cpp:320] Completed Stage: Collection
+STAGE:2026-10-04 18:02:10 8752:2898532 ActivityProfilerController.cpp:324] Completed Stage: Post Processing
