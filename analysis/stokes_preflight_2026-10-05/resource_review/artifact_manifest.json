@@ -1,0 +1,8 @@
+{
+  "excludes_itself": true,
+  "files": {
+    "analysis/stokes_preflight_2026-10-05/resource_review/analyze.py": "2f568c03a0c05ecb4e0229dbd231f55f84d812f18ccd519d0a0b9908b1fa8ece",
+    "analysis/stokes_preflight_2026-10-05/resource_review/results.json": "13e840a530e6c4653d7f2077ae33c1e3b724e481e026c603436504f1ec303eb7",
+    "analysis/stokes_preflight_2026-10-05/resource_review/verification.json": "401c40d05d00e4f69a32b91601526baf1fc3a17be952c19824cd42f842b830f0"
+  }
+}

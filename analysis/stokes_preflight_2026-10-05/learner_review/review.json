@@ -1,0 +1,1485 @@
+{
+  "duplicate_array_comparisons": [
+    {
+      "exact_equal": {
+        "episodes": true,
+        "epochs": true,
+        "identity": true,
+        "initial": true,
+        "manifest": true,
+        "probe": true,
+        "signatures": true,
+        "updates": true
+      },
+      "workload": "pp_real"
+    },
+    {
+      "exact_equal": {
+        "episodes": true,
+        "epochs": true,
+        "identity": true,
+        "initial": true,
+        "manifest": true,
+        "probe": true,
+        "signatures": true,
+        "updates": true
+      },
+      "workload": "pcp_real"
+    },
+    {
+      "exact_equal": {
+        "episodes": true,
+        "epochs": true,
+        "identity": true,
+        "initial": true,
+        "manifest": true,
+        "probe": true,
+        "signatures": true,
+        "updates": true
+      },
+      "workload": "fc_real"
+    },
+    {
+      "exact_equal": {
+        "episodes": true,
+        "epochs": true,
+        "identity": true,
+        "initial": true,
+        "manifest": true,
+        "probe": true,
+        "signatures": true,
+        "updates": true
+      },
+      "workload": "pcp_binary"
+    }
+  ],
+  "execution": "Only artifact loading, hashes, value comparisons, and recorded-source inspection; no training/evaluation or Slurm jobs executed.",
+  "input_sha256": {
+    "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991/checkpoint_probe/report.json": "57d988ba155d81fa2c3ac643d675b2579fc59246c1ed8cb685939be1b480371e",
+    "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991/checkpoint_records.jsonl": "e5d75e083e8eb9d809e1328e9344ef9ffa5a8f4104dfda2e65d573835395749d",
+    "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991/checkpoints/fc_real/run1/model_update00000100_ep10.pt": "293f8464be3bac9e01e37c2e55e8338d3917a2d7aa814e2a15c0ee8a1330ab57",
+    "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991/epoch_signatures.jsonl": "fd8953bff98af4ae471d74c77bbc1a2cead89d3367f4204f2490d7ac429a31f8",
+    "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991/initial_signature.json": "9628dbaabf71f367deff83681e8403f1db983159f3fa72cffcc4bdbbc8ee1e1f",
+    "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991/initial_training_identity.json": "83efb5c7854ecf197599747f67668997a8f73b092e3ec4cad0910c23a20d00f7",
+    "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991/metrics.jsonl": "75acda2a765ff99a8c8985944206fee5355072420a0344c010c394bebca7fcb2",
+    "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991/preflight.json": "b5915af4cefc0c83688cf9a17b4b3f5efe1a82dadb23935213976aae7547808e",
+    "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991/protocol.json": "5b912a55d6758901548bb0896dd217ab1fa19f2d39098ca89283de08b40e6cd1",
+    "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991/run_status.json": "40ba054f3882f031491491c0103b26b69adf5fce5e744f4cd3b0825a5749a0c7",
+    "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991/source_manifest.json": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+    "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991/stdout.log": "8dea08274b6329fc5dd0e7609ea0611e1c681969ef05954c084971b90e5bd192",
+    "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991/updates.jsonl": "8132743467cd0ad5d8420fdabf55326e3e6d23361adf8f61a35a72bf8acdd536",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991/checkpoint_probe/report.json": "7f4fd39129e7de20f82ac2cb112b4f0fdd6923dd178107cec0b54ad30c5bf6ca",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991/checkpoint_records.jsonl": "e411e489d7e465dbdd11472cf3bc867692a1e49fbbe4316a6a42df9930656ac3",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991/checkpoints/pcp_binary/run1/model_update00000100_ep10.pt": "228e513b7ef1d5406f00b853fc1027054260c8bf07e82cb78fb3fd3d8eaef8c2",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991/epoch_signatures.jsonl": "c20da955522b25ec58f53849809a48c4002b4579b873ee4546b2129d70ff785e",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991/initial_signature.json": "4208850e207e385c996b840436e10b177cbb205ac1d526aae110a7edbc31e4f3",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991/initial_training_identity.json": "8cee135d62ed9940d0865c219eb44fd3c9e01e8d7b37e825466b69fc375291e0",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991/metrics.jsonl": "723ba7e491ca2f80b177c31277a3fd0dc2db4902c8ad5f254e0b39b041ccdbcc",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991/preflight.json": "54af462b57143dc0068b31c72e651f41a0a56c290d87d0542d5cb1d1239133c0",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991/protocol.json": "dbd8b8c6593a5691de82673c917466ef01213c51c9429faee2b938bd1288fd36",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991/run_status.json": "b88d4e80acf8ae0e73bef8d2eb9ce664e9ff6ed5bef29c8bccc4b091e78b6a50",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991/source_manifest.json": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991/stdout.log": "654edefa9f40e10450faf198d79d5c7158f6c437e69aae2c16e2b6e7faaf00ca",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991/updates.jsonl": "288786d841f11c04d47a7115c7788dbdbbdf3d79dd1bdc30e1b8c164edf84bc9",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991/checkpoint_probe/report.json": "922c0a5b5a9acd8a50ba82ef71e63d9322271cacf08be4261b59ea6550df4343",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991/checkpoint_records.jsonl": "2800d7cd4d1eeae9fb69526580ad9eb24bfe146300eb76670c3c8c7b4da8d76d",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991/checkpoints/pcp_real/run1/model_update00000100_ep10.pt": "6bd092312214955b0c5e677f9309e875b283e6c64aebcda1d75c609acd22993b",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991/epoch_signatures.jsonl": "bb5f931ed91420780681382d5750e46362cb726b89b2e18e4a3efb0186de419a",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991/initial_signature.json": "853e6723ce80df0bf5593cf21dd5dbe994d3a3486e3677c7ce6e0e52bc7fa1f8",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991/initial_training_identity.json": "963dcd693d46403861d3fe3228c5bfc6f82d891886df39aa8a3acacf0c04b8cb",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991/metrics.jsonl": "00e60d72f24a2b42b14d2d574aa624f9133c0437f351e3551edccd545b2c470a",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991/preflight.json": "d01fc2891435f65d312de6dfbdfd2450778f70a953503375eff122177c324e83",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991/protocol.json": "ebb706a29dd9d99fb5845f59a782f536705a14ec83f284cc3ccfcb6c2bec81a3",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991/run_status.json": "105ada48d4ccc6fe6a541660ae5876e94e675c5d62ddeac455c61e17fe3f02e0",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991/source_manifest.json": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991/stdout.log": "3f77e63bf7318ee628ad87870d18b855e7443fe713cdbba5297ae589d8502b6b",
+    "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991/updates.jsonl": "201a978b47bd32ceaa5fad36e3d211b1fcc45e8f89ba6c7e2c7310c5bf2a9c2d",
+    "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991/checkpoint_probe/report.json": "5b1e1b00e743eb2f4af86f9cad9530f4570b955a825363c766f86f98e63b3422",
+    "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991/checkpoint_records.jsonl": "af7d147b11368dd74ba2251f79904b4b18493a2a623e233ef5eba4b8ab32c8e8",
+    "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991/checkpoints/pp_real/run1/model_update00000100_ep10.pt": "a96d5c50283ee52132eb5b5b13a0685f331bb449147a202f004d1ba02526900a",
+    "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991/epoch_signatures.jsonl": "c0d108de0ddd4cf429ac186045d0f4eac62c9c663aebb347a8603fd4f7b73670",
+    "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991/initial_signature.json": "853e6723ce80df0bf5593cf21dd5dbe994d3a3486e3677c7ce6e0e52bc7fa1f8",
+    "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991/initial_training_identity.json": "86539807db3120d7ea8bf9cfe5223feb0fb352e7bd34c1de1d67c62828d215b2",
+    "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991/metrics.jsonl": "cc35f190fd2850695725e67014f740693154e013eb3f98a02b388cf266c703be",
+    "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991/preflight.json": "d9fa7dd477b5d0f05b5949698fc26fc222e6083b2d17693e976542e21363f918",
+    "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991/protocol.json": "9cae5726602cd6f8eb619127b44802a3df86511dbc7f367866d7acec0b186f61",
+    "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991/run_status.json": "f2beddf9814cce84d04c9a724f8063da78d1da4eb546f86b5c420520d248a4dd",
+    "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991/source_manifest.json": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+    "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991/stdout.log": "3f6eebc1246ba7483c3fe17878826719c21a986451cf6720452b7f7492b47f87",
+    "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991/updates.jsonl": "ed8717ea6def8c5ec1152a2a7e07ae7bd77ee6471ac940eb0c764ef426e1a82b",
+    "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991/checkpoint_probe/report.json": "60e8a5ad74187f1768d19d9e81fd0f16f61261697cf5047b09ac122879f43766",
+    "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991/checkpoint_records.jsonl": "4caf0dc73199f55417af31146039b0912550f0b8bc3595b28f36474b922313d8",
+    "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991/checkpoints/fc_real/run1/model_update00000100_ep10.pt": "77d1ad1a0bdf6e9c9e1adf2462f3bfa5a1760dc8296c3893129f7d55d44a9cee",
+    "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991/epoch_signatures.jsonl": "fd8953bff98af4ae471d74c77bbc1a2cead89d3367f4204f2490d7ac429a31f8",
+    "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991/initial_signature.json": "9628dbaabf71f367deff83681e8403f1db983159f3fa72cffcc4bdbbc8ee1e1f",
+    "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991/initial_training_identity.json": "e89be8f7c77ada7573460b7ebd923a20aa68523bbdc08599615ea26fdf305010",
+    "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991/metrics.jsonl": "645508f997ee2caa86677279bc284395cc5c955bb947bd3ba986ef35463f673a",
+    "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991/preflight.json": "b3a38876fe7e67c4b50674c1aa68847e73a317c59a12fc696b6d5c02006a8a09",
+    "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991/protocol.json": "8ee55e477b815e9d2074ed5c4197c8d3a2b666772ea4eced07b0a62e6917b22d",
+    "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991/run_status.json": "9dd5a2f489ebdfad821fdfc3404e17d7d87f6028677708f2e1f4e945e45d43f5",
+    "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991/source_manifest.json": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+    "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991/stdout.log": "0dc1d88d385cebd25f498c6f4e578b83a4d21be60c71c53c91c37203513bdc28",
+    "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991/updates.jsonl": "fb215541086f44e50a2b5a21b575659eb18e5ae42b62cec2130af1b672003acd",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991/checkpoint_probe/report.json": "8fca128640f0413e3cdb64bc14b9b225bd1e09874888118e9c158271ff009fea",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991/checkpoint_records.jsonl": "c63d0d3d59d6e29bfc1f5a2ea0ab26896de9ddd1b8660e0b667803d700fd8448",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991/checkpoints/pcp_binary/run1/model_update00000100_ep10.pt": "716a7bc0affb4ce523eaef4f10a08c902e9085a5a1af0257e083dcfd065290fd",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991/epoch_signatures.jsonl": "c20da955522b25ec58f53849809a48c4002b4579b873ee4546b2129d70ff785e",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991/initial_signature.json": "4208850e207e385c996b840436e10b177cbb205ac1d526aae110a7edbc31e4f3",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991/initial_training_identity.json": "c8cda8748d09145e336776b6ce1ac3b155bc3064e2ab795a96e752e9219770bc",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991/metrics.jsonl": "4d7846c2c6f8a0311d94614c461209c725c1cfcc4d20ef6777e80ef3904892b6",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991/preflight.json": "63168db6d5b7925332dd71112677d486cb9c7ea1e798353ff5ba3b7aa3052964",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991/protocol.json": "5d6f18dbca05b257d033df8c92db1fccb1760c90c4887eb01c92025ee2f02e69",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991/run_status.json": "ca0ecf77a3651ff54e785666bd837f683eb5af5af614cddd57479a6e82e916c8",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991/source_manifest.json": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991/stdout.log": "13b017882d4689d50f342e49f4896a7b53691a56a882a7661c0ed718fd1a587d",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991/updates.jsonl": "00701bf58ef23f6d5acb80837e80df7e2a1d662ac892c7dddbd6e091174f4520",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991/checkpoint_probe/report.json": "80f3cc7186ddeed6a2bc1d6cbcef07aedfe2d142121ea43f04b4f1dfd9a07907",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991/checkpoint_records.jsonl": "8b3fa83a9cd7c5bc1058bbc5a012163d4576e132480dde21fa2804602a01d84f",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991/checkpoints/pcp_real/run1/model_update00000100_ep10.pt": "9663dd34327cbf00f9083ae6999fa446408273905b8083b07ae78de44a738f73",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991/epoch_signatures.jsonl": "bb5f931ed91420780681382d5750e46362cb726b89b2e18e4a3efb0186de419a",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991/initial_signature.json": "853e6723ce80df0bf5593cf21dd5dbe994d3a3486e3677c7ce6e0e52bc7fa1f8",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991/initial_training_identity.json": "14751d23b42633af6374f41ae35740eba433734290b823cf6a2233d690edd310",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991/metrics.jsonl": "b2383764dc4ffafdaea8b68f4d03ff0aa589ecf072ae7a2f6539194cd449635d",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991/preflight.json": "ace5344dc814a3de7a0759beeb2ae6a3a503c0048503c83fe30492297906f4fa",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991/protocol.json": "c05b6e91b038f1a0dadabe480aa0f7e461dd0f8b3e46eb5189624cbf8d2717e3",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991/run_status.json": "25795e827fe88088825184830c262909ba93aa4179d4c886e4de2765079c884d",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991/source_manifest.json": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991/stdout.log": "3ec635dec6f729b7374ee80b3d4eb5b6a82ce45f5c02cfc37abb4210e4486161",
+    "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991/updates.jsonl": "ce92ca8804cd65d538002b4ab11f4b3a847d88d6ccf65e742393a7fa528970fe",
+    "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991/checkpoint_probe/report.json": "154958e231c51eff7069d0026dd9ef142ff24d2c6b458161db9606685769f962",
+    "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991/checkpoint_records.jsonl": "dff0b6ee7a95fe9009b391c1b61033b88f03931b9058f485d720b14c80f1f619",
+    "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991/checkpoints/pp_real/run1/model_update00000100_ep10.pt": "2929a8b2ee3221445246509b68ed884b74dc1486876df1f95b74482e86b889ef",
+    "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991/epoch_signatures.jsonl": "c0d108de0ddd4cf429ac186045d0f4eac62c9c663aebb347a8603fd4f7b73670",
+    "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991/initial_signature.json": "853e6723ce80df0bf5593cf21dd5dbe994d3a3486e3677c7ce6e0e52bc7fa1f8",
+    "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991/initial_training_identity.json": "0692304f410ddf70ca2bc53e65ecbe9fc5a5d22e0cc6d68fd520fca77592f9b1",
+    "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991/metrics.jsonl": "bdecc00757e3960cfa4e941fbdc4cbf2c3df3b9ce66129b9af84acc09df477fa",
+    "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991/preflight.json": "08fc553d9e1d25648bc7a5936cbaaee7b2671dcb81ae76a0e8443bf27250e693",
+    "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991/protocol.json": "a4df19f6d657ef20d7e69f603515f3fcbaa593839c1812fece7408a17b7fad33",
+    "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991/run_status.json": "7ac12fcabbcf8229dbb4bd13f1c3278fd456db7e167c493c8aebfde397742672",
+    "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991/source_manifest.json": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+    "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991/stdout.log": "36c36072cfb57009a5115532dab9171943bbd3c8923a02090ec7490d816bdbd8",
+    "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991/updates.jsonl": "ca084abf956ec399674012b2deaec3c71335828e8bd4e47f22c0485026ef7d60"
+  },
+  "numerical_comparison_exclusions": [
+    "updates/metrics.wall_time_seconds",
+    "episodes.rollout_wall_time_seconds",
+    "checkpoint paths/source/runtime/timing fields are not compared as numerical state; model/Adam/log/all RNG/count/recorder values are compared exactly"
+  ],
+  "passed": true,
+  "reporting_cautions": [
+    "Both arrays use torch-v1; neither is an additional DGL versus Torch performance comparison.",
+    "Arrays repeat seed991 and exact data/model trajectories; they are not independent training seeds.",
+    "Public checkpoint log/stdout loss fields retain per-step normalization; use paper-labelled updates.jsonl/metrics.jsonl for global-episode-mean losses.",
+    "Legacy log entropy is a placeholder zero, not measured policy entropy.",
+    "One frozen scenario establishes load/execution/immutability, not task quality.",
+    "No actions or intermediate gradient tensors are persisted in these 100-update ledgers; finite global preclip norms and checkpoint/optimizer finiteness are checked, not independent per-update gradient recomputation.",
+    "Large FC loss/gradient magnitudes reflect a distinct reward scale and unaveraged time sums; these data alone neither establish a defect nor validate eventual convergence."
+  ],
+  "runs": [
+    {
+      "active_adam_parameters": 158,
+      "all_active_adam_steps": 100,
+      "all_counts_rewards_loss_aggregation_reconciled": true,
+      "all_recorded_losses_and_gradient_norms_finite": true,
+      "archived_source_files_verified": 53,
+      "array": "905118",
+      "backend": "torch-v1",
+      "changed_model_tensor_count": 154,
+      "checkpoint": "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991/checkpoints/pp_real/run1/model_update00000100_ep10.pt",
+      "checkpoint_sha256": "a96d5c50283ee52132eb5b5b13a0685f331bb449147a202f004d1ba02526900a",
+      "collector_steps_max": 579,
+      "collector_steps_min": 500,
+      "counts": {
+        "env_steps": 215817,
+        "episodes": 3118,
+        "epoch": 10,
+        "updates": 100
+      },
+      "episode_return_range": [
+        -3.9999999999999942,
+        -0.06666666666666667
+      ],
+      "epoch_metrics": [
+        {
+          "episodes": 311,
+          "epoch": 1,
+          "mean_agent_return": -2.2825294748124305,
+          "policy_loss": -59.24018129372762,
+          "steps": 21523,
+          "success_rate": 0.33762057877813506,
+          "value_loss": 191.4546876269371
+        },
+        {
+          "episodes": 312,
+          "epoch": 2,
+          "mean_agent_return": -2.1903311965811945,
+          "policy_loss": -55.77096031845173,
+          "steps": 21676,
+          "success_rate": 0.3685897435897436,
+          "value_loss": 160.8358105076191
+        },
+        {
+          "episodes": 316,
+          "epoch": 3,
+          "mean_agent_return": -2.1633966244725715,
+          "policy_loss": -54.16337781623658,
+          "steps": 21459,
+          "success_rate": 0.3987341772151899,
+          "value_loss": 157.99313382392455
+        },
+        {
+          "episodes": 321,
+          "epoch": 4,
+          "mean_agent_return": -2.14890965732087,
+          "policy_loss": -51.89552628940407,
+          "steps": 21306,
+          "success_rate": 0.40498442367601245,
+          "value_loss": 157.248233827155
+        },
+        {
+          "episodes": 315,
+          "epoch": 5,
+          "mean_agent_return": -2.386984126984124,
+          "policy_loss": -44.60977375150324,
+          "steps": 21700,
+          "success_rate": 0.33650793650793653,
+          "value_loss": 149.30529721704124
+        },
+        {
+          "episodes": 293,
+          "epoch": 6,
+          "mean_agent_return": -2.801877133105798,
+          "policy_loss": -14.107089972528154,
+          "steps": 21530,
+          "success_rate": 0.22184300341296928,
+          "value_loss": 116.07013246252713
+        },
+        {
+          "episodes": 309,
+          "epoch": 7,
+          "mean_agent_return": -2.708198489751884,
+          "policy_loss": -12.190742626648959,
+          "steps": 21652,
+          "success_rate": 0.23300970873786409,
+          "value_loss": 68.78015084396323
+        },
+        {
+          "episodes": 300,
+          "epoch": 8,
+          "mean_agent_return": -3.0503333333333287,
+          "policy_loss": -1.0287125998715712,
+          "steps": 21815,
+          "success_rate": 0.15666666666666668,
+          "value_loss": 42.1226399665526
+        },
+        {
+          "episodes": 316,
+          "epoch": 9,
+          "mean_agent_return": -2.6509493670886037,
+          "policy_loss": 10.159710176330561,
+          "steps": 21859,
+          "success_rate": 0.27531645569620256,
+          "value_loss": 48.4878002269315
+        },
+        {
+          "episodes": 325,
+          "epoch": 10,
+          "mean_agent_return": -2.1970769230769207,
+          "policy_loss": 2.488604496946068,
+          "steps": 21297,
+          "success_rate": 0.40615384615384614,
+          "value_loss": 35.3880899886715
+        }
+      ],
+      "exact_initial_model_optimizer_rng_and_20_update_benchmark_prefix": true,
+      "final_value_identities": {
+        "completed_epochs": "2fdffa5993e05265a6a1322c4b78596a208c2a1c05ef8af34b4a6c735077ccc6",
+        "counts": "f1e27864d96c07d8870e82a235715ff9166ab4ba75007a5196d9b54bb4652c61",
+        "log": "c455d3de37ac14d941b5cebcc2ac1dbec8b161a58cbe8cd5f21bd6b9e1c269ce",
+        "milestones_reached": "6d355a642ffed28c2afbda550638c33deb10c7f463ea5f2ce79a5ee5a8e15a4c",
+        "policy_net": "6f20b8c2a409914ed994e8f9487c2867cd4636d4b2518a4547441fe9b63ddade",
+        "recorder_state": "9436df702e566a5f41e874acc6bec627df39a2755e6b22e32a27a46647707077",
+        "rng_states": "bb0791d838b7f2500905e6be466a4758e9dc0f4768dc882027a66fcb5071b16b",
+        "trainer": "ac1a799582b0a89bb02a2b04ed93d9b6e68a3fa1466ee2e0217c17e16dc6fcb5",
+        "updates_in_epoch": "bec5d9b7db1968f57a2b7aee34ad0621bb132aa20899ef22a88a3f21291c481b"
+      },
+      "finite_model_values": 993470,
+      "finite_optimizer_values": 996860,
+      "frozen_probe": {
+        "checkpoint_hash_matches": true,
+        "episodes": 1,
+        "mean_agent_return": -3.799999999999995,
+        "parameters_unchanged": true,
+        "source_files_verified": 12,
+        "steps": 80,
+        "success": false
+      },
+      "gradient_norm_max": 1271.732074357934,
+      "gradient_norm_median": 191.52981695591683,
+      "gradient_norm_min": 61.11992771604786,
+      "ledger_episodes": 3118,
+      "ledger_epochs": 10,
+      "ledger_updates": 100,
+      "model_tensor_count": 382,
+      "parameter_dtypes": [
+        "torch.float32",
+        "torch.float64"
+      ],
+      "policy_loss_range": [
+        -66.68834695304153,
+        18.920685369227417
+      ],
+      "run": "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991",
+      "source_differences_from_benchmark": {},
+      "source_manifest_sha256": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+      "updates_clipped": 100,
+      "value_loss_range": [
+        20.868527268850645,
+        225.75820569973504
+      ],
+      "workload": "pp_real"
+    },
+    {
+      "active_adam_parameters": 334,
+      "all_active_adam_steps": 100,
+      "all_counts_rewards_loss_aggregation_reconciled": true,
+      "all_recorded_losses_and_gradient_norms_finite": true,
+      "archived_source_files_verified": 53,
+      "array": "905118",
+      "backend": "torch-v1",
+      "changed_model_tensor_count": 256,
+      "checkpoint": "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991/checkpoints/pcp_real/run1/model_update00000100_ep10.pt",
+      "checkpoint_sha256": "6bd092312214955b0c5e677f9309e875b283e6c64aebcda1d75c609acd22993b",
+      "collector_steps_max": 579,
+      "collector_steps_min": 500,
+      "counts": {
+        "env_steps": 216285,
+        "episodes": 2947,
+        "epoch": 10,
+        "updates": 100
+      },
+      "episode_return_range": [
+        -3.9999999999999942,
+        -0.05000000000000001
+      ],
+      "epoch_metrics": [
+        {
+          "episodes": 300,
+          "epoch": 1,
+          "mean_agent_return": -2.388166666666664,
+          "policy_loss": -54.650503217994334,
+          "steps": 21361,
+          "success_rate": 0.2833333333333333,
+          "value_loss": 178.54773376655018
+        },
+        {
+          "episodes": 295,
+          "epoch": 2,
+          "mean_agent_return": -2.4808474576271156,
+          "policy_loss": -30.673794182615104,
+          "steps": 21709,
+          "success_rate": 0.1864406779661017,
+          "value_loss": 122.72689283519203
+        },
+        {
+          "episodes": 282,
+          "epoch": 3,
+          "mean_agent_return": -2.602600472813236,
+          "policy_loss": -14.619743023549145,
+          "steps": 21750,
+          "success_rate": 0.08156028368794327,
+          "value_loss": 89.66079587334316
+        },
+        {
+          "episodes": 287,
+          "epoch": 4,
+          "mean_agent_return": -2.7913472706155593,
+          "policy_loss": -6.5997469323397135,
+          "steps": 21661,
+          "success_rate": 0.14982578397212543,
+          "value_loss": 67.29376836147237
+        },
+        {
+          "episodes": 288,
+          "epoch": 5,
+          "mean_agent_return": -2.733506944444441,
+          "policy_loss": 3.600647296840267,
+          "steps": 21910,
+          "success_rate": 0.14583333333333334,
+          "value_loss": 57.39885284638329
+        },
+        {
+          "episodes": 299,
+          "epoch": 6,
+          "mean_agent_return": -2.4353957636566306,
+          "policy_loss": -1.5333918469135146,
+          "steps": 21396,
+          "success_rate": 0.27424749163879597,
+          "value_loss": 64.40188908387276
+        },
+        {
+          "episodes": 298,
+          "epoch": 7,
+          "mean_agent_return": -2.701286353467558,
+          "policy_loss": -0.6277676882968222,
+          "steps": 21796,
+          "success_rate": 0.20469798657718122,
+          "value_loss": 63.54338918889947
+        },
+        {
+          "episodes": 299,
+          "epoch": 8,
+          "mean_agent_return": -2.5027313266443674,
+          "policy_loss": -0.3251643469928625,
+          "steps": 21447,
+          "success_rate": 0.2508361204013378,
+          "value_loss": 54.842309063734774
+        },
+        {
+          "episodes": 294,
+          "epoch": 9,
+          "mean_agent_return": -2.738151927437638,
+          "policy_loss": -1.495742061483185,
+          "steps": 21622,
+          "success_rate": 0.18027210884353742,
+          "value_loss": 62.44030480543675
+        },
+        {
+          "episodes": 305,
+          "epoch": 10,
+          "mean_agent_return": -2.749180327868849,
+          "policy_loss": 1.9217382518110016,
+          "steps": 21633,
+          "success_rate": 0.21639344262295082,
+          "value_loss": 53.379793523903565
+        }
+      ],
+      "exact_initial_model_optimizer_rng_and_20_update_benchmark_prefix": true,
+      "final_value_identities": {
+        "completed_epochs": "2fdffa5993e05265a6a1322c4b78596a208c2a1c05ef8af34b4a6c735077ccc6",
+        "counts": "e326a60d6111b24ccb2bed74b125e27edef0578ca47a54c7e8864b7b8bbb1684",
+        "log": "c08aa7aeae1342e0086b7c628d7fe0aa940973d795e97c3d49c4642688cc62e4",
+        "milestones_reached": "6d355a642ffed28c2afbda550638c33deb10c7f463ea5f2ce79a5ee5a8e15a4c",
+        "policy_net": "51ad5da14e45291d6a120e0a627393e36fb0b411feff3a223cf14c70a3fd1176",
+        "recorder_state": "330eeb3c5e0b747b43226384bd19e3794e4c2b5557384f20a69623e97cabcaba",
+        "rng_states": "7aa6e301bf47a48b209fd502358227650d48170fdb3965a7aa7f82d912a0e5bd",
+        "trainer": "ee97bc0572a8ac90bee359419bbfc4f192766093cae5a3cb8cb2842c86b64b46",
+        "updates_in_epoch": "bec5d9b7db1968f57a2b7aee34ad0621bb132aa20899ef22a88a3f21291c481b"
+      },
+      "finite_model_values": 993470,
+      "finite_optimizer_values": 1971898,
+      "frozen_probe": {
+        "checkpoint_hash_matches": true,
+        "episodes": 1,
+        "mean_agent_return": -1.8666666666666654,
+        "parameters_unchanged": true,
+        "source_files_verified": 12,
+        "steps": 70,
+        "success": true
+      },
+      "gradient_norm_max": 981.9044219061584,
+      "gradient_norm_median": 188.1552045734141,
+      "gradient_norm_min": 19.349824484933855,
+      "ledger_episodes": 2947,
+      "ledger_epochs": 10,
+      "ledger_updates": 100,
+      "model_tensor_count": 382,
+      "parameter_dtypes": [
+        "torch.float32",
+        "torch.float64"
+      ],
+      "policy_loss_range": [
+        -60.7354797073043,
+        9.880108423633631
+      ],
+      "run": "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991",
+      "source_differences_from_benchmark": {},
+      "source_manifest_sha256": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+      "updates_clipped": 100,
+      "value_loss_range": [
+        41.670116836020334,
+        216.13671797223097
+      ],
+      "workload": "pcp_real"
+    },
+    {
+      "active_adam_parameters": 334,
+      "all_active_adam_steps": 100,
+      "all_counts_rewards_loss_aggregation_reconciled": true,
+      "all_recorded_losses_and_gradient_norms_finite": true,
+      "archived_source_files_verified": 53,
+      "array": "905118",
+      "backend": "torch-v1",
+      "changed_model_tensor_count": 257,
+      "checkpoint": "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991/checkpoints/fc_real/run1/model_update00000100_ep10.pt",
+      "checkpoint_sha256": "293f8464be3bac9e01e37c2e55e8338d3917a2d7aa814e2a15c0ee8a1330ab57",
+      "collector_steps_max": 797,
+      "collector_steps_min": 500,
+      "counts": {
+        "env_steps": 247718,
+        "episodes": 1098,
+        "epoch": 10,
+        "updates": 100
+      },
+      "episode_return_range": [
+        -37.63333333333352,
+        107.60000000000008
+      ],
+      "epoch_metrics": [
+        {
+          "episodes": 110,
+          "epoch": 1,
+          "mean_agent_return": 16.30060606060601,
+          "policy_loss": 453.2699993216111,
+          "steps": 24527,
+          "success_rate": 0.5,
+          "value_loss": 123056.58387470068
+        },
+        {
+          "episodes": 116,
+          "epoch": 2,
+          "mean_agent_return": 16.765229885057444,
+          "policy_loss": 422.2432550169099,
+          "steps": 24980,
+          "success_rate": 0.5,
+          "value_loss": 112362.62884662363
+        },
+        {
+          "episodes": 116,
+          "epoch": 3,
+          "mean_agent_return": 13.769252873563174,
+          "policy_loss": 302.98988029195885,
+          "steps": 24609,
+          "success_rate": 0.47413793103448276,
+          "value_loss": 109611.46551979487
+        },
+        {
+          "episodes": 120,
+          "epoch": 4,
+          "mean_agent_return": 3.7458333333332803,
+          "policy_loss": 25.637180547712678,
+          "steps": 24993,
+          "success_rate": 0.48333333333333334,
+          "value_loss": 84410.26118594041
+        },
+        {
+          "episodes": 102,
+          "epoch": 5,
+          "mean_agent_return": 0.41045751633980504,
+          "policy_loss": -57.356371181800036,
+          "steps": 24456,
+          "success_rate": 0.38235294117647056,
+          "value_loss": 97363.72242707603
+        },
+        {
+          "episodes": 112,
+          "epoch": 6,
+          "mean_agent_return": 7.961309523809483,
+          "policy_loss": 86.69443427758928,
+          "steps": 25282,
+          "success_rate": 0.41964285714285715,
+          "value_loss": 75146.7920320653
+        },
+        {
+          "episodes": 98,
+          "epoch": 7,
+          "mean_agent_return": -3.497959183673536,
+          "policy_loss": -118.47089896338404,
+          "steps": 24711,
+          "success_rate": 0.2857142857142857,
+          "value_loss": 85729.6185413421
+        },
+        {
+          "episodes": 118,
+          "epoch": 8,
+          "mean_agent_return": 8.796045197740076,
+          "policy_loss": 102.4454265142003,
+          "steps": 25312,
+          "success_rate": 0.5,
+          "value_loss": 73694.86845314821
+        },
+        {
+          "episodes": 107,
+          "epoch": 9,
+          "mean_agent_return": 0.1971962616821865,
+          "policy_loss": -68.58193913882455,
+          "steps": 24586,
+          "success_rate": 0.32710280373831774,
+          "value_loss": 80079.4076031271
+        },
+        {
+          "episodes": 99,
+          "epoch": 10,
+          "mean_agent_return": -0.9063973063973656,
+          "policy_loss": -67.27204638140414,
+          "steps": 24262,
+          "success_rate": 0.32323232323232326,
+          "value_loss": 75997.34070785624
+        }
+      ],
+      "exact_initial_model_optimizer_rng_and_20_update_benchmark_prefix": true,
+      "final_value_identities": {
+        "completed_epochs": "2fdffa5993e05265a6a1322c4b78596a208c2a1c05ef8af34b4a6c735077ccc6",
+        "counts": "d122a5d33fbefa25d3458889aae66a61e785cc1328244da57e92126b5e56bdef",
+        "log": "ab523a8067e8bdc07f17861d546a3a1bb6eb8fc96f191bf00c9d70c9c2603f85",
+        "milestones_reached": "6d355a642ffed28c2afbda550638c33deb10c7f463ea5f2ce79a5ee5a8e15a4c",
+        "policy_net": "c1b5883587bc8543922db0599bb47eb9a44f89384d39bfc3162a5e4235b8224c",
+        "recorder_state": "929110febebd1202f6e93585053098cb60d0499bd6622ee62c865c9dccaee06d",
+        "rng_states": "7c21efece7db6db62cb6d8fb428da7ef25a1fd58b40eeb1a16415f2a3ede11b1",
+        "trainer": "85bd3aba981041a672153b2441b4eb175e1f9c88a17ca2ee2fe047ba48f0441e",
+        "updates_in_epoch": "bec5d9b7db1968f57a2b7aee34ad0621bb132aa20899ef22a88a3f21291c481b"
+      },
+      "finite_model_values": 221286,
+      "finite_optimizer_values": 428066,
+      "frozen_probe": {
+        "checkpoint_hash_matches": true,
+        "episodes": 1,
+        "mean_agent_return": 87.23333333333392,
+        "parameters_unchanged": true,
+        "source_files_verified": 12,
+        "steps": 300,
+        "success": false
+      },
+      "gradient_norm_max": 157536.55878881944,
+      "gradient_norm_median": 26738.054170311756,
+      "gradient_norm_min": 4215.2506652912125,
+      "ledger_episodes": 1098,
+      "ledger_epochs": 10,
+      "ledger_updates": 100,
+      "model_tensor_count": 382,
+      "parameter_dtypes": [
+        "torch.float32",
+        "torch.float64"
+      ],
+      "policy_loss_range": [
+        -515.5615732799212,
+        1038.9045152703386
+      ],
+      "run": "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991",
+      "source_differences_from_benchmark": {},
+      "source_manifest_sha256": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+      "updates_clipped": 100,
+      "value_loss_range": [
+        20238.892270435736,
+        334446.9204107597
+      ],
+      "workload": "fc_real"
+    },
+    {
+      "active_adam_parameters": 382,
+      "all_active_adam_steps": 100,
+      "all_counts_rewards_loss_aggregation_reconciled": true,
+      "all_recorded_losses_and_gradient_norms_finite": true,
+      "archived_source_files_verified": 53,
+      "array": "905118",
+      "backend": "torch-v1",
+      "changed_model_tensor_count": 305,
+      "checkpoint": "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991/checkpoints/pcp_binary/run1/model_update00000100_ep10.pt",
+      "checkpoint_sha256": "228e513b7ef1d5406f00b853fc1027054260c8bf07e82cb78fb3fd3d8eaef8c2",
+      "collector_steps_max": 579,
+      "collector_steps_min": 500,
+      "counts": {
+        "env_steps": 216940,
+        "episodes": 2996,
+        "epoch": 10,
+        "updates": 100
+      },
+      "episode_return_range": [
+        -3.9999999999999942,
+        -0.10000000000000002
+      ],
+      "epoch_metrics": [
+        {
+          "episodes": 304,
+          "epoch": 1,
+          "mean_agent_return": -2.4449561403508744,
+          "policy_loss": -34.5205852411565,
+          "steps": 21624,
+          "success_rate": 0.2894736842105263,
+          "value_loss": 114.56896165640946
+        },
+        {
+          "episodes": 307,
+          "epoch": 2,
+          "mean_agent_return": -2.3865906623235587,
+          "policy_loss": -7.8889430650003,
+          "steps": 21657,
+          "success_rate": 0.2964169381107492,
+          "value_loss": 75.97952671374944
+        },
+        {
+          "episodes": 292,
+          "epoch": 3,
+          "mean_agent_return": -2.520776255707759,
+          "policy_loss": -0.5600006422578215,
+          "steps": 21852,
+          "success_rate": 0.13013698630136986,
+          "value_loss": 60.635275311039926
+        },
+        {
+          "episodes": 298,
+          "epoch": 4,
+          "mean_agent_return": -2.4509507829977597,
+          "policy_loss": 2.4470950747757243,
+          "steps": 21823,
+          "success_rate": 0.20134228187919462,
+          "value_loss": 55.52817574501467
+        },
+        {
+          "episodes": 307,
+          "epoch": 5,
+          "mean_agent_return": -2.256351791530942,
+          "policy_loss": 1.0141818061345336,
+          "steps": 21662,
+          "success_rate": 0.26058631921824105,
+          "value_loss": 50.656114381845384
+        },
+        {
+          "episodes": 294,
+          "epoch": 6,
+          "mean_agent_return": -2.4199546485260743,
+          "policy_loss": -0.2036956808370139,
+          "steps": 21757,
+          "success_rate": 0.21428571428571427,
+          "value_loss": 48.46574628159353
+        },
+        {
+          "episodes": 301,
+          "epoch": 7,
+          "mean_agent_return": -2.573532668881503,
+          "policy_loss": 0.49020732305509446,
+          "steps": 21596,
+          "success_rate": 0.22259136212624583,
+          "value_loss": 60.416164162497175
+        },
+        {
+          "episodes": 302,
+          "epoch": 8,
+          "mean_agent_return": -2.8198675496688703,
+          "policy_loss": -0.46749726414954446,
+          "steps": 21933,
+          "success_rate": 0.20860927152317882,
+          "value_loss": 46.24008234005012
+        },
+        {
+          "episodes": 290,
+          "epoch": 9,
+          "mean_agent_return": -2.514425287356319,
+          "policy_loss": 2.774045950167148,
+          "steps": 21670,
+          "success_rate": 0.17586206896551723,
+          "value_loss": 46.15993046904255
+        },
+        {
+          "episodes": 301,
+          "epoch": 10,
+          "mean_agent_return": -2.434163898117384,
+          "policy_loss": -0.8904835973508342,
+          "steps": 21366,
+          "success_rate": 0.26245847176079734,
+          "value_loss": 47.666028656542935
+        }
+      ],
+      "exact_initial_model_optimizer_rng_and_20_update_benchmark_prefix": true,
+      "final_value_identities": {
+        "completed_epochs": "2fdffa5993e05265a6a1322c4b78596a208c2a1c05ef8af34b4a6c735077ccc6",
+        "counts": "0e367621967319d09b9749d96f7b6226a28aa898b4993d67a7d30d09ee5bc004",
+        "log": "08cde4bb3472bdec7838b0763e075b82c68544100bdacb2291623956acf8fab9",
+        "milestones_reached": "6d355a642ffed28c2afbda550638c33deb10c7f463ea5f2ce79a5ee5a8e15a4c",
+        "policy_net": "7a91e2c0be84b16e88f2c2fcc97261232a96ab92beaf90c1d8095c81f2acf458",
+        "recorder_state": "5d3babd70f7f7845ccf03646fdad19434dcac317ef3bbc4522041ec820d7d571",
+        "rng_states": "442a537547060be75ca47e56b39dcc4157b513ae5c577b9abe69b50ab24708d5",
+        "trainer": "2045c9f984673d170bd83f7645110ef9ed8b68f85714aa1deff1a821e9a36249",
+        "updates_in_epoch": "bec5d9b7db1968f57a2b7aee34ad0621bb132aa20899ef22a88a3f21291c481b"
+      },
+      "finite_model_values": 1064386,
+      "finite_optimizer_values": 2128546,
+      "frozen_probe": {
+        "checkpoint_hash_matches": true,
+        "episodes": 1,
+        "mean_agent_return": -1.6166666666666665,
+        "parameters_unchanged": true,
+        "source_files_verified": 12,
+        "steps": 54,
+        "success": true
+      },
+      "gradient_norm_max": 486.94904076174487,
+      "gradient_norm_median": 154.68628337801277,
+      "gradient_norm_min": 19.496217464345634,
+      "ledger_episodes": 2996,
+      "ledger_epochs": 10,
+      "ledger_updates": 100,
+      "model_tensor_count": 406,
+      "parameter_dtypes": [
+        "torch.float32",
+        "torch.float64"
+      ],
+      "policy_loss_range": [
+        -47.9160787971643,
+        11.345715072449918
+      ],
+      "run": "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991",
+      "source_differences_from_benchmark": {},
+      "source_manifest_sha256": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+      "updates_clipped": 100,
+      "value_loss_range": [
+        35.64342699049768,
+        162.8309648035748
+      ],
+      "workload": "pcp_binary"
+    },
+    {
+      "active_adam_parameters": 158,
+      "all_active_adam_steps": 100,
+      "all_counts_rewards_loss_aggregation_reconciled": true,
+      "all_recorded_losses_and_gradient_norms_finite": true,
+      "archived_source_files_verified": 53,
+      "array": "905404",
+      "backend": "torch-v1",
+      "changed_model_tensor_count": 154,
+      "checkpoint": "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991/checkpoints/pp_real/run1/model_update00000100_ep10.pt",
+      "checkpoint_sha256": "2929a8b2ee3221445246509b68ed884b74dc1486876df1f95b74482e86b889ef",
+      "collector_steps_max": 579,
+      "collector_steps_min": 500,
+      "counts": {
+        "env_steps": 215817,
+        "episodes": 3118,
+        "epoch": 10,
+        "updates": 100
+      },
+      "episode_return_range": [
+        -3.9999999999999942,
+        -0.06666666666666667
+      ],
+      "epoch_metrics": [
+        {
+          "episodes": 311,
+          "epoch": 1,
+          "mean_agent_return": -2.2825294748124305,
+          "policy_loss": -59.24018129372762,
+          "steps": 21523,
+          "success_rate": 0.33762057877813506,
+          "value_loss": 191.4546876269371
+        },
+        {
+          "episodes": 312,
+          "epoch": 2,
+          "mean_agent_return": -2.1903311965811945,
+          "policy_loss": -55.77096031845173,
+          "steps": 21676,
+          "success_rate": 0.3685897435897436,
+          "value_loss": 160.8358105076191
+        },
+        {
+          "episodes": 316,
+          "epoch": 3,
+          "mean_agent_return": -2.1633966244725715,
+          "policy_loss": -54.16337781623658,
+          "steps": 21459,
+          "success_rate": 0.3987341772151899,
+          "value_loss": 157.99313382392455
+        },
+        {
+          "episodes": 321,
+          "epoch": 4,
+          "mean_agent_return": -2.14890965732087,
+          "policy_loss": -51.89552628940407,
+          "steps": 21306,
+          "success_rate": 0.40498442367601245,
+          "value_loss": 157.248233827155
+        },
+        {
+          "episodes": 315,
+          "epoch": 5,
+          "mean_agent_return": -2.386984126984124,
+          "policy_loss": -44.60977375150324,
+          "steps": 21700,
+          "success_rate": 0.33650793650793653,
+          "value_loss": 149.30529721704124
+        },
+        {
+          "episodes": 293,
+          "epoch": 6,
+          "mean_agent_return": -2.801877133105798,
+          "policy_loss": -14.107089972528154,
+          "steps": 21530,
+          "success_rate": 0.22184300341296928,
+          "value_loss": 116.07013246252713
+        },
+        {
+          "episodes": 309,
+          "epoch": 7,
+          "mean_agent_return": -2.708198489751884,
+          "policy_loss": -12.190742626648959,
+          "steps": 21652,
+          "success_rate": 0.23300970873786409,
+          "value_loss": 68.78015084396323
+        },
+        {
+          "episodes": 300,
+          "epoch": 8,
+          "mean_agent_return": -3.0503333333333287,
+          "policy_loss": -1.0287125998715712,
+          "steps": 21815,
+          "success_rate": 0.15666666666666668,
+          "value_loss": 42.1226399665526
+        },
+        {
+          "episodes": 316,
+          "epoch": 9,
+          "mean_agent_return": -2.6509493670886037,
+          "policy_loss": 10.159710176330561,
+          "steps": 21859,
+          "success_rate": 0.27531645569620256,
+          "value_loss": 48.4878002269315
+        },
+        {
+          "episodes": 325,
+          "epoch": 10,
+          "mean_agent_return": -2.1970769230769207,
+          "policy_loss": 2.488604496946068,
+          "steps": 21297,
+          "success_rate": 0.40615384615384614,
+          "value_loss": 35.3880899886715
+        }
+      ],
+      "exact_initial_model_optimizer_rng_and_20_update_benchmark_prefix": true,
+      "final_value_identities": {
+        "completed_epochs": "2fdffa5993e05265a6a1322c4b78596a208c2a1c05ef8af34b4a6c735077ccc6",
+        "counts": "f1e27864d96c07d8870e82a235715ff9166ab4ba75007a5196d9b54bb4652c61",
+        "log": "c455d3de37ac14d941b5cebcc2ac1dbec8b161a58cbe8cd5f21bd6b9e1c269ce",
+        "milestones_reached": "6d355a642ffed28c2afbda550638c33deb10c7f463ea5f2ce79a5ee5a8e15a4c",
+        "policy_net": "6f20b8c2a409914ed994e8f9487c2867cd4636d4b2518a4547441fe9b63ddade",
+        "recorder_state": "9436df702e566a5f41e874acc6bec627df39a2755e6b22e32a27a46647707077",
+        "rng_states": "bb0791d838b7f2500905e6be466a4758e9dc0f4768dc882027a66fcb5071b16b",
+        "trainer": "ac1a799582b0a89bb02a2b04ed93d9b6e68a3fa1466ee2e0217c17e16dc6fcb5",
+        "updates_in_epoch": "bec5d9b7db1968f57a2b7aee34ad0621bb132aa20899ef22a88a3f21291c481b"
+      },
+      "finite_model_values": 993470,
+      "finite_optimizer_values": 996860,
+      "frozen_probe": {
+        "checkpoint_hash_matches": true,
+        "episodes": 1,
+        "mean_agent_return": -3.799999999999995,
+        "parameters_unchanged": true,
+        "source_files_verified": 12,
+        "steps": 80,
+        "success": false
+      },
+      "gradient_norm_max": 1271.732074357934,
+      "gradient_norm_median": 191.52981695591683,
+      "gradient_norm_min": 61.11992771604786,
+      "ledger_episodes": 3118,
+      "ledger_epochs": 10,
+      "ledger_updates": 100,
+      "model_tensor_count": 382,
+      "parameter_dtypes": [
+        "torch.float32",
+        "torch.float64"
+      ],
+      "policy_loss_range": [
+        -66.68834695304153,
+        18.920685369227417
+      ],
+      "run": "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991",
+      "source_differences_from_benchmark": {},
+      "source_manifest_sha256": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+      "updates_clipped": 100,
+      "value_loss_range": [
+        20.868527268850645,
+        225.75820569973504
+      ],
+      "workload": "pp_real"
+    },
+    {
+      "active_adam_parameters": 334,
+      "all_active_adam_steps": 100,
+      "all_counts_rewards_loss_aggregation_reconciled": true,
+      "all_recorded_losses_and_gradient_norms_finite": true,
+      "archived_source_files_verified": 53,
+      "array": "905404",
+      "backend": "torch-v1",
+      "changed_model_tensor_count": 256,
+      "checkpoint": "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991/checkpoints/pcp_real/run1/model_update00000100_ep10.pt",
+      "checkpoint_sha256": "9663dd34327cbf00f9083ae6999fa446408273905b8083b07ae78de44a738f73",
+      "collector_steps_max": 579,
+      "collector_steps_min": 500,
+      "counts": {
+        "env_steps": 216285,
+        "episodes": 2947,
+        "epoch": 10,
+        "updates": 100
+      },
+      "episode_return_range": [
+        -3.9999999999999942,
+        -0.05000000000000001
+      ],
+      "epoch_metrics": [
+        {
+          "episodes": 300,
+          "epoch": 1,
+          "mean_agent_return": -2.388166666666664,
+          "policy_loss": -54.650503217994334,
+          "steps": 21361,
+          "success_rate": 0.2833333333333333,
+          "value_loss": 178.54773376655018
+        },
+        {
+          "episodes": 295,
+          "epoch": 2,
+          "mean_agent_return": -2.4808474576271156,
+          "policy_loss": -30.673794182615104,
+          "steps": 21709,
+          "success_rate": 0.1864406779661017,
+          "value_loss": 122.72689283519203
+        },
+        {
+          "episodes": 282,
+          "epoch": 3,
+          "mean_agent_return": -2.602600472813236,
+          "policy_loss": -14.619743023549145,
+          "steps": 21750,
+          "success_rate": 0.08156028368794327,
+          "value_loss": 89.66079587334316
+        },
+        {
+          "episodes": 287,
+          "epoch": 4,
+          "mean_agent_return": -2.7913472706155593,
+          "policy_loss": -6.5997469323397135,
+          "steps": 21661,
+          "success_rate": 0.14982578397212543,
+          "value_loss": 67.29376836147237
+        },
+        {
+          "episodes": 288,
+          "epoch": 5,
+          "mean_agent_return": -2.733506944444441,
+          "policy_loss": 3.600647296840267,
+          "steps": 21910,
+          "success_rate": 0.14583333333333334,
+          "value_loss": 57.39885284638329
+        },
+        {
+          "episodes": 299,
+          "epoch": 6,
+          "mean_agent_return": -2.4353957636566306,
+          "policy_loss": -1.5333918469135146,
+          "steps": 21396,
+          "success_rate": 0.27424749163879597,
+          "value_loss": 64.40188908387276
+        },
+        {
+          "episodes": 298,
+          "epoch": 7,
+          "mean_agent_return": -2.701286353467558,
+          "policy_loss": -0.6277676882968222,
+          "steps": 21796,
+          "success_rate": 0.20469798657718122,
+          "value_loss": 63.54338918889947
+        },
+        {
+          "episodes": 299,
+          "epoch": 8,
+          "mean_agent_return": -2.5027313266443674,
+          "policy_loss": -0.3251643469928625,
+          "steps": 21447,
+          "success_rate": 0.2508361204013378,
+          "value_loss": 54.842309063734774
+        },
+        {
+          "episodes": 294,
+          "epoch": 9,
+          "mean_agent_return": -2.738151927437638,
+          "policy_loss": -1.495742061483185,
+          "steps": 21622,
+          "success_rate": 0.18027210884353742,
+          "value_loss": 62.44030480543675
+        },
+        {
+          "episodes": 305,
+          "epoch": 10,
+          "mean_agent_return": -2.749180327868849,
+          "policy_loss": 1.9217382518110016,
+          "steps": 21633,
+          "success_rate": 0.21639344262295082,
+          "value_loss": 53.379793523903565
+        }
+      ],
+      "exact_initial_model_optimizer_rng_and_20_update_benchmark_prefix": true,
+      "final_value_identities": {
+        "completed_epochs": "2fdffa5993e05265a6a1322c4b78596a208c2a1c05ef8af34b4a6c735077ccc6",
+        "counts": "e326a60d6111b24ccb2bed74b125e27edef0578ca47a54c7e8864b7b8bbb1684",
+        "log": "c08aa7aeae1342e0086b7c628d7fe0aa940973d795e97c3d49c4642688cc62e4",
+        "milestones_reached": "6d355a642ffed28c2afbda550638c33deb10c7f463ea5f2ce79a5ee5a8e15a4c",
+        "policy_net": "51ad5da14e45291d6a120e0a627393e36fb0b411feff3a223cf14c70a3fd1176",
+        "recorder_state": "330eeb3c5e0b747b43226384bd19e3794e4c2b5557384f20a69623e97cabcaba",
+        "rng_states": "7aa6e301bf47a48b209fd502358227650d48170fdb3965a7aa7f82d912a0e5bd",
+        "trainer": "ee97bc0572a8ac90bee359419bbfc4f192766093cae5a3cb8cb2842c86b64b46",
+        "updates_in_epoch": "bec5d9b7db1968f57a2b7aee34ad0621bb132aa20899ef22a88a3f21291c481b"
+      },
+      "finite_model_values": 993470,
+      "finite_optimizer_values": 1971898,
+      "frozen_probe": {
+        "checkpoint_hash_matches": true,
+        "episodes": 1,
+        "mean_agent_return": -1.8666666666666654,
+        "parameters_unchanged": true,
+        "source_files_verified": 12,
+        "steps": 70,
+        "success": true
+      },
+      "gradient_norm_max": 981.9044219061584,
+      "gradient_norm_median": 188.1552045734141,
+      "gradient_norm_min": 19.349824484933855,
+      "ledger_episodes": 2947,
+      "ledger_epochs": 10,
+      "ledger_updates": 100,
+      "model_tensor_count": 382,
+      "parameter_dtypes": [
+        "torch.float32",
+        "torch.float64"
+      ],
+      "policy_loss_range": [
+        -60.7354797073043,
+        9.880108423633631
+      ],
+      "run": "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991",
+      "source_differences_from_benchmark": {},
+      "source_manifest_sha256": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+      "updates_clipped": 100,
+      "value_loss_range": [
+        41.670116836020334,
+        216.13671797223097
+      ],
+      "workload": "pcp_real"
+    },
+    {
+      "active_adam_parameters": 334,
+      "all_active_adam_steps": 100,
+      "all_counts_rewards_loss_aggregation_reconciled": true,
+      "all_recorded_losses_and_gradient_norms_finite": true,
+      "archived_source_files_verified": 53,
+      "array": "905404",
+      "backend": "torch-v1",
+      "changed_model_tensor_count": 257,
+      "checkpoint": "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991/checkpoints/fc_real/run1/model_update00000100_ep10.pt",
+      "checkpoint_sha256": "77d1ad1a0bdf6e9c9e1adf2462f3bfa5a1760dc8296c3893129f7d55d44a9cee",
+      "collector_steps_max": 797,
+      "collector_steps_min": 500,
+      "counts": {
+        "env_steps": 247718,
+        "episodes": 1098,
+        "epoch": 10,
+        "updates": 100
+      },
+      "episode_return_range": [
+        -37.63333333333352,
+        107.60000000000008
+      ],
+      "epoch_metrics": [
+        {
+          "episodes": 110,
+          "epoch": 1,
+          "mean_agent_return": 16.30060606060601,
+          "policy_loss": 453.2699993216111,
+          "steps": 24527,
+          "success_rate": 0.5,
+          "value_loss": 123056.58387470068
+        },
+        {
+          "episodes": 116,
+          "epoch": 2,
+          "mean_agent_return": 16.765229885057444,
+          "policy_loss": 422.2432550169099,
+          "steps": 24980,
+          "success_rate": 0.5,
+          "value_loss": 112362.62884662363
+        },
+        {
+          "episodes": 116,
+          "epoch": 3,
+          "mean_agent_return": 13.769252873563174,
+          "policy_loss": 302.98988029195885,
+          "steps": 24609,
+          "success_rate": 0.47413793103448276,
+          "value_loss": 109611.46551979487
+        },
+        {
+          "episodes": 120,
+          "epoch": 4,
+          "mean_agent_return": 3.7458333333332803,
+          "policy_loss": 25.637180547712678,
+          "steps": 24993,
+          "success_rate": 0.48333333333333334,
+          "value_loss": 84410.26118594041
+        },
+        {
+          "episodes": 102,
+          "epoch": 5,
+          "mean_agent_return": 0.41045751633980504,
+          "policy_loss": -57.356371181800036,
+          "steps": 24456,
+          "success_rate": 0.38235294117647056,
+          "value_loss": 97363.72242707603
+        },
+        {
+          "episodes": 112,
+          "epoch": 6,
+          "mean_agent_return": 7.961309523809483,
+          "policy_loss": 86.69443427758928,
+          "steps": 25282,
+          "success_rate": 0.41964285714285715,
+          "value_loss": 75146.7920320653
+        },
+        {
+          "episodes": 98,
+          "epoch": 7,
+          "mean_agent_return": -3.497959183673536,
+          "policy_loss": -118.47089896338404,
+          "steps": 24711,
+          "success_rate": 0.2857142857142857,
+          "value_loss": 85729.6185413421
+        },
+        {
+          "episodes": 118,
+          "epoch": 8,
+          "mean_agent_return": 8.796045197740076,
+          "policy_loss": 102.4454265142003,
+          "steps": 25312,
+          "success_rate": 0.5,
+          "value_loss": 73694.86845314821
+        },
+        {
+          "episodes": 107,
+          "epoch": 9,
+          "mean_agent_return": 0.1971962616821865,
+          "policy_loss": -68.58193913882455,
+          "steps": 24586,
+          "success_rate": 0.32710280373831774,
+          "value_loss": 80079.4076031271
+        },
+        {
+          "episodes": 99,
+          "epoch": 10,
+          "mean_agent_return": -0.9063973063973656,
+          "policy_loss": -67.27204638140414,
+          "steps": 24262,
+          "success_rate": 0.32323232323232326,
+          "value_loss": 75997.34070785624
+        }
+      ],
+      "exact_initial_model_optimizer_rng_and_20_update_benchmark_prefix": true,
+      "final_value_identities": {
+        "completed_epochs": "2fdffa5993e05265a6a1322c4b78596a208c2a1c05ef8af34b4a6c735077ccc6",
+        "counts": "d122a5d33fbefa25d3458889aae66a61e785cc1328244da57e92126b5e56bdef",
+        "log": "ab523a8067e8bdc07f17861d546a3a1bb6eb8fc96f191bf00c9d70c9c2603f85",
+        "milestones_reached": "6d355a642ffed28c2afbda550638c33deb10c7f463ea5f2ce79a5ee5a8e15a4c",
+        "policy_net": "c1b5883587bc8543922db0599bb47eb9a44f89384d39bfc3162a5e4235b8224c",
+        "recorder_state": "929110febebd1202f6e93585053098cb60d0499bd6622ee62c865c9dccaee06d",
+        "rng_states": "7c21efece7db6db62cb6d8fb428da7ef25a1fd58b40eeb1a16415f2a3ede11b1",
+        "trainer": "85bd3aba981041a672153b2441b4eb175e1f9c88a17ca2ee2fe047ba48f0441e",
+        "updates_in_epoch": "bec5d9b7db1968f57a2b7aee34ad0621bb132aa20899ef22a88a3f21291c481b"
+      },
+      "finite_model_values": 221286,
+      "finite_optimizer_values": 428066,
+      "frozen_probe": {
+        "checkpoint_hash_matches": true,
+        "episodes": 1,
+        "mean_agent_return": 87.23333333333392,
+        "parameters_unchanged": true,
+        "source_files_verified": 12,
+        "steps": 300,
+        "success": false
+      },
+      "gradient_norm_max": 157536.55878881944,
+      "gradient_norm_median": 26738.054170311756,
+      "gradient_norm_min": 4215.2506652912125,
+      "ledger_episodes": 1098,
+      "ledger_epochs": 10,
+      "ledger_updates": 100,
+      "model_tensor_count": 382,
+      "parameter_dtypes": [
+        "torch.float32",
+        "torch.float64"
+      ],
+      "policy_loss_range": [
+        -515.5615732799212,
+        1038.9045152703386
+      ],
+      "run": "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991",
+      "source_differences_from_benchmark": {},
+      "source_manifest_sha256": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+      "updates_clipped": 100,
+      "value_loss_range": [
+        20238.892270435736,
+        334446.9204107597
+      ],
+      "workload": "fc_real"
+    },
+    {
+      "active_adam_parameters": 382,
+      "all_active_adam_steps": 100,
+      "all_counts_rewards_loss_aggregation_reconciled": true,
+      "all_recorded_losses_and_gradient_norms_finite": true,
+      "archived_source_files_verified": 53,
+      "array": "905404",
+      "backend": "torch-v1",
+      "changed_model_tensor_count": 305,
+      "checkpoint": "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991/checkpoints/pcp_binary/run1/model_update00000100_ep10.pt",
+      "checkpoint_sha256": "716a7bc0affb4ce523eaef4f10a08c902e9085a5a1af0257e083dcfd065290fd",
+      "collector_steps_max": 579,
+      "collector_steps_min": 500,
+      "counts": {
+        "env_steps": 216940,
+        "episodes": 2996,
+        "epoch": 10,
+        "updates": 100
+      },
+      "episode_return_range": [
+        -3.9999999999999942,
+        -0.10000000000000002
+      ],
+      "epoch_metrics": [
+        {
+          "episodes": 304,
+          "epoch": 1,
+          "mean_agent_return": -2.4449561403508744,
+          "policy_loss": -34.5205852411565,
+          "steps": 21624,
+          "success_rate": 0.2894736842105263,
+          "value_loss": 114.56896165640946
+        },
+        {
+          "episodes": 307,
+          "epoch": 2,
+          "mean_agent_return": -2.3865906623235587,
+          "policy_loss": -7.8889430650003,
+          "steps": 21657,
+          "success_rate": 0.2964169381107492,
+          "value_loss": 75.97952671374944
+        },
+        {
+          "episodes": 292,
+          "epoch": 3,
+          "mean_agent_return": -2.520776255707759,
+          "policy_loss": -0.5600006422578215,
+          "steps": 21852,
+          "success_rate": 0.13013698630136986,
+          "value_loss": 60.635275311039926
+        },
+        {
+          "episodes": 298,
+          "epoch": 4,
+          "mean_agent_return": -2.4509507829977597,
+          "policy_loss": 2.4470950747757243,
+          "steps": 21823,
+          "success_rate": 0.20134228187919462,
+          "value_loss": 55.52817574501467
+        },
+        {
+          "episodes": 307,
+          "epoch": 5,
+          "mean_agent_return": -2.256351791530942,
+          "policy_loss": 1.0141818061345336,
+          "steps": 21662,
+          "success_rate": 0.26058631921824105,
+          "value_loss": 50.656114381845384
+        },
+        {
+          "episodes": 294,
+          "epoch": 6,
+          "mean_agent_return": -2.4199546485260743,
+          "policy_loss": -0.2036956808370139,
+          "steps": 21757,
+          "success_rate": 0.21428571428571427,
+          "value_loss": 48.46574628159353
+        },
+        {
+          "episodes": 301,
+          "epoch": 7,
+          "mean_agent_return": -2.573532668881503,
+          "policy_loss": 0.49020732305509446,
+          "steps": 21596,
+          "success_rate": 0.22259136212624583,
+          "value_loss": 60.416164162497175
+        },
+        {
+          "episodes": 302,
+          "epoch": 8,
+          "mean_agent_return": -2.8198675496688703,
+          "policy_loss": -0.46749726414954446,
+          "steps": 21933,
+          "success_rate": 0.20860927152317882,
+          "value_loss": 46.24008234005012
+        },
+        {
+          "episodes": 290,
+          "epoch": 9,
+          "mean_agent_return": -2.514425287356319,
+          "policy_loss": 2.774045950167148,
+          "steps": 21670,
+          "success_rate": 0.17586206896551723,
+          "value_loss": 46.15993046904255
+        },
+        {
+          "episodes": 301,
+          "epoch": 10,
+          "mean_agent_return": -2.434163898117384,
+          "policy_loss": -0.8904835973508342,
+          "steps": 21366,
+          "success_rate": 0.26245847176079734,
+          "value_loss": 47.666028656542935
+        }
+      ],
+      "exact_initial_model_optimizer_rng_and_20_update_benchmark_prefix": true,
+      "final_value_identities": {
+        "completed_epochs": "2fdffa5993e05265a6a1322c4b78596a208c2a1c05ef8af34b4a6c735077ccc6",
+        "counts": "0e367621967319d09b9749d96f7b6226a28aa898b4993d67a7d30d09ee5bc004",
+        "log": "08cde4bb3472bdec7838b0763e075b82c68544100bdacb2291623956acf8fab9",
+        "milestones_reached": "6d355a642ffed28c2afbda550638c33deb10c7f463ea5f2ce79a5ee5a8e15a4c",
+        "policy_net": "7a91e2c0be84b16e88f2c2fcc97261232a96ab92beaf90c1d8095c81f2acf458",
+        "recorder_state": "5d3babd70f7f7845ccf03646fdad19434dcac317ef3bbc4522041ec820d7d571",
+        "rng_states": "442a537547060be75ca47e56b39dcc4157b513ae5c577b9abe69b50ab24708d5",
+        "trainer": "2045c9f984673d170bd83f7645110ef9ed8b68f85714aa1deff1a821e9a36249",
+        "updates_in_epoch": "bec5d9b7db1968f57a2b7aee34ad0621bb132aa20899ef22a88a3f21291c481b"
+      },
+      "finite_model_values": 1064386,
+      "finite_optimizer_values": 2128546,
+      "frozen_probe": {
+        "checkpoint_hash_matches": true,
+        "episodes": 1,
+        "mean_agent_return": -1.6166666666666665,
+        "parameters_unchanged": true,
+        "source_files_verified": 12,
+        "steps": 54,
+        "success": true
+      },
+      "gradient_norm_max": 486.94904076174487,
+      "gradient_norm_median": 154.68628337801277,
+      "gradient_norm_min": 19.496217464345634,
+      "ledger_episodes": 2996,
+      "ledger_epochs": 10,
+      "ledger_updates": 100,
+      "model_tensor_count": 406,
+      "parameter_dtypes": [
+        "torch.float32",
+        "torch.float64"
+      ],
+      "policy_loss_range": [
+        -47.9160787971643,
+        11.345715072449918
+      ],
+      "run": "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991",
+      "source_differences_from_benchmark": {},
+      "source_manifest_sha256": "17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599",
+      "updates_clipped": 100,
+      "value_loss_range": [
+        35.64342699049768,
+        162.8309648035748
+      ],
+      "workload": "pcp_binary"
+    }
+  ],
+  "script_sha256": "0bf8453928676dd259350845602a89c26d2d33122b02534a443b332ccca5ff73"
+}

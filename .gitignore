@@ -79,3 +79,15 @@ analysis/dgl_profile_2026-10-04/scripts/out_*/
 !analysis/paper_v1_2026-10-04/**
 analysis/paper_v1_2026-10-04/**/__pycache__/
 analysis/paper_v1_2026-10-04/**/*.pyc
+
+# Audited Stokes backend timing results; original cluster inputs stay ignored.
+!analysis/stokes_backend_2026-10-05/
+!analysis/stokes_backend_2026-10-05/**
+analysis/stokes_backend_2026-10-05/**/__pycache__/
+analysis/stokes_backend_2026-10-05/**/*.pyc
+
+# Completed Torch paper preflights and the evidence-backed launch runbook.
+!analysis/stokes_preflight_2026-10-05/
+!analysis/stokes_preflight_2026-10-05/**
+analysis/stokes_preflight_2026-10-05/**/__pycache__/
+analysis/stokes_preflight_2026-10-05/**/*.pyc

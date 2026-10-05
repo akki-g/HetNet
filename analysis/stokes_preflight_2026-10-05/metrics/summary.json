@@ -1,0 +1,236 @@
+{
+  "backend": "torch-v1",
+  "counts": {
+    "env_steps": 1793520,
+    "episodes": 20318,
+    "updates": 800
+  },
+  "date": "2026-10-05",
+  "groups": [
+    "905118",
+    "905404"
+  ],
+  "idealized_days_at_three_hetnet_jobs": {
+    "905118": 9.148602692657711,
+    "905404": 6.586848669313026
+  },
+  "interpretation": [
+    "Both arrays are same-seed Torch repeats, not a backend speedup measurement.",
+    "Ranges are two observed early-rate projections, not confidence intervals.",
+    "Projections include segment logging/checkpoints but exclude startup, probes and queueing.",
+    "No preflight node/CPU model or per-phase timing was saved.",
+    "Engineering readiness does not establish convergence or exact paper reproduction."
+  ],
+  "projected_12_hetnet_run_job_hours": {
+    "905118": 658.6993938713553,
+    "905404": 474.2531041905379
+  },
+  "runs": [
+    {
+      "all_updates_clipped_at_0_75": true,
+      "budget_steps": 40000000,
+      "checkpoint_fraction_of_segment": 0.0003847114652712194,
+      "episodes": 3118,
+      "first_update_seconds": 12.627492055296898,
+      "group": "905118",
+      "input_run": "stokes_runs/hetnet_paper_preflight_905118/pp_real/seed991",
+      "last_20_update_steps_per_second": 339.6596656117245,
+      "planned_46_hour_segments_at_current_rate": 1,
+      "projected_segment_hours": 33.33585956069294,
+      "segment_seconds": 647.5000682529062,
+      "segment_steps_per_second": 333.3080729741396,
+      "startup_seconds": 144.4704290162772,
+      "steps": 215817,
+      "update_fraction_of_segment": 0.9943397931047128,
+      "update_seconds": 643.8350839018822,
+      "update_steps_per_second": 335.2054049183962,
+      "updates": 100,
+      "workload": "pp_real"
+    },
+    {
+      "all_updates_clipped_at_0_75": true,
+      "budget_steps": 40000000,
+      "checkpoint_fraction_of_segment": 0.00012187385587051383,
+      "episodes": 2947,
+      "first_update_seconds": 9.645572870969772,
+      "group": "905118",
+      "input_run": "stokes_runs/hetnet_paper_preflight_905118/pcp_real/seed991",
+      "last_20_update_steps_per_second": 188.36810616046682,
+      "planned_46_hour_segments_at_current_rate": 2,
+      "projected_segment_hours": 58.63751998686117,
+      "segment_seconds": 1141.417440932244,
+      "segment_steps_per_second": 189.4880805600367,
+      "startup_seconds": 14.447030795738101,
+      "steps": 216285,
+      "update_fraction_of_segment": 0.9973625885629144,
+      "update_seconds": 1138.4070535190403,
+      "update_steps_per_second": 189.9891601439226,
+      "updates": 100,
+      "workload": "pcp_real"
+    },
+    {
+      "all_updates_clipped_at_0_75": true,
+      "budget_steps": 28000000,
+      "checkpoint_fraction_of_segment": 0.0001161530668077178,
+      "episodes": 1098,
+      "first_update_seconds": 10.452447541058064,
+      "group": "905118",
+      "input_run": "stokes_runs/hetnet_paper_preflight_905118/fc_real/seed991",
+      "last_20_update_steps_per_second": 184.53088218417676,
+      "planned_46_hour_segments_at_current_rate": 1,
+      "projected_segment_hours": 40.80676508019925,
+      "segment_seconds": 1299.6733155604452,
+      "segment_steps_per_second": 190.60020470850324,
+      "startup_seconds": 13.38725352101028,
+      "steps": 247718,
+      "update_fraction_of_segment": 0.9974974630996974,
+      "update_seconds": 1296.4208351299167,
+      "update_steps_per_second": 191.07838541886417,
+      "updates": 100,
+      "workload": "fc_real"
+    },
+    {
+      "all_updates_clipped_at_0_75": true,
+      "budget_steps": 40000000,
+      "checkpoint_fraction_of_segment": 0.00010031139581973414,
+      "episodes": 2996,
+      "first_update_seconds": 14.564620973542333,
+      "group": "905118",
+      "input_run": "stokes_runs/hetnet_paper_preflight_905118/pcp_binary/seed991",
+      "last_20_update_steps_per_second": 127.5393453810232,
+      "planned_46_hour_segments_at_current_rate": 2,
+      "projected_segment_hours": 86.78631999603174,
+      "segment_seconds": 1694.4681833945215,
+      "segment_steps_per_second": 128.02837027332373,
+      "startup_seconds": 14.217057880014181,
+      "steps": 216940,
+      "update_fraction_of_segment": 0.9967226481760525,
+      "update_seconds": 1688.9148150030524,
+      "update_steps_per_second": 128.44934396505246,
+      "updates": 100,
+      "workload": "pcp_binary"
+    },
+    {
+      "all_updates_clipped_at_0_75": true,
+      "budget_steps": 40000000,
+      "checkpoint_fraction_of_segment": 0.0003509804641530729,
+      "episodes": 3118,
+      "first_update_seconds": 11.41454565525055,
+      "group": "905404",
+      "input_run": "stokes_runs/hetnet_paper_preflight_905404/pp_real/seed991",
+      "last_20_update_steps_per_second": 345.27239143008273,
+      "planned_46_hour_segments_at_current_rate": 1,
+      "projected_segment_hours": 32.67511784655127,
+      "segment_seconds": 634.6661317460239,
+      "segment_steps_per_second": 340.04808072280133,
+      "startup_seconds": 135.95474046096206,
+      "steps": 215817,
+      "update_fraction_of_segment": 0.9941195725507527,
+      "update_seconds": 630.934023603797,
+      "update_steps_per_second": 342.0595370135325,
+      "updates": 100,
+      "workload": "pp_real"
+    },
+    {
+      "all_updates_clipped_at_0_75": true,
+      "budget_steps": 40000000,
+      "checkpoint_fraction_of_segment": 0.0001449032545604505,
+      "episodes": 2947,
+      "first_update_seconds": 9.573579465970397,
+      "group": "905404",
+      "input_run": "stokes_runs/hetnet_paper_preflight_905404/pcp_real/seed991",
+      "last_20_update_steps_per_second": 272.54044292818935,
+      "planned_46_hour_segments_at_current_rate": 1,
+      "projected_segment_hours": 42.25297697764172,
+      "segment_seconds": 822.4816613048315,
+      "segment_steps_per_second": 262.9663494951039,
+      "startup_seconds": 14.472128104418516,
+      "steps": 216285,
+      "update_fraction_of_segment": 0.9977993135510135,
+      "update_seconds": 820.671637058258,
+      "update_steps_per_second": 263.5463323373588,
+      "updates": 100,
+      "workload": "pcp_real"
+    },
+    {
+      "all_updates_clipped_at_0_75": true,
+      "budget_steps": 28000000,
+      "checkpoint_fraction_of_segment": 8.967363878083295e-05,
+      "episodes": 1098,
+      "first_update_seconds": 7.162209078669548,
+      "group": "905404",
+      "input_run": "stokes_runs/hetnet_paper_preflight_905404/fc_real/seed991",
+      "last_20_update_steps_per_second": 293.75171395377805,
+      "planned_46_hour_segments_at_current_rate": 1,
+      "projected_segment_hours": 26.674166257383284,
+      "segment_seconds": 849.557715035975,
+      "segment_steps_per_second": 291.58466295548885,
+      "startup_seconds": 10.408072296530008,
+      "steps": 247718,
+      "update_fraction_of_segment": 0.9971424666329699,
+      "update_seconds": 847.1300755180418,
+      "update_steps_per_second": 292.4202636159672,
+      "updates": 100,
+      "workload": "fc_real"
+    },
+    {
+      "all_updates_clipped_at_0_75": true,
+      "budget_steps": 40000000,
+      "checkpoint_fraction_of_segment": 0.00012473553899178315,
+      "episodes": 2996,
+      "first_update_seconds": 9.441126827150583,
+      "group": "905404",
+      "input_run": "stokes_runs/hetnet_paper_preflight_905404/pcp_binary/seed991",
+      "last_20_update_steps_per_second": 197.06184426875055,
+      "planned_46_hour_segments_at_current_rate": 2,
+      "projected_segment_hours": 56.48210698193636,
+      "segment_seconds": 1102.7905459795147,
+      "segment_steps_per_second": 196.71913292230005,
+      "startup_seconds": 10.552419297397137,
+      "steps": 216940,
+      "update_fraction_of_segment": 0.9965059011843422,
+      "update_seconds": 1098.9372868388891,
+      "update_steps_per_second": 197.40889912292576,
+      "updates": 100,
+      "workload": "pcp_binary"
+    }
+  ],
+  "workloads": [
+    {
+      "905404_to_905118_update_rate_ratio": 1.0204475584061805,
+      "budget_steps": 40000000,
+      "projected_hours_range": [
+        32.67511784655127,
+        33.33585956069294
+      ],
+      "workload": "pp_real"
+    },
+    {
+      "905404_to_905118_update_rate_ratio": 1.3871651000389413,
+      "budget_steps": 40000000,
+      "projected_hours_range": [
+        42.25297697764172,
+        58.63751998686117
+      ],
+      "workload": "pcp_real"
+    },
+    {
+      "905404_to_905118_update_rate_ratio": 1.5303680893835838,
+      "budget_steps": 28000000,
+      "projected_hours_range": [
+        26.674166257383284,
+        40.80676508019925
+      ],
+      "workload": "fc_real"
+    },
+    {
+      "905404_to_905118_update_rate_ratio": 1.5368618712185504,
+      "budget_steps": 40000000,
+      "projected_hours_range": [
+        56.48210698193636,
+        86.78631999603174
+      ],
+      "workload": "pcp_binary"
+    }
+  ]
+}

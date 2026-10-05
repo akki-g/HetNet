@@ -1,0 +1,2256 @@
+{
+  "checks": {
+    "all_128_resource_intervals_match_raw_start_end_counters": true,
+    "all_32_runs_four_collectors_one_torch_thread_matching_four_core_affinity": true,
+    "slurm_matches_4_cpus_16_gib": true
+  },
+  "diagnostic_pairs": [
+    {
+      "caveat": "Diagnostic collector wall phases sum over four concurrent collectors; contributions are not an additive decomposition of elapsed speedup.",
+      "collector_phase_saving_ms_per_joint_environment_step": {
+        "phase_environment_seconds": 0.00657326424770463,
+        "phase_graph_preparation_seconds": 1.0382700606649409,
+        "phase_loss_backward_seconds": 0.32164498213084514,
+        "phase_model_inference_seconds": 1.5060293509754783
+      },
+      "fraction_of_summed_collector_phase_savings": {
+        "phase_environment_seconds": 0.0022883285780174734,
+        "phase_graph_preparation_seconds": 0.3614494963212806,
+        "phase_loss_backward_seconds": 0.1119731957897406,
+        "phase_model_inference_seconds": 0.5242889793109613
+      },
+      "task": "pp",
+      "variant": "real"
+    },
+    {
+      "caveat": "Diagnostic collector wall phases sum over four concurrent collectors; contributions are not an additive decomposition of elapsed speedup.",
+      "collector_phase_saving_ms_per_joint_environment_step": {
+        "phase_environment_seconds": 0.005418781325519206,
+        "phase_graph_preparation_seconds": 1.060810993065022,
+        "phase_loss_backward_seconds": 0.5683946485301163,
+        "phase_model_inference_seconds": 3.1993946722896904
+      },
+      "fraction_of_summed_collector_phase_savings": {
+        "phase_environment_seconds": 0.001120968125857892,
+        "phase_graph_preparation_seconds": 0.21944700096780687,
+        "phase_loss_backward_seconds": 0.11758221002753055,
+        "phase_model_inference_seconds": 0.6618498208788047
+      },
+      "task": "pcp",
+      "variant": "real"
+    },
+    {
+      "caveat": "Diagnostic collector wall phases sum over four concurrent collectors; contributions are not an additive decomposition of elapsed speedup.",
+      "collector_phase_saving_ms_per_joint_environment_step": {
+        "phase_environment_seconds": 0.024781233572367223,
+        "phase_graph_preparation_seconds": 1.1342196301128533,
+        "phase_loss_backward_seconds": 0.5645642812813341,
+        "phase_model_inference_seconds": 3.104848468019681
+      },
+      "fraction_of_summed_collector_phase_savings": {
+        "phase_environment_seconds": 0.005132375881328182,
+        "phase_graph_preparation_seconds": 0.23490523410470027,
+        "phase_loss_backward_seconds": 0.11692541827048807,
+        "phase_model_inference_seconds": 0.6430369717434835
+      },
+      "task": "fc",
+      "variant": "real"
+    },
+    {
+      "caveat": "Diagnostic collector wall phases sum over four concurrent collectors; contributions are not an additive decomposition of elapsed speedup.",
+      "collector_phase_saving_ms_per_joint_environment_step": {
+        "phase_environment_seconds": 0.003445967758843177,
+        "phase_graph_preparation_seconds": 0.9934148572158915,
+        "phase_loss_backward_seconds": 0.5864022522345635,
+        "phase_model_inference_seconds": 3.572272495172519
+      },
+      "fraction_of_summed_collector_phase_savings": {
+        "phase_environment_seconds": 0.000668401509496552,
+        "phase_graph_preparation_seconds": 0.19268897348659775,
+        "phase_loss_backward_seconds": 0.113742257036479,
+        "phase_model_inference_seconds": 0.6929003679674267
+      },
+      "task": "pcp",
+      "variant": "binary"
+    }
+  ],
+  "hardware_identity": {
+    "affinity": [
+      0,
+      2,
+      4,
+      6
+    ],
+    "hostname": "ec169",
+    "logical_cpus": 48,
+    "thread_environment": {
+      "DGLBACKEND": "pytorch",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "PYTHONUNBUFFERED": "1"
+    }
+  },
+  "inputs_sha256": {
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/fc_real/dgl/initial_training_identity.json": "58aa8fa6e1f561a820211441124106b33ab4c80dab4238845a33fb01e8258f83",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/fc_real/dgl/protocol.json": "232dbcbe1a0c397097fdd44203c95571ddeb9f0b8e7239ed1d34472971f23977",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/fc_real/dgl/run_status.json": "6b76ebd93db378d57bbd8a482e81d56bf3546ecc096617c273d94e3e76e60699",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/fc_real/dgl/updates.jsonl": "fa5658247c3580b4e26c37b68bb3d3e19f55c50ea9590505e64ec622ea9d37b2",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/fc_real/torch-v1/initial_training_identity.json": "6075f569d60a90bec922092163bde0822ec17f9e677eab85e5e8d297c207e41b",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/fc_real/torch-v1/protocol.json": "2b2a4ba1d5eaaf75519fe1961d76fee52b41d9a3cf34d5ccc4c002c486eae1d4",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/fc_real/torch-v1/run_status.json": "a4611622811467a1d950d07514f75a6309130b89be73144f8fbcbefe189a7a1f",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/fc_real/torch-v1/updates.jsonl": "0418049f2c7f29b5d0a84a8f612df42d60c432fa2aa6fc70547e857ab24fb387",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_binary/dgl/initial_training_identity.json": "e91c76ac28bd7ae995921dfc0cb2f4363deb040806e93f831360d05a47ac9f5a",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_binary/dgl/protocol.json": "61a31ca2bd28d69f21e36b0d2d60160c6e980b0f4390ca6ed13a1b945fba2ac0",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_binary/dgl/run_status.json": "6584e4dc5013589f55ed351dbeea00a5033230854ee94b9f416a3230017be0c4",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_binary/dgl/updates.jsonl": "c36e46284837fbeb76634f06dc233e1250da23a4493a163f53ef3d9d8a87b391",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_binary/torch-v1/initial_training_identity.json": "140bac1e3d91d98e1d6d4e6fa5eaa6e54a0a813064fb28f79014bad9a7d11033",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_binary/torch-v1/protocol.json": "fc6381a82796ecfc29db31071e2f11ed76652f4c1904c5e521db91c4e4a899eb",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_binary/torch-v1/run_status.json": "cc8b2b2eba53ad4ae66e1c66a97d8656cd20bb372aada5a697eaa6202008dac8",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_binary/torch-v1/updates.jsonl": "76a75afb8df2dfde7f51ed654dddb829d659ae61d024ea59c83c2b4caa89ebb3",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_real/dgl/initial_training_identity.json": "26e327be4c2499436e19e6914e99d391a3ab440e70d4854cee35110268ee0327",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_real/dgl/protocol.json": "d596a508e61e76524a7cc81f3c17c683df27ac52a7420f3dc010b7f2c76e0890",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_real/dgl/run_status.json": "2922e250f111a814641b2140e02d7a5df2cc9c84cd52f774e0b0ad29724fcb7e",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_real/dgl/updates.jsonl": "fbbb01b2abb2bbf972b610c3500446d3ed5e59f9ceb6d3939fefeab97213b68e",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_real/torch-v1/initial_training_identity.json": "1dbd765a51d59252afbb4f3821530ff90f47f39998515b9b9723d6ab543c778d",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_real/torch-v1/protocol.json": "d7ebb04dce26e4adfa7ce4c643b04e50078e9200b51731bee33b7611dbbf7591",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_real/torch-v1/run_status.json": "466b0f6d733125b8428e635a0b4459a43999b24d79896846fd5cc7ef91fc29e2",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_real/torch-v1/updates.jsonl": "112ef9bb5ebe779d0af70661e2583c21bd113c64431eb6fa847fc9e3ed82a841",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pp_real/dgl/initial_training_identity.json": "e092cd220c32738d2e00917594e9f0fc1a2fdd914a11c7b719ddd5630105f3a1",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pp_real/dgl/protocol.json": "f7ae81a826424af0773b9c20a61885987b06f50ef7ebc7ea85877218b1e2c2bd",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pp_real/dgl/run_status.json": "0d034b6938dafd0c27d1e73666747c684ffcf847a7712dbfcdf35bdb39ab4f28",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pp_real/dgl/updates.jsonl": "db74f0ea59c0447b7b350fc598b12ed7eadc66c70035de4a0eeb036ddd61aaf7",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pp_real/torch-v1/initial_training_identity.json": "a4e1acd9cd8da364ecf77e0c5af67d6efe006e661e5b1c457a88449ebfb6769c",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pp_real/torch-v1/protocol.json": "9e6edab47204eab4369fd825fcb208fed7668e65320024f687aae9ba279d9e4a",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pp_real/torch-v1/run_status.json": "3f8c30ee531d639ea30e984ed12bf6793540bf3bfce6905768c920323e95b15e",
+    "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pp_real/torch-v1/updates.jsonl": "35d9236ce35906a4526a2a9f1b805a252a38b1cce9820687140e33300154a6c6",
+    "stokes_runs/hetnet_backend_benchmark_904547/hardware.json": "ed950c9693ae3f2a164a550378dafab44174c0e1e7daa69d850a6097d14e2e19",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_00.json": "33dde4e1f7ef856f4d41380ed06f1304fba97b89118b8649d2aa90deb35391cd",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_01.json": "97706d3ec46e1ebeef413248e4c5f8b951a3e476c7efecb007a63c0059b81edc",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_02.json": "db5328a2ca99a9369a1cc03c5fd035eb8c2f39347116b023d86291b6b2019cee",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_03.json": "a3c354bd164e8be7ea65be05a507c036561310fe56c3c2c4171fcb47efbf6fd8",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_04.json": "7539a5d522d238a317a1ef906b1b30bd7abedb6cbb9a5d73065f5d39d86d9f4f",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_05.json": "28a4b8b7b84dade72fbb2fefa60cd21b2860061792268674b09b95d3720d484b",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_06.json": "ffce11939a8686276160417493bb8f3c6988eb9ae789f49b7b581994ff6cbacf",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_07.json": "1cfb4887458bf028109fdabea38b0e1ffeb9a1159b399846eab8ccec359d6bfb",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_08.json": "ecd10f02f2e720d4c63f0fe19fa29a943fa2d22a0bcfa473b1c4ea0bd00ac8d7",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_09.json": "20575206cd75bf35c1c31308ecfdcae49d977483f6d00b31547464f207304baf",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_10.json": "df32e8822fd9ef37d08faf50602e53b2c55cc2754d3aa55539d91fd73dc68d35",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_11.json": "8a8f1707452d08aa490de1d3ca0cec1a9541c2a9c36775679e57ff10e2a68486",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_12.json": "e65165569be7aaa513b9a82332912d71289b2902ab23dd4a4892e32ab262991e",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_13.json": "5f49fd1f8529c13f3442619bdbd052711cdd58da1d75d20615fb83ddce0b90e4",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_14.json": "c72fb8a04ba8feb71502c0098260d36b3497aad008fed5418429cef584623104",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_15.json": "d9c00cb2ae393d0cdd2df45f517b95a0095a7b798d88cb8d4c5a60f20754ae86",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_16.json": "c3261b37a3f7e64e95391d9d4dd8e5a7bc5977b8280a6d589b19b627c9dabcb8",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_17.json": "ebc0cb8d1fd26f81d379a62eb8c453dca20dbb08c637fdc314ae2e475ef43a0c",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_18.json": "738d8d88e9b8d3afa3ee482e835528b8ec75df684152ec6ca5df6bd316cc396a",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_19.json": "ec71aaf55ac4cae24be97d143c2eac99b7ffff87aabcbedc9183a600a262f249",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_20.json": "8e93424605991c29dce94854461035c68c642d9f141bb1e95d5d13a3389dd99b",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_21.json": "e54b8a1d25048ce71f7d6ff8ce17c1d5c88517b05c5a68b63fcbff66e679e5cf",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_22.json": "70bb61bc4374e3347a49a84d2331c432165525a7e2e1c7581d008583d01b0385",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_23.json": "f799155bc78883bf32ec2bf891acc28748de75e9c56439e3f46fb9de437da424",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_24.json": "57e0b8ed7e039f56bb9cbc62127904b519245cfc371b345d2854ade35e8ba551",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_25.json": "88e8efe41258c6f585bca1f40b7d22635094ed07cc59c6938c5298bf6f9c0d06",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_26.json": "ffc35b6059e11c771f6e8a666ae54c49678947efaa9da2e050f6250e17bcba3e",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_27.json": "242339d5bdda1b0f92d13930a39d2fa33f2a223ff04c381862ae3ef2eefb2850",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_28.json": "847de73125b31e4c63ee37ca7c04ea52dd7a33735bbe152ccd29f7a8849b9c8b",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_29.json": "8e0c0872348f2c0042e1cdb8167b6a30c7877c43d9ca771c74e284b3fd10e997",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_30.json": "de0b5647549331f8c3dab830848afaa72d85d8d2080c52028a4d4656d203badf",
+    "stokes_runs/hetnet_backend_benchmark_904547/result_31.json": "11728ef405ae5661252047260ed5a7f5264e9c236466b76005e88ec240bcf8e2",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair1/dgl/initial_training_identity.json": "56612ba536517033a19e42f2a24db920cf63cf47ba94013ffbe463566d76e65c",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair1/dgl/protocol.json": "77295e038546ea60ae7a5f65c4e55d33cc006cfc67939927a9ae9bc7457bdbce",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair1/dgl/run_status.json": "2f5aa6d273b6ca3b1de7690c464da00f79753bde2bdf9ac5f713b59d62d6664b",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair1/dgl/updates.jsonl": "9541d19108f92a1008a126f510ec9e33a666e224176e035e2366db7841d94837",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair1/torch-v1/initial_training_identity.json": "2f25b9b24e852b86d93173e0eaa9217ca4ede92969e9f4c4f87104c04762b09e",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair1/torch-v1/protocol.json": "d0cbbd5e503905661276ae1e4ea1e0a612a7bd9a641657a9dc94fb6ee5e1d954",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair1/torch-v1/run_status.json": "2a2b689fc7ecb2a318c0611b7a39477ba7514da9982ba2fc122c39e7d1e2c63d",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair1/torch-v1/updates.jsonl": "3955f3ae6e4e0865d5716905a0e70c56fb1fdab9f89708605d824e9971108a89",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair2/dgl/initial_training_identity.json": "f915b61b6081e9f4699839adb406b1ca5caf96cfddf90dd3762977836fb832a8",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair2/dgl/protocol.json": "5544dbf0f6818e5f2b6ccb08bab2d074c1c5b90d0b68d492b3d4319b53314a2a",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair2/dgl/run_status.json": "8c337329e08072a2e1dd2230e55033fc0d71ef00bc160c725bc28012fb256fc3",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair2/dgl/updates.jsonl": "fa9e95c11e5556847a2447804e42277232616e3eb081e14f0518f3fcb2b96b11",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair2/torch-v1/initial_training_identity.json": "b2074a57e404a85a168e7dd4da3347fddbc5d844a60c3f68f3b9ca5053667cac",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair2/torch-v1/protocol.json": "b9fa5ea949893cda3a82c92d5032415e4d5c5138a55538410044b78ca90ffba2",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair2/torch-v1/run_status.json": "4926d11891f12fca7963bd3b8463e74b36f5a7143c58185367b55b591a655f97",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair2/torch-v1/updates.jsonl": "91fc9189f219e4ed1536e1e0d162bacad4e0035f7f2d3080d1ad22a295900e79",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair3/dgl/initial_training_identity.json": "2470bd048eb5c5ff91ca3847bed51b65f2168e7f50014fb5fcc5802091ae1405",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair3/dgl/protocol.json": "ad36fbd93340cfb50528fe495c1651393b9ebf4744b9d178369655a908043fdd",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair3/dgl/run_status.json": "1a8e450a57a65441de1526723f5b4c5071d7cf1aa35c9bed4d9f367cf3442aa2",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair3/dgl/updates.jsonl": "101367e43ac0a6da4293fd57413e0df65c8cd7d240132e238788e5ce8f38c9e1",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair3/torch-v1/initial_training_identity.json": "57dc4804e6bb604e8fac9621cdda076b9ec787d745d5473af91ce82e18730c99",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair3/torch-v1/protocol.json": "ed9a11d8aaa6393c7962f284ad33deb25c3df0edc24de10f3084951f4b2dada6",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair3/torch-v1/run_status.json": "e65ac6e18afe1477822e3dcc29c88fe37eb6298813d4cf0e0ae9a1bc616b20fd",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair3/torch-v1/updates.jsonl": "d8adb47808d0edf41c746e56395e69403e2079dfc32ea0cef074a66984a8f2ac",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair1/dgl/initial_training_identity.json": "3097b81c52cc250c328393fb3b6f87e9a0ae28250f9123669d571b2fe94e3852",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair1/dgl/protocol.json": "ce5ac40d0976ebb7b0b678ccd9ef4aab426ff2caa65e2f40f848282df88c4402",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair1/dgl/run_status.json": "9ccfa38aef84a4cae996524ed73bad798530256148de8d71cc7366457f92e338",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair1/dgl/updates.jsonl": "8ee450b5e8e64bac5781eb43f8805d144595b89b9e1fca8de1b945ea0377decb",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair1/torch-v1/initial_training_identity.json": "d899368dfd785c6ef9aefa5a08e6f5c679c00c11999d5496971b271a274f1810",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair1/torch-v1/protocol.json": "e833d269a97c0649fecd2aee9267acfc8c664411f8489d5e439ce9dc5e468841",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair1/torch-v1/run_status.json": "6b4bbaf3db2d60da11de24c1f09cdfc4b441b1797936266db7ed50f489e4f0f4",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair1/torch-v1/updates.jsonl": "d6c12fd26f0cc483d8b939e394a768875e3e11ed48f0eb44c766c958e10a1ec8",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair2/dgl/initial_training_identity.json": "c832ad4900802a308474987192b8b0617a31e3dd2230006eb7d7b6de5e00a37b",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair2/dgl/protocol.json": "08cc7801dbdf37c96be5ac2675da7e819d0294452d073180a026d6222464e471",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair2/dgl/run_status.json": "feaf82eea05bb02838435d827db8f1fbca59609e5676d2bdbbd6c708e8217b70",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair2/dgl/updates.jsonl": "da3835b02daea2e26c2345fe4a7dd493bcb0c3bb3389d2afb71349b92676839e",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair2/torch-v1/initial_training_identity.json": "6b815934cde15399f57f2f9cc3517d0b85a6db8af655856e3cd1db57ee2905fb",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair2/torch-v1/protocol.json": "dda39d9b0dd4d846e4bee497affcc2466a3f04be5c074c96ce4cab79cd3ca36a",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair2/torch-v1/run_status.json": "6fcf6d5bb61cedfdc0155d2769bde1cc4ad344a3fd05627a704c24cbeff2c45f",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair2/torch-v1/updates.jsonl": "cd90584d832833fa81ea08f70566b24e9f3ec14d06148323f0343f82eaed08ce",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair3/dgl/initial_training_identity.json": "889dade98c50184117f70181357c4c9ecb4a5da684ab4118419ce07a12b33198",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair3/dgl/protocol.json": "c37646694bfd19ec8bb66447ca9be069b4598c74f5bf5607284f35f2396199cc",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair3/dgl/run_status.json": "589f30857e9b35880b45b4ac0ae1777ebfe684160bbbd0d0bdac4fc32b05482a",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair3/dgl/updates.jsonl": "b34b6e29b2542a9331875276a165e9b098023a795a2bac513b5748aacb0a9a00",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair3/torch-v1/initial_training_identity.json": "fdbd6324008bbc707394b167f630009fc23301b5d1f68c51e27293b39e74a6f2",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair3/torch-v1/protocol.json": "fe311af0a5a82b55dcef9d93f3a03b7af7f98b010ec08816beebd84ef60838ba",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair3/torch-v1/run_status.json": "464050129335f72dc599dcdceac6cf33d1dacc86c5cf44801fcdc5fb85492305",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair3/torch-v1/updates.jsonl": "54e319d2ea7c1e1f9e1afd47073cc400b04dca4d4419e4111750e6d9a1d2bc19",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair1/dgl/initial_training_identity.json": "8b26505b9d448ed6ff026a2cace3f7bbeb6f453e94bf7aded52893874af79d8e",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair1/dgl/protocol.json": "70dc1d3fbc9549d0d3e7eabdbf1e21cee4c7fc4fb97f08c79f190269f86cdea1",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair1/dgl/run_status.json": "70dd315ba656ec9674c4c1ae0530f9cb7b73057d84192da32523d4826aef237e",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair1/dgl/updates.jsonl": "161a80b088bf12aa184e203a52a09d4837b53c0ca5d17ee4e12de2dd706cc5d1",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair1/torch-v1/initial_training_identity.json": "264f8fdb77a236898f366dde164243686397292a86e1911100492eb36a9165b0",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair1/torch-v1/protocol.json": "97a4eff9a75b4d36b8947f4cf605c38289742db60a41c90bad2a6fa4b31c563e",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair1/torch-v1/run_status.json": "46659070b6f2c85342f748986b34916e094dcee2b78723ba43b84b627c06deae",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair1/torch-v1/updates.jsonl": "27f4ca2d1cf846805a854fb59e3433a7f5fc267c1c12053311b48bae4e057b76",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair2/dgl/initial_training_identity.json": "ed400d29af0fe03dc528189fae1bc5def33e556d2a41ee91fb79adb5d0928e31",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair2/dgl/protocol.json": "876f68aa95d7240df32b4424757ec9abdf19469a3ece4dcf6c9d6916a05d19a7",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair2/dgl/run_status.json": "0699ad527759fc6071d72bff9969e29d5405cdfa436fbb979dc1ad2a886e000d",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair2/dgl/updates.jsonl": "b4c373ceb39375cfc85bec45970cf3cd2e98b7705118b6aee7b19775fee6a082",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair2/torch-v1/initial_training_identity.json": "4cf17518185ee1554c2bedba87f2cad86bc0a1812e6393a42e925da5d799833a",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair2/torch-v1/protocol.json": "09ad8070bef79eaeaf7414f6c36901c883da17170df7e68474306db40ae623ea",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair2/torch-v1/run_status.json": "9ca3630fc7b08013a2e3419b897d07298f3497e9f06939aeee6cc199207fbab7",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair2/torch-v1/updates.jsonl": "75dd04f753ccbf906218cc9e73b4877463cf44204246866f2f705f9ac728fd82",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair3/dgl/initial_training_identity.json": "c8b8bb47b1e21a766070204494eec1e1be19aa8a4ef0f600bfcde54abb2befbd",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair3/dgl/protocol.json": "0209f03a4a3b9760372c84de2f9d76a70345a1fe7f1d183a2b8a107d6a7fc4aa",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair3/dgl/run_status.json": "59314f4cf7885edd80e1795bfb3ef55572dbf7b225cb86496f511c97a18991d1",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair3/dgl/updates.jsonl": "41acfd473e9bc22908e6799dd4f1c91e8f46f3c540cd631f6ac5736f400e9ca3",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair3/torch-v1/initial_training_identity.json": "60f247b4d5199554e2b55dca2773b4d2e0f052a9927f32cdeb3c80d6a93a5662",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair3/torch-v1/protocol.json": "f758576d0be8912303d635914575ace614f7c1a0904c5b6e43843a5b4c69a23b",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair3/torch-v1/run_status.json": "0e30b7e092544b108fa9f72b7f57410a8fa1affa809063361aaa591a1aa168d4",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair3/torch-v1/updates.jsonl": "03052a1a9bee876c29d291227b75c683f12c31b4dbd73acc75bc1379079315f0",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/dgl/initial_training_identity.json": "128cab461a6ce38626b8f040b48611bc19383d5d127f4ff10ea804e9cf979566",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/dgl/protocol.json": "f1e52218ccee85fe9c4d9a1d40e68c93835d26bcf65b5be76a3586abc46841a0",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/dgl/run_status.json": "3150638afa4cb98778d05d662a4ab17739e1cf85fb32a223feb5466968e6e1c0",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/dgl/source/benchmark.py": "6b4f526e58c0d09ac0cb09cf9a1716702829cad01d86f00f939c85bd358522a1",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/dgl/source/runtime/hetgat/policy.py": "2fd959b31025a4005f6eeea2bbcfe0f957ee7de7ee16c8d3cc147f89b40ee6ea",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/dgl/source/runtime/hetnet_ext/recovery.py": "214358dae41c94abd00d42526a233b7fa2d48d6f80a46a023c88339b41f04fb1",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/dgl/source/runtime/main.py": "c8b60250fa80e91d06fe9d5be8fc2842cb540f622f42305cd13d0fdc39f1f3ca",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/dgl/source/runtime/multi_processing.py": "c21bc7392848878c1bb42fa99cb007b178dc96a1d2f65d2a0224b44c77594ea6",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/dgl/source/runtime/trainer.py": "f5388bb2ef0be3c0c7a03e3b409c4f0da737d781d5142aab227c32e4e60ca2a1",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/dgl/updates.jsonl": "2b84fc91349d454762af41f19ea7c87237636c8db5554eadf067f6366e027c23",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/torch-v1/initial_training_identity.json": "f49de9ab904fa56cdcd93fb90f89295071cb3a5d484248680516c4a16579fd05",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/torch-v1/protocol.json": "1d307995629b6b3bb2061e3439960c49f5d6e7251723e9681a1a293ee3f3fffd",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/torch-v1/run_status.json": "f5704034de85fd1f66ee63d3dfa7ec029e9a2e4c8219e267a27c17817598b2ad",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/torch-v1/updates.jsonl": "b092cc6c3139d21c2578d1264017fbd1f6c61ecd0cecd577d5fee300ec98be64",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair2/dgl/initial_training_identity.json": "52b5d4f68623f8d9139271b6700a9ae80e7bc38efc618719f46a1135ac94f6f7",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair2/dgl/protocol.json": "31fdb8cfe1ed765a68dd4f34a02577ba488058253374216ffaf4a23eda9b138a",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair2/dgl/run_status.json": "04e750b5465f717758060d989fce27a0dc50d88c38ea19e59a63d6f4c88ced0d",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair2/dgl/updates.jsonl": "1101822450e4873a2be17d36ed8788d5b545d3b1f3a6f8c57114f2e81fe20136",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair2/torch-v1/initial_training_identity.json": "e43078788f4e8bb3ed68fcd47573abdf6a693d221ef518a448d3bed8ca44f9ac",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair2/torch-v1/protocol.json": "d527f731f6b8ac9d266ffc4e3cdd08173b8a8cbb0686e2f814765a5a15095714",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair2/torch-v1/run_status.json": "7d2eb699792961e9d84d28e9bf027050fcc6a46d08bf5ae3fe36ca8b7742ecfb",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair2/torch-v1/updates.jsonl": "4e9e2bfc2f61cd9e09e0254b590d11edad5d5496726c3a874e25dccfb5b0e240",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair3/dgl/initial_training_identity.json": "b048ba2bba2fc700ae6ffbd3201e569363b648e6ca25c74916b1ee3b7afbd693",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair3/dgl/protocol.json": "9ef9bebe6c5fbfdd405dc30f6e2d80307e3d4a1e26bf30ea56ce48eb088cc5b7",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair3/dgl/run_status.json": "9444dccb1f8a10bdc8dc43cfa7fdc859aa4277e33f3af67d8ce832c2c9fccbe4",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair3/dgl/updates.jsonl": "b485ca3ffacf077142f6c0ff50c85ca9c6e5b9994923d427f7d4a5277f3e67b2",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair3/torch-v1/initial_training_identity.json": "060d825c083fe8e903365821ae55973d31d827d23e7f303892bb008ceae2f685",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair3/torch-v1/protocol.json": "a2fa2ac03a7af95480dc3f2e61709081176429719a2c102b38838c84757f426a",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair3/torch-v1/run_status.json": "b8ebf0abe691c0b556ef236cce15484c6c91eafb0c03a310bc51be76ec6feead",
+    "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair3/torch-v1/updates.jsonl": "a9bf1cc6610457c64a014a6999a1d45e2f8a7c25f0530a375796300cb99c70d5",
+    "stokes_runs/hetnet_preflight_903502/pcp_binary/seed991/protocol.json": "3938e8f0d2031eb4837fc817989557ab7e4a55fc6e9332893921082e3b88976f",
+    "stokes_runs/hetnet_preflight_903502/pcp_binary/seed991/updates.jsonl": "94786554f8c8245d40d430d70e431963a7bf47b8f60a22756fabe559ee1aa14e",
+    "stokes_runs/hetnet_preflight_903502/pcp_real/seed991/protocol.json": "27d096582d010018818818e3a1c276f5f80fc3d3f9e8666b02756a3c1d853dc0",
+    "stokes_runs/hetnet_preflight_903502/pcp_real/seed991/updates.jsonl": "ebf00b3748f435ec7484e89ba2f858a28265c6944162d994e90dd5c89772f2d3"
+  },
+  "limitations": [
+    "Single node/allocation; identical four-core affinity is an allowed CPU set, not one collector pinned per core.",
+    "Allocation records do not prove node/socket exclusivity or lack of external cache/memory-bandwidth contention.",
+    "Resource CPU intervals span collector samples approximately surrounding training; first/last sampling and housekeeping differ slightly from wall timer boundaries.",
+    "RSS fields are lifetime process high-water marks, not concurrent job/cgroup peaks; sums can double-count shared pages. No swap, fault, memory-pressure or bandwidth samples exist.",
+    "Parent wait starts after collector zero finishes its own rollout/backward; it is residual worker synchronization/receive time, not total communication or idle time.",
+    "Graph/forward/loss/environment are separate collector intervals. Collector intervals overlap across four processes; parent wait/aggregation/optimizer must not be added to their total as one elapsed breakdown.",
+    "Loss/backward includes all loss construction and backpropagation, not just message passing. Forward includes the full model.",
+    "Diagnostics are separate three-update runs, not throughput samples. They show where local cost changed, not formal causal mediation or long-run throughput.",
+    "Old supplement-v1 and new paper-v1 change architecture, learner and Binary head/payload semantics. New benchmark cannot identify cause of old slowdown."
+  ],
+  "new_binary_relative_to_real_post_first_update_seconds_per_step": {
+    "dgl": 1.3084719710676838,
+    "torch-v1": 1.379158177024267
+  },
+  "old_preflight": {
+    "binary": {
+      "environment_version": "corrected-v1",
+      "learner_spec": "public-code-v1",
+      "model_spec": "supplement-v1",
+      "protocol_keys": [
+        "architecture",
+        "batch_step_floor_per_collector",
+        "budget_semantics",
+        "claim",
+        "collectors",
+        "command",
+        "env_version",
+        "episode_horizon",
+        "episode_log",
+        "epoch_budget_min_steps_without_step_cap",
+        "epochs",
+        "learner_spec",
+        "max_env_steps",
+        "max_overshoot_steps",
+        "milestones",
+        "model_spec",
+        "optimizer",
+        "output",
+        "recipe",
+        "rng_scheme",
+        "runtime_scaffold_reference",
+        "schema_version",
+        "seed",
+        "task",
+        "updates_per_epoch",
+        "upstream_reference",
+        "variant",
+        "wall_seconds"
+      ],
+      "seconds": 5553.960697455332,
+      "steps": 215575,
+      "updates": 100
+    },
+    "binary_relative_to_real_seconds_per_step": 2.5175050497045985,
+    "real": {
+      "environment_version": "corrected-v1",
+      "learner_spec": "public-code-v1",
+      "model_spec": "supplement-v1",
+      "protocol_keys": [
+        "architecture",
+        "batch_step_floor_per_collector",
+        "budget_semantics",
+        "claim",
+        "collectors",
+        "command",
+        "env_version",
+        "episode_horizon",
+        "episode_log",
+        "epoch_budget_min_steps_without_step_cap",
+        "epochs",
+        "learner_spec",
+        "max_env_steps",
+        "max_overshoot_steps",
+        "milestones",
+        "model_spec",
+        "optimizer",
+        "output",
+        "recipe",
+        "rng_scheme",
+        "runtime_scaffold_reference",
+        "schema_version",
+        "seed",
+        "task",
+        "updates_per_epoch",
+        "upstream_reference",
+        "variant",
+        "wall_seconds"
+      ],
+      "seconds": 2198.9425509069115,
+      "steps": 214872,
+      "updates": 100
+    }
+  },
+  "rows": [
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 10.073336095742956,
+      "aggregate_cpu_seconds_per_segment_second": 3.435725072917031,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.0016373501257835495,
+      "checkpoint_seconds": 0.20738157629966736,
+      "episodes": 623,
+      "four_cpu_allocation_utilization": 0.8589312682292578,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_00.json",
+      "largest_individual_peak_rss_gib": 0.9115371704101562,
+      "non_update_non_checkpoint_segment_seconds": 0.6056141946464777,
+      "pair": 1,
+      "post_first_update_steps_per_second": 363.4863394011733,
+      "process_seconds": 283.4844601880759,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/dgl",
+      "segment_seconds": 126.65682985819876,
+      "startup_seconds": 146.67990353517234,
+      "steps": 43199,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 3.46185302734375,
+      "system_cpu_fraction": 0.006603922474640398,
+      "system_cpu_seconds": 2.87375,
+      "task": "pp",
+      "update_seconds": 125.84383408725262,
+      "user_cpu_seconds": 432.284296,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 7.125632283154702,
+      "aggregate_cpu_seconds_per_segment_second": 3.594397050934932,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.0010941208166916133,
+      "checkpoint_seconds": 0.09369929693639278,
+      "episodes": 623,
+      "four_cpu_allocation_utilization": 0.898599262733733,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_01.json",
+      "largest_individual_peak_rss_gib": 0.9507217407226562,
+      "non_update_non_checkpoint_segment_seconds": 0.42436944879591465,
+      "pair": 1,
+      "post_first_update_steps_per_second": 506.0009583007669,
+      "process_seconds": 98.37901538424194,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/torch-v1",
+      "segment_seconds": 85.63889426738024,
+      "startup_seconds": 11.406332010403275,
+      "steps": 43199,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 3.607025146484375,
+      "system_cpu_fraction": 0.007542344794025191,
+      "system_cpu_seconds": 2.321686,
+      "task": "pp",
+      "update_seconds": 85.12082552164793,
+      "user_cpu_seconds": 305.49850299999997,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 17.813797051311816,
+      "aggregate_cpu_seconds_per_segment_second": 3.6326128576931915,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.0007817854538005003,
+      "checkpoint_seconds": 0.16512006148695946,
+      "episodes": 595,
+      "four_cpu_allocation_utilization": 0.9081532144232979,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_02.json",
+      "largest_individual_peak_rss_gib": 1.24517822265625,
+      "non_update_non_checkpoint_segment_seconds": 0.7550540659576654,
+      "pair": 1,
+      "post_first_update_steps_per_second": 203.8369133151367,
+      "process_seconds": 223.43014077097178,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair1/dgl",
+      "segment_seconds": 211.20892015099525,
+      "startup_seconds": 10.578064635396004,
+      "steps": 43070,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 4.687191009521484,
+      "system_cpu_fraction": 0.006851586677533476,
+      "system_cpu_seconds": 5.256813,
+      "task": "pcp",
+      "update_seconds": 210.28874602355063,
+      "user_cpu_seconds": 761.983426,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 12.981088971441835,
+      "aggregate_cpu_seconds_per_segment_second": 3.5864870828949735,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.0008629766218670839,
+      "checkpoint_seconds": 0.13452895171940327,
+      "episodes": 595,
+      "four_cpu_allocation_utilization": 0.8966217707237434,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_03.json",
+      "largest_individual_peak_rss_gib": 1.3485488891601562,
+      "non_update_non_checkpoint_segment_seconds": 0.40328384935855865,
+      "pair": 1,
+      "post_first_update_steps_per_second": 275.3409199891359,
+      "process_seconds": 168.25163618847728,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair1/torch-v1",
+      "segment_seconds": 155.88945089653134,
+      "startup_seconds": 10.756434448063374,
+      "steps": 43070,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 5.049415588378906,
+      "system_cpu_fraction": 0.006915816682782042,
+      "system_cpu_seconds": 3.866602,
+      "task": "pcp",
+      "update_seconds": 155.35163809545338,
+      "user_cpu_seconds": 555.2289,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 16.286321308097843,
+      "aggregate_cpu_seconds_per_segment_second": 3.450160409210514,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.00024222788527522986,
+      "checkpoint_seconds": 0.05660756304860115,
+      "episodes": 226,
+      "four_cpu_allocation_utilization": 0.8625401023026285,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_04.json",
+      "largest_individual_peak_rss_gib": 1.3819007873535156,
+      "non_update_non_checkpoint_segment_seconds": 0.9020725134760141,
+      "pair": 1,
+      "post_first_update_steps_per_second": 212.61832045610552,
+      "process_seconds": 246.0388607326895,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair1/dgl",
+      "segment_seconds": 233.69548466429114,
+      "startup_seconds": 10.673343075439334,
+      "steps": 49507,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 5.134452819824219,
+      "system_cpu_fraction": 0.006852710788586052,
+      "system_cpu_seconds": 5.525251000000001,
+      "task": "fc",
+      "update_seconds": 232.73680458776653,
+      "user_cpu_seconds": 800.761658,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 11.454091037631041,
+      "aggregate_cpu_seconds_per_segment_second": 3.4166008438628386,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.0006557746573055101,
+      "checkpoint_seconds": 0.10883977264165878,
+      "episodes": 226,
+      "four_cpu_allocation_utilization": 0.8541502109657096,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_05.json",
+      "largest_individual_peak_rss_gib": 1.5156211853027344,
+      "non_update_non_checkpoint_segment_seconds": 0.42362209036946297,
+      "pair": 1,
+      "post_first_update_steps_per_second": 297.8624115816002,
+      "process_seconds": 178.2180523518473,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair1/torch-v1",
+      "segment_seconds": 165.9713003989309,
+      "startup_seconds": 10.72506128065288,
+      "steps": 49507,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 5.60931396484375,
+      "system_cpu_fraction": 0.007353304805312709,
+      "system_cpu_seconds": 4.169748,
+      "task": "fc",
+      "update_seconds": 165.43883853591979,
+      "user_cpu_seconds": 562.887937,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 23.140501305422703,
+      "aggregate_cpu_seconds_per_segment_second": 3.607554730739544,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.0014295598174697353,
+      "checkpoint_seconds": 0.3968802187591791,
+      "episodes": 611,
+      "four_cpu_allocation_utilization": 0.901888682684886,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_06.json",
+      "largest_individual_peak_rss_gib": 1.631378173828125,
+      "non_update_non_checkpoint_segment_seconds": 0.9753597099334002,
+      "pair": 1,
+      "post_first_update_steps_per_second": 155.78734931660728,
+      "process_seconds": 290.13879425264895,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair1/dgl",
+      "segment_seconds": 277.6240727454424,
+      "startup_seconds": 10.711740277707577,
+      "steps": 43281,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 6.100349426269531,
+      "system_cpu_fraction": 0.0070638890938751605,
+      "system_cpu_seconds": 7.074796,
+      "task": "pcp",
+      "update_seconds": 276.2518328167498,
+      "user_cpu_seconds": 994.469241,
+      "variant": "binary"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 17.87848619486611,
+      "aggregate_cpu_seconds_per_segment_second": 3.5772230500548545,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.0006995491686459191,
+      "checkpoint_seconds": 0.15132136642932892,
+      "episodes": 611,
+      "four_cpu_allocation_utilization": 0.8943057625137136,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_07.json",
+      "largest_individual_peak_rss_gib": 1.7058639526367188,
+      "non_update_non_checkpoint_segment_seconds": 0.7105975393205881,
+      "pair": 1,
+      "post_first_update_steps_per_second": 198.95111280856827,
+      "process_seconds": 228.981425113976,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair1/torch-v1",
+      "segment_seconds": 216.3126956783235,
+      "startup_seconds": 10.846979081630707,
+      "steps": 43281,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 6.401424407958984,
+      "system_cpu_fraction": 0.007617848847912538,
+      "system_cpu_seconds": 5.8946819999999995,
+      "task": "pcp",
+      "update_seconds": 215.4507767725736,
+      "user_cpu_seconds": 767.904079,
+      "variant": "binary"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 7.144627259890276,
+      "aggregate_cpu_seconds_per_segment_second": 3.6085312998486088,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.000999806746989757,
+      "checkpoint_seconds": 0.08551432192325592,
+      "episodes": 623,
+      "four_cpu_allocation_utilization": 0.9021328249621522,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_08.json",
+      "largest_individual_peak_rss_gib": 0.95257568359375,
+      "non_update_non_checkpoint_segment_seconds": 0.27898905985057354,
+      "pair": 2,
+      "post_first_update_steps_per_second": 504.35630056868587,
+      "process_seconds": 97.7575026191771,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair2/torch-v1",
+      "segment_seconds": 85.53085101768374,
+      "startup_seconds": 10.860807238146663,
+      "steps": 43199,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 3.6190414428710938,
+      "system_cpu_fraction": 0.00735087955154127,
+      "system_cpu_seconds": 2.268781,
+      "task": "pp",
+      "update_seconds": 85.16634763590991,
+      "user_cpu_seconds": 306.371972,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 10.023596286951086,
+      "aggregate_cpu_seconds_per_segment_second": 3.659466071620751,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.002262395526671885,
+      "checkpoint_seconds": 0.2676998134702444,
+      "episodes": 623,
+      "four_cpu_allocation_utilization": 0.9148665179051878,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_09.json",
+      "largest_individual_peak_rss_gib": 0.9166908264160156,
+      "non_update_non_checkpoint_segment_seconds": 0.5017434917390347,
+      "pair": 2,
+      "post_first_update_steps_per_second": 366.26372005476355,
+      "process_seconds": 130.5526451598853,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair2/dgl",
+      "segment_seconds": 118.32582336477935,
+      "startup_seconds": 10.901836600154638,
+      "steps": 43199,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 3.466796875,
+      "system_cpu_fraction": 0.006601707543783767,
+      "system_cpu_seconds": 2.858601,
+      "task": "pp",
+      "update_seconds": 117.55638005957007,
+      "user_cpu_seconds": 430.150735,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 13.0098187833759,
+      "aggregate_cpu_seconds_per_segment_second": 3.580093682321853,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.0015379014197134972,
+      "checkpoint_seconds": 0.24070229195058346,
+      "episodes": 595,
+      "four_cpu_allocation_utilization": 0.8950234205804632,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_10.json",
+      "largest_individual_peak_rss_gib": 1.3503189086914062,
+      "non_update_non_checkpoint_segment_seconds": 0.39862531796097755,
+      "pair": 2,
+      "post_first_update_steps_per_second": 274.31944302827446,
+      "process_seconds": 168.93254055269063,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair2/torch-v1",
+      "segment_seconds": 156.5134727526456,
+      "startup_seconds": 10.77253064326942,
+      "steps": 43070,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 5.050235748291016,
+      "system_cpu_fraction": 0.007105902643820331,
+      "system_cpu_seconds": 3.981671,
+      "task": "pcp",
+      "update_seconds": 155.87414514273405,
+      "user_cpu_seconds": 556.351224,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 17.820452635244955,
+      "aggregate_cpu_seconds_per_segment_second": 3.6397131082860454,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.0005775690088201262,
+      "checkpoint_seconds": 0.12179524451494217,
+      "episodes": 595,
+      "four_cpu_allocation_utilization": 0.9099282770715114,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_11.json",
+      "largest_individual_peak_rss_gib": 1.2393989562988281,
+      "non_update_non_checkpoint_segment_seconds": 0.8766856212168932,
+      "pair": 2,
+      "post_first_update_steps_per_second": 204.1697476309515,
+      "process_seconds": 223.09408648312092,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair2/dgl",
+      "segment_seconds": 210.87565754912794,
+      "startup_seconds": 10.620321424677968,
+      "steps": 43070,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 4.670299530029297,
+      "system_cpu_fraction": 0.0067156304666040395,
+      "system_cpu_seconds": 5.154427,
+      "task": "pcp",
+      "update_seconds": 209.8771766833961,
+      "user_cpu_seconds": 762.372468,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 11.4360698285091,
+      "aggregate_cpu_seconds_per_segment_second": 3.41147747660149,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.0003119340681059754,
+      "checkpoint_seconds": 0.05176827684044838,
+      "episodes": 226,
+      "four_cpu_allocation_utilization": 0.8528693691503725,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_12.json",
+      "largest_individual_peak_rss_gib": 1.5132217407226562,
+      "non_update_non_checkpoint_segment_seconds": 0.6643529925495386,
+      "pair": 2,
+      "post_first_update_steps_per_second": 298.2655646648303,
+      "process_seconds": 178.360187292099,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair2/torch-v1",
+      "segment_seconds": 165.95903472416103,
+      "startup_seconds": 10.810632389038801,
+      "steps": 49507,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 5.610954284667969,
+      "system_cpu_fraction": 0.007185504830885063,
+      "system_cpu_seconds": 4.068185,
+      "task": "fc",
+      "update_seconds": 165.24291345477104,
+      "user_cpu_seconds": 562.097324,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 16.33491193164603,
+      "aggregate_cpu_seconds_per_segment_second": 3.466529113137598,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.00024399249020306697,
+      "checkpoint_seconds": 0.056920016184449196,
+      "episodes": 226,
+      "four_cpu_allocation_utilization": 0.8666322782843995,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_13.json",
+      "largest_individual_peak_rss_gib": 1.3841781616210938,
+      "non_update_non_checkpoint_segment_seconds": 0.9401635080575943,
+      "pair": 2,
+      "post_first_update_steps_per_second": 212.74562224026482,
+      "process_seconds": 245.53859551995993,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair2/dgl",
+      "segment_seconds": 233.28593489527702,
+      "startup_seconds": 10.645446509122849,
+      "steps": 49507,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 5.130180358886719,
+      "system_cpu_fraction": 0.006889361658900539,
+      "system_cpu_seconds": 5.571375,
+      "task": "fc",
+      "update_seconds": 232.28885137103498,
+      "user_cpu_seconds": 803.12111,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 17.873042905662995,
+      "aggregate_cpu_seconds_per_segment_second": 3.580018357089647,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.0006324535881214512,
+      "checkpoint_seconds": 0.136659299954772,
+      "episodes": 611,
+      "four_cpu_allocation_utilization": 0.8950045892724118,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_14.json",
+      "largest_individual_peak_rss_gib": 1.7081413269042969,
+      "non_update_non_checkpoint_segment_seconds": 1.3096958119422197,
+      "pair": 2,
+      "post_first_update_steps_per_second": 199.74942422080687,
+      "process_seconds": 228.73508779890835,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair2/torch-v1",
+      "segment_seconds": 216.07798978686333,
+      "startup_seconds": 10.826669700443745,
+      "steps": 43281,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 6.396190643310547,
+      "system_cpu_fraction": 0.007629570833885486,
+      "system_cpu_seconds": 5.901955,
+      "task": "pcp",
+      "update_seconds": 214.63163467496634,
+      "user_cpu_seconds": 767.661215,
+      "variant": "binary"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 23.231679813313,
+      "aggregate_cpu_seconds_per_segment_second": 3.627111487720084,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.0006211803801340003,
+      "checkpoint_seconds": 0.1722006257623434,
+      "episodes": 611,
+      "four_cpu_allocation_utilization": 0.906777871930021,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_15.json",
+      "largest_individual_peak_rss_gib": 1.6366004943847656,
+      "non_update_non_checkpoint_segment_seconds": 0.8139753118157387,
+      "pair": 2,
+      "post_first_update_steps_per_second": 155.65651512160818,
+      "process_seconds": 289.7696732003242,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair2/dgl",
+      "segment_seconds": 277.2151717431843,
+      "startup_seconds": 10.776111762970686,
+      "steps": 43281,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 6.096530914306641,
+      "system_cpu_fraction": 0.0072182126019323814,
+      "system_cpu_seconds": 7.257842999999999,
+      "task": "pcp",
+      "update_seconds": 276.22899580560625,
+      "user_cpu_seconds": 998.232491,
+      "variant": "binary"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 9.955158151809071,
+      "aggregate_cpu_seconds_per_segment_second": 3.6520347380716163,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.0007960780101124363,
+      "checkpoint_seconds": 0.09374380670487881,
+      "episodes": 623,
+      "four_cpu_allocation_utilization": 0.9130086845179041,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_16.json",
+      "largest_individual_peak_rss_gib": 0.9066276550292969,
+      "non_update_non_checkpoint_segment_seconds": 0.503794027492404,
+      "pair": 3,
+      "post_first_update_steps_per_second": 367.5593980556893,
+      "process_seconds": 130.09933795966208,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair3/dgl",
+      "segment_seconds": 117.75706088356674,
+      "startup_seconds": 10.96954539231956,
+      "steps": 43199,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 3.4596786499023438,
+      "system_cpu_fraction": 0.006391927939596135,
+      "system_cpu_seconds": 2.748867,
+      "task": "pp",
+      "update_seconds": 117.15952304936945,
+      "user_cpu_seconds": 427.30401,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 7.1326634644320475,
+      "aggregate_cpu_seconds_per_segment_second": 3.6051249761590705,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.0008250584579014606,
+      "checkpoint_seconds": 0.07051634974777699,
+      "episodes": 623,
+      "four_cpu_allocation_utilization": 0.9012812440397676,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_17.json",
+      "largest_individual_peak_rss_gib": 0.9532089233398438,
+      "non_update_non_checkpoint_segment_seconds": 0.5243451967835426,
+      "pair": 3,
+      "post_first_update_steps_per_second": 506.09827205962625,
+      "process_seconds": 97.75750731676817,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair3/torch-v1",
+      "segment_seconds": 85.46830721199512,
+      "startup_seconds": 10.743849048390985,
+      "steps": 43199,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 3.6016159057617188,
+      "system_cpu_fraction": 0.007377369253265622,
+      "system_cpu_seconds": 2.273144,
+      "task": "pp",
+      "update_seconds": 84.8734456654638,
+      "user_cpu_seconds": 305.85078500000003,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 17.839166589273276,
+      "aggregate_cpu_seconds_per_segment_second": 3.6272804221085293,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.00066274760095269,
+      "checkpoint_seconds": 0.1403836291283369,
+      "episodes": 595,
+      "four_cpu_allocation_utilization": 0.9068201055271323,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_18.json",
+      "largest_individual_peak_rss_gib": 1.2418289184570312,
+      "non_update_non_checkpoint_segment_seconds": 0.9606010466814041,
+      "pair": 3,
+      "post_first_update_steps_per_second": 203.2783205597728,
+      "process_seconds": 224.18654126487672,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair3/dgl",
+      "segment_seconds": 211.82065227627754,
+      "startup_seconds": 10.862553395330906,
+      "steps": 43070,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 4.667182922363281,
+      "system_cpu_fraction": 0.006837536132856368,
+      "system_cpu_seconds": 5.2535039999999995,
+      "task": "pcp",
+      "update_seconds": 210.7196676004678,
+      "user_cpu_seconds": 763.079401,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 13.015859298815883,
+      "aggregate_cpu_seconds_per_segment_second": 3.591522174869382,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.002165662301320218,
+      "checkpoint_seconds": 0.33803362399339676,
+      "episodes": 595,
+      "four_cpu_allocation_utilization": 0.8978805437173455,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_19.json",
+      "largest_individual_peak_rss_gib": 1.3504104614257812,
+      "non_update_non_checkpoint_segment_seconds": 0.5123482346534729,
+      "pair": 3,
+      "post_first_update_steps_per_second": 275.55026114467705,
+      "process_seconds": 168.49584297649562,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair3/torch-v1",
+      "segment_seconds": 156.0878738053143,
+      "startup_seconds": 10.826545175164938,
+      "steps": 43070,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 5.051181793212891,
+      "system_cpu_fraction": 0.007032942933685265,
+      "system_cpu_seconds": 3.942619,
+      "task": "pcp",
+      "update_seconds": 155.23749194666743,
+      "user_cpu_seconds": 556.650441,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 16.25179174662169,
+      "aggregate_cpu_seconds_per_segment_second": 3.4568791709581164,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.00033716631003769465,
+      "checkpoint_seconds": 0.07847436890006065,
+      "episodes": 226,
+      "four_cpu_allocation_utilization": 0.8642197927395291,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_20.json",
+      "largest_individual_peak_rss_gib": 1.3831138610839844,
+      "non_update_non_checkpoint_segment_seconds": 0.8462834544479847,
+      "pair": 3,
+      "post_first_update_steps_per_second": 213.29743007436247,
+      "process_seconds": 245.2208944261074,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair3/dgl",
+      "segment_seconds": 232.7467678822577,
+      "startup_seconds": 10.729149255901575,
+      "steps": 49507,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 5.134601593017578,
+      "system_cpu_fraction": 0.006917823725147536,
+      "system_cpu_seconds": 5.565925000000001,
+      "task": "fc",
+      "update_seconds": 231.82201005890965,
+      "user_cpu_seconds": 799.0115290000001,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 11.43416129032258,
+      "aggregate_cpu_seconds_per_segment_second": 3.4152287488209434,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.0004025566209092154,
+      "checkpoint_seconds": 0.06672338955104351,
+      "episodes": 226,
+      "four_cpu_allocation_utilization": 0.8538071872052359,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_21.json",
+      "largest_individual_peak_rss_gib": 1.5120468139648438,
+      "non_update_non_checkpoint_segment_seconds": 0.548586742952466,
+      "pair": 3,
+      "post_first_update_steps_per_second": 298.5686500462177,
+      "process_seconds": 178.12629987858236,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair3/torch-v1",
+      "segment_seconds": 165.74907996878028,
+      "startup_seconds": 10.76615290157497,
+      "steps": 49507,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 5.604682922363281,
+      "system_cpu_fraction": 0.00736243656831733,
+      "system_cpu_seconds": 4.167662,
+      "task": "fc",
+      "update_seconds": 165.13376983627677,
+      "user_cpu_seconds": 561.903361,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 23.179507104734178,
+      "aggregate_cpu_seconds_per_segment_second": 3.6253958730801528,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.00046112447349154994,
+      "checkpoint_seconds": 0.12760397978127003,
+      "episodes": 611,
+      "four_cpu_allocation_utilization": 0.9063489682700382,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_22.json",
+      "largest_individual_peak_rss_gib": 1.6371803283691406,
+      "non_update_non_checkpoint_segment_seconds": 0.6890850514173508,
+      "pair": 3,
+      "post_first_update_steps_per_second": 155.78240713005903,
+      "process_seconds": 289.11933125555515,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair3/dgl",
+      "segment_seconds": 276.7235033418983,
+      "startup_seconds": 10.664578402414918,
+      "steps": 43281,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 6.102527618408203,
+      "system_cpu_fraction": 0.00706740540009775,
+      "system_cpu_seconds": 7.090249,
+      "task": "pcp",
+      "update_seconds": 275.9068143106997,
+      "user_cpu_seconds": 996.1419980000001,
+      "variant": "binary"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 17.827798456597584,
+      "aggregate_cpu_seconds_per_segment_second": 3.57879891101163,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.0006238342713238065,
+      "checkpoint_seconds": 0.13450144045054913,
+      "episodes": 611,
+      "four_cpu_allocation_utilization": 0.8946997277529075,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_23.json",
+      "largest_individual_peak_rss_gib": 1.7103385925292969,
+      "non_update_non_checkpoint_segment_seconds": 0.7329116556793451,
+      "pair": 3,
+      "post_first_update_steps_per_second": 199.6441920702843,
+      "process_seconds": 228.17319603264332,
+      "profiled": false,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair3/torch-v1",
+      "segment_seconds": 215.6044427715242,
+      "startup_seconds": 10.814301412552595,
+      "steps": 43281,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 6.4063873291015625,
+      "system_cpu_fraction": 0.007465670142899357,
+      "system_cpu_seconds": 5.760548000000001,
+      "task": "pcp",
+      "update_seconds": 214.7370296753943,
+      "user_cpu_seconds": 765.8443970000001,
+      "variant": "binary"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 9.70722263914947,
+      "aggregate_cpu_seconds_per_segment_second": 3.6993168505301113,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.0053512901878501285,
+      "checkpoint_seconds": 0.08981325104832649,
+      "collector_phase_seconds_divided_by_4_update_seconds": 0.8888742773993414,
+      "collector_phase_share_of_measured_collector_phases": {
+        "phase_environment_seconds": 0.01903478347601076,
+        "phase_graph_preparation_seconds": 0.11305616569540465,
+        "phase_loss_backward_seconds": 0.3823183263367418,
+        "phase_model_inference_seconds": 0.4855907244918428
+      },
+      "episodes": 94,
+      "four_cpu_allocation_utilization": 0.9248292126325278,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_24.json",
+      "largest_individual_peak_rss_gib": 0.8796310424804688,
+      "non_update_non_checkpoint_segment_seconds": 0.16417055018246174,
+      "pair": 1,
+      "parent_phase_fraction_of_update_wall": {
+        "phase_aggregation_seconds": 0.006634560189012422,
+        "phase_collector_wait_seconds": 0.09198786827520587,
+        "phase_optimizer_seconds": 0.0014565134589728508
+      },
+      "phase_ms_per_joint_environment_step": {
+        "phase_aggregation_seconds": 0.01714601495383008,
+        "phase_collector_wait_seconds": 0.2377286994290434,
+        "phase_environment_seconds": 0.17490383444949192,
+        "phase_graph_preparation_seconds": 1.0388327722878588,
+        "phase_loss_backward_seconds": 3.5129867035725515,
+        "phase_model_inference_seconds": 4.461919926421448,
+        "phase_optimizer_seconds": 0.003764138215124197
+      },
+      "phase_seconds": {
+        "phase_aggregation_seconds": 0.10966591164469719,
+        "phase_collector_wait_seconds": 1.5205127615481615,
+        "phase_environment_seconds": 1.1186849251389503,
+        "phase_graph_preparation_seconds": 6.6443744115531445,
+        "phase_loss_backward_seconds": 22.46906295605004,
+        "phase_model_inference_seconds": 28.53843984939158,
+        "phase_optimizer_seconds": 0.024075428023934364
+      },
+      "post_first_update_steps_per_second": 384.844649943661,
+      "process_seconds": 29.109214898198843,
+      "profiled": true,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pp_real/dgl",
+      "segment_seconds": 16.78347611427307,
+      "startup_seconds": 10.877435421571136,
+      "steps": 6396,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 3.348682403564453,
+      "system_cpu_fraction": 0.013324797838195693,
+      "system_cpu_seconds": 0.827302,
+      "task": "pp",
+      "update_seconds": 16.529492313042283,
+      "user_cpu_seconds": 61.260094,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 6.845136491557223,
+      "aggregate_cpu_seconds_per_segment_second": 3.631458951451412,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.006660652296523019,
+      "checkpoint_seconds": 0.08030196838080883,
+      "collector_phase_seconds_divided_by_4_update_seconds": 0.8528122530719059,
+      "collector_phase_share_of_measured_collector_phases": {
+        "phase_environment_seconds": 0.02665092200970829,
+        "phase_graph_preparation_seconds": 8.90912658251001e-05,
+        "phase_loss_backward_seconds": 0.5052688838546335,
+        "phase_model_inference_seconds": 0.46799110286983303
+      },
+      "episodes": 94,
+      "four_cpu_allocation_utilization": 0.907864737862853,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_25.json",
+      "largest_individual_peak_rss_gib": 0.904937744140625,
+      "non_update_non_checkpoint_segment_seconds": 0.13330452516674995,
+      "pair": 1,
+      "parent_phase_fraction_of_update_wall": {
+        "phase_aggregation_seconds": 0.0094463260834145,
+        "phase_collector_wait_seconds": 0.11852418789797226,
+        "phase_optimizer_seconds": 0.0018774153199722916
+      },
+      "phase_ms_per_joint_environment_step": {
+        "phase_aggregation_seconds": 0.017490421128858246,
+        "phase_collector_wait_seconds": 0.21945441455077647,
+        "phase_environment_seconds": 0.1683305702017873,
+        "phase_graph_preparation_seconds": 0.0005627116229177789,
+        "phase_loss_backward_seconds": 3.1913417214417064,
+        "phase_model_inference_seconds": 2.9558905754459697,
+        "phase_optimizer_seconds": 0.003476143454092603
+      },
+      "phase_seconds": {
+        "phase_aggregation_seconds": 0.11186873354017735,
+        "phase_collector_wait_seconds": 1.4036304354667664,
+        "phase_environment_seconds": 1.0766423270106316,
+        "phase_graph_preparation_seconds": 0.0035991035401821136,
+        "phase_loss_backward_seconds": 20.411821650341153,
+        "phase_model_inference_seconds": 18.90587612055242,
+        "phase_optimizer_seconds": 0.02223341353237629
+      },
+      "post_first_update_steps_per_second": 527.7913361414269,
+      "process_seconds": 21.556139774620533,
+      "profiled": true,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pp_real/torch-v1",
+      "segment_seconds": 12.056171799078584,
+      "startup_seconds": 8.254090271890163,
+      "steps": 6396,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 3.463878631591797,
+      "system_cpu_fraction": 0.023112893843067434,
+      "system_cpu_seconds": 1.011917,
+      "task": "pp",
+      "update_seconds": 11.842565305531025,
+      "user_cpu_seconds": 42.769576,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 17.2159417047424,
+      "aggregate_cpu_seconds_per_segment_second": 3.6575091016255485,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.004174071964024906,
+      "checkpoint_seconds": 0.12470210902392864,
+      "collector_phase_seconds_divided_by_4_update_seconds": 0.8817921105463429,
+      "collector_phase_share_of_measured_collector_phases": {
+        "phase_environment_seconds": 0.011168892244456323,
+        "phase_graph_preparation_seconds": 0.0648890470982083,
+        "phase_loss_backward_seconds": 0.4766230121602398,
+        "phase_model_inference_seconds": 0.4473190484970956
+      },
+      "episodes": 90,
+      "four_cpu_allocation_utilization": 0.9143772754063871,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_26.json",
+      "largest_individual_peak_rss_gib": 1.19696044921875,
+      "non_update_non_checkpoint_segment_seconds": 0.31729595363140106,
+      "pair": 1,
+      "parent_phase_fraction_of_update_wall": {
+        "phase_aggregation_seconds": 0.007058578246237981,
+        "phase_collector_wait_seconds": 0.11675878288851008,
+        "phase_optimizer_seconds": 0.0015873399824206345
+      },
+      "phase_ms_per_joint_environment_step": {
+        "phase_aggregation_seconds": 0.032733265696143626,
+        "phase_collector_wait_seconds": 0.5414541185662862,
+        "phase_environment_seconds": 0.1826873194406929,
+        "phase_graph_preparation_seconds": 1.0613770655112622,
+        "phase_loss_backward_seconds": 7.796026550307318,
+        "phase_model_inference_seconds": 7.316707522651333,
+        "phase_optimizer_seconds": 0.007361088817337845
+      },
+      "phase_seconds": {
+        "phase_aggregation_seconds": 0.20775803737342358,
+        "phase_collector_wait_seconds": 3.4366092905402184,
+        "phase_environment_seconds": 1.159516416490078,
+        "phase_graph_preparation_seconds": 6.736560234799981,
+        "phase_loss_backward_seconds": 49.48138051480055,
+        "phase_model_inference_seconds": 46.43914264626801,
+        "phase_optimizer_seconds": 0.0467208307236433
+      },
+      "post_first_update_steps_per_second": 210.35441474753875,
+      "process_seconds": 39.29451471194625,
+      "profiled": true,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_real/dgl",
+      "segment_seconds": 29.87540945596993,
+      "startup_seconds": 7.939063103869557,
+      "steps": 6347,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 4.486328125,
+      "system_cpu_fraction": 0.020347455891247025,
+      "system_cpu_seconds": 2.2233579999999997,
+      "task": "pcp",
+      "update_seconds": 29.4334113933146,
+      "user_cpu_seconds": 107.046224,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 12.401690089806207,
+      "aggregate_cpu_seconds_per_segment_second": 3.6173363705959254,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.005246178418960159,
+      "checkpoint_seconds": 0.11415725946426392,
+      "collector_phase_seconds_divided_by_4_update_seconds": 0.8539894569806524,
+      "collector_phase_share_of_measured_collector_phases": {
+        "phase_environment_seconds": 0.015384182282357998,
+        "phase_graph_preparation_seconds": 4.912638074739838e-05,
+        "phase_loss_backward_seconds": 0.6272472703220685,
+        "phase_model_inference_seconds": 0.35731942101482606
+      },
+      "episodes": 90,
+      "four_cpu_allocation_utilization": 0.9043340926489813,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_27.json",
+      "largest_individual_peak_rss_gib": 1.304351806640625,
+      "non_update_non_checkpoint_segment_seconds": 0.23609100095927715,
+      "pair": 1,
+      "parent_phase_fraction_of_update_wall": {
+        "phase_aggregation_seconds": 0.009882106401594851,
+        "phase_collector_wait_seconds": 0.14196558860231673,
+        "phase_optimizer_seconds": 0.0020554740077542415
+      },
+      "phase_ms_per_joint_environment_step": {
+        "phase_aggregation_seconds": 0.03333452502648549,
+        "phase_collector_wait_seconds": 0.478881249993415,
+        "phase_environment_seconds": 0.1772685381151737,
+        "phase_graph_preparation_seconds": 0.0005660724462402774,
+        "phase_loss_backward_seconds": 7.227631901777202,
+        "phase_model_inference_seconds": 4.1173128503616425,
+        "phase_optimizer_seconds": 0.0069335672950977525
+      },
+      "phase_seconds": {
+        "phase_aggregation_seconds": 0.2115742303431034,
+        "phase_collector_wait_seconds": 3.0394592937082052,
+        "phase_environment_seconds": 1.1251234114170074,
+        "phase_graph_preparation_seconds": 0.0035928618162870407,
+        "phase_loss_backward_seconds": 45.8737796805799,
+        "phase_model_inference_seconds": 26.132584661245346,
+        "phase_optimizer_seconds": 0.044007351621985435
+      },
+      "post_first_update_steps_per_second": 286.13319703714984,
+      "process_seconds": 31.243506303057075,
+      "profiled": true,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_real/torch-v1",
+      "segment_seconds": 21.760079499334097,
+      "startup_seconds": 8.0031410548836,
+      "steps": 6347,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 4.859596252441406,
+      "system_cpu_fraction": 0.026018729919191654,
+      "system_cpu_seconds": 2.048026,
+      "task": "pcp",
+      "update_seconds": 21.409831238910556,
+      "user_cpu_seconds": 76.665501,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 15.604296685409885,
+      "aggregate_cpu_seconds_per_segment_second": 3.4709017138549036,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.0016788001357508364,
+      "checkpoint_seconds": 0.05100574158132076,
+      "collector_phase_seconds_divided_by_4_update_seconds": 0.8309986749447321,
+      "collector_phase_share_of_measured_collector_phases": {
+        "phase_environment_seconds": 0.028809663900873746,
+        "phase_graph_preparation_seconds": 0.07685226152371975,
+        "phase_loss_backward_seconds": 0.4546473786406905,
+        "phase_model_inference_seconds": 0.439690695934716
+      },
+      "episodes": 28,
+      "four_cpu_allocation_utilization": 0.8677254284637259,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_28.json",
+      "largest_individual_peak_rss_gib": 1.2000770568847656,
+      "non_update_non_checkpoint_segment_seconds": 0.3108076751232147,
+      "pair": 1,
+      "parent_phase_fraction_of_update_wall": {
+        "phase_aggregation_seconds": 0.006036382962090962,
+        "phase_collector_wait_seconds": 0.23493128291118254,
+        "phase_optimizer_seconds": 0.0007807636991872066
+      },
+      "phase_ms_per_joint_environment_step": {
+        "phase_aggregation_seconds": 0.02681487274349847,
+        "phase_collector_wait_seconds": 1.0436137823416094,
+        "phase_environment_seconds": 0.42539998474435786,
+        "phase_graph_preparation_seconds": 1.134791123986985,
+        "phase_loss_backward_seconds": 6.7132677633197355,
+        "phase_model_inference_seconds": 6.492419209971817,
+        "phase_optimizer_seconds": 0.0034683152755430797
+      },
+      "phase_seconds": {
+        "phase_aggregation_seconds": 0.18121491000056267,
+        "phase_collector_wait_seconds": 7.052741941064596,
+        "phase_environment_seconds": 2.8748530969023705,
+        "phase_graph_preparation_seconds": 7.668918415904045,
+        "phase_loss_backward_seconds": 45.368263544514775,
+        "phase_model_inference_seconds": 43.87576902098954,
+        "phase_optimizer_seconds": 0.023438874632120132
+      },
+      "post_first_update_steps_per_second": 227.75000717704916,
+      "process_seconds": 39.75486001186073,
+      "profiled": true,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/fc_real/dgl",
+      "segment_seconds": 30.38225962407887,
+      "startup_seconds": 7.877666061744094,
+      "steps": 6758,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 4.428180694580078,
+      "system_cpu_fraction": 0.01990709925519353,
+      "system_cpu_seconds": 2.09928,
+      "task": "fc",
+      "update_seconds": 30.020446207374334,
+      "user_cpu_seconds": 103.354557,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 10.756078721515241,
+      "aggregate_cpu_seconds_per_segment_second": 3.437557190408587,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.0030341691370319463,
+      "checkpoint_seconds": 0.06415965408086777,
+      "collector_phase_seconds_divided_by_4_update_seconds": 0.8091301038187154,
+      "collector_phase_share_of_measured_collector_phases": {
+        "phase_environment_seconds": 0.04031398073625784,
+        "phase_graph_preparation_seconds": 5.750902314291588e-05,
+        "phase_loss_backward_seconds": 0.6187396695803692,
+        "phase_model_inference_seconds": 0.34088884066023006
+      },
+      "episodes": 28,
+      "four_cpu_allocation_utilization": 0.8593892976021468,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_29.json",
+      "largest_individual_peak_rss_gib": 1.306549072265625,
+      "non_update_non_checkpoint_segment_seconds": 0.33167601004242897,
+      "pair": 1,
+      "parent_phase_fraction_of_update_wall": {
+        "phase_aggregation_seconds": 0.008493918695510876,
+        "phase_collector_wait_seconds": 0.2521177384724451,
+        "phase_optimizer_seconds": 0.0011484652415788255
+      },
+      "phase_ms_per_joint_environment_step": {
+        "phase_aggregation_seconds": 0.026079864919485513,
+        "phase_collector_wait_seconds": 0.7741063693772586,
+        "phase_environment_seconds": 0.40061875117199064,
+        "phase_graph_preparation_seconds": 0.0005714938741317335,
+        "phase_loss_backward_seconds": 6.1487034820384014,
+        "phase_model_inference_seconds": 3.387570741952136,
+        "phase_optimizer_seconds": 0.003526266195711281
+      },
+      "phase_seconds": {
+        "phase_aggregation_seconds": 0.1762477271258831,
+        "phase_collector_wait_seconds": 5.2314108442515135,
+        "phase_environment_seconds": 2.707381520420313,
+        "phase_graph_preparation_seconds": 0.0038621556013822556,
+        "phase_loss_backward_seconds": 41.55293813161552,
+        "phase_model_inference_seconds": 22.893203074112535,
+        "phase_optimizer_seconds": 0.023830506950616837
+      },
+      "post_first_update_steps_per_second": 324.24206908173505,
+      "process_seconds": 30.573831137269735,
+      "profiled": true,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/fc_real/torch-v1",
+      "segment_seconds": 21.145707830786705,
+      "startup_seconds": 7.906480910256505,
+      "steps": 6758,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 4.796928405761719,
+      "system_cpu_fraction": 0.027244372577197445,
+      "system_cpu_seconds": 1.980382,
+      "task": "fc",
+      "update_seconds": 20.74987216666341,
+      "user_cpu_seconds": 70.709198,
+      "variant": "real"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 22.150768056191787,
+      "aggregate_cpu_seconds_per_segment_second": 3.694259948690568,
+      "backend": "dgl",
+      "checkpoint_fraction_of_segment": 0.004588422906789697,
+      "checkpoint_seconds": 0.18017717264592648,
+      "collector_phase_seconds_divided_by_4_update_seconds": 0.8902974117901343,
+      "collector_phase_share_of_measured_collector_phases": {
+        "phase_environment_seconds": 0.008782654765319668,
+        "phase_graph_preparation_seconds": 0.046982892324528215,
+        "phase_loss_backward_seconds": 0.49293181109465795,
+        "phase_model_inference_seconds": 0.4513026418154942
+      },
+      "episodes": 93,
+      "four_cpu_allocation_utilization": 0.923564987172642,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_30.json",
+      "largest_individual_peak_rss_gib": 1.5498313903808594,
+      "non_update_non_checkpoint_segment_seconds": 0.18094828724861145,
+      "pair": 1,
+      "parent_phase_fraction_of_update_wall": {
+        "phase_aggregation_seconds": 0.005730124040182102,
+        "phase_collector_wait_seconds": 0.12794220282765922,
+        "phase_optimizer_seconds": 0.0012471202099083964
+      },
+      "phase_ms_per_joint_environment_step": {
+        "phase_aggregation_seconds": 0.03404183016603895,
+        "phase_collector_wait_seconds": 0.7600859438968917,
+        "phase_environment_seconds": 0.1858103028311586,
+        "phase_graph_preparation_seconds": 0.9939939214252556,
+        "phase_loss_backward_seconds": 10.428715638041606,
+        "phase_model_inference_seconds": 9.547987799243375,
+        "phase_optimizer_seconds": 0.007408959053002854
+      },
+      "phase_seconds": {
+        "phase_aggregation_seconds": 0.22293994575738907,
+        "phase_collector_wait_seconds": 4.977802846580744,
+        "phase_environment_seconds": 1.2168716732412577,
+        "phase_graph_preparation_seconds": 6.509666191413999,
+        "phase_loss_backward_seconds": 68.29765871353447,
+        "phase_model_inference_seconds": 62.52977209724486,
+        "phase_optimizer_seconds": 0.04852127283811569
+      },
+      "post_first_update_steps_per_second": 162.92290188750903,
+      "process_seconds": 48.895891495049,
+      "profiled": true,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_binary/dgl",
+      "segment_seconds": 39.26777812466025,
+      "startup_seconds": 7.996283743530512,
+      "steps": 6549,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 5.863670349121094,
+      "system_cpu_fraction": 0.021541197493157912,
+      "system_cpu_seconds": 3.124882,
+      "task": "pcp",
+      "update_seconds": 38.906652664765716,
+      "user_cpu_seconds": 141.940498,
+      "variant": "binary"
+    },
+    {
+      "aggregate_cpu_ms_per_joint_environment_step": 16.89090639792335,
+      "aggregate_cpu_seconds_per_segment_second": 3.683425957326556,
+      "backend": "torch-v1",
+      "checkpoint_fraction_of_segment": 0.004509414461943891,
+      "checkpoint_seconds": 0.13542416132986546,
+      "collector_phase_seconds_divided_by_4_update_seconds": 0.8907871258038703,
+      "collector_phase_share_of_measured_collector_phases": {
+        "phase_environment_seconds": 0.011397078505990555,
+        "phase_graph_preparation_seconds": 3.618931438273787e-05,
+        "phase_loss_backward_seconds": 0.6151072154219346,
+        "phase_model_inference_seconds": 0.3734595167576922
+      },
+      "episodes": 93,
+      "four_cpu_allocation_utilization": 0.920856489331639,
+      "input": "stokes_runs/hetnet_backend_benchmark_904547/result_31.json",
+      "largest_individual_peak_rss_gib": 1.6425514221191406,
+      "non_update_non_checkpoint_segment_seconds": 0.48651902563869953,
+      "pair": 1,
+      "parent_phase_fraction_of_update_wall": {
+        "phase_aggregation_seconds": 0.0081165911602267,
+        "phase_collector_wait_seconds": 0.1363227372244708,
+        "phase_optimizer_seconds": 0.0016090792295570507
+      },
+      "phase_ms_per_joint_environment_step": {
+        "phase_aggregation_seconds": 0.03644904176648982,
+        "phase_collector_wait_seconds": 0.612182262815634,
+        "phase_environment_seconds": 0.18236433507231542,
+        "phase_graph_preparation_seconds": 0.0005790642093640099,
+        "phase_loss_backward_seconds": 9.842313385807042,
+        "phase_model_inference_seconds": 5.975715304070856,
+        "phase_optimizer_seconds": 0.007225865500176075
+      },
+      "phase_seconds": {
+        "phase_aggregation_seconds": 0.23870477452874184,
+        "phase_collector_wait_seconds": 4.009181639179587,
+        "phase_environment_seconds": 1.1943040303885937,
+        "phase_graph_preparation_seconds": 0.003792291507124901,
+        "phase_loss_backward_seconds": 64.45731036365032,
+        "phase_model_inference_seconds": 39.134959526360035,
+        "phase_optimizer_seconds": 0.047322193160653114
+      },
+      "post_first_update_steps_per_second": 213.4215844169203,
+      "process_seconds": 39.659947564825416,
+      "profiled": true,
+      "run": "stokes_runs/hetnet_backend_benchmark_904547/diagnostics/pcp_binary/torch-v1",
+      "segment_seconds": 30.031429240480065,
+      "startup_seconds": 7.954619292169809,
+      "steps": 6549,
+      "sum_individual_peak_rss_gib_not_simultaneous_job_peak": 6.210235595703125,
+      "system_cpu_fraction": 0.027132638319075354,
+      "system_cpu_seconds": 3.001373,
+      "task": "pcp",
+      "update_seconds": 29.4094860535115,
+      "user_cpu_seconds": 107.61717300000001,
+      "variant": "binary"
+    }
+  ],
+  "schema_version": 1,
+  "script_sha256": "8fc897370bee824dee9b3741f2306442b66c1fd195e6d790590b3238efe23220",
+  "throughput_groups": [
+    {
+      "backend": "dgl",
+      "replicates": 3,
+      "statistics": {
+        "aggregate_cpu_ms_per_joint_environment_step": {
+          "max": 16.33491193164603,
+          "median": 16.286321308097843,
+          "min": 16.25179174662169
+        },
+        "aggregate_cpu_seconds_per_segment_second": {
+          "max": 3.466529113137598,
+          "median": 3.4568791709581164,
+          "min": 3.450160409210514
+        },
+        "checkpoint_fraction_of_segment": {
+          "max": 0.00033716631003769465,
+          "median": 0.00024399249020306697,
+          "min": 0.00024222788527522986
+        },
+        "checkpoint_seconds": {
+          "max": 0.07847436890006065,
+          "median": 0.056920016184449196,
+          "min": 0.05660756304860115
+        },
+        "episodes": {
+          "max": 226,
+          "median": 226,
+          "min": 226
+        },
+        "four_cpu_allocation_utilization": {
+          "max": 0.8666322782843995,
+          "median": 0.8642197927395291,
+          "min": 0.8625401023026285
+        },
+        "largest_individual_peak_rss_gib": {
+          "max": 1.3841781616210938,
+          "median": 1.3831138610839844,
+          "min": 1.3819007873535156
+        },
+        "non_update_non_checkpoint_segment_seconds": {
+          "max": 0.9401635080575943,
+          "median": 0.9020725134760141,
+          "min": 0.8462834544479847
+        },
+        "post_first_update_steps_per_second": {
+          "max": 213.29743007436247,
+          "median": 212.74562224026482,
+          "min": 212.61832045610552
+        },
+        "process_seconds": {
+          "max": 246.0388607326895,
+          "median": 245.53859551995993,
+          "min": 245.2208944261074
+        },
+        "segment_seconds": {
+          "max": 233.69548466429114,
+          "median": 233.28593489527702,
+          "min": 232.7467678822577
+        },
+        "startup_seconds": {
+          "max": 10.729149255901575,
+          "median": 10.673343075439334,
+          "min": 10.645446509122849
+        },
+        "steps": {
+          "max": 49507,
+          "median": 49507,
+          "min": 49507
+        },
+        "sum_individual_peak_rss_gib_not_simultaneous_job_peak": {
+          "max": 5.134601593017578,
+          "median": 5.134452819824219,
+          "min": 5.130180358886719
+        },
+        "system_cpu_fraction": {
+          "max": 0.006917823725147536,
+          "median": 0.006889361658900539,
+          "min": 0.006852710788586052
+        },
+        "system_cpu_seconds": {
+          "max": 5.571375,
+          "median": 5.565925000000001,
+          "min": 5.525251000000001
+        },
+        "update_seconds": {
+          "max": 232.73680458776653,
+          "median": 232.28885137103498,
+          "min": 231.82201005890965
+        },
+        "user_cpu_seconds": {
+          "max": 803.12111,
+          "median": 800.761658,
+          "min": 799.0115290000001
+        }
+      },
+      "task": "fc",
+      "variant": "real"
+    },
+    {
+      "backend": "torch-v1",
+      "replicates": 3,
+      "statistics": {
+        "aggregate_cpu_ms_per_joint_environment_step": {
+          "max": 11.454091037631041,
+          "median": 11.4360698285091,
+          "min": 11.43416129032258
+        },
+        "aggregate_cpu_seconds_per_segment_second": {
+          "max": 3.4166008438628386,
+          "median": 3.4152287488209434,
+          "min": 3.41147747660149
+        },
+        "checkpoint_fraction_of_segment": {
+          "max": 0.0006557746573055101,
+          "median": 0.0004025566209092154,
+          "min": 0.0003119340681059754
+        },
+        "checkpoint_seconds": {
+          "max": 0.10883977264165878,
+          "median": 0.06672338955104351,
+          "min": 0.05176827684044838
+        },
+        "episodes": {
+          "max": 226,
+          "median": 226,
+          "min": 226
+        },
+        "four_cpu_allocation_utilization": {
+          "max": 0.8541502109657096,
+          "median": 0.8538071872052359,
+          "min": 0.8528693691503725
+        },
+        "largest_individual_peak_rss_gib": {
+          "max": 1.5156211853027344,
+          "median": 1.5132217407226562,
+          "min": 1.5120468139648438
+        },
+        "non_update_non_checkpoint_segment_seconds": {
+          "max": 0.6643529925495386,
+          "median": 0.548586742952466,
+          "min": 0.42362209036946297
+        },
+        "post_first_update_steps_per_second": {
+          "max": 298.5686500462177,
+          "median": 298.2655646648303,
+          "min": 297.8624115816002
+        },
+        "process_seconds": {
+          "max": 178.360187292099,
+          "median": 178.2180523518473,
+          "min": 178.12629987858236
+        },
+        "segment_seconds": {
+          "max": 165.9713003989309,
+          "median": 165.95903472416103,
+          "min": 165.74907996878028
+        },
+        "startup_seconds": {
+          "max": 10.810632389038801,
+          "median": 10.76615290157497,
+          "min": 10.72506128065288
+        },
+        "steps": {
+          "max": 49507,
+          "median": 49507,
+          "min": 49507
+        },
+        "sum_individual_peak_rss_gib_not_simultaneous_job_peak": {
+          "max": 5.610954284667969,
+          "median": 5.60931396484375,
+          "min": 5.604682922363281
+        },
+        "system_cpu_fraction": {
+          "max": 0.00736243656831733,
+          "median": 0.007353304805312709,
+          "min": 0.007185504830885063
+        },
+        "system_cpu_seconds": {
+          "max": 4.169748,
+          "median": 4.167662,
+          "min": 4.068185
+        },
+        "update_seconds": {
+          "max": 165.43883853591979,
+          "median": 165.24291345477104,
+          "min": 165.13376983627677
+        },
+        "user_cpu_seconds": {
+          "max": 562.887937,
+          "median": 562.097324,
+          "min": 561.903361
+        }
+      },
+      "task": "fc",
+      "variant": "real"
+    },
+    {
+      "backend": "dgl",
+      "replicates": 3,
+      "statistics": {
+        "aggregate_cpu_ms_per_joint_environment_step": {
+          "max": 23.231679813313,
+          "median": 23.179507104734178,
+          "min": 23.140501305422703
+        },
+        "aggregate_cpu_seconds_per_segment_second": {
+          "max": 3.627111487720084,
+          "median": 3.6253958730801528,
+          "min": 3.607554730739544
+        },
+        "checkpoint_fraction_of_segment": {
+          "max": 0.0014295598174697353,
+          "median": 0.0006211803801340003,
+          "min": 0.00046112447349154994
+        },
+        "checkpoint_seconds": {
+          "max": 0.3968802187591791,
+          "median": 0.1722006257623434,
+          "min": 0.12760397978127003
+        },
+        "episodes": {
+          "max": 611,
+          "median": 611,
+          "min": 611
+        },
+        "four_cpu_allocation_utilization": {
+          "max": 0.906777871930021,
+          "median": 0.9063489682700382,
+          "min": 0.901888682684886
+        },
+        "largest_individual_peak_rss_gib": {
+          "max": 1.6371803283691406,
+          "median": 1.6366004943847656,
+          "min": 1.631378173828125
+        },
+        "non_update_non_checkpoint_segment_seconds": {
+          "max": 0.9753597099334002,
+          "median": 0.8139753118157387,
+          "min": 0.6890850514173508
+        },
+        "post_first_update_steps_per_second": {
+          "max": 155.78734931660728,
+          "median": 155.78240713005903,
+          "min": 155.65651512160818
+        },
+        "process_seconds": {
+          "max": 290.13879425264895,
+          "median": 289.7696732003242,
+          "min": 289.11933125555515
+        },
+        "segment_seconds": {
+          "max": 277.6240727454424,
+          "median": 277.2151717431843,
+          "min": 276.7235033418983
+        },
+        "startup_seconds": {
+          "max": 10.776111762970686,
+          "median": 10.711740277707577,
+          "min": 10.664578402414918
+        },
+        "steps": {
+          "max": 43281,
+          "median": 43281,
+          "min": 43281
+        },
+        "sum_individual_peak_rss_gib_not_simultaneous_job_peak": {
+          "max": 6.102527618408203,
+          "median": 6.100349426269531,
+          "min": 6.096530914306641
+        },
+        "system_cpu_fraction": {
+          "max": 0.0072182126019323814,
+          "median": 0.00706740540009775,
+          "min": 0.0070638890938751605
+        },
+        "system_cpu_seconds": {
+          "max": 7.257842999999999,
+          "median": 7.090249,
+          "min": 7.074796
+        },
+        "update_seconds": {
+          "max": 276.2518328167498,
+          "median": 276.22899580560625,
+          "min": 275.9068143106997
+        },
+        "user_cpu_seconds": {
+          "max": 998.232491,
+          "median": 996.1419980000001,
+          "min": 994.469241
+        }
+      },
+      "task": "pcp",
+      "variant": "binary"
+    },
+    {
+      "backend": "torch-v1",
+      "replicates": 3,
+      "statistics": {
+        "aggregate_cpu_ms_per_joint_environment_step": {
+          "max": 17.87848619486611,
+          "median": 17.873042905662995,
+          "min": 17.827798456597584
+        },
+        "aggregate_cpu_seconds_per_segment_second": {
+          "max": 3.580018357089647,
+          "median": 3.57879891101163,
+          "min": 3.5772230500548545
+        },
+        "checkpoint_fraction_of_segment": {
+          "max": 0.0006995491686459191,
+          "median": 0.0006324535881214512,
+          "min": 0.0006238342713238065
+        },
+        "checkpoint_seconds": {
+          "max": 0.15132136642932892,
+          "median": 0.136659299954772,
+          "min": 0.13450144045054913
+        },
+        "episodes": {
+          "max": 611,
+          "median": 611,
+          "min": 611
+        },
+        "four_cpu_allocation_utilization": {
+          "max": 0.8950045892724118,
+          "median": 0.8946997277529075,
+          "min": 0.8943057625137136
+        },
+        "largest_individual_peak_rss_gib": {
+          "max": 1.7103385925292969,
+          "median": 1.7081413269042969,
+          "min": 1.7058639526367188
+        },
+        "non_update_non_checkpoint_segment_seconds": {
+          "max": 1.3096958119422197,
+          "median": 0.7329116556793451,
+          "min": 0.7105975393205881
+        },
+        "post_first_update_steps_per_second": {
+          "max": 199.74942422080687,
+          "median": 199.6441920702843,
+          "min": 198.95111280856827
+        },
+        "process_seconds": {
+          "max": 228.981425113976,
+          "median": 228.73508779890835,
+          "min": 228.17319603264332
+        },
+        "segment_seconds": {
+          "max": 216.3126956783235,
+          "median": 216.07798978686333,
+          "min": 215.6044427715242
+        },
+        "startup_seconds": {
+          "max": 10.846979081630707,
+          "median": 10.826669700443745,
+          "min": 10.814301412552595
+        },
+        "steps": {
+          "max": 43281,
+          "median": 43281,
+          "min": 43281
+        },
+        "sum_individual_peak_rss_gib_not_simultaneous_job_peak": {
+          "max": 6.4063873291015625,
+          "median": 6.401424407958984,
+          "min": 6.396190643310547
+        },
+        "system_cpu_fraction": {
+          "max": 0.007629570833885486,
+          "median": 0.007617848847912538,
+          "min": 0.007465670142899357
+        },
+        "system_cpu_seconds": {
+          "max": 5.901955,
+          "median": 5.8946819999999995,
+          "min": 5.760548000000001
+        },
+        "update_seconds": {
+          "max": 215.4507767725736,
+          "median": 214.7370296753943,
+          "min": 214.63163467496634
+        },
+        "user_cpu_seconds": {
+          "max": 767.904079,
+          "median": 767.661215,
+          "min": 765.8443970000001
+        }
+      },
+      "task": "pcp",
+      "variant": "binary"
+    },
+    {
+      "backend": "dgl",
+      "replicates": 3,
+      "statistics": {
+        "aggregate_cpu_ms_per_joint_environment_step": {
+          "max": 17.839166589273276,
+          "median": 17.820452635244955,
+          "min": 17.813797051311816
+        },
+        "aggregate_cpu_seconds_per_segment_second": {
+          "max": 3.6397131082860454,
+          "median": 3.6326128576931915,
+          "min": 3.6272804221085293
+        },
+        "checkpoint_fraction_of_segment": {
+          "max": 0.0007817854538005003,
+          "median": 0.00066274760095269,
+          "min": 0.0005775690088201262
+        },
+        "checkpoint_seconds": {
+          "max": 0.16512006148695946,
+          "median": 0.1403836291283369,
+          "min": 0.12179524451494217
+        },
+        "episodes": {
+          "max": 595,
+          "median": 595,
+          "min": 595
+        },
+        "four_cpu_allocation_utilization": {
+          "max": 0.9099282770715114,
+          "median": 0.9081532144232979,
+          "min": 0.9068201055271323
+        },
+        "largest_individual_peak_rss_gib": {
+          "max": 1.24517822265625,
+          "median": 1.2418289184570312,
+          "min": 1.2393989562988281
+        },
+        "non_update_non_checkpoint_segment_seconds": {
+          "max": 0.9606010466814041,
+          "median": 0.8766856212168932,
+          "min": 0.7550540659576654
+        },
+        "post_first_update_steps_per_second": {
+          "max": 204.1697476309515,
+          "median": 203.8369133151367,
+          "min": 203.2783205597728
+        },
+        "process_seconds": {
+          "max": 224.18654126487672,
+          "median": 223.43014077097178,
+          "min": 223.09408648312092
+        },
+        "segment_seconds": {
+          "max": 211.82065227627754,
+          "median": 211.20892015099525,
+          "min": 210.87565754912794
+        },
+        "startup_seconds": {
+          "max": 10.862553395330906,
+          "median": 10.620321424677968,
+          "min": 10.578064635396004
+        },
+        "steps": {
+          "max": 43070,
+          "median": 43070,
+          "min": 43070
+        },
+        "sum_individual_peak_rss_gib_not_simultaneous_job_peak": {
+          "max": 4.687191009521484,
+          "median": 4.670299530029297,
+          "min": 4.667182922363281
+        },
+        "system_cpu_fraction": {
+          "max": 0.006851586677533476,
+          "median": 0.006837536132856368,
+          "min": 0.0067156304666040395
+        },
+        "system_cpu_seconds": {
+          "max": 5.256813,
+          "median": 5.2535039999999995,
+          "min": 5.154427
+        },
+        "update_seconds": {
+          "max": 210.7196676004678,
+          "median": 210.28874602355063,
+          "min": 209.8771766833961
+        },
+        "user_cpu_seconds": {
+          "max": 763.079401,
+          "median": 762.372468,
+          "min": 761.983426
+        }
+      },
+      "task": "pcp",
+      "variant": "real"
+    },
+    {
+      "backend": "torch-v1",
+      "replicates": 3,
+      "statistics": {
+        "aggregate_cpu_ms_per_joint_environment_step": {
+          "max": 13.015859298815883,
+          "median": 13.0098187833759,
+          "min": 12.981088971441835
+        },
+        "aggregate_cpu_seconds_per_segment_second": {
+          "max": 3.591522174869382,
+          "median": 3.5864870828949735,
+          "min": 3.580093682321853
+        },
+        "checkpoint_fraction_of_segment": {
+          "max": 0.002165662301320218,
+          "median": 0.0015379014197134972,
+          "min": 0.0008629766218670839
+        },
+        "checkpoint_seconds": {
+          "max": 0.33803362399339676,
+          "median": 0.24070229195058346,
+          "min": 0.13452895171940327
+        },
+        "episodes": {
+          "max": 595,
+          "median": 595,
+          "min": 595
+        },
+        "four_cpu_allocation_utilization": {
+          "max": 0.8978805437173455,
+          "median": 0.8966217707237434,
+          "min": 0.8950234205804632
+        },
+        "largest_individual_peak_rss_gib": {
+          "max": 1.3504104614257812,
+          "median": 1.3503189086914062,
+          "min": 1.3485488891601562
+        },
+        "non_update_non_checkpoint_segment_seconds": {
+          "max": 0.5123482346534729,
+          "median": 0.40328384935855865,
+          "min": 0.39862531796097755
+        },
+        "post_first_update_steps_per_second": {
+          "max": 275.55026114467705,
+          "median": 275.3409199891359,
+          "min": 274.31944302827446
+        },
+        "process_seconds": {
+          "max": 168.93254055269063,
+          "median": 168.49584297649562,
+          "min": 168.25163618847728
+        },
+        "segment_seconds": {
+          "max": 156.5134727526456,
+          "median": 156.0878738053143,
+          "min": 155.88945089653134
+        },
+        "startup_seconds": {
+          "max": 10.826545175164938,
+          "median": 10.77253064326942,
+          "min": 10.756434448063374
+        },
+        "steps": {
+          "max": 43070,
+          "median": 43070,
+          "min": 43070
+        },
+        "sum_individual_peak_rss_gib_not_simultaneous_job_peak": {
+          "max": 5.051181793212891,
+          "median": 5.050235748291016,
+          "min": 5.049415588378906
+        },
+        "system_cpu_fraction": {
+          "max": 0.007105902643820331,
+          "median": 0.007032942933685265,
+          "min": 0.006915816682782042
+        },
+        "system_cpu_seconds": {
+          "max": 3.981671,
+          "median": 3.942619,
+          "min": 3.866602
+        },
+        "update_seconds": {
+          "max": 155.87414514273405,
+          "median": 155.35163809545338,
+          "min": 155.23749194666743
+        },
+        "user_cpu_seconds": {
+          "max": 556.650441,
+          "median": 556.351224,
+          "min": 555.2289
+        }
+      },
+      "task": "pcp",
+      "variant": "real"
+    },
+    {
+      "backend": "dgl",
+      "replicates": 3,
+      "statistics": {
+        "aggregate_cpu_ms_per_joint_environment_step": {
+          "max": 10.073336095742956,
+          "median": 10.023596286951086,
+          "min": 9.955158151809071
+        },
+        "aggregate_cpu_seconds_per_segment_second": {
+          "max": 3.659466071620751,
+          "median": 3.6520347380716163,
+          "min": 3.435725072917031
+        },
+        "checkpoint_fraction_of_segment": {
+          "max": 0.002262395526671885,
+          "median": 0.0016373501257835495,
+          "min": 0.0007960780101124363
+        },
+        "checkpoint_seconds": {
+          "max": 0.2676998134702444,
+          "median": 0.20738157629966736,
+          "min": 0.09374380670487881
+        },
+        "episodes": {
+          "max": 623,
+          "median": 623,
+          "min": 623
+        },
+        "four_cpu_allocation_utilization": {
+          "max": 0.9148665179051878,
+          "median": 0.9130086845179041,
+          "min": 0.8589312682292578
+        },
+        "largest_individual_peak_rss_gib": {
+          "max": 0.9166908264160156,
+          "median": 0.9115371704101562,
+          "min": 0.9066276550292969
+        },
+        "non_update_non_checkpoint_segment_seconds": {
+          "max": 0.6056141946464777,
+          "median": 0.503794027492404,
+          "min": 0.5017434917390347
+        },
+        "post_first_update_steps_per_second": {
+          "max": 367.5593980556893,
+          "median": 366.26372005476355,
+          "min": 363.4863394011733
+        },
+        "process_seconds": {
+          "max": 283.4844601880759,
+          "median": 130.5526451598853,
+          "min": 130.09933795966208
+        },
+        "segment_seconds": {
+          "max": 126.65682985819876,
+          "median": 118.32582336477935,
+          "min": 117.75706088356674
+        },
+        "startup_seconds": {
+          "max": 146.67990353517234,
+          "median": 10.96954539231956,
+          "min": 10.901836600154638
+        },
+        "steps": {
+          "max": 43199,
+          "median": 43199,
+          "min": 43199
+        },
+        "sum_individual_peak_rss_gib_not_simultaneous_job_peak": {
+          "max": 3.466796875,
+          "median": 3.46185302734375,
+          "min": 3.4596786499023438
+        },
+        "system_cpu_fraction": {
+          "max": 0.006603922474640398,
+          "median": 0.006601707543783767,
+          "min": 0.006391927939596135
+        },
+        "system_cpu_seconds": {
+          "max": 2.87375,
+          "median": 2.858601,
+          "min": 2.748867
+        },
+        "update_seconds": {
+          "max": 125.84383408725262,
+          "median": 117.55638005957007,
+          "min": 117.15952304936945
+        },
+        "user_cpu_seconds": {
+          "max": 432.284296,
+          "median": 430.150735,
+          "min": 427.30401
+        }
+      },
+      "task": "pp",
+      "variant": "real"
+    },
+    {
+      "backend": "torch-v1",
+      "replicates": 3,
+      "statistics": {
+        "aggregate_cpu_ms_per_joint_environment_step": {
+          "max": 7.144627259890276,
+          "median": 7.1326634644320475,
+          "min": 7.125632283154702
+        },
+        "aggregate_cpu_seconds_per_segment_second": {
+          "max": 3.6085312998486088,
+          "median": 3.6051249761590705,
+          "min": 3.594397050934932
+        },
+        "checkpoint_fraction_of_segment": {
+          "max": 0.0010941208166916133,
+          "median": 0.000999806746989757,
+          "min": 0.0008250584579014606
+        },
+        "checkpoint_seconds": {
+          "max": 0.09369929693639278,
+          "median": 0.08551432192325592,
+          "min": 0.07051634974777699
+        },
+        "episodes": {
+          "max": 623,
+          "median": 623,
+          "min": 623
+        },
+        "four_cpu_allocation_utilization": {
+          "max": 0.9021328249621522,
+          "median": 0.9012812440397676,
+          "min": 0.898599262733733
+        },
+        "largest_individual_peak_rss_gib": {
+          "max": 0.9532089233398438,
+          "median": 0.95257568359375,
+          "min": 0.9507217407226562
+        },
+        "non_update_non_checkpoint_segment_seconds": {
+          "max": 0.5243451967835426,
+          "median": 0.42436944879591465,
+          "min": 0.27898905985057354
+        },
+        "post_first_update_steps_per_second": {
+          "max": 506.09827205962625,
+          "median": 506.0009583007669,
+          "min": 504.35630056868587
+        },
+        "process_seconds": {
+          "max": 98.37901538424194,
+          "median": 97.75750731676817,
+          "min": 97.7575026191771
+        },
+        "segment_seconds": {
+          "max": 85.63889426738024,
+          "median": 85.53085101768374,
+          "min": 85.46830721199512
+        },
+        "startup_seconds": {
+          "max": 11.406332010403275,
+          "median": 10.860807238146663,
+          "min": 10.743849048390985
+        },
+        "steps": {
+          "max": 43199,
+          "median": 43199,
+          "min": 43199
+        },
+        "sum_individual_peak_rss_gib_not_simultaneous_job_peak": {
+          "max": 3.6190414428710938,
+          "median": 3.607025146484375,
+          "min": 3.6016159057617188
+        },
+        "system_cpu_fraction": {
+          "max": 0.007542344794025191,
+          "median": 0.007377369253265622,
+          "min": 0.00735087955154127
+        },
+        "system_cpu_seconds": {
+          "max": 2.321686,
+          "median": 2.273144,
+          "min": 2.268781
+        },
+        "update_seconds": {
+          "max": 85.16634763590991,
+          "median": 85.12082552164793,
+          "min": 84.8734456654638
+        },
+        "user_cpu_seconds": {
+          "max": 306.371972,
+          "median": 305.85078500000003,
+          "min": 305.49850299999997
+        }
+      },
+      "task": "pp",
+      "variant": "real"
+    }
+  ]
+}

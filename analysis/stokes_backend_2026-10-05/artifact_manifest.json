@@ -1,0 +1,39 @@
+{
+  "analysis_date": "2026-10-05",
+  "excludes": [
+    "this manifest",
+    "__pycache__",
+    "*.pyc"
+  ],
+  "files": {
+    ".gitignore": "e772586aba9cee63d79faf2bb2fc3c4e9a477546c994db771ef29be297867cdb",
+    "AGENTS.md": "0fce9d9f1cd2f1eef88d8b6603f80e6051f940ac0e26dade68b7cfaf182b37c1",
+    "analysis/stokes_backend_2026-10-05/analysis_console.json": "0d221ea269eadb25d879cc22c68c9e83e2c254f81846d5488ee7bafa90e9d509",
+    "analysis/stokes_backend_2026-10-05/analyze.py": "ca03a04c9e3b8e162b5ef80493a5aeb187176c07f8aebbf93e30d638494eeaa9",
+    "analysis/stokes_backend_2026-10-05/hardware_review/analyze.py": "8fc897370bee824dee9b3741f2306442b66c1fd195e6d790590b3238efe23220",
+    "analysis/stokes_backend_2026-10-05/hardware_review/artifact_manifest.json": "0253a4fbf6f49c24deaf5f31cabf4de67ddd41dc907038f5385f9de0086bcc96",
+    "analysis/stokes_backend_2026-10-05/hardware_review/results.json": "b85c177474cc55712daa62a405cb4c18d44c0fe5d93967920406c012660b9eef",
+    "analysis/stokes_backend_2026-10-05/hardware_review/verification.json": "39926186e79ffe1c7387b00c59795b283eafdf5b3cbf97473e27349880610279",
+    "analysis/stokes_backend_2026-10-05/metrics/inputs.json": "b2ce10fdeba4d94659f1ac95cf7ba3bc49cf7643d51e8080697b1868fe996d90",
+    "analysis/stokes_backend_2026-10-05/metrics/summary.json": "c9f10c6decec3595ee2cd31d8e92ce36f258dd502630dd3ecda43a73cf39f326",
+    "analysis/stokes_backend_2026-10-05/metrics/throughput.csv": "ff9e69433a249aad81f99e214eea1f3fbd6fef39713936134ef66b9ad876fa4a",
+    "analysis/stokes_backend_2026-10-05/provenance_review/README.md": "b9e26c143ae838495a966ff916e3c37eee5378766829922d50ecd60211ed8465",
+    "analysis/stokes_backend_2026-10-05/provenance_review/audit.py": "a7ff25e5ff4de4a48d15d385b5ce36ddd7a615dad731f2f1acce9361d993f91c",
+    "analysis/stokes_backend_2026-10-05/provenance_review/input_hashes.json": "dd933bf7b76038000eb3609a36835bbfd3828c84290ce504ec95e05d484a0cfc",
+    "analysis/stokes_backend_2026-10-05/provenance_review/review.json": "995483e79f1d8269c668e4301de2b1c53b3856c18859c54e3592f38656395f5c",
+    "analysis/stokes_backend_2026-10-05/replay_review/audit.py": "fee16d45a6276320b7f9effa4b769db00b8c7fa7421f9366d4b0c9065f0a113a",
+    "analysis/stokes_backend_2026-10-05/replay_review/review.json": "a5224973477bc873fa1e1d5af3ed524fc77c67a5bf41355a5b4f7da749b06b2d",
+    "analysis/stokes_backend_2026-10-05/report.md": "8af71fb5899b21470bd019a73093466c7b242dd6c0c4e76fd786d753f99b276f",
+    "analysis/stokes_backend_2026-10-05/validation.json": "f770a50938b09cd849fe0a0ce0c567bdbf68ba733ac8f5faf209688690e47cee"
+  },
+  "input_hash_manifests": [
+    "metrics/inputs.json",
+    "provenance_review/input_hashes.json",
+    "hardware_review/results.json",
+    "replay_review/review.json"
+  ],
+  "jobs_submitted": false,
+  "reviewed_commit": "a17898917faeea999965c2bc272b95e73a1160e4",
+  "runtime_modified": false,
+  "schema_version": 1
+}

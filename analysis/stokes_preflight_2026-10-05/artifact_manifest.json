@@ -1,0 +1,27 @@
+{
+  "analysis_date": "2026-10-05",
+  "files": {
+    ".gitignore": "55e0dbc82f366c5d36215b04b0233c30920a730ac5a76f63e3dff1e202bf05cb",
+    "AGENTS.md": "6fde43a670011bd6b73cef0f813e628d203ea3eb31c851e86e49bffd3343267c",
+    "analysis/stokes_preflight_2026-10-05/analyze.py": "7af53dafd5ae8393b7008a6d5fec671c703aa4e2117d9eafa46d75b3a9b232be",
+    "analysis/stokes_preflight_2026-10-05/learner_review/audit.py": "0bf8453928676dd259350845602a89c26d2d33122b02534a443b332ccca5ff73",
+    "analysis/stokes_preflight_2026-10-05/learner_review/review.json": "508d025880d252dc9402b612518c2870ddb141d19de260660672362cec488b74",
+    "analysis/stokes_preflight_2026-10-05/metrics/input_hashes.json": "79080f0df4d34bf5585bb20357a6b53b5987a215cfa464ca57d946a9b1db0dc8",
+    "analysis/stokes_preflight_2026-10-05/metrics/summary.json": "5da90811b67a053ca14a009a8a1bb203bdfd8a172faeeca8e85af333d695f4da",
+    "analysis/stokes_preflight_2026-10-05/metrics/throughput.csv": "ce54968b9827141921b32caab91c711dcd95d73d1de99279ac6fd4e26827ba16",
+    "analysis/stokes_preflight_2026-10-05/metrics/update_windows.csv": "d35321e1da3e5a61eb25273aa34dd1bf6d35a1f57222a24be4c0963d0caa136c",
+    "analysis/stokes_preflight_2026-10-05/provenance_review/README.md": "10094d6d39cc8fa7e1bffddd7363ab63af65302c4ffbd1b317a6d00671df78ea",
+    "analysis/stokes_preflight_2026-10-05/provenance_review/audit.py": "7e9e222f106acaf216800ba6fc7b1c33648684c4e309649c06dd3352ddb8159c",
+    "analysis/stokes_preflight_2026-10-05/provenance_review/input_hashes.json": "ed97fd2732395ca056f2d8a28fd752dde80110e4654bb9039704840eca0c465c",
+    "analysis/stokes_preflight_2026-10-05/provenance_review/review.json": "349067a7c906d2e759d9a547634b5433c681d096036e04b59e0fc2ada8399894",
+    "analysis/stokes_preflight_2026-10-05/provenance_review/softrole_recovery.md": "926a80ce7a6d9bfad41a5eb19ed35315c0be676cf9a5f0715fd95da72fbe0ec8",
+    "analysis/stokes_preflight_2026-10-05/report.md": "88547828cd4606c515953e22f2e2d28c6b5935d64524557025f9ecb7d920367a",
+    "analysis/stokes_preflight_2026-10-05/resource_review/analyze.py": "2f568c03a0c05ecb4e0229dbd231f55f84d812f18ccd519d0a0b9908b1fa8ece",
+    "analysis/stokes_preflight_2026-10-05/resource_review/artifact_manifest.json": "fd1d18bf194d7773404fb76f35132786c14eb62d67b1428b7e38e53f41c120ca",
+    "analysis/stokes_preflight_2026-10-05/resource_review/results.json": "13e840a530e6c4653d7f2077ae33c1e3b724e481e026c603436504f1ec303eb7",
+    "analysis/stokes_preflight_2026-10-05/resource_review/verification.json": "401c40d05d00e4f69a32b91601526baf1fc3a17be952c19824cd42f842b830f0",
+    "analysis/stokes_preflight_2026-10-05/study_dry_run.json": "682a671bca66556a3dfd02a6eebc5b2311bdfd5b3e2347cd698629c6d3059827",
+    "analysis/stokes_preflight_2026-10-05/validation.json": "85a7cfe0cd865d81bbf38878b0c23c6317ba925f5e7ee22a1273465850074cf9"
+  },
+  "meaning": "Snapshot of all generated analysis files and touched repository documentation; excludes this manifest itself. Prior benchmark artifacts are preserved separately."
+}

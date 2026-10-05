@@ -1,0 +1,515 @@
+{
+  "affinity": [
+    0,
+    2,
+    4,
+    6
+  ],
+  "analysis_date": "2026-10-05",
+  "counts": {
+    "all": {
+      "env_steps": 1126442,
+      "episodes": 12940,
+      "updates": 504
+    },
+    "diagnostics": {
+      "env_steps": 52100,
+      "episodes": 610,
+      "updates": 24
+    },
+    "throughput": {
+      "env_steps": 1074342,
+      "episodes": 12330,
+      "updates": 480
+    }
+  },
+  "hostname": "ec169",
+  "input": "stokes_runs/hetnet_backend_benchmark_904547",
+  "limitations": [
+    "one machine/allocation; one training seed repeated for timing",
+    "no full trajectory digests; equal episode summaries are not trajectory proofs",
+    "three timing repetitions are not independent training seeds or a confidence interval",
+    "constant early-run throughput projections exclude queueing and later learning changes",
+    "this is the new paper-v1 baseline, not the old supplement-v1 preflight"
+  ],
+  "projected_12_run_job_hours": {
+    "dgl": 578.2158154889064,
+    "torch-v1": 431.43285556784406
+  },
+  "raw_ledger_rates_recomputed": true,
+  "recorded_summary_agrees": true,
+  "replay_process_hours": 0.8940511727358939,
+  "schema_version": 1,
+  "throughput_and_diagnostic_process_hours": 1.4224804335046146,
+  "training_runs": 32,
+  "workloads": [
+    {
+      "backends": {
+        "dgl": {
+          "first_update_seconds": [
+            12.975768487900496,
+            5.54419388435781,
+            5.542189314961433
+          ],
+          "median_post_first_update_steps_per_second": 366.26372005476355,
+          "median_segment_steps_per_second": 365.0851417853606,
+          "post_first_update_steps_per_second": [
+            363.4863394011733,
+            366.26372005476355,
+            367.5593980556893
+          ],
+          "projected_100_update_segment_minutes": 9.86048528039828,
+          "projected_budget_hours": 30.43430104214844,
+          "projected_budget_hours_range": [
+            30.28801100940267,
+            32.5770992276567
+          ],
+          "segment_steps_per_second": [
+            341.07122409714754,
+            365.0851417853606,
+            366.84849023799404
+          ],
+          "startup_seconds": [
+            146.67990353517234,
+            10.901836600154638,
+            10.96954539231956
+          ]
+        },
+        "torch-v1": {
+          "first_update_seconds": [
+            4.041927691549063,
+            3.8230592627078295,
+            3.810137875378132
+          ],
+          "median_post_first_update_steps_per_second": 506.0009583007669,
+          "median_segment_steps_per_second": 505.0692175513194,
+          "post_first_update_steps_per_second": [
+            506.0009583007669,
+            504.35630056868587,
+            506.09827205962625
+          ],
+          "projected_100_update_segment_minutes": 7.127570918140312,
+          "projected_budget_hours": 21.999184913664088,
+          "projected_budget_hours_range": [
+            21.98309817150992,
+            22.0269744586115
+          ],
+          "segment_steps_per_second": [
+            504.4320150272474,
+            505.0692175513194,
+            505.4388159677649
+          ],
+          "startup_seconds": [
+            11.406332010403275,
+            10.860807238146663,
+            10.743849048390985
+          ]
+        }
+      },
+      "budget": 40000000,
+      "median_paired_update_speedup": 1.377030464533246,
+      "median_paired_update_time_reduction_fraction": 0.2737996538522792,
+      "median_replay_speedup": 1.4905319631728595,
+      "pairs": [
+        {
+          "full_trajectory_verified": false,
+          "pair": 1,
+          "same_counts": true,
+          "same_episode_ledger": true,
+          "same_final_rng": true,
+          "segment_speedup": 1.4789638626434511,
+          "update_speedup": 1.392076959850485,
+          "update_time_reduction_fraction": 0.28164891105775913
+        },
+        {
+          "full_trajectory_verified": false,
+          "pair": 2,
+          "same_counts": true,
+          "same_episode_ledger": true,
+          "same_final_rng": true,
+          "segment_speedup": 1.3834285752671296,
+          "update_speedup": 1.377030464533246,
+          "update_time_reduction_fraction": 0.2737996538522792
+        },
+        {
+          "full_trajectory_verified": false,
+          "pair": 3,
+          "same_counts": true,
+          "same_episode_ledger": true,
+          "same_final_rng": true,
+          "segment_speedup": 1.3777862780350003,
+          "update_speedup": 1.376915608026289,
+          "update_time_reduction_fraction": 0.2737390772747291
+        }
+      ],
+      "ratio_of_median_segment_throughput": 1.3834285752671296,
+      "replay_correctness_passed": true,
+      "replay_maximum_absolute_differences": {
+        "torch.float32": 2.263419736433668e-16,
+        "torch.float64": 2.2737367544323206e-13
+      },
+      "replay_speedups": [
+        1.4949005688785868,
+        1.4844067090641677,
+        1.4905319631728595
+      ],
+      "task": "pp",
+      "update_speedup_range": [
+        1.376915608026289,
+        1.392076959850485
+      ],
+      "variant": "real"
+    },
+    {
+      "backends": {
+        "dgl": {
+          "first_update_seconds": [
+            9.206423232331872,
+            9.12265513651073,
+            9.084786482155323
+          ],
+          "median_post_first_update_steps_per_second": 203.8369133151367,
+          "median_segment_steps_per_second": 203.92131151093832,
+          "post_first_update_steps_per_second": [
+            203.8369133151367,
+            204.1697476309515,
+            203.2783205597728
+          ],
+          "projected_100_update_segment_minutes": 17.60074334591627,
+          "projected_budget_hours": 54.48724818796152,
+          "projected_budget_hours_range": [
+            54.401273778894286,
+            54.64506159901905
+          ],
+          "segment_steps_per_second": [
+            203.92131151093832,
+            204.24358363869445,
+            203.33239246107044
+          ],
+          "startup_seconds": [
+            10.578064635396004,
+            10.620321424677968,
+            10.862553395330906
+          ]
+        },
+        "torch-v1": {
+          "first_update_seconds": [
+            6.488911837339401,
+            6.457102196291089,
+            6.4878597389906645
+          ],
+          "median_post_first_update_steps_per_second": 275.3409199891359,
+          "median_segment_steps_per_second": 275.93431155145635,
+          "post_first_update_steps_per_second": [
+            275.3409199891359,
+            274.31944302827446,
+            275.55026114467705
+          ],
+          "projected_100_update_segment_minutes": 13.007322817109525,
+          "projected_budget_hours": 40.26723262010533,
+          "projected_budget_hours_range": [
+            40.21604388115763,
+            40.37702777201084
+          ],
+          "segment_steps_per_second": [
+            276.2855328073924,
+            275.18397772738683,
+            275.93431155145635
+          ],
+          "startup_seconds": [
+            10.756434448063374,
+            10.77253064326942,
+            10.826545175164938
+          ]
+        }
+      },
+      "budget": 40000000,
+      "median_paired_update_speedup": 1.350790274004259,
+      "median_paired_update_time_reduction_fraction": 0.25969262642407287,
+      "median_replay_speedup": 1.421679989826559,
+      "pairs": [
+        {
+          "full_trajectory_verified": false,
+          "pair": 1,
+          "same_counts": true,
+          "same_episode_ledger": true,
+          "same_final_rng": true,
+          "segment_speedup": 1.354863455713762,
+          "update_speedup": 1.350790274004259,
+          "update_time_reduction_fraction": 0.25969262642407287
+        },
+        {
+          "full_trajectory_verified": false,
+          "pair": 2,
+          "same_counts": true,
+          "same_episode_ledger": true,
+          "same_final_rng": true,
+          "segment_speedup": 1.3473323020721448,
+          "update_speedup": 1.3435851599528965,
+          "update_time_reduction_fraction": 0.25572265174835807
+        },
+        {
+          "full_trajectory_verified": false,
+          "pair": 3,
+          "same_counts": true,
+          "same_episode_ledger": true,
+          "same_final_rng": true,
+          "segment_speedup": 1.3570602706811021,
+          "update_speedup": 1.355531964185296,
+          "update_time_reduction_fraction": 0.2622822431184634
+        }
+      ],
+      "ratio_of_median_segment_throughput": 1.353141118537065,
+      "replay_correctness_passed": true,
+      "replay_maximum_absolute_differences": {
+        "torch.float32": 4.380816816112207e-16,
+        "torch.float64": 2.2737367544323206e-13
+      },
+      "replay_speedups": [
+        1.421679989826559,
+        1.4167446572356324,
+        1.4310248595739796
+      ],
+      "task": "pcp",
+      "update_speedup_range": [
+        1.3435851599528965,
+        1.355531964185296
+      ],
+      "variant": "real"
+    },
+    {
+      "backends": {
+        "dgl": {
+          "first_update_seconds": [
+            10.658105542883277,
+            10.343038795515895,
+            10.45037898235023
+          ],
+          "median_post_first_update_steps_per_second": 212.74562224026482,
+          "median_segment_steps_per_second": 212.21596587991422,
+          "post_first_update_steps_per_second": [
+            212.61832045610552,
+            212.74562224026482,
+            213.29743007436247
+          ],
+          "projected_100_update_segment_minutes": 19.44049457460642,
+          "projected_budget_hours": 36.65029511577351,
+          "projected_budget_hours_range": [
+            36.565589494096315,
+            36.714637271273375
+          ],
+          "segment_steps_per_second": [
+            211.8440588234639,
+            212.21596587991422,
+            212.70757248515125
+          ],
+          "startup_seconds": [
+            10.673343075439334,
+            10.645446509122849,
+            10.729149255901575
+          ]
+        },
+        "torch-v1": {
+          "first_update_seconds": [
+            6.915983136743307,
+            6.934326766058803,
+            6.9858866184949875
+          ],
+          "median_post_first_update_steps_per_second": 298.2655646648303,
+          "median_segment_steps_per_second": 298.30855597759484,
+          "post_first_update_steps_per_second": [
+            297.8624115816002,
+            298.2655646648303,
+            298.5686500462177
+          ],
+          "projected_100_update_segment_minutes": 13.829919560346752,
+          "projected_budget_hours": 26.07292892518291,
+          "projected_budget_hours_range": [
+            26.039944065855153,
+            26.074855919196978
+          ],
+          "segment_steps_per_second": [
+            298.28651026414985,
+            298.30855597759484,
+            298.6864241377684
+          ],
+          "startup_seconds": [
+            10.72506128065288,
+            10.810632389038801,
+            10.76615290157497
+          ]
+        }
+      },
+      "budget": 28000000,
+      "median_paired_update_speedup": 1.4009254279811372,
+      "median_paired_update_time_reduction_fraction": 0.28618613094838863,
+      "median_replay_speedup": 1.4788251688365905,
+      "pairs": [
+        {
+          "full_trajectory_verified": false,
+          "pair": 1,
+          "same_counts": true,
+          "same_episode_ledger": true,
+          "same_final_rng": true,
+          "segment_speedup": 1.4080475606480003,
+          "update_speedup": 1.4009254279811372,
+          "update_time_reduction_fraction": 0.28618613094838863
+        },
+        {
+          "full_trajectory_verified": false,
+          "pair": 2,
+          "same_counts": true,
+          "same_episode_ledger": true,
+          "same_final_rng": true,
+          "segment_speedup": 1.405683850132169,
+          "update_speedup": 1.4019821490285864,
+          "update_time_reduction_fraction": 0.2867241564431574
+        },
+        {
+          "full_trajectory_verified": false,
+          "pair": 3,
+          "same_counts": true,
+          "same_episode_ledger": true,
+          "same_final_rng": true,
+          "segment_speedup": 1.404211522176152,
+          "update_speedup": 1.3997761245511815,
+          "update_time_reduction_fraction": 0.2856000452782148
+        }
+      ],
+      "ratio_of_median_segment_throughput": 1.405683850132169,
+      "replay_correctness_passed": true,
+      "replay_maximum_absolute_differences": {
+        "torch.float32": 9.737611040313947e-15,
+        "torch.float64": 7.275957614183426e-12
+      },
+      "replay_speedups": [
+        1.481712652830658,
+        1.4761705184867138,
+        1.4788251688365905
+      ],
+      "task": "fc",
+      "update_speedup_range": [
+        1.3997761245511815,
+        1.4019821490285864
+      ],
+      "variant": "real"
+    },
+    {
+      "backends": {
+        "dgl": {
+          "first_update_seconds": [
+            12.49485781043768,
+            12.250324768945575,
+            12.14147163182497
+          ],
+          "median_post_first_update_steps_per_second": 155.78240713005903,
+          "median_segment_steps_per_second": 156.12781843014014,
+          "post_first_update_steps_per_second": [
+            155.78734931660728,
+            155.65651512160818,
+            155.78240713005903
+          ],
+          "projected_100_update_segment_minutes": 23.101264311932027,
+          "projected_budget_hours": 71.16676081708533,
+          "projected_budget_hours_range": [
+            71.04053955980127,
+            71.27173400323016
+          ],
+          "segment_steps_per_second": [
+            155.89786423054525,
+            156.12781843014014,
+            156.40521848455106
+          ],
+          "startup_seconds": [
+            10.711740277707577,
+            10.776111762970686,
+            10.664578402414918
+          ]
+        },
+        "torch-v1": {
+          "first_update_seconds": [
+            8.917626895010471,
+            8.923907805234194,
+            8.920874575152993
+          ],
+          "median_post_first_update_steps_per_second": 199.6441920702843,
+          "median_segment_steps_per_second": 200.3026779483271,
+          "post_first_update_steps_per_second": [
+            198.95111280856827,
+            199.74942422080687,
+            199.6441920702843
+          ],
+          "projected_100_update_segment_minutes": 18.006499148905277,
+          "projected_budget_hours": 55.471605396995685,
+          "projected_budget_hours_range": [
+            55.35003626726744,
+            55.53185916281548
+          ],
+          "segment_steps_per_second": [
+            200.08534341582407,
+            200.3026779483271,
+            200.74261663459706
+          ],
+          "startup_seconds": [
+            10.846979081630707,
+            10.826669700443745,
+            10.814301412552595
+          ]
+        }
+      },
+      "budget": 40000000,
+      "median_paired_update_speedup": 1.2815580125399277,
+      "median_paired_update_time_reduction_fraction": 0.2196997793193194,
+      "median_replay_speedup": 1.3336608640132028,
+      "pairs": [
+        {
+          "full_trajectory_verified": false,
+          "pair": 1,
+          "same_counts": true,
+          "same_episode_ledger": true,
+          "same_final_rng": true,
+          "segment_speedup": 1.2834386436489815,
+          "update_speedup": 1.2770684762357636,
+          "update_time_reduction_fraction": 0.21695663262508813
+        },
+        {
+          "full_trajectory_verified": false,
+          "pair": 2,
+          "same_counts": true,
+          "same_episode_ledger": true,
+          "same_final_rng": true,
+          "segment_speedup": 1.282940349531324,
+          "update_speedup": 1.2832705657373267,
+          "update_time_reduction_fraction": 0.2207411073708906
+        },
+        {
+          "full_trajectory_verified": false,
+          "pair": 3,
+          "same_counts": true,
+          "same_episode_ledger": true,
+          "same_final_rng": true,
+          "segment_speedup": 1.2834777418531302,
+          "update_speedup": 1.2815580125399277,
+          "update_time_reduction_fraction": 0.2196997793193194
+        }
+      ],
+      "ratio_of_median_segment_throughput": 1.282940349531324,
+      "replay_correctness_passed": true,
+      "replay_maximum_absolute_differences": {
+        "torch.float32": 1.5644198786348047e-15,
+        "torch.float64": 1.1368683772161603e-13
+      },
+      "replay_speedups": [
+        1.3253996886821309,
+        1.3521907840649101,
+        1.3336608640132028
+      ],
+      "task": "pcp",
+      "update_speedup_range": [
+        1.2770684762357636,
+        1.2832705657373267
+      ],
+      "variant": "binary"
+    }
+  ]
+}

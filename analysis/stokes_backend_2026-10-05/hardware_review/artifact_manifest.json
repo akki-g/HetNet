@@ -1,0 +1,8 @@
+{
+  "excludes_itself": true,
+  "files": {
+    "analysis/stokes_backend_2026-10-05/hardware_review/analyze.py": "8fc897370bee824dee9b3741f2306442b66c1fd195e6d790590b3238efe23220",
+    "analysis/stokes_backend_2026-10-05/hardware_review/results.json": "b85c177474cc55712daa62a405cb4c18d44c0fe5d93967920406c012660b9eef",
+    "analysis/stokes_backend_2026-10-05/hardware_review/verification.json": "39926186e79ffe1c7387b00c59795b283eafdf5b3cbf97473e27349880610279"
+  }
+}

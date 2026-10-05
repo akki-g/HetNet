@@ -1,0 +1,71 @@
+{
+  "all_input_bytes_unchanged": true,
+  "analysis_scripts_compile": true,
+  "arithmetic_rerun_exact": true,
+  "csv_rerun_exact": true,
+  "independent_reviews": [
+    "provenance_review/review.json",
+    "hardware_review/verification.json",
+    "replay_review/review.json"
+  ],
+  "input_files_rehashed": 3130,
+  "jobs_submitted": false,
+  "local_links": [
+    {
+      "file": "report.md",
+      "target": "../../stokes_runs/hetnet_backend_benchmark_904547/summary.json"
+    },
+    {
+      "file": "report.md",
+      "target": "metrics/summary.json"
+    },
+    {
+      "file": "report.md",
+      "target": "replay_review/review.json"
+    },
+    {
+      "file": "report.md",
+      "target": "analyze.py"
+    },
+    {
+      "file": "report.md",
+      "target": "metrics/throughput.csv"
+    },
+    {
+      "file": "report.md",
+      "target": "hardware_review/results.json"
+    },
+    {
+      "file": "report.md",
+      "target": "provenance_review/README.md"
+    },
+    {
+      "file": "report.md",
+      "target": "provenance_review/review.json"
+    },
+    {
+      "file": "report.md",
+      "target": "replay_review/review.json"
+    },
+    {
+      "file": "report.md",
+      "target": "hardware_review/results.json"
+    },
+    {
+      "file": "report.md",
+      "target": "metrics/throughput.csv"
+    },
+    {
+      "file": "report.md",
+      "target": "../../publication_reconstruction/FIDELITY.md"
+    },
+    {
+      "file": "report.md",
+      "target": "metrics/summary.json"
+    }
+  ],
+  "passed": true,
+  "runtime_changed": false,
+  "shell_blocks_syntax_checked": 5,
+  "training_or_policy_evaluation_run": false
+}

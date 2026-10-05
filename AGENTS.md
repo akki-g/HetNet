@@ -2223,3 +2223,185 @@ or push occurred. Automatic paper-specific final checkpoint selection/manifests
 remain unimplemented; the README gives the predeclared first-saved-at-28M rule
 and working manual frozen-evaluation commands using the shared panel. Do not use
 the legacy `prepare-evaluation` route for paper-v1 or pool unmatched old FC runs.
+
+### 2026-10-05 — Stokes backend benchmark analysis and rollout recommendation
+
+- Analyzed the newly copied `stokes_runs/hetnet_backend_benchmark_904547/` and
+  matching stdout/stderr without modifying inputs. Worktree started clean at
+  `a178989`; that user commit adds `sapphirerapids` only to the benchmark script.
+  The benchmark completed 24 unprofiled runs (480 updates, 1,074,342 steps,
+  12,330 episodes), eight separate diagnostic runs (24 updates, 52,100 steps,
+  610 episodes), and four replay fixtures (26,050 steps, 305 episodes).
+- Added [the evidence-backed report and next steps](analysis/stokes_backend_2026-10-05/report.md).
+  Root analysis recomputes update/segment/process rates from raw ledgers and
+  checks recorded results, fixed protocols, pairing and both benchmark gates.
+  Independent reviews cover actual checkpoint tensors and provenance, replay
+  fixtures/assertion coverage, and raw hardware/resource/phase observations.
+- Measured median paired post-first-update speedups: PP Real **1.377×**, PCP Real
+  **1.351×**, FC Real **1.401×**, PCP Binary **1.282×**. All twelve individual
+  pairs improve. Median DGL→Torch rates are 366.3→506.0, 203.8→275.3,
+  212.7→298.3 and 155.8→199.6 steps/s. Corresponding update-time reductions
+  are 27.4%, 26.0%, 28.6% and 22.0%. Rates and paired ratios are separately
+  defined; repetitions use the same seed and are not independent learning seeds
+  or a confidence interval. Full-segment median ratios also pass all gates.
+- All 68 recorded source identities match the reviewed checkout; ORIGINS validates
+  43 runtime files and all twelve direct dependency pins match the Stokes runtime.
+  All 32 runs share the same 53-file archived-source manifest
+  `17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599`.
+  Checkpoint bytes/signatures/sidecars, counts/configuration, model and active
+  Adam finiteness/shape/dtype/step inventories pass. Three repetitions finish
+  bitwise identically within each backend; paired initialization and final RNG
+  match. The largest cross-backend model difference after 20 updates is
+  1.665e-13 (float64), with exact float32 model parameters. All episode-summary
+  ledgers match, but full action/observation trajectories were not recorded.
+  Sequential order is supported by matching stdout and hash-verified blocking
+  subprocess control flow; independent absolute process timestamps were not saved.
+- Fixed-rollout median speedups: PP Real 1.491×, PCP Real 1.422×, FC Real 1.479×,
+  PCP Binary 1.334×. All four correctness gates and all twelve timing pairs pass.
+  Independently loaded/hash-checked all fixtures; finite data/parameters/Adam,
+  legal actions, four collector partitions, floor 500, production horizons,
+  initial identities and three active optimizer steps reconcile. The reported
+  Stokes float64 drift is at most 7.28e-12, below atol 1e-10; float32 drift at most
+  9.74e-15. Checked archived fail-closed validation source and log receipts;
+  did not rerun numerical kernels on the Mac. Replay includes RNG restoration
+  and Python iteration, excludes environment/action sampling/IPC, and is not
+  interpreted as end-to-end throughput or per-backend memory evidence.
+- Hardware/resource review: ec169, Xeon Gold 5418Y, four distinct cores on NUMA 0,
+  affinity `[0,2,4,6]`, four CPUs/16 GiB and one Torch thread in all 128 collector
+  intervals. In the 24 unprofiled runs aggregate CPU utilization is 3.41–3.66 cores; system CPU
+  is under 0.8%. Summed individual peak RSS is 3.46–6.10 GiB DGL / 3.60–6.41 GiB
+  Torch; these are neither simultaneous nor cgroup peaks, and shared pages can
+  be double-counted. No recorded evidence identifies resource pressure as the
+  main limit; no swap/fault/pressure counters were available. Keep 16 GiB.
+- Phase evidence: eliminating graph construction and reducing forward computation
+  accounts for 87.8–88.6% of the measured collector-phase reduction. Backward is
+  now the largest measured Torch collector phase. Collector wall intervals overlap
+  and must not be combined with parent phases as elapsed-time components. Parent
+  waiting (9.2–25.2% of update wall) includes residual collector imbalance, not
+  just IPC. Checkpoint time is 0.024–0.226% of segment wall. First PP DGL startup
+  was 146.68 s versus later 10.58–11.41 s; its whole-process ratio is unsuitable
+  as the backend gain and the startup cause is unmeasured.
+- Recommendation: proceed to all four official paper-v1/Torch 100-update preflights
+  with explicit `sbatch --constraint=sapphirerapids`. The preflight and training
+  scripts currently lack that benchmark constraint. The early-rate projection is
+  about 52 active minutes for the serial preflight array, excluding queueing and
+  probes. If they pass, freeze the implementation and start the fresh seed 0–2
+  study plus matched paper-FC SoftRole runs. Retain DGL as the reference and keep
+  old FC and supplement-v1/Binary results separate; the historical slowdown is
+  not causally explained by this different-model/hardware comparison.
+- Scheduling: unchanged per-seed budgets project to 22.0 h PP Real, 40.3 h PCP
+  Real, 26.1 h FC Real and 55.5 h PCP Binary with Torch at median segment rates.
+  Plan Binary continuation after the existing 46-hour checkpointed pause; do not
+  cut its 40M budget or restart a seed. Carry node constraint and explicit core
+  binding into the continuation (the existing resume script omits explicit
+  `--cpu-bind=cores`). The twelve HetNet runs project to 431.4 job-hours versus
+  578.2 for DGL, about six idealized days at three continuously running jobs,
+  excluding queueing, rate changes, SoftRole training and evaluation. These are
+  planning estimates, not completion guarantees or learned-performance claims.
+- Remaining orchestration: prepare the paper-specific FC checkpoint selection
+  manifest and commands using the first saved checkpoint at or above 28M steps while training proceeds;
+  retain the common 500-scenario panel and separate independent seed reporting.
+  Existing manual frozen evaluation is available; the legacy automatic selector
+  is not suitable for paper-v1. No new runtime bug or validity blocker was found
+  in these reviewed artifacts; the official preflight remains required.
+- Files touched: `AGENTS.md` (this additive record), `.gitignore` (narrow exception),
+  and fresh `analysis/stokes_backend_2026-10-05/`: `analyze.py`, `report.md`,
+  `analysis_console.json`, `metrics/{summary.json,inputs.json,throughput.csv}`;
+  `provenance_review/{audit.py,README.md,review.json,input_hashes.json}`;
+  `hardware_review/{analyze.py,results.json,verification.json,artifact_manifest.json}`;
+  `replay_review/{audit.py,review.json}`; final validation/artifact manifests.
+  Auditors verified 3,118 provenance/checkpoint inputs and 171 resource inputs;
+  replay fixture/source/log hashes are recorded separately. All inputs remained
+  unchanged. Analysis scripts and arithmetic checks passed; no runtime test suite
+  was rerun because no implementation changed. No training, frozen policy
+  evaluation, cluster submission, dependency/launcher modification, commit or push.
+
+### 2026-10-05 — completed Stokes paper-preflight audit and exact launch runbook
+
+- Analyzed both newly copied groups, `hetnet_paper_preflight_905118` and
+  `hetnet_paper_preflight_905404` (the latter is the actual directory matching
+  the user's abbreviated `90540`). Both use `paper-v1` model/environment,
+  `paper-equations-v1`, `torch-v1`, seed 991, four collectors, floor 500 and
+  production horizons. All eight complete the official 100-update and strict
+  frozen-checkpoint gates: 800 updates, 1,793,520 steps and 20,318 training
+  episodes, plus eight separate frozen execution probes. No new generic
+  preflight is needed before the fresh, locked research wave.
+- Added [the analysis and exact next steps](analysis/stokes_preflight_2026-10-05/report.md).
+  Root calculations reconcile raw update/segment times, projections, windows
+  and counts. Independent audits inspect actual checkpoints/source/probes,
+  ordered episode and learner records, and process CPU/memory evidence.
+  Model, active Adam, all four collector RNG streams, every epoch signature,
+  all numerical update/episode ledgers and frozen episodes match bitwise
+  between groups after excluding only declared clocks. Intermediate gradients
+  and full action trajectories were not saved and were not recomputed.
+- All eight 53-file source manifests are identical to benchmark 904547 and
+  the reviewed reconstruction: `17143ed20265d29e321f96609d4999144a84e748dc0b29ad1bde059c61b49599`.
+  Current ORIGINS validates 43 runtime files. Installed package inventories,
+  lock files, initial model/Adam/RNG and first-20 numerical update prefixes
+  match the benchmark. All model/active optimizer tensors, losses and recorded
+  metrics are finite; active Adam steps are 100. Frozen receipts bind actual
+  checkpoint bytes, immutable tensors, scenario bytes and evaluator archives.
+- Measured update rates, 905118 -> 905404: PP Real 335.2 -> 342.1 steps/s;
+  PCP Real 190.0 -> 263.5; FC Real 191.1 -> 292.4; PCP Binary 128.4 -> 197.4.
+  These are same-backend runtime differences, not new backend speedups. No
+  hostname, CPU model/topology or actual Slurm node/constraint identity was
+  saved; CPU affinity numbers cannot establish Sapphire Rapids placement.
+  CPU cost per step rises with slower wall times. Aggregate CPU utilization
+  is 3.385–3.600 cores; system CPU 0.405–0.686%; checkpointing only
+  0.009–0.0385% of segment time. Summed individual lifetime peak RSS is
+  3.630–6.477 GiB, not a concurrent/job peak; memory-growth/pressure data are
+  absent. Keep four CPUs and 16 GiB.
+- Complete-segment rate projections for unchanged per-seed budgets are
+  PP 32.7–33.3 h (40M), PCP Real 42.3–58.6 h (40M), FC 26.7–40.8 h (28M),
+  Binary 56.5–86.8 h (40M). Twelve HetNet runs imply 474.3–658.7 job-hours,
+  or 6.6–9.1 idealized days at three continuously occupied HetNet slots.
+  These early-rate scenarios exclude startup, probes, queueing, future rate
+  changes, SoftRole training and evaluation; they are not confidence bounds.
+  PP's previous 22-hour benchmark projection is not supported by these longer
+  preflights. Binary needs checkpointed continuation after the existing
+  46-hour pause; PCP Real may also need one. Do not shorten scientific budgets.
+- Found no blocking numerical/learner defect. Reporting cautions: legacy
+  checkpoint `log` losses remain per-step, while structured update/epoch
+  losses correctly use the paper completed-episode mean; conversions reconcile.
+  Legacy entropy zeros are placeholders. All 800 updates trigger the declared
+  .75 clip. FC's large finite summed-time losses/norms and positive failed-probe
+  return are compatible with its reward/objective, not by themselves evidence
+  of a bug. Keep scientific settings fixed rather than tuning to seed 991.
+- Prepared concrete source-check, study-preparation, two-array launch,
+  historical accounting and HetNet continuation commands, without executing
+  submissions. Explicitly set Torch (launcher defaults to DGL), request
+  `sapphirerapids`, use fresh seeds 0–2 and one prepared root, and retain the
+  matched six paper-FC SoftRole runs. Existing seed-991 preflights exhausted
+  their engineering budgets and must not become research continuations.
+  The two research arrays each allow three jobs (up to six combined).
+- Operational recovery distinction: HetNet resumes its exact parent source
+  archive and has a 46-hour graceful pause. SoftRole FC has no wall-time/signal
+  pause handler and saves every ten epochs / 100 updates; a timeout can leave
+  an unsaved suffix or incomplete checkpoint write. Its array launcher rejects
+  `--resume`; the separate documented `softrole train --resume` recipe requires
+  a fully validated checkpoint/signature and fresh output. SoftRole executes
+  current learner/model code, enforcing simulator identity but not automatic
+  full learner-source equality, so its source must be checked and frozen.
+- Preserve the declared Binary64-per-head/256-total interpretation and old FC
+  separation. Prepare paper-specific final checkpoint selection/manifests
+  while training proceeds: first saved FC checkpoint at or above28M along the
+  retained lineage, actual hashes/counts and a common500-scenario panel, before
+  viewing outcomes. Existing manual evaluation works; legacy automatic
+  `prepare-evaluation` is not the paper-v1 route. Preflight repeats/probe
+  successes are not independent seeds, convergence or exact-publication proof.
+- Files touched: `AGENTS.md` (this additive record), `.gitignore` (narrow
+  exception), and fresh `analysis/stokes_preflight_2026-10-05/`: `report.md`,
+  `analyze.py`, `metrics/{summary.json,input_hashes.json,throughput.csv,update_windows.csv}`;
+  `provenance_review/{audit.py,README.md,review.json,input_hashes.json,softrole_recovery.md}`;
+  `learner_review/{audit.py,review.json}`;
+  `resource_review/{analyze.py,results.json,verification.json,artifact_manifest.json}`;
+  plus validation/artifact manifests and resolved study dry-run evidence.
+  Preserved all pre-existing benchmark-analysis and documentation changes.
+- Validation: root calculations reproduce identical outputs; independent
+  reviews checked timing, learner interpretation and source/launch/recovery
+  details. Input hashes are rechecked and original artifacts unchanged.
+  Shell blocks, local links, source audit, 12+6 resolved dry-run protocols and
+  whitespace are checked in the accompanying validation record. No numerical
+  training test suite was rerun for this analysis-only change. No training,
+  policy evaluation, input/checkpoint mutation, launcher/dependency change,
+  Slurm submission, commit or push occurred.

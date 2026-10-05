@@ -1,0 +1,698 @@
+{
+  "assertion_coverage": {
+    "exact": [
+      "DGL replay final model/Adam versus recorded collection",
+      "per-forward Python/NumPy/Torch RNG",
+      "gradient presence, tensor shapes/dtypes and dictionary schema"
+    ],
+    "not_directly_checked": [
+      "new action samples/environment outcomes during replay (fixed inputs)",
+      "20-update trajectory identity",
+      "input gradients in this replay",
+      "per-backend replay RSS (process-lifetime high-water mark)",
+      "long-training quality or original historical learner equivalence"
+    ],
+    "tolerance_based": [
+      "all forward actor/state/critic/hidden tensors",
+      "collector losses and raw gradients",
+      "globally clipped gradients and norm",
+      "model and active Adam state after each of three updates"
+    ]
+  },
+  "execution": "Loaded/copied artifact values and inspected archived validation code; did not rerun model forward/backward or training.",
+  "input_sha256": {
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/logs/replay_fc_real.log": "668a08831f390aa57b67852b9c1250fc05849a5f5cecf022a2abe646a88201e5",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/logs/replay_pcp_binary.log": "bfc67bc954306a4e6ec080ccf3c1b8f76866bfbd3b65f21e51ea3997b77740ed",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/logs/replay_pcp_real.log": "21ceb124bae32801e33aa906fee1e4858f62a46b08173d0d68bda3b1ead7fd68",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/logs/replay_pp_real.log": "3fdb151b16f1ec268c62a299cfbe523ff60f31b279e7cb987c6d1fc856a5595c",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/replay/fc_real/fixture.pt": "b85780bcf43154e1e90d3b5a0351c630e4391e85b4fde091cef04a422a8922ab",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/replay/fc_real/summary.json": "53e28f3170225e3b8a7f9b0e6f31c69738e3b00a0fe3a2a9ae61cdea76809232",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/replay/pcp_binary/fixture.pt": "8533489e49d697328fb4479ebfc426ef9e9ba866dc4e14ffa0b6b44afbb1ba94",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/replay/pcp_binary/summary.json": "8e84c93e92449682333e15150004b879b9e412f4e2d5373cb5388cb4d7b0d100",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/replay/pcp_real/fixture.pt": "f83564d7e5291a7f2c3b2b5e09f46202ec2eef1ced5008e7645626b7a75227e4",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/replay/pcp_real/summary.json": "048332a17db973b504a878b77e7c69043c03a88ff6a827924e2d1e5499ab251a",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/replay/pp_real/fixture.pt": "9f08977ee84093ff65134110a56f5e6d73f3c2caa69c061c66a672a5bae4a7ac",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/replay/pp_real/summary.json": "613cac05079760d3497ad1279b401e205767f0d1b74e0ddbfbfc9ffd01b25135",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/summary.json": "fdd1da892d1d8007f17ef80f2c7702cfa165c9d94da4e013aa3ced2df7fc0cd5",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair1/dgl/initial_training_identity.json": "56612ba536517033a19e42f2a24db920cf63cf47ba94013ffbe463566d76e65c",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair1/torch-v1/initial_training_identity.json": "2f25b9b24e852b86d93173e0eaa9217ca4ede92969e9f4c4f87104c04762b09e",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair2/dgl/initial_training_identity.json": "f915b61b6081e9f4699839adb406b1ca5caf96cfddf90dd3762977836fb832a8",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair2/torch-v1/initial_training_identity.json": "b2074a57e404a85a168e7dd4da3347fddbc5d844a60c3f68f3b9ca5053667cac",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair3/dgl/initial_training_identity.json": "2470bd048eb5c5ff91ca3847bed51b65f2168e7f50014fb5fcc5802091ae1405",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair3/torch-v1/initial_training_identity.json": "57dc4804e6bb604e8fac9621cdda076b9ec787d745d5473af91ce82e18730c99",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair1/dgl/initial_training_identity.json": "3097b81c52cc250c328393fb3b6f87e9a0ae28250f9123669d571b2fe94e3852",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair1/torch-v1/initial_training_identity.json": "d899368dfd785c6ef9aefa5a08e6f5c679c00c11999d5496971b271a274f1810",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair2/dgl/initial_training_identity.json": "c832ad4900802a308474987192b8b0617a31e3dd2230006eb7d7b6de5e00a37b",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair2/torch-v1/initial_training_identity.json": "6b815934cde15399f57f2f9cc3517d0b85a6db8af655856e3cd1db57ee2905fb",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair3/dgl/initial_training_identity.json": "889dade98c50184117f70181357c4c9ecb4a5da684ab4118419ce07a12b33198",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair3/torch-v1/initial_training_identity.json": "fdbd6324008bbc707394b167f630009fc23301b5d1f68c51e27293b39e74a6f2",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair1/dgl/initial_training_identity.json": "8b26505b9d448ed6ff026a2cace3f7bbeb6f453e94bf7aded52893874af79d8e",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair1/torch-v1/initial_training_identity.json": "264f8fdb77a236898f366dde164243686397292a86e1911100492eb36a9165b0",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair2/dgl/initial_training_identity.json": "ed400d29af0fe03dc528189fae1bc5def33e556d2a41ee91fb79adb5d0928e31",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair2/torch-v1/initial_training_identity.json": "4cf17518185ee1554c2bedba87f2cad86bc0a1812e6393a42e925da5d799833a",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair3/dgl/initial_training_identity.json": "c8b8bb47b1e21a766070204494eec1e1be19aa8a4ef0f600bfcde54abb2befbd",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair3/torch-v1/initial_training_identity.json": "60f247b4d5199554e2b55dca2773b4d2e0f052a9927f32cdeb3c80d6a93a5662",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/dgl/initial_training_identity.json": "128cab461a6ce38626b8f040b48611bc19383d5d127f4ff10ea804e9cf979566",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/torch-v1/initial_training_identity.json": "f49de9ab904fa56cdcd93fb90f89295071cb3a5d484248680516c4a16579fd05",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair2/dgl/initial_training_identity.json": "52b5d4f68623f8d9139271b6700a9ae80e7bc38efc618719f46a1135ac94f6f7",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair2/torch-v1/initial_training_identity.json": "e43078788f4e8bb3ed68fcd47573abdf6a693d221ef518a448d3bed8ca44f9ac",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair3/dgl/initial_training_identity.json": "b048ba2bba2fc700ae6ffbd3201e569363b648e6ca25c74916b1ee3b7afbd693",
+    "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair3/torch-v1/initial_training_identity.json": "060d825c083fe8e903365821ae55973d31d827d23e7f303892bb008ceae2f685"
+  },
+  "limitations": [
+    "The four Stokes correctness flags/maxima were not numerically recomputed on another architecture; archived code shows checks precede report publication.",
+    "Replay is serial collector compute, including RNG restoration/Python iteration; it excludes environment/action sampling/IPC and is separate from four-process throughput.",
+    "ru_maxrss per timing pass includes earlier fixture/correctness peaks in the same process; equal readings cannot establish equal backend memory.",
+    "A three-update correctness fixture and three same-seed repetitions do not establish task convergence or between-seed uncertainty."
+  ],
+  "passed": true,
+  "source": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547",
+  "workloads": [
+    {
+      "active_optimizer_parameters": 158,
+      "all_active_optimizer_steps": 3,
+      "all_observations_rewards_actions_finite_and_actions_legal": true,
+      "archive_runtime": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pp_real/pair1/dgl/source/runtime",
+      "archived_python_source_files_hash_checked": 39,
+      "compute_gate_reconciled": true,
+      "final_model_tensors_changed": 149,
+      "finite_model_values_checked": 1986940,
+      "finite_optimizer_values_checked": 996860,
+      "fixture_bytes": 304791290,
+      "fixture_episodes": 94,
+      "fixture_sha256": "9f08977ee84093ff65134110a56f5e6d73f3c2caa69c061c66a672a5bae4a7ac",
+      "fixture_steps": 6396,
+      "initial_model_and_optimizer_match_all_six_throughput_runs": true,
+      "log_path": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/logs/replay_pp_real.log",
+      "median_replay_speedup": 1.4905319631728595,
+      "median_replay_wall_time_reduction_percent": 32.909858714379794,
+      "observed_reward_values": [
+        -0.05,
+        0.0
+      ],
+      "replay_pairs": [
+        {
+          "maximum_interupdate_unaccounted_seconds": 5.088746547698975e-06,
+          "pair": 1,
+          "process_cpu_ratio": 1.493660436854303,
+          "reported_speedup": 1.4949005688785868,
+          "speedup_excluding_first_update": 1.4928915781239451
+        },
+        {
+          "maximum_interupdate_unaccounted_seconds": 5.159527063369751e-06,
+          "pair": 2,
+          "process_cpu_ratio": 1.4833536314801818,
+          "reported_speedup": 1.4844067090641677,
+          "speedup_excluding_first_update": 1.485989658578214
+        },
+        {
+          "maximum_interupdate_unaccounted_seconds": 4.796311259269714e-06,
+          "pair": 3,
+          "process_cpu_ratio": 1.489385832892906,
+          "reported_speedup": 1.4905319631728595,
+          "speedup_excluding_first_update": 1.4898861186530614
+        }
+      ],
+      "reported_maximum_absolute_differences": {
+        "torch.float32": 2.263419736433668e-16,
+        "torch.float64": 2.2737367544323206e-13
+      },
+      "summary_path": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/replay/pp_real/summary.json",
+      "throughput_gate_reconciled": true,
+      "update_partitions": [
+        {
+          "collectors": [
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 49,
+              "steps": 518
+            },
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 36,
+              "steps": 569
+            },
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 39,
+              "steps": 546
+            },
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 41,
+              "steps": 540
+            }
+          ],
+          "steps": 2173
+        },
+        {
+          "collectors": [
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 48,
+              "steps": 528
+            },
+            {
+              "episodes": 9,
+              "episodes_crossing_detach_gap": 9,
+              "maximum_length": 80,
+              "minimum_length": 11,
+              "steps": 533
+            },
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 17,
+              "steps": 500
+            },
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 42,
+              "steps": 511
+            }
+          ],
+          "steps": 2072
+        },
+        {
+          "collectors": [
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 29,
+              "steps": 567
+            },
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 25,
+              "steps": 505
+            },
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 44,
+              "steps": 540
+            },
+            {
+              "episodes": 9,
+              "episodes_crossing_detach_gap": 9,
+              "maximum_length": 80,
+              "minimum_length": 16,
+              "steps": 539
+            }
+          ],
+          "steps": 2151
+        }
+      ],
+      "within_forward_python_numpy_unchanged": true,
+      "within_forward_torch_rng_changed_count": 0,
+      "workload": "pp_real"
+    },
+    {
+      "active_optimizer_parameters": 334,
+      "all_active_optimizer_steps": 3,
+      "all_observations_rewards_actions_finite_and_actions_legal": true,
+      "archive_runtime": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_real/pair1/dgl/source/runtime",
+      "archived_python_source_files_hash_checked": 39,
+      "compute_gate_reconciled": true,
+      "final_model_tensors_changed": 254,
+      "finite_model_values_checked": 1986940,
+      "finite_optimizer_values_checked": 1971898,
+      "fixture_bytes": 310571514,
+      "fixture_episodes": 90,
+      "fixture_sha256": "f83564d7e5291a7f2c3b2b5e09f46202ec2eef1ced5008e7645626b7a75227e4",
+      "fixture_steps": 6347,
+      "initial_model_and_optimizer_match_all_six_throughput_runs": true,
+      "log_path": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/logs/replay_pcp_real.log",
+      "median_replay_speedup": 1.421679989826559,
+      "median_replay_wall_time_reduction_percent": 29.660682632102244,
+      "observed_reward_values": [
+        -0.05,
+        0.0
+      ],
+      "replay_pairs": [
+        {
+          "maximum_interupdate_unaccounted_seconds": 5.0477683544158936e-06,
+          "pair": 1,
+          "process_cpu_ratio": 1.4209831825906705,
+          "reported_speedup": 1.421679989826559,
+          "speedup_excluding_first_update": 1.4187147899493455
+        },
+        {
+          "maximum_interupdate_unaccounted_seconds": 5.459412932395935e-06,
+          "pair": 2,
+          "process_cpu_ratio": 1.4160616966212392,
+          "reported_speedup": 1.4167446572356324,
+          "speedup_excluding_first_update": 1.414712653897738
+        },
+        {
+          "maximum_interupdate_unaccounted_seconds": 5.370005965232849e-06,
+          "pair": 3,
+          "process_cpu_ratio": 1.4272817047261932,
+          "reported_speedup": 1.4310248595739796,
+          "speedup_excluding_first_update": 1.4269598692532146
+        }
+      ],
+      "reported_maximum_absolute_differences": {
+        "torch.float32": 4.380816816112207e-16,
+        "torch.float64": 2.2737367544323206e-13
+      },
+      "summary_path": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/replay/pcp_real/summary.json",
+      "throughput_gate_reconciled": true,
+      "update_partitions": [
+        {
+          "collectors": [
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 11,
+              "steps": 513
+            },
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 56,
+              "steps": 536
+            },
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 33,
+              "steps": 513
+            },
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 59,
+              "steps": 520
+            }
+          ],
+          "steps": 2082
+        },
+        {
+          "collectors": [
+            {
+              "episodes": 9,
+              "episodes_crossing_detach_gap": 9,
+              "maximum_length": 80,
+              "minimum_length": 14,
+              "steps": 518
+            },
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 67,
+              "steps": 547
+            },
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 47,
+              "steps": 527
+            },
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 25,
+              "steps": 534
+            }
+          ],
+          "steps": 2126
+        },
+        {
+          "collectors": [
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 44,
+              "steps": 564
+            },
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 75,
+              "steps": 555
+            },
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 49,
+              "steps": 520
+            },
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 31,
+              "steps": 500
+            }
+          ],
+          "steps": 2139
+        }
+      ],
+      "within_forward_python_numpy_unchanged": true,
+      "within_forward_torch_rng_changed_count": 0,
+      "workload": "pcp_real"
+    },
+    {
+      "active_optimizer_parameters": 334,
+      "all_active_optimizer_steps": 3,
+      "all_observations_rewards_actions_finite_and_actions_legal": true,
+      "archive_runtime": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/fc_real/pair1/dgl/source/runtime",
+      "archived_python_source_files_hash_checked": 39,
+      "compute_gate_reconciled": true,
+      "final_model_tensors_changed": 250,
+      "finite_model_values_checked": 442572,
+      "finite_optimizer_values_checked": 428066,
+      "fixture_bytes": 228727674,
+      "fixture_episodes": 28,
+      "fixture_sha256": "b85780bcf43154e1e90d3b5a0351c630e4391e85b4fde091cef04a422a8922ab",
+      "fixture_steps": 6758,
+      "initial_model_and_optimizer_match_all_six_throughput_runs": true,
+      "log_path": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/logs/replay_fc_real.log",
+      "median_replay_speedup": 1.4788251688365905,
+      "median_replay_wall_time_reduction_percent": 32.37875436034727,
+      "observed_reward_values": [
+        -0.30000000000000004,
+        -0.2,
+        -0.1,
+        9.9
+      ],
+      "replay_pairs": [
+        {
+          "maximum_interupdate_unaccounted_seconds": 5.111098289489746e-06,
+          "pair": 1,
+          "process_cpu_ratio": 1.4803882041459737,
+          "reported_speedup": 1.481712652830658,
+          "speedup_excluding_first_update": 1.4837999377189264
+        },
+        {
+          "maximum_interupdate_unaccounted_seconds": 4.539266228675842e-06,
+          "pair": 2,
+          "process_cpu_ratio": 1.4746555100418977,
+          "reported_speedup": 1.4761705184867138,
+          "speedup_excluding_first_update": 1.4775205627045338
+        },
+        {
+          "maximum_interupdate_unaccounted_seconds": 4.516914486885071e-06,
+          "pair": 3,
+          "process_cpu_ratio": 1.480735673873312,
+          "reported_speedup": 1.4788251688365905,
+          "speedup_excluding_first_update": 1.4775607764788188
+        }
+      ],
+      "reported_maximum_absolute_differences": {
+        "torch.float32": 9.737611040313947e-15,
+        "torch.float64": 7.275957614183426e-12
+      },
+      "summary_path": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/replay/fc_real/summary.json",
+      "throughput_gate_reconciled": true,
+      "update_partitions": [
+        {
+          "collectors": [
+            {
+              "episodes": 2,
+              "episodes_crossing_detach_gap": 2,
+              "maximum_length": 300,
+              "minimum_length": 208,
+              "steps": 508
+            },
+            {
+              "episodes": 3,
+              "episodes_crossing_detach_gap": 3,
+              "maximum_length": 300,
+              "minimum_length": 66,
+              "steps": 666
+            },
+            {
+              "episodes": 3,
+              "episodes_crossing_detach_gap": 3,
+              "maximum_length": 300,
+              "minimum_length": 11,
+              "steps": 548
+            },
+            {
+              "episodes": 2,
+              "episodes_crossing_detach_gap": 2,
+              "maximum_length": 300,
+              "minimum_length": 267,
+              "steps": 567
+            }
+          ],
+          "steps": 2289
+        },
+        {
+          "collectors": [
+            {
+              "episodes": 2,
+              "episodes_crossing_detach_gap": 2,
+              "maximum_length": 300,
+              "minimum_length": 201,
+              "steps": 501
+            },
+            {
+              "episodes": 2,
+              "episodes_crossing_detach_gap": 2,
+              "maximum_length": 300,
+              "minimum_length": 210,
+              "steps": 510
+            },
+            {
+              "episodes": 3,
+              "episodes_crossing_detach_gap": 3,
+              "maximum_length": 300,
+              "minimum_length": 87,
+              "steps": 585
+            },
+            {
+              "episodes": 3,
+              "episodes_crossing_detach_gap": 3,
+              "maximum_length": 259,
+              "minimum_length": 82,
+              "steps": 520
+            }
+          ],
+          "steps": 2116
+        },
+        {
+          "collectors": [
+            {
+              "episodes": 2,
+              "episodes_crossing_detach_gap": 2,
+              "maximum_length": 297,
+              "minimum_length": 256,
+              "steps": 553
+            },
+            {
+              "episodes": 2,
+              "episodes_crossing_detach_gap": 2,
+              "maximum_length": 300,
+              "minimum_length": 300,
+              "steps": 600
+            },
+            {
+              "episodes": 2,
+              "episodes_crossing_detach_gap": 2,
+              "maximum_length": 300,
+              "minimum_length": 300,
+              "steps": 600
+            },
+            {
+              "episodes": 2,
+              "episodes_crossing_detach_gap": 2,
+              "maximum_length": 300,
+              "minimum_length": 300,
+              "steps": 600
+            }
+          ],
+          "steps": 2353
+        }
+      ],
+      "within_forward_python_numpy_unchanged": true,
+      "within_forward_torch_rng_changed_count": 0,
+      "workload": "fc_real"
+    },
+    {
+      "active_optimizer_parameters": 382,
+      "all_active_optimizer_steps": 3,
+      "all_observations_rewards_actions_finite_and_actions_legal": true,
+      "archive_runtime": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/throughput/pcp_binary/pair1/dgl/source/runtime",
+      "archived_python_source_files_hash_checked": 39,
+      "compute_gate_reconciled": true,
+      "final_model_tensors_changed": 302,
+      "finite_model_values_checked": 2128772,
+      "finite_optimizer_values_checked": 2128546,
+      "fixture_bytes": 321843130,
+      "fixture_episodes": 93,
+      "fixture_sha256": "8533489e49d697328fb4479ebfc426ef9e9ba866dc4e14ffa0b6b44afbb1ba94",
+      "fixture_steps": 6549,
+      "initial_model_and_optimizer_match_all_six_throughput_runs": true,
+      "log_path": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/logs/replay_pcp_binary.log",
+      "median_replay_speedup": 1.3336608640132028,
+      "median_replay_wall_time_reduction_percent": 25.01841907613326,
+      "observed_reward_values": [
+        -0.05,
+        0.0
+      ],
+      "replay_pairs": [
+        {
+          "maximum_interupdate_unaccounted_seconds": 5.2675604820251465e-06,
+          "pair": 1,
+          "process_cpu_ratio": 1.3245380666161553,
+          "reported_speedup": 1.3253996886821309,
+          "speedup_excluding_first_update": 1.325647347080989
+        },
+        {
+          "maximum_interupdate_unaccounted_seconds": 5.3551048040390015e-06,
+          "pair": 2,
+          "process_cpu_ratio": 1.3226082179294465,
+          "reported_speedup": 1.3521907840649101,
+          "speedup_excluding_first_update": 1.3714363811393866
+        },
+        {
+          "maximum_interupdate_unaccounted_seconds": 5.194917321205139e-06,
+          "pair": 3,
+          "process_cpu_ratio": 1.333967151251505,
+          "reported_speedup": 1.3336608640132028,
+          "speedup_excluding_first_update": 1.3342882827615206
+        }
+      ],
+      "reported_maximum_absolute_differences": {
+        "torch.float32": 1.5644198786348047e-15,
+        "torch.float64": 1.1368683772161603e-13
+      },
+      "summary_path": "/Users/akshatguduru/Desktop/Thesis/HetNet/stokes_runs/hetnet_backend_benchmark_904547/replay/pcp_binary/summary.json",
+      "throughput_gate_reconciled": true,
+      "update_partitions": [
+        {
+          "collectors": [
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 18,
+              "steps": 544
+            },
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 64,
+              "steps": 544
+            },
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 74,
+              "steps": 554
+            },
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 30,
+              "steps": 549
+            }
+          ],
+          "steps": 2191
+        },
+        {
+          "collectors": [
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 41,
+              "steps": 521
+            },
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 36,
+              "steps": 555
+            },
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 58,
+              "steps": 538
+            },
+            {
+              "episodes": 11,
+              "episodes_crossing_detach_gap": 11,
+              "maximum_length": 80,
+              "minimum_length": 9,
+              "steps": 551
+            }
+          ],
+          "steps": 2165
+        },
+        {
+          "collectors": [
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 47,
+              "steps": 577
+            },
+            {
+              "episodes": 8,
+              "episodes_crossing_detach_gap": 8,
+              "maximum_length": 80,
+              "minimum_length": 34,
+              "steps": 534
+            },
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 63,
+              "steps": 543
+            },
+            {
+              "episodes": 7,
+              "episodes_crossing_detach_gap": 7,
+              "maximum_length": 80,
+              "minimum_length": 59,
+              "steps": 539
+            }
+          ],
+          "steps": 2193
+        }
+      ],
+      "within_forward_python_numpy_unchanged": true,
+      "within_forward_torch_rng_changed_count": 6549,
+      "workload": "pcp_binary"
+    }
+  ]
+}

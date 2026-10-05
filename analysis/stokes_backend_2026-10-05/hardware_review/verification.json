@@ -1,0 +1,11 @@
+{
+  "all_input_hashes_verified": true,
+  "input_count": 171,
+  "recorded_checks": {
+    "all_128_resource_intervals_match_raw_start_end_counters": true,
+    "all_32_runs_four_collectors_one_torch_thread_matching_four_core_affinity": true,
+    "slurm_matches_4_cpus_16_gib": true
+  },
+  "script_hash_verified": true,
+  "source_or_run_mutations": false
+}
