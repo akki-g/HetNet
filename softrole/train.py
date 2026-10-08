@@ -20,6 +20,7 @@ from softrole.config import Config
 from softrole.env import make_env
 from softrole.learning import loss_sum
 from softrole.model import SoftRoleNet
+from softrole.optimizers import make_optimizer, optimizer_spec, validate_optimizer_resume
 from softrole.rollout import run_episode
 from softrole.scenarios import make_scenarios
 
@@ -181,7 +182,7 @@ def train(config, output, resume=None, episode_log="file"):
     torch.set_num_threads(1)
     torch.manual_seed(config.seed)
     model = SoftRoleNet(**config.model_kwargs()).double()
-    optimizer = torch.optim.RMSprop(model.parameters(), lr=config.lr, alpha=0.97, eps=1e-6)
+    optimizer = make_optimizer(model.parameters(), config)
     completed_updates = total_steps = total_episodes = completed_epochs = 0
     if resume is not None:
         checkpoint = torch.load(resume, map_location="cpu", weights_only=False)
@@ -189,6 +190,7 @@ def train(config, output, resume=None, episode_log="file"):
             raise ValueError("unsupported checkpoint format")
         if checkpoint.get("environment_version") != config.env_version:
             raise ValueError("cannot resume a different environment version")
+        validate_optimizer_resume(config, checkpoint)
         previous = Config(**checkpoint["config"]).to_dict()
         current = config.to_dict()
         for key in ("epochs", "total_steps", "save_every"):
@@ -227,6 +229,8 @@ def train(config, output, resume=None, episode_log="file"):
                "parent_source_sha256": checkpoint["source_sha256"] if resume else None,
                "torch": torch.__version__, "numpy": np.__version__, "dtype": "float64",
                "episode_log": episode_log,
+               "optimizer": optimizer_spec(config),
+               "optimizer_initialization": "checkpoint" if resume else "fresh",
                "parameters": sum(p.numel() for p in model.parameters()),
                "actor_objective": "undiscounted sum of physical-agent rewards",
                "approximations": ["straight-through bits", "GAE with learned critic", "truncated BPTT"]})
@@ -238,6 +242,7 @@ def train(config, output, resume=None, episode_log="file"):
         payload = {"format_version": CHECKPOINT_VERSION, "config": config.to_dict(),
                    "model_config": config.model_kwargs(), "model_state": model.state_dict(),
                    "optimizer_state": optimizer.state_dict(), "epoch": epoch,
+                   "optimizer": optimizer_spec(config),
                    "updates": completed_updates, "total_steps": total_steps,
                    "total_episodes": total_episodes, "environment_version": config.env_version,
                    "completed_epochs": completed_updates // config.updates_per_epoch,

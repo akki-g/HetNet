@@ -29,6 +29,8 @@ def parser():
     train.add_argument("--env-version", choices=("corrected-observation-v1", "paper-v1"))
     train.add_argument("--study", choices=("fixed", "composition", "failure"))
     train.add_argument("--model", choices=("banked", "shared", "capability", "constant"))
+    train.add_argument("--optimizer", choices=("rmsprop", "adam"),
+                       help="opt-in Adam; the historical default remains RMSprop")
     # Familiar release spellings are aliases, not a second set of defaults.
     integers = {
         "num_p": ("--num-p", "--nfriendly_P"), "num_a": ("--num-a", "--nfriendly_A"),

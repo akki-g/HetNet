@@ -2405,3 +2405,38 @@ the legacy `prepare-evaluation` route for paper-v1 or pool unmatched old FC runs
   training test suite was rerun for this analysis-only change. No training,
   policy evaluation, input/checkpoint mutation, launcher/dependency change,
   Slurm submission, commit or push occurred.
+
+### 2026-10-08 — opt-in Adam PCP preparation against historical RMSprop
+
+- Direct user authorization supersedes the earlier read-only audit for this
+  preparation only: implement a minimal Adam experiment and a script for the user
+  to submit; no SSH, submission, training or dependency installation. Work is in
+  isolated branch `codex/capcon-adam-history` at base `ddcd972`; the original dirty
+  Mac checkout and all historical artifacts remain unchanged.
+- Added a default-RMSprop optimizer selector, explicit fixed recipes, recorded
+  optimizer metadata and fresh/checkpoint initialization, and resume validation
+  against selector, recipe, saved parameter groups and actual moment-key inventory.
+  Legacy checkpoints without the new fields still resolve to RMSprop. Kept the
+  objective, credit, clipping, architecture, observations and reward unchanged.
+- Prepared the fixed shared PCP seed0..2 Adam array at the historical lr1e-4,
+  horizon80, four collectors/floor500, and full2000x10-update budget. No banked or
+  concurrent RMSprop jobs are included. Resources follow the working Stokes CPU
+  launchers: cenyioha/normal, four CPUs/16GiB,48h and one thread per collector.
+  Output roots and log names are isolated by array job ID. The runbook explains
+  the historical-control limitation and possible checkpoint continuation after
+  timeout; there is no scientific budget reduction or completion guarantee.
+- All three resolved recipes equal archived PCP shared recipes except optimizer
+  after default-field migration. All34 initialized model tensors match archived
+  code bitwise for seeds0..2. Archived learning/scenarios/PCP simulator bytes match;
+  actual epoch50 RMSprop checkpoint passes the legacy resume guard. Current
+  paper-FC and opt-in diagnostic additions do not alter this fixed-PCP path.
+- Validation:95 focused tests passed (14 launcher,56 optimizer/model/learning/env,
+  25 existing failure-launcher), plus shell syntax and whitespace. Numerical tests
+  use synthetic gradients and simulator unit checks; no training runs were made.
+  Ran launcher tests separately after a combined Mac test process hit the sandbox
+  OpenMP shared-memory restriction during forking. Both separate groups pass.
+- Deliverables are `softrole/optimizers.py`, config/CLI/train changes,
+  `scripts/softrole_adam_pcp.sh`, `slurm/softrole_adam_pcp.sbatch`, focused tests and
+  `softrole/ADAM_PCP.md`. Changes are uncommitted and reviewed locally; no source
+  archive, checkpoint, log, original entrypoint, dependency, cluster job or push
+  was changed.

@@ -35,6 +35,7 @@ class Config:
     batch_steps: int = 500
     nprocesses: int = 4
     total_steps: int | None = None
+    optimizer: str = "rmsprop"
     lr: float = 0.0001
     gamma: float = 1.0
     gae_lambda: float = 0.95
@@ -80,6 +81,8 @@ class Config:
             raise ValueError("paper-v1 FC uses the fixed paper reward (reward_type=3)")
         if self.model not in ("banked", "shared", "capability", "constant"):
             raise ValueError("unknown deterministic model variant")
+        if self.optimizer not in ("rmsprop", "adam"):
+            raise ValueError("optimizer must be rmsprop or adam")
         for name in ("dim", "max_steps", "nfires", "experts", "pre_dim", "hidden_dim",
                      "heads", "head_dim", "msg_dim", "epochs", "updates_per_epoch",
                      "batch_steps", "nprocesses", "detach_gap", "save_every"):
