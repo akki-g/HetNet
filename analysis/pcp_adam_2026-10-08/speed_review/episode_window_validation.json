@@ -1,0 +1,253 @@
+[
+  {
+    "run": "pcp_real_seed0",
+    "windows": {
+      "26m-27m": {
+        "episodes": 102135,
+        "steps": 993493,
+        "successes": 97291,
+        "mean_agent_return_sum": -24348.03333333333,
+        "updates": 480,
+        "first_episode": 4198759,
+        "last_episode": 4300893,
+        "first_epoch": 1278,
+        "last_epoch": 1325,
+        "start_steps": 25995407,
+        "end_steps": 26988900,
+        "steps_taken": 9.727253145346845,
+        "success_rate": 0.9525725755128017,
+        "mean_agent_return": -0.23839069205789717,
+        "passed": true
+      },
+      "last100": {
+        "episodes": 392629,
+        "steps": 2009130,
+        "successes": 392629,
+        "mean_agent_return_sum": -53354.10000000005,
+        "updates": 1000,
+        "first_episode": 5814405,
+        "last_episode": 6207033,
+        "first_epoch": 1712,
+        "last_epoch": 1811,
+        "start_steps": 34743645,
+        "end_steps": 36752775,
+        "steps_taken": 5.117120742482089,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.1358893510158446,
+        "passed": true
+      },
+      "worst_epoch_after20m": {
+        "episodes": 280,
+        "steps": 22400,
+        "successes": 0,
+        "mean_agent_return_sum": -791.6833333333323,
+        "updates": 10,
+        "first_episode": 4160094,
+        "last_episode": 4160373,
+        "first_epoch": 1200,
+        "last_epoch": 1200,
+        "start_steps": 24276133,
+        "end_steps": 24298533,
+        "steps_taken": 80.0,
+        "success_rate": 0.0,
+        "mean_agent_return": -2.8274404761904726,
+        "passed": true
+      }
+    }
+  },
+  {
+    "run": "pcp_real_seed1",
+    "windows": {
+      "26m-27m": {
+        "episodes": 196254,
+        "steps": 1004521,
+        "successes": 196254,
+        "mean_agent_return_sum": -26666.883333333324,
+        "updates": 500,
+        "first_episode": 4640567,
+        "last_episode": 4836820,
+        "first_epoch": 1288,
+        "last_epoch": 1337,
+        "start_steps": 25994283,
+        "end_steps": 26998804,
+        "steps_taken": 5.1184740183639565,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.13587943855072163,
+        "passed": true
+      },
+      "last100": {
+        "episodes": 389636,
+        "steps": 1992806,
+        "successes": 389636,
+        "mean_agent_return_sum": -52862.84999999998,
+        "updates": 992,
+        "first_episode": 6988964,
+        "last_episode": 7378599,
+        "first_epoch": 1886,
+        "last_epoch": 1985,
+        "start_steps": 38008544,
+        "end_steps": 40001350,
+        "steps_taken": 5.114532538061165,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.13567239680111687,
+        "passed": true
+      }
+    }
+  },
+  {
+    "run": "pcp_real_seed2",
+    "windows": {
+      "26m-27m": {
+        "episodes": 196218,
+        "steps": 1004347,
+        "successes": 196218,
+        "mean_agent_return_sum": -26676.64999999997,
+        "updates": 500,
+        "first_episode": 4534673,
+        "last_episode": 4730890,
+        "first_epoch": 1286,
+        "last_epoch": 1335,
+        "start_steps": 25995418,
+        "end_steps": 26999765,
+        "steps_taken": 5.118526332956201,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.13595414284112553,
+        "passed": true
+      },
+      "last100": {
+        "episodes": 389093,
+        "steps": 1990995,
+        "successes": 389093,
+        "mean_agent_return_sum": -52840.63333333342,
+        "updates": 991,
+        "first_episode": 6883218,
+        "last_episode": 7272310,
+        "first_epoch": 1884,
+        "last_epoch": 1983,
+        "start_steps": 38009059,
+        "end_steps": 40000054,
+        "steps_taken": 5.117015726317359,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.13580463625234435,
+        "passed": true
+      }
+    }
+  },
+  {
+    "run": "pcp_binary_seed0",
+    "windows": {
+      "26m-27m": {
+        "episodes": 196476,
+        "steps": 1004565,
+        "successes": 196476,
+        "mean_agent_return_sum": -26676.200000000023,
+        "updates": 500,
+        "first_episode": 3849361,
+        "last_episode": 4045836,
+        "first_epoch": 1269,
+        "last_epoch": 1318,
+        "start_steps": 25989001,
+        "end_steps": 26993566,
+        "steps_taken": 5.112914554449398,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.135773326004194,
+        "passed": true
+      },
+      "last100": {
+        "episodes": 392487,
+        "steps": 2009031,
+        "successes": 392487,
+        "mean_agent_return_sum": -53409.15,
+        "updates": 1000,
+        "first_episode": 3712124,
+        "last_episode": 4104610,
+        "first_epoch": 1234,
+        "last_epoch": 1333,
+        "start_steps": 25285890,
+        "end_steps": 27294921,
+        "steps_taken": 5.118719855689488,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.13607877458361678,
+        "passed": true
+      }
+    }
+  },
+  {
+    "run": "pcp_binary_seed1",
+    "windows": {
+      "26m-27m": {
+        "episodes": 196353,
+        "steps": 1004433,
+        "successes": 196353,
+        "mean_agent_return_sum": -26697.23333333336,
+        "updates": 500,
+        "first_episode": 3992684,
+        "last_episode": 4189036,
+        "first_epoch": 1274,
+        "last_epoch": 1323,
+        "start_steps": 25993871,
+        "end_steps": 26998304,
+        "steps_taken": 5.115445142167423,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.13596549751383152,
+        "passed": true
+      },
+      "last100": {
+        "episodes": 392506,
+        "steps": 2008914,
+        "successes": 392506,
+        "mean_agent_return_sum": -53400.76666666669,
+        "updates": 1000,
+        "first_episode": 3898504,
+        "last_episode": 4291009,
+        "first_epoch": 1250,
+        "last_epoch": 1349,
+        "start_steps": 25511751,
+        "end_steps": 27520665,
+        "steps_taken": 5.118173989696973,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.13605082894698856,
+        "passed": true
+      }
+    }
+  },
+  {
+    "run": "pcp_binary_seed2",
+    "windows": {
+      "26m-27m": {
+        "episodes": 196223,
+        "steps": 1004539,
+        "successes": 196223,
+        "mean_agent_return_sum": -26705.566666666644,
+        "updates": 500,
+        "first_episode": 4726926,
+        "last_episode": 4923148,
+        "first_epoch": 1290,
+        "last_epoch": 1339,
+        "start_steps": 25985497,
+        "end_steps": 26990036,
+        "steps_taken": 5.119374385265743,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.13609804491148664,
+        "passed": true
+      },
+      "last100": {
+        "episodes": 392438,
+        "steps": 2009022,
+        "successes": 392438,
+        "mean_agent_return_sum": -53388.9333333333,
+        "updates": 1000,
+        "first_episode": 4644599,
+        "last_episode": 5037036,
+        "first_epoch": 1269,
+        "last_epoch": 1368,
+        "start_steps": 25563612,
+        "end_steps": 27572634,
+        "steps_taken": 5.119336047987198,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.1360442498772629,
+        "passed": true
+      }
+    }
+  }
+]

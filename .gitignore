@@ -91,3 +91,14 @@ analysis/stokes_backend_2026-10-05/**/*.pyc
 !analysis/stokes_preflight_2026-10-05/**
 analysis/stokes_preflight_2026-10-05/**/__pycache__/
 analysis/stokes_preflight_2026-10-05/**/*.pyc
+
+# Evidence-backed proposed deadline scope and experimental critical path.
+!analysis/core_experiments_2026-10-05/
+!analysis/core_experiments_2026-10-05/**
+
+# PCP Adam trial analysis; original scientific inputs remain ignored.
+!analysis/pcp_adam_2026-10-08/
+!analysis/pcp_adam_2026-10-08/**
+analysis/pcp_adam_2026-10-08/**/__pycache__/
+analysis/pcp_adam_2026-10-08/**/*.pyc
+!output/pdf/pcp_adam_analysis_2026-10-08.pdf

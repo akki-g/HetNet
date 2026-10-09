@@ -1,0 +1,16 @@
+{
+  "audit.py": "47566dff2421b6f655e68eeb2c7e25b021caa9f68d34611e71f517a188a8ce36",
+  "build_notes.py": "7ce53d09bd117226d97bdfd4976a9f5bdfbed8c91ceae7e3358f7bb9aa5df8e7",
+  "comparisons.json": "d4617f383f172473439d4dd6693517de549aecbf1b77e7c435ad0b7ebbac04b0",
+  "episode_window_audit.py": "2ca7aad1d5859b8d49b4e0948c036c3b8a7b18b0b476947fa974ccb613658a15",
+  "episode_window_validation.json": "4fb1cd6108e0c5e99f051ca985d679a30b23b90b31538d915afb22c36ad27372",
+  "input_hashes.json": "6e310c4e87ae8724ca2add4d9e984b2d03b496a2663670a25b7b3c2825b0db15",
+  "notes.md": "740b6ca41f33462b32baa7dd100bd6303b26d294eac7f2abe411006d127e7008",
+  "paper_pcp_epochs.csv": "ebc7524260cf168b1cfb2663be85e641db0d98f1ceb5152c43e5718f670f6236",
+  "paper_pcp_timing.json": "b976d221706b6a5a369b5fc1e51d20fd9e724d4ccd58ce1f5e9d8c8a1a46f8c4",
+  "paper_wave_inventory.json": "67c88fc1a6702ba44cb9836ff468b40fc002fc1d2b922e0a112d9cfd21bb2a28",
+  "real_seed0_regression_epochs.csv": "ccb30dee0433394efc2e801c0bc616abea4d3f73064a7c52f45c6073ed2de194",
+  "softrole_epochs.csv": "f6db6a083b9b47d893bc647e0ffdd1331b9493bc8e2f03412c0ee6a0a2c9a3a9",
+  "softrole_timing.json": "4714f1fa30db1e06f6f5c699b93a725ad79f53f7fe05ae5e53d881b09e231839",
+  "timing_summary.csv": "118a73207acaa1c9f0bc0bd4d820d4aaa1e1cd0b635d864e052dafb0d9a123c1"
+}

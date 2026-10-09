@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-05",
+  "existing_nominal_pcp_episodes": 15000,
+  "files_sha256": {
+    ".gitignore": "bd358e50c98305cfd1b6c6758f32748acd59ac30721f877760c822b8be206d73",
+    "AGENTS.md": "1bce3fe0c88ba0d93c52f5f0c48379e3bee2c22406b78847950a4c5f0b368eb6",
+    "analysis/core_experiments_2026-10-05/plan.md": "de7b09afbcda6fc76c0c2d3f3b2ab1aef5d6ebac586913b2986b633d22bfcd5d"
+  },
+  "git_diff_check_passed": true,
+  "links_checked": [
+    "../stokes_preflight_2026-10-05/report.md",
+    "../pcp_frozen_full_2026-10-03/report_text.txt",
+    "../pcp_frozen_full_2026-10-03/failure_audit.json",
+    "../../logs_sr/softrole-898818_6.err",
+    "../../stokes_runs/softrole_primary/pcp_shared/seed0/metrics.jsonl",
+    "../../slurm/softrole_paper_fc.sbatch",
+    "../../publication_reconstruction/STUDY.json",
+    "../../publication_reconstruction/study.py",
+    "../../publication_reconstruction/paper_study.py",
+    "../stokes_preflight_2026-10-05/provenance_review/softrole_recovery.md",
+    "../../softrole/rollout.py",
+    "../../publication_reconstruction/evaluation_worker.py",
+    "../../softrole/report.py",
+    "../../README.md#full-original-study-coverage-still-required"
+  ],
+  "nominal_episodes": 39000,
+  "proposal_not_executed": true,
+  "proposed_additional_failure_and_control_episodes": 18000
+}

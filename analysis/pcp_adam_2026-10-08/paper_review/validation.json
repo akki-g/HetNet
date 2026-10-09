@@ -1,0 +1,12 @@
+{
+  "analysis_script_repeat_identical": true,
+  "all_input_hashes_rechecked": true,
+  "local_markdown_links_valid": true,
+  "AST_physical_method_equality": true,
+  "layout_enumeration_and_closed_form_agree": true,
+  "rendered_primary_pages_reviewed": [
+    "paper page7",
+    "supplement page1"
+  ],
+  "no_environment_or_policy_execution": true
+}

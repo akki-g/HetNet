@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-08",
+  "pdf": {
+    "path": "output/pdf/pcp_adam_analysis_2026-10-08.pdf",
+    "sha256": "2c0011f583df68edc876aabefe625e68e874d1a2b40a30f03a5a5cc304b17055",
+    "pages": 6,
+    "all_pages_and_figures_visually_reviewed": true,
+    "rendering": "Poppler pdftoppm 1200px; embedded Arial body fonts; no clipping after final caption correction"
+  },
+  "trial_validation": {
+    "all_input_hashes_rechecked_unchanged": true,
+    "input_files_rechecked": 1213,
+    "new_checkpoint_count": 120,
+    "new_episode_records": 15224881,
+    "new_epochs_reconciled": 6000,
+    "new_steps": 121822429,
+    "new_updates_reconciled": 60000,
+    "no_training_or_evaluation_performed": true,
+    "old_terminal_checkpoint_count": 5,
+    "script_sha256": "bd6813a183c3d58590fe4d4d5809262c29d990050104a1cafe608c305a4660fd",
+    "script_syntax_valid": true,
+    "source_files_verified": 918,
+    "stdout_discrepancy_count": 1
+  },
+  "independent_comparison": {
+    "all_fields_exact": true,
+    "metric_count_boundary_fields_checked": 1070,
+    "per_seed_windows_checked": 107,
+    "reference_windows_sha256": "aae7e3df42242dd7a17cf4417443e5efb7bc3bfb9e8a1aa58e05a712bc8f5ab4",
+    "root_comparison_sha256": "d60068893aa9d95818112e482a7e82f523a5da6e03caa8babb9473d76528aaed",
+    "timing_fields_match_within_roundoff": true
+  },
+  "root_comparison_repeat_identical": true,
+  "analysis_python_syntax_files": 11,
+  "authored_text_whitespace_clean": true,
+  "downloaded_reference_bytes_preserved": true,
+  "documented_python_command_paths_exist": true,
+  "git_diff_check": true,
+  "independent_reviews": [
+    "trial_review/report_review.json",
+    "paper_review/final_report_review.json",
+    "speed reviewer messages"
+  ],
+  "review_corrections_applied": [
+    "historical sensory masking is -1",
+    "Real seed0 recovery at27-28M is5.18",
+    "dotted oracle reference labeled",
+    "new shared Adam recipe distinguished from older RMSprop",
+    "stdout discrepancy cause left unknown"
+  ],
+  "scope": {
+    "runtime_edits": false,
+    "training_or_policy_evaluation": false,
+    "cluster_actions": false,
+    "input_or_checkpoint_mutations": false,
+    "test_suite_run": false,
+    "dependency_file_changes": false,
+    "commit_or_push": false
+  }
+}

@@ -1,4 +1,4 @@
-"""Shared capability-conditioned recurrent actors with a binary message channel.
+"""Shared capability-conditioned recurrent actors with configurable message channels.
 
 The gate is deterministic.  Gaussian roles and information-rate penalties are
 deliberately absent.  Dense adjacency is indexed ``[receiver, sender]``.
@@ -15,7 +15,8 @@ def straight_through_bits(logits: Tensor, noise: Tensor | None = None) -> Tensor
     """Bernoulli(sigmoid(u)) forward; biased sigmoid(u + Logistic) backward.
 
     Injecting the logistic noise couples otherwise stochastic forward passes.
-    The same sampled bits are broadcast to every receiver and attention head.
+    The same sampled bits are broadcast to every receiver.  A channel may
+    share its payload between heads or include independently encoded head axes.
     """
     if noise is None:
         eps = torch.finfo(logits.dtype).eps
@@ -66,19 +67,33 @@ class HeadBank(nn.Module):
 class CommunicationRound(nn.Module):
     """Receiver-gated GATv2 with a zero-message null softmax candidate.
 
-    z_j=B_self(h_j,g_j), b_k=ST(B_enc(h_k,g_k)),
-    m_jk=B_dec(b_k,g_j), h'_j=z_j+sum_k alpha_jk m_jk.
+    z_j=B_self(h_j,g_j), p_k=channel(B_enc(h_k,g_k)),
+    m_jk=B_dec(p_k,g_j), h'_j=z_j+sum_k alpha_jk m_jk.
+    The binary channel uses hard bits with a straight-through derivative;
+    the real channel passes encoder outputs unchanged.  Independent-head
+    payloads use separate encoders/decoders and bit draws for each head.
     Only hidden rounds apply ReLU and concatenate heads; the final round
     averages heads without a final nonlinearity.
     """
 
     def __init__(self, in_dim: int, heads: int, head_dim: int, msg_dim: int,
-                 experts: int, final: bool):
+                 experts: int, final: bool, independent_heads: bool = False,
+                 communication: str = "binary"):
         super().__init__()
+        if type(independent_heads) is not bool:
+            raise ValueError("independent_heads must be boolean")
+        if not isinstance(communication, str) or communication not in {"binary", "real"}:
+            raise ValueError("communication must be 'binary' or 'real'")
         self.heads, self.head_dim, self.final = heads, head_dim, final
+        self.independent_heads, self.communication = independent_heads, communication
         self.self_map = AffineBank(experts, in_dim, heads * head_dim)
-        self.encoder = AffineBank(experts, in_dim, msg_dim)
-        self.decoder = AffineBank(experts, msg_dim, heads * head_dim)
+        if independent_heads:
+            self.encoder = HeadBank(experts, heads, in_dim, msg_dim)
+            self.decoder = HeadBank(experts, heads, msg_dim, head_dim)
+        else:
+            # Preserve the original shared-payload parameters and initialization.
+            self.encoder = AffineBank(experts, in_dim, msg_dim)
+            self.decoder = AffineBank(experts, msg_dim, heads * head_dim)
         self.attention = HeadBank(experts, heads, 2 * head_dim, head_dim)
         self.score = HeadBank(experts, heads, head_dim, 1, bias=False)
         self.null_logits = nn.Parameter(torch.zeros(experts, heads))
@@ -87,16 +102,23 @@ class CommunicationRound(nn.Module):
                 noise: Tensor | None = None, comm_off: bool = False):
         n = h.shape[0]
         z = self.self_map(h, gate).reshape(n, self.heads, self.head_dim)
-        bits = straight_through_bits(self.encoder(h, gate), noise)
+        encoder_input = h.unsqueeze(1).expand(-1, self.heads, -1) if self.independent_heads else h
+        encoded = self.encoder(encoder_input, gate)
+        if self.communication == "binary":
+            payload = straight_through_bits(encoded, noise)
+        else:
+            if noise is not None:
+                raise ValueError("Real communication does not accept bit noise")
+            payload = encoded
         if comm_off:
             aggregate = torch.zeros_like(z)
             alpha_null = h.new_ones(n, self.heads)
         else:
             # Axes are receiver, sender, head, feature.  The receiver's gate
             # selects its decoder, even when the sender has a different gate.
-            payload = bits.unsqueeze(0).expand(n, n, -1)
+            received_payload = payload.unsqueeze(0).expand(n, *payload.shape)
             receiver_gate = gate.unsqueeze(1)
-            messages = self.decoder(payload, receiver_gate).reshape(
+            messages = self.decoder(received_payload, receiver_gate).reshape(
                 n, n, self.heads, self.head_dim)
             query = z.unsqueeze(1).expand(n, n, -1, -1)
             pair = torch.cat((query, messages), dim=-1)
@@ -109,7 +131,7 @@ class CommunicationRound(nn.Module):
             alpha_null = alpha[:, -1]
         updated = z + aggregate
         output = updated.mean(dim=1) if self.final else F.relu(updated).flatten(1)
-        return output, bits, alpha_null
+        return output, payload, alpha_null
 
 
 class SoftRoleNet(nn.Module):
@@ -129,10 +151,18 @@ class SoftRoleNet(nn.Module):
     def __init__(self, base: int = 25, n_squares: int = 25, mode: str = "banked",
                  experts: int = 4, pre_dim: int = 128, hidden_dim: int = 64,
                  heads: int = 4, head_dim: int = 16, msg_dim: int = 16,
-                 feedback: bool = True, allow_stay: bool = True):
+                 feedback: bool = True, allow_stay: bool = True,
+                 comm_rounds: int = 2, independent_heads: bool = False,
+                 communication: str = "binary"):
         super().__init__()
         if type(allow_stay) is not bool:
             raise ValueError("allow_stay must be boolean")
+        if type(comm_rounds) is not int or comm_rounds <= 0:
+            raise ValueError("comm_rounds must be a positive integer")
+        if type(independent_heads) is not bool:
+            raise ValueError("independent_heads must be boolean")
+        if not isinstance(communication, str) or communication not in {"binary", "real"}:
+            raise ValueError("communication must be 'binary' or 'real'")
         self.allow_stay = allow_stay
         if mode not in {"banked", "shared", "capability", "constant"}:
             raise ValueError(f"Unknown gate mode: {mode}")
@@ -142,6 +172,8 @@ class SoftRoleNet(nn.Module):
         self.mode, self.experts, self.feedback = mode, (1 if mode == "shared" else experts), feedback
         self.obs_dim = n_squares * (base + 3) + 2
         self.hidden_dim, self.head_dim, self.msg_dim = hidden_dim, head_dim, msg_dim
+        self.heads, self.comm_rounds = heads, comm_rounds
+        self.independent_heads, self.communication = independent_heads, communication
         self.pre = nn.Linear(self.obs_dim, pre_dim)
         self.lstm = nn.LSTMCell(pre_dim + (head_dim if feedback else 0) + 6, hidden_dim)
         self.gate_network = None
@@ -153,8 +185,11 @@ class SoftRoleNet(nn.Module):
         elif mode == "constant":
             self.constant_logits = nn.Parameter(torch.zeros(self.experts))
         self.rounds = nn.ModuleList([
-            CommunicationRound(hidden_dim, heads, head_dim, msg_dim, self.experts, final=False),
-            CommunicationRound(heads * head_dim, heads, head_dim, msg_dim, self.experts, final=True),
+            CommunicationRound(hidden_dim if index == 0 else heads * head_dim,
+                               heads, head_dim, msg_dim, self.experts,
+                               final=index == comm_rounds - 1,
+                               independent_heads=independent_heads, communication=communication)
+            for index in range(comm_rounds)
         ])
         self.output = nn.Linear(head_dim, 6)
         self.critic_agent = nn.Sequential(nn.Linear(hidden_dim + 2, 64), nn.ReLU())
@@ -191,7 +226,10 @@ class SoftRoleNet(nn.Module):
 
         ``adjacency[j,k]`` permits sender k to reach receiver j.  The caller
         writes the sampled actions to returned memory['a_prev'] before the
-        next step.  Injected noise contains two N x msg_dim logistic tensors.
+        next step.  Binary injected noise contains one logistic tensor per
+        round, shaped N x msg_dim for a shared payload or N x heads x msg_dim
+        for independent head payloads.  Real communication sends raw encoder
+        outputs and does not accept bit noise.
         A gate override is either the full gate or ``(agent_mask, pinned_gate)``
         to freeze selected agents while all others continue adapting.
         """
@@ -200,8 +238,11 @@ class SoftRoleNet(nn.Module):
             raise ValueError("Observation/capability shapes do not match this nonempty roster")
         if adjacency.shape != (n, n) or adjacency.dtype != torch.bool:
             raise ValueError("Adjacency must be a boolean [receiver, sender] matrix")
-        if noise is not None and len(noise) != 2:
-            raise ValueError("Supply one bit-noise tensor for each of the two rounds")
+        if noise is not None:
+            if self.communication == "real":
+                raise ValueError("Real communication does not accept bit noise")
+            if len(noise) != self.comm_rounds:
+                raise ValueError("Supply one bit-noise tensor for each communication round")
         previous_action = F.one_hot(memory["a_prev"].long(), num_classes=6).to(obs.dtype)
         recurrent_inputs = [F.relu(self.pre(obs))]
         if self.feedback:
@@ -219,11 +260,11 @@ class SoftRoleNet(nn.Module):
             gate = self._gate(hidden, kappa) if gate_override is None else gate_override
         if gate.shape != (n, self.experts):
             raise ValueError("Gate override must have shape [agents, effective experts]")
-        features, bits, alpha_null = hidden, [], []
+        features, messages, alpha_null = hidden, [], []
         for index, layer in enumerate(self.rounds):
             features, message, null = layer(features, gate, adjacency,
                                             None if noise is None else noise[index], comm_off)
-            bits.append(message)
+            messages.append(message)
             alpha_null.append(null)
         logits = self.output(features)
         feasible = torch.ones_like(logits, dtype=torch.bool)
@@ -238,4 +279,5 @@ class SoftRoleNet(nn.Module):
         value = self.critic(torch.cat((pooled, team))).squeeze(-1)
         next_memory = {"H": hidden, "C": cell, "u_bar": features, "a_prev": memory["a_prev"]}
         return {"logits": logits, "value": value, "memory": next_memory,
-                "gate": gate, "bits": bits, "alpha_null": alpha_null}
+                "gate": gate, "bits": messages if self.communication == "binary" else [],
+                "messages": messages, "alpha_null": alpha_null}

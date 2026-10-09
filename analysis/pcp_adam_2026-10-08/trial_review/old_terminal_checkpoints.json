@@ -1,0 +1,72 @@
+[
+  {
+    "actual_optimizer": "RMSprop",
+    "available": true,
+    "episodes": 3785493,
+    "epoch": 1650,
+    "finite_model_and_optimizer": true,
+    "model": "shared",
+    "path": "stokes_runs/softrole_primary/pcp_shared/seed0/checkpoints/epoch1650.pt",
+    "seed": 0,
+    "sha256": "31dbea5cc09db571915c04fc704356de2330ca7eecb088e2bd1696ea76474b79",
+    "steps": 33569089,
+    "updates": 16500
+  },
+  {
+    "actual_optimizer": "RMSprop",
+    "available": true,
+    "episodes": 5274501,
+    "epoch": 2000,
+    "finite_model_and_optimizer": true,
+    "model": "shared",
+    "path": "stokes_runs/softrole_primary/pcp_shared/seed1/checkpoints/epoch2000.pt",
+    "seed": 1,
+    "sha256": "cfbb56e1ddc300c2bcf63bffdbe865b0c08e6f15d14b3d2e6faf9223574d0b31",
+    "steps": 40557314,
+    "updates": 20000
+  },
+  {
+    "available": false,
+    "model": "shared",
+    "seed": 2
+  },
+  {
+    "actual_optimizer": "RMSprop",
+    "available": true,
+    "episodes": 4064676,
+    "epoch": 2000,
+    "finite_model_and_optimizer": true,
+    "model": "banked",
+    "path": "stokes_runs/softrole_primary/pcp_banked/seed0/checkpoints/epoch2000.pt",
+    "seed": 0,
+    "sha256": "43294b03032fff6f7421d0e69c0fd667049f7e975d1ef21072ec6c923cfcb133",
+    "steps": 40789296,
+    "updates": 20000
+  },
+  {
+    "actual_optimizer": "RMSprop",
+    "available": true,
+    "episodes": 4228149,
+    "epoch": 2000,
+    "finite_model_and_optimizer": true,
+    "model": "banked",
+    "path": "stokes_runs/softrole_primary/pcp_banked/seed1/checkpoints/epoch2000.pt",
+    "seed": 1,
+    "sha256": "b10b772137af715b448a9d43a92de79a4ce3f498de0b0a9be4ad7007f1a67657",
+    "steps": 40741476,
+    "updates": 20000
+  },
+  {
+    "actual_optimizer": "RMSprop",
+    "available": true,
+    "episodes": 4268674,
+    "epoch": 2000,
+    "finite_model_and_optimizer": true,
+    "model": "banked",
+    "path": "stokes_runs/softrole_primary/pcp_banked/seed2/checkpoints/epoch2000.pt",
+    "seed": 2,
+    "sha256": "cd19d8f4e016b6edec29682b375a29b9f7aa025ebc0ce8b944314ad8baab852a",
+    "steps": 40695846,
+    "updates": 20000
+  }
+]

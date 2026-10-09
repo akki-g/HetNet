@@ -1,0 +1,192 @@
+{
+  "checks": "passed",
+  "config_deltas": [
+    {
+      "seed": 0,
+      "delta": {
+        "env_version": {
+          "old": "MISSING",
+          "adam": "corrected-observation-v1"
+        },
+        "optimizer": {
+          "old": "MISSING",
+          "adam": "adam"
+        }
+      },
+      "adam_environment": {
+        "task": "pcp",
+        "dim": 5,
+        "vision": 2,
+        "num_p": 2,
+        "num_a": 1,
+        "max_steps": 80,
+        "env_version": "corrected-observation-v1",
+        "failure_prob": 0.0,
+        "compositions": [],
+        "comm_range": -1.0
+      }
+    },
+    {
+      "seed": 1,
+      "delta": {
+        "env_version": {
+          "old": "MISSING",
+          "adam": "corrected-observation-v1"
+        },
+        "optimizer": {
+          "old": "MISSING",
+          "adam": "adam"
+        }
+      },
+      "adam_environment": {
+        "task": "pcp",
+        "dim": 5,
+        "vision": 2,
+        "num_p": 2,
+        "num_a": 1,
+        "max_steps": 80,
+        "env_version": "corrected-observation-v1",
+        "failure_prob": 0.0,
+        "compositions": [],
+        "comm_range": -1.0
+      }
+    },
+    {
+      "seed": 2,
+      "delta": {
+        "env_version": {
+          "old": "MISSING",
+          "adam": "corrected-observation-v1"
+        },
+        "optimizer": {
+          "old": "MISSING",
+          "adam": "adam"
+        }
+      },
+      "adam_environment": {
+        "task": "pcp",
+        "dim": 5,
+        "vision": 2,
+        "num_p": 2,
+        "num_a": 1,
+        "max_steps": 80,
+        "env_version": "corrected-observation-v1",
+        "failure_prob": 0.0,
+        "compositions": [],
+        "comm_range": -1.0
+      }
+    }
+  ],
+  "geometry": {
+    "layouts": 303600,
+    "corrected_any_P_sees_target_initially": 239008,
+    "historical_any_P_sees_target_initially": 101280,
+    "restored_visibility_initially": 137728,
+    "corrected_any_P_sees_target_initially_fraction": 0.7872463768115942,
+    "historical_any_P_sees_target_initially_fraction": 0.33359683794466405,
+    "restored_visibility_initially_fraction": 0.45364953886693016,
+    "omniscient_mean_episode_steps": 5.08505928853755,
+    "omniscient_mean_team_return": -0.4,
+    "interpretation": "Static uniform-distinct layout population; no policy/environment rollouts. Independent-copy correction restores intended P target channel; effect on learned performance is unmeasured."
+  },
+  "source_comparison": {
+    "historical_softrole_pcp_simulator": {
+      "same_bytes": true,
+      "identical_method_AST": [
+        "__init__",
+        "_all_idx",
+        "_get_cordinates",
+        "_get_obs",
+        "_get_reward",
+        "_get_tensor_obs",
+        "_onehot_initialization",
+        "_set_grid",
+        "_take_action",
+        "exit_render",
+        "init_args",
+        "init_curses",
+        "multi_agent_init",
+        "render",
+        "reset",
+        "reward_terminal",
+        "seed",
+        "step"
+      ],
+      "different_method_AST": []
+    },
+    "working_pcp_simulator": {
+      "same_bytes": true,
+      "identical_method_AST": [
+        "__init__",
+        "_all_idx",
+        "_get_cordinates",
+        "_get_obs",
+        "_get_reward",
+        "_get_tensor_obs",
+        "_onehot_initialization",
+        "_set_grid",
+        "_take_action",
+        "exit_render",
+        "init_args",
+        "init_curses",
+        "multi_agent_init",
+        "render",
+        "reset",
+        "reward_terminal",
+        "seed",
+        "step"
+      ],
+      "different_method_AST": []
+    },
+    "paper_v1_pcp_simulator": {
+      "same_bytes": false,
+      "identical_method_AST": [
+        "_all_idx",
+        "_get_cordinates",
+        "_get_reward",
+        "_get_tensor_obs",
+        "_onehot_initialization",
+        "_set_grid",
+        "_take_action",
+        "exit_render",
+        "init_args",
+        "init_curses",
+        "render",
+        "reset",
+        "reward_terminal",
+        "seed",
+        "step"
+      ],
+      "different_method_AST": [
+        "__init__",
+        "_get_obs",
+        "multi_agent_init"
+      ]
+    },
+    "upstream_pcp_simulator_fetched_20261008": {
+      "same_bytes": false,
+      "identical_method_AST": [
+        "_all_idx",
+        "_get_cordinates",
+        "_get_reward",
+        "_get_tensor_obs",
+        "_onehot_initialization",
+        "_set_grid",
+        "_take_action",
+        "exit_render",
+        "init_args",
+        "init_curses",
+        "multi_agent_init",
+        "render",
+        "reset",
+        "reward_terminal",
+        "seed",
+        "step"
+      ],
+      "different_method_AST": [
+        "__init__",
+        "_get_obs"
+      ]
+    }
+  }
+}

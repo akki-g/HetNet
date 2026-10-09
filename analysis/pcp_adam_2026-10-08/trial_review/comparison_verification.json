@@ -1,0 +1,8 @@
+{
+  "all_fields_exact": true,
+  "metric_count_boundary_fields_checked": 1070,
+  "per_seed_windows_checked": 107,
+  "reference_windows_sha256": "aae7e3df42242dd7a17cf4417443e5efb7bc3bfb9e8a1aa58e05a712bc8f5ab4",
+  "root_comparison_sha256": "d60068893aa9d95818112e482a7e82f523a5da6e03caa8babb9473d76528aaed",
+  "timing_fields_match_within_roundoff": true
+}

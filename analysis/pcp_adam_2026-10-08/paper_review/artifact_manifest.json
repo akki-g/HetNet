@@ -1,0 +1,14 @@
+{
+  "audit.py": "c697a022be67941414e2c8736029fb71b77bf06a56564f9af951c0b0954e4ffe",
+  "audit_console.json": "683dc31766341e731f02178b272acf72d1544943953eed6ab7fbb8705e5aaa47",
+  "comparison.json": "a92e15d3a298e05184c474dcf560ba523cae4a86f3dcb517df3d2612fb0425e2",
+  "evidence_notes.md": "c4faa6c6949a2913cec4484a97fc7e3bf087c11eaa06e3e0c9ce24b663099032",
+  "final_report_review.json": "7155ef001e14732ff39091021e94b243cef6b833088b7c831df2c13d9c350af2",
+  "hetnet_paper.pdf": "c4f7d8d45d2414ee9ef025ebb16b2a8303b40a9ea434bb5b57cb6ed8698ac723",
+  "hetnet_supplement.pdf": "22262845fe6f8e1b6aa6f66f970c176a27c9a9f0550b4fc62066c7d99a928696",
+  "paper_page7.png": "4e3d8f2f4514ce96c269a0d234fd19eac675352aefb479963287736be1ec5b53",
+  "supplement_page1.png": "28d42bc3d840a4b53d6ed6a49e1fdb286eb83c9c06ad794887208c3159d79f24",
+  "upstream_predator_capture_env.py": "5cbacd28f4f851a44bdf0f71b9e76b85a87ef1bb8d5e58418a0ffbcffbbaf853",
+  "upstream_print_plot_eval.py": "7c95155bf39b5bfd81c466cd2d0286b3c46df1fada2d6808900306b1722f5d52",
+  "validation.json": "751f5e845b418ce4080ea54229bbad60422a049117a0827d1775fc6381fc3b53"
+}

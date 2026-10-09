@@ -1,0 +1,42 @@
+{
+  "review_date": "2026-10-08",
+  "scope": "Scientific review of six-page report text and generating script; visual review owned by root.",
+  "reviewed": {
+    "analysis/pcp_adam_2026-10-08/report_text.txt": "039c4902421cf506dcfe9b2a67ddc469aad9c34ef36398f2899de48d2545df09",
+    "analysis/pcp_adam_2026-10-08/build_report.py": "e3ace344149a27dabc022d61dec7ed506bfd8d0a00fa904cfd7b54e983dc0ab3"
+  },
+  "substantive_findings": "No new scientific blocker. The physical/observation distinction, reported original-paper numbers, reward units, oracle interpretation, incomplete provenance, training/frozen separation and causal limitations are supported.",
+  "wording_corrections_sent_to_root": [
+    {
+      "location": "page3",
+      "before": "zeroing the blind A agent sensory view",
+      "after": "masking the blind A agent sensory view with -1",
+      "basis": "Actual historical code writes -1, not 0."
+    },
+    {
+      "location": "page5",
+      "before": "Banked transfer is not established",
+      "after": "Reliable banked transfer across these teams is not established",
+      "basis": "Some seed/composition cells do transfer; reliability/general benefit is not established."
+    },
+    {
+      "location": "page6",
+      "before": "One stdout scalar is corrupted or edited",
+      "after": "One stdout scalar is invalid and disagrees with the run artifacts",
+      "basis": "Reports observed discrepancy without inferring its origin."
+    },
+    {
+      "location": "page5 next steps",
+      "before": "checkpoint/update/gradient ledgers",
+      "after": "checkpoints and update ledgers with gradient-norm diagnostics",
+      "basis": "Full intermediate gradient tensors are not established as saved research artifacts."
+    },
+    {
+      "location": "opening",
+      "before": "Source code ... not changed",
+      "after": "Runtime source code ... not changed",
+      "basis": "Analysis/build source files were added."
+    }
+  ],
+  "upstream_reporting_link_verified": "https://github.com/CORE-Robotics-Lab/HetNet/blob/main/print_plot_eval.py"
+}

@@ -260,6 +260,60 @@ directory. PP/PCP/FC defaults match the repository's domain recipes, but the new
 actor, learner and corrected observations constitute a separate experiment.
 Original reproduction commands retain their default behavior.
 
+### PCP CapCom Binary/Real communication experiment
+
+`scripts/softrole_channels_pcp.sh` prepares six fresh **shared CapCom** runs,
+continuing the model and Adam learner used in the latest PCP trials. Indices
+0–2 select Binary seeds 0–2; indices 3–5 select Real seeds 0–2. Each seed therefore
+has one run of each channel. Both use three rounds, four independently encoded
+64-dimensional payloads per round, four 16-wide attention heads, the same
+encoder/decoder architecture, and the same global team critic. Binary samples
+hard Bernoulli bits with the existing straight-through training derivative;
+Real sends the continuous encoder outputs. The channel is the only configured
+difference within each seed pair. Matching seeds does not make subsequent
+trajectories identical once the channel changes.
+
+Binary broadcasts **768 logical bits per agent-step** (3 × 4 × 64). Real
+broadcasts **768 real-valued scalars**; CPU float64 represents those scalars with
+49,152 bits, excluding transport overhead. This is a matched-dimension channel
+comparison, not an equal-bandwidth comparison. It does not reproduce HetNet-Real's
+removal of its encoder/decoder, and it does not isolate the benefit of capability
+banks because this six-run study uses the shared variant.
+
+The fixed protocol uses corrected native PCP observations, 2P1A on a 5×5 grid,
+vision 2, horizon 80, no sensor failures, Adam at 1e-4, four collectors, and the
+unchanged team objective (actor coefficient 50, value coefficient 1). Each run
+targets 40M environment steps with a 2,000-epoch cap, records actual counts and
+complete-update overshoot, and saves every 50 epochs plus its terminal
+checkpoint. Reduced runtime budgets below are execution checks, not the
+research budget.
+
+```bash
+# Read the complete fixed configuration without creating output directories.
+bash scripts/softrole_channels_pcp.sh 0 --dry-run
+bash scripts/softrole_channels_pcp.sh 3 --dry-run
+
+# One small local execution; use a fresh root each time.
+SOFTROLE_CHANNELS_PCP_RUN_ROOT=runs/channels_pcp_smoke \
+  bash scripts/softrole_channels_pcp.sh 0 --epochs 1 --updates-per-epoch 1 \
+    --batch-steps 1 --nprocesses 1 --total-steps 1 --save-every 1
+
+# Optional six-job Slurm array; this command submits the full experiment.
+mkdir -p logs_sr
+sbatch slurm/softrole_channels_pcp.sbatch
+```
+
+Outputs are isolated under
+`runs/softrole_channels_pcp_JOBID/pcp_shared/{binary,real}/seed{0,1,2}` on Slurm
+and `runs/softrole_channels_pcp_manual/` locally. Set
+`SOFTROLE_CHANNELS_PCP_RUN_ROOT` to choose a different fresh study root. Existing
+run directories, resume and scientific-setting overrides are rejected. Only
+the displayed runtime/budget settings, `--episode-log file|stdout` and `--dry-run`
+may be overridden. The array permits three concurrent jobs and retains core
+binding and one thread per numerical library; its four-CPU, 16 GB, 48-hour
+requests are starting settings, not a measured runtime for this larger model.
+No submission is automatic.
+
 SoftRole logs both `team_return` and `mean_agent_return`. The latter is the
 mean of each episode's agent returns, matching the released HetNet reporting
 scale. For fixed three-agent teams it is `team_return / 3`; for varying teams,

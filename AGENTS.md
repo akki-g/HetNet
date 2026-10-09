@@ -2405,3 +2405,280 @@ the legacy `prepare-evaluation` route for paper-v1 or pool unmatched old FC runs
   training test suite was rerun for this analysis-only change. No training,
   policy evaluation, input/checkpoint mutation, launcher/dependency change,
   Slurm submission, commit or push occurred.
+
+### 2026-10-05 — proposed experiment-completion critical path for next week
+
+- Reviewed the user's twelve-concurrent-run decision and current code/artifacts
+  to propose [a scoped plan through12 October](analysis/core_experiments_2026-10-05/plan.md).
+  This is a recommendation, not execution or a new locked experimental panel.
+  The twelve-task paper launcher permits48 CPUs/192GiB total and preserves four
+  collectors per independent run; the legacy publication_train launcher ignores
+  the backend environment variable. No launcher was edited or submitted.
+- Separate audits checked existing training/evaluation coverage, final-evaluation
+  readiness and the scientific claims that the remaining tests could support.
+  The existing PCP30M frozen tranche already contains15000 nominal/transfer and
+  1200 failure/sham episodes. Preserve it, its unstable banked seed and its
+  1/600 failure exposure result. It cannot establish useful sensor-loss adaptation.
+- Updated artifact status rather than repeating stale absence claims: five of
+  six selected PCP1500 weights now match the recorded manifest; shared2 remains
+  missing locally. All six PP stdout logs reach2000 epochs/about40.3M steps but
+  their newer copied checkpoint directories are incomplete. Recover missing
+  archives instead of restarting these completed runs.
+- Identified a real remaining training task: PCP shared0's48h timeout leaves a
+  valid epoch1650 checkpoint at33569089 steps and an abandoned ledger suffix to
+  epoch1655/33669601. A source-verified continuation should finish40M; recent
+  observed rates project11.8–11.9 active hours, not a guarantee. Existing30M
+  evaluation remains usable. Six fresh paper-FC SoftRole runs are still needed;
+  the completed older FC runs have different environment semantics.
+- Prioritized a paper-specific checkpoint/panel preparer, retained-lineage
+  accounting, explicit budget protocol sidecars, report input hardening and
+  paired mechanism analysis in a separate evaluation checkout. Core evaluators
+  already support paper-v1/native evaluation, PCP transfer and failure/sham, and
+  SoftRole gate/communication interventions. Existing generic summaries already
+  support within-policy failure-minus-sham seed inference; gate interaction and
+  between-method contrasts remain to implement. Noted stale RESEARCH wording.
+- Proposed retaining the declared PCP30M comparison selection while completing
+  all40M training, with PP40M and FC28M. The nominal three-seed matrix contains
+  39000 episode evaluations,15000 already available. New supplemental native
+  step1 failure/sham plus banked freeze_all/comm_off controls would add18000
+  evaluations without retraining; timing/panel must be fixed before new outcomes,
+  and exposure/censoring/full assigned denominators retained. This is frozen
+  nominal-policy perturbation, not evidence about failure-trained policies.
+- Kept broader original-paper baselines/ablations, bank searches, extra training
+  regimes and stronger architectural-causality claims outside the recommended
+  one-week scope unless the user explicitly makes them mandatory. Twelve
+  simultaneous HetNet starts put the observed Binary critical path near56.5–86.8
+  active hours plus queue/continuation delays; the prior three-slot6.6–9.1day
+  estimate does not apply to twelve continuously running jobs. No completion,
+  favorable result or acceptance guarantee is made.
+- Files touched: `analysis/core_experiments_2026-10-05/plan.md` (new proposal with
+  traceable evidence and dated schedule), `.gitignore` (narrow exception),
+  `AGENTS.md` (this additive record), and the proposal's validation/hash record.
+  Checked local evidence links, panel arithmetic, observed timeout/counters and
+  whitespace. No runtime code, dependency, source archive, checkpoint or existing
+  report was changed; no tests, training, evaluation, Slurm jobs, commit or push.
+
+### 2026-10-05 — sensor-adaptation training readiness clarification
+
+- Rechecked the training engine, `softrole/config.py`, generic CLI and locked
+  failure launchers in response to the user's question about starting the
+  adaptation-training study. Existing implementation supports persistent
+  before-action sensory/capability changes, shared/banked training, counters,
+  checkpoint recovery and actual event-exposure metrics; prior small real
+  failure-training validations remain execution evidence, not research results.
+- Confirmed the current locked study uses mixed teams(2,1)/(2,2)/(3,1), failure
+  probability.5 and times10–30. The observed1/600 exposure under mature fixed-team
+  nominal policies does not prove this training distribution will behave
+  identically, but motivates revisiting timing before a full adaptation sweep.
+  Comparing this mixed-team failure training to old fixed-team nominal training
+  would confound composition variation with failure experience.
+- Recommended, without changing or launching the existing protocol, a distinct
+  native2P1A early-failure study: shared/banked seeds0–2, .5 event probability,
+  proposed window1–3 and40M steps, with unchanged architecture/learner. Its
+  protocol must be fixed, exposure checked and bounded training/recovery
+  validated before research submission. This is additional training, not a
+  substitute name for frozen nominal-policy perturbation tests. Mixed-team
+  training remains an alternative with a different scientific scope.
+- Executed only dry runs for the existing reference launcher and the proposed
+  generic early-failure configuration. Both resolved correctly; no run directory
+  was created. The locked failure launcher intentionally rejects timing/study
+  overrides, so a new frozen launcher/protocol is needed for the proposal.
+- Fresh validation: `.venv/bin/python -m pytest -q
+  tests/test_softrole_failure_launcher.py tests/test_softrole_env.py` passed
+  **45 tests in1.42 seconds**. No model/learner/environment/launcher was edited;
+  no training, evaluation or cluster submission occurred. Only `AGENTS.md` was
+  changed for this clarification; earlier proposal files were preserved.
+
+### 2026-10-08 — PCP Adam trials, latest HetNet and throughput analysis
+
+- Analyzed the new `logs_sr/softrole-adam-pcp-911488_{0,1,2}.out` and
+  `stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed{0,1,2}/`. These are fresh
+  **shared** Adam trials, not banked trials: fixed 2P1A, no failures, Adam 1e-4,
+  CPU float64, four collectors and 20,000 updates each. All finish 2,000 epochs.
+  Total: 121,822,429 joint steps and 15,224,881 episodes.
+- Streamed every new episode; reconciled all 60,000 updates and 6,000 epochs,
+  including rewards, successes, sample counts, no-event settings, payload and
+  attention bounds. Loaded all 120 saved checkpoints and checked actual finite
+  model/Adam tensors, moment shapes/dtypes/nonnegative second moments, optimizer
+  steps, source/configuration/count identities and exact signatures/sidecars.
+  Verified 918 archived source files (306 per seed) against their manifests.
+  Additional checks loaded five available older terminal RMSprop checkpoints.
+- Found one invalid copied stdout scalar: seed 2 epoch 2000 `alpha_null` is
+  -1.3112684324133872, while structured metrics contain +0.3112684324133873 and
+  independent raw-episode reaggregation gives +0.3112684324133872. All other
+  stdout fields/epochs match. Retained both inputs; used the reconciled run
+  artifacts and did not infer the cause of the discrepancy. Performance metrics
+  are unaffected. All 60,000 pre-clip update norms exceed .75; this alone does
+  not measure optimizer step size or establish instability.
+- Identified the newer `logs_1/hetnet-paper-908316_*` wave separately from older
+  release/reproduction-fast runs. Inventoried 12 status receipts and streamed
+  the six PCP logs, recording hashes and complete epoch/partial suffix counts.
+  Independently reconciled raw paper episode batches for each seed's common
+  26–27M and latest-100-epoch windows plus the worst Real seed-0 epoch.
+  Real seeds 1/2 reach 40M, Real 0 pauses at 36.767M, and Binary seeds pause at
+  27.295–27.585M after 46 active hours. These are copied-segment facts; current
+  cluster state/continuations and the scientific-wave checkpoint/source/run
+  directories are not available locally.
+- Used complete epochs with lower < epoch-end steps <= upper, recording exact
+  retained boundaries. Weighted episodes within each independent training seed,
+  then seeds equally; reported descriptive seed ranges, not confidence intervals.
+  At 26–27M, mean steps are Binary 5.1159, shared RMSprop 6.0953, shared Adam
+  6.1188, Real 6.6548 and banked RMSprop 7.5339. Real seed 0 regresses materially
+  around 24–27M (epoch 1200: 280 episodes, all 80 steps, zero successes), then
+  recovers; its cause is unresolved without the missing run diagnostics.
+- Latest 100-epoch means are shared Adam 5.4012, HetNet Real 5.1162 and Binary
+  5.1187, at different budgets. Adam's last 100 epochs contain three failures
+  among 1,116,258 episodes. Adam learns more slowly at several early windows and
+  closely tracks shared RMSprop later; no general sample-efficiency improvement
+  is established. Older shared seed 0 stops early with a 100,512-step unsaved
+  suffix after epoch 1650; shared seed 2 lacks copied checkpoints. Did not pool
+  unmatched endpoints into an optimizer-superiority claim.
+- Audited physical PCP methods against archived/current/upstream source and
+  the paper/supplement. New and old CapCom raw simulator bytes match. Reset,
+  movement/capture, reward and termination methods retain the public physics.
+  Independent observation copies do change observations relative to the buggy
+  historical release: blind A masking otherwise corrupts overlapping P views.
+  Full distinct-layout enumeration and an independent closed-form calculation
+  give 78.72% versus 33.36% initial visibility to at least one P. This establishes
+  an information difference, not its causal share of learning or that the paper
+  used the defective checkout. Distinguished Table 1's 50 frozen trials from
+  Figure 3 training; verified current public mean-agent reward postprocessing.
+  Recomputed the omniscient native physical reference of 5.0851 steps and -0.4
+  team return, without executing an environment or policy.
+- New Adam epoch-loop sums are 15.31–15.37 hours versus 24.67–24.87 for the two
+  completed older shared RMSprop seeds: observed throughput improves about
+  1.62x. These timers omit checkpoint writes, some setup/shutdown and queueing.
+  Source comparison finds episode-log opens reduced from one per episode to
+  one per update (about five million to 20,000), plus launch affinity/thread
+  changes; persistent worker pools already existed. Hardware/load/IO profiling
+  is missing, so no causal speedup fraction is assigned to Adam or logging.
+- Freshly recomputed all 18 prior frozen reports / 16,200 outcomes, panels,
+  reward arithmetic and failure exposure. Five of six selected older weight
+  files now exist and hash-match; shared seed 2 remains missing. The old banked
+  transfer weakness and 1/600 failure exposure are preserved. These are older
+  RMSprop policies, not frozen evaluations of the new Adam checkpoints.
+- Created the six-page report `output/pdf/pcp_adam_analysis_2026-10-08.pdf` and
+  fresh `analysis/pcp_adam_2026-10-08/`. Root authored files are `README.txt`,
+  `frozen_audit.py`, `compare.py`, `build_report.py`; derived files include three
+  comparison CSVs, frozen composition CSV/JSON/input hashes, comparison JSON,
+  two PNG/SVG figures, extracted report text, PDF build/validation records and
+  an artifact manifest. Independent `trial_review/`, `speed_review/` and
+  `paper_review/` contain reproducible audit scripts, source/paper snapshots,
+  raw-input hashes, numerical tables, evidence notes and review receipts.
+  The root artifact manifest enumerates every exact analysis output plus PDF.
+  Also touched `.gitignore` with narrow output exceptions and this `AGENTS.md`.
+- Validation: independent comparison agrees exactly on 1,070 values across 107
+  overlapping per-seed windows, plus durations. Rechecked source/input hashes;
+  repeated root comparison calculations; syntax-checked analysis scripts,
+  checked documented command paths and whitespace. Rendered and visually
+  inspected all six PDF pages and both charts; embedded Arial fonts and verified
+  expected numbers/page count. Plot/PDF dependencies ran through isolated
+  `uv --no-project`; no project dependency changed. Temporary PDF QA renders
+  were removed after inspection. Existing staged changes were preserved.
+- No runtime/model/environment edit, input/checkpoint mutation, training,
+  policy evaluation, full test-suite run, cluster action, commit or push.
+  Further frozen evaluation, matched banked trials and exposed capability
+  perturbations are recommendations, not newly executed experiments.
+
+### 2026-10-08 — PCP CapCom three-round independent Binary/Real experiment
+
+- Implemented the user's requested six-run experiment: three communication
+  rounds, four independently encoded 64-value payloads per round, Binary and
+  Real for each training seed0/1/2. Used shared CapCom and Adam1e-4 to match the
+  latest archived PCP Adam trials; the optional shared-versus-banked clarification
+  received no answer, so the stated shared default was retained. This experiment
+  retains the global pooled scalar critic and common team learner. It does not
+  test capability-conditioned expert selection or change environment dynamics.
+- Added opt-in `comm_rounds`, `independent_heads`, `communication` and `optimizer`
+  configuration/CLI fields. Defaults remain two rounds, one16-bit payload shared
+  across heads, Binary and historical RMSprop. Default model_config dictionaries
+  omit new channel fields, retaining old checkpoint layout compatibility.
+- Independent heads have separate affine encoder/decoder parameters and
+  conditional Logistic bit draws; each sender/head broadcasts the same payload
+  to every receiver. Receiver gating, null attention, one gate per agent-step,
+  16-wide attention heads, recurrence and physical masking retain their original
+  semantics. Real sends raw affine encoder outputs with no sigmoid, threshold or
+  bit-noise draws, using exactly the same parameter shapes and initialization.
+  It is a matched continuous CapCom control, not original HetNet-Real.
+- Ported the optimizer helper byte-for-byte from the archived Adam PCP source.
+  Recorded optimizer recipes and fresh/resume status; validated optimizer groups
+  and moments before continuation. Binary-only approximation metadata now omits
+  straight-through bits for Real. GAE and truncated recurrence remain approximate.
+- Added indexed per-round/per-head rollout noise and honest episode payload
+  accounting:768 Binary logical bits or768 float64 values (49,152 representation
+  bits) per sender-step. These are logical payload sizes, not measured/packed
+  network traffic. Legacy lightweight rollout configs retain missing-field
+  defaults; independent review caught this compatibility issue before final
+  regression testing.
+- Added a fixed launcher and optional Slurm array. Indices0–2 are Binary seeds
+  0–2 and3–5 are Real seeds0–2. Both use corrected-observation-v1 native PCP,
+  2P1A,5x5,vision2,horizon80,no failures, shared model, Adam(.9,.999)/eps1e-8,
+  four500-step collectors,10updates/epoch,40M-step target with2,000-epoch cap,
+  and50-epoch checkpoints plus terminal checkpoint. The launcher rejects
+  scientific/resume overrides and existing run directories, but permits bounded
+  budget/resource checks. Slurm retains one thread per library, core binding,
+  4CPUs/16GB/48h and at most three concurrent jobs; resources are unbenchmarked
+  for the new model. No research array was submitted.
+- Repository files touched, with purpose:
+  - `softrole/config.py`: optional channel/optimizer fields and validation.
+  - `softrole/__main__.py`: corresponding training CLI options.
+  - `softrole/model.py`: dynamic rounds, independent head payloads, Real path.
+  - `softrole/rollout.py`: indexed noise, Real no-noise path, payload accounting.
+  - `softrole/optimizers.py` (new): explicit Adam/RMSprop recipes/resume checks.
+  - `softrole/train.py`: optimizer creation/provenance/resume and approximations.
+  - `scripts/softrole_channels_pcp.sh` (new): six fixed paired-seed launch entries.
+  - `slurm/softrole_channels_pcp.sbatch` (new): optional0–5%3 array.
+  - `tests/test_softrole_channels_model.py` (new): frozen legacy numerics,
+    independent encoding/decoding, raw Real gradients, equivariance/null behavior.
+  - `tests/test_softrole_channels_training.py` (new): config compatibility,
+    independent noise, replay/payloads, actual Adam resume, report separation.
+  - `tests/test_softrole_channels_launcher.py` (new): six direct/mocked-Slurm
+    dry runs, paired configurations, protected settings and fresh-output checks.
+  - `tests/test_softrole_optimizer.py` (new): exact old RMSprop updates, Adam
+    continuation and invalid optimizer-state rejection.
+  - `README.md`, `softrole/RESEARCH.md`: experiment usage, mathematics, budget
+    and inference limits; `AGENTS.md`: this additive record.
+- Validation:39 model tests passed,46 launcher tests passed,31 optimizer/learner
+  tests passed, and39 rollout/evaluation integration tests passed. The full
+  `.venv/bin/python -m pytest -q` completed with **716 passed,1 failed in289.96s**.
+  The sole failure is the pre-existing
+  `test_publication_slurm.py::test_batch_files_have_required_directives_and_valid_shell[train]`:
+  `slurm/publication_train.sbatch` has `--array=0-11`, while the test expects
+  `0-11%3`. Both files are byte-identical to HEAD; isolated rerun reproduces it.
+  Preserved this unrelated existing launch setting. A preliminary full run was
+  interrupted after95passes to apply the lightweight-config compatibility fix.
+- Validation: legacy default seeded state_dict bytes/keys, RNG state, model
+  outputs and recurrent memory match a pre-extension snapshot exactly. Real and
+  Binary initialization matches exactly. Tests verify raw Real channel gradients,
+  biased Binary forward/backward behavior, independent conditional draws,
+  receiver-gated decoding, null neighborhoods, permutation symmetry, old
+  checkpoint layout, and exact new-channel Adam model/moment continuation.
+  Read-only independent review strictly loaded a real archived RMSprop checkpoint
+  and validated its optimizer recipe. `uv lock --check` resolved59 packages with
+  no changes; new shell syntax and `git diff --check` passed.
+- Generated only fresh `runs/capcom_channels_validation_20261008/` for this
+  implementation's persistent execution checks. `validate.py` records the exact
+  six launcher commands: each index with epochs1,updates1,batch floor1,
+  two collectors,total-steps1,save-every1, retaining the full requested model and
+  horizon80. Binary seeds0/1/2 collected107/113/160 steps; Real collected160 each:
+  **860steps,12episodes,six optimizer updates** total. Each model has235,571
+  parameters; all model/Adam tensors are finite and signatures changed.
+- Six checkpoints each ran the same two frozen scenarios twice:24 episode
+  executions, exact per-episode/trace replay, no checkpoint mutation. Summaries
+  retain separate Binary/Real groups with three seeds each. Same-seed config
+  dictionaries differ only in communication and initial weights match exactly;
+  trajectories/sample counts can diverge. These tiny executions are engineering
+  checks, not task-quality estimates or evidence of channel superiority.
+- `validation.json`, `scenarios.json`, six command logs, six training run trees,
+  twelve frozen report/replay JSONs, and `stratified_summary.json` preserve the
+  execution evidence. All3,864 archived source-file copies (644perrun) passed
+  independent hash audit. The common execution source identity is
+  `87db13aa8830ee3d30065d4737ac7f1e5c38da4660a2cf53dce7131f79443ed0`.
+  This final work-log entry and a wording clarification in RESEARCH were added
+  after execution. `checks.json` records regression results and baseline failure
+  evidence; `artifact_manifest.json` enumerates/hashes every other file under
+  this fresh validation directory, excluding itself.
+- No original reproduction/model/environment source, supplied logs, old run
+  artifacts/checkpoints, dependency versions, prior staged work or ignore rules
+  were changed by this implementation. No full research training, held-out
+  tuning, cluster submission, commit or push was performed.

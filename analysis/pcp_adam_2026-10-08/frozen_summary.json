@@ -1,0 +1,771 @@
+{
+  "raw_reports": 18,
+  "total_evaluated_episodes": 16200,
+  "nominal_seed_rows": [
+    {
+      "model": "shared",
+      "seed": 0,
+      "num_p": 1,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 0.968,
+      "steps_taken": 12.01,
+      "team_return": -1.2039999999999995,
+      "mean_agent_return": -0.40133333333333315
+    },
+    {
+      "model": "shared",
+      "seed": 0,
+      "num_p": 2,
+      "num_a": 1,
+      "episodes": 500,
+      "success_rate": 0.994,
+      "steps_taken": 6.5,
+      "team_return": -0.5713999999999999,
+      "mean_agent_return": -0.19046666666666665
+    },
+    {
+      "model": "shared",
+      "seed": 0,
+      "num_p": 2,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 0.998,
+      "steps_taken": 7.632,
+      "team_return": -0.8522,
+      "mean_agent_return": -0.21305
+    },
+    {
+      "model": "shared",
+      "seed": 0,
+      "num_p": 3,
+      "num_a": 1,
+      "episodes": 500,
+      "success_rate": 0.998,
+      "steps_taken": 6.044,
+      "team_return": -0.6398999999999999,
+      "mean_agent_return": -0.15997499999999998
+    },
+    {
+      "model": "shared",
+      "seed": 0,
+      "num_p": 3,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 7.114,
+      "team_return": -0.9338,
+      "mean_agent_return": -0.18676
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "num_p": 1,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 7.882,
+      "team_return": -0.7273000000000001,
+      "mean_agent_return": -0.24243333333333333
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "num_p": 2,
+      "num_a": 1,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 5.684,
+      "team_return": -0.4722,
+      "mean_agent_return": -0.1574
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "num_p": 2,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 6.666,
+      "team_return": -0.7447,
+      "mean_agent_return": -0.186175
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "num_p": 3,
+      "num_a": 1,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 5.65,
+      "team_return": -0.5868,
+      "mean_agent_return": -0.1467
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "num_p": 3,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 6.496,
+      "team_return": -0.867,
+      "mean_agent_return": -0.1734
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "num_p": 1,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 8.084,
+      "team_return": -0.7461,
+      "mean_agent_return": -0.2487
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "num_p": 2,
+      "num_a": 1,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 5.694,
+      "team_return": -0.4749,
+      "mean_agent_return": -0.1583
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "num_p": 2,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 6.776,
+      "team_return": -0.7525000000000001,
+      "mean_agent_return": -0.18812500000000001
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "num_p": 3,
+      "num_a": 1,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 5.656,
+      "team_return": -0.5899,
+      "mean_agent_return": -0.147475
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "num_p": 3,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 6.542,
+      "team_return": -0.8708,
+      "mean_agent_return": -0.17416
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "num_p": 1,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 0.996,
+      "steps_taken": 9.964,
+      "team_return": -0.9506999999999999,
+      "mean_agent_return": -0.31689999999999996
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "num_p": 2,
+      "num_a": 1,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 7.024,
+      "team_return": -0.5522,
+      "mean_agent_return": -0.18406666666666666
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "num_p": 2,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 8.058,
+      "team_return": -0.8991,
+      "mean_agent_return": -0.224775
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "num_p": 3,
+      "num_a": 1,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 6.876,
+      "team_return": -0.6707,
+      "mean_agent_return": -0.167675
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "num_p": 3,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 7.692,
+      "team_return": -1.0134,
+      "mean_agent_return": -0.20268
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "num_p": 1,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 0.498,
+      "steps_taken": 46.254,
+      "team_return": -4.6319999999999935,
+      "mean_agent_return": -1.5439999999999978
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "num_p": 2,
+      "num_a": 1,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 6.672,
+      "team_return": -0.5333,
+      "mean_agent_return": -0.17776666666666666
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "num_p": 2,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 0.614,
+      "steps_taken": 37.27,
+      "team_return": -3.826199999999995,
+      "mean_agent_return": -0.9565499999999988
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "num_p": 3,
+      "num_a": 1,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 6.57,
+      "team_return": -0.6488,
+      "mean_agent_return": -0.1622
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "num_p": 3,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 0.644,
+      "steps_taken": 36.118,
+      "team_return": -3.8433999999999955,
+      "mean_agent_return": -0.7686799999999991
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "num_p": 1,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 0.928,
+      "steps_taken": 15.292,
+      "team_return": -1.2111999999999994,
+      "mean_agent_return": -0.40373333333333317
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "num_p": 2,
+      "num_a": 1,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 6.988,
+      "team_return": -0.5463,
+      "mean_agent_return": -0.1821
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "num_p": 2,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 0.996,
+      "steps_taken": 8.788,
+      "team_return": -0.9229999999999999,
+      "mean_agent_return": -0.23074999999999998
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "num_p": 3,
+      "num_a": 1,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 7.044,
+      "team_return": -0.6837,
+      "mean_agent_return": -0.170925
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "num_p": 3,
+      "num_a": 2,
+      "episodes": 500,
+      "success_rate": 1,
+      "steps_taken": 8.394,
+      "team_return": -1.0547,
+      "mean_agent_return": -0.21094
+    }
+  ],
+  "nominal_groups": [
+    {
+      "model": "banked",
+      "num_p": 1,
+      "num_a": 2,
+      "seeds": 3,
+      "metrics": {
+        "success_rate": {
+          "mean": 0.8073333333333333,
+          "minimum": 0.498,
+          "maximum": 0.996
+        },
+        "steps_taken": {
+          "mean": 23.836666666666666,
+          "minimum": 9.964,
+          "maximum": 46.254
+        },
+        "team_return": {
+          "mean": -2.264633333333331,
+          "minimum": -4.6319999999999935,
+          "maximum": -0.9506999999999999
+        },
+        "mean_agent_return": {
+          "mean": -0.754877777777777,
+          "minimum": -1.5439999999999978,
+          "maximum": -0.31689999999999996
+        }
+      }
+    },
+    {
+      "model": "banked",
+      "num_p": 2,
+      "num_a": 1,
+      "seeds": 3,
+      "metrics": {
+        "success_rate": {
+          "mean": 1,
+          "minimum": 1,
+          "maximum": 1
+        },
+        "steps_taken": {
+          "mean": 6.894666666666667,
+          "minimum": 6.672,
+          "maximum": 7.024
+        },
+        "team_return": {
+          "mean": -0.5439333333333334,
+          "minimum": -0.5522,
+          "maximum": -0.5333
+        },
+        "mean_agent_return": {
+          "mean": -0.18131111111111112,
+          "minimum": -0.18406666666666666,
+          "maximum": -0.17776666666666666
+        }
+      }
+    },
+    {
+      "model": "banked",
+      "num_p": 2,
+      "num_a": 2,
+      "seeds": 3,
+      "metrics": {
+        "success_rate": {
+          "mean": 0.87,
+          "minimum": 0.614,
+          "maximum": 1
+        },
+        "steps_taken": {
+          "mean": 18.038666666666668,
+          "minimum": 8.058,
+          "maximum": 37.27
+        },
+        "team_return": {
+          "mean": -1.8827666666666651,
+          "minimum": -3.826199999999995,
+          "maximum": -0.8991
+        },
+        "mean_agent_return": {
+          "mean": -0.4706916666666663,
+          "minimum": -0.9565499999999988,
+          "maximum": -0.224775
+        }
+      }
+    },
+    {
+      "model": "banked",
+      "num_p": 3,
+      "num_a": 1,
+      "seeds": 3,
+      "metrics": {
+        "success_rate": {
+          "mean": 1,
+          "minimum": 1,
+          "maximum": 1
+        },
+        "steps_taken": {
+          "mean": 6.83,
+          "minimum": 6.57,
+          "maximum": 7.044
+        },
+        "team_return": {
+          "mean": -0.6677333333333333,
+          "minimum": -0.6837,
+          "maximum": -0.6488
+        },
+        "mean_agent_return": {
+          "mean": -0.16693333333333332,
+          "minimum": -0.170925,
+          "maximum": -0.1622
+        }
+      }
+    },
+    {
+      "model": "banked",
+      "num_p": 3,
+      "num_a": 2,
+      "seeds": 3,
+      "metrics": {
+        "success_rate": {
+          "mean": 0.8813333333333333,
+          "minimum": 0.644,
+          "maximum": 1
+        },
+        "steps_taken": {
+          "mean": 17.401333333333334,
+          "minimum": 7.692,
+          "maximum": 36.118
+        },
+        "team_return": {
+          "mean": -1.9704999999999986,
+          "minimum": -3.8433999999999955,
+          "maximum": -1.0134
+        },
+        "mean_agent_return": {
+          "mean": -0.39409999999999973,
+          "minimum": -0.7686799999999991,
+          "maximum": -0.20268
+        }
+      }
+    },
+    {
+      "model": "shared",
+      "num_p": 1,
+      "num_a": 2,
+      "seeds": 3,
+      "metrics": {
+        "success_rate": {
+          "mean": 0.9893333333333333,
+          "minimum": 0.968,
+          "maximum": 1
+        },
+        "steps_taken": {
+          "mean": 9.325333333333333,
+          "minimum": 7.882,
+          "maximum": 12.01
+        },
+        "team_return": {
+          "mean": -0.8924666666666665,
+          "minimum": -1.2039999999999995,
+          "maximum": -0.7273000000000001
+        },
+        "mean_agent_return": {
+          "mean": -0.2974888888888888,
+          "minimum": -0.40133333333333315,
+          "maximum": -0.24243333333333333
+        }
+      }
+    },
+    {
+      "model": "shared",
+      "num_p": 2,
+      "num_a": 1,
+      "seeds": 3,
+      "metrics": {
+        "success_rate": {
+          "mean": 0.998,
+          "minimum": 0.994,
+          "maximum": 1
+        },
+        "steps_taken": {
+          "mean": 5.959333333333333,
+          "minimum": 5.684,
+          "maximum": 6.5
+        },
+        "team_return": {
+          "mean": -0.5061666666666667,
+          "minimum": -0.5713999999999999,
+          "maximum": -0.4722
+        },
+        "mean_agent_return": {
+          "mean": -0.16872222222222222,
+          "minimum": -0.19046666666666665,
+          "maximum": -0.1574
+        }
+      }
+    },
+    {
+      "model": "shared",
+      "num_p": 2,
+      "num_a": 2,
+      "seeds": 3,
+      "metrics": {
+        "success_rate": {
+          "mean": 0.9993333333333333,
+          "minimum": 0.998,
+          "maximum": 1
+        },
+        "steps_taken": {
+          "mean": 7.024666666666667,
+          "minimum": 6.666,
+          "maximum": 7.632
+        },
+        "team_return": {
+          "mean": -0.7831333333333333,
+          "minimum": -0.8522,
+          "maximum": -0.7447
+        },
+        "mean_agent_return": {
+          "mean": -0.19578333333333334,
+          "minimum": -0.21305,
+          "maximum": -0.186175
+        }
+      }
+    },
+    {
+      "model": "shared",
+      "num_p": 3,
+      "num_a": 1,
+      "seeds": 3,
+      "metrics": {
+        "success_rate": {
+          "mean": 0.9993333333333333,
+          "minimum": 0.998,
+          "maximum": 1
+        },
+        "steps_taken": {
+          "mean": 5.783333333333333,
+          "minimum": 5.65,
+          "maximum": 6.044
+        },
+        "team_return": {
+          "mean": -0.6055333333333333,
+          "minimum": -0.6398999999999999,
+          "maximum": -0.5868
+        },
+        "mean_agent_return": {
+          "mean": -0.15138333333333331,
+          "minimum": -0.15997499999999998,
+          "maximum": -0.1467
+        }
+      }
+    },
+    {
+      "model": "shared",
+      "num_p": 3,
+      "num_a": 2,
+      "seeds": 3,
+      "metrics": {
+        "success_rate": {
+          "mean": 1,
+          "minimum": 1,
+          "maximum": 1
+        },
+        "steps_taken": {
+          "mean": 6.717333333333333,
+          "minimum": 6.496,
+          "maximum": 7.114
+        },
+        "team_return": {
+          "mean": -0.8905333333333333,
+          "minimum": -0.9338,
+          "maximum": -0.867
+        },
+        "mean_agent_return": {
+          "mean": -0.17810666666666666,
+          "minimum": -0.18676,
+          "maximum": -0.1734
+        }
+      }
+    }
+  ],
+  "failure_sham_pairs": [
+    {
+      "model": "shared",
+      "seed": 0,
+      "pairs": 100,
+      "exposed": 1,
+      "success_delta": 0,
+      "steps_delta": 0,
+      "team_return_delta": 0.0
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "pairs": 100,
+      "exposed": 0,
+      "success_delta": 0,
+      "steps_delta": 0,
+      "team_return_delta": 0.0
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "pairs": 100,
+      "exposed": 0,
+      "success_delta": 0,
+      "steps_delta": 0,
+      "team_return_delta": 0.0
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "pairs": 100,
+      "exposed": 0,
+      "success_delta": 0,
+      "steps_delta": 0,
+      "team_return_delta": 0.0
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "pairs": 100,
+      "exposed": 0,
+      "success_delta": 0,
+      "steps_delta": 0,
+      "team_return_delta": 0.0
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "pairs": 100,
+      "exposed": 0,
+      "success_delta": 0,
+      "steps_delta": 0,
+      "team_return_delta": 0.0
+    }
+  ],
+  "checkpoint_byte_checks": [
+    {
+      "model": "shared",
+      "seed": 0,
+      "local_path": "stokes_runs/softrole_primary/pcp_shared/seed0/checkpoints/epoch1500.pt",
+      "local_exists": true,
+      "sha256": "fa75518461b4256f0d3a5a094e881a86d37d7d67a6fff21acb21dc568def9444",
+      "recorded_sha256": "fa75518461b4256f0d3a5a094e881a86d37d7d67a6fff21acb21dc568def9444",
+      "progress": {
+        "epoch": 1500,
+        "total_episodes": 3273528,
+        "total_steps": 30552489,
+        "updates": 15000
+      }
+    },
+    {
+      "model": "shared",
+      "seed": 1,
+      "local_path": "stokes_runs/softrole_primary/pcp_shared/seed1/checkpoints/epoch1500.pt",
+      "local_exists": true,
+      "sha256": "ae74f9f722c74bbb34d44ecae04b2eb75acdc18d1a5bfa8d7d926f1f26148f65",
+      "recorded_sha256": "ae74f9f722c74bbb34d44ecae04b2eb75acdc18d1a5bfa8d7d926f1f26148f65",
+      "progress": {
+        "epoch": 1500,
+        "total_episodes": 3456693,
+        "total_steps": 30508112,
+        "updates": 15000
+      }
+    },
+    {
+      "model": "shared",
+      "seed": 2,
+      "local_path": "stokes_runs/softrole_primary/pcp_shared/seed2/checkpoints/epoch1500.pt",
+      "local_exists": false,
+      "sha256": null,
+      "recorded_sha256": "f280d10521755bc050367a5451ae26f41033de9dd2b39ecc6bda77360ccaa67a",
+      "progress": {
+        "epoch": 1500,
+        "total_episodes": 3370835,
+        "total_steps": 30536475,
+        "updates": 15000
+      }
+    },
+    {
+      "model": "banked",
+      "seed": 0,
+      "local_path": "stokes_runs/softrole_primary/pcp_banked/seed0/checkpoints/epoch1500.pt",
+      "local_exists": true,
+      "sha256": "748e761c3d6e33040f481c577f45062f5b1f285257f523c0cfb14d918ac5c0f7",
+      "recorded_sha256": "748e761c3d6e33040f481c577f45062f5b1f285257f523c0cfb14d918ac5c0f7",
+      "progress": {
+        "epoch": 1500,
+        "total_episodes": 2507739,
+        "total_steps": 30728678,
+        "updates": 15000
+      }
+    },
+    {
+      "model": "banked",
+      "seed": 1,
+      "local_path": "stokes_runs/softrole_primary/pcp_banked/seed1/checkpoints/epoch1500.pt",
+      "local_exists": true,
+      "sha256": "54f681164a8de35a2cc0a5c7f999555ddcd0a46640985f630d9a27b877b89488",
+      "recorded_sha256": "54f681164a8de35a2cc0a5c7f999555ddcd0a46640985f630d9a27b877b89488",
+      "progress": {
+        "epoch": 1500,
+        "total_episodes": 2604257,
+        "total_steps": 30683393,
+        "updates": 15000
+      }
+    },
+    {
+      "model": "banked",
+      "seed": 2,
+      "local_path": "stokes_runs/softrole_primary/pcp_banked/seed2/checkpoints/epoch1500.pt",
+      "local_exists": true,
+      "sha256": "f0a95ba1344a99c051961e8ed309e302d1e7226fea029f5d5a42e49475230f81",
+      "recorded_sha256": "f0a95ba1344a99c051961e8ed309e302d1e7226fea029f5d5a42e49475230f81",
+      "progress": {
+        "epoch": 1500,
+        "total_episodes": 2717080,
+        "total_steps": 30635286,
+        "updates": 15000
+      }
+    }
+  ],
+  "geometric_reference": {
+    "placements": 303600,
+    "optimistic_mean_steps": 5.08505928853755,
+    "optimistic_mean_team_return": -0.4,
+    "scope": "Population geometric reference; not a policy evaluation or the exact common-panel lower bound."
+  },
+  "caveats": [
+    "These are prior RMSprop evaluations, not evaluations of the new Adam checkpoints.",
+    "No new frozen-policy evaluation was run.",
+    "Seed ranges are descriptive, not confidence intervals."
+  ]
+}

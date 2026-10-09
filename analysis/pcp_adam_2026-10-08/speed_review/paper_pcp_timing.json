@@ -1,0 +1,1526 @@
+[
+  {
+    "path": "logs_1/hetnet-paper-908316_3.out",
+    "bytes": 2044143925,
+    "task": "pcp_real",
+    "seed": 0,
+    "namespace": "Namespace(publication_env_version='paper-v1', max_env_steps=40000000, source_manifest='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_real/seed0/source_manifest.json', model_spec='paper-v1', reconstruction_spec='paper-v1', learner_spec='paper-equations-v1', message_backend='torch-v1', profile_phases=False, milestones=[10000000, 20000000, 30000000, 40000000], resume_checkpoint='', wall_seconds=165600.0, episode_log='stdout', experiment_name='pcp_real', save_dir='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_real/seed0/checkpoints', metrics_file='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_real/seed0/metrics.jsonl', profile_memory=False, num_epochs=2000, epoch_size=10, batch_size=500, nprocesses=4, hid_size=128, recurrent=False, use_binary=False, msg_dim=16, gamma=1.0, tau=1.0, seed=0, normalize_rewards=False, lrate=0.001, entr=0, value_coeff=0.01, env_name='predator_capture', max_steps=80, nactions='1', action_scale=1.0, comm_range_P=-1, comm_range_A=-1, lossy_comm=False, min_comm_loss=0.0, max_comm_loss=0.3, plot=False, plot_env='main', save='tst', save_every=10, load='', display=False, random=False, use_cuda=False, hetgat=True, lr_gamma=0.1, hetgat_a2c=True, eval=False, eval_string='', eval_config='', commnet=False, hetcomm=False, ic3net=False, nagents=3, comm_mode='avg', comm_passes=1, comm_mask_zero=False, mean_ratio=1.0, rnn_type='MLP', detach_gap=5, total_state_action_in_batch=500, comm_init='uniform', hard_attn=False, comm_action_one=False, advantages_per_action=False, share_weights=False, nenemies=1, dim=5, vision=2, moving_prey=False, no_stay=False, mode='mixed', enemy_comm=False, nfriendly_P=2, nfriendly_A=1, tensor_obs=False, second_reward_scheme=False, A_vision=-1, rng_scheme='seedsequence-v1', nfriendly=3, num_actions=[6], dim_actions=1, num_inputs=725, continuous=False, naction_heads=[6])",
+    "status": {
+      "active_time_seconds": 165603.4718196895,
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_real/seed0/checkpoints/pcp_real/run1/model_update00018117_paused.pt",
+      "checkpoint_seconds": 36.24480555951595,
+      "counts": {
+        "env_steps": 36766831,
+        "episodes": 6209772,
+        "epoch": 1812,
+        "updates": 18117
+      },
+      "record_type": "publication_status",
+      "resources": {
+        "collector_count": 4,
+        "collectors": [
+          {
+            "cpu_affinity": [
+              9,
+              11,
+              13,
+              15
+            ],
+            "max_rss": 1119656,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 22.004252,
+            "torch_threads": 1,
+            "user_cpu_seconds": 141576.311607
+          },
+          {
+            "cpu_affinity": [
+              9,
+              11,
+              13,
+              15
+            ],
+            "max_rss": 1416792,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 115.771483,
+            "torch_threads": 1,
+            "user_cpu_seconds": 158509.922417
+          },
+          {
+            "cpu_affinity": [
+              9,
+              11,
+              13,
+              15
+            ],
+            "max_rss": 1420968,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 109.097657,
+            "torch_threads": 1,
+            "user_cpu_seconds": 158489.951257
+          },
+          {
+            "cpu_affinity": [
+              9,
+              11,
+              13,
+              15
+            ],
+            "max_rss": 1420612,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 125.387362,
+            "torch_threads": 1,
+            "user_cpu_seconds": 158852.931053
+          }
+        ],
+        "completed_children_only": {
+          "max_rss": 345988,
+          "max_rss_unit": "KiB",
+          "system_cpu_seconds": 0.048978999999999995,
+          "user_cpu_seconds": 0.004918
+        },
+        "slurm_cpus_per_task": "4"
+      },
+      "schema_version": 1,
+      "scientific_budget_completed": false,
+      "segment_wall_time_seconds": 165603.4718196895,
+      "startup_to_training_seconds": 132.57524148374796,
+      "stop_reason": "paused_wall_time",
+      "training_update_seconds": 165225.16256099008
+    },
+    "sha256": "76595088f5397135d8bc84aeadd154171be42c099c42450287313807d7598d06",
+    "summary": {
+      "all": {
+        "first_epoch": 1,
+        "last_epoch": 1811,
+        "epochs": 1811,
+        "steps": 36752775,
+        "episodes": 6207033,
+        "updates": 18110,
+        "timed_seconds": 165474.27762463875,
+        "hours": 45.96507711795521,
+        "steps_per_second": 222.1056681895289,
+        "episodes_per_second": 37.51056109203879,
+        "seconds_per_epoch": 91.37177118975083,
+        "steps_taken": 5.9211502500470035,
+        "success_rate": 0.992088007265307,
+        "mean_agent_return": -0.15919813057220733
+      },
+      "first100": {
+        "first_epoch": 1,
+        "last_epoch": 100,
+        "epochs": 100,
+        "steps": 2150951,
+        "episodes": 31450,
+        "updates": 1000,
+        "timed_seconds": 11557.953504735604,
+        "hours": 3.210542640204334,
+        "steps_per_second": 186.1013715895896,
+        "episodes_per_second": 2.7210699530080382,
+        "seconds_per_epoch": 115.57953504735605,
+        "steps_taken": 68.3927186009539,
+        "success_rate": 0.3568839427662957,
+        "mean_agent_return": -2.237409644939054
+      },
+      "last100": {
+        "first_epoch": 1712,
+        "last_epoch": 1811,
+        "epochs": 100,
+        "steps": 2009130,
+        "episodes": 392629,
+        "updates": 1000,
+        "timed_seconds": 8008.874099463224,
+        "hours": 2.224687249850896,
+        "steps_per_second": 250.8629771236705,
+        "episodes_per_second": 49.024244247554726,
+        "seconds_per_epoch": 80.08874099463225,
+        "steps_taken": 5.117120742482089,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.13588935101584448
+      },
+      "windows": {
+        "0m-1m": {
+          "first_epoch": 1,
+          "last_epoch": 46,
+          "epochs": 46,
+          "steps": 989198,
+          "episodes": 14151,
+          "updates": 460,
+          "timed_seconds": 5439.663334181532,
+          "hours": 1.5110175928282035,
+          "steps_per_second": 181.84912176165727,
+          "episodes_per_second": 2.601447760760952,
+          "seconds_per_epoch": 118.25355074307679,
+          "steps_taken": 69.90304572115045,
+          "success_rate": 0.3141120768850258,
+          "mean_agent_return": -2.317220220008006
+        },
+        "4m-5m": {
+          "first_epoch": 190,
+          "last_epoch": 239,
+          "epochs": 50,
+          "steps": 1004613,
+          "episodes": 193121,
+          "updates": 500,
+          "timed_seconds": 4635.919511549175,
+          "hours": 1.2877554198747707,
+          "steps_per_second": 216.70199353057592,
+          "episodes_per_second": 41.65753946307519,
+          "seconds_per_epoch": 92.7183902309835,
+          "steps_taken": 5.201987355077905,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.1419066284868036
+        },
+        "9m-10m": {
+          "first_epoch": 439,
+          "last_epoch": 488,
+          "epochs": 50,
+          "steps": 1004602,
+          "episodes": 196460,
+          "updates": 500,
+          "timed_seconds": 4641.788803555071,
+          "hours": 1.2893857787652976,
+          "steps_per_second": 216.42561575196862,
+          "episodes_per_second": 42.324200499931074,
+          "seconds_per_epoch": 92.83577607110142,
+          "steps_taken": 5.113519291458821,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.136222386236384
+        },
+        "19m-20m": {
+          "first_epoch": 937,
+          "last_epoch": 986,
+          "epochs": 50,
+          "steps": 1004461,
+          "episodes": 195921,
+          "updates": 500,
+          "timed_seconds": 4672.308991145343,
+          "hours": 1.297863608651484,
+          "steps_per_second": 214.98171501576402,
+          "episodes_per_second": 41.93237227488524,
+          "seconds_per_epoch": 93.44617982290686,
+          "steps_taken": 5.126867461885148,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.1362422438976254
+        },
+        "26m-27m": {
+          "first_epoch": 1278,
+          "last_epoch": 1325,
+          "epochs": 48,
+          "steps": 993493,
+          "episodes": 102135,
+          "updates": 480,
+          "timed_seconds": 4378.162164151669,
+          "hours": 1.2161561567087968,
+          "steps_per_second": 226.92010088952551,
+          "episodes_per_second": 23.328281632937212,
+          "seconds_per_epoch": 91.21171175315976,
+          "steps_taken": 9.727253145346845,
+          "success_rate": 0.9525725755128017,
+          "mean_agent_return": -0.23839069205789712
+        },
+        "29m-30m": {
+          "first_epoch": 1426,
+          "last_epoch": 1474,
+          "epochs": 49,
+          "steps": 984408,
+          "episodes": 192526,
+          "updates": 490,
+          "timed_seconds": 3925.3229231406003,
+          "hours": 1.0903674786501667,
+          "steps_per_second": 250.78395313585764,
+          "episodes_per_second": 49.04717491267252,
+          "seconds_per_epoch": 80.10863108450205,
+          "steps_taken": 5.113117189366631,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.13588796664692906
+        },
+        "35m-36m": {
+          "first_epoch": 1724,
+          "last_epoch": 1773,
+          "epochs": 50,
+          "steps": 1004508,
+          "episodes": 196301,
+          "updates": 500,
+          "timed_seconds": 4001.8634252250195,
+          "hours": 1.111628729229172,
+          "steps_per_second": 251.01006537811017,
+          "episodes_per_second": 49.05239863076093,
+          "seconds_per_epoch": 80.03726850450039,
+          "steps_taken": 5.117182286386722,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.13594904423988333
+        },
+        "39m-40m": null
+      }
+    },
+    "episode_batch_count": 18117,
+    "last_batch_update": 18117,
+    "complete_epoch_updates": 18110,
+    "last_complete_epoch_byte_end": 2043238552,
+    "partial_suffix": {
+      "updates": 7,
+      "steps": 14056,
+      "episodes": 2739
+    }
+  },
+  {
+    "path": "logs_1/hetnet-paper-908316_4.out",
+    "bytes": 2429436604,
+    "task": "pcp_real",
+    "seed": 1,
+    "namespace": "Namespace(publication_env_version='paper-v1', max_env_steps=40000000, source_manifest='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_real/seed1/source_manifest.json', model_spec='paper-v1', reconstruction_spec='paper-v1', learner_spec='paper-equations-v1', message_backend='torch-v1', profile_phases=False, milestones=[10000000, 20000000, 30000000, 40000000], resume_checkpoint='', wall_seconds=165600.0, episode_log='stdout', experiment_name='pcp_real', save_dir='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_real/seed1/checkpoints', metrics_file='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_real/seed1/metrics.jsonl', profile_memory=False, num_epochs=2000, epoch_size=10, batch_size=500, nprocesses=4, hid_size=128, recurrent=False, use_binary=False, msg_dim=16, gamma=1.0, tau=1.0, seed=1, normalize_rewards=False, lrate=0.001, entr=0, value_coeff=0.01, env_name='predator_capture', max_steps=80, nactions='1', action_scale=1.0, comm_range_P=-1, comm_range_A=-1, lossy_comm=False, min_comm_loss=0.0, max_comm_loss=0.3, plot=False, plot_env='main', save='tst', save_every=10, load='', display=False, random=False, use_cuda=False, hetgat=True, lr_gamma=0.1, hetgat_a2c=True, eval=False, eval_string='', eval_config='', commnet=False, hetcomm=False, ic3net=False, nagents=3, comm_mode='avg', comm_passes=1, comm_mask_zero=False, mean_ratio=1.0, rnn_type='MLP', detach_gap=5, total_state_action_in_batch=500, comm_init='uniform', hard_attn=False, comm_action_one=False, advantages_per_action=False, share_weights=False, nenemies=1, dim=5, vision=2, moving_prey=False, no_stay=False, mode='mixed', enemy_comm=False, nfriendly_P=2, nfriendly_A=1, tensor_obs=False, second_reward_scheme=False, A_vision=-1, rng_scheme='seedsequence-v1', nfriendly=3, num_actions=[6], dim_actions=1, num_inputs=725, continuous=False, naction_heads=[6])",
+    "status": {
+      "active_time_seconds": 157667.44110258296,
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_real/seed1/checkpoints/pcp_real/run1/model_update00019842_ep1985.pt",
+      "checkpoint_seconds": 39.327451921999454,
+      "counts": {
+        "env_steps": 40001350,
+        "episodes": 7378599,
+        "epoch": 1985,
+        "updates": 19842
+      },
+      "record_type": "publication_status",
+      "resources": {
+        "collector_count": 4,
+        "collectors": [
+          {
+            "cpu_affinity": [
+              32,
+              34,
+              36,
+              38
+            ],
+            "max_rss": 1116308,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 22.816663,
+            "torch_threads": 1,
+            "user_cpu_seconds": 131240.995074
+          },
+          {
+            "cpu_affinity": [
+              32,
+              34,
+              36,
+              38
+            ],
+            "max_rss": 1410764,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 123.796745,
+            "torch_threads": 1,
+            "user_cpu_seconds": 150839.579657
+          },
+          {
+            "cpu_affinity": [
+              32,
+              34,
+              36,
+              38
+            ],
+            "max_rss": 1419756,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 133.740003,
+            "torch_threads": 1,
+            "user_cpu_seconds": 150824.118031
+          },
+          {
+            "cpu_affinity": [
+              32,
+              34,
+              36,
+              38
+            ],
+            "max_rss": 1418968,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 144.205154,
+            "torch_threads": 1,
+            "user_cpu_seconds": 151039.641908
+          }
+        ],
+        "completed_children_only": {
+          "max_rss": 345348,
+          "max_rss_unit": "KiB",
+          "system_cpu_seconds": 0.10491199999999999,
+          "user_cpu_seconds": 0.002969
+        },
+        "slurm_cpus_per_task": "4"
+      },
+      "schema_version": 1,
+      "scientific_budget_completed": true,
+      "segment_wall_time_seconds": 157667.44110258296,
+      "startup_to_training_seconds": 28.83558290824294,
+      "stop_reason": "budget_completed",
+      "training_update_seconds": 157389.69722138904
+    },
+    "sha256": "82df0fb312745a324149a636a258b3ac4916934b8c2ff8d3ad3300be5222cec2",
+    "summary": {
+      "all": {
+        "first_epoch": 1,
+        "last_epoch": 1985,
+        "epochs": 1985,
+        "steps": 40001350,
+        "episodes": 7378599,
+        "updates": 19842,
+        "timed_seconds": 157596.75509119965,
+        "hours": 43.77687641422212,
+        "steps_per_second": 253.82089864002353,
+        "episodes_per_second": 46.81948556447168,
+        "seconds_per_epoch": 79.39383128020134,
+        "steps_taken": 5.421266286458987,
+        "success_rate": 0.9976069982933075,
+        "mean_agent_return": -0.14660088588633152
+      },
+      "first100": {
+        "first_epoch": 1,
+        "last_epoch": 100,
+        "epochs": 100,
+        "steps": 2141831,
+        "episodes": 34512,
+        "updates": 1000,
+        "timed_seconds": 12606.087206779048,
+        "hours": 3.501690890771958,
+        "steps_per_second": 169.9045044562447,
+        "episodes_per_second": 2.7377249922117652,
+        "seconds_per_epoch": 126.06087206779048,
+        "steps_taken": 62.06047171998146,
+        "success_rate": 0.4911045433472415,
+        "mean_agent_return": -2.011240051769431
+      },
+      "last100": {
+        "first_epoch": 1886,
+        "last_epoch": 1985,
+        "epochs": 100,
+        "steps": 1992806,
+        "episodes": 389636,
+        "updates": 992,
+        "timed_seconds": 6949.353343259543,
+        "hours": 1.9303759286832065,
+        "steps_per_second": 286.7613577215645,
+        "episodes_per_second": 56.06795060693289,
+        "seconds_per_epoch": 69.49353343259543,
+        "steps_taken": 5.114532538061165,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.13567239680111692
+      },
+      "windows": {
+        "0m-1m": {
+          "first_epoch": 1,
+          "last_epoch": 46,
+          "epochs": 46,
+          "steps": 989569,
+          "episodes": 14288,
+          "updates": 460,
+          "timed_seconds": 5828.93393185921,
+          "hours": 1.6191483144053362,
+          "steps_per_second": 169.76843648738438,
+          "episodes_per_second": 2.451220097367387,
+          "seconds_per_epoch": 126.71595504041761,
+          "steps_taken": 69.25874860022397,
+          "success_rate": 0.333496640537514,
+          "mean_agent_return": -2.2591055431130993
+        },
+        "4m-5m": {
+          "first_epoch": 193,
+          "last_epoch": 241,
+          "epochs": 49,
+          "steps": 984258,
+          "episodes": 191125,
+          "updates": 490,
+          "timed_seconds": 4716.394950104877,
+          "hours": 1.310109708362466,
+          "steps_per_second": 208.68862985660547,
+          "episodes_per_second": 40.52353588321733,
+          "seconds_per_epoch": 96.25295816540566,
+          "steps_taken": 5.149812949640288,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.14057414432090692
+        },
+        "9m-10m": {
+          "first_epoch": 442,
+          "last_epoch": 490,
+          "epochs": 49,
+          "steps": 984499,
+          "episodes": 192208,
+          "updates": 490,
+          "timed_seconds": 4002.9908680208027,
+          "hours": 1.1119419077835564,
+          "steps_per_second": 245.94085583981496,
+          "episodes_per_second": 48.01609754734048,
+          "seconds_per_epoch": 81.69369118409801,
+          "steps_taken": 5.12205007075668,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.13687879796886707
+        },
+        "19m-20m": {
+          "first_epoch": 939,
+          "last_epoch": 988,
+          "epochs": 50,
+          "steps": 1004598,
+          "episodes": 196381,
+          "updates": 500,
+          "timed_seconds": 3537.8502592667937,
+          "hours": 0.9827361831296649,
+          "steps_per_second": 283.9571848380602,
+          "episodes_per_second": 55.50856752221594,
+          "seconds_per_epoch": 70.75700518533587,
+          "steps_taken": 5.115555985558684,
+          "success_rate": 0.9999847235730545,
+          "mean_agent_return": -0.13591980215329724
+        },
+        "26m-27m": {
+          "first_epoch": 1288,
+          "last_epoch": 1337,
+          "epochs": 50,
+          "steps": 1004521,
+          "episodes": 196254,
+          "updates": 500,
+          "timed_seconds": 3515.8688565678895,
+          "hours": 0.9766302379355248,
+          "steps_per_second": 285.71059984887785,
+          "episodes_per_second": 55.81948815678485,
+          "seconds_per_epoch": 70.31737713135779,
+          "steps_taken": 5.1184740183639565,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.13587943855072168
+        },
+        "29m-30m": {
+          "first_epoch": 1437,
+          "last_epoch": 1486,
+          "epochs": 50,
+          "steps": 1004522,
+          "episodes": 196398,
+          "updates": 500,
+          "timed_seconds": 3519.9085407592356,
+          "hours": 0.977752372433121,
+          "steps_per_second": 285.38298321334423,
+          "episodes_per_second": 55.79633610526637,
+          "seconds_per_epoch": 70.39817081518471,
+          "steps_taken": 5.114726219207935,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.13567364908671847
+        },
+        "35m-36m": {
+          "first_epoch": 1736,
+          "last_epoch": 1785,
+          "epochs": 50,
+          "steps": 1004594,
+          "episodes": 196232,
+          "updates": 500,
+          "timed_seconds": 3505.868012322113,
+          "hours": 0.9738522256450314,
+          "steps_per_second": 286.5464405588409,
+          "episodes_per_second": 55.97244371730517,
+          "seconds_per_epoch": 70.11736024644226,
+          "steps_taken": 5.119419870357536,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.1358421834019596
+        },
+        "39m-40m": {
+          "first_epoch": 1935,
+          "last_epoch": 1984,
+          "epochs": 50,
+          "steps": 1004362,
+          "episodes": 196453,
+          "updates": 500,
+          "timed_seconds": 3503.427597463131,
+          "hours": 0.9731743326286475,
+          "steps_per_second": 286.67982199126055,
+          "episodes_per_second": 56.07451403940921,
+          "seconds_per_epoch": 70.06855194926261,
+          "steps_taken": 5.112479829781169,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.13559350073554488
+        }
+      }
+    },
+    "episode_batch_count": 19842,
+    "last_batch_update": 19842,
+    "complete_epoch_updates": 19842,
+    "last_complete_epoch_byte_end": 2429434899,
+    "partial_suffix": {
+      "updates": 0,
+      "steps": 0,
+      "episodes": 0
+    }
+  },
+  {
+    "path": "logs_1/hetnet-paper-908316_5.out",
+    "bytes": 2394772570,
+    "task": "pcp_real",
+    "seed": 2,
+    "namespace": "Namespace(publication_env_version='paper-v1', max_env_steps=40000000, source_manifest='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_real/seed2/source_manifest.json', model_spec='paper-v1', reconstruction_spec='paper-v1', learner_spec='paper-equations-v1', message_backend='torch-v1', profile_phases=False, milestones=[10000000, 20000000, 30000000, 40000000], resume_checkpoint='', wall_seconds=165600.0, episode_log='stdout', experiment_name='pcp_real', save_dir='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_real/seed2/checkpoints', metrics_file='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_real/seed2/metrics.jsonl', profile_memory=False, num_epochs=2000, epoch_size=10, batch_size=500, nprocesses=4, hid_size=128, recurrent=False, use_binary=False, msg_dim=16, gamma=1.0, tau=1.0, seed=2, normalize_rewards=False, lrate=0.001, entr=0, value_coeff=0.01, env_name='predator_capture', max_steps=80, nactions='1', action_scale=1.0, comm_range_P=-1, comm_range_A=-1, lossy_comm=False, min_comm_loss=0.0, max_comm_loss=0.3, plot=False, plot_env='main', save='tst', save_every=10, load='', display=False, random=False, use_cuda=False, hetgat=True, lr_gamma=0.1, hetgat_a2c=True, eval=False, eval_string='', eval_config='', commnet=False, hetcomm=False, ic3net=False, nagents=3, comm_mode='avg', comm_passes=1, comm_mask_zero=False, mean_ratio=1.0, rnn_type='MLP', detach_gap=5, total_state_action_in_batch=500, comm_init='uniform', hard_attn=False, comm_action_one=False, advantages_per_action=False, share_weights=False, nenemies=1, dim=5, vision=2, moving_prey=False, no_stay=False, mode='mixed', enemy_comm=False, nfriendly_P=2, nfriendly_A=1, tensor_obs=False, second_reward_scheme=False, A_vision=-1, rng_scheme='seedsequence-v1', nfriendly=3, num_actions=[6], dim_actions=1, num_inputs=725, continuous=False, naction_heads=[6])",
+    "status": {
+      "active_time_seconds": 157853.25988715515,
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_real/seed2/checkpoints/pcp_real/run1/model_update00019821_ep1983.pt",
+      "checkpoint_seconds": 33.572274789214134,
+      "counts": {
+        "env_steps": 40000054,
+        "episodes": 7272310,
+        "epoch": 1983,
+        "updates": 19821
+      },
+      "record_type": "publication_status",
+      "resources": {
+        "collector_count": 4,
+        "collectors": [
+          {
+            "cpu_affinity": [
+              40,
+              42,
+              44,
+              46
+            ],
+            "max_rss": 1122228,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 22.931258,
+            "torch_threads": 1,
+            "user_cpu_seconds": 131619.281391
+          },
+          {
+            "cpu_affinity": [
+              40,
+              42,
+              44,
+              46
+            ],
+            "max_rss": 1417736,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 125.462243,
+            "torch_threads": 1,
+            "user_cpu_seconds": 150452.720798
+          },
+          {
+            "cpu_affinity": [
+              40,
+              42,
+              44,
+              46
+            ],
+            "max_rss": 1416340,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 129.866701,
+            "torch_threads": 1,
+            "user_cpu_seconds": 150979.993069
+          },
+          {
+            "cpu_affinity": [
+              40,
+              42,
+              44,
+              46
+            ],
+            "max_rss": 1415500,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 148.562352,
+            "torch_threads": 1,
+            "user_cpu_seconds": 150570.087948
+          }
+        ],
+        "completed_children_only": {
+          "max_rss": 349104,
+          "max_rss_unit": "KiB",
+          "system_cpu_seconds": 0.105991,
+          "user_cpu_seconds": 0.001979
+        },
+        "slurm_cpus_per_task": "4"
+      },
+      "schema_version": 1,
+      "scientific_budget_completed": true,
+      "segment_wall_time_seconds": 157853.25988715515,
+      "startup_to_training_seconds": 28.895603019744158,
+      "stop_reason": "budget_completed",
+      "training_update_seconds": 157576.1791392099
+    },
+    "sha256": "fdff22b47d04381eab7c6087b93488cdec9e3b9e3c0a57e17d6a56a1c3dfbed7",
+    "summary": {
+      "all": {
+        "first_epoch": 1,
+        "last_epoch": 1983,
+        "epochs": 1983,
+        "steps": 40000054,
+        "episodes": 7272310,
+        "updates": 19821,
+        "timed_seconds": 157788.06358888373,
+        "hours": 43.830017663578815,
+        "steps_per_second": 253.50494258057446,
+        "episodes_per_second": 46.08910100416708,
+        "seconds_per_epoch": 79.5703800246514,
+        "steps_taken": 5.500323006032471,
+        "success_rate": 0.9966868849100217,
+        "mean_agent_return": -0.14906534283237835
+      },
+      "first100": {
+        "first_epoch": 1,
+        "last_epoch": 100,
+        "epochs": 100,
+        "steps": 2152383,
+        "episodes": 31205,
+        "updates": 1000,
+        "timed_seconds": 12678.54812839441,
+        "hours": 3.521818924554003,
+        "steps_per_second": 169.7657317070558,
+        "episodes_per_second": 2.4612439597965032,
+        "seconds_per_epoch": 126.7854812839441,
+        "steps_taken": 68.97558083640442,
+        "success_rate": 0.3306841852267265,
+        "mean_agent_return": -2.275414196442875
+      },
+      "last100": {
+        "first_epoch": 1884,
+        "last_epoch": 1983,
+        "epochs": 100,
+        "steps": 1990995,
+        "episodes": 389093,
+        "updates": 991,
+        "timed_seconds": 6939.061559297144,
+        "hours": 1.9275170998047624,
+        "steps_per_second": 286.92568627416347,
+        "episodes_per_second": 56.072856059142836,
+        "seconds_per_epoch": 69.39061559297144,
+        "steps_taken": 5.117015726317359,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.13580463625234412
+      },
+      "windows": {
+        "0m-1m": {
+          "first_epoch": 1,
+          "last_epoch": 46,
+          "epochs": 46,
+          "steps": 991784,
+          "episodes": 13977,
+          "updates": 460,
+          "timed_seconds": 5841.806906603277,
+          "hours": 1.6227241407231325,
+          "steps_per_second": 169.77349916837179,
+          "episodes_per_second": 2.392581648702069,
+          "seconds_per_epoch": 126.99580231746253,
+          "steps_taken": 70.95828861701366,
+          "success_rate": 0.27459397581741435,
+          "mean_agent_return": -2.3808006009873335
+        },
+        "4m-5m": {
+          "first_epoch": 191,
+          "last_epoch": 239,
+          "epochs": 49,
+          "steps": 984398,
+          "episodes": 190322,
+          "updates": 490,
+          "timed_seconds": 4783.315398758277,
+          "hours": 1.3286987218772992,
+          "steps_per_second": 205.79826290684164,
+          "episodes_per_second": 39.788720611943454,
+          "seconds_per_epoch": 97.61868160731179,
+          "steps_taken": 5.1722764577925835,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.1404746517305759
+        },
+        "9m-10m": {
+          "first_epoch": 440,
+          "last_epoch": 488,
+          "epochs": 49,
+          "steps": 984446,
+          "episodes": 192179,
+          "updates": 490,
+          "timed_seconds": 3966.2937060520053,
+          "hours": 1.1017482516811126,
+          "steps_per_second": 248.2030008261552,
+          "episodes_per_second": 48.453043128591794,
+          "seconds_per_epoch": 80.94476951126542,
+          "steps_taken": 5.12254720859199,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.13639220032712557
+        },
+        "19m-20m": {
+          "first_epoch": 937,
+          "last_epoch": 986,
+          "epochs": 50,
+          "steps": 1004399,
+          "episodes": 196358,
+          "updates": 500,
+          "timed_seconds": 3539.1760562211275,
+          "hours": 0.9831044600614243,
+          "steps_per_second": 283.7945849668817,
+          "episodes_per_second": 55.481274986262385,
+          "seconds_per_epoch": 70.78352112442255,
+          "steps_taken": 5.115141730920054,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.1357310796266683
+        },
+        "26m-27m": {
+          "first_epoch": 1286,
+          "last_epoch": 1335,
+          "epochs": 50,
+          "steps": 1004347,
+          "episodes": 196218,
+          "updates": 500,
+          "timed_seconds": 3517.9131550826132,
+          "hours": 0.9771980986340593,
+          "steps_per_second": 285.4951090958396,
+          "episodes_per_second": 55.77681749093436,
+          "seconds_per_epoch": 70.35826310165227,
+          "steps_taken": 5.118526332956201,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.1359541428411257
+        },
+        "29m-30m": {
+          "first_epoch": 1435,
+          "last_epoch": 1484,
+          "epochs": 50,
+          "steps": 1004467,
+          "episodes": 196363,
+          "updates": 500,
+          "timed_seconds": 3520.5215607099235,
+          "hours": 0.9779226557527565,
+          "steps_per_second": 285.3176674757948,
+          "episodes_per_second": 55.776678714730785,
+          "seconds_per_epoch": 70.41043121419847,
+          "steps_taken": 5.115357781252069,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.1357335648772936
+        },
+        "35m-36m": {
+          "first_epoch": 1734,
+          "last_epoch": 1783,
+          "epochs": 50,
+          "steps": 1004479,
+          "episodes": 196519,
+          "updates": 500,
+          "timed_seconds": 3507.7558880522847,
+          "hours": 0.9743766355700791,
+          "steps_per_second": 286.3594366476131,
+          "episodes_per_second": 56.024138016376924,
+          "seconds_per_epoch": 70.15511776104569,
+          "steps_taken": 5.111358189284497,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.13562157687891077
+        },
+        "39m-40m": {
+          "first_epoch": 1933,
+          "last_epoch": 1982,
+          "epochs": 50,
+          "steps": 1004577,
+          "episodes": 196337,
+          "updates": 500,
+          "timed_seconds": 3499.541413899511,
+          "hours": 0.9720948371943087,
+          "steps_per_second": 287.05961187086166,
+          "episodes_per_second": 56.103636670846896,
+          "seconds_per_epoch": 69.99082827799022,
+          "steps_taken": 5.116595445585906,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.13584618962973527
+        }
+      }
+    },
+    "episode_batch_count": 19821,
+    "last_batch_update": 19821,
+    "complete_epoch_updates": 19821,
+    "last_complete_epoch_byte_end": 2394770877,
+    "partial_suffix": {
+      "updates": 0,
+      "steps": 0,
+      "episodes": 0
+    }
+  },
+  {
+    "path": "logs_1/hetnet-paper-908316_9.out",
+    "bytes": 1350412955,
+    "task": "pcp_binary",
+    "seed": 0,
+    "namespace": "Namespace(publication_env_version='paper-v1', max_env_steps=40000000, source_manifest='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_binary/seed0/source_manifest.json', model_spec='paper-v1', reconstruction_spec='paper-v1', learner_spec='paper-equations-v1', message_backend='torch-v1', profile_phases=False, milestones=[10000000, 20000000, 30000000, 40000000], resume_checkpoint='', wall_seconds=165600.0, episode_log='stdout', experiment_name='pcp_binary', save_dir='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_binary/seed0/checkpoints', metrics_file='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_binary/seed0/metrics.jsonl', profile_memory=False, num_epochs=2000, epoch_size=10, batch_size=500, nprocesses=4, hid_size=128, recurrent=False, use_binary=True, msg_dim=64, gamma=1.0, tau=1.0, seed=0, normalize_rewards=False, lrate=0.001, entr=0, value_coeff=0.01, env_name='predator_capture', max_steps=80, nactions='1', action_scale=1.0, comm_range_P=-1, comm_range_A=-1, lossy_comm=False, min_comm_loss=0.0, max_comm_loss=0.3, plot=False, plot_env='main', save='tst', save_every=10, load='', display=False, random=False, use_cuda=False, hetgat=True, lr_gamma=0.1, hetgat_a2c=True, eval=False, eval_string='', eval_config='', commnet=False, hetcomm=False, ic3net=False, nagents=3, comm_mode='avg', comm_passes=1, comm_mask_zero=False, mean_ratio=1.0, rnn_type='MLP', detach_gap=5, total_state_action_in_batch=500, comm_init='uniform', hard_attn=False, comm_action_one=False, advantages_per_action=False, share_weights=False, nenemies=1, dim=5, vision=2, moving_prey=False, no_stay=False, mode='mixed', enemy_comm=False, nfriendly_P=2, nfriendly_A=1, tensor_obs=False, second_reward_scheme=False, A_vision=-1, rng_scheme='seedsequence-v1', nfriendly=3, num_actions=[6], dim_actions=1, num_inputs=725, continuous=False, naction_heads=[6])",
+    "status": {
+      "active_time_seconds": 165608.6593447253,
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_binary/seed0/checkpoints/pcp_binary/run1/model_update00013330_paused.pt",
+      "checkpoint_seconds": 28.489562086760998,
+      "counts": {
+        "env_steps": 27294921,
+        "episodes": 4104610,
+        "epoch": 1333,
+        "updates": 13330
+      },
+      "record_type": "publication_status",
+      "resources": {
+        "collector_count": 4,
+        "collectors": [
+          {
+            "cpu_affinity": [
+              25,
+              27,
+              29,
+              31
+            ],
+            "max_rss": 1380904,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 18.011174,
+            "torch_threads": 1,
+            "user_cpu_seconds": 137549.911974
+          },
+          {
+            "cpu_affinity": [
+              25,
+              27,
+              29,
+              31
+            ],
+            "max_rss": 1823168,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 263.97469,
+            "torch_threads": 1,
+            "user_cpu_seconds": 158300.597766
+          },
+          {
+            "cpu_affinity": [
+              25,
+              27,
+              29,
+              31
+            ],
+            "max_rss": 1825248,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 162.962697,
+            "torch_threads": 1,
+            "user_cpu_seconds": 156751.166412
+          },
+          {
+            "cpu_affinity": [
+              25,
+              27,
+              29,
+              31
+            ],
+            "max_rss": 1837476,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 190.441229,
+            "torch_threads": 1,
+            "user_cpu_seconds": 157008.23451
+          }
+        ],
+        "completed_children_only": {
+          "max_rss": 351012,
+          "max_rss_unit": "KiB",
+          "system_cpu_seconds": 0.048368,
+          "user_cpu_seconds": 0.001008
+        },
+        "slurm_cpus_per_task": "4"
+      },
+      "schema_version": 1,
+      "scientific_budget_completed": false,
+      "segment_wall_time_seconds": 165608.6593447253,
+      "startup_to_training_seconds": 38.167480608448386,
+      "stop_reason": "paused_wall_time",
+      "training_update_seconds": 165270.95133934543
+    },
+    "sha256": "8bbb864df768e257a375b3c8361d6ecf562c965d2d9d3a86b831c44d51a6493a",
+    "summary": {
+      "all": {
+        "first_epoch": 1,
+        "last_epoch": 1333,
+        "epochs": 1333,
+        "steps": 27294921,
+        "episodes": 4104610,
+        "updates": 13330,
+        "timed_seconds": 165552.68769937567,
+        "hours": 45.98685769427102,
+        "steps_per_second": 164.87150634222493,
+        "episodes_per_second": 24.793375794982513,
+        "seconds_per_epoch": 124.19556466569819,
+        "steps_taken": 6.649820811234197,
+        "success_rate": 0.9840552451999094,
+        "mean_agent_return": -0.1827945488933987
+      },
+      "first100": {
+        "first_epoch": 1,
+        "last_epoch": 100,
+        "epochs": 100,
+        "steps": 2205543,
+        "episodes": 28836,
+        "updates": 1000,
+        "timed_seconds": 15729.613600442186,
+        "hours": 4.369337111233941,
+        "steps_per_second": 140.21596817470447,
+        "episodes_per_second": 1.8332300291972443,
+        "seconds_per_epoch": 157.29613600442187,
+        "steps_taken": 76.485746982938,
+        "success_rate": 0.10698432514911915,
+        "mean_agent_return": -2.625891825033519
+      },
+      "last100": {
+        "first_epoch": 1234,
+        "last_epoch": 1333,
+        "epochs": 100,
+        "steps": 2009031,
+        "episodes": 392487,
+        "updates": 1000,
+        "timed_seconds": 10340.262281024829,
+        "hours": 2.8722950780624523,
+        "steps_per_second": 194.2920735856696,
+        "episodes_per_second": 37.95716098229381,
+        "seconds_per_epoch": 103.40262281024829,
+        "steps_taken": 5.118719855689488,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.13607877458361678
+      },
+      "windows": {
+        "0m-1m": {
+          "first_epoch": 1,
+          "last_epoch": 46,
+          "epochs": 46,
+          "steps": 996392,
+          "episodes": 13716,
+          "updates": 460,
+          "timed_seconds": 7156.586796967313,
+          "hours": 1.9879407769353645,
+          "steps_per_second": 139.2272640949779,
+          "episodes_per_second": 1.9165560886947275,
+          "seconds_per_epoch": 155.5779738471155,
+          "steps_taken": 72.64450277048702,
+          "success_rate": 0.22346165062700496,
+          "mean_agent_return": -2.449404588315346
+        },
+        "4m-5m": {
+          "first_epoch": 182,
+          "last_epoch": 226,
+          "epochs": 45,
+          "steps": 988418,
+          "episodes": 14000,
+          "updates": 450,
+          "timed_seconds": 6540.864020843059,
+          "hours": 1.8169066724564051,
+          "steps_per_second": 151.11428656066172,
+          "episodes_per_second": 2.140390008932723,
+          "seconds_per_epoch": 145.35253379651243,
+          "steps_taken": 70.60128571428571,
+          "success_rate": 0.22685714285714287,
+          "mean_agent_return": -1.860799999999998
+        },
+        "9m-10m": {
+          "first_epoch": 423,
+          "last_epoch": 472,
+          "epochs": 50,
+          "steps": 1004461,
+          "episodes": 193507,
+          "updates": 500,
+          "timed_seconds": 6232.708188222721,
+          "hours": 1.731307830061867,
+          "steps_per_second": 161.15963874227612,
+          "episodes_per_second": 31.04701746917165,
+          "seconds_per_epoch": 124.65416376445442,
+          "steps_taken": 5.190825138108699,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.1407802646243633
+        },
+        "19m-20m": {
+          "first_epoch": 921,
+          "last_epoch": 969,
+          "epochs": 49,
+          "steps": 984578,
+          "episodes": 192343,
+          "updates": 490,
+          "timed_seconds": 5361.27953604795,
+          "hours": 1.489244315568875,
+          "steps_per_second": 183.6460854876033,
+          "episodes_per_second": 35.87632368480921,
+          "seconds_per_epoch": 109.41386808261123,
+          "steps_taken": 5.1188657762434815,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.1363453136670774
+        },
+        "26m-27m": {
+          "first_epoch": 1269,
+          "last_epoch": 1318,
+          "epochs": 50,
+          "steps": 1004565,
+          "episodes": 196476,
+          "updates": 500,
+          "timed_seconds": 5072.7472772412,
+          "hours": 1.4090964659003333,
+          "steps_per_second": 198.03174593517892,
+          "episodes_per_second": 38.73167521699463,
+          "seconds_per_epoch": 101.454945544824,
+          "steps_taken": 5.112914554449398,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.1357733260041939
+        },
+        "29m-30m": null,
+        "35m-36m": null,
+        "39m-40m": null
+      }
+    },
+    "episode_batch_count": 13330,
+    "last_batch_update": 13330,
+    "complete_epoch_updates": 13330,
+    "last_complete_epoch_byte_end": 1350411259,
+    "partial_suffix": {
+      "updates": 0,
+      "steps": 0,
+      "episodes": 0
+    }
+  },
+  {
+    "path": "logs_1/hetnet-paper-908316_10.out",
+    "bytes": 1412056077,
+    "task": "pcp_binary",
+    "seed": 1,
+    "namespace": "Namespace(publication_env_version='paper-v1', max_env_steps=40000000, source_manifest='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_binary/seed1/source_manifest.json', model_spec='paper-v1', reconstruction_spec='paper-v1', learner_spec='paper-equations-v1', message_backend='torch-v1', profile_phases=False, milestones=[10000000, 20000000, 30000000, 40000000], resume_checkpoint='', wall_seconds=165600.0, episode_log='stdout', experiment_name='pcp_binary', save_dir='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_binary/seed1/checkpoints', metrics_file='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_binary/seed1/metrics.jsonl', profile_memory=False, num_epochs=2000, epoch_size=10, batch_size=500, nprocesses=4, hid_size=128, recurrent=False, use_binary=True, msg_dim=64, gamma=1.0, tau=1.0, seed=1, normalize_rewards=False, lrate=0.001, entr=0, value_coeff=0.01, env_name='predator_capture', max_steps=80, nactions='1', action_scale=1.0, comm_range_P=-1, comm_range_A=-1, lossy_comm=False, min_comm_loss=0.0, max_comm_loss=0.3, plot=False, plot_env='main', save='tst', save_every=10, load='', display=False, random=False, use_cuda=False, hetgat=True, lr_gamma=0.1, hetgat_a2c=True, eval=False, eval_string='', eval_config='', commnet=False, hetcomm=False, ic3net=False, nagents=3, comm_mode='avg', comm_passes=1, comm_mask_zero=False, mean_ratio=1.0, rnn_type='MLP', detach_gap=5, total_state_action_in_batch=500, comm_init='uniform', hard_attn=False, comm_action_one=False, advantages_per_action=False, share_weights=False, nenemies=1, dim=5, vision=2, moving_prey=False, no_stay=False, mode='mixed', enemy_comm=False, nfriendly_P=2, nfriendly_A=1, tensor_obs=False, second_reward_scheme=False, A_vision=-1, rng_scheme='seedsequence-v1', nfriendly=3, num_actions=[6], dim_actions=1, num_inputs=725, continuous=False, naction_heads=[6])",
+    "status": {
+      "active_time_seconds": 165608.7287271805,
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_binary/seed1/checkpoints/pcp_binary/run1/model_update00013496_paused.pt",
+      "checkpoint_seconds": 28.953793916851282,
+      "counts": {
+        "env_steps": 27532726,
+        "episodes": 4293347,
+        "epoch": 1350,
+        "updates": 13496
+      },
+      "record_type": "publication_status",
+      "resources": {
+        "collector_count": 4,
+        "collectors": [
+          {
+            "cpu_affinity": [
+              33,
+              35,
+              37,
+              39
+            ],
+            "max_rss": 1377724,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 18.115611,
+            "torch_threads": 1,
+            "user_cpu_seconds": 138436.826612
+          },
+          {
+            "cpu_affinity": [
+              33,
+              35,
+              37,
+              39
+            ],
+            "max_rss": 1812824,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 149.523376,
+            "torch_threads": 1,
+            "user_cpu_seconds": 156950.773206
+          },
+          {
+            "cpu_affinity": [
+              33,
+              35,
+              37,
+              39
+            ],
+            "max_rss": 1823476,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 169.768114,
+            "torch_threads": 1,
+            "user_cpu_seconds": 157681.415428
+          },
+          {
+            "cpu_affinity": [
+              33,
+              35,
+              37,
+              39
+            ],
+            "max_rss": 1825336,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 196.834153,
+            "torch_threads": 1,
+            "user_cpu_seconds": 157931.380755
+          }
+        ],
+        "completed_children_only": {
+          "max_rss": 345596,
+          "max_rss_unit": "KiB",
+          "system_cpu_seconds": 0.048434,
+          "user_cpu_seconds": 0.00101
+        },
+        "slurm_cpus_per_task": "4"
+      },
+      "schema_version": 1,
+      "scientific_budget_completed": false,
+      "segment_wall_time_seconds": 165608.7287271805,
+      "startup_to_training_seconds": 38.17274531908333,
+      "stop_reason": "paused_wall_time",
+      "training_update_seconds": 165248.67609956488
+    },
+    "sha256": "46008cf1acd1ab2f91bdb6113f735c5cb3381974a1571b8c8f5b0df4880c9e23",
+    "summary": {
+      "all": {
+        "first_epoch": 1,
+        "last_epoch": 1349,
+        "epochs": 1349,
+        "steps": 27520665,
+        "episodes": 4291009,
+        "updates": 13490,
+        "timed_seconds": 165492.2143590618,
+        "hours": 45.97005954418383,
+        "steps_per_second": 166.29582912154115,
+        "episodes_per_second": 25.928766598590375,
+        "seconds_per_epoch": 122.67769781991237,
+        "steps_taken": 6.4135649680529685,
+        "success_rate": 0.9874122846165087,
+        "mean_agent_return": -0.17404979419370437
+      },
+      "first100": {
+        "first_epoch": 1,
+        "last_epoch": 100,
+        "epochs": 100,
+        "steps": 2181888,
+        "episodes": 29800,
+        "updates": 1000,
+        "timed_seconds": 15654.637725885957,
+        "hours": 4.348510479412766,
+        "steps_per_second": 139.3764607143931,
+        "episodes_per_second": 1.903589244401598,
+        "seconds_per_epoch": 156.54637725885956,
+        "steps_taken": 73.21771812080537,
+        "success_rate": 0.2130201342281879,
+        "mean_agent_return": -2.442536912751675
+      },
+      "last100": {
+        "first_epoch": 1250,
+        "last_epoch": 1349,
+        "epochs": 100,
+        "steps": 2008914,
+        "episodes": 392506,
+        "updates": 1000,
+        "timed_seconds": 10350.978292847052,
+        "hours": 2.87527174801307,
+        "steps_per_second": 194.0796264048048,
+        "episodes_per_second": 37.91970081429285,
+        "seconds_per_epoch": 103.50978292847053,
+        "steps_taken": 5.118173989696973,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.1360508289469885
+      },
+      "windows": {
+        "0m-1m": {
+          "first_epoch": 1,
+          "last_epoch": 46,
+          "epochs": 46,
+          "steps": 991190,
+          "episodes": 14100,
+          "updates": 460,
+          "timed_seconds": 7135.841709960252,
+          "hours": 1.9821782527667366,
+          "steps_per_second": 138.90302507922658,
+          "episodes_per_second": 1.9759406911057364,
+          "seconds_per_epoch": 155.1269936947881,
+          "steps_taken": 70.29716312056738,
+          "success_rate": 0.3058156028368794,
+          "mean_agent_return": -2.33145271867612
+        },
+        "4m-5m": {
+          "first_epoch": 183,
+          "last_epoch": 229,
+          "epochs": 47,
+          "steps": 999990,
+          "episodes": 19795,
+          "updates": 470,
+          "timed_seconds": 6344.384291835129,
+          "hours": 1.7623289699542026,
+          "steps_per_second": 157.61813187875956,
+          "episodes_per_second": 3.1200821213612593,
+          "seconds_per_epoch": 134.98689982627934,
+          "steps_taken": 50.51730234907805,
+          "success_rate": 0.6103561505430665,
+          "mean_agent_return": -1.0932887092700168
+        },
+        "9m-10m": {
+          "first_epoch": 428,
+          "last_epoch": 476,
+          "epochs": 49,
+          "steps": 984472,
+          "episodes": 190834,
+          "updates": 490,
+          "timed_seconds": 6104.030789896846,
+          "hours": 1.6955641083046793,
+          "steps_per_second": 161.2822795110175,
+          "episodes_per_second": 31.263603767507366,
+          "seconds_per_epoch": 124.57205693667032,
+          "steps_taken": 5.158787218210591,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.13897296428658765
+        },
+        "19m-20m": {
+          "first_epoch": 925,
+          "last_epoch": 974,
+          "epochs": 50,
+          "steps": 1004708,
+          "episodes": 196091,
+          "updates": 500,
+          "timed_seconds": 5467.909081317484,
+          "hours": 1.518863633699301,
+          "steps_per_second": 183.74628858274966,
+          "episodes_per_second": 35.86215445132313,
+          "seconds_per_epoch": 109.35818162634969,
+          "steps_taken": 5.123682371959958,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.13635726949902513
+        },
+        "26m-27m": {
+          "first_epoch": 1274,
+          "last_epoch": 1323,
+          "epochs": 50,
+          "steps": 1004433,
+          "episodes": 196353,
+          "updates": 500,
+          "timed_seconds": 5166.747331382707,
+          "hours": 1.4352075920507519,
+          "steps_per_second": 194.4033519694483,
+          "episodes_per_second": 38.00321312547186,
+          "seconds_per_epoch": 103.33494662765413,
+          "steps_taken": 5.115445142167423,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.13596549751383138
+        },
+        "29m-30m": null,
+        "35m-36m": null,
+        "39m-40m": null
+      }
+    },
+    "episode_batch_count": 13496,
+    "last_batch_update": 13496,
+    "complete_epoch_updates": 13490,
+    "last_complete_epoch_byte_end": 1411282891,
+    "partial_suffix": {
+      "updates": 6,
+      "steps": 12061,
+      "episodes": 2338
+    }
+  },
+  {
+    "path": "logs_1/hetnet-paper-908316_11.out",
+    "bytes": 1654168646,
+    "task": "pcp_binary",
+    "seed": 2,
+    "namespace": "Namespace(publication_env_version='paper-v1', max_env_steps=40000000, source_manifest='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_binary/seed2/source_manifest.json', model_spec='paper-v1', reconstruction_spec='paper-v1', learner_spec='paper-equations-v1', message_backend='torch-v1', profile_phases=False, milestones=[10000000, 20000000, 30000000, 40000000], resume_checkpoint='', wall_seconds=165600.0, episode_log='stdout', experiment_name='pcp_binary', save_dir='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_binary/seed2/checkpoints', metrics_file='/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_binary/seed2/metrics.jsonl', profile_memory=False, num_epochs=2000, epoch_size=10, batch_size=500, nprocesses=4, hid_size=128, recurrent=False, use_binary=True, msg_dim=64, gamma=1.0, tau=1.0, seed=2, normalize_rewards=False, lrate=0.001, entr=0, value_coeff=0.01, env_name='predator_capture', max_steps=80, nactions='1', action_scale=1.0, comm_range_P=-1, comm_range_A=-1, lossy_comm=False, min_comm_loss=0.0, max_comm_loss=0.3, plot=False, plot_env='main', save='tst', save_every=10, load='', display=False, random=False, use_cuda=False, hetgat=True, lr_gamma=0.1, hetgat_a2c=True, eval=False, eval_string='', eval_config='', commnet=False, hetcomm=False, ic3net=False, nagents=3, comm_mode='avg', comm_passes=1, comm_mask_zero=False, mean_ratio=1.0, rnn_type='MLP', detach_gap=5, total_state_action_in_batch=500, comm_init='uniform', hard_attn=False, comm_action_one=False, advantages_per_action=False, share_weights=False, nenemies=1, dim=5, vision=2, moving_prey=False, no_stay=False, mode='mixed', enemy_comm=False, nfriendly_P=2, nfriendly_A=1, tensor_obs=False, second_reward_scheme=False, A_vision=-1, rng_scheme='seedsequence-v1', nfriendly=3, num_actions=[6], dim_actions=1, num_inputs=725, continuous=False, naction_heads=[6])",
+    "status": {
+      "active_time_seconds": 165604.40178209543,
+      "checkpoint": "/lustre/fs1/home/ak565492/HetNet/runs/paper_study_20261005_v1/hetnet/pcp_binary/seed2/checkpoints/pcp_binary/run1/model_update00013686_paused.pt",
+      "checkpoint_seconds": 29.11224398203194,
+      "counts": {
+        "env_steps": 27584667,
+        "episodes": 5039375,
+        "epoch": 1369,
+        "updates": 13686
+      },
+      "record_type": "publication_status",
+      "resources": {
+        "collector_count": 4,
+        "collectors": [
+          {
+            "cpu_affinity": [
+              41,
+              43,
+              45,
+              47
+            ],
+            "max_rss": 1378056,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 18.861016,
+            "torch_threads": 1,
+            "user_cpu_seconds": 138677.897244
+          },
+          {
+            "cpu_affinity": [
+              41,
+              43,
+              45,
+              47
+            ],
+            "max_rss": 1814952,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 135.736765,
+            "torch_threads": 1,
+            "user_cpu_seconds": 157574.334781
+          },
+          {
+            "cpu_affinity": [
+              41,
+              43,
+              45,
+              47
+            ],
+            "max_rss": 1817908,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 151.850124,
+            "torch_threads": 1,
+            "user_cpu_seconds": 158819.53094
+          },
+          {
+            "cpu_affinity": [
+              41,
+              43,
+              45,
+              47
+            ],
+            "max_rss": 1812760,
+            "max_rss_unit": "KiB",
+            "system_cpu_seconds": 170.892129,
+            "torch_threads": 1,
+            "user_cpu_seconds": 158543.882167
+          }
+        ],
+        "completed_children_only": {
+          "max_rss": 345960,
+          "max_rss_unit": "KiB",
+          "system_cpu_seconds": 0.048419,
+          "user_cpu_seconds": 0.00101
+        },
+        "slurm_cpus_per_task": "4"
+      },
+      "schema_version": 1,
+      "scientific_budget_completed": false,
+      "segment_wall_time_seconds": 165604.40178209543,
+      "startup_to_training_seconds": 38.16516087949276,
+      "stop_reason": "paused_wall_time",
+      "training_update_seconds": 165315.59990302473
+    },
+    "sha256": "10b2246fee81ab15ddc23b996c02a56eaa995969a342c201ae4f39f6ad29611c",
+    "summary": {
+      "all": {
+        "first_epoch": 1,
+        "last_epoch": 1368,
+        "epochs": 1368,
+        "steps": 27572634,
+        "episodes": 5037036,
+        "updates": 13680,
+        "timed_seconds": 165487.82740788348,
+        "hours": 45.9688409466343,
+        "steps_per_second": 166.6142726742118,
+        "episodes_per_second": 30.43750153046028,
+        "seconds_per_epoch": 120.97063407009027,
+        "steps_taken": 5.473979935819399,
+        "success_rate": 0.9977925510161134,
+        "mean_agent_return": -0.14761560833262524
+      },
+      "first100": {
+        "first_epoch": 1,
+        "last_epoch": 100,
+        "epochs": 100,
+        "steps": 2097058,
+        "episodes": 105497,
+        "updates": 1000,
+        "timed_seconds": 15049.700142657384,
+        "hours": 4.180472261849274,
+        "steps_per_second": 139.3421782574941,
+        "episodes_per_second": 7.009907107781882,
+        "seconds_per_epoch": 150.49700142657383,
+        "steps_taken": 19.877892262339213,
+        "success_rate": 0.894622595903201,
+        "mean_agent_return": -0.5589814560287651
+      },
+      "last100": {
+        "first_epoch": 1269,
+        "last_epoch": 1368,
+        "epochs": 100,
+        "steps": 2009022,
+        "episodes": 392438,
+        "updates": 1000,
+        "timed_seconds": 10350.066800454631,
+        "hours": 2.875018555681842,
+        "steps_per_second": 194.10715300037992,
+        "episodes_per_second": 37.91647025725109,
+        "seconds_per_epoch": 103.50066800454631,
+        "steps_taken": 5.119336047987198,
+        "success_rate": 1.0,
+        "mean_agent_return": -0.136044249877263
+      },
+      "windows": {
+        "0m-1m": {
+          "first_epoch": 1,
+          "last_epoch": 46,
+          "epochs": 46,
+          "steps": 989761,
+          "episodes": 14723,
+          "updates": 460,
+          "timed_seconds": 7140.145442171022,
+          "hours": 1.983373733936395,
+          "steps_per_second": 138.6191651159216,
+          "episodes_per_second": 2.062002814822683,
+          "seconds_per_epoch": 155.2205530906744,
+          "steps_taken": 67.22549752088568,
+          "success_rate": 0.35006452489302453,
+          "mean_agent_return": -2.1087221807149787
+        },
+        "4m-5m": {
+          "first_epoch": 195,
+          "last_epoch": 244,
+          "epochs": 50,
+          "steps": 1004716,
+          "episodes": 190307,
+          "updates": 500,
+          "timed_seconds": 6230.258697286248,
+          "hours": 1.7306274159128467,
+          "steps_per_second": 161.2639296081927,
+          "episodes_per_second": 30.545601594825136,
+          "seconds_per_epoch": 124.60517394572497,
+          "steps_taken": 5.27944847010357,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.1469415208058558
+        },
+        "9m-10m": {
+          "first_epoch": 444,
+          "last_epoch": 493,
+          "epochs": 50,
+          "steps": 1004545,
+          "episodes": 195559,
+          "updates": 500,
+          "timed_seconds": 6230.85956247896,
+          "hours": 1.730794322910822,
+          "steps_per_second": 161.22093427513232,
+          "episodes_per_second": 31.385557327855498,
+          "seconds_per_epoch": 124.6171912495792,
+          "steps_taken": 5.136787363404395,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.1380829655841289
+        },
+        "19m-20m": {
+          "first_epoch": 942,
+          "last_epoch": 991,
+          "epochs": 50,
+          "steps": 1004623,
+          "episodes": 195981,
+          "updates": 500,
+          "timed_seconds": 5487.021417858079,
+          "hours": 1.5241726160716886,
+          "steps_per_second": 183.09077430067074,
+          "episodes_per_second": 35.717192457488785,
+          "seconds_per_epoch": 109.74042835716158,
+          "steps_taken": 5.1261244712497644,
+          "success_rate": 0.9999948974645502,
+          "mean_agent_return": -0.13644707054935598
+        },
+        "26m-27m": {
+          "first_epoch": 1290,
+          "last_epoch": 1339,
+          "epochs": 50,
+          "steps": 1004539,
+          "episodes": 196223,
+          "updates": 500,
+          "timed_seconds": 5190.627385053784,
+          "hours": 1.4418409402927177,
+          "steps_per_second": 193.52939933475716,
+          "episodes_per_second": 37.80333001074528,
+          "seconds_per_epoch": 103.81254770107567,
+          "steps_taken": 5.119374385265743,
+          "success_rate": 1.0,
+          "mean_agent_return": -0.13609804491148678
+        },
+        "29m-30m": null,
+        "35m-36m": null,
+        "39m-40m": null
+      }
+    },
+    "episode_batch_count": 13686,
+    "last_batch_update": 13686,
+    "complete_epoch_updates": 13680,
+    "last_complete_epoch_byte_end": 1653395479,
+    "partial_suffix": {
+      "updates": 6,
+      "steps": 12033,
+      "episodes": 2339
+    }
+  }
+]

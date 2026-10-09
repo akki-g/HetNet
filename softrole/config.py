@@ -27,6 +27,9 @@ class Config:
     heads: int = 4
     head_dim: int = 16
     msg_dim: int = 16
+    comm_rounds: int = 2
+    independent_heads: bool = False
+    communication: str = "binary"
     feedback: bool = True
     comm_range: float = -1.0
     seed: int = 0
@@ -36,6 +39,7 @@ class Config:
     nprocesses: int = 4
     total_steps: int | None = None
     lr: float = 0.0001
+    optimizer: str = "rmsprop"
     gamma: float = 1.0
     gae_lambda: float = 0.95
     actor_coeff: float = 50.0
@@ -66,6 +70,12 @@ class Config:
         # Missing fields in old checkpoint model_config retain the old layout.
         if self.task == "fc" and self.env_version == "paper-v1":
             settings["allow_stay"] = False
+        # Omit default additions so original checkpoint model_config dictionaries
+        # still match exactly and retain their original state-dict layout.
+        for name, default in (("comm_rounds", 2), ("independent_heads", False),
+                              ("communication", "binary")):
+            if getattr(self, name) != default:
+                settings[name] = getattr(self, name)
         return settings
 
     def to_dict(self):
@@ -80,6 +90,14 @@ class Config:
             raise ValueError("paper-v1 FC uses the fixed paper reward (reward_type=3)")
         if self.model not in ("banked", "shared", "capability", "constant"):
             raise ValueError("unknown deterministic model variant")
+        if self.communication not in ("binary", "real"):
+            raise ValueError("communication must be binary or real")
+        if self.optimizer not in ("rmsprop", "adam"):
+            raise ValueError("optimizer must be rmsprop or adam")
+        if type(self.comm_rounds) is not int or self.comm_rounds <= 0:
+            raise ValueError("comm_rounds must be a positive integer")
+        if type(self.independent_heads) is not bool:
+            raise ValueError("independent_heads must be a boolean")
         for name in ("dim", "max_steps", "nfires", "experts", "pre_dim", "hidden_dim",
                      "heads", "head_dim", "msg_dim", "epochs", "updates_per_epoch",
                      "batch_steps", "nprocesses", "detach_gap", "save_every"):

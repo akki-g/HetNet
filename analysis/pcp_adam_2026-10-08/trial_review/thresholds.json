@@ -1,0 +1,532 @@
+[
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 9055334,
+      "first_epoch": 333,
+      "last_epoch": 432,
+      "value": 19.9461349442993
+    },
+    "group": "adam_shared",
+    "metric": "steps_taken",
+    "seed": 0,
+    "threshold": 20
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 12737486,
+      "first_epoch": 515,
+      "last_epoch": 614,
+      "value": 9.987629294147895
+    },
+    "group": "adam_shared",
+    "metric": "steps_taken",
+    "seed": 0,
+    "threshold": 10
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 22751242,
+      "first_epoch": 1012,
+      "last_epoch": 1111,
+      "value": 6.998338206305777
+    },
+    "group": "adam_shared",
+    "metric": "steps_taken",
+    "seed": 0,
+    "threshold": 7
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 30858098,
+      "first_epoch": 1415,
+      "last_epoch": 1514,
+      "value": 5.998097010696112
+    },
+    "group": "adam_shared",
+    "metric": "steps_taken",
+    "seed": 0,
+    "threshold": 6
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 8872010,
+      "first_epoch": 324,
+      "last_epoch": 423,
+      "value": 0.9901969701563431
+    },
+    "group": "adam_shared",
+    "metric": "success_rate",
+    "seed": 0,
+    "threshold": 0.99
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 7867746,
+      "first_epoch": 276,
+      "last_epoch": 375,
+      "value": 19.89133659766326
+    },
+    "group": "adam_shared",
+    "metric": "steps_taken",
+    "seed": 1,
+    "threshold": 20
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 11447692,
+      "first_epoch": 453,
+      "last_epoch": 552,
+      "value": 9.988663847466428
+    },
+    "group": "adam_shared",
+    "metric": "steps_taken",
+    "seed": 1,
+    "threshold": 10
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 19849740,
+      "first_epoch": 870,
+      "last_epoch": 969,
+      "value": 6.999725331080353
+    },
+    "group": "adam_shared",
+    "metric": "steps_taken",
+    "seed": 1,
+    "threshold": 7
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 28016676,
+      "first_epoch": 1276,
+      "last_epoch": 1375,
+      "value": 5.998845379279481
+    },
+    "group": "adam_shared",
+    "metric": "steps_taken",
+    "seed": 1,
+    "threshold": 6
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 7562952,
+      "first_epoch": 261,
+      "last_epoch": 360,
+      "value": 0.9902781727599246
+    },
+    "group": "adam_shared",
+    "metric": "success_rate",
+    "seed": 1,
+    "threshold": 0.99
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 8581745,
+      "first_epoch": 310,
+      "last_epoch": 409,
+      "value": 19.953192151371955
+    },
+    "group": "adam_shared",
+    "metric": "steps_taken",
+    "seed": 2,
+    "threshold": 20
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 13219950,
+      "first_epoch": 539,
+      "last_epoch": 638,
+      "value": 9.985827067483328
+    },
+    "group": "adam_shared",
+    "metric": "steps_taken",
+    "seed": 2,
+    "threshold": 10
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 21057163,
+      "first_epoch": 928,
+      "last_epoch": 1027,
+      "value": 6.995262837779129
+    },
+    "group": "adam_shared",
+    "metric": "steps_taken",
+    "seed": 2,
+    "threshold": 7
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 26749357,
+      "first_epoch": 1211,
+      "last_epoch": 1310,
+      "value": 5.9992810155282745
+    },
+    "group": "adam_shared",
+    "metric": "steps_taken",
+    "seed": 2,
+    "threshold": 6
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 8234873,
+      "first_epoch": 293,
+      "last_epoch": 392,
+      "value": 0.9901994587760816
+    },
+    "group": "adam_shared",
+    "metric": "success_rate",
+    "seed": 2,
+    "threshold": 0.99
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 7740946,
+      "first_epoch": 269,
+      "last_epoch": 368,
+      "value": 19.89060364299078
+    },
+    "group": "rmsprop_shared",
+    "metric": "steps_taken",
+    "seed": 0,
+    "threshold": 20
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 11259888,
+      "first_epoch": 443,
+      "last_epoch": 542,
+      "value": 9.994106265371464
+    },
+    "group": "rmsprop_shared",
+    "metric": "steps_taken",
+    "seed": 0,
+    "threshold": 10
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 21697302,
+      "first_epoch": 961,
+      "last_epoch": 1060,
+      "value": 6.998905075236973
+    },
+    "group": "rmsprop_shared",
+    "metric": "steps_taken",
+    "seed": 0,
+    "threshold": 7
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 31960307,
+      "first_epoch": 1471,
+      "last_epoch": 1570,
+      "value": 5.999373764302776
+    },
+    "group": "rmsprop_shared",
+    "metric": "steps_taken",
+    "seed": 0,
+    "threshold": 6
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 7578537,
+      "first_epoch": 261,
+      "last_epoch": 360,
+      "value": 0.9902462062876034
+    },
+    "group": "rmsprop_shared",
+    "metric": "success_rate",
+    "seed": 0,
+    "threshold": 0.99
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 7243398,
+      "first_epoch": 246,
+      "last_epoch": 345,
+      "value": 19.884097453149387
+    },
+    "group": "rmsprop_shared",
+    "metric": "steps_taken",
+    "seed": 1,
+    "threshold": 20
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 10640960,
+      "first_epoch": 414,
+      "last_epoch": 513,
+      "value": 9.990256255533408
+    },
+    "group": "rmsprop_shared",
+    "metric": "steps_taken",
+    "seed": 1,
+    "threshold": 10
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 19688080,
+      "first_epoch": 863,
+      "last_epoch": 962,
+      "value": 6.997156879101324
+    },
+    "group": "rmsprop_shared",
+    "metric": "steps_taken",
+    "seed": 1,
+    "threshold": 7
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 27130991,
+      "first_epoch": 1233,
+      "last_epoch": 1332,
+      "value": 5.998168498168498
+    },
+    "group": "rmsprop_shared",
+    "metric": "steps_taken",
+    "seed": 1,
+    "threshold": 6
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 6958858,
+      "first_epoch": 232,
+      "last_epoch": 331,
+      "value": 0.9902604636358814
+    },
+    "group": "rmsprop_shared",
+    "metric": "success_rate",
+    "seed": 1,
+    "threshold": 0.99
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 7711510,
+      "first_epoch": 268,
+      "last_epoch": 367,
+      "value": 19.987211478477853
+    },
+    "group": "rmsprop_shared",
+    "metric": "steps_taken",
+    "seed": 2,
+    "threshold": 20
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 11555798,
+      "first_epoch": 458,
+      "last_epoch": 557,
+      "value": 9.995447460227131
+    },
+    "group": "rmsprop_shared",
+    "metric": "steps_taken",
+    "seed": 2,
+    "threshold": 10
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 20260162,
+      "first_epoch": 890,
+      "last_epoch": 989,
+      "value": 6.99855735972496
+    },
+    "group": "rmsprop_shared",
+    "metric": "steps_taken",
+    "seed": 2,
+    "threshold": 7
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 27299752,
+      "first_epoch": 1240,
+      "last_epoch": 1339,
+      "value": 5.998979670988645
+    },
+    "group": "rmsprop_shared",
+    "metric": "steps_taken",
+    "seed": 2,
+    "threshold": 6
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 7345076,
+      "first_epoch": 250,
+      "last_epoch": 349,
+      "value": 0.9904846348478623
+    },
+    "group": "rmsprop_shared",
+    "metric": "success_rate",
+    "seed": 2,
+    "threshold": 0.99
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 10771981,
+      "first_epoch": 413,
+      "last_epoch": 512,
+      "value": 19.948047660202565
+    },
+    "group": "rmsprop_banked",
+    "metric": "steps_taken",
+    "seed": 0,
+    "threshold": 20
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 17423527,
+      "first_epoch": 741,
+      "last_epoch": 840,
+      "value": 9.996526403293485
+    },
+    "group": "rmsprop_banked",
+    "metric": "steps_taken",
+    "seed": 0,
+    "threshold": 10
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 32520590,
+      "first_epoch": 1490,
+      "last_epoch": 1589,
+      "value": 6.997032207842755
+    },
+    "group": "rmsprop_banked",
+    "metric": "steps_taken",
+    "seed": 0,
+    "threshold": 7
+  },
+  {
+    "first_100epoch_crossing": null,
+    "group": "rmsprop_banked",
+    "metric": "steps_taken",
+    "seed": 0,
+    "threshold": 6
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 10629097,
+      "first_epoch": 406,
+      "last_epoch": 505,
+      "value": 0.9901647821633501
+    },
+    "group": "rmsprop_banked",
+    "metric": "success_rate",
+    "seed": 0,
+    "threshold": 0.99
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 9702274,
+      "first_epoch": 362,
+      "last_epoch": 461,
+      "value": 19.986876180462254
+    },
+    "group": "rmsprop_banked",
+    "metric": "steps_taken",
+    "seed": 1,
+    "threshold": 20
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 17926163,
+      "first_epoch": 768,
+      "last_epoch": 867,
+      "value": 9.99465817250146
+    },
+    "group": "rmsprop_banked",
+    "metric": "steps_taken",
+    "seed": 1,
+    "threshold": 10
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 29495901,
+      "first_epoch": 1342,
+      "last_epoch": 1441,
+      "value": 6.997987535930652
+    },
+    "group": "rmsprop_banked",
+    "metric": "steps_taken",
+    "seed": 1,
+    "threshold": 7
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 39314024,
+      "first_epoch": 1830,
+      "last_epoch": 1929,
+      "value": 5.999847868367359
+    },
+    "group": "rmsprop_banked",
+    "metric": "steps_taken",
+    "seed": 1,
+    "threshold": 6
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 9559627,
+      "first_epoch": 355,
+      "last_epoch": 454,
+      "value": 0.9901567480067164
+    },
+    "group": "rmsprop_banked",
+    "metric": "success_rate",
+    "seed": 1,
+    "threshold": 0.99
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 8587121,
+      "first_epoch": 309,
+      "last_epoch": 408,
+      "value": 19.960958097813926
+    },
+    "group": "rmsprop_banked",
+    "metric": "steps_taken",
+    "seed": 2,
+    "threshold": 20
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 15841910,
+      "first_epoch": 667,
+      "last_epoch": 766,
+      "value": 9.989467385983216
+    },
+    "group": "rmsprop_banked",
+    "metric": "steps_taken",
+    "seed": 2,
+    "threshold": 10
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 31944124,
+      "first_epoch": 1466,
+      "last_epoch": 1565,
+      "value": 6.999134430879613
+    },
+    "group": "rmsprop_banked",
+    "metric": "steps_taken",
+    "seed": 2,
+    "threshold": 7
+  },
+  {
+    "first_100epoch_crossing": null,
+    "group": "rmsprop_banked",
+    "metric": "steps_taken",
+    "seed": 2,
+    "threshold": 6
+  },
+  {
+    "first_100epoch_crossing": {
+      "end_steps": 8117309,
+      "first_epoch": 286,
+      "last_epoch": 385,
+      "value": 0.9903330100226317
+    },
+    "group": "rmsprop_banked",
+    "metric": "success_rate",
+    "seed": 2,
+    "threshold": 0.99
+  }
+]

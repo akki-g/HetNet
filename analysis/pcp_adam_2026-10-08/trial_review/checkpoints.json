@@ -1,0 +1,2282 @@
+[
+  {
+    "epoch": 50,
+    "file_sha256": "a5c751149a443fa605d756dbc311bad5214b1e2dce0cafb6613f4baf5aa158b2",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "e1a0d396eb933bae832a6df0137bab19e2eabf72d1854f1c97026cb888c2dc39",
+    "optimizer_steps": 500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.11528702097878622,
+      "exp_avg_sq_sum": 0.22141184164940075,
+      "parameter_l2": 28.622510800355585
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0050.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 15219,
+    "total_steps": 1076006,
+    "updates": 500
+  },
+  {
+    "epoch": 100,
+    "file_sha256": "c6e96512ccdfa0d7279eb0a09e5c35744961d8d021c386b07c3fc8bbde51eb1e",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "6a3187d5574ef6afd1655fae41362cbd5c9fd8ea5fff8857d3829d75b9877d56",
+    "optimizer_steps": 1000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.19316958463330464,
+      "exp_avg_sq_sum": 0.3556713213479981,
+      "parameter_l2": 29.099999324075686
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0100.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 32144,
+    "total_steps": 2147240,
+    "updates": 1000
+  },
+  {
+    "epoch": 150,
+    "file_sha256": "0d3325e89874f4bab9e91dfaf4127e31bcc4f5b693a212a9add72b89ca0014cc",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "fe49dee1d18c2dd5f6e5a14d7e14903eeac73599b6e067fcda4f6325f3705b40",
+    "optimizer_steps": 1500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1720826313211154,
+      "exp_avg_sq_sum": 0.4370834431030842,
+      "parameter_l2": 29.540460226979395
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0150.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 55538,
+    "total_steps": 3203453,
+    "updates": 1500
+  },
+  {
+    "epoch": 200,
+    "file_sha256": "2972dd23d37d91b4ba6828c20244b7af233a01634cd4135fba1f5b5a7315a44e",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "0cee898619041dad2994ede30099d67e7423ccdba0abd7c81ce9908952c1e57f",
+    "optimizer_steps": 2000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.17140384729484318,
+      "exp_avg_sq_sum": 0.48645003952676946,
+      "parameter_l2": 29.936784880883383
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0200.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 83434,
+    "total_steps": 4253990,
+    "updates": 2000
+  },
+  {
+    "epoch": 250,
+    "file_sha256": "f898bbe15a27b7f28ee0cf846c30c52405ab405f8a615bb2048cd0049a2b8ca1",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "ee9e81703188460f39037130747aa2a6a8dcaf7a7eb1cc50a3148a8d214f8212",
+    "optimizer_steps": 2500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1782389684625124,
+      "exp_avg_sq_sum": 0.516384904033442,
+      "parameter_l2": 30.320149729428334
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0250.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 116540,
+    "total_steps": 5298431,
+    "updates": 2500
+  },
+  {
+    "epoch": 300,
+    "file_sha256": "55831732ae3cbc94c02ba5bd2727208ab808604e3e766f6f5079f820c9b62b1c",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "c9fc5db2133db146f080f961f0f1ba4fbb3c7727f046535702091eb7d3956754",
+    "optimizer_steps": 3000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.20196185370307243,
+      "exp_avg_sq_sum": 0.5345367755396034,
+      "parameter_l2": 30.630990115108037
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0300.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 153333,
+    "total_steps": 6337608,
+    "updates": 3000
+  },
+  {
+    "epoch": 350,
+    "file_sha256": "771f64ec57aefc23145950c844446c1c787e371826910aa55eba06e5acde3da8",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "fafb29297344a8c89096b2dab69421b08879accc3f5f4761ea424046853e0ef3",
+    "optimizer_steps": 3500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.19488874610000678,
+      "exp_avg_sq_sum": 0.5455436880927085,
+      "parameter_l2": 30.950584619991414
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0350.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 194694,
+    "total_steps": 7373922,
+    "updates": 3500
+  },
+  {
+    "epoch": 400,
+    "file_sha256": "b5dc494c38353971c152c865f36371cfe197b97f39cef02cc9a573572a4e1d24",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "2e531bea7512659e924ab6024e0966725229143964340fb5d8f4ed4f5bc8722f",
+    "optimizer_steps": 4000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.20458684567084326,
+      "exp_avg_sq_sum": 0.5522180477688464,
+      "parameter_l2": 31.350014629935703
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0400.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 244368,
+    "total_steps": 8401394,
+    "updates": 4000
+  },
+  {
+    "epoch": 450,
+    "file_sha256": "98157ee9df23558ac3dc31acdc03fe621d88fd894ac339720c72f815f21c2827",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "7e4cc899b2b38509583ecaf0a17d12aa6e89031579f6d6b2f3a01ca27aa51679",
+    "optimizer_steps": 4500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.13099204642750484,
+      "exp_avg_sq_sum": 0.5562652381335983,
+      "parameter_l2": 31.80973911617551
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0450.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 306564,
+    "total_steps": 9421258,
+    "updates": 4500
+  },
+  {
+    "epoch": 500,
+    "file_sha256": "a4bc92e5f8c8f8bb75b876cb7085bdc425aa246fc1f9913365935b061124490b",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "db0f488139bc30fd8088030cc10cf7061cf0f7137b4ac72c6aecf1c57dc14796",
+    "optimizer_steps": 5000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.15862792042822252,
+      "exp_avg_sq_sum": 0.558719367391874,
+      "parameter_l2": 32.376715110408526
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0500.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 387226,
+    "total_steps": 10434419,
+    "updates": 5000
+  },
+  {
+    "epoch": 550,
+    "file_sha256": "4bd5bd0a164cf176c17f1e5266e5fac589042d48d3adc90c12efbd2d73c54bca",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "8382d1e3b9bda5173d0758f5ab2eb084d60a2e6e093c533489131b7054bda034",
+    "optimizer_steps": 5500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.2014351933307941,
+      "exp_avg_sq_sum": 0.5602074985055208,
+      "parameter_l2": 32.85865626209967
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0550.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 480887,
+    "total_steps": 11445259,
+    "updates": 5500
+  },
+  {
+    "epoch": 600,
+    "file_sha256": "4417945335d1946c99c1c2c0ecced633d2b4a7b78bfbf7d595a853aebc218b2d",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "db6c45558d6333766da751d426488a42c9f1f055c9607b1d4bc67330792bab03",
+    "optimizer_steps": 6000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.18993725032455694,
+      "exp_avg_sq_sum": 0.5611098689620619,
+      "parameter_l2": 33.285366252647115
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0600.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 584348,
+    "total_steps": 12454829,
+    "updates": 6000
+  },
+  {
+    "epoch": 650,
+    "file_sha256": "b337be780eeee2e817ad4acdd0d2ffb18a99e2f44fde6d68c1906916ab665871",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "0fa9d83265fead7467896e67806eba2f18f03973ee759f8e712f9323f0421b1b",
+    "optimizer_steps": 6500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.20465742098184866,
+      "exp_avg_sq_sum": 0.5616570469709364,
+      "parameter_l2": 33.625097781439926
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0650.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 694331,
+    "total_steps": 13463738,
+    "updates": 6500
+  },
+  {
+    "epoch": 700,
+    "file_sha256": "a32a2af87d88c828469c383c298a33d654c8a5124407ec3eede073dedd9e9e68",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "1e1ff9b6f53673b5ac343bbc45d6263f9db160067205aaa6d9a6bb18cb420f9d",
+    "optimizer_steps": 7000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.2154379773661045,
+      "exp_avg_sq_sum": 0.5619888435371899,
+      "parameter_l2": 33.94813801287921
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0700.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 809731,
+    "total_steps": 14472437,
+    "updates": 7000
+  },
+  {
+    "epoch": 750,
+    "file_sha256": "0869a81e4dffcc1a02c1a424dd5fd53b97533ae320bcd23245097feeadca6806",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "6efa1e44806770cdc440f678e817a3c683366aa8cca9df4b2689268fed6af460",
+    "optimizer_steps": 7500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.15856550533467223,
+      "exp_avg_sq_sum": 0.5621900377925374,
+      "parameter_l2": 34.20616415764831
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0750.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 928933,
+    "total_steps": 15480216,
+    "updates": 7500
+  },
+  {
+    "epoch": 800,
+    "file_sha256": "c6c25d5c9a438a6dd8a62aa7245e52d50c4ba213683510662c8d18d22f58640a",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "baa37273e0d836266080807919dd149fea5f89539d2b22bfb3a647c7c987560f",
+    "optimizer_steps": 8000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.15037270254993823,
+      "exp_avg_sq_sum": 0.5623120376166947,
+      "parameter_l2": 34.43142967197022
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0800.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1052566,
+    "total_steps": 16488088,
+    "updates": 8000
+  },
+  {
+    "epoch": 850,
+    "file_sha256": "284907ab71f7da377e12a6c683cc89673fa8b588930e738bfcf8bf71e376d1d1",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "b9abef7b14a37784b094e356106497d0753d8ff6414300a8766ffcf3f1d34c0a",
+    "optimizer_steps": 8500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.16858819882372417,
+      "exp_avg_sq_sum": 0.5623860151477988,
+      "parameter_l2": 34.664354602106954
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0850.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1179974,
+    "total_steps": 17495735,
+    "updates": 8500
+  },
+  {
+    "epoch": 900,
+    "file_sha256": "4476a3340f121d3b5c847433b0d3886d68361cd9c904cb25c05a464e45651d9e",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "a8d49b9adc033e6ae06fffdf396ced95f16e90c98436e2197e06e9600ac960bc",
+    "optimizer_steps": 9000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.15477002195697817,
+      "exp_avg_sq_sum": 0.5624308732402308,
+      "parameter_l2": 34.903755994280814
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0900.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1311664,
+    "total_steps": 18503029,
+    "updates": 9000
+  },
+  {
+    "epoch": 950,
+    "file_sha256": "dc00e53eba7c11d67539e2e21f5637a06587cebe05260335ef720b850e504482",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "d55d8545b109e5974516c73b9c3b28cbfe39d9d0735a0e44ec165e38be4df466",
+    "optimizer_steps": 9500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.17861254609132501,
+      "exp_avg_sq_sum": 0.5624580741693873,
+      "parameter_l2": 35.10055740688852
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0950.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1446599,
+    "total_steps": 19510005,
+    "updates": 9500
+  },
+  {
+    "epoch": 1000,
+    "file_sha256": "cac06bae0fa2a9629fad478627b6035319eada79c70511de0d9f4a3ea392e91d",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "21a1c48849e8e005f791241f3ea8d3c90fb6a85ea074054f76d381e0858b1012",
+    "optimizer_steps": 10000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.14704753287631858,
+      "exp_avg_sq_sum": 0.5624745680429813,
+      "parameter_l2": 35.286633819299915
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1000.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1585073,
+    "total_steps": 20516805,
+    "updates": 10000
+  },
+  {
+    "epoch": 1050,
+    "file_sha256": "ea6dd919513bb47d3e27d0eca13047d9397da950a8390a11f508b3e039bc7261",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "a0d4de7740a956f9e2b099497cfedd3cc4ce8cf39805ae5054b74cfc4f410f82",
+    "optimizer_steps": 10500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.20057871876840996,
+      "exp_avg_sq_sum": 0.562484569347877,
+      "parameter_l2": 35.502291559307984
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1050.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1726663,
+    "total_steps": 21523392,
+    "updates": 10500
+  },
+  {
+    "epoch": 1100,
+    "file_sha256": "c1482ba41f4e05862f0910965e4cd4620532809890028eed5fc0c0942d44fee7",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "8bae9a9c713d40d129e649c8859a2cfb4e765488e8318e46ec1aa3dd92bb2772",
+    "optimizer_steps": 11000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.17875816450906742,
+      "exp_avg_sq_sum": 0.5624906333958991,
+      "parameter_l2": 35.70302865005793
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1100.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1871475,
+    "total_steps": 22529789,
+    "updates": 11000
+  },
+  {
+    "epoch": 1150,
+    "file_sha256": "544cbdc22fc8f32254c14f765308e64b6749fb338880e9ed516ec7ad4c0c5a0a",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "29e8c466311a2fc92d5ebc82caf79732ea7e28bca9ce39397ed292e25a666798",
+    "optimizer_steps": 11500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.19005224594123515,
+      "exp_avg_sq_sum": 0.5624943103656433,
+      "parameter_l2": 35.87842271522618
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1150.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2019059,
+    "total_steps": 23536091,
+    "updates": 11500
+  },
+  {
+    "epoch": 1200,
+    "file_sha256": "8723d1ccd39200049bb2a2e3fda70023fe87576ff3b7d45e434c153cf7ddd459",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "9994b8a9d41ccab0117fb34f8d97982c2935071b08b41d0d65f201ecdf3867d1",
+    "optimizer_steps": 12000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1652039536202841,
+      "exp_avg_sq_sum": 0.5624965395965134,
+      "parameter_l2": 36.048616547557515
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1200.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2169405,
+    "total_steps": 24542325,
+    "updates": 12000
+  },
+  {
+    "epoch": 1250,
+    "file_sha256": "e16a545d864d05e4e870d6dcd8cec47fd29953d8070458c7038adda4b061209d",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "ba50ce13454312e390f00a3921ce0f03d2b51b7847cac45bdcda707c1cf3b702",
+    "optimizer_steps": 12500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.17680419288836913,
+      "exp_avg_sq_sum": 0.5624978910467726,
+      "parameter_l2": 36.21866502861404
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1250.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2322012,
+    "total_steps": 25548356,
+    "updates": 12500
+  },
+  {
+    "epoch": 1300,
+    "file_sha256": "0ef7994e052459c6bbbdae95d01e847e127341ebc79d01c6af5ff19aaef68449",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "7dd992ca2a29cb360adb1494a08e1ae78a26e724af18e8e4a41840ae1f1f73d0",
+    "optimizer_steps": 13000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1557572114329323,
+      "exp_avg_sq_sum": 0.56249870993786,
+      "parameter_l2": 36.379385962105154
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1300.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2477749,
+    "total_steps": 26554431,
+    "updates": 13000
+  },
+  {
+    "epoch": 1350,
+    "file_sha256": "37df467f901eec57827f6cd318251a5eb6eabad9ddcac26e5bd7ea450b7ed469",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "4aedc1f2de56c1d9d190e45d25ab84de0bbbe2563ef411e396fb4dc1d359d1f7",
+    "optimizer_steps": 13500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.16723222569516277,
+      "exp_avg_sq_sum": 0.5624992058515315,
+      "parameter_l2": 36.54586583864922
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1350.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2636930,
+    "total_steps": 27560122,
+    "updates": 13500
+  },
+  {
+    "epoch": 1400,
+    "file_sha256": "28b8bdfd43b8c8229fc4d9d26d14624198b979f2bb10bcb7259d850b62433521",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "62be2d85752a486cb3d144235c196096c9ea15d21cc6f0277fce12821eab1500",
+    "optimizer_steps": 14000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.19071243941433874,
+      "exp_avg_sq_sum": 0.5624995069321593,
+      "parameter_l2": 36.735774226875826
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1400.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2799246,
+    "total_steps": 28565652,
+    "updates": 14000
+  },
+  {
+    "epoch": 1450,
+    "file_sha256": "30d8997707af780dae16f2cd34a35f996492bfe841c4bc8c1379633a8198c9d2",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "c4a161db2b8b0e208c9607f4f817446de879d8fea56277e4b6c245548d893935",
+    "optimizer_steps": 14500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1918898058113802,
+      "exp_avg_sq_sum": 0.5624996890380911,
+      "parameter_l2": 36.902182375916084
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1450.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2964756,
+    "total_steps": 29571037,
+    "updates": 14500
+  },
+  {
+    "epoch": 1500,
+    "file_sha256": "dcf4f8b8242b68c462958d0e7491d701c48aeff09870d6460a99c46531ac02fa",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "46c68f10e5390c9d3496196e59a938a650171312e41e28a4fdc5e6c8f8bb60bf",
+    "optimizer_steps": 15000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.18472774307389206,
+      "exp_avg_sq_sum": 0.5624997990651254,
+      "parameter_l2": 37.06403636525943
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1500.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3133184,
+    "total_steps": 30576510,
+    "updates": 15000
+  },
+  {
+    "epoch": 1550,
+    "file_sha256": "0d4d79415cbe11ad06a7849f464503e2210efbbe78087e60216eb4e10f0496c1",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "326f10b2ffec4b23fb912657cdb95fe640647488301d780f15e3988dde345d92",
+    "optimizer_steps": 15500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.17632617139121154,
+      "exp_avg_sq_sum": 0.5624998661999394,
+      "parameter_l2": 37.21790808350978
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1550.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3303806,
+    "total_steps": 31581986,
+    "updates": 15500
+  },
+  {
+    "epoch": 1600,
+    "file_sha256": "875c3c4aae2e934688d22d9333ee7105d14c61397b8738bf87333ee5ada16bc1",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "e1575b2e04e2d5538665e1ecb123df455281de15a20d33bb6124e83a49507deb",
+    "optimizer_steps": 16000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.2050989910773373,
+      "exp_avg_sq_sum": 0.5624999055347429,
+      "parameter_l2": 37.39330240524253
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1600.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3477397,
+    "total_steps": 32587286,
+    "updates": 16000
+  },
+  {
+    "epoch": 1650,
+    "file_sha256": "18c3266e8a3fc9f94c598cab4b0198ad758fe22f95b610652ba28a4504ade09d",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "ccb43c7b9adb2edc4c93ad5f645b9c6fd9b706d184570441f5d8ac228b19e6d3",
+    "optimizer_steps": 16500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1979997600249525,
+      "exp_avg_sq_sum": 0.562499928642999,
+      "parameter_l2": 37.568687414500324
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1650.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3653281,
+    "total_steps": 33592392,
+    "updates": 16500
+  },
+  {
+    "epoch": 1700,
+    "file_sha256": "f842dfa04154fb09263220b94aea844593a9b38af81ab03d85963dbfe20081bf",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "3c69aa8742e4ca9f9749ab4028d5cfbc445a43da6357052742eeaee94fba7579",
+    "optimizer_steps": 17000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.16656299287049853,
+      "exp_avg_sq_sum": 0.5624999428913832,
+      "parameter_l2": 37.72379333622289
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1700.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3830646,
+    "total_steps": 34597396,
+    "updates": 17000
+  },
+  {
+    "epoch": 1750,
+    "file_sha256": "5e09af5953d6d190043476fc5776feb80c495e3b0c72448ea7eabeb6adb28ed4",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "6c42ea27f2fa0a9d68a32d523ab9127a965181dcd2eec9e54c0249fbe61220b5",
+    "optimizer_steps": 17500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.15224531238988243,
+      "exp_avg_sq_sum": 0.5624999505747384,
+      "parameter_l2": 37.87653451006439
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1750.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4009472,
+    "total_steps": 35602501,
+    "updates": 17500
+  },
+  {
+    "epoch": 1800,
+    "file_sha256": "4321b221d495264f89f551eaf7bb1ee5313079b3967be8292b45c68ddff117c8",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "7d8a79c99d484b018edb2e7fc24c491f20aaa1605ff6ce7da26dff142c345b52",
+    "optimizer_steps": 18000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.21539960812367806,
+      "exp_avg_sq_sum": 0.5624999543510916,
+      "parameter_l2": 38.02309246533746
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1800.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4190193,
+    "total_steps": 36607434,
+    "updates": 18000
+  },
+  {
+    "epoch": 1850,
+    "file_sha256": "14273170052c30c8826bcb75af2056908610a51505ab5aea55a3bf97d3099cb6",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "a911de1b6e96011c2aad6584b77c78eacda1c179e608d1dd6b3574d3154ea7c8",
+    "optimizer_steps": 18500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1897590856006635,
+      "exp_avg_sq_sum": 0.5624999564506904,
+      "parameter_l2": 38.16982309113379
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1850.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4371930,
+    "total_steps": 37612330,
+    "updates": 18500
+  },
+  {
+    "epoch": 1900,
+    "file_sha256": "a020e175ac36e325551cfcc8334916710198b4339bd70d60fa8e408581deef35",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "c2cd618d111d6231cf06df8fef015c3c5dceaa6cb1f3befeaba61cc941a0eb45",
+    "optimizer_steps": 19000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1588453581385175,
+      "exp_avg_sq_sum": 0.5624999577681118,
+      "parameter_l2": 38.3072543062239
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1900.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4554385,
+    "total_steps": 38617248,
+    "updates": 19000
+  },
+  {
+    "epoch": 1950,
+    "file_sha256": "ff5e61e1aaf24acdde8074313141a0ddf2efaeb0d6b1a204158071d8c296c135",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "f0f46afbc4eec49462f8c3b9eaa344880a68ea94116e3959f11bb3f00513440f",
+    "optimizer_steps": 19500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.13061399708360574,
+      "exp_avg_sq_sum": 0.5624999574994729,
+      "parameter_l2": 38.43478896780096
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch1950.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4738359,
+    "total_steps": 39622033,
+    "updates": 19500
+  },
+  {
+    "epoch": 2000,
+    "file_sha256": "aff9a065ca51852c77a5a88299b73566760f831d8854c6f4cacfa9fd43ad0533",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "e9c210ca12156a17728e73ee9bcf7d7b105aa9d15aecadfd010c7ddb6c9b1af5",
+    "optimizer_steps": 20000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1597080081311642,
+      "exp_avg_sq_sum": 0.5624999580562142,
+      "parameter_l2": 38.5500458519446
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch2000.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4922687,
+    "total_steps": 40626850,
+    "updates": 20000
+  },
+  {
+    "epoch": 50,
+    "file_sha256": "1ac9932ef4dda4a19aca1e1fa89087071fd68c4fb97bcfd490e8f29109dc6433",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "134873875e15b695fe0cb8086d512873fae48d808e6e1ba2c89309b099a44288",
+    "optimizer_steps": 500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.18455929084260514,
+      "exp_avg_sq_sum": 0.22141184183639545,
+      "parameter_l2": 28.455276994540288
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0050.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 15423,
+    "total_steps": 1075331,
+    "updates": 500
+  },
+  {
+    "epoch": 100,
+    "file_sha256": "121f5795691e0ddd6f0e5d0a132032d0940b112aafcd71aea5b67d2f94221e19",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "e5a49670b66c7eb1c741cda26e2683a435e3902777bc29db56371fe66822659a",
+    "optimizer_steps": 1000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.2505709535464381,
+      "exp_avg_sq_sum": 0.3556713215489113,
+      "parameter_l2": 28.997189850350242
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0100.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 33232,
+    "total_steps": 2143872,
+    "updates": 1000
+  },
+  {
+    "epoch": 150,
+    "file_sha256": "4a0fd1aa9d90203b35d92bf074c3549fdd0a2eb489f60ec7f985939b4adad6d5",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "7480f578699ad1f0b09779dcf0499769d92419590133497d3c3c3a2affea668a",
+    "optimizer_steps": 1500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.15442914204452363,
+      "exp_avg_sq_sum": 0.43708344319576453,
+      "parameter_l2": 29.448874135156736
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0150.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 57262,
+    "total_steps": 3200305,
+    "updates": 1500
+  },
+  {
+    "epoch": 200,
+    "file_sha256": "6fe41399422fb609c109e3dd67176ebb67c8c1437e831ea0fb70d9e29c1d51e4",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "eec0f9083619065eff1078aa9ead28d5a5d3bd37177ef3581c6d725e27af7195",
+    "optimizer_steps": 2000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.16819169832815226,
+      "exp_avg_sq_sum": 0.48645003960961647,
+      "parameter_l2": 29.793919165937346
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0200.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 84847,
+    "total_steps": 4253103,
+    "updates": 2000
+  },
+  {
+    "epoch": 250,
+    "file_sha256": "88561d7860dd967f313fe6ec784b9b915ccfedbc5c72fe32e912f2dc21dc183a",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "ba422c6a8ce40b8368628a6b2198e9d5075996b33c70c770e620340bff4a2688",
+    "optimizer_steps": 2500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1657487076309892,
+      "exp_avg_sq_sum": 0.5163849039623133,
+      "parameter_l2": 30.172637037607526
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0250.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 118918,
+    "total_steps": 5296290,
+    "updates": 2500
+  },
+  {
+    "epoch": 300,
+    "file_sha256": "ba4e2c1872a75d0c25051080206167e69e8c4499b4a0b52596ddc363aa70e335",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "2e90f710f32f6104811db5cd71dd53b80fbd3987e8359552588da25b8d1141f2",
+    "optimizer_steps": 3000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.19346325255427277,
+      "exp_avg_sq_sum": 0.5345367752894865,
+      "parameter_l2": 30.540227662774534
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0300.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 158920,
+    "total_steps": 6332899,
+    "updates": 3000
+  },
+  {
+    "epoch": 350,
+    "file_sha256": "ff17b85a1bb49d4d0d2372f93479de96eaef636613631992e8e4e525fa6fe7b4",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "5218ed033f5ea295ce2fc6829867f1bbc15a62e40097a04c9c2bfbadb8b3025d",
+    "optimizer_steps": 3500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1786893166416134,
+      "exp_avg_sq_sum": 0.5455436873531528,
+      "parameter_l2": 30.96033315112931
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0350.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 209064,
+    "total_steps": 7359446,
+    "updates": 3500
+  },
+  {
+    "epoch": 400,
+    "file_sha256": "4204d54364be71ff983405a0c725c252c6ca4ab18b1488dd83a7dd754e15b023",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "c7523a0ef919591012fce675783489a5ed21162172bbf153e1bca9061482a36d",
+    "optimizer_steps": 4000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.2005095412412269,
+      "exp_avg_sq_sum": 0.5522180456044509,
+      "parameter_l2": 31.50987185643917
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0400.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 277495,
+    "total_steps": 8375232,
+    "updates": 4000
+  },
+  {
+    "epoch": 450,
+    "file_sha256": "b0a53c2c62efe8e1b07a235e2eee81967fbeeefa7a6245a61f712aec51c8dd29",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "b3c1f3a9777517d5587b24d158b953ba7d7c5dd686dd0bce5eb581412d477a80",
+    "optimizer_steps": 4500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.15129625501808722,
+      "exp_avg_sq_sum": 0.5562652346773506,
+      "parameter_l2": 32.03130955305351
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0450.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 361609,
+    "total_steps": 9387702,
+    "updates": 4500
+  },
+  {
+    "epoch": 500,
+    "file_sha256": "e25c9cdc18d31e76e544e64827117a9fec30d0850a3fd77041c0f85936e43934",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "0514cda0e5ceb038a4aac163991602cb2db08d372134a002ac25e8ac1fb41659",
+    "optimizer_steps": 5000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1671387854445323,
+      "exp_avg_sq_sum": 0.5587193637831896,
+      "parameter_l2": 32.500099669899384
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0500.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 457678,
+    "total_steps": 10397982,
+    "updates": 5000
+  },
+  {
+    "epoch": 550,
+    "file_sha256": "95f3a69eb2c6e5edea2eaa992d3e3eb38ae26e78dc77202ac6bd0ecce8edf879",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "74d9498bc02787d28eec98acf54302093da58d7e71363e60a0da09ceb6cb52fa",
+    "optimizer_steps": 5500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.19130181687665596,
+      "exp_avg_sq_sum": 0.5602074953062381,
+      "parameter_l2": 32.9171383469278
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0550.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 563033,
+    "total_steps": 11407338,
+    "updates": 5500
+  },
+  {
+    "epoch": 600,
+    "file_sha256": "a28d7c726578bdfc4154e4683a8ca3b1323dbada913303e0b2513506aeb4d79a",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "74030c4e6a45e959ed7a50f3e18f8bcd9826c3a70db1e4e3f9f546195d430e77",
+    "optimizer_steps": 6000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.18743000255059403,
+      "exp_avg_sq_sum": 0.5611098663948418,
+      "parameter_l2": 33.27444760778943
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0600.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 675310,
+    "total_steps": 12416083,
+    "updates": 6000
+  },
+  {
+    "epoch": 650,
+    "file_sha256": "7864c005f59a38f2c59f1f5346d0c92d65da33d927cd86603ffe23702f8e0f16",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "6797d858c61fd0e9c3911fd7014fe228991fbdea5ed9bef286284cd40a9e8ff0",
+    "optimizer_steps": 6500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.13952011467975375,
+      "exp_avg_sq_sum": 0.5616570445023019,
+      "parameter_l2": 33.586763825416526
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0650.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 793420,
+    "total_steps": 13424350,
+    "updates": 6500
+  },
+  {
+    "epoch": 700,
+    "file_sha256": "325223d4307993f9911671dbe8a9fb460241d338112f3439a0381cafffe7f98b",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "287aa27f6126929838d50c50505ce40cd748401f0fb93d90b67757c230696e2f",
+    "optimizer_steps": 7000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.17713691537209889,
+      "exp_avg_sq_sum": 0.5619888413840258,
+      "parameter_l2": 33.865740868738875
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0700.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 916604,
+    "total_steps": 14432204,
+    "updates": 7000
+  },
+  {
+    "epoch": 750,
+    "file_sha256": "b614996c1f6ca2c14b330e619ed005e7a2469dbcc5b15c938d91e208cc32d6d6",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "eff4a3aba38bb44829e6c3d006f393549fdb8c39d2a33a69d43c6686f2e6cf25",
+    "optimizer_steps": 7500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1854117951606868,
+      "exp_avg_sq_sum": 0.562190035841825,
+      "parameter_l2": 34.1138465696283
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0750.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1044163,
+    "total_steps": 15439878,
+    "updates": 7500
+  },
+  {
+    "epoch": 800,
+    "file_sha256": "6b96d3adbcb0f2cc4f1df0cc5ba4392721f339a4e47831f383cfe8b3e3dcbc14",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "1f12354e3bd9deee023af04240b4e0caf8145c91ca8017b0d213bc9b9f833b84",
+    "optimizer_steps": 8000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1697431441892891,
+      "exp_avg_sq_sum": 0.5623120355777271,
+      "parameter_l2": 34.34611436685205
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0800.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1176734,
+    "total_steps": 16447003,
+    "updates": 8000
+  },
+  {
+    "epoch": 850,
+    "file_sha256": "2b7beb9296c2b805ecb4835a649945a2febb7b6b8b8c93265bc1208288c2d09c",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "98a5290eca07f8eda4d5e8e733c685c5e9f2cc49c9f32eea6b89c10746c9ce4e",
+    "optimizer_steps": 8500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1679960738852163,
+      "exp_avg_sq_sum": 0.5623860136131207,
+      "parameter_l2": 34.55436280153351
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0850.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1313664,
+    "total_steps": 17453972,
+    "updates": 8500
+  },
+  {
+    "epoch": 900,
+    "file_sha256": "515e93f5e009890c073a7325cffd46c0c3af69ee508c9c2a08500c32402c81db",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "e129bd1c27ef79d16d8f5355973a53e227ff61323dbc4c36171ed3004746ef26",
+    "optimizer_steps": 9000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.16329033192044057,
+      "exp_avg_sq_sum": 0.5624308719977889,
+      "parameter_l2": 34.74541158032426
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0900.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1454594,
+    "total_steps": 18460739,
+    "updates": 9000
+  },
+  {
+    "epoch": 950,
+    "file_sha256": "23954216e382db7481fb6f108dc93f5ea1aa7e0f7741da77106902f430700b97",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "a95c3e47c99d78f40306716651258e6ec267c19e0bb30c026c5812c31709999c",
+    "optimizer_steps": 9500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.13511204252689332,
+      "exp_avg_sq_sum": 0.5624580730717373,
+      "parameter_l2": 34.92074944321811
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch0950.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1598885,
+    "total_steps": 19467430,
+    "updates": 9500
+  },
+  {
+    "epoch": 1000,
+    "file_sha256": "4bed6bce5ac23f7a5d3864ef130c9178ad8e1f3054581960ead2724ee4c4be43",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "c08ca7353a5ca3e2da31d5105c43d90d64c01a2d9f98c3da8491357a12834169",
+    "optimizer_steps": 10000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.12753568250258132,
+      "exp_avg_sq_sum": 0.562474566982494,
+      "parameter_l2": 35.088770373779276
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1000.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1746448,
+    "total_steps": 20473644,
+    "updates": 10000
+  },
+  {
+    "epoch": 1050,
+    "file_sha256": "4f391283cba636ff348eebcf97d06138cc81da7268111cd897bc257ab2bfec07",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "817ad64db5ff1d35fbb5e223353b6852c11b8684bafde2559eec055d8ab9c115",
+    "optimizer_steps": 10500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.17429685877152393,
+      "exp_avg_sq_sum": 0.5624845677372462,
+      "parameter_l2": 35.254286145070445
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1050.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1897149,
+    "total_steps": 21479833,
+    "updates": 10500
+  },
+  {
+    "epoch": 1100,
+    "file_sha256": "1f1d59b69f6cec9e2103ee15d6ccf070aaccd008f91c620efb438d8edec65320",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "b22ad46ce8be21e47b97128df79778d8562e1fabc8f009ae7e7bd922ea73f74e",
+    "optimizer_steps": 11000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1304228574717171,
+      "exp_avg_sq_sum": 0.5624906318844085,
+      "parameter_l2": 35.411907178536374
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1100.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2050305,
+    "total_steps": 22485939,
+    "updates": 11000
+  },
+  {
+    "epoch": 1150,
+    "file_sha256": "05c1a481883ac9bcc3567a529d8c5179e67641948f8653a00287eadb78f5ff9c",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "46ca30ea5b3b8f64fcfe00d42a631c90fb761bfb6273e8ac4723fc44524cd662",
+    "optimizer_steps": 11500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.17308598181884954,
+      "exp_avg_sq_sum": 0.562494308560283,
+      "parameter_l2": 35.58412279486468
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1150.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2206303,
+    "total_steps": 23491907,
+    "updates": 11500
+  },
+  {
+    "epoch": 1200,
+    "file_sha256": "4cf0d3a8b75cf6fc20ddbb4fceb67191113b5699a58ea5dd9e675939f04555ec",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "720986613005efcd545da5bb5ab5a54123f127d04cc917084ffd53667ae8cc96",
+    "optimizer_steps": 12000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.13987791333626481,
+      "exp_avg_sq_sum": 0.5624965374481714,
+      "parameter_l2": 35.73232889674711
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1200.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2364793,
+    "total_steps": 24497541,
+    "updates": 12000
+  },
+  {
+    "epoch": 1250,
+    "file_sha256": "3832defd3156aa4b87e69a1f2817cb7d24ff63ec5a009fed9222ade1add24b7e",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "9dbbe090a4eeb6d9a46ef953d21a9b80fd84bd5f21435ee1a682e1fd3d548446",
+    "optimizer_steps": 12500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1815202176350044,
+      "exp_avg_sq_sum": 0.5624978879653943,
+      "parameter_l2": 35.88907709163666
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1250.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2526540,
+    "total_steps": 25503281,
+    "updates": 12500
+  },
+  {
+    "epoch": 1300,
+    "file_sha256": "47e6ea0511a1a04c75c91c990cda4a76b7ef6bea1cb549e9008c1e53f71e01ba",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "a84a58394f96f039f0ee256a1d4103a70cbca9be9d6c55b85295e66e728de52d",
+    "optimizer_steps": 13000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1873192487627216,
+      "exp_avg_sq_sum": 0.5624987066699544,
+      "parameter_l2": 36.06035841060851
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1300.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2691303,
+    "total_steps": 26508727,
+    "updates": 13000
+  },
+  {
+    "epoch": 1350,
+    "file_sha256": "1becc08a3b66f4439f839fdbb786ab98c5a318e82bf20a0d60cfc5df81b9f53a",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "1eea76dbd431e7fcf6a3cad00adda1766a1fd4c378ee9b07ebd2577e2c1b84cf",
+    "optimizer_steps": 13500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.12311908349605356,
+      "exp_avg_sq_sum": 0.5624992024809731,
+      "parameter_l2": 36.22764085967186
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1350.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2858878,
+    "total_steps": 27513990,
+    "updates": 13500
+  },
+  {
+    "epoch": 1400,
+    "file_sha256": "6c1141b36d82d787ea7b44c109a531bd095ea0106aeaf374ee154496de2ad6b4",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "ba88eb7234c6b6e3c78ca6d67a5f500f512f3510ffcede308353ba03aa8474c8",
+    "optimizer_steps": 14000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.14199610912071098,
+      "exp_avg_sq_sum": 0.562499503512109,
+      "parameter_l2": 36.37106334198689
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1400.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3029295,
+    "total_steps": 28519515,
+    "updates": 14000
+  },
+  {
+    "epoch": 1450,
+    "file_sha256": "a6bf1c1beb4a1ccc26695bac14385354b19a01acfb53232e41c67a70b3cade55",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "3a50d899daf6e3313270e0fefc66a1548993794e8bfa72082850dd657e4d5738",
+    "optimizer_steps": 14500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1609925373604469,
+      "exp_avg_sq_sum": 0.5624996847466905,
+      "parameter_l2": 36.53440824538416
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1450.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3202088,
+    "total_steps": 29524573,
+    "updates": 14500
+  },
+  {
+    "epoch": 1500,
+    "file_sha256": "0646f0531dfb04c064b4a62cc6fc3ddaaebd2b7d775ea0043a664e1ed303b102",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "6607b784b0603f648fa063c588101741703db2222f768a121fd8cccaf90aefa7",
+    "optimizer_steps": 15000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1530029132356742,
+      "exp_avg_sq_sum": 0.5624997949956225,
+      "parameter_l2": 36.69923128040486
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1500.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3377560,
+    "total_steps": 30529752,
+    "updates": 15000
+  },
+  {
+    "epoch": 1550,
+    "file_sha256": "9ed20293f0ee8caf3a852e2ebbe2893b603102a8dd64f34067131e83de5c7b4b",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "6e380633b911b82c7cde6748bd271178709c2824175ded2e272f50d9e8175202",
+    "optimizer_steps": 15500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.2254889226198212,
+      "exp_avg_sq_sum": 0.5624998613484237,
+      "parameter_l2": 36.854097200610376
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1550.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3554873,
+    "total_steps": 31534765,
+    "updates": 15500
+  },
+  {
+    "epoch": 1600,
+    "file_sha256": "418e785c83955e9fe0d2426ff752f2c1bb92d2d4a0bd309142e6b4afed380ffa",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "5d8db21570648c9a90a46d716046a408afe5ce6177442a28ffd093095fba3886",
+    "optimizer_steps": 16000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1870929591434244,
+      "exp_avg_sq_sum": 0.5624999013666394,
+      "parameter_l2": 37.00482108918494
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1600.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3734569,
+    "total_steps": 32539847,
+    "updates": 16000
+  },
+  {
+    "epoch": 1650,
+    "file_sha256": "11e7a00d0ed50fd967cd506d63e385635936b33e76a0726f5c70d2fc50b31254",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "b0896200460f05e22097736bf9da3c576c5b66dae51afb285b0b78ca7b0d4874",
+    "optimizer_steps": 16500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1233617755529306,
+      "exp_avg_sq_sum": 0.5624999250799386,
+      "parameter_l2": 37.14655103645925
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1650.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3915010,
+    "total_steps": 33544789,
+    "updates": 16500
+  },
+  {
+    "epoch": 1700,
+    "file_sha256": "d440b7c785f83074960d6426cce2c1c40665dcb5d02c25f6eb1c3ceebef194c9",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "5564b66162baacbf04c44b82f3ac39120ace1f478558489d0b4b26a4fcd2c3d1",
+    "optimizer_steps": 17000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1668716090172323,
+      "exp_avg_sq_sum": 0.5624999391547968,
+      "parameter_l2": 37.28837232376249
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1700.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4096870,
+    "total_steps": 34549773,
+    "updates": 17000
+  },
+  {
+    "epoch": 1750,
+    "file_sha256": "7bbda929ee3b6ffa45bade8bd6c9a3a158b78d3342e35ed42a0dad1d13bd6633",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "8723c977b6a4733d3e04ffd3f310af78b84d05e08a3eb394502a57d5f5ff258e",
+    "optimizer_steps": 17500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.16061855244626275,
+      "exp_avg_sq_sum": 0.5624999472754721,
+      "parameter_l2": 37.43003126832303
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1750.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4279515,
+    "total_steps": 35554792,
+    "updates": 17500
+  },
+  {
+    "epoch": 1800,
+    "file_sha256": "3d49507196c9228c1a6f8c00a21fbc7666cda94d571a08129de595e06d189c99",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "f9e6047669ab14f8970ed33b3d6417090d787c46d08b14f853f076562af485d2",
+    "optimizer_steps": 18000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.13853512506853677,
+      "exp_avg_sq_sum": 0.5624999519976954,
+      "parameter_l2": 37.56714667768499
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1800.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4463124,
+    "total_steps": 36559579,
+    "updates": 18000
+  },
+  {
+    "epoch": 1850,
+    "file_sha256": "78b08a04217dcd2cea5d6777b4558ea234ccefdb84b7e2b5d71ded2be3d9a4a5",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "f43683fbcef34ee84e3c9ee553c35d981af40dd77cd6b47cb34af844e55b7e57",
+    "optimizer_steps": 18500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.17378514068051767,
+      "exp_avg_sq_sum": 0.562499954509628,
+      "parameter_l2": 37.71055041338552
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1850.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4647560,
+    "total_steps": 37564340,
+    "updates": 18500
+  },
+  {
+    "epoch": 1900,
+    "file_sha256": "e36213bea0fa767888f89bea36dc0a3a2e3d92e0cd3a63113ab3335ad0432cce",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "df6e4aa4517f6a964f267a1f6391151123d51b4418d8a1f20c467d49e6042388",
+    "optimizer_steps": 19000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.14680153183474864,
+      "exp_avg_sq_sum": 0.5624999558753511,
+      "parameter_l2": 37.84698551047756
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1900.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4832815,
+    "total_steps": 38569106,
+    "updates": 19000
+  },
+  {
+    "epoch": 1950,
+    "file_sha256": "367ce22eadbe7a677b74f34ccc420508f755645b4e680d05f61c1d2a9a1407b4",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "d082280644ad5b427abfe4ea0b51f5af1e2de5edeaa5bf989af31d930bfb1ad5",
+    "optimizer_steps": 19500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.13720146640815498,
+      "exp_avg_sq_sum": 0.5624999561279602,
+      "parameter_l2": 37.98304528752286
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch1950.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 5018817,
+    "total_steps": 39573869,
+    "updates": 19500
+  },
+  {
+    "epoch": 2000,
+    "file_sha256": "8d53ff13a9b8520efdcb806413f9968580ba2079d36ab8ccaa5394b29508215e",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "727a72f4a4374d5fa60c08196404154e224f2e48946d2dc47cb94824a22afaee",
+    "optimizer_steps": 20000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1640272395445177,
+      "exp_avg_sq_sum": 0.562499956366868,
+      "parameter_l2": 38.11703392390477
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed1/checkpoints/epoch2000.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 5205340,
+    "total_steps": 40578698,
+    "updates": 20000
+  },
+  {
+    "epoch": 50,
+    "file_sha256": "4abdf02179482f3797c36ed0fd5f3bd2f4802176c5f0e1264c8c6326a6c60d12",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "d9409ee02e441d576fdab04c65d930c68844f9e2fe54710206edcafd53a70de3",
+    "optimizer_steps": 500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1162377693163775,
+      "exp_avg_sq_sum": 0.2214118418999082,
+      "parameter_l2": 28.404921570310243
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0050.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 15301,
+    "total_steps": 1075227,
+    "updates": 500
+  },
+  {
+    "epoch": 100,
+    "file_sha256": "8d24319ea70a19df2da3a02d5b487dad938a8479dbaf74741a1b94fc9708552f",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "d2ac06607cda8b94cd10a32ca99098810361a07cd6c2f64157bf8daf02f2aab7",
+    "optimizer_steps": 1000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.14635169769262577,
+      "exp_avg_sq_sum": 0.35567132162502735,
+      "parameter_l2": 28.771001558207434
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0100.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 31900,
+    "total_steps": 2146141,
+    "updates": 1000
+  },
+  {
+    "epoch": 150,
+    "file_sha256": "2ea1e748590a018be178b2a505e77f0feeb70095014ba5249c3b8a71b0d20fcf",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "52542b12bc1f9f5748a726fa86e46e53b6e9b0a612feef8ff8cff54d716bc364",
+    "optimizer_steps": 1500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.14567619348770125,
+      "exp_avg_sq_sum": 0.43708344314745196,
+      "parameter_l2": 29.23133462505308
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0150.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 53316,
+    "total_steps": 3208223,
+    "updates": 1500
+  },
+  {
+    "epoch": 200,
+    "file_sha256": "dc068bd022f3b35a34f3d1e9a2abb7292b8e9a92b5ba49fec397c0f0717f5d06",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "fa77b79018106d282bb5d70f95410f386bf98c89c98f4115c41611819970a4a9",
+    "optimizer_steps": 2000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.17884514495051787,
+      "exp_avg_sq_sum": 0.48645003933058173,
+      "parameter_l2": 29.67615946305129
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0200.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 81681,
+    "total_steps": 4259083,
+    "updates": 2000
+  },
+  {
+    "epoch": 250,
+    "file_sha256": "9e3ca06f5b27ee172b7af6db7decd02f5e68625873d52bbd9de8b224bcff5a61",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "5affdbe1d64a1e697723a29d32086c85020511d959b11f240421484263e6b45f",
+    "optimizer_steps": 2500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.13315407387182696,
+      "exp_avg_sq_sum": 0.5163849038411037,
+      "parameter_l2": 30.026696577599544
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0250.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 114329,
+    "total_steps": 5302714,
+    "updates": 2500
+  },
+  {
+    "epoch": 300,
+    "file_sha256": "71f38f57a1d7d48c15e78f2b8bea6201ed027beff97250d3baabe362f8da9369",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "f03209c0caa57123165108df2bb1171d042beb04551f7ec89065e1c14ed2285a",
+    "optimizer_steps": 3000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1418847342379653,
+      "exp_avg_sq_sum": 0.5345367753975278,
+      "parameter_l2": 30.346211348154785
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0300.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 150997,
+    "total_steps": 6342723,
+    "updates": 3000
+  },
+  {
+    "epoch": 350,
+    "file_sha256": "0853c38a2e4529756fa2fea4b8fb79474fbf7b301e9c608a6b65ae2eef746ed9",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "f9f55cbeb32ead8ae741fb53c6e80fc32ccf01decdf18630dd62cb3a6c08a09c",
+    "optimizer_steps": 3500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.18860600320927043,
+      "exp_avg_sq_sum": 0.5455436877865234,
+      "parameter_l2": 30.72300272881648
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0350.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 195083,
+    "total_steps": 7374961,
+    "updates": 3500
+  },
+  {
+    "epoch": 400,
+    "file_sha256": "3a45f0624c1ea3248f6f02422dd6bafcb00d0a8d1b58e912b14ab6ad87945e4c",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "5fad491f41d815d579ffe421eaf937b791c9bc6a1900ff87b30b5d108db167fa",
+    "optimizer_steps": 4000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.14711764354154702,
+      "exp_avg_sq_sum": 0.5522180470906788,
+      "parameter_l2": 31.166936646529347
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0400.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 249949,
+    "total_steps": 8397930,
+    "updates": 4000
+  },
+  {
+    "epoch": 450,
+    "file_sha256": "a0a6f0955c6e0e25dd5d079fcbd125a795d1e414b888e631de831cff75cc4e44",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "111293709b6200be9ed46509f0a5b47712e700a91fdb76735fad7b5eb8739fdb",
+    "optimizer_steps": 4500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.15890372619339194,
+      "exp_avg_sq_sum": 0.5562652374914739,
+      "parameter_l2": 31.608836123000405
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0450.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 315427,
+    "total_steps": 9415854,
+    "updates": 4500
+  },
+  {
+    "epoch": 500,
+    "file_sha256": "778d825d540ff4c52a1c4c51835f6e420da2c30d8414cfeae91ff34121414912",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "3b4b5887c5ddfa48e73b2fb36d796db7d2508100dc15e3b6daeff3a0c8f10b49",
+    "optimizer_steps": 5000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.18002457886078876,
+      "exp_avg_sq_sum": 0.5587193676860944,
+      "parameter_l2": 32.05494326642442
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0500.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 391471,
+    "total_steps": 10430595,
+    "updates": 5000
+  },
+  {
+    "epoch": 550,
+    "file_sha256": "6b128ee6e40aa61083d33acceb6bfb1fdb69c04876489e8b5cfa541557923fbe",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "e8d35fbf91d5ff5191c8be86e297779719c055a825e7360706f16558b9d6aa4c",
+    "optimizer_steps": 5500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.18232146390684206,
+      "exp_avg_sq_sum": 0.5602074993415873,
+      "parameter_l2": 32.51007624928158
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0550.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 478843,
+    "total_steps": 11442754,
+    "updates": 5500
+  },
+  {
+    "epoch": 600,
+    "file_sha256": "ff9212113a1607855ccba5ae5545b0d6906250dae5eb9ad9da9d699e4e8a5588",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "5c5c462c5307bc46d8967b06f642bf70ce0c6e9a27f906454cb44454ba31aab9",
+    "optimizer_steps": 6000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.18929012056121314,
+      "exp_avg_sq_sum": 0.5611098698353171,
+      "parameter_l2": 32.97032294253516
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0600.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 577760,
+    "total_steps": 12452852,
+    "updates": 6000
+  },
+  {
+    "epoch": 650,
+    "file_sha256": "29ff5e639d3a6d17ab54a2abc1dca7d84a69d7c6186c140721c20bfff2a1fcc1",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "5217a5703c8e1572064a6b8b35c5ca5314c0d26a85aa329b54c6648ad94a14d1",
+    "optimizer_steps": 6500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1930031487982695,
+      "exp_avg_sq_sum": 0.5616570475999552,
+      "parameter_l2": 33.35221230505728
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0650.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 685623,
+    "total_steps": 13462183,
+    "updates": 6500
+  },
+  {
+    "epoch": 700,
+    "file_sha256": "baff2519c7aaec04a5c4f98a628485045098ba2855fe6fc4abf3d82272b5f716",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "c0aba7ff60fa22b21be5d484b8a25aec33bf0fc20e41c4f5b7c9ee1c36143a85",
+    "optimizer_steps": 7000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.18896211316677583,
+      "exp_avg_sq_sum": 0.5619888442608878,
+      "parameter_l2": 33.705420164233956
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0700.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 800394,
+    "total_steps": 14470764,
+    "updates": 7000
+  },
+  {
+    "epoch": 750,
+    "file_sha256": "ac41930f9878ea7963320dbdffa59c2a2dceec1286a6484cf99080a858cf0234",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "8e92b004b2959021942ceff8c670ecc18571a9a6e511716168af4ca6e655941f",
+    "optimizer_steps": 7500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.14321893494131233,
+      "exp_avg_sq_sum": 0.562190038433924,
+      "parameter_l2": 33.999427047404446
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0750.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 920886,
+    "total_steps": 15478760,
+    "updates": 7500
+  },
+  {
+    "epoch": 800,
+    "file_sha256": "abebaed915cac2a3414208df2227af329088011a486299bf5e8f42861b0088a5",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "9430593a612ffeea6ddfc6235ab8fb5356ac1c12378fbd53a7ae51089735ef08",
+    "optimizer_steps": 8000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.16383062474407756,
+      "exp_avg_sq_sum": 0.5623120376774766,
+      "parameter_l2": 34.28329428627042
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0800.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1046230,
+    "total_steps": 16486298,
+    "updates": 8000
+  },
+  {
+    "epoch": 850,
+    "file_sha256": "27d257b8cf70cdae005a0107f5b79256da6b8a4fc0a606e272b9e08acd52999c",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "80dce844a82d6cba6e0810464a72b5a0d500ff4d15b2339359c50416e189bb14",
+    "optimizer_steps": 8500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.2135836132687854,
+      "exp_avg_sq_sum": 0.5623860149445549,
+      "parameter_l2": 34.562614990253294
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0850.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1176342,
+    "total_steps": 17493626,
+    "updates": 8500
+  },
+  {
+    "epoch": 900,
+    "file_sha256": "15980b0b1871851aa0ad004299239e9cb8e6e8577674cfa7c42bda2e3a7b056e",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "dfcfbb0c1ef54a61e792b2f760087a0fbf580bb0eae2f731b7db5dd02b614a68",
+    "optimizer_steps": 9000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.15908831092014603,
+      "exp_avg_sq_sum": 0.5624308730091601,
+      "parameter_l2": 34.78440977909475
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0900.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1310655,
+    "total_steps": 18500731,
+    "updates": 9000
+  },
+  {
+    "epoch": 950,
+    "file_sha256": "e6304eee12b75321f4485394cc0840860ed3185df1d974ca23538c29d0d90e3f",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "8fe59ba19bd788ab6b4bb8c5d8e7bd4367207a98a58d0ea1578ab039df8db1fd",
+    "optimizer_steps": 9500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.19034203934116742,
+      "exp_avg_sq_sum": 0.5624580733562251,
+      "parameter_l2": 35.00575189329477
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch0950.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1449474,
+    "total_steps": 19507453,
+    "updates": 9500
+  },
+  {
+    "epoch": 1000,
+    "file_sha256": "9ae8d9dc03940ef99e6ba96b25e5e817aaf5b59a81f7881cf275d3d44a95d893",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "dcbf2b179ea1386f822152ffdfc37be89edd51e81430e652b579ead945a365ec",
+    "optimizer_steps": 10000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.15248014395990492,
+      "exp_avg_sq_sum": 0.5624745666779151,
+      "parameter_l2": 35.21791903452478
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1000.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1593167,
+    "total_steps": 20513864,
+    "updates": 10000
+  },
+  {
+    "epoch": 1050,
+    "file_sha256": "9285e8bea6b1d3c3bc6b6d08b155666a59c70301937bb5b2f15fa016dbf3502b",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "77c56783153dc699cf15bd83cb7fdcfb1754fbe276e5fb21aee7bd276eb1109f",
+    "optimizer_steps": 10500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1871681100140561,
+      "exp_avg_sq_sum": 0.5624845673794155,
+      "parameter_l2": 35.425356156835576
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1050.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1741645,
+    "total_steps": 21519978,
+    "updates": 10500
+  },
+  {
+    "epoch": 1100,
+    "file_sha256": "3ba4d4f218e103362afb00c2a08125e769d68c60a705459e695e23600efd8117",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "9395c0ab10f334025947444fc7ef00c4c9eaa1a8cc62e44e50707f0f3cad1e9a",
+    "optimizer_steps": 11000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.15685601754676237,
+      "exp_avg_sq_sum": 0.5624906310572071,
+      "parameter_l2": 35.628073535486386
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1100.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 1894957,
+    "total_steps": 22525839,
+    "updates": 11000
+  },
+  {
+    "epoch": 1150,
+    "file_sha256": "4f9218fe51323af45f4e758aabaeac82292ca762bc4f3d3cf3f7da53a710bb22",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "4f26d120870931e88d63018ed9435cf7eadf3931206e6e7e96fcd83e13e02da4",
+    "optimizer_steps": 11500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.15304703836502728,
+      "exp_avg_sq_sum": 0.5624943076447056,
+      "parameter_l2": 35.82410016400066
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1150.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2052266,
+    "total_steps": 23531681,
+    "updates": 11500
+  },
+  {
+    "epoch": 1200,
+    "file_sha256": "f76c4422a41b3258e0e213a1151c9418723c054ea287889252606580e3f70a70",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "b90a5de19f38072038c570dd7562a0ad85e848d9218c41c4362c6778c0319f7e",
+    "optimizer_steps": 12000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.12667460133792394,
+      "exp_avg_sq_sum": 0.5624965362850884,
+      "parameter_l2": 36.02748538639796
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1200.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2214059,
+    "total_steps": 24537382,
+    "updates": 12000
+  },
+  {
+    "epoch": 1250,
+    "file_sha256": "6f911deae4a6ebab307e54267e94ecfa7a4feae768da0213285e2f617d30038e",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "c97feabd51e666a6738cd734b201624d7149cbc615073c02f02830d61283fd80",
+    "optimizer_steps": 12500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.15588758484637202,
+      "exp_avg_sq_sum": 0.562497887518974,
+      "parameter_l2": 36.218524947674624
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1250.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2379190,
+    "total_steps": 25542805,
+    "updates": 12500
+  },
+  {
+    "epoch": 1300,
+    "file_sha256": "f738d613e3ceb93e701e35bc382783a248c569005e4b1eaaa6cde5ea88d0664d",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "ddf390a1f5b4d887988a365fa730b5ceed9d225e18081b782cc04e42f8c6e857",
+    "optimizer_steps": 13000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1291279492273679,
+      "exp_avg_sq_sum": 0.562498705643153,
+      "parameter_l2": 36.42166543273085
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1300.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2547849,
+    "total_steps": 26548250,
+    "updates": 13000
+  },
+  {
+    "epoch": 1350,
+    "file_sha256": "8878f5678c62782ece8f05d01d97494d8859b446bdc64694ea158e50eed31a36",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "71aa9f297593e02afd6dde5f51f3fad5141e64973697aac0e05495186c7a27d3",
+    "optimizer_steps": 13500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.18484748602588089,
+      "exp_avg_sq_sum": 0.5624992014800084,
+      "parameter_l2": 36.61031859769591
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1350.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2719493,
+    "total_steps": 27553477,
+    "updates": 13500
+  },
+  {
+    "epoch": 1400,
+    "file_sha256": "03b7ed5c415c4f39e876ca9b9366a479c1251292a8a7ede2d3522531c15604e6",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "1ee534e10507e6a1e8331ec6836380d0c5f3a290ee075b46ba5102134ded665e",
+    "optimizer_steps": 14000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.22224248637037095,
+      "exp_avg_sq_sum": 0.562499501545942,
+      "parameter_l2": 36.78827667300642
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1400.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 2894078,
+    "total_steps": 28558501,
+    "updates": 14000
+  },
+  {
+    "epoch": 1450,
+    "file_sha256": "68a57dc63f20352332ea511ac0c17438fcdc190b7c1e70cf67ec0ca5fa4fbe6e",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "d6174a2ff4f7193502fb498ce1fa8973e5f93089024c4f17571b786bb96c5fa4",
+    "optimizer_steps": 14500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.16037687356252134,
+      "exp_avg_sq_sum": 0.5624996825545122,
+      "parameter_l2": 36.9770610181889
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1450.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3071058,
+    "total_steps": 29563593,
+    "updates": 14500
+  },
+  {
+    "epoch": 1500,
+    "file_sha256": "9d339b8f47bebb862d0c7621f7a45d6a5c729a50cd63e305a33456d24d898a97",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "3a0633f79b75da883e71cc5d98bc87a4636f6bf538e09b5153c9d8d60267d785",
+    "optimizer_steps": 15000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.14639282791626235,
+      "exp_avg_sq_sum": 0.5624997917890392,
+      "parameter_l2": 37.1637031300541
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1500.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3249801,
+    "total_steps": 30568538,
+    "updates": 15000
+  },
+  {
+    "epoch": 1550,
+    "file_sha256": "3e9179f40b697c34da1242bbb6806aba26ea580047bd29a882de4740fceccc2a",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "cfc0a9ab331d6572119ddcafec118f04074c09bdd67b0afd42988ee6e8265ec3",
+    "optimizer_steps": 15500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.18733802504177766,
+      "exp_avg_sq_sum": 0.5624998576530087,
+      "parameter_l2": 37.34257177979949
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1550.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3430348,
+    "total_steps": 31573462,
+    "updates": 15500
+  },
+  {
+    "epoch": 1600,
+    "file_sha256": "742a62871f17ce940b7c6f2bb58aaf83d150937f595b8d56b269df029d4b89ed",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "b70d671969f34a0319ac0c9327f2d063522aa0aa18ae152e8116c839ecccfa57",
+    "optimizer_steps": 16000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.14899746714608936,
+      "exp_avg_sq_sum": 0.5624998975739741,
+      "parameter_l2": 37.51080975264457
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1600.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3612016,
+    "total_steps": 32578300,
+    "updates": 16000
+  },
+  {
+    "epoch": 1650,
+    "file_sha256": "8924559e8290f2dade2ed7771d22465e93ec93c628eebb25d59b6129af51b112",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "e8f89993bfcfa2863a455cba3906a76aff7d31ef809ecb54dc0620ba62fb7be3",
+    "optimizer_steps": 16500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.17393658729213776,
+      "exp_avg_sq_sum": 0.5624999216850256,
+      "parameter_l2": 37.68002580031838
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1650.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3794677,
+    "total_steps": 33583161,
+    "updates": 16500
+  },
+  {
+    "epoch": 1700,
+    "file_sha256": "c4e0ada00c53c0542fbca36abd984c64f2c281207990dcf00f96e8e5c39b2807",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "0e36d42ccbd4aae1fefcc9fb02678100f866d73b8ceb942ea09a0cbb3cd84989",
+    "optimizer_steps": 17000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.18374747689327836,
+      "exp_avg_sq_sum": 0.5624999359112859,
+      "parameter_l2": 37.84090390743692
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1700.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 3978367,
+    "total_steps": 34588056,
+    "updates": 17000
+  },
+  {
+    "epoch": 1750,
+    "file_sha256": "70353be9aae3d79c93009ad49948f006df5551d1163550064e72acb43213de49",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "8db5e1f208a856622777ecaee2737d2b365917e70f8cded75b1fdae9be63fc33",
+    "optimizer_steps": 17500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.12943830712855392,
+      "exp_avg_sq_sum": 0.5624999442811748,
+      "parameter_l2": 38.011076396542904
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1750.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4162915,
+    "total_steps": 35592832,
+    "updates": 17500
+  },
+  {
+    "epoch": 1800,
+    "file_sha256": "4cce2f4da71e0b96c8a3eb61b28b903c2407b723e71c962feb17d8591451221e",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "9b28d668429ba3512c3920e5a002768b4cf251cb3ff0a058fe34e0e7a06a0c02",
+    "optimizer_steps": 18000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.19308578144538727,
+      "exp_avg_sq_sum": 0.5624999493726488,
+      "parameter_l2": 38.163022124447394
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1800.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4348240,
+    "total_steps": 36597650,
+    "updates": 18000
+  },
+  {
+    "epoch": 1850,
+    "file_sha256": "96afa5c4e46d65243564a488bf6e5282dbd32a66bd8ca405b49a4d46bcb26d2b",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "bfc7756ba27abf5930aa52e6027b4992bd3202271b65fbfa71fd59e098b0c943",
+    "optimizer_steps": 18500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.15669038316003212,
+      "exp_avg_sq_sum": 0.5624999517546226,
+      "parameter_l2": 38.31402120759648
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1850.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4534736,
+    "total_steps": 37602616,
+    "updates": 18500
+  },
+  {
+    "epoch": 1900,
+    "file_sha256": "0907693d98a74646d9ec4a1ec19ac71e71869c86a8264baa202fe86a1e3aa2a7",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "dc58492c575455c139e6419035da541e3a91086c398f22d2aa6cf6a379a5d7d6",
+    "optimizer_steps": 19000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.16400708510565595,
+      "exp_avg_sq_sum": 0.5624999534639724,
+      "parameter_l2": 38.47264467532632
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1900.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4721423,
+    "total_steps": 38607362,
+    "updates": 19000
+  },
+  {
+    "epoch": 1950,
+    "file_sha256": "67b4cc225cf1f83008c3f14902b747a1514c3c63bb7ca7308c132cb259eb7139",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "327809dcd73a2b54ccf322dc050e1a2d6ee273cb05385e82aee3de09642a66f2",
+    "optimizer_steps": 19500,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.1853192444629814,
+      "exp_avg_sq_sum": 0.5624999542217809,
+      "parameter_l2": 38.63201594513892
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch1950.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 4908728,
+    "total_steps": 39612149,
+    "updates": 19500
+  },
+  {
+    "epoch": 2000,
+    "file_sha256": "98dfa5a4ad5184d7767ee50f7ec18a8cb128ba1f16edd371ca29d424447dbf2b",
+    "model_and_optimizer_finite": true,
+    "model_sha256": "bf9368d86d3a075bd888f7e5db5adae70fbd57d7a0dcabb71503192432cb3e15",
+    "optimizer_steps": 20000,
+    "optimizer_tensor_stats": {
+      "exp_avg_l2": 0.16962173081724047,
+      "exp_avg_sq_sum": 0.5624999542217289,
+      "parameter_l2": 38.77474469196136
+    },
+    "parameter_tensors": 34,
+    "parameters": 171087,
+    "path": "stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed2/checkpoints/epoch2000.pt",
+    "source_sha256": "4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e",
+    "total_episodes": 5096854,
+    "total_steps": 40616881,
+    "updates": 20000
+  }
+]

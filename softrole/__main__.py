@@ -29,6 +29,10 @@ def parser():
     train.add_argument("--env-version", choices=("corrected-observation-v1", "paper-v1"))
     train.add_argument("--study", choices=("fixed", "composition", "failure"))
     train.add_argument("--model", choices=("banked", "shared", "capability", "constant"))
+    train.add_argument("--optimizer", choices=("rmsprop", "adam"))
+    train.add_argument("--communication", choices=("binary", "real"))
+    train.add_argument("--independent-heads", action="store_true", default=None,
+                       help="each attention head broadcasts its own msg-dim payload")
     # Familiar release spellings are aliases, not a second set of defaults.
     integers = {
         "num_p": ("--num-p", "--nfriendly_P"), "num_a": ("--num-a", "--nfriendly_A"),
@@ -36,6 +40,7 @@ def parser():
         "nfires": ("--nfires",), "reward_type": ("--reward-type", "--reward_type"),
         "experts": ("--experts",), "pre_dim": ("--pre-dim",), "hidden_dim": ("--hidden-dim",),
         "heads": ("--heads",), "head_dim": ("--head-dim",), "msg_dim": ("--msg-dim", "--msg_dim"),
+        "comm_rounds": ("--comm-rounds",),
         "seed": ("--seed",), "epochs": ("--epochs", "--num_epochs"),
         "updates_per_epoch": ("--updates-per-epoch", "--epoch_size"),
         "batch_steps": ("--batch-steps", "--batch_size"), "nprocesses": ("--nprocesses",),

@@ -17,10 +17,12 @@ def _generator(seed, step, substream=0):
     return torch.Generator(device="cpu").manual_seed(keyed_seed)
 
 
-def message_noise(seed, step, n_agents, n_bits, dtype):
+def message_noise(seed, step, n_agents, n_bits, dtype, *, comm_rounds=2, heads=None):
+    """Indexed independent Logistic draws; omitted options preserve legacy streams."""
     draws = []
-    for round_index in range(2):
-        uniform = torch.rand((n_agents, n_bits), dtype=dtype,
+    shape = (n_agents, n_bits) if heads is None else (n_agents, heads, n_bits)
+    for round_index in range(comm_rounds):
+        uniform = torch.rand(shape, dtype=dtype,
                              generator=_generator(seed, step, round_index))
         uniform = uniform.clamp(torch.finfo(dtype).tiny, 1 - torch.finfo(dtype).eps)
         draws.append(uniform.log() - torch.log1p(-uniform))
@@ -94,6 +96,10 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
         raise ValueError("Sensor-event diagnostics are supported only for PCP")
     n_agents = scenario.num_p + scenario.num_a
     dtype = next(model.parameters()).dtype
+    # Lightweight legacy adapters supply only the original rollout settings.
+    communication = getattr(config, "communication", "binary")
+    comm_rounds = getattr(config, "comm_rounds", 2)
+    independent_heads = getattr(config, "independent_heads", False)
     obs, kappa = adapter.reset(seed=scenario.env_seed, num_p=scenario.num_p, num_a=scenario.num_a)
     kappa = np.asarray(kappa).copy()
     memory = model.initial_memory(n_agents)
@@ -137,10 +143,17 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
             is_intervened = intervention != "none" and t >= trigger
             intervention_exposed |= is_intervened
             adjacency = communication_adjacency(adapter.positions, config.comm_range)
+            noise = None
+            if communication == "binary":
+                noise = message_noise(
+                    scenario.message_seed, t, n_agents, config.msg_dim, dtype,
+                    comm_rounds=comm_rounds,
+                    heads=config.heads if independent_heads else None,
+                )
             out = model(
                 torch.as_tensor(obs, dtype=dtype), torch.as_tensor(kappa, dtype=dtype),
                 memory, adjacency, remaining=(config.max_steps - t) / config.max_steps,
-                noise=message_noise(scenario.message_seed, t, n_agents, config.msg_dim, dtype),
+                noise=noise,
                 gate_override=gate_override,
                 comm_off=intervention == "comm_off" and is_intervened,
             )
@@ -171,6 +184,11 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
     steps = len(episode.rewards)
     success = bool(info.get("success", False))
     cap = kappa[:, 1].astype(bool)
+    payload_values = comm_rounds * config.msg_dim * (
+        config.heads if independent_heads else 1)
+    # Logical representation size, not measured traffic: binary values are
+    # counted as packed bits, Real as the model's floating-point scalar width.
+    value_bits = 1 if communication == "binary" else next(model.parameters()).element_size() * 8
     episode.metrics = {
         "scenario_id": str(scenario.scenario_id), "num_p": int(scenario.num_p),
         "env_seed": int(scenario.env_seed), "action_seed": int(scenario.action_seed),
@@ -197,9 +215,13 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
         "gate_entropy": entropy_sum / (steps * n_agents),
         "expert_load": (gate_sum / (steps * n_agents)).tolist(),
         "alpha_null": null_sum / steps,
-        "payload_bits_per_agent_step": 2 * config.msg_dim,
-        "payload_bits_generated": steps * n_agents * 2 * config.msg_dim,
+        "payload_bits_per_agent_step": payload_values * value_bits,
+        "payload_bits_generated": steps * n_agents * payload_values * value_bits,
         "environment_version": info.get("environment_version", "unspecified"),
     }
     episode.metrics.update(diagnostic_metrics)
+    if communication != "binary" or independent_heads or comm_rounds != 2:
+        episode.metrics.update(communication=communication,
+                               payload_values_per_agent_step=payload_values,
+                               payload_value_bits=value_bits)
     return episode

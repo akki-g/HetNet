@@ -1,0 +1,34 @@
+{
+  "all_compared_fields_exact": true,
+  "metric_count_boundary_fields_compared": 1070,
+  "no_numerical_blocker": true,
+  "recommended_wording_changes": [
+    "Page5: qualify 'CapCom ... Adam1e-4' as the new shared trials; historical shared/banked data used RMSprop.",
+    "Optional Page1: use 'observed nominal training-performance gap' instead of 'real ... gap' to avoid implying inferential significance."
+  ],
+  "report_numbers_checked": [
+    "last100 per-seed steps and per-agent returns",
+    "three failures among1116258 episodes",
+    "26\u201327M and29\u201330M groups",
+    "4\u20138M sample efficiency",
+    "20k optimizer steps and60k clipped updates",
+    "120 new checkpoints and918 source files",
+    "15.31\u201315.37h and733\u2013737steps/s; old complete seeds24.67/24.87h and453\u2013457steps/s",
+    "older shared0 incomplete tail andmissing shared2 initial signature",
+    "alpha_null discrepancy and raw correction"
+  ],
+  "reviewed_files": {
+    "analysis/pcp_adam_2026-10-08/build_report.py": "e3ace344149a27dabc022d61dec7ed506bfd8d0a00fa904cfd7b54e983dc0ab3",
+    "analysis/pcp_adam_2026-10-08/compare.py": "239a28fee52d7ad33b29c4a41b615b8cc78a0b5c5216f329ab856a3071c697ae",
+    "analysis/pcp_adam_2026-10-08/comparison_groups.csv": "c891b49fb346b5286721ffb8b448393fc78854b601d841a4fae52d125e9c0e73",
+    "analysis/pcp_adam_2026-10-08/comparison_windows.csv": "d60068893aa9d95818112e482a7e82f523a5da6e03caa8babb9473d76528aaed",
+    "analysis/pcp_adam_2026-10-08/report_text.txt": "039c4902421cf506dcfe9b2a67ddc469aad9c34ef36398f2899de48d2545df09"
+  },
+  "root_files_edited": false,
+  "scope_limits": [
+    "Paper-specific layout enumeration/primary-source assertions are delegated to paper reviewer, not independently rerun in this review.",
+    "Latest HetNet stdout and prior frozen outcomes are separate auditors; this review checked their report interpretation but did not duplicate their raw parsing."
+  ],
+  "softrole_per_seed_windows_independently_compared": 107,
+  "timing_fields_match_within_roundoff": true
+}

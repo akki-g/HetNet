@@ -600,3 +600,76 @@ For a strong graduate-school research portfolio, the valuable deliverable is a
 clear question, corrected baseline assumptions, auditable mathematics, careful
 experiments and appropriately limited conclusions. Novelty claims should follow
 that evidence rather than substitute for it.
+
+## 10. Opt-in PCP communication experiment (8 October 2026)
+
+The user-requested channel comparison extends the original two-round,
+shared-payload binary contract. Existing defaults and checkpoints retain that
+contract. The new six-run launcher is `scripts/softrole_channels_pcp.sh`:
+
+| Index | Channel | Training seed |
+|---|---|---|
+| 0 / 1 / 2 | Binary | 0 / 1 / 2 |
+| 3 / 4 / 5 | Real | 0 / 1 / 2 |
+
+Both conditions use native corrected-observation-v1 PCP (5x5, 2P1A, vision2,
+horizon80), shared CapCom, and the Adam settings of the recent PCP trials:
+learning rate1e-4, betas(.9,.999), epsilon1e-8, no weight decay. The original
+common team objective, pooled permutation-invariant global scalar critic,
+recurrence, physical action mask, GAE, detachment, clipping and global episode
+averaging remain unchanged. The default optimizer outside this launcher remains
+RMSprop. The shared model has one effective expert; this experiment does not test
+capability-conditioned expert selection. No failures or composition changes are
+configured.
+
+Each of three rounds has four separate affine head encoders and decoders. Each
+head encodes 64 values from that round's sender features. Binary samples an
+independent Logistic perturbation for every sender/head/value/round and sends
+the thresholded bit, with the existing biased straight-through derivative.
+Every receiver sees the same sampled payload from a given sender and head;
+receiver gates choose its corresponding head decoder. Gates are computed once
+per agent-step and reused in all three rounds. Intermediate rounds concatenate
+four 16-wide heads (64 features); the last averages them to16 features.
+Attention and its zero-message null candidate keep their existing semantics.
+
+Real sends the raw continuous affine encoder values with no threshold, sigmoid,
+or message-noise draws. It retains identical encoder/decoder parameter shapes,
+initialization, attention and learner to isolate the channel's forward values
+and gradient path. It is a matched continuous CapCom control, not a reproduction
+of the original paper's HetNet-Real architecture. It has exact derivatives
+through this continuous channel; learned-critic GAE and truncated recurrence
+remain approximations. Independent head payloads mean independently parameterized
+encodings (and independent conditional bit draws for Binary), not a guarantee
+that learned messages become statistically independent.
+
+Binary generates 3x4x64 =768 logical bits per sender-step; Real generates768
+float64 scalars (49,152 bits in their floating-point representation). The Binary
+logical-bit budget is24 times the default two-round16-bit payload budget. Neither condition
+measures or implements network packet packing/traffic. Episode logs record
+`payload_values_per_agent_step`, `payload_value_bits`, and their product in
+`payload_bits_per_agent_step`; the generated total multiplies by agent-steps,
+not receiver edges. Real records an empty model `bits` list; both channels expose
+their actual `messages` tensors.
+
+The launcher targets40M environment steps with a2,000-epoch cap,10 updates per
+epoch, four collectors and a500-step floor per collector. Checkpoints are saved
+every50 epochs and at stopping; complete updates can overshoot a step target.
+Compare actual saved sample counts. Binary and Real of the same seed have
+identical initial weights and indexed scenario/action seeds, but their trajectories
+and episode counts can diverge. This is not exact experience matching.
+
+The optional Slurm array `slurm/softrole_channels_pcp.sbatch` prepares indices0–5
+with at most three concurrent jobs, one Torch/BLAS thread per collector and core
+binding. Resource requests (4CPUs,16GB,48h) are not a measured runtime guarantee
+for the larger model. It submits nothing automatically. Use a fresh
+`SOFTROLE_CHANNELS_PCP_RUN_ROOT`; scientific settings and resume overrides are
+rejected by this launcher. General CLI resume retains strict optimizer,
+configuration and model-state compatibility. Configuration and source snapshots
+identify the new fields; old missing fields mean RMSprop/two rounds/shared-head
+Binary and continue loading with the original model layout.
+
+This comparison can estimate the effect of the Binary versus continuous channel
+under the larger fixed architecture. It cannot separately attribute an outcome
+to rounds, width or head independence because those changed together relative
+to earlier trials. Claims about improvements still require the frozen evaluation
+and independent-seed evidence described above.
