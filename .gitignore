@@ -17,6 +17,7 @@ slurm-*.err
 *.pdf
 *.md
 !README.md
+!softrole/ADAM_PCP.md
 # Required by the reconstruction source manifest and upstream license terms.
 !publication_reconstruction/runtime/envs/LICENSE.md
 research/
