@@ -7,8 +7,8 @@ an explicit bootstrap to ``team_gae``.
 
 Opt-in learner variants share one loss-term builder with the diagnostics:
 ``critic_mode="decomposed"`` trains per-agent values against per-agent
-lambda-return targets; summing per-agent advantages over agents
-reproduces the team advantage exactly because GAE is linear.
+lambda-return targets and mixes advantages with ``credit_beta`` (beta=1
+reproduces the team advantage exactly because GAE is linear).
 Every default reproduces the pre-existing arithmetic.
 """
 from dataclasses import dataclass, field
@@ -72,7 +72,7 @@ def episode_loss_terms(episode, config):
 
     Team mode: ``policy = -sum_t (sum_j log pi_jt) A_t`` and
     ``value = mean_t (V_t - R_t)^2`` exactly as before. Decomposed mode:
-    ``policy = -sum_t sum_j log pi_jt sum_i A_it`` and
+    ``policy = -sum_t sum_j log pi_jt [beta sum_i A_it + (1-beta) A_jt]`` and
     ``value = (1/tau) sum_t sum_j (v_jt - R_jt)^2`` with per-agent targets.
     Diagnostics reuse this builder so their decomposition matches production arithmetic;
     ``actor_weights`` returns the multipliers applied to the log probabilities.
@@ -80,6 +80,7 @@ def episode_loss_terms(episode, config):
     if not episode.values or len(episode.log_probs) != len(episode.values):
         raise ValueError("Episode needs one summed action log probability and value per step")
     critic_mode = getattr(config, "critic_mode", "team")
+    beta = float(getattr(config, "credit_beta", 1.0))
     if critic_mode == "team":
         values = torch.stack(episode.values)
         log_probs = torch.stack(episode.log_probs)
@@ -101,7 +102,7 @@ def episode_loss_terms(episode, config):
         agent_rewards = torch.as_tensor(episode.agent_rewards, dtype=agent_values.dtype,
                                         device=agent_values.device)
         advantages, targets = agent_gae(agent_rewards, agent_values, config.gamma, config.gae_lambda)
-        mixed = advantages.sum(-1, keepdim=True).expand_as(advantages)
+        mixed = beta * advantages.sum(-1, keepdim=True) + (1 - beta) * advantages
         policy_loss = -(agent_log_probs * mixed).sum()
         value_loss = (agent_values - targets).square().sum(-1).mean()
         actor_weights = mixed

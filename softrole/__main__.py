@@ -42,6 +42,8 @@ def parser():
                        default=None, help="add log(max(d,1)/2) to each receiver's null attention logit (A1)")
     train.add_argument("--critic-mode", dest="critic_mode", choices=("team", "decomposed"),
                        help="team: one pooled scalar value; decomposed: per-agent values summing to the team value (L1b)")
+    train.add_argument("--credit-beta", dest="credit_beta", type=float,
+                       help="actor advantage mixing beta*sum_i A_i + (1-beta)*A_j; values below one need the decomposed critic (L1a)")
     # Familiar release spellings are aliases, not a second set of defaults.
     integers = {
         "num_p": ("--num-p", "--nfriendly_P"), "num_a": ("--num-a", "--nfriendly_A"),

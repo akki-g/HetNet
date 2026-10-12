@@ -25,7 +25,8 @@ HAND_TARGETS = torch.tensor([[2.75, 1.5], [1.5, 3.], [3., 1.]], dtype=DTYPE)
 
 
 def learner(**changes):
-    values = dict(gamma=1., gae_lambda=.95, actor_coeff=50., value_coeff=1., critic_mode="decomposed")
+    values = dict(gamma=1., gae_lambda=.95, actor_coeff=50., value_coeff=1., critic_mode="decomposed",
+                  credit_beta=1., objective="team")
     values.update(changes)
     return SimpleNamespace(**values)
 
@@ -183,7 +184,7 @@ def test_training_evaluation_and_resume_guard(tmp_path):
     config = decomposed_config()
     checkpoint = train(config, tmp_path / "run")
     record = json.loads((tmp_path / "run" / "run.json").read_text())
-    assert record["learner"]["critic_mode"] == "decomposed"
+    assert record["learner"]["critic_mode"] == "decomposed" and record["learner"]["credit_beta"] == 1.0
     rows = [json.loads(line) for line in (tmp_path / "run" / "updates.jsonl").open()]
     assert len(rows) == 2 and all(np.isfinite(r["gradient_norm_before_clip"]) and r["gradient_norm_before_clip"] > 0 for r in rows)
     saved = torch.load(checkpoint, weights_only=False)

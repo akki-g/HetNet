@@ -249,9 +249,11 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
                "parameters": sum(p.numel() for p in model.parameters()),
                "actor_objective": "undiscounted sum of physical-agent rewards",
                "learner": {"critic_mode": config.critic_mode,
+                           "credit_beta": config.credit_beta,
                            "null_degree_correction": config.null_degree_correction,
                            "communication": config.communication},
                "approximations": channel_approximations(config.communication) +
+                                  (["credit mixing: beta<1 drops cross-agent credit"] if config.credit_beta != 1 else []) +
                                   ["GAE with learned critic", "truncated BPTT"]})
 
     def save(epoch):

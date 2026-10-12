@@ -36,6 +36,7 @@ class Config:
     communication: str = "binary"
     null_degree_correction: bool = False
     critic_mode: str = "team"
+    credit_beta: float = 1.0
     feedback: bool = True
     comm_range: float = -1.0
     seed: int = 0
@@ -103,6 +104,11 @@ class Config:
             raise ValueError("null_degree_correction must be a boolean")
         if self.critic_mode not in CRITIC_MODES:
             raise ValueError(f"critic_mode must be one of {CRITIC_MODES}")
+        if (isinstance(self.credit_beta, bool) or not isinstance(self.credit_beta, (int, float))
+                or not math.isfinite(self.credit_beta) or not 0 <= self.credit_beta <= 1):
+            raise ValueError("credit_beta must be a finite number in [0, 1]")
+        if self.credit_beta != 1 and self.critic_mode != "decomposed":
+            raise ValueError("credit_beta below one requires critic_mode=decomposed")
         if self.optimizer not in ("rmsprop", "adam"):
             raise ValueError("optimizer must be rmsprop or adam")
         if type(self.comm_rounds) is not int or self.comm_rounds <= 0:
