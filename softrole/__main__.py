@@ -44,6 +44,8 @@ def parser():
                        help="team: one pooled scalar value; decomposed: per-agent values summing to the team value (L1b)")
     train.add_argument("--credit-beta", dest="credit_beta", type=float,
                        help="actor advantage mixing beta*sum_i A_i + (1-beta)*A_j; values below one need the decomposed critic (L1a)")
+    train.add_argument("--objective", choices=("team", "mean_agent"),
+                       help="team: expected team return; mean_agent: complete episode loss divided by the roster size (L1c)")
     # Familiar release spellings are aliases, not a second set of defaults.
     integers = {
         "num_p": ("--num-p", "--nfriendly_P"), "num_a": ("--num-a", "--nfriendly_A"),

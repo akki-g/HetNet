@@ -8,7 +8,8 @@ an explicit bootstrap to ``team_gae``.
 Opt-in learner variants share one loss-term builder with the diagnostics:
 ``critic_mode="decomposed"`` trains per-agent values against per-agent
 lambda-return targets and mixes advantages with ``credit_beta`` (beta=1
-reproduces the team advantage exactly because GAE is linear).
+reproduces the team advantage exactly because GAE is linear);
+``objective="mean_agent"`` multiplies the complete episode loss by 1/N.
 Every default reproduces the pre-existing arithmetic.
 """
 from dataclasses import dataclass, field
@@ -74,13 +75,15 @@ def episode_loss_terms(episode, config):
     ``value = mean_t (V_t - R_t)^2`` exactly as before. Decomposed mode:
     ``policy = -sum_t sum_j log pi_jt [beta sum_i A_it + (1-beta) A_jt]`` and
     ``value = (1/tau) sum_t sum_j (v_jt - R_jt)^2`` with per-agent targets.
-    Diagnostics reuse this builder so their decomposition matches production arithmetic;
+    ``scale`` is 1/N for the mean-agent objective and 1 otherwise. Diagnostics
+    reuse this builder so their decomposition matches production arithmetic;
     ``actor_weights`` returns the multipliers applied to the log probabilities.
     """
     if not episode.values or len(episode.log_probs) != len(episode.values):
         raise ValueError("Episode needs one summed action log probability and value per step")
     critic_mode = getattr(config, "critic_mode", "team")
     beta = float(getattr(config, "credit_beta", 1.0))
+    objective = getattr(config, "objective", "team")
     if critic_mode == "team":
         values = torch.stack(episode.values)
         log_probs = torch.stack(episode.log_probs)
@@ -108,9 +111,21 @@ def episode_loss_terms(episode, config):
         actor_weights = mixed
     else:
         raise ValueError(f"Unknown critic_mode: {critic_mode!r}")
+    if objective == "mean_agent":
+        if episode.agent_rewards:
+            n_agents = len(episode.agent_rewards[0])
+        else:
+            n_agents = episode.metrics.get("num_agents")
+        if type(n_agents) is not int or n_agents < 1:
+            raise ValueError("The mean-agent objective needs the episode roster size")
+        scale = 1.0 / n_agents
+    elif objective == "team":
+        scale = 1.0
+    else:
+        raise ValueError(f"Unknown objective: {objective!r}")
     # ``actor_weights`` are the detached per-step ([T]) or per-agent-step ([T,N])
     # multipliers of the log probabilities inside ``policy``; diagnostics reuse them.
-    return {"policy": policy_loss, "value": value_loss,
+    return {"policy": policy_loss, "value": value_loss, "scale": scale,
             "advantages": advantages, "targets": targets, "actor_weights": actor_weights}
 
 
@@ -118,6 +133,8 @@ def compute_episode_loss(episode, config):
     """Sum time/action scores against the configured advantages; mean the value error."""
     terms = episode_loss_terms(episode, config)
     total = config.actor_coeff * terms["policy"] + config.value_coeff * terms["value"]
+    if terms["scale"] != 1.0:
+        total = terms["scale"] * total
     return total, {"policy_loss_sum": float(terms["policy"].detach()),
                    "value_loss_sum": float(terms["value"].detach()), "episode_count": 1}
 

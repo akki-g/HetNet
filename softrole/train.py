@@ -247,9 +247,11 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
                "optimizer": optimizer_spec(config),
                "optimizer_initialization": "checkpoint" if resume else "fresh",
                "parameters": sum(p.numel() for p in model.parameters()),
-               "actor_objective": "undiscounted sum of physical-agent rewards",
+               "actor_objective": ("undiscounted sum of physical-agent rewards" if config.objective == "team"
+                                   else "undiscounted sum of physical-agent rewards; complete episode loss divided by roster size"),
                "learner": {"critic_mode": config.critic_mode,
                            "credit_beta": config.credit_beta,
+                           "objective": config.objective,
                            "null_degree_correction": config.null_degree_correction,
                            "communication": config.communication},
                "approximations": channel_approximations(config.communication) +

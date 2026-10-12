@@ -11,6 +11,7 @@ EXTRAPOLATION_TEST = ((4, 1), (4, 2))
 # Every default below reproduces the pre-existing behaviour and checkpoint layout.
 CHANNELS = ("binary", "real", "real_noisy", "binary_deterministic")
 CRITIC_MODES = ("team", "decomposed")
+OBJECTIVES = ("team", "mean_agent")
 
 
 @dataclass
@@ -37,6 +38,7 @@ class Config:
     null_degree_correction: bool = False
     critic_mode: str = "team"
     credit_beta: float = 1.0
+    objective: str = "team"
     feedback: bool = True
     comm_range: float = -1.0
     seed: int = 0
@@ -109,6 +111,8 @@ class Config:
             raise ValueError("credit_beta must be a finite number in [0, 1]")
         if self.credit_beta != 1 and self.critic_mode != "decomposed":
             raise ValueError("credit_beta below one requires critic_mode=decomposed")
+        if self.objective not in OBJECTIVES:
+            raise ValueError(f"objective must be one of {OBJECTIVES}")
         if self.optimizer not in ("rmsprop", "adam"):
             raise ValueError("optimizer must be rmsprop or adam")
         if type(self.comm_rounds) is not int or self.comm_rounds <= 0:
