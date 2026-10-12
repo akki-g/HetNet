@@ -7,7 +7,8 @@ Opt-in variants (every default reproduces the pre-existing model exactly):
 ``communication`` adds ``real_noisy`` and ``binary_deterministic`` channels,
 ``null_degree_correction`` adds ``log(max(d,1)/2)`` to the null attention logit,
 ``critic_mode="decomposed"`` replaces the scalar team head by per-agent values
-that sum to the team value.
+that sum to the team value, and ``actor_capabilities="physical_only"`` removes
+the two capability entries from the actor input (masks and critic keep them).
 """
 
 from __future__ import annotations
@@ -208,7 +209,9 @@ class SoftRoleNet(nn.Module):
 
     ``critic_mode="decomposed"`` computes v_j = psi([H_j; kappa_j; mean_i
     phi([H_i; kappa_i]); N; sum kappa; remaining]) with one shared head and
-    V = sum_j v_j.
+    V = sum_j v_j.  ``actor_capabilities="physical_only"`` feeds the actor the
+    observation without its two capability entries and gates banked models on
+    H only; the action mask and the critic still receive kappa.
     """
 
     def __init__(self, base: int = 25, n_squares: int = 25, mode: str = "banked",
@@ -217,7 +220,7 @@ class SoftRoleNet(nn.Module):
                  feedback: bool = True, allow_stay: bool = True,
                  comm_rounds: int = 2, independent_heads: bool = False,
                  communication: str = "binary", null_degree_correction: bool = False,
-                 critic_mode: str = "team"):
+                 critic_mode: str = "team", actor_capabilities: str = "explicit"):
         super().__init__()
         if type(allow_stay) is not bool:
             raise ValueError("allow_stay must be boolean")
@@ -231,9 +234,13 @@ class SoftRoleNet(nn.Module):
             raise ValueError("null_degree_correction must be boolean")
         if critic_mode not in ("team", "decomposed"):
             raise ValueError("critic_mode must be team or decomposed")
+        if actor_capabilities not in ("explicit", "physical_only"):
+            raise ValueError("actor_capabilities must be explicit or physical_only")
         self.allow_stay = allow_stay
         if mode not in {"banked", "shared", "capability", "constant"}:
             raise ValueError(f"Unknown gate mode: {mode}")
+        if mode == "capability" and actor_capabilities == "physical_only":
+            raise ValueError("physical_only actor capabilities contradict the capability-gated model")
         dimensions = (base, n_squares, experts, pre_dim, hidden_dim, heads, head_dim, msg_dim)
         if any(value <= 0 for value in dimensions):
             raise ValueError("All model dimensions must be positive")
@@ -243,13 +250,17 @@ class SoftRoleNet(nn.Module):
         self.heads, self.comm_rounds = heads, comm_rounds
         self.independent_heads, self.communication = independent_heads, communication
         self.null_degree_correction = null_degree_correction
-        self.critic_mode = critic_mode
-        self.pre = nn.Linear(self.obs_dim, pre_dim)
+        self.critic_mode, self.actor_capabilities = critic_mode, actor_capabilities
+        self.actor_input_dim = self.obs_dim - (2 if actor_capabilities == "physical_only" else 0)
+        self.pre = nn.Linear(self.actor_input_dim, pre_dim)
         self.lstm = nn.LSTMCell(pre_dim + (head_dim if feedback else 0) + 6, hidden_dim)
         self.gate_network = None
         self.register_parameter("constant_logits", None)
         if mode in {"banked", "capability"}:
-            gate_in = hidden_dim + 2 if mode == "banked" else 2
+            if mode == "banked":
+                gate_in = hidden_dim + (0 if actor_capabilities == "physical_only" else 2)
+            else:
+                gate_in = 2
             self.gate_network = nn.Sequential(nn.Linear(gate_in, 32), nn.ReLU(),
                                               nn.Linear(32, self.experts))
         elif mode == "constant":
@@ -290,7 +301,10 @@ class SoftRoleNet(nn.Module):
             return hidden.new_ones(hidden.shape[0], 1)
         if self.mode == "constant":
             return torch.softmax(self.constant_logits, dim=-1).expand(hidden.shape[0], -1)
-        gate_input = torch.cat((hidden, kappa), dim=-1) if self.mode == "banked" else kappa
+        if self.mode == "banked":
+            gate_input = hidden if self.actor_capabilities == "physical_only" else torch.cat((hidden, kappa), dim=-1)
+        else:
+            gate_input = kappa
         return torch.softmax(self.gate_network(gate_input), dim=-1)
 
     def forward(self, obs: Tensor, kappa: Tensor, memory: dict[str, Tensor],
@@ -321,7 +335,8 @@ class SoftRoleNet(nn.Module):
             if len(noise) != self.comm_rounds:
                 raise ValueError("Supply one noise tensor for each communication round")
         previous_action = F.one_hot(memory["a_prev"].long(), num_classes=6).to(obs.dtype)
-        recurrent_inputs = [F.relu(self.pre(obs))]
+        actor_obs = obs[:, :self.actor_input_dim] if self.actor_capabilities == "physical_only" else obs
+        recurrent_inputs = [F.relu(self.pre(actor_obs))]
         if self.feedback:
             recurrent_inputs.append(memory["u_bar"])
         recurrent_inputs.append(previous_action)

@@ -12,6 +12,7 @@ EXTRAPOLATION_TEST = ((4, 1), (4, 2))
 CHANNELS = ("binary", "real", "real_noisy", "binary_deterministic")
 CRITIC_MODES = ("team", "decomposed")
 OBJECTIVES = ("team", "mean_agent")
+ACTOR_CAPABILITIES = ("explicit", "physical_only")
 
 
 @dataclass
@@ -39,6 +40,7 @@ class Config:
     critic_mode: str = "team"
     credit_beta: float = 1.0
     objective: str = "team"
+    actor_capabilities: str = "explicit"
     feedback: bool = True
     comm_range: float = -1.0
     seed: int = 0
@@ -83,7 +85,7 @@ class Config:
         # still match exactly and retain their original state-dict layout.
         for name, default in (("comm_rounds", 2), ("independent_heads", False),
                               ("communication", "binary"), ("null_degree_correction", False),
-                              ("critic_mode", "team")):
+                              ("critic_mode", "team"), ("actor_capabilities", "explicit")):
             if getattr(self, name) != default:
                 settings[name] = getattr(self, name)
         return settings
@@ -113,6 +115,10 @@ class Config:
             raise ValueError("credit_beta below one requires critic_mode=decomposed")
         if self.objective not in OBJECTIVES:
             raise ValueError(f"objective must be one of {OBJECTIVES}")
+        if self.actor_capabilities not in ACTOR_CAPABILITIES:
+            raise ValueError(f"actor_capabilities must be one of {ACTOR_CAPABILITIES}")
+        if self.actor_capabilities == "physical_only" and self.model == "capability":
+            raise ValueError("physical_only actor capabilities contradict the capability-gated model")
         if self.optimizer not in ("rmsprop", "adam"):
             raise ValueError("optimizer must be rmsprop or adam")
         if type(self.comm_rounds) is not int or self.comm_rounds <= 0:

@@ -46,6 +46,8 @@ def parser():
                        help="actor advantage mixing beta*sum_i A_i + (1-beta)*A_j; values below one need the decomposed critic (L1a)")
     train.add_argument("--objective", choices=("team", "mean_agent"),
                        help="team: expected team return; mean_agent: complete episode loss divided by the roster size (L1c)")
+    train.add_argument("--actor-capabilities", dest="actor_capabilities", choices=("explicit", "physical_only"),
+                       help="physical_only removes the two capability inputs from the actor; masks and critic keep them (O1)")
     # Familiar release spellings are aliases, not a second set of defaults.
     integers = {
         "num_p": ("--num-p", "--nfriendly_P"), "num_a": ("--num-a", "--nfriendly_A"),
