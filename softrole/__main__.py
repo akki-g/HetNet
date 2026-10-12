@@ -32,7 +32,10 @@ def parser():
     train.add_argument("--study", choices=("fixed", "composition", "failure"))
     train.add_argument("--model", choices=("banked", "shared", "capability", "constant"))
     train.add_argument("--optimizer", choices=("rmsprop", "adam"))
-    train.add_argument("--communication", choices=("binary", "real"))
+    train.add_argument("--communication", choices=("binary", "real", "real_noisy", "binary_deterministic"),
+                       help="binary: Bernoulli bits with the straight-through surrogate; real: raw encoder values; "
+                            "real_noisy: raw values plus keyed logistic noise, exact pathwise gradient; "
+                            "binary_deterministic: 1[u>0] with the sigmoid'(u) surrogate and no noise")
     train.add_argument("--independent-heads", action="store_true", default=None,
                        help="each attention head broadcasts its own msg-dim payload")
     # Familiar release spellings are aliases, not a second set of defaults.

@@ -144,7 +144,8 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
             intervention_exposed |= is_intervened
             adjacency = communication_adjacency(adapter.positions, config.comm_range)
             noise = None
-            if communication == "binary":
+            if communication in ("binary", "real_noisy"):
+                # Keyed logistic draws: bits for binary, additive noise for real_noisy.
                 noise = message_noise(
                     scenario.message_seed, t, n_agents, config.msg_dim, dtype,
                     comm_rounds=comm_rounds,
@@ -188,7 +189,8 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
         config.heads if independent_heads else 1)
     # Logical representation size, not measured traffic: binary values are
     # counted as packed bits, Real as the model's floating-point scalar width.
-    value_bits = 1 if communication == "binary" else next(model.parameters()).element_size() * 8
+    value_bits = (1 if communication in ("binary", "binary_deterministic")
+                  else next(model.parameters()).element_size() * 8)
     episode.metrics = {
         "scenario_id": str(scenario.scenario_id), "num_p": int(scenario.num_p),
         "env_seed": int(scenario.env_seed), "action_seed": int(scenario.action_seed),

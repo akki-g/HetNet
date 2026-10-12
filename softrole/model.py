@@ -2,6 +2,9 @@
 
 The gate is deterministic.  Gaussian roles and information-rate penalties are
 deliberately absent.  Dense adjacency is indexed ``[receiver, sender]``.
+
+Opt-in variants (every default reproduces the pre-existing model exactly):
+``communication`` adds ``real_noisy`` and ``binary_deterministic`` channels.
 """
 
 from __future__ import annotations
@@ -9,6 +12,18 @@ from __future__ import annotations
 import torch
 from torch import Tensor, nn
 from torch.nn import functional as F
+
+
+CHANNELS = ("binary", "real", "real_noisy", "binary_deterministic")
+BIT_CHANNELS = ("binary", "binary_deterministic")
+NOISE_CHANNELS = ("binary", "real_noisy")
+
+
+def logistic_noise_like(logits: Tensor) -> Tensor:
+    """Fresh standard logistic draws; the keyed rollout streams normally replace this."""
+    eps = torch.finfo(logits.dtype).eps
+    uniform = torch.rand_like(logits).clamp(eps, 1 - eps)
+    return uniform.log() - torch.log1p(-uniform)
 
 
 def straight_through_bits(logits: Tensor, noise: Tensor | None = None) -> Tensor:
@@ -19,14 +34,45 @@ def straight_through_bits(logits: Tensor, noise: Tensor | None = None) -> Tensor
     share its payload between heads or include independently encoded head axes.
     """
     if noise is None:
-        eps = torch.finfo(logits.dtype).eps
-        uniform = torch.rand_like(logits).clamp(eps, 1 - eps)
-        noise = uniform.log() - torch.log1p(-uniform)
+        noise = logistic_noise_like(logits)
     elif noise.shape != logits.shape:
         raise ValueError("Bit noise must have the same shape as the encoder logits")
     relaxed = torch.sigmoid(logits + noise)
     hard = ((logits + noise) > 0).to(logits.dtype)
     return hard + (relaxed - relaxed.detach())
+
+
+def deterministic_bits(logits: Tensor) -> Tensor:
+    """1[u > 0] forward with the sigmoid'(u) surrogate backward; no noise draw."""
+    relaxed = torch.sigmoid(logits)
+    hard = (logits > 0).to(logits.dtype)
+    return hard + (relaxed - relaxed.detach())
+
+
+def channel_payload(encoded: Tensor, communication: str, noise: Tensor | None) -> Tensor:
+    """Apply one channel to encoder outputs ``u``.
+
+    binary: stochastic bits (straight-through surrogate); binary_deterministic:
+    thresholded bits (sigmoid'(u) surrogate, noise rejected); real: ``u`` with
+    exact derivatives; real_noisy: ``u + eps`` with exact pathwise derivative 1.
+    """
+    if communication == "binary":
+        return straight_through_bits(encoded, noise)
+    if communication == "binary_deterministic":
+        if noise is not None:
+            raise ValueError("Deterministic binary communication does not accept noise")
+        return deterministic_bits(encoded)
+    if communication == "real":
+        if noise is not None:
+            raise ValueError("Real communication does not accept bit noise")
+        return encoded
+    if communication == "real_noisy":
+        if noise is None:
+            noise = logistic_noise_like(encoded)
+        elif noise.shape != encoded.shape:
+            raise ValueError("Message noise must have the same shape as the encoder outputs")
+        return encoded + noise
+    raise ValueError(f"Unknown communication channel: {communication!r}")
 
 
 class AffineBank(nn.Module):
@@ -82,8 +128,8 @@ class CommunicationRound(nn.Module):
         super().__init__()
         if type(independent_heads) is not bool:
             raise ValueError("independent_heads must be boolean")
-        if not isinstance(communication, str) or communication not in {"binary", "real"}:
-            raise ValueError("communication must be 'binary' or 'real'")
+        if not isinstance(communication, str) or communication not in CHANNELS:
+            raise ValueError(f"communication must be one of {CHANNELS}")
         self.heads, self.head_dim, self.final = heads, head_dim, final
         self.independent_heads, self.communication = independent_heads, communication
         self.self_map = AffineBank(experts, in_dim, heads * head_dim)
@@ -104,12 +150,7 @@ class CommunicationRound(nn.Module):
         z = self.self_map(h, gate).reshape(n, self.heads, self.head_dim)
         encoder_input = h.unsqueeze(1).expand(-1, self.heads, -1) if self.independent_heads else h
         encoded = self.encoder(encoder_input, gate)
-        if self.communication == "binary":
-            payload = straight_through_bits(encoded, noise)
-        else:
-            if noise is not None:
-                raise ValueError("Real communication does not accept bit noise")
-            payload = encoded
+        payload = channel_payload(encoded, self.communication, noise)
         if comm_off:
             aggregate = torch.zeros_like(z)
             alpha_null = h.new_ones(n, self.heads)
@@ -161,8 +202,8 @@ class SoftRoleNet(nn.Module):
             raise ValueError("comm_rounds must be a positive integer")
         if type(independent_heads) is not bool:
             raise ValueError("independent_heads must be boolean")
-        if not isinstance(communication, str) or communication not in {"binary", "real"}:
-            raise ValueError("communication must be 'binary' or 'real'")
+        if not isinstance(communication, str) or communication not in CHANNELS:
+            raise ValueError(f"communication must be one of {CHANNELS}")
         self.allow_stay = allow_stay
         if mode not in {"banked", "shared", "capability", "constant"}:
             raise ValueError(f"Unknown gate mode: {mode}")
@@ -226,10 +267,10 @@ class SoftRoleNet(nn.Module):
 
         ``adjacency[j,k]`` permits sender k to reach receiver j.  The caller
         writes the sampled actions to returned memory['a_prev'] before the
-        next step.  Binary injected noise contains one logistic tensor per
-        round, shaped N x msg_dim for a shared payload or N x heads x msg_dim
-        for independent head payloads.  Real communication sends raw encoder
-        outputs and does not accept bit noise.
+        next step.  Injected noise contains one logistic tensor per round,
+        shaped N x msg_dim for a shared payload or N x heads x msg_dim for
+        independent head payloads; binary and real_noisy channels consume it,
+        real and binary_deterministic reject it.
         A gate override is either the full gate or ``(agent_mask, pinned_gate)``
         to freeze selected agents while all others continue adapting.
         """
@@ -239,10 +280,10 @@ class SoftRoleNet(nn.Module):
         if adjacency.shape != (n, n) or adjacency.dtype != torch.bool:
             raise ValueError("Adjacency must be a boolean [receiver, sender] matrix")
         if noise is not None:
-            if self.communication == "real":
-                raise ValueError("Real communication does not accept bit noise")
+            if self.communication not in NOISE_CHANNELS:
+                raise ValueError(f"{self.communication} communication does not accept bit noise")
             if len(noise) != self.comm_rounds:
-                raise ValueError("Supply one bit-noise tensor for each communication round")
+                raise ValueError("Supply one noise tensor for each communication round")
         previous_action = F.one_hot(memory["a_prev"].long(), num_classes=6).to(obs.dtype)
         recurrent_inputs = [F.relu(self.pre(obs))]
         if self.feedback:
@@ -278,6 +319,6 @@ class SoftRoleNet(nn.Module):
         team = torch.cat((obs.new_tensor([n]), kappa.sum(dim=0), remaining_tensor))
         value = self.critic(torch.cat((pooled, team))).squeeze(-1)
         next_memory = {"H": hidden, "C": cell, "u_bar": features, "a_prev": memory["a_prev"]}
-        return {"logits": logits, "value": value, "memory": next_memory,
-                "gate": gate, "bits": messages if self.communication == "binary" else [],
+        return {"logits": logits, "value": value, "memory": next_memory, "gate": gate,
+                "bits": messages if self.communication in BIT_CHANNELS else [],
                 "messages": messages, "alpha_null": alpha_null}

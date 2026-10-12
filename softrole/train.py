@@ -86,6 +86,13 @@ def source_snapshot(output=None):
     return record
 
 
+def channel_approximations(communication):
+    """Gradient approximations introduced by the message channel alone."""
+    return {"binary": ["straight-through bits"],
+            "binary_deterministic": ["deterministic-threshold surrogate bits"],
+            "real": [], "real_noisy": []}[communication]
+
+
 def collect_batch(model, config, collector, update, environment_source=None):
     """Return *sums*, never locally normalized or clipped gradients."""
     model.train()
@@ -241,7 +248,8 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
                "optimizer_initialization": "checkpoint" if resume else "fresh",
                "parameters": sum(p.numel() for p in model.parameters()),
                "actor_objective": "undiscounted sum of physical-agent rewards",
-               "approximations": (["straight-through bits"] if config.communication == "binary" else []) +
+               "learner": {"communication": config.communication},
+               "approximations": channel_approximations(config.communication) +
                                   ["GAE with learned critic", "truncated BPTT"]})
 
     def save(epoch):

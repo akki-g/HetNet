@@ -7,6 +7,9 @@ COMPOSITION_TRAIN = ((1, 1), (1, 2), (2, 1), (2, 2), (3, 1))
 FAILURE_TRAIN = ((2, 1), (2, 2), (3, 1))
 COMPOSITION_TEST = ((3, 2),)
 EXTRAPOLATION_TEST = ((4, 1), (4, 2))
+# Opt-in channel, critic, credit, objective and capability-input variants.
+# Every default below reproduces the pre-existing behaviour and checkpoint layout.
+CHANNELS = ("binary", "real", "real_noisy", "binary_deterministic")
 
 
 @dataclass
@@ -90,8 +93,8 @@ class Config:
             raise ValueError("paper-v1 FC uses the fixed paper reward (reward_type=3)")
         if self.model not in ("banked", "shared", "capability", "constant"):
             raise ValueError("unknown deterministic model variant")
-        if self.communication not in ("binary", "real"):
-            raise ValueError("communication must be binary or real")
+        if self.communication not in CHANNELS:
+            raise ValueError(f"communication must be one of {CHANNELS}")
         if self.optimizer not in ("rmsprop", "adam"):
             raise ValueError("optimizer must be rmsprop or adam")
         if type(self.comm_rounds) is not int or self.comm_rounds <= 0:
