@@ -185,8 +185,8 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
         raise ValueError("episode_log must be file or stdout")
     if diagnostics_every is not None and (type(diagnostics_every) is not int or diagnostics_every < 1):
         raise ValueError("diagnostics_every must be a positive integer")
-    if diagnostics_every is not None and (config.task != "pcp" or config.failure_prob):
-        raise ValueError("Update diagnostics currently support nominal PCP only")
+    if diagnostics_every is not None and config.task != "pcp":
+        raise ValueError("Update diagnostics currently support PCP only")
     output = Path(output)
     if output.exists():
         raise FileExistsError(f"refusing to overwrite run: {output}")

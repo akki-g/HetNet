@@ -164,8 +164,8 @@ def main(argv=None):
             if args.diagnostics_every is not None:
                 if args.diagnostics_every < 1:
                     raise ValueError("--diagnostics-every must be positive")
-                if config.task != "pcp" or config.failure_prob:
-                    raise ValueError("Update diagnostics currently support nominal PCP only")
+                if config.task != "pcp":
+                    raise ValueError("Update diagnostics currently support PCP only")
             if args.dry_run:
                 print(json.dumps(config.to_dict(), indent=2, sort_keys=True))
             else:
