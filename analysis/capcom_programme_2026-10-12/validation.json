@@ -1,0 +1,1383 @@
+{
+  "checkout": "644f8f17944d01c9d10e3a4fb670cefef32ceb3f",
+  "commands": [
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme",
+        "arms"
+      ],
+      "name": "arms",
+      "returncode": 0,
+      "seconds": 0.065,
+      "stderr_tail": "",
+      "stdout_head": "{\n  \"programme\": \"capcom_proposals_2026-10-12\",\n  \"arms\": [\n    {\n      \"name\": \"c1_real64\",\n      \"stage\": \"C1\",\n      \"preset\": \"fixed\",\n      \"control\": null,\n      \"factors\": {\n        \"model\": \"shared\",\n        \"communication\": \"real\",\n        \"msg_dim\": 64,\n        \"null_degree_correction\": false,\n        \"critic_mode\": \"team\",\n        \"credit_beta\": 1.0,\n        \"objective\": \"team\",\n        \"actor_capabilities\": \"explicit\"\n      },\n      \"changed\": [],\n      \"changed_from_control\": [\n        \"actor_capabilities\",\n        \"communication\",\n        \"credit_beta\",\n        \"critic_mode\",\n        \"model\",\n        \"msg_dim\",\n        \"null_degree_correction\",\n        \"objective\"\n      ],\n      \"preset_differs_from_control\": false\n    },\n    {\n      \"name\": \"c1_real_noisy64\",\n      \"stage\": \"C1\",\n      \"preset\": \"fixed\",\n      \"control\": \"c1_real64\",\n      \"factors\": {\n        \"model\": \"shared\",\n        \"communication\": \"real_noisy\",\n        \"msg_dim\": 64,\n        \"null_degree_correction\": false,\n        \"critic_mode\": \"team\",\n        \"credit_beta\": 1.0,\n        \"objective\": \"team\",\n        \"actor_capabilities\": \"explicit\"\n      },\n      \"changed\": [\n        \"communication\"\n      ],\n      \"changed_from_control\": [\n        \"communication\"\n      ],\n      \"preset_differs_from_control\": false\n    },\n    {\n      \"name\": \"c1_binary64\",\n      \"stage\": \"C1\",\n      \"preset\": \"fixed\",\n      \"control\": \"c1_real64\",\n      \"factors\": {\n        \"model\": \"shared\",\n        \"communication\": \"binary\",\n        \"msg_dim\": 64,\n        \"null_degree_correction\": false,\n        \"critic_mode\": \"team\",\n        \"credit_beta\": 1.0,\n        \"objective\": \"team\",\n        \"actor_capabilities\": \"explicit\"\n      },\n      \"changed\": [\n        \"communication\"\n      ],\n      \"changed_from_control\": [\n        \"communication\"\n      ],\n      \"preset_differs_from_control\": false\n    },\n    {\n      \"name\": \"c1_binary_deterministic64\",\n      \"stage\": \"C1\",\n      \"preset\": \"fixed\",\n      \"control\": \"c1_binary64"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_lr_pcp.sh",
+        "0",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "1",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "s1_bounded_0",
+      "returncode": 0,
+      "seconds": 6.081,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.33528113385015856, \"episodes\": 1, \"epoch\": 1, \"event_exposed_episodes\": 0, \"gate_entropy\": 0.0, \"mean_agent_return\": -2.466666666666665, \"num_agents\": 3.0, \"partial_epoch\": false, \"policy_loss_per_episode\": -481.57845445331355, \"return_cap\": -1.950000000000001, \"return_nocap\": -2.724999999999997, \"steps\": 80, \"steps_taken\": 80.0, \"success_rate\": 0.0, \"team_return\": -7.399999999999995, \"total_episodes\": 1, \"total_steps\": 80, \"updates\": 1, \"value_loss_per_episode\": 2.087950012236525, \"wall_time_seconds\": 1.2864125040005092}\n{\n  \"finished\": {\n    \"checkpoint\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_bounded/pcp_shared/real/adam_lr3e-4/seed0/checkpoints/epoch0001.pt\",\n    \"total_episodes\": 1,\n    \"total_steps\": 80,\n    \"updates\": 1\n  },\n  \"recorded_updates\": 1,\n  \"clip_fraction\": 1.0,\n  \"mean_parameter_update_l2\": 0.12175560778037434,\n  \"windows\": [\n    {\n      \"start_exclusive\": 0,\n      \"end_inclusive\": 2000000,\n      \"episodes\": 1,\n      \"steps_taken\": 80.0,\n      \"success_rate\": 0.0,\n      \"team_return\": -7.399999999999995,\n      \"fully_reached\": false\n    },\n    {\n      \"start_exclusive\": 4000000,\n      \"end_inclusive\": 8000000,\n      \"episodes\": 0,\n      \"steps_taken\": null,\n      \"success_rate\": null,\n      \"team_return\": null,\n      \"fully_reached\": false\n    },\n    {\n      \"start_exclusive\": 8000000,\n      \"end_inclusive\": 12000000,\n      \"episodes\": 0,\n      \"steps_taken\": null,\n      \"success_rate\": null,\n      \"team_return\": null,\n      \"fully_reached\": false\n    }\n  ]\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_lr_pcp.sh",
+        "1",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "1",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "s1_bounded_1",
+      "returncode": 0,
+      "seconds": 6.338,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.3403150417822563, \"episodes\": 1, \"epoch\": 1, \"event_exposed_episodes\": 0, \"gate_entropy\": 0.0, \"mean_agent_return\": -2.016666666666665, \"num_agents\": 3.0, \"partial_epoch\": false, \"policy_loss_per_episode\": -405.71710882385, \"return_cap\": -3.999999999999994, \"return_nocap\": -1.0250000000000004, \"steps\": 80, \"steps_taken\": 80.0, \"success_rate\": 0.0, \"team_return\": -6.0499999999999945, \"total_episodes\": 1, \"total_steps\": 80, \"updates\": 1, \"value_loss_per_episode\": 1.3074187396771761, \"wall_time_seconds\": 1.2620848720007416}\n{\n  \"finished\": {\n    \"checkpoint\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_bounded/pcp_shared/real/adam_lr3e-4/seed1/checkpoints/epoch0001.pt\",\n    \"total_episodes\": 1,\n    \"total_steps\": 80,\n    \"updates\": 1\n  },\n  \"recorded_updates\": 1,\n  \"clip_fraction\": 1.0,\n  \"mean_parameter_update_l2\": 0.12116105629170369,\n  \"windows\": [\n    {\n      \"start_exclusive\": 0,\n      \"end_inclusive\": 2000000,\n      \"episodes\": 1,\n      \"steps_taken\": 80.0,\n      \"success_rate\": 0.0,\n      \"team_return\": -6.0499999999999945,\n      \"fully_reached\": false\n    },\n    {\n      \"start_exclusive\": 4000000,\n      \"end_inclusive\": 8000000,\n      \"episodes\": 0,\n      \"steps_taken\": null,\n      \"success_rate\": null,\n      \"team_return\": null,\n      \"fully_reached\": false\n    },\n    {\n      \"start_exclusive\": 8000000,\n      \"end_inclusive\": 12000000,\n      \"episodes\": 0,\n      \"steps_taken\": null,\n      \"success_rate\": null,\n      \"team_return\": null,\n      \"fully_reached\": false\n    }\n  ]\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_lr_pcp.sh",
+        "2",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "1",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "s1_bounded_2",
+      "returncode": 0,
+      "seconds": 5.866,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.3405709435688973, \"episodes\": 1, \"epoch\": 1, \"event_exposed_episodes\": 0, \"gate_entropy\": 0.0, \"mean_agent_return\": -1.7666666666666646, \"num_agents\": 3.0, \"partial_epoch\": false, \"policy_loss_per_episode\": -346.1069031469639, \"return_cap\": -3.999999999999994, \"return_nocap\": -0.6500000000000001, \"steps\": 80, \"steps_taken\": 80.0, \"success_rate\": 0.0, \"team_return\": -5.299999999999994, \"total_episodes\": 1, \"total_steps\": 80, \"updates\": 1, \"value_loss_per_episode\": 0.9130704799913547, \"wall_time_seconds\": 1.2220525739994628}\n{\n  \"finished\": {\n    \"checkpoint\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_bounded/pcp_shared/real/adam_lr3e-4/seed2/checkpoints/epoch0001.pt\",\n    \"total_episodes\": 1,\n    \"total_steps\": 80,\n    \"updates\": 1\n  },\n  \"recorded_updates\": 1,\n  \"clip_fraction\": 1.0,\n  \"mean_parameter_update_l2\": 0.11869907329038926,\n  \"windows\": [\n    {\n      \"start_exclusive\": 0,\n      \"end_inclusive\": 2000000,\n      \"episodes\": 1,\n      \"steps_taken\": 80.0,\n      \"success_rate\": 0.0,\n      \"team_return\": -5.299999999999994,\n      \"fully_reached\": false\n    },\n    {\n      \"start_exclusive\": 4000000,\n      \"end_inclusive\": 8000000,\n      \"episodes\": 0,\n      \"steps_taken\": null,\n      \"success_rate\": null,\n      \"team_return\": null,\n      \"fully_reached\": false\n    },\n    {\n      \"start_exclusive\": 8000000,\n      \"end_inclusive\": 12000000,\n      \"episodes\": 0,\n      \"steps_taken\": null,\n      \"success_rate\": null,\n      \"team_return\": null,\n      \"fully_reached\": false\n    }\n  ]\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_lr_pcp.sh",
+        "3",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "1",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "s1_bounded_3",
+      "returncode": 0,
+      "seconds": 4.943,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.33528113385015856, \"episodes\": 1, \"epoch\": 1, \"event_exposed_episodes\": 0, \"gate_entropy\": 0.0, \"mean_agent_return\": -2.466666666666665, \"num_agents\": 3.0, \"partial_epoch\": false, \"policy_loss_per_episode\": -481.57845445331355, \"return_cap\": -1.950000000000001, \"return_nocap\": -2.724999999999997, \"steps\": 80, \"steps_taken\": 80.0, \"success_rate\": 0.0, \"team_return\": -7.399999999999995, \"total_episodes\": 1, \"total_steps\": 80, \"updates\": 1, \"value_loss_per_episode\": 2.087950012236525, \"wall_time_seconds\": 1.015530342000602}\n{\n  \"finished\": {\n    \"checkpoint\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_bounded/pcp_shared/real/adam_lr1e-3/seed0/checkpoints/epoch0001.pt\",\n    \"total_episodes\": 1,\n    \"total_steps\": 80,\n    \"updates\": 1\n  },\n  \"recorded_updates\": 1,\n  \"clip_fraction\": 1.0,\n  \"mean_parameter_update_l2\": 0.4058520259345812,\n  \"windows\": [\n    {\n      \"start_exclusive\": 0,\n      \"end_inclusive\": 2000000,\n      \"episodes\": 1,\n      \"steps_taken\": 80.0,\n      \"success_rate\": 0.0,\n      \"team_return\": -7.399999999999995,\n      \"fully_reached\": false\n    },\n    {\n      \"start_exclusive\": 4000000,\n      \"end_inclusive\": 8000000,\n      \"episodes\": 0,\n      \"steps_taken\": null,\n      \"success_rate\": null,\n      \"team_return\": null,\n      \"fully_reached\": false\n    },\n    {\n      \"start_exclusive\": 8000000,\n      \"end_inclusive\": 12000000,\n      \"episodes\": 0,\n      \"steps_taken\": null,\n      \"success_rate\": null,\n      \"team_return\": null,\n      \"fully_reached\": false\n    }\n  ]\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_lr_pcp.sh",
+        "4",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "1",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "s1_bounded_4",
+      "returncode": 0,
+      "seconds": 4.757,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.3403150417822563, \"episodes\": 1, \"epoch\": 1, \"event_exposed_episodes\": 0, \"gate_entropy\": 0.0, \"mean_agent_return\": -2.016666666666665, \"num_agents\": 3.0, \"partial_epoch\": false, \"policy_loss_per_episode\": -405.71710882385, \"return_cap\": -3.999999999999994, \"return_nocap\": -1.0250000000000004, \"steps\": 80, \"steps_taken\": 80.0, \"success_rate\": 0.0, \"team_return\": -6.0499999999999945, \"total_episodes\": 1, \"total_steps\": 80, \"updates\": 1, \"value_loss_per_episode\": 1.3074187396771761, \"wall_time_seconds\": 1.0445818119997057}\n{\n  \"finished\": {\n    \"checkpoint\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_bounded/pcp_shared/real/adam_lr1e-3/seed1/checkpoints/epoch0001.pt\",\n    \"total_episodes\": 1,\n    \"total_steps\": 80,\n    \"updates\": 1\n  },\n  \"recorded_updates\": 1,\n  \"clip_fraction\": 1.0,\n  \"mean_parameter_update_l2\": 0.40387018763901233,\n  \"windows\": [\n    {\n      \"start_exclusive\": 0,\n      \"end_inclusive\": 2000000,\n      \"episodes\": 1,\n      \"steps_taken\": 80.0,\n      \"success_rate\": 0.0,\n      \"team_return\": -6.0499999999999945,\n      \"fully_reached\": false\n    },\n    {\n      \"start_exclusive\": 4000000,\n      \"end_inclusive\": 8000000,\n      \"episodes\": 0,\n      \"steps_taken\": null,\n      \"success_rate\": null,\n      \"team_return\": null,\n      \"fully_reached\": false\n    },\n    {\n      \"start_exclusive\": 8000000,\n      \"end_inclusive\": 12000000,\n      \"episodes\": 0,\n      \"steps_taken\": null,\n      \"success_rate\": null,\n      \"team_return\": null,\n      \"fully_reached\": false\n    }\n  ]\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_lr_pcp.sh",
+        "5",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "1",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "s1_bounded_5",
+      "returncode": 0,
+      "seconds": 4.815,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.3405709435688973, \"episodes\": 1, \"epoch\": 1, \"event_exposed_episodes\": 0, \"gate_entropy\": 0.0, \"mean_agent_return\": -1.7666666666666646, \"num_agents\": 3.0, \"partial_epoch\": false, \"policy_loss_per_episode\": -346.1069031469639, \"return_cap\": -3.999999999999994, \"return_nocap\": -0.6500000000000001, \"steps\": 80, \"steps_taken\": 80.0, \"success_rate\": 0.0, \"team_return\": -5.299999999999994, \"total_episodes\": 1, \"total_steps\": 80, \"updates\": 1, \"value_loss_per_episode\": 0.9130704799913547, \"wall_time_seconds\": 0.9947487870003897}\n{\n  \"finished\": {\n    \"checkpoint\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_bounded/pcp_shared/real/adam_lr1e-3/seed2/checkpoints/epoch0001.pt\",\n    \"total_episodes\": 1,\n    \"total_steps\": 80,\n    \"updates\": 1\n  },\n  \"recorded_updates\": 1,\n  \"clip_fraction\": 1.0,\n  \"mean_parameter_update_l2\": 0.3956635776346309,\n  \"windows\": [\n    {\n      \"start_exclusive\": 0,\n      \"end_inclusive\": 2000000,\n      \"episodes\": 1,\n      \"steps_taken\": 80.0,\n      \"success_rate\": 0.0,\n      \"team_return\": -5.299999999999994,\n      \"fully_reached\": false\n    },\n    {\n      \"start_exclusive\": 4000000,\n      \"end_inclusive\": 8000000,\n      \"episodes\": 0,\n      \"steps_taken\": null,\n      \"success_rate\": null,\n      \"team_return\": null,\n      \"fully_reached\": false\n    },\n    {\n      \"start_exclusive\": 8000000,\n      \"end_inclusive\": 12000000,\n      \"episodes\": 0,\n      \"steps_taken\": null,\n      \"success_rate\": null,\n      \"team_return\": null,\n      \"fully_reached\": false\n    }\n  ]\n}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme",
+        "select-lr",
+        "--runs",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_bounded/pcp_shared/real/adam_lr1e-3/seed0",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_bounded/pcp_shared/real/adam_lr1e-3/seed1",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_bounded/pcp_shared/real/adam_lr1e-3/seed2",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_bounded/pcp_shared/real/adam_lr3e-4/seed0",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_bounded/pcp_shared/real/adam_lr3e-4/seed1",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_bounded/pcp_shared/real/adam_lr3e-4/seed2",
+        "--output",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/lr_selection_refused.json"
+      ],
+      "name": "select_lr_refuses_partial_real_runs",
+      "returncode": 2,
+      "seconds": 0.056,
+      "stderr_tail": "usage: programme.py [-h] {arms,select-lr,prepare,launch} ...\nprogramme.py: error: /home/user/HetNet/runs/capcom_programme_validation_20261012/s1_bounded/pcp_shared/real/adam_lr1e-3/seed0: configuration differs from the S1 Real64 protocol\n",
+      "stdout_head": ""
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme",
+        "select-lr",
+        "--runs",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_synthetic/lr0.0003/seed0",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_synthetic/lr0.0003/seed1",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_synthetic/lr0.0003/seed2",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_synthetic/lr0.001/seed0",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_synthetic/lr0.001/seed1",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/s1_synthetic/lr0.001/seed2",
+        "--output",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/lr_selection_synthetic.json",
+        "--bounded"
+      ],
+      "name": "select_lr_synthetic_rule",
+      "returncode": 0,
+      "seconds": 0.062,
+      "stderr_tail": "",
+      "stdout_head": "{\n  \"selected_lr\": 0.0003,\n  \"equal_seed_means\": {\n    \"0.0003\": 6.0,\n    \"0.001\": 6.0\n  },\n  \"bounded_check\": true\n}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme",
+        "prepare",
+        "--lr-selection",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/lr_selection_synthetic.json",
+        "--output",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/manifest.json",
+        "--bounded"
+      ],
+      "name": "prepare_manifest_bounded",
+      "returncode": 0,
+      "seconds": 1.47,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"entries\": 63, \"lr\": 0.0003, \"source_sha256\": \"2bec61b22ff4bd9d733bfbe591e14979f37b9fe5a17c1e693f3250ed3d2afba6\", \"manifest\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/manifest.json\"}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme",
+        "prepare",
+        "--lr-selection",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/lr_selection_synthetic.json",
+        "--output",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/manifest_research.json"
+      ],
+      "name": "prepare_manifest_refuses_research_from_bounded",
+      "returncode": 2,
+      "seconds": 1.482,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nusage: programme.py [-h] {arms,select-lr,prepare,launch} ...\nprogramme.py: error: A bounded (engineering) selection cannot lock the research manifest\n",
+      "stdout_head": ""
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "0",
+        "--dry-run"
+      ],
+      "name": "launch_dry_run_0",
+      "returncode": 0,
+      "seconds": 0.071,
+      "stderr_tail": "",
+      "stdout_head": "{\n  \"actor_capabilities\": \"explicit\",\n  \"actor_coeff\": 50.0,\n  \"batch_steps\": 500,\n  \"comm_range\": -1.0,\n  \"comm_rounds\": 3,\n  \"communication\": \"real\",\n  \"compositions\": [],\n  \"credit_beta\": 1.0,\n  \"critic_mode\": \"team\",\n  \"detach_gap\": 5,\n  \"dim\": 5,\n  \"env_version\": \"corrected-observation-v1\",\n  \"epochs\": 2000,\n  \"experts\": 4,\n  \"failure_prob\": 0.0,\n  \"failure_window\": [\n    10,\n    30\n  ],\n  \"feedback\": true,\n  \"gae_lambda\": 0.95,\n  \"gamma\": 1.0,\n  \"head_dim\": 16,\n  \"heads\": 4,\n  \"held_out\": [],\n  \"hidden_dim\": 64,\n  \"independent_heads\": true,\n  \"lr\": 0.0003,\n  \"max_grad_norm\": 0.75,\n  \"max_steps\": 80,\n  \"model\": \"shared\",\n  \"msg_dim\": 64,\n  \"nfires\": 1,\n  \"nprocesses\": 4,\n  \"null_degree_correction\": false,\n  \"num_a\": 1,\n  \"num_p\": 2,\n  \"objective\": \"team\",\n  \"optimizer\": \"adam\",\n  \"pre_dim\": 128,\n  \"reward_type\": 3,\n  \"save_every\": 10,\n  \"seed\": 0,\n  \"task\": \"pcp\",\n  \"total_steps\": 20000000,\n  \"updates_per_epoch\": 10,\n  \"value_coeff\": 1.0,\n  \"vision\": 2\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "0",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "2",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "launch_bounded_0",
+      "returncode": 0,
+      "seconds": 5.715,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.335769949999864, \"episodes\": 2, \"epoch\": 1, \"event_exposed_episodes\": 0, \"gate_entropy\": 0.0, \"mean_agent_return\": -2.0333333333333314, \"num_agents\": 3.0, \"partial_epoch\": false, \"policy_loss_per_episode\": -401.0975643144844, \"return_cap\": -1.0500000000000005, \"return_nocap\": -2.524999999999997, \"steps\": 160, \"steps_taken\": 80.0, \"success_rate\": 0.0, \"team_return\": -6.099999999999994, \"total_episodes\": 2, \"total_steps\": 160, \"updates\": 1, \"value_loss_per_episode\": 1.4221473931876698, \"wall_time_seconds\": 2.7362608769999497}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "3",
+        "--dry-run"
+      ],
+      "name": "launch_dry_run_3",
+      "returncode": 0,
+      "seconds": 0.065,
+      "stderr_tail": "",
+      "stdout_head": "{\n  \"actor_capabilities\": \"explicit\",\n  \"actor_coeff\": 50.0,\n  \"batch_steps\": 500,\n  \"comm_range\": -1.0,\n  \"comm_rounds\": 3,\n  \"communication\": \"real_noisy\",\n  \"compositions\": [],\n  \"credit_beta\": 1.0,\n  \"critic_mode\": \"team\",\n  \"detach_gap\": 5,\n  \"dim\": 5,\n  \"env_version\": \"corrected-observation-v1\",\n  \"epochs\": 2000,\n  \"experts\": 4,\n  \"failure_prob\": 0.0,\n  \"failure_window\": [\n    10,\n    30\n  ],\n  \"feedback\": true,\n  \"gae_lambda\": 0.95,\n  \"gamma\": 1.0,\n  \"head_dim\": 16,\n  \"heads\": 4,\n  \"held_out\": [],\n  \"hidden_dim\": 64,\n  \"independent_heads\": true,\n  \"lr\": 0.0003,\n  \"max_grad_norm\": 0.75,\n  \"max_steps\": 80,\n  \"model\": \"shared\",\n  \"msg_dim\": 64,\n  \"nfires\": 1,\n  \"nprocesses\": 4,\n  \"null_degree_correction\": false,\n  \"num_a\": 1,\n  \"num_p\": 2,\n  \"objective\": \"team\",\n  \"optimizer\": \"adam\",\n  \"pre_dim\": 128,\n  \"reward_type\": 3,\n  \"save_every\": 10,\n  \"seed\": 0,\n  \"task\": \"pcp\",\n  \"total_steps\": 20000000,\n  \"updates_per_epoch\": 10,\n  \"value_coeff\": 1.0,\n  \"vision\": 2\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "3",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "2",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "launch_bounded_3",
+      "returncode": 0,
+      "seconds": 5.237,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.36339034733013664, \"episodes\": 2, \"epoch\": 1, \"event_exposed_episodes\": 0, \"gate_entropy\": 0.0, \"mean_agent_return\": -1.266666666666666, \"num_agents\": 3.0, \"partial_epoch\": false, \"policy_loss_per_episode\": -191.51791024569155, \"return_cap\": -0.6250000000000002, \"return_nocap\": -1.5874999999999986, \"steps\": 104, \"steps_taken\": 52.0, \"success_rate\": 0.5, \"team_return\": -3.7999999999999976, \"total_episodes\": 2, \"total_steps\": 104, \"updates\": 1, \"value_loss_per_episode\": 0.981368395387711, \"wall_time_seconds\": 2.417961084000126}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "9",
+        "--dry-run"
+      ],
+      "name": "launch_dry_run_9",
+      "returncode": 0,
+      "seconds": 0.063,
+      "stderr_tail": "",
+      "stdout_head": "{\n  \"actor_capabilities\": \"explicit\",\n  \"actor_coeff\": 50.0,\n  \"batch_steps\": 500,\n  \"comm_range\": -1.0,\n  \"comm_rounds\": 3,\n  \"communication\": \"binary_deterministic\",\n  \"compositions\": [],\n  \"credit_beta\": 1.0,\n  \"critic_mode\": \"team\",\n  \"detach_gap\": 5,\n  \"dim\": 5,\n  \"env_version\": \"corrected-observation-v1\",\n  \"epochs\": 2000,\n  \"experts\": 4,\n  \"failure_prob\": 0.0,\n  \"failure_window\": [\n    10,\n    30\n  ],\n  \"feedback\": true,\n  \"gae_lambda\": 0.95,\n  \"gamma\": 1.0,\n  \"head_dim\": 16,\n  \"heads\": 4,\n  \"held_out\": [],\n  \"hidden_dim\": 64,\n  \"independent_heads\": true,\n  \"lr\": 0.0003,\n  \"max_grad_norm\": 0.75,\n  \"max_steps\": 80,\n  \"model\": \"shared\",\n  \"msg_dim\": 64,\n  \"nfires\": 1,\n  \"nprocesses\": 4,\n  \"null_degree_correction\": false,\n  \"num_a\": 1,\n  \"num_p\": 2,\n  \"objective\": \"team\",\n  \"optimizer\": \"adam\",\n  \"pre_dim\": 128,\n  \"reward_type\": 3,\n  \"save_every\": 10,\n  \"seed\": 0,\n  \"task\": \"pcp\",\n  \"total_steps\": 20000000,\n  \"updates_per_epoch\": 10,\n  \"value_coeff\": 1.0,\n  \"vision\": 2\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "9",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "2",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "launch_bounded_9",
+      "returncode": 0,
+      "seconds": 5.121,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.363237367428662, \"episodes\": 2, \"epoch\": 1, \"event_exposed_episodes\": 0, \"gate_entropy\": 0.0, \"mean_agent_return\": -2.0833333333333317, \"num_agents\": 3.0, \"partial_epoch\": false, \"policy_loss_per_episode\": -404.502330990809, \"return_cap\": -1.0500000000000005, \"return_nocap\": -2.599999999999997, \"steps\": 120, \"steps_taken\": 60.0, \"success_rate\": 0.5, \"team_return\": -6.249999999999995, \"total_episodes\": 2, \"total_steps\": 120, \"updates\": 1, \"value_loss_per_episode\": 2.1486628205037577, \"wall_time_seconds\": 2.4832555989996763}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "21",
+        "--dry-run"
+      ],
+      "name": "launch_dry_run_21",
+      "returncode": 0,
+      "seconds": 0.064,
+      "stderr_tail": "",
+      "stdout_head": "{\n  \"actor_capabilities\": \"explicit\",\n  \"actor_coeff\": 50.0,\n  \"batch_steps\": 500,\n  \"comm_range\": -1.0,\n  \"comm_rounds\": 3,\n  \"communication\": \"real\",\n  \"compositions\": [\n    [\n      1,\n      1\n    ],\n    [\n      1,\n      2\n    ],\n    [\n      2,\n      1\n    ],\n    [\n      2,\n      2\n    ],\n    [\n      3,\n      1\n    ]\n  ],\n  \"credit_beta\": 1.0,\n  \"critic_mode\": \"team\",\n  \"detach_gap\": 5,\n  \"dim\": 5,\n  \"env_version\": \"corrected-observation-v1\",\n  \"epochs\": 2000,\n  \"experts\": 4,\n  \"failure_prob\": 0.0,\n  \"failure_window\": [\n    10,\n    30\n  ],\n  \"feedback\": true,\n  \"gae_lambda\": 0.95,\n  \"gamma\": 1.0,\n  \"head_dim\": 16,\n  \"heads\": 4,\n  \"held_out\": [\n    [\n      3,\n      2\n    ]\n  ],\n  \"hidden_dim\": 64,\n  \"independent_heads\": true,\n  \"lr\": 0.0003,\n  \"max_grad_norm\": 0.75,\n  \"max_steps\": 80,\n  \"model\": \"shared\",\n  \"msg_dim\": 64,\n  \"nfires\": 1,\n  \"nprocesses\": 4,\n  \"null_degree_correction\": true,\n  \"num_a\": 1,\n  \"num_p\": 2,\n  \"objective\": \"team\",\n  \"optimizer\": \"adam\",\n  \"pre_dim\": 128,\n  \"reward_type\": 3,\n  \"save_every\": 10,\n  \"seed\": 0,\n  \"task\": \"pcp\",\n  \"total_steps\": 20000000,\n  \"updates_per_epoch\": 10,\n  \"value_coeff\": 1.0,\n  \"vision\": 2\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "21",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "2",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "launch_bounded_21",
+      "returncode": 0,
+      "seconds": 5.282,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.3349378997700366, \"episodes\": 2, \"epoch\": 1, \"event_exposed_episodes\": 0, \"gate_entropy\": 0.0, \"mean_agent_return\": -1.939583333333332, \"num_agents\": 3.5, \"partial_epoch\": false, \"policy_loss_per_episode\": -460.87652390065796, \"return_cap\": -2.574999999999999, \"return_nocap\": -1.770833333333332, \"steps\": 145, \"steps_taken\": 72.5, \"success_rate\": 0.5, \"team_return\": -6.524999999999996, \"total_episodes\": 2, \"total_steps\": 145, \"updates\": 1, \"value_loss_per_episode\": 1.7930338167760078, \"wall_time_seconds\": 2.6275853360002657}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "30",
+        "--dry-run"
+      ],
+      "name": "launch_dry_run_30",
+      "returncode": 0,
+      "seconds": 0.091,
+      "stderr_tail": "",
+      "stdout_head": "{\n  \"actor_capabilities\": \"explicit\",\n  \"actor_coeff\": 50.0,\n  \"batch_steps\": 500,\n  \"comm_range\": -1.0,\n  \"comm_rounds\": 3,\n  \"communication\": \"real\",\n  \"compositions\": [],\n  \"credit_beta\": 0.0,\n  \"critic_mode\": \"decomposed\",\n  \"detach_gap\": 5,\n  \"dim\": 5,\n  \"env_version\": \"corrected-observation-v1\",\n  \"epochs\": 2000,\n  \"experts\": 4,\n  \"failure_prob\": 0.0,\n  \"failure_window\": [\n    10,\n    30\n  ],\n  \"feedback\": true,\n  \"gae_lambda\": 0.95,\n  \"gamma\": 1.0,\n  \"head_dim\": 16,\n  \"heads\": 4,\n  \"held_out\": [],\n  \"hidden_dim\": 64,\n  \"independent_heads\": true,\n  \"lr\": 0.0003,\n  \"max_grad_norm\": 0.75,\n  \"max_steps\": 80,\n  \"model\": \"shared\",\n  \"msg_dim\": 64,\n  \"nfires\": 1,\n  \"nprocesses\": 4,\n  \"null_degree_correction\": false,\n  \"num_a\": 1,\n  \"num_p\": 2,\n  \"objective\": \"team\",\n  \"optimizer\": \"adam\",\n  \"pre_dim\": 128,\n  \"reward_type\": 3,\n  \"save_every\": 10,\n  \"seed\": 0,\n  \"task\": \"pcp\",\n  \"total_steps\": 20000000,\n  \"updates_per_epoch\": 10,\n  \"value_coeff\": 1.0,\n  \"vision\": 2\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "30",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "2",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "launch_bounded_30",
+      "returncode": 0,
+      "seconds": 5.335,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.335769949999864, \"episodes\": 2, \"epoch\": 1, \"event_exposed_episodes\": 0, \"gate_entropy\": 0.0, \"mean_agent_return\": -2.0333333333333314, \"num_agents\": 3.0, \"partial_epoch\": false, \"policy_loss_per_episode\": -127.2134549134675, \"return_cap\": -1.0500000000000005, \"return_nocap\": -2.524999999999997, \"steps\": 160, \"steps_taken\": 80.0, \"success_rate\": 0.0, \"team_return\": -6.099999999999994, \"total_episodes\": 2, \"total_steps\": 160, \"updates\": 1, \"value_loss_per_episode\": 0.7962257803250444, \"wall_time_seconds\": 2.6740037650006343}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "33",
+        "--dry-run"
+      ],
+      "name": "launch_dry_run_33",
+      "returncode": 0,
+      "seconds": 0.065,
+      "stderr_tail": "",
+      "stdout_head": "{\n  \"actor_capabilities\": \"physical_only\",\n  \"actor_coeff\": 50.0,\n  \"batch_steps\": 500,\n  \"comm_range\": -1.0,\n  \"comm_rounds\": 3,\n  \"communication\": \"real\",\n  \"compositions\": [],\n  \"credit_beta\": 1.0,\n  \"critic_mode\": \"team\",\n  \"detach_gap\": 5,\n  \"dim\": 5,\n  \"env_version\": \"corrected-observation-v1\",\n  \"epochs\": 2000,\n  \"experts\": 4,\n  \"failure_prob\": 0.0,\n  \"failure_window\": [\n    10,\n    30\n  ],\n  \"feedback\": true,\n  \"gae_lambda\": 0.95,\n  \"gamma\": 1.0,\n  \"head_dim\": 16,\n  \"heads\": 4,\n  \"held_out\": [],\n  \"hidden_dim\": 64,\n  \"independent_heads\": true,\n  \"lr\": 0.0003,\n  \"max_grad_norm\": 0.75,\n  \"max_steps\": 80,\n  \"model\": \"shared\",\n  \"msg_dim\": 64,\n  \"nfires\": 1,\n  \"nprocesses\": 4,\n  \"null_degree_correction\": false,\n  \"num_a\": 1,\n  \"num_p\": 2,\n  \"objective\": \"team\",\n  \"optimizer\": \"adam\",\n  \"pre_dim\": 128,\n  \"reward_type\": 3,\n  \"save_every\": 10,\n  \"seed\": 0,\n  \"task\": \"pcp\",\n  \"total_steps\": 20000000,\n  \"updates_per_epoch\": 10,\n  \"value_coeff\": 1.0,\n  \"vision\": 2\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "33",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "2",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "launch_bounded_33",
+      "returncode": 0,
+      "seconds": 5.029,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.3286457005556298, \"episodes\": 2, \"epoch\": 1, \"event_exposed_episodes\": 0, \"gate_entropy\": 0.0, \"mean_agent_return\": -2.233333333333332, \"num_agents\": 3.0, \"partial_epoch\": false, \"policy_loss_per_episode\": -437.65093788756104, \"return_cap\": -3.2499999999999964, \"return_nocap\": -1.725, \"steps\": 137, \"steps_taken\": 68.5, \"success_rate\": 0.5, \"team_return\": -6.699999999999996, \"total_episodes\": 2, \"total_steps\": 137, \"updates\": 1, \"value_loss_per_episode\": 2.177105963683634, \"wall_time_seconds\": 2.481274561000646}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "36",
+        "--dry-run"
+      ],
+      "name": "launch_dry_run_36",
+      "returncode": 0,
+      "seconds": 0.068,
+      "stderr_tail": "",
+      "stdout_head": "{\n  \"actor_capabilities\": \"explicit\",\n  \"actor_coeff\": 50.0,\n  \"batch_steps\": 500,\n  \"comm_range\": -1.0,\n  \"comm_rounds\": 3,\n  \"communication\": \"real\",\n  \"compositions\": [\n    [\n      1,\n      1\n    ],\n    [\n      1,\n      2\n    ],\n    [\n      2,\n      1\n    ],\n    [\n      2,\n      2\n    ],\n    [\n      3,\n      1\n    ]\n  ],\n  \"credit_beta\": 1.0,\n  \"critic_mode\": \"team\",\n  \"detach_gap\": 5,\n  \"dim\": 5,\n  \"env_version\": \"corrected-observation-v1\",\n  \"epochs\": 2000,\n  \"experts\": 4,\n  \"failure_prob\": 0.0,\n  \"failure_window\": [\n    10,\n    30\n  ],\n  \"feedback\": true,\n  \"gae_lambda\": 0.95,\n  \"gamma\": 1.0,\n  \"head_dim\": 16,\n  \"heads\": 4,\n  \"held_out\": [\n    [\n      3,\n      2\n    ]\n  ],\n  \"hidden_dim\": 64,\n  \"independent_heads\": true,\n  \"lr\": 0.0003,\n  \"max_grad_norm\": 0.75,\n  \"max_steps\": 80,\n  \"model\": \"banked\",\n  \"msg_dim\": 64,\n  \"nfires\": 1,\n  \"nprocesses\": 4,\n  \"null_degree_correction\": false,\n  \"num_a\": 1,\n  \"num_p\": 2,\n  \"objective\": \"team\",\n  \"optimizer\": \"adam\",\n  \"pre_dim\": 128,\n  \"reward_type\": 3,\n  \"save_every\": 10,\n  \"seed\": 0,\n  \"task\": \"pcp\",\n  \"total_steps\": 20000000,\n  \"updates_per_epoch\": 10,\n  \"value_coeff\": 1.0,\n  \"vision\": 2\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "36",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "2",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "launch_bounded_36",
+      "returncode": 0,
+      "seconds": 6.29,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.2913964264036609, \"episodes\": 2, \"epoch\": 1, \"event_exposed_episodes\": 0, \"gate_entropy\": 1.3822568421724037, \"mean_agent_return\": -2.3999999999999977, \"num_agents\": 3.5, \"partial_epoch\": false, \"policy_loss_per_episode\": -600.0203242496831, \"return_cap\": -3.599999999999995, \"return_nocap\": -1.929166666666665, \"steps\": 145, \"steps_taken\": 72.5, \"success_rate\": 0.5, \"team_return\": -8.024999999999991, \"total_episodes\": 2, \"total_steps\": 145, \"updates\": 1, \"value_loss_per_episode\": 2.703148996395816, \"wall_time_seconds\": 3.5884250210001483}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "48",
+        "--dry-run"
+      ],
+      "name": "launch_dry_run_48",
+      "returncode": 0,
+      "seconds": 0.068,
+      "stderr_tail": "",
+      "stdout_head": "{\n  \"actor_capabilities\": \"explicit\",\n  \"actor_coeff\": 50.0,\n  \"batch_steps\": 500,\n  \"comm_range\": -1.0,\n  \"comm_rounds\": 3,\n  \"communication\": \"real\",\n  \"compositions\": [\n    [\n      2,\n      1\n    ],\n    [\n      2,\n      2\n    ],\n    [\n      3,\n      1\n    ]\n  ],\n  \"credit_beta\": 1.0,\n  \"critic_mode\": \"team\",\n  \"detach_gap\": 5,\n  \"dim\": 5,\n  \"env_version\": \"corrected-observation-v1\",\n  \"epochs\": 2000,\n  \"experts\": 4,\n  \"failure_prob\": 0.5,\n  \"failure_window\": [\n    1,\n    1\n  ],\n  \"feedback\": true,\n  \"gae_lambda\": 0.95,\n  \"gamma\": 1.0,\n  \"head_dim\": 16,\n  \"heads\": 4,\n  \"held_out\": [\n    [\n      3,\n      2\n    ]\n  ],\n  \"hidden_dim\": 64,\n  \"independent_heads\": true,\n  \"lr\": 0.0003,\n  \"max_grad_norm\": 0.75,\n  \"max_steps\": 80,\n  \"model\": \"banked\",\n  \"msg_dim\": 64,\n  \"nfires\": 1,\n  \"nprocesses\": 4,\n  \"null_degree_correction\": false,\n  \"num_a\": 1,\n  \"num_p\": 2,\n  \"objective\": \"team\",\n  \"optimizer\": \"adam\",\n  \"pre_dim\": 128,\n  \"reward_type\": 3,\n  \"save_every\": 10,\n  \"seed\": 0,\n  \"task\": \"pcp\",\n  \"total_steps\": 20000000,\n  \"updates_per_epoch\": 10,\n  \"value_coeff\": 1.0,\n  \"vision\": 2\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "48",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "2",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "launch_bounded_48",
+      "returncode": 0,
+      "seconds": 6.565,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.2497558287690662, \"episodes\": 2, \"epoch\": 1, \"event_exposed_episodes\": 1, \"gate_entropy\": 1.3821785647092033, \"mean_agent_return\": -2.2499999999999982, \"num_agents\": 4.0, \"partial_epoch\": false, \"policy_loss_per_episode\": -793.6795694808816, \"return_cap\": -2.9499999999999966, \"return_nocap\": -2.066666666666665, \"steps\": 145, \"steps_taken\": 72.5, \"success_rate\": 0.5, \"team_return\": -8.999999999999993, \"total_episodes\": 2, \"total_steps\": 145, \"updates\": 1, \"value_loss_per_episode\": 3.4692334758175876, \"wall_time_seconds\": 3.8593426699999327}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "60",
+        "--dry-run"
+      ],
+      "name": "launch_dry_run_60",
+      "returncode": 0,
+      "seconds": 0.071,
+      "stderr_tail": "",
+      "stdout_head": "{\n  \"actor_capabilities\": \"explicit\",\n  \"actor_coeff\": 50.0,\n  \"batch_steps\": 500,\n  \"comm_range\": -1.0,\n  \"comm_rounds\": 3,\n  \"communication\": \"real\",\n  \"compositions\": [\n    [\n      2,\n      1\n    ],\n    [\n      2,\n      2\n    ],\n    [\n      3,\n      1\n    ]\n  ],\n  \"credit_beta\": 1.0,\n  \"critic_mode\": \"team\",\n  \"detach_gap\": 5,\n  \"dim\": 5,\n  \"env_version\": \"corrected-observation-v1\",\n  \"epochs\": 2000,\n  \"experts\": 4,\n  \"failure_prob\": 0.5,\n  \"failure_window\": [\n    1,\n    1\n  ],\n  \"feedback\": true,\n  \"gae_lambda\": 0.95,\n  \"gamma\": 1.0,\n  \"head_dim\": 16,\n  \"heads\": 4,\n  \"held_out\": [\n    [\n      3,\n      2\n    ]\n  ],\n  \"hidden_dim\": 64,\n  \"independent_heads\": true,\n  \"lr\": 0.0003,\n  \"max_grad_norm\": 0.75,\n  \"max_steps\": 80,\n  \"model\": \"shared\",\n  \"msg_dim\": 64,\n  \"nfires\": 1,\n  \"nprocesses\": 4,\n  \"null_degree_correction\": false,\n  \"num_a\": 1,\n  \"num_p\": 2,\n  \"objective\": \"mean_agent\",\n  \"optimizer\": \"adam\",\n  \"pre_dim\": 128,\n  \"reward_type\": 3,\n  \"save_every\": 10,\n  \"seed\": 0,\n  \"task\": \"pcp\",\n  \"total_steps\": 20000000,\n  \"updates_per_epoch\": 10,\n  \"value_coeff\": 1.0,\n  \"vision\": 2\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "60",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "2",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "launch_bounded_60",
+      "returncode": 0,
+      "seconds": 5.368,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nGym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"alpha_null\": 0.2521075309807569, \"episodes\": 2, \"epoch\": 1, \"event_exposed_episodes\": 1, \"gate_entropy\": 0.0, \"mean_agent_return\": -2.3812499999999974, \"num_agents\": 4.0, \"partial_epoch\": false, \"policy_loss_per_episode\": -885.0009316657972, \"return_cap\": -2.9499999999999966, \"return_nocap\": -2.4083333333333306, \"steps\": 145, \"steps_taken\": 72.5, \"success_rate\": 0.5, \"team_return\": -9.52499999999999, \"total_episodes\": 2, \"total_steps\": 145, \"updates\": 1, \"value_loss_per_episode\": 4.213896740438352, \"wall_time_seconds\": 2.7346458759993766}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "0",
+        "--communication",
+        "binary"
+      ],
+      "name": "launch_rejects_scientific_override",
+      "returncode": 2,
+      "seconds": 0.003,
+      "stderr_tail": "Unsupported programme option: --communication\nUsage: SOFTROLE_PROGRAMME_MANIFEST=manifest.json bash scripts/softrole_programme.sh INDEX [--dry-run] [runtime options...]\nINDEX is 0..62: arm order of \"python -m softrole.programme arms\" times seeds 0,1,2.\nOptions: --epochs, --updates-per-epoch, --batch-steps, --nprocesses, --total-steps, --save-every,\n         --diagnostics-every POSITIVE_INTEGER; --episode-log file|stdout. Scientific settings come from the manifest.\n",
+      "stdout_head": ""
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_programme.sh",
+        "0",
+        "--epochs",
+        "1",
+        "--updates-per-epoch",
+        "1",
+        "--batch-steps",
+        "1",
+        "--nprocesses",
+        "2",
+        "--total-steps",
+        "1",
+        "--save-every",
+        "1",
+        "--diagnostics-every",
+        "1"
+      ],
+      "name": "launch_rejects_existing_run",
+      "returncode": 2,
+      "seconds": 0.068,
+      "stderr_tail": "usage: programme.py [-h] {arms,select-lr,prepare,launch} ...\nprogramme.py: error: refusing to overwrite run: /home/user/HetNet/runs/capcom_programme_validation_20261012/programme/C1/c1_real64/seed0\n",
+      "stdout_head": ""
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.diagnostics",
+        "prepare",
+        "--checkpoints",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/L1/l1a_decomposed_beta0/seed0/checkpoints/epoch0001.pt",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/BANKS/banks_failure_banked/seed0/checkpoints/epoch0001.pt",
+        "--checkpoint-rule",
+        "bounded validation: terminal epoch 1 checkpoints of entries 30 and 48",
+        "--batch-mode",
+        "checkpoint-probe",
+        "--probe-episodes",
+        "1",
+        "--d5-instances",
+        "1",
+        "--d5-bits",
+        "2",
+        "--d5-samples",
+        "32",
+        "--protocol-version",
+        "2",
+        "--output",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/manifest.json"
+      ],
+      "name": "diagnostics_prepare_v2",
+      "returncode": 0,
+      "seconds": 1.632,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"entries\": 2, \"manifest\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/manifest.json\"}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.diagnostics",
+        "prepare",
+        "--checkpoints",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/L1/l1a_decomposed_beta0/seed0/checkpoints/epoch0001.pt",
+        "--checkpoint-rule",
+        "x",
+        "--batch-mode",
+        "checkpoint-probe",
+        "--output",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/manifest_v1.json"
+      ],
+      "name": "diagnostics_prepare_v1_refuses_programme_learner",
+      "returncode": 1,
+      "seconds": 1.463,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nTraceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/home/user/HetNet/softrole/diagnostics.py\", line 627, in <module>\n    main()\n  File \"/home/user/HetNet/softrole/diagnostics.py\", line 614, in main\n    result = prepare(**args)\n             ^^^^^^^^^^^^^^^\n  File \"/home/user/HetNet/softrole/diagnostics.py\", line 225, in prepare\n    saved, cfg, _, digest = load_checkpoint(checkpoint, protocol_version)\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/HetNet/softrole/diagnostics.py\", line 104, in load_checkpoint\n    raise ValueError('D1--D6 require nominal fixed 2P1A native PCP checkpoints with the team learner; '\nValueError: D1--D6 require nominal fixed 2P1A native PCP checkpoints with the team learner; composition/failure training and programme learner variants need --protocol-version 2\n",
+      "stdout_head": ""
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_diagnostics.sh",
+        "--manifest",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/manifest.json",
+        "--index",
+        "0",
+        "--output",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/dry_0",
+        "--dry-run"
+      ],
+      "name": "diagnostics_dry_run_0",
+      "returncode": 0,
+      "seconds": 1.561,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\n  \"index\": 0,\n  \"checkpoint\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/L1/l1a_decomposed_beta0/seed0/checkpoints/epoch0001.pt\",\n  \"output\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/dry_0\",\n  \"batch_mode\": \"checkpoint-probe\",\n  \"D6_policy_episodes\": 9,\n  \"training_steps_persisted\": 0\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_diagnostics.sh",
+        "--manifest",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/manifest.json",
+        "--index",
+        "0",
+        "--output",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/task_0"
+      ],
+      "name": "diagnostics_execute_0",
+      "returncode": 0,
+      "seconds": 12.236,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\n  \"index\": 0,\n  \"checkpoint\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/L1/l1a_decomposed_beta0/seed0/checkpoints/epoch0001.pt\",\n  \"output\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/task_0\",\n  \"batch_mode\": \"checkpoint-probe\",\n  \"D6_policy_episodes\": 9,\n  \"training_steps_persisted\": 0\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_diagnostics.sh",
+        "--manifest",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/manifest.json",
+        "--index",
+        "1",
+        "--output",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/dry_1",
+        "--dry-run"
+      ],
+      "name": "diagnostics_dry_run_1",
+      "returncode": 0,
+      "seconds": 1.564,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\n  \"index\": 1,\n  \"checkpoint\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/BANKS/banks_failure_banked/seed0/checkpoints/epoch0001.pt\",\n  \"output\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/dry_1\",\n  \"batch_mode\": \"checkpoint-probe\",\n  \"D6_policy_episodes\": 9,\n  \"training_steps_persisted\": 0\n}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "scripts/softrole_diagnostics.sh",
+        "--manifest",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/manifest.json",
+        "--index",
+        "1",
+        "--output",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/task_1"
+      ],
+      "name": "diagnostics_execute_1",
+      "returncode": 0,
+      "seconds": 15.218,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\n  \"index\": 1,\n  \"checkpoint\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/BANKS/banks_failure_banked/seed0/checkpoints/epoch0001.pt\",\n  \"output\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/diagnostics/task_1\",\n  \"batch_mode\": \"checkpoint-probe\",\n  \"D6_policy_episodes\": 9,\n  \"training_steps_persisted\": 0\n}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme_evaluation",
+        "prepare",
+        "--manifest",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/manifest.json",
+        "--run-root",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme",
+        "--output",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation",
+        "--episodes",
+        "2",
+        "--target-steps",
+        "1",
+        "--bounded",
+        "--entries",
+        "0",
+        "3",
+        "9",
+        "21",
+        "30",
+        "33",
+        "36",
+        "48",
+        "60"
+      ],
+      "name": "evaluation_prepare_bounded",
+      "returncode": 0,
+      "seconds": 1.776,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"tasks\": 9, \"jobs\": 186, \"output\": \"/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation\"}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme_evaluation",
+        "prepare",
+        "--manifest",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/manifest.json",
+        "--run-root",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme",
+        "--output",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation_research"
+      ],
+      "name": "evaluation_prepare_refuses_research",
+      "returncode": 2,
+      "seconds": 1.511,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\nusage: programme_evaluation.py [-h] {prepare,run,summarize} ...\nprogramme_evaluation.py: error: A bounded manifest cannot enter the research evaluation\n",
+      "stdout_head": ""
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme_evaluation",
+        "run",
+        "--tasks",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation/tasks.json",
+        "--index",
+        "0"
+      ],
+      "name": "evaluation_task_0",
+      "returncode": 0,
+      "seconds": 15.391,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"task\": 0, \"arm\": \"c1_real64\", \"seed\": 0, \"jobs\": 18, \"executed\": 18, \"skipped_existing\": 0, \"dry_run\": false}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme_evaluation",
+        "run",
+        "--tasks",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation/tasks.json",
+        "--index",
+        "1"
+      ],
+      "name": "evaluation_task_1",
+      "returncode": 0,
+      "seconds": 15.94,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"task\": 1, \"arm\": \"c1_real_noisy64\", \"seed\": 0, \"jobs\": 18, \"executed\": 18, \"skipped_existing\": 0, \"dry_run\": false}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme_evaluation",
+        "run",
+        "--tasks",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation/tasks.json",
+        "--index",
+        "2"
+      ],
+      "name": "evaluation_task_2",
+      "returncode": 0,
+      "seconds": 15.37,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"task\": 2, \"arm\": \"c1_binary_deterministic64\", \"seed\": 0, \"jobs\": 18, \"executed\": 18, \"skipped_existing\": 0, \"dry_run\": false}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme_evaluation",
+        "run",
+        "--tasks",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation/tasks.json",
+        "--index",
+        "3"
+      ],
+      "name": "evaluation_task_3",
+      "returncode": 0,
+      "seconds": 15.181,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"task\": 3, \"arm\": \"a1_composition_corrected_null\", \"seed\": 0, \"jobs\": 18, \"executed\": 18, \"skipped_existing\": 0, \"dry_run\": false}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme_evaluation",
+        "run",
+        "--tasks",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation/tasks.json",
+        "--index",
+        "4"
+      ],
+      "name": "evaluation_task_4",
+      "returncode": 0,
+      "seconds": 15.759,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"task\": 4, \"arm\": \"l1a_decomposed_beta0\", \"seed\": 0, \"jobs\": 18, \"executed\": 18, \"skipped_existing\": 0, \"dry_run\": false}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme_evaluation",
+        "run",
+        "--tasks",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation/tasks.json",
+        "--index",
+        "5"
+      ],
+      "name": "evaluation_task_5",
+      "returncode": 0,
+      "seconds": 15.262,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"task\": 5, \"arm\": \"o1_physical_only\", \"seed\": 0, \"jobs\": 18, \"executed\": 18, \"skipped_existing\": 0, \"dry_run\": false}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme_evaluation",
+        "run",
+        "--tasks",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation/tasks.json",
+        "--index",
+        "6"
+      ],
+      "name": "evaluation_task_6",
+      "returncode": 0,
+      "seconds": 30.137,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"task\": 6, \"arm\": \"banks_composition_banked\", \"seed\": 0, \"jobs\": 30, \"executed\": 30, \"skipped_existing\": 0, \"dry_run\": false}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme_evaluation",
+        "run",
+        "--tasks",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation/tasks.json",
+        "--index",
+        "7"
+      ],
+      "name": "evaluation_task_7",
+      "returncode": 0,
+      "seconds": 30.564,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"task\": 7, \"arm\": \"banks_failure_banked\", \"seed\": 0, \"jobs\": 30, \"executed\": 30, \"skipped_existing\": 0, \"dry_run\": false}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme_evaluation",
+        "run",
+        "--tasks",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation/tasks.json",
+        "--index",
+        "8"
+      ],
+      "name": "evaluation_task_8",
+      "returncode": 0,
+      "seconds": 15.613,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"task\": 8, \"arm\": \"l1c_failure_mean_agent\", \"seed\": 0, \"jobs\": 18, \"executed\": 18, \"skipped_existing\": 0, \"dry_run\": false}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme_evaluation",
+        "run",
+        "--tasks",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation/tasks.json",
+        "--index",
+        "0"
+      ],
+      "name": "evaluation_task_rerun_skips",
+      "returncode": 0,
+      "seconds": 1.973,
+      "stderr_tail": "Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.\nPlease upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.\nUsers of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.\nSee the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.\n",
+      "stdout_head": "{\"task\": 0, \"arm\": \"c1_real64\", \"seed\": 0, \"jobs\": 18, \"executed\": 0, \"skipped_existing\": 18, \"dry_run\": false}\n"
+    },
+    {
+      "command": [
+        "/home/user/HetNet/.venv/bin/python",
+        "-m",
+        "softrole.programme_evaluation",
+        "summarize",
+        "--evaluation",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation",
+        "--output",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/summary",
+        "--bootstrap-samples",
+        "200"
+      ],
+      "name": "evaluation_summarize",
+      "returncode": 0,
+      "seconds": 2.507,
+      "stderr_tail": "",
+      "stdout_head": "{\"compositions\": [\"3_2\", \"4_1\", \"4_2\"], \"missing_reports\": 0}\n"
+    },
+    {
+      "command": [
+        "bash",
+        "-n",
+        "/home/user/HetNet/runs/capcom_programme_validation_20261012/evaluation/evaluate.sbatch"
+      ],
+      "name": "evaluate_sbatch_syntax",
+      "returncode": 0,
+      "seconds": 0.003,
+      "stderr_tail": "",
+      "stdout_head": ""
+    }
+  ],
+  "date": "2026-10-12",
+  "diagnostics": [
+    {
+      "batch_mode": "checkpoint-probe",
+      "checkpoint": "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/L1/l1a_decomposed_beta0/seed0/checkpoints/epoch0001.pt",
+      "d1_clip_active": true,
+      "d1_norm": 418.35314719476384,
+      "d3_learned": true,
+      "d4_production_variant": "learned_gae_beta_0",
+      "d4_variants": [
+        "allocated_gae_beta_0",
+        "allocated_gae_beta_0.5",
+        "allocated_gae_beta_1",
+        "learned_gae_beta_0",
+        "learned_gae_beta_0.5",
+        "learned_gae_beta_1",
+        "mc_beta_0",
+        "mc_beta_0.5",
+        "mc_beta_1",
+        "team_gae"
+      ],
+      "d5_status": "not_applicable_real_channel",
+      "d6_strata": 9,
+      "d6_training_support": {
+        "compositions_in_training": [],
+        "step_one_sensor_loss_in_training": false,
+        "training_study": "fixed"
+      },
+      "episode_compositions": {
+        "2,1": 2
+      },
+      "episodes": 2,
+      "index": 0,
+      "learner": {
+        "actor_capabilities": "explicit",
+        "communication": "real",
+        "credit_beta": 0.0,
+        "critic_mode": "decomposed",
+        "null_degree_correction": false,
+        "objective": "team"
+      },
+      "protocol_version": 2,
+      "report_sha256": "824bbb1c1ed78d959a1f8e609942e073628879167e686a95577e114c67d5cdad",
+      "training_study": "fixed"
+    },
+    {
+      "batch_mode": "checkpoint-probe",
+      "checkpoint": "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/BANKS/banks_failure_banked/seed0/checkpoints/epoch0001.pt",
+      "d1_clip_active": true,
+      "d1_norm": 892.8079000974457,
+      "d3_learned": false,
+      "d4_production_variant": "team_gae",
+      "d4_variants": [
+        "allocated_gae_beta_0",
+        "allocated_gae_beta_0.5",
+        "allocated_gae_beta_1",
+        "mc_beta_0",
+        "mc_beta_0.5",
+        "mc_beta_1",
+        "team_gae"
+      ],
+      "d5_status": "not_applicable_real_channel",
+      "d6_strata": 9,
+      "d6_training_support": {
+        "compositions_in_training": [
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            1
+          ]
+        ],
+        "step_one_sensor_loss_in_training": true,
+        "training_study": "failure"
+      },
+      "episode_compositions": {
+        "2,1": 2
+      },
+      "episodes": 2,
+      "index": 1,
+      "learner": {
+        "actor_capabilities": "explicit",
+        "communication": "real",
+        "credit_beta": 1.0,
+        "critic_mode": "team",
+        "null_degree_correction": false,
+        "objective": "team"
+      },
+      "protocol_version": 2,
+      "report_sha256": "c70190431790f56fa54f42de69ca2ceb424f1ef76f58fb9b1f06cfe27769df69",
+      "training_study": "failure"
+    }
+  ],
+  "evaluation": {
+    "arms_3_2": [
+      "a1_composition_corrected_null",
+      "banks_composition_banked",
+      "banks_failure_banked",
+      "c1_binary_deterministic64",
+      "c1_real64",
+      "c1_real_noisy64",
+      "l1a_decomposed_beta0",
+      "l1c_failure_mean_agent",
+      "o1_physical_only"
+    ],
+    "compositions": [
+      "3_2",
+      "4_1",
+      "4_2"
+    ],
+    "contrasts_3_2": {
+      "absolute": 12,
+      "difference_in_differences": 2,
+      "failure_minus_sham": 4
+    },
+    "did_3_2": 13,
+    "episodes": 372,
+    "evaluate_sbatch_sha256": "518da40a4d02503e00cd1b44ad331b1b5bac4944144fa08ce0147fe6e1c6c34f",
+    "evaluation_manifest_sha256": "f37e2dcea3f3b0599d424deb10b0c5642c0412d71310b520b91cd5b2eb26eb55",
+    "jobs": 186,
+    "overview_sha256": "b50e9bfd73ac216ff0375fb48cd8deddbc11e05cb2d15d82ca52ea1ad39bb4fd",
+    "paired_3_2": 22,
+    "reports": 186,
+    "strata_3_2": 62,
+    "tasks": 9
+  },
+  "git_status": " M .gitignore\n M README.md\n M softrole/RESEARCH.md\n M softrole/__main__.py\n M softrole/config.py\n M softrole/diagnostic_estimators.py\n M softrole/diagnostic_surrogate.py\n M softrole/diagnostics.py\n M softrole/learning.py\n M softrole/model.py\n M softrole/report.py\n M softrole/rollout.py\n M softrole/train.py\n?? analysis/capcom_programme_2026-10-12/\n?? scripts/softrole_programme.sh\n?? slurm/softrole_programme.sbatch\n?? softrole/programme.py\n?? softrole/programme_evaluation.py\n?? tests/fixtures/softrole_model_pre_programme.py\n?? tests/test_softrole_a1_null_degree.py\n?? tests/test_softrole_c1_channels.py\n?? tests/test_softrole_diagnostics_v2.py\n?? tests/test_softrole_l1a_credit.py\n?? tests/test_softrole_l1b_decomposed_critic.py\n?? tests/test_softrole_l1c_objective.py\n?? tests/test_softrole_o1_actor_capabilities.py\n?? tests/test_softrole_programme.py\n?? tests/test_softrole_programme_defaults.py\n?? tests/test_softrole_programme_evaluation.py\n?? tests/test_softrole_programme_launcher.py\n?? tests/test_softrole_report_contrasts.py\n",
+  "principal_hashes": {
+    "diagnostics/manifest.json": "a915b0899439d85c1920668594878914f43f5f0d8819ba935aa674ddc279b694",
+    "lr_selection_synthetic.json": "b358fb96dffdc3ae6e8a066d2f88a7414917745093f1566ec8fb7cd3d24ba065",
+    "manifest.json": "f0003da955b92e16c4221a2cbc541632d89dec8400427f0348d0fe6678a21070"
+  },
+  "programme_runs": [
+    {
+      "arm": "c1_real64",
+      "bounded_check": true,
+      "checkpoint_sha256": "3407d8ce9542d0a841c516cdc967b10564d52aafa81c75b3a5f6e692fec358fe",
+      "diagnostics_rows": 1,
+      "episodes": 2,
+      "event_exposed_episodes": 0,
+      "index": 0,
+      "learner": {
+        "actor_capabilities": "explicit",
+        "communication": "real",
+        "credit_beta": 1.0,
+        "critic_mode": "team",
+        "model": "shared",
+        "null_degree_correction": false,
+        "objective": "team"
+      },
+      "run": "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/C1/c1_real64/seed0",
+      "seed": 0,
+      "source_sha256": "2bec61b22ff4bd9d733bfbe591e14979f37b9fe5a17c1e693f3250ed3d2afba6",
+      "steps": 160,
+      "success_rate": 0.0,
+      "updates": 1
+    },
+    {
+      "arm": "c1_real_noisy64",
+      "bounded_check": true,
+      "checkpoint_sha256": "a8499215000d586b87e5559ca0d097f7ccfe35c7752fce784f3ba95d12f2aef1",
+      "diagnostics_rows": 1,
+      "episodes": 2,
+      "event_exposed_episodes": 0,
+      "index": 3,
+      "learner": {
+        "actor_capabilities": "explicit",
+        "communication": "real_noisy",
+        "credit_beta": 1.0,
+        "critic_mode": "team",
+        "model": "shared",
+        "null_degree_correction": false,
+        "objective": "team"
+      },
+      "run": "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/C1/c1_real_noisy64/seed0",
+      "seed": 0,
+      "source_sha256": "2bec61b22ff4bd9d733bfbe591e14979f37b9fe5a17c1e693f3250ed3d2afba6",
+      "steps": 104,
+      "success_rate": 0.5,
+      "updates": 1
+    },
+    {
+      "arm": "c1_binary_deterministic64",
+      "bounded_check": true,
+      "checkpoint_sha256": "c643a338cbb6177f5d0dcd0364076aedd343de0be7bfe0efb02cdd61a556ca8b",
+      "diagnostics_rows": 1,
+      "episodes": 2,
+      "event_exposed_episodes": 0,
+      "index": 9,
+      "learner": {
+        "actor_capabilities": "explicit",
+        "communication": "binary_deterministic",
+        "credit_beta": 1.0,
+        "critic_mode": "team",
+        "model": "shared",
+        "null_degree_correction": false,
+        "objective": "team"
+      },
+      "run": "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/C1/c1_binary_deterministic64/seed0",
+      "seed": 0,
+      "source_sha256": "2bec61b22ff4bd9d733bfbe591e14979f37b9fe5a17c1e693f3250ed3d2afba6",
+      "steps": 120,
+      "success_rate": 0.5,
+      "updates": 1
+    },
+    {
+      "arm": "a1_composition_corrected_null",
+      "bounded_check": true,
+      "checkpoint_sha256": "c203ade59ecea0d45daf581232948c21bb0a4f9ee53d26d3d1f2881bc51f1b0a",
+      "diagnostics_rows": 1,
+      "episodes": 2,
+      "event_exposed_episodes": 0,
+      "index": 21,
+      "learner": {
+        "actor_capabilities": "explicit",
+        "communication": "real",
+        "credit_beta": 1.0,
+        "critic_mode": "team",
+        "model": "shared",
+        "null_degree_correction": true,
+        "objective": "team"
+      },
+      "run": "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/A1/a1_composition_corrected_null/seed0",
+      "seed": 0,
+      "source_sha256": "2bec61b22ff4bd9d733bfbe591e14979f37b9fe5a17c1e693f3250ed3d2afba6",
+      "steps": 145,
+      "success_rate": 0.5,
+      "updates": 1
+    },
+    {
+      "arm": "l1a_decomposed_beta0",
+      "bounded_check": true,
+      "checkpoint_sha256": "8db55b2e1fcdc0a74b9cb817b1e36c89040b80832888fa4dafc8dcde2fe7b3b5",
+      "diagnostics_rows": 1,
+      "episodes": 2,
+      "event_exposed_episodes": 0,
+      "index": 30,
+      "learner": {
+        "actor_capabilities": "explicit",
+        "communication": "real",
+        "credit_beta": 0.0,
+        "critic_mode": "decomposed",
+        "model": "shared",
+        "null_degree_correction": false,
+        "objective": "team"
+      },
+      "run": "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/L1/l1a_decomposed_beta0/seed0",
+      "seed": 0,
+      "source_sha256": "2bec61b22ff4bd9d733bfbe591e14979f37b9fe5a17c1e693f3250ed3d2afba6",
+      "steps": 160,
+      "success_rate": 0.0,
+      "updates": 1
+    },
+    {
+      "arm": "o1_physical_only",
+      "bounded_check": true,
+      "checkpoint_sha256": "d94dc708a24e241c167d4c923a4f412cde89a1a748adf7a3f622897e328f4062",
+      "diagnostics_rows": 1,
+      "episodes": 2,
+      "event_exposed_episodes": 0,
+      "index": 33,
+      "learner": {
+        "actor_capabilities": "physical_only",
+        "communication": "real",
+        "credit_beta": 1.0,
+        "critic_mode": "team",
+        "model": "shared",
+        "null_degree_correction": false,
+        "objective": "team"
+      },
+      "run": "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/O1/o1_physical_only/seed0",
+      "seed": 0,
+      "source_sha256": "2bec61b22ff4bd9d733bfbe591e14979f37b9fe5a17c1e693f3250ed3d2afba6",
+      "steps": 137,
+      "success_rate": 0.5,
+      "updates": 1
+    },
+    {
+      "arm": "banks_composition_banked",
+      "bounded_check": true,
+      "checkpoint_sha256": "7aa212374748cf91a38baab2d1d1ad5ed375440c413c58297e5b7aaca4ad5328",
+      "diagnostics_rows": 1,
+      "episodes": 2,
+      "event_exposed_episodes": 0,
+      "index": 36,
+      "learner": {
+        "actor_capabilities": "explicit",
+        "communication": "real",
+        "credit_beta": 1.0,
+        "critic_mode": "team",
+        "model": "banked",
+        "null_degree_correction": false,
+        "objective": "team"
+      },
+      "run": "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/BANKS/banks_composition_banked/seed0",
+      "seed": 0,
+      "source_sha256": "2bec61b22ff4bd9d733bfbe591e14979f37b9fe5a17c1e693f3250ed3d2afba6",
+      "steps": 145,
+      "success_rate": 0.5,
+      "updates": 1
+    },
+    {
+      "arm": "banks_failure_banked",
+      "bounded_check": true,
+      "checkpoint_sha256": "5bd5e7a571a8c1149e81b2d0958b8444bbee7ba8ccc47730ea43ee9f268a4c6d",
+      "diagnostics_rows": 1,
+      "episodes": 2,
+      "event_exposed_episodes": 1,
+      "index": 48,
+      "learner": {
+        "actor_capabilities": "explicit",
+        "communication": "real",
+        "credit_beta": 1.0,
+        "critic_mode": "team",
+        "model": "banked",
+        "null_degree_correction": false,
+        "objective": "team"
+      },
+      "run": "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/BANKS/banks_failure_banked/seed0",
+      "seed": 0,
+      "source_sha256": "2bec61b22ff4bd9d733bfbe591e14979f37b9fe5a17c1e693f3250ed3d2afba6",
+      "steps": 145,
+      "success_rate": 0.5,
+      "updates": 1
+    },
+    {
+      "arm": "l1c_failure_mean_agent",
+      "bounded_check": true,
+      "checkpoint_sha256": "03bf92d2479d23597e890fcc86b34b9542e930d07fd153da7d65703af5375fe5",
+      "diagnostics_rows": 1,
+      "episodes": 2,
+      "event_exposed_episodes": 1,
+      "index": 60,
+      "learner": {
+        "actor_capabilities": "explicit",
+        "communication": "real",
+        "credit_beta": 1.0,
+        "critic_mode": "team",
+        "model": "shared",
+        "null_degree_correction": false,
+        "objective": "mean_agent"
+      },
+      "run": "/home/user/HetNet/runs/capcom_programme_validation_20261012/programme/L1C/l1c_failure_mean_agent/seed0",
+      "seed": 0,
+      "source_sha256": "2bec61b22ff4bd9d733bfbe591e14979f37b9fe5a17c1e693f3250ed3d2afba6",
+      "steps": 145,
+      "success_rate": 0.5,
+      "updates": 1
+    }
+  ],
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "root": "/home/user/HetNet/runs/capcom_programme_validation_20261012",
+  "scope": "Bounded engineering executions with reduced budgets; synthetic S1 ledgers exercise only the selection rule; no research outcome is produced.",
+  "totals": {
+    "commands": 51,
+    "evaluation_episodes": 372,
+    "programme_training_episodes": 18,
+    "training_steps": 1741
+  }
+}

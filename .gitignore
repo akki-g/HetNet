@@ -35,7 +35,7 @@ logs/
 # Keep the self-contained SoftRole guide; other local docs stay excluded.
 
 docs/
-analysis/
+analysis/*
 output/
 
 *.pptx
@@ -46,3 +46,7 @@ stokes_runs/
 
 # Paper reconciliation, numerical backend validation and source audit evidence.
 !publication_reconstruction/FIDELITY.md
+
+# CapCom proposal programme record (12 October 2026); large run outputs stay under runs/.
+!analysis/capcom_programme_2026-10-12/
+!analysis/capcom_programme_2026-10-12/**
