@@ -6,6 +6,7 @@
 #SBATCH --job-name=capcom-diagnostics
 #SBATCH --account=cenyioha
 #SBATCH --partition=normal
+#SBATCH --constraint=sapphirerapids
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1

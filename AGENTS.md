@@ -3066,3 +3066,31 @@ the legacy `prepare-evaluation` route for paper-v1 or pool unmatched old FC runs
   cluster submission, dependency change, pre-existing input/checkpoint mutation,
   commit or push was performed. The bounded executions establish implementation
   behavior only, not adaptation, superiority or statistical significance.
+
+### 2026-10-11 — Sapphire Rapids placement for D1–D6 diagnostics
+
+- Added `#SBATCH --constraint=sapphirerapids` to
+  `slurm/softrole_diagnostics.sbatch`, matching the exact selector in the HetNet
+  reproduction backend benchmark and the recorded reproduction launch protocol.
+  Retained its existing `srun --cpu-bind=cores` binding and resource requests.
+- Files touched: `slurm/softrole_diagnostics.sbatch` (node constraint),
+  `README.md` (documented placement), and `AGENTS.md` (this additive record).
+- Validation: all 30 existing diagnostic-launcher tests passed in 2.00s;
+  `bash -n` and `git diff --check` passed. An independent read-only check confirmed
+  the matching selector and allocation-level placement. No scheduler job was
+  submitted, and actual node placement has not been observed for this launcher.
+
+### 2026-10-11 — Sapphire Rapids placement for S1 learning-rate runs
+
+- Updated `slurm/softrole_lr_pcp.sbatch` with
+  `#SBATCH --constraint=sapphirerapids`, using the exact selector in
+  `slurm/publication_backend_benchmark.sbatch`. All six S1 training/diagnostic
+  jobs request this CPU family and retain `srun --cpu-bind=cores`, four CPUs,
+  one thread per numerical library, 16 GB, 48 hours and concurrency three.
+- Files touched: `slurm/softrole_lr_pcp.sbatch` (placement constraint),
+  `README.md` (S1 placement documentation), and `AGENTS.md` (this record).
+  Preserved the pre-existing staged D1–D6 placement/documentation changes.
+- Validation: all **23 existing S1 launcher tests passed in 2.00s**; shell syntax
+  and `git diff --check` passed. Read-only comparison confirmed the exact HetNet
+  constraint and core binding. No training, scheduler submission, dependency
+  change, commit or push; actual cluster placement was not exercised locally.

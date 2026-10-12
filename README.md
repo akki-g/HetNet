@@ -343,7 +343,9 @@ SOFTROLE_LR_PCP_RUN_ROOT=runs/lr_pcp_smoke \
     --diagnostics-every 1
 ```
 
-Each job requests four CPUs, 16 GB and 48 hours; at most three run concurrently.
+Each job requests Sapphire Rapids nodes (`--constraint=sapphirerapids`), matching
+the HetNet backend benchmark selector, with four CPUs, 16 GB and 48 hours;
+at most three run concurrently. Core binding remains `srun --cpu-bind=cores`.
 The wall-time request follows existing launchers and does not guarantee completion.
 Outputs use `runs/softrole_lr_pcp_JOBID/pcp_shared/real/adam_lr{3e-4,1e-3}/seedN`;
 set `SOFTROLE_LR_PCP_RUN_ROOT` for a custom fresh root. Existing paths, resume,
@@ -435,7 +437,9 @@ sbatch --array=0-1%3 slurm/softrole_diagnostics.sbatch
 
 For six checkpoints use `--array=0-5%3`. Index order is exactly the manifest's
 checkpoint order; there is no guessed channel/seed/path mapping. The script's
-safe default is only index 0. Each task requests **one CPU, 16 GB, 12 hours**;
+safe default is only index 0. Each task requests **one CPU, 16 GB, 12 hours**
+on **Sapphire Rapids** nodes (`--constraint=sapphirerapids`), matching the
+HetNet reproduction benchmark's node selection, with `srun --cpu-bind=cores`;
 these are unbenchmarked limits. Existing task directories cannot be overwritten.
 A failed attempt needs a fresh output root. No submission is performed by the
 preparation command or the wrapper. Stokes account/partition/module directives
