@@ -38,6 +38,8 @@ def parser():
                             "binary_deterministic: 1[u>0] with the sigmoid'(u) surrogate and no noise")
     train.add_argument("--independent-heads", action="store_true", default=None,
                        help="each attention head broadcasts its own msg-dim payload")
+    train.add_argument("--null-degree-correction", dest="null_degree_correction", action="store_true",
+                       default=None, help="add log(max(d,1)/2) to each receiver's null attention logit (A1)")
     # Familiar release spellings are aliases, not a second set of defaults.
     integers = {
         "num_p": ("--num-p", "--nfriendly_P"), "num_a": ("--num-a", "--nfriendly_A"),

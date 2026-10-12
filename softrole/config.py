@@ -33,6 +33,7 @@ class Config:
     comm_rounds: int = 2
     independent_heads: bool = False
     communication: str = "binary"
+    null_degree_correction: bool = False
     feedback: bool = True
     comm_range: float = -1.0
     seed: int = 0
@@ -76,7 +77,7 @@ class Config:
         # Omit default additions so original checkpoint model_config dictionaries
         # still match exactly and retain their original state-dict layout.
         for name, default in (("comm_rounds", 2), ("independent_heads", False),
-                              ("communication", "binary")):
+                              ("communication", "binary"), ("null_degree_correction", False)):
             if getattr(self, name) != default:
                 settings[name] = getattr(self, name)
         return settings
@@ -95,6 +96,8 @@ class Config:
             raise ValueError("unknown deterministic model variant")
         if self.communication not in CHANNELS:
             raise ValueError(f"communication must be one of {CHANNELS}")
+        if type(self.null_degree_correction) is not bool:
+            raise ValueError("null_degree_correction must be a boolean")
         if self.optimizer not in ("rmsprop", "adam"):
             raise ValueError("optimizer must be rmsprop or adam")
         if type(self.comm_rounds) is not int or self.comm_rounds <= 0:

@@ -4,7 +4,8 @@ The gate is deterministic.  Gaussian roles and information-rate penalties are
 deliberately absent.  Dense adjacency is indexed ``[receiver, sender]``.
 
 Opt-in variants (every default reproduces the pre-existing model exactly):
-``communication`` adds ``real_noisy`` and ``binary_deterministic`` channels.
+``communication`` adds ``real_noisy`` and ``binary_deterministic`` channels,
+``null_degree_correction`` adds ``log(max(d,1)/2)`` to the null attention logit.
 """
 
 from __future__ import annotations
@@ -120,18 +121,29 @@ class CommunicationRound(nn.Module):
     payloads use separate encoders/decoders and bit draws for each head.
     Only hidden rounds apply ReLU and concatenate heads; the final round
     averages heads without a final nonlinearity.
+
+    With ``degree_correction`` the null logit of receiver j becomes
+    nu + log(max(d_j, 1)/2) where d_j counts its permitted senders, so equal
+    scores give a roster-invariant null share; d_j = 0 keeps the exact zero
+    aggregate.  The constant -log(2) is the proposal's corrected-null
+    initialization folded into the offset: the parameter nu starts at zero
+    like the baseline and the nominal two-sender case is bitwise identical
+    to the uncorrected model at initialization.
     """
 
     def __init__(self, in_dim: int, heads: int, head_dim: int, msg_dim: int,
                  experts: int, final: bool, independent_heads: bool = False,
-                 communication: str = "binary"):
+                 communication: str = "binary", degree_correction: bool = False):
         super().__init__()
         if type(independent_heads) is not bool:
             raise ValueError("independent_heads must be boolean")
         if not isinstance(communication, str) or communication not in CHANNELS:
             raise ValueError(f"communication must be one of {CHANNELS}")
+        if type(degree_correction) is not bool:
+            raise ValueError("degree_correction must be boolean")
         self.heads, self.head_dim, self.final = heads, head_dim, final
         self.independent_heads, self.communication = independent_heads, communication
+        self.degree_correction = degree_correction
         self.self_map = AffineBank(experts, in_dim, heads * head_dim)
         if independent_heads:
             self.encoder = HeadBank(experts, heads, in_dim, msg_dim)
@@ -167,6 +179,10 @@ class CommunicationRound(nn.Module):
             scores = self.score(keys, receiver_gate).squeeze(-1)
             scores = scores.masked_fill(~adjacency.unsqueeze(-1), -torch.inf)
             null = gate @ self.null_logits
+            if self.degree_correction:
+                # log(max(d,1)/2): exactly zero for two permitted senders.
+                degree = adjacency.sum(dim=1).to(h.dtype).clamp_min(1)
+                null = null + (degree / 2).log().unsqueeze(-1)
             alpha = torch.softmax(torch.cat((scores, null.unsqueeze(1)), dim=1), dim=1)
             aggregate = (alpha[:, :-1].unsqueeze(-1) * messages).sum(dim=1)
             alpha_null = alpha[:, -1]
@@ -194,7 +210,7 @@ class SoftRoleNet(nn.Module):
                  heads: int = 4, head_dim: int = 16, msg_dim: int = 16,
                  feedback: bool = True, allow_stay: bool = True,
                  comm_rounds: int = 2, independent_heads: bool = False,
-                 communication: str = "binary"):
+                 communication: str = "binary", null_degree_correction: bool = False):
         super().__init__()
         if type(allow_stay) is not bool:
             raise ValueError("allow_stay must be boolean")
@@ -204,6 +220,8 @@ class SoftRoleNet(nn.Module):
             raise ValueError("independent_heads must be boolean")
         if not isinstance(communication, str) or communication not in CHANNELS:
             raise ValueError(f"communication must be one of {CHANNELS}")
+        if type(null_degree_correction) is not bool:
+            raise ValueError("null_degree_correction must be boolean")
         self.allow_stay = allow_stay
         if mode not in {"banked", "shared", "capability", "constant"}:
             raise ValueError(f"Unknown gate mode: {mode}")
@@ -215,6 +233,7 @@ class SoftRoleNet(nn.Module):
         self.hidden_dim, self.head_dim, self.msg_dim = hidden_dim, head_dim, msg_dim
         self.heads, self.comm_rounds = heads, comm_rounds
         self.independent_heads, self.communication = independent_heads, communication
+        self.null_degree_correction = null_degree_correction
         self.pre = nn.Linear(self.obs_dim, pre_dim)
         self.lstm = nn.LSTMCell(pre_dim + (head_dim if feedback else 0) + 6, hidden_dim)
         self.gate_network = None
@@ -229,7 +248,8 @@ class SoftRoleNet(nn.Module):
             CommunicationRound(hidden_dim if index == 0 else heads * head_dim,
                                heads, head_dim, msg_dim, self.experts,
                                final=index == comm_rounds - 1,
-                               independent_heads=independent_heads, communication=communication)
+                               independent_heads=independent_heads, communication=communication,
+                               degree_correction=null_degree_correction)
             for index in range(comm_rounds)
         ])
         self.output = nn.Linear(head_dim, 6)
