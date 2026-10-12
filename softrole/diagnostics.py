@@ -3,6 +3,13 @@
 Run ``python -m softrole.diagnostics prepare --help`` to lock inputs first.
 Historical claims require an exact next-update episode-ledger replay. A terminal
 checkpoint instead needs an explicitly selected, labelled checkpoint-probe batch.
+
+Protocol version 1 is the nominal fixed-2P1A, team-learner protocol and is
+preserved unchanged. Version 2 admits composition- and failure-trained
+checkpoints and the programme learner variants: it builds D1 from the shared
+production loss-term builder, records each episode's actual composition, adds
+learned per-agent D3/D4 records for decomposed critics (the V/N allocation
+stays labelled separately) and applies D5 only to stochastic Binary bits.
 """
 import argparse
 import ast
@@ -28,7 +35,7 @@ from hetnet_ext.signatures import model_signature
 from softrole import CHECKPOINT_VERSION
 from softrole.config import Config
 from softrole.env import make_env
-from softrole.learning import compute_episode_loss, team_gae
+from softrole.learning import compute_episode_loss, episode_loss_terms, team_gae
 from softrole.lr_diagnostics import clone, policy_statistics
 from softrole.model import SoftRoleNet
 from softrole.optimizers import make_optimizer, validate_optimizer_resume
@@ -38,6 +45,9 @@ from softrole.train import apply_gradients, source_snapshot, write_json
 
 ROOT = Path(__file__).resolve().parents[1]
 COMPOSITIONS = ((1, 2), (2, 2), (3, 1))
+PROTOCOL_VERSIONS = (1, 2)
+LEARNER_FIELDS = ('communication', 'null_degree_correction', 'critic_mode', 'credit_beta',
+                  'objective', 'actor_capabilities')
 # Strict numerical-source guard; diagnostic additions need not match old archives.
 CORE = tuple('softrole/' + name + '.py' for name in
              ('config', 'env', 'model', 'learning', 'optimizers', 'rollout', 'scenarios')) + (
@@ -56,6 +66,22 @@ def read_json(path):
     return json.loads(Path(path).read_text())
 
 
+def learner_identity(cfg):
+    return {name: getattr(cfg, name) for name in LEARNER_FIELDS}
+
+
+def training_study(cfg):
+    """fixed: nominal 2P1A; failure: scheduled sensor loss; composition: mixed rosters."""
+    if cfg.failure_prob:
+        return 'failure'
+    return 'fixed' if cfg.training_compositions == ((2, 1),) else 'composition'
+
+
+def version_one_eligible(cfg):
+    return (training_study(cfg) == 'fixed' and cfg.critic_mode == 'team'
+            and cfg.credit_beta == 1 and cfg.objective == 'team')
+
+
 def positive(value):
     value = int(value)
     if value < 1:
@@ -63,16 +89,20 @@ def positive(value):
     return value
 
 
-def load_checkpoint(path):
+def load_checkpoint(path, protocol_version=1):
+    if protocol_version not in PROTOCOL_VERSIONS:
+        raise ValueError('Unsupported diagnostic protocol version')
     path = Path(path).resolve()
     data = path.read_bytes()
     saved = torch.load(io.BytesIO(data), map_location='cpu', weights_only=False)
     if saved.get('format_version') != CHECKPOINT_VERSION:
         raise ValueError('Unsupported checkpoint format')
     cfg = Config(**saved['config'])
-    if (cfg.task != 'pcp' or cfg.env_version != 'corrected-observation-v1'
-            or cfg.failure_prob or cfg.training_compositions != ((2, 1),)):
-        raise ValueError('D1--D6 require nominal fixed 2P1A native PCP checkpoints')
+    if cfg.task != 'pcp' or cfg.env_version != 'corrected-observation-v1':
+        raise ValueError('D1--D6 require native PCP checkpoints')
+    if protocol_version == 1 and not version_one_eligible(cfg):
+        raise ValueError('D1--D6 require nominal fixed 2P1A native PCP checkpoints with the team learner; '
+                         'composition/failure training and programme learner variants need --protocol-version 2')
     for composition in COMPOSITIONS:
         cfg.validate_composition(composition)
     if cfg.max_steps < 2:
@@ -169,8 +199,11 @@ def logged_batch(run, update):
 
 
 def prepare(checkpoints, output, checkpoint_rule, batch_mode='logged-next-update',
-            probe_episodes=100, seed=2711, d5_instances=8, d5_bits=3, d5_samples=256):
+            probe_episodes=100, seed=2711, d5_instances=8, d5_bits=3, d5_samples=256,
+            protocol_version=1):
     torch.set_num_threads(1)
+    if protocol_version not in PROTOCOL_VERSIONS:
+        raise ValueError('Unsupported diagnostic protocol version')
     if not checkpoint_rule.strip():
         raise ValueError('Declare the checkpoint selection rule before outcomes')
     if batch_mode not in ('logged-next-update', 'checkpoint-probe'):
@@ -189,7 +222,7 @@ def prepare(checkpoints, output, checkpoint_rule, batch_mode='logged-next-update
     seen = set()
     for checkpoint in checkpoints:
         checkpoint = Path(checkpoint).resolve()
-        saved, cfg, _, digest = load_checkpoint(checkpoint)
+        saved, cfg, _, digest = load_checkpoint(checkpoint, protocol_version)
         if digest in seen:
             raise ValueError('Duplicate checkpoint')
         seen.add(digest)
@@ -202,13 +235,18 @@ def prepare(checkpoints, output, checkpoint_rule, batch_mode='logged-next-update
             logged_batch(run, saved['updates'] + 1)
             for name in ('episodes.jsonl', 'updates.jsonl'):
                 inputs[str(run / name)] = sha(run / name)
-        entries.append({'checkpoint': str(checkpoint), 'inputs': inputs,
-                        'training_seed': cfg.seed, 'communication': cfg.communication,
-                        'progress': {key: saved[key] for key in ('updates', 'total_steps', 'total_episodes')},
-                        'model': cfg.model, 'source_sha256': saved['source_sha256']})
+        entry = {'checkpoint': str(checkpoint), 'inputs': inputs,
+                 'training_seed': cfg.seed, 'communication': cfg.communication,
+                 'progress': {key: saved[key] for key in ('updates', 'total_steps', 'total_episodes')},
+                 'model': cfg.model, 'source_sha256': saved['source_sha256']}
+        if protocol_version >= 2:
+            entry.update(learner=learner_identity(cfg), training_study=training_study(cfg),
+                         training_compositions=[list(c) for c in cfg.training_compositions],
+                         failure_prob=cfg.failure_prob, failure_window=list(cfg.failure_window))
+        entries.append(entry)
     if not entries:
         raise ValueError('Select at least one checkpoint')
-    manifest = {'version': 1, 'checkpoint_rule': checkpoint_rule, 'batch_mode': batch_mode,
+    manifest = {'version': protocol_version, 'checkpoint_rule': checkpoint_rule, 'batch_mode': batch_mode,
                 'probe_episodes_per_composition': probe_episodes, 'panel_seed': seed,
                 'd5_instances': d5_instances, 'd5_bits': d5_bits, 'd5_samples': d5_samples,
                 'compositions': [list(c) for c in COMPOSITIONS], 'event_step': 1,
@@ -288,14 +326,15 @@ def policy_replay(model, replays):
 
 def batch_diagnostics(saved, cfg, model, manifest, run):
     from softrole.diagnostic_estimators import (actor_episode_gradients, GradientMoments,
-        critic_episode_diagnostics, summarize_critic_diagnostics)
+        agent_critic_episode_diagnostics, critic_episode_diagnostics,
+        summarize_agent_critic_diagnostics, summarize_critic_diagnostics)
     from softrole.diagnostic_surrogate import audit_surrogate
     logged, logged_update = (logged_batch(run, saved['updates'] + 1)
                              if manifest['batch_mode'] == 'logged-next-update' else (None, None))
     total_actor = torch.zeros(sum(p.numel() for p in model.parameters()), dtype=torch.float64)
     total_value = torch.zeros_like(total_actor)
     moments, critic, replays, records, audits = GradientMoments(), [], [], [], []
-    checks = []
+    learned_critic, checks = [], []
     batches = []
     for collector in range(cfg.nprocesses):
         seed = int(np.random.SeedSequence([cfg.seed, saved['updates'], collector, 2026]).generate_state(1)[0])
@@ -310,17 +349,28 @@ def batch_diagnostics(saved, cfg, model, manifest, run):
                 raise ValueError('Exact archived episode replay failed; no historical D1/D2 claim is valid')
             records.append(record)
             values = torch.stack(episode.values)
-            advantages, targets = team_gae(episode.rewards, values, cfg.gamma, cfg.gae_lambda)
-            actor = -cfg.actor_coeff * (log_probs.sum(-1) * advantages).sum()
-            value = cfg.value_coeff * (values - targets).square().mean()
+            # The production loss-term builder gives the exact actor/value split
+            # for every learner variant (team or decomposed critic, credit mixing,
+            # mean-agent scale); the total below is the production episode loss.
+            terms = episode_loss_terms(episode, cfg)
+            scale = terms['scale']
+            actor = scale * cfg.actor_coeff * terms['policy']
+            value = scale * cfg.value_coeff * terms['value']
             total_actor += flat_grad(actor, model, retain_graph=True)
             total_value += flat_grad(value, model, retain_graph=True)
-            estimators = actor_episode_gradients(log_probs, values, rewards, model, cfg, retain_graph=True)
+            agent_values = torch.stack(episode.agent_values).detach() if episode.agent_values else None
+            estimators = actor_episode_gradients(log_probs, values, rewards, model, cfg, retain_graph=True,
+                                                 agent_values=agent_values, scale=scale)
             moments.add(estimators['gradients'])
             checks.append(estimators['checks'])
-            critic.append({'composition': list(cfg.training_compositions[0]), 'steps': len(steps),
+            composition = list(episode.metrics['composition'])
+            critic.append({'composition': composition, 'steps': len(steps),
                            'diagnostics': critic_episode_diagnostics(values, rewards,
                                       gamma=cfg.gamma, gae_lambda=cfg.gae_lambda)})
+            if agent_values is not None:
+                learned_critic.append({'composition': composition, 'steps': len(steps),
+                                       'diagnostics': agent_critic_episode_diagnostics(
+                                           agent_values, rewards, gamma=cfg.gamma, gae_lambda=cfg.gae_lambda)})
             loss, _ = compute_episode_loss(episode, cfg)
             grad = torch.autograd.grad(loss, tuple(model.parameters()), allow_unused=True)
             for accumulated, fresh in zip(gradients, grad):
@@ -328,11 +378,16 @@ def batch_diagnostics(saved, cfg, model, manifest, run):
                     accumulated.add_(fresh.detach())
             if cfg.communication == 'binary' and len(audits) < manifest['d5_instances']:
                 # Predetermined earliest eligible episode/step, not selected on the cosine.
+                # Only stochastic Binary bits have a score function; the production
+                # per-agent actor weights at step 0 (team advantage, or the mixed
+                # decomposed advantage) and the episode scale define the objective.
                 step = steps[0]
                 obs, kappa, memory, adjacency = step['args']
+                weights = terms['actor_weights'][0].detach()
+                step_advantages = (weights.expand(len(kappa)) if weights.ndim == 0 else weights) * (scale * cfg.actor_coeff)
                 audits.append(audit_surrogate(model, obs=obs, kappa=kappa, memory=memory,
                     adjacency=adjacency, remaining=step['kwargs']['remaining'], noise=step['kwargs']['noise'],
-                    actions=step['actions'], advantages=advantages[0].expand(len(kappa)) * cfg.actor_coeff,
+                    actions=step['actions'], advantages=step_advantages,
                     n_bits=manifest['d5_bits'], mc_samples=manifest['d5_samples'],
                     seed=manifest['panel_seed'] + len(audits)))
             replays.append(steps)
@@ -364,8 +419,17 @@ def batch_diagnostics(saved, cfg, model, manifest, run):
         groups[group] = groups.get(group, 0.) + float((after.detach() - before.detach()).square().sum())
     if model_signature(model) != original_signature:
         raise RuntimeError('Diagnostics changed the input policy')
+    d5_status = {'binary': 'conditional_binary_audit', 'real': 'not_applicable_real_channel',
+                 'real_noisy': 'not_applicable_real_noisy_channel',
+                 'binary_deterministic': 'not_applicable_deterministic_bits_have_no_score_function'}[cfg.communication]
+    composition_counts = {}
+    for record in records:
+        key = ','.join(map(str, record['composition']))
+        composition_counts[key] = composition_counts.get(key, 0) + 1
     return {'batch_mode': manifest['batch_mode'], 'update': saved['updates'] + 1,
-            'episodes': records, 'D1': {'gradient_norm_before_clip': norm,
+            'episodes': records, 'episode_compositions': composition_counts,
+            'learner': learner_identity(cfg), 'training_study': training_study(cfg),
+            'D1': {'gradient_norm_before_clip': norm,
                 'actor_coefficient': cfg.actor_coeff, 'value_coefficient': cfg.value_coeff,
                 'weighted_actor_gradient_l2': float(total_actor.norm()),
                 'weighted_value_gradient_l2': float(total_value.norm()),
@@ -377,9 +441,11 @@ def batch_diagnostics(saved, cfg, model, manifest, run):
                 'historical_update_verified': logged is not None},
             'D2': policy_replay(candidate, replays),
             'D3': summarize_critic_diagnostics(critic), 'D3_per_episode': critic,
+            'D3_learned': summarize_agent_critic_diagnostics(learned_critic) if learned_critic else None,
+            'D3_learned_per_episode': learned_critic,
             'D4': {**moments.summary(), 'protocol': estimators['protocol'],
                    'identity_checks_per_episode': checks},
-            'D5': {'status': 'conditional_binary_audit' if cfg.communication == 'binary' else 'not_applicable_real_channel',
+            'D5': {'status': d5_status,
                    'instances': audits, 'requested_instances': manifest['d5_instances'],
                    'selection': 'first step of earliest batch episodes, up to requested count'}}
 
@@ -442,9 +508,16 @@ def frozen_probes(model, cfg, manifest, output):
                        {'outcomes': outcomes, 'paired_failure_minus_sham': deltas,
                         'paired_full_panel_mean': {k: float(np.mean([d[k] for d in deltas]))
                                                    for k in ('success', 'team_return', 'capped_completion')}})
-    return {'strata': rows, 'limits': ['Descriptive within-checkpoint paired probes; no pooled seed inference.',
+    trained = [list(c) for c in COMPOSITIONS if c in cfg.training_compositions]
+    event_trained = bool(cfg.failure_prob) and cfg.failure_window[0] <= 1 <= cfg.failure_window[1]
+    return {'strata': rows,
+            'training_support': {'training_study': training_study(cfg), 'compositions_in_training': trained,
+                                 'step_one_sensor_loss_in_training': event_trained},
+            'limits': ['Descriptive within-checkpoint paired probes; no pooled seed inference.',
             '1P2A loses its only sensor; this differs in fractional severity from 2P2A and 3P1A.',
-            'These teams are in composition-training support, outside nominal 2P1A training.',
+            ('These teams are in composition-training support, outside nominal 2P1A training.' if not trained
+             else f'Probe compositions inside this checkpoint\'s training support: {trained}; step-1 sensor loss '
+                  f'{"is" if event_trained else "is not"} inside its training event distribution.'),
             'Reserved 3P2A, 4P1A and 4P2A are never evaluated.']}
 
 
@@ -452,7 +525,7 @@ def execute(manifest_path, index, output, dry_run=False):
     torch.set_num_threads(1)
     manifest_digest = sha(manifest_path)
     manifest = read_json(manifest_path)
-    if (manifest['version'] != 1 or manifest['compositions'] != [list(c) for c in COMPOSITIONS]
+    if (manifest['version'] not in PROTOCOL_VERSIONS or manifest['compositions'] != [list(c) for c in COMPOSITIONS]
             or manifest['event_step'] != 1 or manifest['batch_mode'] not in ('logged-next-update', 'checkpoint-probe')):
         raise ValueError('Unsupported diagnostic protocol')
     if type(index) is not int or not 0 <= index < len(manifest['entries']):
@@ -468,7 +541,7 @@ def execute(manifest_path, index, output, dry_run=False):
     for path, expected in entry['inputs'].items():
         if sha(path) != expected:
             raise ValueError(f'Locked input hash changed: {path}')
-    saved, cfg, model, digest = load_checkpoint(entry['checkpoint'])
+    saved, cfg, model, digest = load_checkpoint(entry['checkpoint'], manifest['version'])
     if digest != entry['inputs'][entry['checkpoint']]:
         raise ValueError('Checkpoint hash missing or changed')
     run = audit_archive(entry['checkpoint'], saved, cfg)
@@ -476,6 +549,11 @@ def execute(manifest_path, index, output, dry_run=False):
             or entry['model'] != cfg.model or entry['source_sha256'] != saved['source_sha256']
             or entry['progress'] != {k: saved[k] for k in ('updates', 'total_steps', 'total_episodes')}):
         raise ValueError('Manifest entry metadata differs from checkpoint')
+    if manifest['version'] >= 2 and (
+            entry.get('learner') != learner_identity(cfg) or entry.get('training_study') != training_study(cfg)
+            or entry.get('training_compositions') != [list(c) for c in cfg.training_compositions]
+            or entry.get('failure_prob') != cfg.failure_prob or entry.get('failure_window') != list(cfg.failure_window)):
+        raise ValueError('Manifest learner/training metadata differs from checkpoint')
     if source_snapshot()['sha256'] != manifest['evaluator_source_sha256']:
         raise ValueError('Evaluator checkout changed after manifest preparation; prepare on the final fixed checkout')
     if manifest['batch_mode'] == 'logged-next-update':
@@ -504,7 +582,7 @@ def execute(manifest_path, index, output, dry_run=False):
     audit_archive(entry['checkpoint'], saved, cfg)
     if source_snapshot()['sha256'] != source['sha256'] or sha(manifest_path) != manifest_digest:
         raise RuntimeError('Source or manifest changed during diagnostics')
-    report.update(plan=plan, checkpoint_sha256=digest, model_signature=before['sha256'],
+    report.update(plan=plan, protocol_version=manifest['version'], checkpoint_sha256=digest, model_signature=before['sha256'],
                   source_sha256=source['sha256'], manifest_sha256=manifest_digest,
                   config=cfg.to_dict(), training_source_sha256=saved['source_sha256'],
                   runtime={'torch': torch.__version__, 'numpy': np.__version__, 'python': sys.version,
@@ -529,6 +607,8 @@ def main(argv=None):
         parser.add_argument('--d5-instances', type=positive, default=8)
         parser.add_argument('--d5-bits', type=positive, default=3)
         parser.add_argument('--d5-samples', type=positive, default=256)
+        parser.add_argument('--protocol-version', type=int, choices=PROTOCOL_VERSIONS, default=1,
+                            help='1: nominal fixed-2P1A team learner (unchanged); 2: composition/failure training and programme learner variants')
         parser.add_argument('--output', required=True)
         args = vars(parser.parse_args(argv[1:]))
         result = prepare(**args)

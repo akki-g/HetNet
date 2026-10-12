@@ -93,9 +93,12 @@ def audit_surrogate(model: SoftRoleNet, *, obs: Tensor, kappa: Tensor,
     """
     scope = ("Conditional one-step logged-action policy surrogate; incoming state and "
              "all unselected payloads are fixed. Not a full production gradient reference.")
-    if model.communication == "real":
-        return {"status": "not_applicable", "reason": "Real communication has no Bernoulli bits",
-                "scope": scope}
+    if model.communication != "binary":
+        reasons = {"real": "Real communication has no Bernoulli bits",
+                   "real_noisy": "Noisy real communication has no Bernoulli bits",
+                   "binary_deterministic": "Deterministic threshold bits have no score function; "
+                                           "the production surrogate is sigmoid'(u)"}
+        return {"status": "not_applicable", "reason": reasons[model.communication], "scope": scope}
     if type(round_index) is not int or not -model.comm_rounds <= round_index < model.comm_rounds:
         raise ValueError("round_index must identify an existing communication round")
     round_index %= model.comm_rounds

@@ -3094,3 +3094,100 @@ the legacy `prepare-evaluation` route for paper-v1 or pool unmatched old FC runs
   and `git diff --check` passed. Read-only comparison confirmed the exact HetNet
   constraint and core binding. No training, scheduler submission, dependency
   change, commit or push; actual cluster placement was not exercised locally.
+
+### 2026-10-12 — CapCom proposal programme (C1, A1, L1b/L1a, L1c, O1)
+
+- Implemented the user's implementation and evidence plan as independent opt-in
+  options from inspected `644f8f1`, the source of the running S1 and D1–D6 jobs.
+  Every default reproduces that model and learner bitwise, checked on this
+  machine against a byte copy of the `644f8f1` `model.py`
+  (`tests/fixtures/softrole_model_pre_programme.py`); the diagnostics'
+  numerical-source guards are unchanged, so checkpoints archived under
+  `644f8f1` must be diagnosed from that checkout. Resume rejects any change to
+  the new settings. No research run, cluster action or held-out tuning occurred.
+- C1: `--communication real_noisy` sends u + keyed Logistic(0,1) noise with the
+  exact pathwise derivative; `binary_deterministic` sends 1[u>0] with the
+  sigmoid'(u) surrogate and no noise; `binary` and `real` are unchanged. D5
+  enumeration applies only to stochastic Binary.
+- A1: `--null-degree-correction` adds log(max(d,1)/2) to the receiver's null
+  logit: equal-score null shares are degree invariant, degree zero keeps the
+  exact zero aggregate, and the proposal's −log 2 initialization is folded into
+  the offset so the nominal two-sender case is bitwise identical to the
+  baseline at initialization (a float32 constructor cannot represent −log 2
+  exactly, which this parameterization avoids).
+- L1b: `--critic-mode decomposed` adds v_j = ψ([H_j; κ_j; φ̄; N; Σκ; (T−t)/T])
+  with one 134→64→1 head and V = Σ_j v_j; per-agent GAE with zero terminal
+  bootstrap; value loss (1/τ)Σ_t Σ_j (v_jt − R̂_jt)². Per-agent log
+  probabilities, rewards and values are recorded without extra draws. At
+  β = 1 the actor gradient equals the team-GAE gradient (linearity).
+- L1a: `--credit-beta` weights β Σ_i Â_i + (1−β) Â_j (decomposed critic only);
+  the enumerated two-agent example gives exactly β times the exact gradient,
+  and the run record lists the dropped cross-agent credit as an approximation.
+- L1c: `--objective mean_agent` multiplies each complete episode loss by 1/N
+  before collection; one global episode average and one clip remain.
+- O1: `--actor-capabilities physical_only` removes the two capability entries
+  from the actor input; masks and the critic keep κ; banked gates use H only;
+  the capability-gated model is rejected.
+- Diagnostics protocol version 2 (`--protocol-version 2`) admits composition-
+  and failure-trained checkpoints and the learner variants: D1 from the shared
+  production loss-term builder, per-episode compositions, learned per-agent
+  D3/D4 beside the labelled V/N allocation, D5 gated to stochastic Binary,
+  training-support records in D6; version 1 is unchanged. Training-time
+  diagnostics now accept any PCP study.
+- Locked programme (`softrole/programme.py`): 21 arms × seeds 0–2 × 20M joint
+  steps = 63 runs (C1 six channels; A1 original/corrected null under
+  composition training; L1b/L1a β ∈ {1, .5, 0}; O1; shared/banked/capability/
+  constant under composition and failure presets with the shared composition
+  arm reused from A1; shared mean-agent per preset). Common settings: four
+  collectors, floor 500, ten updates/epoch, checkpoints every ten epochs plus
+  terminal, Adam, 50/1, γ = 1, λ = .95, detach 5, clip .75, three rounds of
+  independent 64- or 16-wide heads. The rate comes from S1 by equal-seed mean
+  capped completion over (8M, 12M] (lower wins, ties to the lower rate,
+  partial comparisons refused); `c1_real64` equals the S1 configuration. The
+  manifest records the selection and the source hash every run must execute;
+  the launcher refuses other checkouts and marks reduced-budget runs.
+- Evaluation (`softrole/programme_evaluation.py`, `softrole/report.py`):
+  development windows 4–8M/8–12M/18–20M from ledgers; first saved checkpoint
+  at or above 20M verified against the ledger; common 500-scenario panels for
+  (3,2), (4,1), (4,2) with nominal, communication-off, step-1 failure/sham,
+  failure/sham with communication removed at the event and, for banked and
+  capability arms only, gate freezes (structural no-ops for shared and
+  constant actors, certified by test); per-seed D_I = Δ_I − Δ_none and
+  arm-minus-control contrasts with whole-seed bootstrap intervals; HetNet
+  E2/E5 admission documented with labelled gaps.
+- Corrections recorded in the research record: the 3.16η Adam step bound is
+  the sparse-gradient case, not valid for arbitrary histories (about 7.3η by
+  Cauchy–Schwarz asymptotically); the review's variance expression describes
+  the actor weight, not a bound on gradient variance.
+- Files touched (code): `softrole/{config,__main__,model,learning,rollout,
+  train,diagnostics,diagnostic_estimators,diagnostic_surrogate,report}.py`;
+  new `softrole/{programme,programme_evaluation}.py`,
+  `scripts/softrole_programme.sh`, `slurm/softrole_programme.sbatch`.
+  Tests: new `tests/test_softrole_{c1_channels,a1_null_degree,
+  l1b_decomposed_critic,l1a_credit,l1c_objective,o1_actor_capabilities,
+  programme_defaults,diagnostics_v2,programme,programme_launcher,
+  report_contrasts,programme_evaluation}.py` and the fixture above.
+  Documentation: `README.md`, `softrole/RESEARCH.md` §11, `.gitignore`
+  (`analysis/*` with an exception for the record), this `AGENTS.md`, and
+  `analysis/capcom_programme_2026-10-12/{RECORD.md,validate.py,
+  validation.json,artifact_manifest.json}`.
+- Validation: the twelve new test files (124 tests) pass; the full suite on
+  the frozen tree gives **976 passed, 3 failed in 603.43 s**; the failures are
+  the pre-existing publication Slurm array-string test, the Mac-captured
+  Binary snapshot test (fails equally with the unchanged `644f8f1` model on
+  this x86 container) and the evaluator package-version assertion (`2.2.1`
+  versus `2.2.1+cu121` for the installed CUDA wheel; `evaluate.py` unchanged).
+  The bounded validation ran 51 commands in 297 s: six one-update S1-launcher
+  runs (refused by the rule as partial), the rule on synthetic ledgers, a
+  bounded manifest, dry runs and two-collector one-update launches of nine
+  entries covering every new mode (1,261 joint steps, 18 episodes, two sensor
+  events exposed), override/overwrite refusals, diagnostics version 2 on two
+  checkpoints (version 1 refuses them), nine evaluation tasks (186 reports,
+  372 episodes), an idempotent rerun, the summary (62 strata, 22 pairs, 13 D_I
+  rows and 18 contrasts for (3,2)) and the generated array's syntax; six
+  expected refusals returned their expected status. Hashes are in
+  `validation.json` and `artifact_manifest.json` (437 artifacts; archived
+  source copies are covered by each run's `source_manifest.json`). The
+  validation's recorded source hash is the tree before this entry.
+- Ten commits named after the proposals and stages, authored solely by the
+  repository owner, on branch `claude/funny-ritchie-6fw3dq`.

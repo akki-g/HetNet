@@ -169,6 +169,93 @@ def _paired_summaries(groups, records, metadata, panels, rng, samples):
     return paired
 
 
+IDENTITY_EXCLUDED = ("per_seed", "metrics", "training_seeds", "episodes", "contrast",
+                     "left_config", "right_config")
+
+
+def _identity(group, exclude=()):
+    return {k: v for k, v in group.items() if k not in IDENTITY_EXCLUDED and k not in exclude}
+
+
+def _paired_difference(left_rows, right_rows, label):
+    left = {row["training_seed"]: row for row in left_rows}
+    right = {row["training_seed"]: row for row in right_rows}
+    if not left or set(left) != set(right):
+        raise ValueError(f"{label} requires identical nonempty training-seed sets")
+    return [{"training_seed": seed, **{m: left[seed][m] - right[seed][m] for m in METRICS}}
+            for seed in sorted(left)]
+
+
+def difference_in_differences(paired_groups, bootstrap_samples=10000, seed=0):
+    """D_I = (failure - sham | intervention I) - (failure - sham | none), within training seed.
+
+    Paired strata are matched on every identity field except the intervention
+    and its event offset. Equal-seed means and whole-seed percentile bootstrap
+    intervals follow the same conventions as the absolute summaries.
+    """
+    if not isinstance(bootstrap_samples, int) or bootstrap_samples <= 0:
+        raise ValueError("bootstrap_samples must be a positive integer")
+    rng = np.random.default_rng(seed)
+    families = defaultdict(dict)
+    for group in paired_groups:
+        base = json.dumps(_identity(group, ("intervention", "intervention_offset_from_event")), sort_keys=True)
+        if group["intervention"] in families[base]:
+            raise ValueError("Duplicate paired stratum for one intervention")
+        families[base][group["intervention"]] = group
+    results = []
+    for base, conditions in sorted(families.items()):
+        reference = conditions.get("none")
+        if reference is None:
+            continue
+        for intervention, group in sorted(conditions.items()):
+            if intervention == "none":
+                continue
+            per_seed = _paired_difference(group["per_seed"], reference["per_seed"], "Difference-in-differences")
+            results.append(dict(json.loads(base), intervention=intervention,
+                                intervention_offset_from_event=group.get("intervention_offset_from_event"),
+                                contrast="difference_in_differences", training_seeds=len(per_seed),
+                                per_seed=per_seed, metrics=_uncertainty(per_seed, rng, bootstrap_samples)))
+    return results
+
+
+def contrast_groups(groups, left_config, right_config, bootstrap_samples=10000, seed=0,
+                    label="left_minus_right"):
+    """Equal-seed left-minus-right differences on every stratum the two configurations share.
+
+    Strata are matched on every identity field except ``config`` (the training
+    configuration without its seed), so an arm and its control are compared on
+    the same composition, condition, intervention and declared protocol. Works
+    for absolute strata, failure-minus-sham pairs and difference-in-differences.
+    """
+    if not isinstance(bootstrap_samples, int) or bootstrap_samples <= 0:
+        raise ValueError("bootstrap_samples must be a positive integer")
+    if left_config == right_config:
+        raise ValueError("A contrast needs two different configurations")
+    rng = np.random.default_rng(seed)
+
+    def key(group):
+        return json.dumps(_identity(group, ("config",)), sort_keys=True)
+
+    right_index = {}
+    for group in groups:
+        if group["config"] == right_config:
+            if key(group) in right_index:
+                raise ValueError("Duplicate right-hand stratum")
+            right_index[key(group)] = group
+    results = []
+    for group in groups:
+        if group["config"] != left_config:
+            continue
+        partner = right_index.get(key(group))
+        if partner is None:
+            continue
+        per_seed = _paired_difference(group["per_seed"], partner["per_seed"], "Cross-arm contrast")
+        results.append(dict(json.loads(key(group)), contrast=label, left_config=left_config,
+                            right_config=right_config, training_seeds=len(per_seed), per_seed=per_seed,
+                            metrics=_uncertainty(per_seed, rng, bootstrap_samples)))
+    return results
+
+
 def summarize_reports(paths, output=None, bootstrap_samples=10000, seed=0, protocol=None):
     """Average per-seed metrics and bootstrap independent training seeds.
 

@@ -7,6 +7,12 @@ COMPOSITION_TRAIN = ((1, 1), (1, 2), (2, 1), (2, 2), (3, 1))
 FAILURE_TRAIN = ((2, 1), (2, 2), (3, 1))
 COMPOSITION_TEST = ((3, 2),)
 EXTRAPOLATION_TEST = ((4, 1), (4, 2))
+# Opt-in channel, critic, credit, objective and capability-input variants.
+# Every default below reproduces the pre-existing behaviour and checkpoint layout.
+CHANNELS = ("binary", "real", "real_noisy", "binary_deterministic")
+CRITIC_MODES = ("team", "decomposed")
+OBJECTIVES = ("team", "mean_agent")
+ACTOR_CAPABILITIES = ("explicit", "physical_only")
 
 
 @dataclass
@@ -30,6 +36,11 @@ class Config:
     comm_rounds: int = 2
     independent_heads: bool = False
     communication: str = "binary"
+    null_degree_correction: bool = False
+    critic_mode: str = "team"
+    credit_beta: float = 1.0
+    objective: str = "team"
+    actor_capabilities: str = "explicit"
     feedback: bool = True
     comm_range: float = -1.0
     seed: int = 0
@@ -73,7 +84,8 @@ class Config:
         # Omit default additions so original checkpoint model_config dictionaries
         # still match exactly and retain their original state-dict layout.
         for name, default in (("comm_rounds", 2), ("independent_heads", False),
-                              ("communication", "binary")):
+                              ("communication", "binary"), ("null_degree_correction", False),
+                              ("critic_mode", "team"), ("actor_capabilities", "explicit")):
             if getattr(self, name) != default:
                 settings[name] = getattr(self, name)
         return settings
@@ -90,8 +102,23 @@ class Config:
             raise ValueError("paper-v1 FC uses the fixed paper reward (reward_type=3)")
         if self.model not in ("banked", "shared", "capability", "constant"):
             raise ValueError("unknown deterministic model variant")
-        if self.communication not in ("binary", "real"):
-            raise ValueError("communication must be binary or real")
+        if self.communication not in CHANNELS:
+            raise ValueError(f"communication must be one of {CHANNELS}")
+        if type(self.null_degree_correction) is not bool:
+            raise ValueError("null_degree_correction must be a boolean")
+        if self.critic_mode not in CRITIC_MODES:
+            raise ValueError(f"critic_mode must be one of {CRITIC_MODES}")
+        if (isinstance(self.credit_beta, bool) or not isinstance(self.credit_beta, (int, float))
+                or not math.isfinite(self.credit_beta) or not 0 <= self.credit_beta <= 1):
+            raise ValueError("credit_beta must be a finite number in [0, 1]")
+        if self.credit_beta != 1 and self.critic_mode != "decomposed":
+            raise ValueError("credit_beta below one requires critic_mode=decomposed")
+        if self.objective not in OBJECTIVES:
+            raise ValueError(f"objective must be one of {OBJECTIVES}")
+        if self.actor_capabilities not in ACTOR_CAPABILITIES:
+            raise ValueError(f"actor_capabilities must be one of {ACTOR_CAPABILITIES}")
+        if self.actor_capabilities == "physical_only" and self.model == "capability":
+            raise ValueError("physical_only actor capabilities contradict the capability-gated model")
         if self.optimizer not in ("rmsprop", "adam"):
             raise ValueError("optimizer must be rmsprop or adam")
         if type(self.comm_rounds) is not int or self.comm_rounds <= 0:

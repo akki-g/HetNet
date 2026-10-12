@@ -475,6 +475,97 @@ Engineering checks:
   tests/test_softrole_diagnostics_launcher.py
 ```
 
+### CapCom proposal programme (C1, A1, L1b/L1a, L1c, O1; 12 October 2026)
+
+The proposals of the 11 October review are implemented as independent opt-in
+options. Every default reproduces the pre-programme model and learner bitwise
+(`tests/test_softrole_programme_defaults.py` compares the current model with a
+byte copy of `softrole/model.py` at commit `644f8f1`, the source of the running
+S1 and D1–D6 jobs). Resume rejects any change to these settings. The
+mathematics is in [RESEARCH.md §11](softrole/RESEARCH.md) and the claim-to-evidence
+record in [analysis/capcom_programme_2026-10-12/RECORD.md](analysis/capcom_programme_2026-10-12/RECORD.md).
+
+| Option | Values | Proposal |
+|---|---|---|
+| `--communication` | `binary` (default), `real`, `real_noisy` (u + keyed logistic noise, exact derivative), `binary_deterministic` (1[u>0], sigmoid'(u) surrogate, no noise) | C1 |
+| `--null-degree-correction` | adds log(max(d,1)/2) to each receiver's null attention logit | A1 |
+| `--critic-mode` | `team` (default), `decomposed` (per-agent values summing to the team value, per-agent lambda-return targets) | L1b |
+| `--credit-beta` | actor weight beta·sum_i A_i + (1−beta)·A_j; default 1; below 1 requires the decomposed critic | L1a |
+| `--objective` | `team` (default), `mean_agent` (complete episode loss divided by roster size) | L1c |
+| `--actor-capabilities` | `explicit` (default), `physical_only` (capabilities enter only masks and critic; rejected with `--model capability`) | O1 |
+
+```bash
+# Every option at once; prints the configuration and creates nothing.
+.venv/bin/python -m softrole train --task pcp --study composition --model shared --optimizer adam \
+  --communication real_noisy --null-degree-correction --critic-mode decomposed --credit-beta 0.5 \
+  --objective mean_agent --actor-capabilities physical_only --output runs/programme_dry --dry-run
+
+# Locked programme: 21 arms x seeds 0-2 x 20M joint steps = 63 runs.
+.venv/bin/python -m softrole.programme arms
+
+# Learning-rate rule on the six finished S1 runs: equal-seed mean capped completion
+# in the (8M, 12M] window, lower wins, ties choose the lower rate, partial windows refused.
+.venv/bin/python -m softrole.programme select-lr \
+  --runs runs/softrole_lr_pcp_JOBID/pcp_shared/real/adam_lr3e-4/seed{0,1,2} \
+         runs/softrole_lr_pcp_JOBID/pcp_shared/real/adam_lr1e-3/seed{0,1,2} \
+  --output runs/capcom_programme_plan/lr_selection.json
+
+# Lock the manifest on the final fixed checkout (it records the source identity
+# every run must execute), check one entry, then submit the 63-job array.
+.venv/bin/python -m softrole.programme prepare \
+  --lr-selection runs/capcom_programme_plan/lr_selection.json \
+  --output runs/capcom_programme_plan/manifest.json
+export SOFTROLE_PROGRAMME_MANIFEST="$PWD/runs/capcom_programme_plan/manifest.json"
+bash scripts/softrole_programme.sh 0 --dry-run
+mkdir -p logs_sr
+sbatch slurm/softrole_programme.sbatch
+
+# After every run finishes: first saved checkpoint at or above 20M, common
+# 500-scenario panels for (3,2), (4,1), (4,2), one evaluation task per run.
+.venv/bin/python -m softrole.programme_evaluation prepare \
+  --manifest runs/capcom_programme_plan/manifest.json \
+  --run-root runs/capcom_programme_JOBID --output runs/capcom_programme_evaluation
+sbatch runs/capcom_programme_evaluation/evaluate.sbatch
+.venv/bin/python -m softrole.programme_evaluation summarize \
+  --evaluation runs/capcom_programme_evaluation --output runs/capcom_programme_summary
+
+# D1-D6 on composition/failure-trained or new-learner checkpoints (version 2 protocol).
+.venv/bin/python -m softrole.diagnostics prepare --protocol-version 2 \
+  --checkpoints /absolute/run/checkpoints/epoch0100.pt --checkpoint-rule '...' \
+  --output runs/capcom_diagnostics_plan/manifest.json
+```
+
+Index order is the arm order printed by `arms` times seeds 0, 1, 2; outputs are
+`runs/capcom_programme_JOBID/STAGE/ARM/seedN` with a `seedN.programme.json`
+provenance record beside each run. The launcher accepts only runtime budget
+options and `--episode-log`; scientific settings come from the manifest, and a
+checkout whose source hash differs from the manifest is refused. Runs with
+runtime overrides are marked `bounded_check` and cannot enter the research
+evaluation. The evaluation summary reports equal-seed means with whole-seed
+bootstrap intervals per arm, composition and condition; full-panel
+failure-minus-sham differences; difference-in-differences `D_I` for
+communication removal and (gated arms only) gate freezes, which are structural
+no-ops for shared and constant actors; and arm-minus-control contrasts. HetNet
+E2/E5 admission reuses the panel files through the reconstruction evaluator
+with the gaps labelled in `evaluation_manifest.json`.
+
+Protocol version 1 diagnostics remain nominal-only and unchanged. Their strict
+numerical-source guard means that checkpoints archived under commit `644f8f1`
+(S1 and the existing D1–D6 inputs) must be diagnosed from a checkout at that
+commit; the programme's own runs archive the current source. The bounded
+engineering validation, `analysis/capcom_programme_2026-10-12/validate.py`,
+exercises every mode through these launchers with one-update budgets; it is
+not a research run, and no programme result exists yet.
+
+```bash
+.venv/bin/python -m pytest -q tests/test_softrole_programme_defaults.py tests/test_softrole_c1_channels.py \
+  tests/test_softrole_a1_null_degree.py tests/test_softrole_l1b_decomposed_critic.py \
+  tests/test_softrole_l1a_credit.py tests/test_softrole_l1c_objective.py \
+  tests/test_softrole_o1_actor_capabilities.py tests/test_softrole_diagnostics_v2.py \
+  tests/test_softrole_programme.py tests/test_softrole_programme_launcher.py \
+  tests/test_softrole_report_contrasts.py tests/test_softrole_programme_evaluation.py
+```
+
 SoftRole logs both `team_return` and `mean_agent_return`. The latter is the
 mean of each episode's agent returns, matching the released HetNet reporting
 scale. For fixed three-agent teams it is `team_return / 3`; for varying teams,

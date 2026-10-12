@@ -673,3 +673,79 @@ under the larger fixed architecture. It cannot separately attribute an outcome
 to rounds, width or head independence because those changed together relative
 to earlier trials. Claims about improvements still require the frozen evaluation
 and independent-seed evidence described above.
+
+## 11. Opt-in proposal variants and the locked programme (12 October 2026)
+
+Every variant below is opt-in; the defaults reproduce the model and learner of
+commit `644f8f1` bitwise (`tests/test_softrole_programme_defaults.py` compares the
+current model with a byte copy of that `model.py` on the same machine). Resume
+rejects any change to these settings. The implementation record with the
+claim-to-evidence map is `analysis/capcom_programme_2026-10-12/RECORD.md`.
+
+**C1 channels** (`--communication`). With encoder output $u$ per bit, agent, head
+and round: `real` sends $p=u$; `real_noisy` sends $p=u+\epsilon$ with keyed
+$\epsilon\sim\mathrm{Logistic}(0,1)$ drawn from the scenario's message stream and
+the exact pathwise derivative $\partial p/\partial u = 1$; `binary` is unchanged,
+$b=\mathbf{1}[u+\epsilon>0]$ forward and $\sigma'(u+\epsilon)$ backward;
+`binary_deterministic` sends $b=\mathbf{1}[u>0]$ with the surrogate $\sigma'(u)$ and
+draws no noise. The score-function enumeration (D5) exists only for the
+stochastic Binary channel; the other three report `not_applicable`.
+
+**A1 degree-corrected null** (`--null-degree-correction`). Receiver $j$ with $d_j$
+permitted senders uses the null logit $\nu + \log(\max(d_j,1)/2)$. With equal sender
+scores $s$ the null share is $e^{\nu}/(e^{\nu}+2e^{s})$, independent of $d_j$; the
+baseline share is $e^{\nu}/(e^{\nu}+d_j e^{s})$. At $d_j=0$ every score is $-\infty$,
+so the null share is one and the aggregate is exactly zero. At $d_j=2$ the offset
+is exactly zero, so the corrected model with the same parameters equals the
+baseline bitwise; this is the proposal's $-\log 2$ initialization folded into the
+offset, and a corrected model at degree $d$ equals a baseline whose null
+parameter is shifted by $\log(d/2)$.
+
+**L1b decomposed critic** (`--critic-mode decomposed`). With the pooled feature
+$\bar\phi_t=\frac1N\sum_i\phi([H_{it};\kappa_i])$,
+$$v_{jt}=\psi\big([H_{jt};\kappa_j;\bar\phi_t;N;\textstyle\sum_i\kappa_i;(T-t)/T]\big),\qquad V_t=\sum_j v_{jt},$$
+with one shared head $\psi:\mathbb{R}^{134}\to\mathbb{R}^{64}\to\mathbb{R}$. Per-agent GAE uses
+$\delta_{jt}=r_{jt}+v_{j,t+1}-v_{jt}$ with $v_{j\tau}=0$ and
+$\hat A_{jt}=\sum_{l\ge0}\lambda^l\delta_{j,t+l}$; linearity gives
+$\sum_j\hat A_{jt}=\hat A_t$ whenever $\sum_j v_{jt}=V_t$. The value loss is
+$L_V=\frac1\tau\sum_t\sum_j(v_{jt}-\hat R_{jt})^2$ with $\hat R_{jt}=\hat A_{jt}+v_{jt}$;
+a loss on the sum alone leaves the split $\{v_j\}$ unidentified (cancelling
+errors give zero team loss but $2a^2$ per-agent loss in the test).
+
+**L1a credit mixing** (`--credit-beta`, decomposed critic only).
+$$L_\pi=-c_a\sum_t\sum_j\log\pi_{jt}\big[\beta\textstyle\sum_i\hat A_{it}+(1-\beta)\hat A_{jt}\big].$$
+$\beta=1$ reproduces the team loss exactly; $\beta<1$ drops
+$(1-\beta)\,\mathbb{E}[\sum_t\sum_j\nabla\log\pi_{jt}\sum_{i\ne j}\hat A_{it}]$. In the
+enumerated two-agent example, where agent 1's action rewards only agent 0, the
+estimator equals $\beta$ times the exact gradient. The run record lists
+`credit mixing: beta<1 drops cross-agent credit` among the approximations.
+
+**L1c mean-agent objective** (`--objective mean_agent`). Each complete episode
+loss is multiplied by $1/N_e$ before collection; the learner still averages once
+by the global episode count and clips once. Recorded loss sums stay unscaled.
+
+**O1 physical-only actor input** (`--actor-capabilities physical_only`). The
+actor preprocessing receives $x_{jt}$ without its final two capability entries;
+the action mask and the critic keep $\kappa$; banked gates use $H$ only. The
+capability-gated model is rejected with this option.
+
+**Diagnostics.** Protocol version 2 (`--protocol-version 2`) admits composition- and
+failure-trained checkpoints and the learner variants: D1 uses the production
+loss-term builder, D3/D4 add learned per-agent records (the $V/N$ allocation stays
+labelled separately), compositions are recorded per episode, and historical
+next-update replay must reproduce the production gradient. Version 1 is unchanged.
+
+**Programme.** Twenty-one arms, seeds 0-2, 20M joint steps each (63 runs):
+`python -m softrole.programme arms`. The common learning rate is the S1 rate with
+the lower equal-seed mean horizon-capped completion over the $(8\mathrm{M},12\mathrm{M}]$ window
+(ties choose the lower rate; partial comparisons are refused), recorded in the
+locked manifest together with the source identity every run must execute.
+Final evaluation uses the first saved checkpoint at or above 20M on common
+500-scenario panels for $(3,2)$, $(4,1)$ and $(4,2)$: nominal, communication off,
+step-1 sensor loss with matched sham, communication removed at the event, and
+gate freezes for gated arms. With $\Delta_I$ the within-seed full-panel
+failure-minus-sham mean under intervention $I$, the difference-in-differences
+is $D_I=\Delta_I-\Delta_{\mathrm{none}}$ per seed, reported with equal-seed means
+and whole-seed bootstrap intervals, as are the arm-minus-control contrasts.
+Reserved compositions are never used during development; development windows
+are read from training ledgers only.

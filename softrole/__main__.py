@@ -32,9 +32,22 @@ def parser():
     train.add_argument("--study", choices=("fixed", "composition", "failure"))
     train.add_argument("--model", choices=("banked", "shared", "capability", "constant"))
     train.add_argument("--optimizer", choices=("rmsprop", "adam"))
-    train.add_argument("--communication", choices=("binary", "real"))
+    train.add_argument("--communication", choices=("binary", "real", "real_noisy", "binary_deterministic"),
+                       help="binary: Bernoulli bits with the straight-through surrogate; real: raw encoder values; "
+                            "real_noisy: raw values plus keyed logistic noise, exact pathwise gradient; "
+                            "binary_deterministic: 1[u>0] with the sigmoid'(u) surrogate and no noise")
     train.add_argument("--independent-heads", action="store_true", default=None,
                        help="each attention head broadcasts its own msg-dim payload")
+    train.add_argument("--null-degree-correction", dest="null_degree_correction", action="store_true",
+                       default=None, help="add log(max(d,1)/2) to each receiver's null attention logit (A1)")
+    train.add_argument("--critic-mode", dest="critic_mode", choices=("team", "decomposed"),
+                       help="team: one pooled scalar value; decomposed: per-agent values summing to the team value (L1b)")
+    train.add_argument("--credit-beta", dest="credit_beta", type=float,
+                       help="actor advantage mixing beta*sum_i A_i + (1-beta)*A_j; values below one need the decomposed critic (L1a)")
+    train.add_argument("--objective", choices=("team", "mean_agent"),
+                       help="team: expected team return; mean_agent: complete episode loss divided by the roster size (L1c)")
+    train.add_argument("--actor-capabilities", dest="actor_capabilities", choices=("explicit", "physical_only"),
+                       help="physical_only removes the two capability inputs from the actor; masks and critic keep them (O1)")
     # Familiar release spellings are aliases, not a second set of defaults.
     integers = {
         "num_p": ("--num-p", "--nfriendly_P"), "num_a": ("--num-a", "--nfriendly_A"),
@@ -151,8 +164,8 @@ def main(argv=None):
             if args.diagnostics_every is not None:
                 if args.diagnostics_every < 1:
                     raise ValueError("--diagnostics-every must be positive")
-                if config.task != "pcp" or config.failure_prob:
-                    raise ValueError("Update diagnostics currently support nominal PCP only")
+                if config.task != "pcp":
+                    raise ValueError("Update diagnostics currently support PCP only")
             if args.dry_run:
                 print(json.dumps(config.to_dict(), indent=2, sort_keys=True))
             else:

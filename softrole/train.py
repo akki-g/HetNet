@@ -86,6 +86,13 @@ def source_snapshot(output=None):
     return record
 
 
+def channel_approximations(communication):
+    """Gradient approximations introduced by the message channel alone."""
+    return {"binary": ["straight-through bits"],
+            "binary_deterministic": ["deterministic-threshold surrogate bits"],
+            "real": [], "real_noisy": []}[communication]
+
+
 def collect_batch(model, config, collector, update, environment_source=None):
     """Return *sums*, never locally normalized or clipped gradients."""
     model.train()
@@ -178,8 +185,8 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
         raise ValueError("episode_log must be file or stdout")
     if diagnostics_every is not None and (type(diagnostics_every) is not int or diagnostics_every < 1):
         raise ValueError("diagnostics_every must be a positive integer")
-    if diagnostics_every is not None and (config.task != "pcp" or config.failure_prob):
-        raise ValueError("Update diagnostics currently support nominal PCP only")
+    if diagnostics_every is not None and config.task != "pcp":
+        raise ValueError("Update diagnostics currently support PCP only")
     output = Path(output)
     if output.exists():
         raise FileExistsError(f"refusing to overwrite run: {output}")
@@ -240,8 +247,14 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
                "optimizer": optimizer_spec(config),
                "optimizer_initialization": "checkpoint" if resume else "fresh",
                "parameters": sum(p.numel() for p in model.parameters()),
-               "actor_objective": "undiscounted sum of physical-agent rewards",
-               "approximations": (["straight-through bits"] if config.communication == "binary" else []) +
+               "actor_objective": ("undiscounted sum of physical-agent rewards" if config.objective == "team"
+                                   else "undiscounted sum of physical-agent rewards; complete episode loss divided by roster size"),
+               "learner": {"critic_mode": config.critic_mode, "credit_beta": config.credit_beta,
+                           "objective": config.objective, "actor_capabilities": config.actor_capabilities,
+                           "null_degree_correction": config.null_degree_correction,
+                           "communication": config.communication},
+               "approximations": channel_approximations(config.communication) +
+                                  (["credit mixing: beta<1 drops cross-agent credit"] if config.credit_beta != 1 else []) +
                                   ["GAE with learned critic", "truncated BPTT"]})
 
     def save(epoch):
