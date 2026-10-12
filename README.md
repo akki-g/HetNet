@@ -371,6 +371,106 @@ Sparse D2 observations can miss brief policy changes; performance regressions
 are not an automatic collapse classification. Actor/value gradient decomposition,
 D3–D5, frozen evaluation and held-out panels are outside this launcher.
 
+### D1–D6 offline checkpoint diagnostics
+
+[slurm/softrole_diagnostics.sbatch](slurm/softrole_diagnostics.sbatch) runs the
+October 11 proposal's diagnostics on explicitly selected, verified **nominal
+2P1A native PCP** checkpoints, Binary or Real, one checkpoint per array index.
+The supporting runner is [softrole/diagnostics.py](softrole/diagnostics.py).
+It preserves checkpoints and training defaults. D1 takes one optimizer step on
+a disposable in-memory copy; it saves measurements, never a continuation model.
+
+Review of the proposal: D1/D2 need both optimizer history and the batch for that
+update; sparse checkpoints cannot recover every historical update measurement.
+D3's Monte Carlo residual includes return noise and is not the true conditional
+critic bias. D4's learned decomposed critic does not yet exist, so the diagnostic
+below explicitly measures an equal allocation of the existing value and a
+zero-baseline reference. D5's full message vector is too large to enumerate;
+a conditional subset audit tests the surrogate locally. None of these probes
+implements or endorses the later architecture or learning-objective proposals.
+
+| Diagnostic | Implemented measurement and interpretation |
+|---|---|
+| D1 | Full-batch episode-average actor/value gradients, their coefficient-weighted norms and cosine, global pre-clip norm, and actual disposable optimizer displacement overall/by module. |
+| D2 | Agent-step mean KL and before/after entropy on all batch episodes, fixed observations/actions/message noise; recomputed recurrence/messages versus fixed logged output features. |
+| D3 | Team Monte Carlo MSE beside the same-batch lambda-target MSE, split by composition and exact episode length. The finite-horizon future-error proxy uses `V-G`, zero terminal error and the declared lambda. |
+| D4 | Equal-episode gradient SNR `‖mean(g)‖² / mean(‖g-mean(g)‖²)` for current team GAE, beta=1/.5/0 with `v_j=V/N`, and per-agent Monte Carlo returns with zero baseline. Beta=1 identity errors are retained for every episode. `V/N` is an untrained diagnostic allocation, not evidence about a learned decomposed critic; beta<1 changes credit and can be biased. |
+| D5 | First steps of the first eight batch episodes, up to three seeded connected bits in the final round; enumerate all eight patterns and compare the exact conditional score gradient with 256 fresh-noise ST samples on the actual encoder parameters. Other payloads/incoming memory are fixed. Returns cosine, norms and logit-gradient MC standard errors; Real is explicitly N/A. |
+| D6 | 100 common scenarios per `(1,2)`, `(2,2)`, `(3,1)`; nominal, step-1 sensor failure, and matched sham: 900 policy episodes/checkpoint. Null attention/success by composition, full-panel paired differences, exposure/censoring and pre-event diagnostics. Full traces allow checking actions; automatic wandering/freezing classification is not implemented. |
+
+D6 uses zero-indexed step 1. In `(1,2)` the only sensor fails, giving a fully blind
+team; this differs from the partial losses in the other two compositions.
+These compositions belong to the proposed composition-training support, but are
+outside a nominal checkpoint's fixed 2P1A training. Reserved `(3,2)`, `(4,1)` and
+`(4,2)` are rejected by the locked protocol. These are descriptive per-checkpoint
+results, not pooled independent-seed inference or a guarantee of exposure.
+
+Prepare the manifest **on the final Stokes checkout**, with actual checkpoint
+paths and a selection rule declared before outcomes. The example's placeholders
+must be replaced. Preparation verifies all archived source hashes, numerical
+source compatibility, run/config/source identities, checkpoint tensor signatures,
+finite optimizer moments and recorded runtime versions. Keep that checkout and
+the copied input archives fixed until every array task finishes.
+
+```bash
+# Default: replay the actual update immediately AFTER each selected checkpoint.
+# Choose nonterminal checkpoints whose next update is in episodes.jsonl/updates.jsonl.
+.venv/bin/python -m softrole.diagnostics prepare \
+  --checkpoints /absolute/run_binary/checkpoints/epoch0100.pt \
+                /absolute/run_real/checkpoints/epoch0100.pt \
+  --checkpoint-rule 'Predeclared epoch 100, both channels, seed 0; next recorded update' \
+  --output runs/capcom_diagnostics_plan/manifest.json
+
+# Check one task without creating its output directory or running policy probes.
+bash scripts/softrole_diagnostics.sh \
+  --manifest runs/capcom_diagnostics_plan/manifest.json --index 0 \
+  --output runs/capcom_diagnostics_dry/task_0 --dry-run
+
+# Submit all manifest entries (two in this example), at most three concurrently.
+mkdir -p logs_sr
+export CAPCOM_DIAGNOSTICS_MANIFEST="$PWD/runs/capcom_diagnostics_plan/manifest.json"
+export CAPCOM_DIAGNOSTICS_OUTPUT_ROOT="$PWD/runs/capcom_diagnostics_results"
+sbatch --array=0-1%3 slurm/softrole_diagnostics.sbatch
+```
+
+For six checkpoints use `--array=0-5%3`. Index order is exactly the manifest's
+checkpoint order; there is no guessed channel/seed/path mapping. The script's
+safe default is only index 0. Each task requests **one CPU, 16 GB, 12 hours**;
+these are unbenchmarked limits. Existing task directories cannot be overwritten.
+A failed attempt needs a fresh output root. No submission is performed by the
+preparation command or the wrapper. Stokes account/partition/module directives
+follow the repository's existing launchers.
+
+For terminal checkpoints with no later logged update, explicitly add
+`--batch-mode checkpoint-probe` during preparation. D1–D5 then use a fresh,
+reproducible batch at the checkpoint's next work index with the saved batch
+floor and collector count; all collectors are replayed serially. This is a
+counterfactual update probe, **not a historical logged-batch measurement**.
+D6 is identical in either mode. Historical mode requires file-based episode
+ledgers and rejects missing/mismatched episodes, counts or pre-clip norms.
+The checkpoint rule is recorded verbatim; preparation validates supplied inputs
+but does not search archives or assert that your declared selection rule was met.
+
+Optional preparation settings are `--probe-episodes`, `--seed`, `--d5-instances`,
+`--d5-bits` (1–4) and `--d5-samples` (2–65536). Lock them before outcomes. A tiny
+execution check can use `--probe-episodes 1 --d5-instances 1 --d5-bits 2
+--d5-samples 32`; it is not a research panel. If a batch has fewer episodes than
+requested D5 instances, the report records the actual count. One-episode SNR
+or a zero gradient direction is undefined and is written as null.
+
+Each `task_N/` contains `report.json` (D1–D6, exact counts and limitations),
+`D6_scenarios.json`, three `D6_P_A.json` outcome/trace/pair files, the locked
+`protocol.json`, and an evaluator `source/` archive with `source_manifest.json`.
+Reports keep training and evaluator identities separate. Per-checkpoint output
+is deliberately not collapsed into a claim of model superiority or seed-level CI.
+Engineering checks:
+
+```bash
+.venv/bin/python -m pytest -q tests/test_softrole_diagnostics.py \
+  tests/test_softrole_diagnostic_estimators.py tests/test_softrole_diagnostic_surrogate.py \
+  tests/test_softrole_diagnostics_launcher.py
+```
+
 SoftRole logs both `team_return` and `mean_agent_return`. The latter is the
 mean of each episode's agent returns, matching the released HetNet reporting
 scale. For fixed three-agent teams it is `team_return / 3`; for varying teams,

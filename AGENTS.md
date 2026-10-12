@@ -2975,3 +2975,94 @@ the legacy `prepare-evaluation` route for paper-v1 or pool unmatched old FC runs
   `bash -n` on both new shell files and `git diff --check` passed. No full research training, held-out
   evaluation, cluster submission, dependency change, original-entrypoint edit,
   checkpoint/input mutation, commit or push was performed.
+
+### 2026-10-11 — offline D1–D6 diagnostic runner and Slurm launcher
+
+- Reviewed the supplied `docs/capcom_proposal_guide_2026-10-11.pdf`, including
+  rendered diagnostic pages 3–4 and the decomposed-critic/credit definitions.
+  Implemented a manifest-driven, one-checkpoint-per-task diagnostic route for
+  nominal fixed 2P1A native PCP Binary/Real archives. The explicit manifest
+  avoids guessing Stokes checkpoint paths or treating stdout labels as provenance.
+  The proposal PDF and all existing model, learner and launcher defaults remain
+  unchanged. Preparation records the user-declared selection rule; it does not
+  search archives or certify that the selected paths satisfy that rule.
+- D1/D2: reconstruct the next complete batch at a saved checkpoint using its
+  collector/work indices, optimizer state, actor/value coefficients and recurrent
+  detach boundaries. Historical mode requires exact episode-ledger equality and
+  matching update counts/pre-clip norm. Measure coefficient-weighted actor/value
+  gradient norms/cosine, one global episode average/clip, and parameter displacement
+  from an optimizer step on a disposable in-memory copy. Replay all batch episodes
+  for recomputed-policy versus fixed-output-feature KL/entropy. Terminal checkpoints
+  require explicitly declared `checkpoint-probe` mode: a fresh diagnostic batch,
+  not a historical measurement. No continuation checkpoint is saved. One selected
+  checkpoint gives one update observation, not an every-update time series.
+- D3/D4: compare realized team Monte Carlo MSE with the same-batch lambda-target
+  MSE, by exact episode length/composition; retain the finite-horizon future-error
+  proxy and its GAE-minus-MC identity check. Monte Carlo residuals include return
+  noise and do not identify conditional value bias. Report paired per-episode
+  actor-gradient SNR for team GAE, beta=1/.5/0 with the explicitly untrained
+  allocation `v_j=V/N`, and zero-baseline per-agent MC references. Preserve actor
+  coefficient and sum-of-rewards objective, with no agent/time normalization.
+  Keep beta=1 checks for every episode. The learned decomposed critic of Chapter 6
+  is not implemented or claimed to be tested; beta<1 drops cross credit and may
+  improve descriptive SNR while biasing the objective gradient.
+- D5: audit the actual Binary encoder/downstream actor at predetermined first
+  steps of early batch episodes. Enumerate 1–4 connected selected bits while
+  clamping other payloads and incoming recurrence, and compare exact conditional
+  score gradients against fresh-noise Monte Carlo production ST derivatives.
+  Record encoder cosine/norms, bit patterns, selected coordinates and logit-gradient
+  standard errors. Default: up to eight instances, three bits, 256 noise draws.
+  This is a local one-step conditional surrogate audit, not a full sequential
+  policy-gradient reference. Real returns N/A. Undefined directions/SNR are null.
+- D6: default 100 common scenarios per (1,2), (2,2), (3,1), each with nominal,
+  zero-indexed step-1 failure and matched sham: 900 policy episodes per checkpoint.
+  Verify nominal/sham traces and failure/sham pre-event prefixes/diagnostics.
+  Save raw traces, scenarios, composition-specific null attention/success,
+  full-panel paired differences, exposure and censoring. Losing the only sensor
+  in (1,2) is explicitly a fully blind condition. These teams are in composition
+  training support but outside fixed nominal training; reserved (3,2)/(4,1)/(4,2)
+  are excluded. Automatic wandering/freezing classification and pooled seed-level
+  inference remain outside this runner.
+- Provenance: verify checkpoint/sidecar tensor signatures, finite aligned
+  optimizer moments/counters, config/run/source identities and Torch/NumPy versions.
+  Hash-check every archived source file, compare numerical modules byte-for-byte
+  and collector/global-update function ASTs, lock input/evaluator hashes and archive
+  evaluator source per task. Reject source/input mutation and output reuse.
+  Cap direct CLI BLAS threads before imports and Torch threads during execution.
+  Shell/Slurm follow existing Stokes conventions: one CPU, 16 GB, 12 hours;
+  explicit manifest, task-index output directory and default single-index array.
+  These resource requests are unbenchmarked limits. Submission stays manual.
+- Files touched:
+  - `softrole/diagnostics.py` (new): archive/manifest validation, reproducible
+    batch replay, D1/D2/D6 execution, result/provenance artifacts and CLI.
+  - `softrole/diagnostic_estimators.py` (new): D3/D4 math, strata and streaming SNR.
+  - `softrole/diagnostic_surrogate.py` (new): bounded conditional D5 audit.
+  - `scripts/softrole_diagnostics.sh` and `slurm/softrole_diagnostics.sbatch`
+    (new): strict CLI wrapper and manifest-driven Slurm array.
+  - `tests/test_softrole_diagnostics.py`,
+    `tests/test_softrole_diagnostic_estimators.py`,
+    `tests/test_softrole_diagnostic_surrogate.py`, and
+    `tests/test_softrole_diagnostics_launcher.py` (new): mathematical references,
+    exact replay, immutability, provenance rejection and launcher checks.
+  - `README.md`: proposal review, measurement definitions/limits, preparation,
+    dry-run/submission commands and output layout.
+  - `AGENTS.md`: this additive record.
+- Validation: final focused suite **80 passed in 8.90s**. Independent finite-return,
+  analytic score-gradient and quadrature references passed; real offline Adam/Real
+  and RMSprop/Binary updates reproduced the next saved model signature exactly.
+  Historical/probe modes, all nine D6 strata, paired traces, missing/tampered
+  inputs, invalid counts, numerical noninterference and source-change rejection
+  were exercised. A separate tiny two-spawned-collector Binary/Adam check replayed
+  all four next-update episodes serially and reproduced the actual next model
+  signature exactly (two training updates, 32 total joint steps, temporary files).
+- Validation: full suite before the final source-archive race guard/thread cap
+  completed with **853 passed, one failed in 307.25s**. The failure is the previously
+  recorded, unchanged `test_publication_slurm.py` expectation of `0-11%3` versus
+  `slurm/publication_train.sbatch`'s `0-11`; both have empty diffs against HEAD.
+  The final focused suite includes the added archive-race regression. Shell syntax
+  and `git diff --check` passed. Temporary PDF renders and test/smoke outputs stayed
+  outside the repository; no permanent research output directory was created.
+- No full research training, evaluation of research checkpoints, held-out tuning,
+  cluster submission, dependency change, pre-existing input/checkpoint mutation,
+  commit or push was performed. The bounded executions establish implementation
+  behavior only, not adaptation, superiority or statistical significance.
