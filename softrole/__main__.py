@@ -25,6 +25,8 @@ def parser():
     train.add_argument("--episode-log", choices=("file", "stdout"), default="file",
                        help="episode records: buffered JSONL file or tagged stdout batch per update")
     train.add_argument("--dry-run", action="store_true")
+    train.add_argument("--diagnostics-every", type=int,
+                       help="opt-in nominal PCP update norms and sampled policy replay every N updates")
     train.add_argument("--task", choices=("pp", "pcp", "fc"))
     train.add_argument("--env-version", choices=("corrected-observation-v1", "paper-v1"))
     train.add_argument("--study", choices=("fixed", "composition", "failure"))
@@ -134,7 +136,7 @@ def main(argv=None):
     try:
         if args.command == "train":
             options = vars(args).copy()
-            for key in ("command", "output", "resume", "dry_run", "task", "study", "episode_log"):
+            for key in ("command", "output", "resume", "dry_run", "task", "study", "episode_log", "diagnostics_every"):
                 options.pop(key)
             if args.resume:
                 import torch
@@ -146,11 +148,18 @@ def main(argv=None):
                 config = Config(**values)
             else:
                 config = recipe(args.task or "pcp", args.study or "fixed", **options)
+            if args.diagnostics_every is not None:
+                if args.diagnostics_every < 1:
+                    raise ValueError("--diagnostics-every must be positive")
+                if config.task != "pcp" or config.failure_prob:
+                    raise ValueError("Update diagnostics currently support nominal PCP only")
             if args.dry_run:
                 print(json.dumps(config.to_dict(), indent=2, sort_keys=True))
             else:
                 from softrole.train import train
-                train(config, args.output, args.resume, episode_log=args.episode_log)
+                diagnostic_options = ({"diagnostics_every": args.diagnostics_every}
+                                      if args.diagnostics_every is not None else {})
+                train(config, args.output, args.resume, episode_log=args.episode_log, **diagnostic_options)
         elif args.command == "evaluate":
             import torch
             from softrole.evaluate import evaluate_checkpoint

@@ -2746,3 +2746,232 @@ the legacy `prepare-evaluation` route for paper-v1 or pool unmatched old FC runs
   pull.rebase=false and pull.ff=only for subsequent pulls. Its existing stash
   stays untouched; applying it would reintroduce the recorded analysis deletions.
   No remote-host command, research training or cluster submission was executed.
+
+### 2026-10-11 — latest PCP communication trial analysis
+
+- Analyzed six new `logs_sr/softrole-channels-pcp-914408_*.out` files and their
+  stderr, three previous small CapCom Adam stdout files, and the six scientific
+  paper-v1 HetNet PCP Binary/Real files from array908316. Parsed24,655 epoch
+  records across15runs. The new six contain8,826 records,178,831,120 joint steps,
+  25,496,526 episodes and88,251 updates. Two terminal Binary records are partial
+  epochs; counts reconcile exactly. All recorded metrics are finite, no failures
+  of execution appear in copied stderr, and zero sensor events are recorded.
+- Preserved exact byte snapshots of the nine modest CapCom stdout files plus
+  six new stderr files under the fresh analysis directory. The six much larger
+  HetNet stdout hashes match the October8 snapshot exactly. No newer HetNet
+  continuation or scientific-run archive was found. New channel research
+  configuration/source/checkpoint/run directories are also absent locally;
+  model/seed labels are explicitly conditional on the preserved launcher and
+  filenames. The local one-update implementation validation is not substituted
+  for the missing research-run provenance. Budget attainment in stdout does not
+  prove final checkpoint creation or clean scheduler exit.
+- Compared windows at common sample budgets with episode weighting within seed
+  and equal seed weighting. At18–19M, mean steps are7.327598 old CapCom Binary,
+  6.018172 new Binary,5.352095 new Real,5.123001 HetNet Binary and5.116762 HetNet
+  Real. The new CapCom designs improve17.9%/27.0% over the old model; new Real is
+  11.1% shorter than new Binary, while HetNet remains ahead. At39–40M, new Binary
+  improves5.400943→5.219497 (3.36%). New Real is only at19.35–20.06M; comparisons
+  never mix its partial budget with Binary40M as matched evidence.
+- Reported actual recorded computation: new Binary reaches40M at29.09–29.43h
+  of epoch loops versus about15.33h in the previous small Adam runs. At about19M,
+  equal-seed times are7.02h old CapCom,12.61h new Binary,11.52h new Real,33.43h
+  HetNet Binary and23.90h HetNet Real. Half-hour clock curves show the different
+  quality/time tradeoff; these are not controlled hardware comparisons or queue
+  turnaround. Retained short new-Real regressions and the much larger historical
+  HetNet Real seed0 collapse/recovery rather than using a favorable single tail.
+- Fresh constructor/AST review verified new CapCom235,571 parameters versus
+  old171,087; HetNet Binary1,064,386 and Real993,470. Both families' intermediate
+  heads are16-wide. Actual new Binary allocation is3rounds×4heads×64bits=768
+  logical bits per sender-step,24× old32bits; Real sends768continuous values.
+  CapCom remains shared with one global pooled critic/no graph SEN; HetNet uses
+  typed actor processing and two class-routed SEN/per-class critics. Different
+  learning objectives/rates and final heads remain. Native PCP critical physical
+  methods match current/old Adam/paper source ASTs; no environment change was made.
+  Results support the combined communication design, not an isolated third-round
+  effect, recovered publication fidelity, frozen superiority or role adaptation.
+- Added only fresh `analysis/pcp_channels_2026-10-11/`, the five-page
+  `output/pdf/pcp_channels_analysis_2026-10-11.pdf`, narrow `.gitignore` exceptions,
+  and this additive `AGENTS.md` record. Root analysis sources are `analyze.py`,
+  `build_report.py`, and `README.txt`; output CSV/JSONs include normalized epochs,
+  runs, sample/clock windows, provenance and validation, plus two PNG/SVG figures,
+  extracted report text and PDF build identity. Independent artifacts/scripts
+  occupy `channel_audit/`, `hetnet_audit/` and `architecture_audit/`.
+  `artifact_manifest.json` enumerates every other file in the fresh directory
+  and the delivered PDF; exact paths/hashes are retained there.
+- Validation: independent raw CapCom review passed7,634 numeric checks. HetNet
+  review reparsed9,829 epoch records, reconciled21,474,530 unique raw episodes
+  across58 windows, and independently checked a further1,165,467 raw episode
+  records for the primary18–19M window. All80 root comparator seed windows and
+  27 group windows agreed. Those episode counts describe separate audit passes
+  and must not be added as distinct samples. New source/input hash checks pass.
+  Independent architecture review found no substantive correction; clarified
+  that frozen comparisons should use each model's own declared communication
+  rule rather than imply identical Binary sampling or noise for Real.
+- Rendered and visually inspected all five final PDF pages, verified embedded
+  Arial fonts, five-page text/header/page counts, table values, plot labels and
+  local deliverable paths. Compiled analysis scripts without executing models;
+  whitespace checks pass. Plot/PDF packages ran through isolated `uv --no-project`
+  with no project dependency change. Temporary PDF QA renders were removed after
+  inspection. No runtime edits, input/checkpoint mutation, training, policy
+  evaluation, full regression suite, cluster operation, commit or push occurred.
+
+### 2026-10-11 — compact current HetNet / CapCom reviewer bundle
+
+- Created a local ZIP handoff for architecture critique and current-run review,
+  centered on CapCom channels job 914408, immediate small-channel Adam control
+  911488, and HetNet paper-v1 job 908316. Included current runtime/test/launcher
+  source, latest channel/Adam analyses, original CapCom logs, available Adam
+  configuration/metric/source evidence, selected smoke-test receipts and three
+  relevant reference PDFs. No historical full-run archive or checkpoint tensors.
+- Preserved all non-episode lines from all twelve current HetNet stdout files
+  under distinct compact filenames. Removed only lines beginning with the exact
+  bytes `{"episodes": [`. Recorded original/derived SHA256, sizes and omission
+  counts. Explicitly documented unavailable 914408 and 908316 scientific run
+  archives, conditional channel mappings, and the difference between archived
+  audit receipts and checks reproducible from this compact packet.
+- Added START_HERE.txt with reading order, current scope, exclusions, reviewer
+  questions and a continuation prompt; VERIFY_BUNDLE.py and a full file manifest;
+  RECOMPUTE_COMPARISON.py supplies the recorded Git identity to the unmodified
+  numerical analysis without requiring a .git directory.
+- Validation: all 9,829 retained PCP HetNet epoch objects match the latest
+  analysis input exactly. Original PCP stdout hashes match the prior raw audit.
+  Portable recomputation in a disposable directory reproduces eight numerical
+  JSON/CSV outputs byte-for-byte. Archive integrity and per-file SHA256 checks
+  are recorded in the adjacent ZIP receipt after packaging.
+- Files touched: AGENTS.md (this entry); new
+  output/review_bundles/build_current_review.py,
+  output/review_bundles/validate_current_review.py,
+  output/review_bundles/finalize_current_review.py; new
+  output/review_bundles/current_hetnet_capcom_review_2026-10-11/ (copied evidence,
+  guide, verification/recompute helpers and manifests enumerating all files),
+  and the adjacent .zip, .zip.sha256 and .zip.validation.json deliverables.
+- No runtime changes, source-log/checkpoint mutations, training, policy evaluation,
+  new runtime test suite, dependency changes, cluster actions, commit or push.
+  Preserved all pre-existing concurrent work and ignore-file edits.
+
+### 2026-10-11 — reviewer ZIP below 30 MB
+
+- Applied the user's explicit 30 MB ceiling using decimal bytes (<30,000,000).
+  Removed only two byte-identical duplicate HetNet paper/supplement PDFs from
+  the generated staging tree; complete copies remain under docs/papers/.
+  No unique reference, code, log or run metric was removed.
+- Touched AGENTS.md, the generated bundle START_HERE.txt/copied-files receipt,
+  and output/review_bundles/finalize_current_review.py; refreshed the packaged
+  work log, finalizer and manifest. Produced a distinct _under30MB.zip with
+  SHA256/validation receipts, preserving the previous archive.
+- Finalization enforces the byte ceiling and verifies ZIP CRC and every member
+  hash. No scientific inputs, runtime code or experiment results changed.
+
+### 2026-10-11 — current CapConNet architecture/research handoff
+
+- Added output/review_bundles/CAPCONNET_CURRENT_HANDOFF.txt: copyable agent
+  briefing covering the tested shared three-round independent-head Binary/Real
+  channel design, observation/recurrence/message/action dimensions, team critic
+  and learner, and differences from the current HetNet paper-v1 reconstruction.
+- States the goal of outperforming HetNet while testing frozen team-composition/
+  size transfer and sensor adaptation. Separates this objective from existing
+  fixed-team/no-failure training evidence and separates shared from banked modes.
+- Grounded results in the October 11 report/CSV: Real's matched-budget gap is
+  about 0.235 steps/4.6%; Binary's is about 0.895/17.5%. Does not generalize
+  'slightly behind' across variants or promise that any proposed fix will win.
+- Proposes falsifiable, small follow-ups: complete/provenance-check the baseline,
+  frozen nominal evaluation, final-head aggregation ablation, measured optimizer/
+  critic diagnostics, matched capability-bank tests and communication ablations.
+  Includes full-panel failure/sham controls, exposure/censoring, no held-out
+  tuning and current limitations on evaluator support and dynamic rosters.
+- Files touched: AGENTS.md; the new standalone handoff and its copied version
+  in the generated reviewer staging tree; staging START_HERE.txt;
+  output/review_bundles/finalize_current_review.py. Refreshed packaged log,
+  finalizer and manifest and produced _handoff_under30MB.zip plus checksum/
+  validation receipts. Existing ZIP versions are preserved.
+- Checked architecture against current model/env/config/learner/launcher and
+  prior architecture audit; recalculated the quoted relative gaps from the
+  saved per-group CSV. Packaging enforces <30,000,000 bytes and verifies all
+  members. No implementation, training, evaluation, dependency, cluster,
+  commit or push action; proposals are not new validated findings.
+
+### 2026-10-11 — mathematical-review emphasis for CapConNet handoff
+
+- Revised the user's handoff to prioritize in-depth algorithm/architecture
+  critique, information/representation/learning-signal gaps, mathematically
+  justified remedies and interpretation of current results. Requires explicit
+  assumptions, derivations or counterexamples, falsifiable predictions and
+  ranked proposals; prior improvement ideas are questions, not prescribed fixes.
+- Explicitly limits the next agent to research review and written proposals.
+  Source inspection supports the mathematics; discovered bugs should be reported,
+  not fixed. No core edits, training, evaluation or cluster jobs are authorized.
+- Files touched: output/review_bundles/CAPCONNET_CURRENT_HANDOFF.txt and its
+  generated bundle copy; output/review_bundles/finalize_current_review.py;
+  AGENTS.md. Refreshed the packaged log/finalizer/manifest and generated the
+  distinct _math_review_under30MB.zip with checksum and validation receipts.
+- Retained the architecture and numerical evidence sections; only task framing,
+  investigative questions and expected deliverables changed. ZIP finalization
+  checks every member hash/CRC and enforces the decimal 30 MB ceiling. No new
+  mathematical finding, experimental result or runtime change is claimed.
+
+### 2026-10-11 — S1 Real learning-rate training and diagnostics launcher
+
+- Read S1 and the D1/D2 definitions in the supplied
+  `docs/capcom_proposal_guide_2026-10-11.pdf`, including rendered S1 page 5.
+  The user selected **20M steps per run and Real only**. Prepared six fresh
+  current shared CapConNet PCP runs: indices 0–2 are Adam 3e-4/seeds 0–2;
+  indices 3–5 are Adam 1e-3/seeds 0–2. Preserved the current three-round,
+  independent-head/msg64 architecture, corrected native 2P1A observations,
+  objective, global episode averaging, clipping, optimizer recipe and indexed
+  training random streams. These are the two requested new rates; the third
+  S1 rate, 1e-4, is not silently added or supplied by unverified historical logs.
+- Added an isolated launcher and Stokes array following existing CPU resource
+  conventions: four CPUs, 16 GB, 48 hours, concurrency three. Fresh job-specific
+  paths include channel/rate/seed; overwrites, resume and scientific-setting
+  overrides fail early. Positive runtime/budget overrides allow bounded local
+  execution checks. Checkpoints save every 10 epochs and at the terminal budget;
+  complete-update overshoot and actual counts remain recorded. No completion
+  guarantee is inferred from the wall-time request.
+- Added opt-in, read-only update diagnostics. Every update records the actual
+  parameter displacement overall/by module and the pre-clip norm (part of D1).
+  Update 1 and every 50th update replay all complete episodes of the actual
+  batch, checking exact pre-update episode metrics. D2 holds observations,
+  sampled action histories and message noise fixed and compares pre/post policy
+  KL and entropy, both with recomputed recurrence/messages and with logged final
+  communication features fixed to isolate the action head. Means weight agent
+  steps. No diagnostic supplies a gradient, action, reward or training sample.
+  Defaults elsewhere keep diagnostics disabled. The summary streams episode
+  records into episode-weighted 0–2M, 4–8M and 8–12M windows by complete-update
+  endpoint and records incomplete windows explicitly. It also records epoch
+  performance and descriptive adjacent-epoch regressions, without automatically
+  classifying collapses or selecting rates. Sparse D2 cadence can miss brief
+  changes; actor/value gradient decomposition and D3–D5 are not implemented here.
+- Repository files touched: `scripts/softrole_lr_pcp.sh` (new fixed Real-only
+  mapping, training then summary); `slurm/softrole_lr_pcp.sbatch` (new array);
+  `softrole/lr_diagnostics.py` (new measurements and streaming summary);
+  `softrole/train.py` (optional before/after measurement hooks);
+  `softrole/__main__.py` (runtime-only diagnostic flag and validation);
+  `tests/test_softrole_lr_diagnostics.py` (new mathematical/noninterference
+  tests); `tests/test_softrole_lr_launcher.py` (new mapping/isolation tests);
+  `README.md` (usage, definitions and limits); `AGENTS.md` (this record).
+  Preserved all pre-existing dirty files and artifacts, including `.gitignore`.
+- Generated files are confined to fresh `runs/softrole_lr_validation_20261011/`.
+  `artifact_manifest.json` enumerates the exact SHA256 of all 1,365 other files,
+  including both archived source trees. `validation.json` records checkpoint,
+  optimizer/model finiteness, source hashes, batch identities and diagnostics.
+  Both rate/seed0 launchers completed one actual update with four collectors,
+  unchanged full model/horizon80, batch floor1 and total-step floor1: each
+  collected 284 steps/4 episodes. Applied displacements were
+  0.1257710359334028 and 0.41923678644467605 (ratio 10/3); pre-clip gradients and
+  all four scenario identities matched exactly. Both D2 modes were finite and
+  positive; all 852 agent-steps were replayed. These are execution checks, not
+  learning or superiority evidence. Archived source predates this additive log
+  and the final CLI rejection guard for unsupported diagnostic dry runs.
+- Initial focused checks passed 31 tests; these included exact model **and Adam
+  state** equality with/without diagnostics for Real and Binary, masked-action
+  KL, recurrence versus action-head separation, unchanged RNG/gradients, all
+  six real CLI dry runs and all six mocked-Slurm mappings. Final focused checks
+  passed **34 tests in 3.53s**, including all-episode replay coverage and the
+  final nominal-PCP dry-run guard. The full suite completed with **773 passed,
+  one failed in 294.15s**: the unchanged, pre-existing
+  `slurm/publication_train.sbatch` has `--array=0-11`, while its unchanged test
+  expects `0-11%3`. Verified the directive in Git HEAD, empty diffs for both
+  files and the same failure in isolation; neither unrelated file was edited.
+  `bash -n` on both new shell files and `git diff --check` passed. No full research training, held-out
+  evaluation, cluster submission, dependency change, original-entrypoint edit,
+  checkpoint/input mutation, commit or push was performed.

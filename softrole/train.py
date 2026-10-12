@@ -171,11 +171,15 @@ def summarize(episodes):
     return row
 
 
-def train(config, output, resume=None, episode_log="file"):
+def train(config, output, resume=None, episode_log="file", diagnostics_every=None):
     """Run bounded training in a fresh directory; no changes to legacy entrypoints."""
     config.validate()
     if episode_log not in ("file", "stdout"):
         raise ValueError("episode_log must be file or stdout")
+    if diagnostics_every is not None and (type(diagnostics_every) is not int or diagnostics_every < 1):
+        raise ValueError("diagnostics_every must be a positive integer")
+    if diagnostics_every is not None and (config.task != "pcp" or config.failure_prob):
+        raise ValueError("Update diagnostics currently support nominal PCP only")
     output = Path(output)
     if output.exists():
         raise FileExistsError(f"refusing to overwrite run: {output}")
@@ -213,6 +217,10 @@ def train(config, output, resume=None, episode_log="file"):
     output.mkdir(parents=True)
     (output / "checkpoints").mkdir()
     provenance = source_snapshot(output)
+    diagnostics = None
+    if diagnostics_every is not None:
+        from softrole.lr_diagnostics import UpdateDiagnostics
+        diagnostics = UpdateDiagnostics(config, output, diagnostics_every)
     environment_source = simulator_source = None
     if config.env_version == "paper-v1":
         from softrole.publication_env import source_binding, SIMULATOR_FILES
@@ -276,6 +284,8 @@ def train(config, output, resume=None, episode_log="file"):
                                config.to_dict(), rank, completed_updates, environment_source)
                                for rank in range(config.nprocesses)]
                     batches = [future.result() for future in futures]
+                if diagnostics is not None:
+                    diagnostics.before(model, batches, completed_updates + 1, environment_source)
                 norm = apply_gradients(model, optimizer, batches, config.max_grad_norm)
                 completed_updates += 1
                 episode_records = []
@@ -294,6 +304,8 @@ def train(config, output, resume=None, episode_log="file"):
                     "episodes": sum(b["num_episodes"] for b in batches),
                     "steps": sum(b["num_steps"] for b in batches), "total_steps": total_steps,
                     "gradient_norm_before_clip": norm})
+                if diagnostics is not None:
+                    diagnostics.after(model, completed_updates, total_steps, norm)
                 if config.total_steps is not None and total_steps >= config.total_steps:
                     break
             row = summarize(epoch_episodes)

@@ -314,6 +314,63 @@ binding and one thread per numerical library; its four-CPU, 16 GB, 48-hour
 requests are starting settings, not a measured runtime for this larger model.
 No submission is automatic.
 
+### CapConNet Real Adam learning-rate training and diagnostics (S1)
+
+[slurm/softrole_lr_pcp.sbatch](slurm/softrole_lr_pcp.sbatch) runs six fresh
+shared **Real** PCP jobs: indices 0–2 use Adam **3e-4**, seeds 0–2; indices
+3–5 use Adam **1e-3**, seeds 0–2. Each targets **20M joint environment steps**
+with complete-update overshoot, a 2,000-epoch ceiling and checkpoints every
+10 epochs plus the terminal checkpoint. The current three-round, independent
+64-wide head payload model, four collectors with batch floor 500 each, native
+2P1A PCP task, team objective, clipping and seed coordinates are preserved.
+Matching seed coordinates does not keep trajectories identical after rates diverge.
+This covers the two requested new S1 rates; a fresh 1e-4 control is not included.
+Historical stdout alone is insufficient for a fully verified three-rate comparison.
+
+```bash
+# Validate the configurations locally without creating runs.
+bash scripts/softrole_lr_pcp.sh 0 --dry-run
+bash scripts/softrole_lr_pcp.sh 3 --dry-run
+
+# Submit from the checkout root on Stokes.
+mkdir -p logs_sr
+sbatch slurm/softrole_lr_pcp.sbatch
+
+# Optional tiny local execution check, with a fresh output root.
+SOFTROLE_LR_PCP_RUN_ROOT=runs/lr_pcp_smoke \
+  bash scripts/softrole_lr_pcp.sh 0 --epochs 1 --updates-per-epoch 2 \
+    --batch-steps 1 --nprocesses 1 --total-steps 1 --save-every 1 \
+    --diagnostics-every 1
+```
+
+Each job requests four CPUs, 16 GB and 48 hours; at most three run concurrently.
+The wall-time request follows existing launchers and does not guarantee completion.
+Outputs use `runs/softrole_lr_pcp_JOBID/pcp_shared/real/adam_lr{3e-4,1e-3}/seedN`;
+set `SOFTROLE_LR_PCP_RUN_ROOT` for a custom fresh root. Existing paths, resume,
+and architecture/learner overrides are rejected. Only positive runtime/budget
+options listed by `bash scripts/softrole_lr_pcp.sh --help` may be changed.
+
+`diagnostics.jsonl` records pre-clip norms and applied parameter displacement
+overall and by module **every update** (the applied-update portion of D1).
+On update 1 and every 50th update, D2 replays **all complete episodes in that
+logged batch**, checking exact pre-update metrics. It holds observations,
+sampled action histories and Binary noise fixed, and records agent-step mean
+KL(old || new) and before/after entropy twice: recomputing recurrence/messages,
+and holding logged final communication features fixed to isolate the action
+head. Defaults elsewhere keep diagnostics disabled. Diagnostics use no gradients,
+optimizer steps or extra training samples; replay adds wall-clock cost.
+
+After successful training, the launcher creates `diagnostics_summary.json`
+with mean/max applied update size, mean/max measured KL, entropy changes,
+epoch performance and descriptive adjacent-epoch regressions. It streams the
+episode ledger for episode-weighted 0–2M, **4–8M** and **8–12M** windows, assigning
+complete updates by their step endpoint. Unreached windows remain explicitly
+incomplete or empty. `diagnostics_protocol.json` records the definitions and
+limits alongside the normal archived source/configuration/checkpoints.
+Sparse D2 observations can miss brief policy changes; performance regressions
+are not an automatic collapse classification. Actor/value gradient decomposition,
+D3–D5, frozen evaluation and held-out panels are outside this launcher.
+
 SoftRole logs both `team_return` and `mean_agent_return`. The latter is the
 mean of each episode's agent returns, matching the released HetNet reporting
 scale. For fixed three-agent teams it is `team_return / 3`; for varying teams,
