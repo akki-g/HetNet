@@ -29,8 +29,8 @@ def message_noise(seed, step, n_agents, n_bits, dtype, *, comm_rounds=2, heads=N
     return draws
 
 
-def sample_actions(logits, seed, step):
-    """Inverse-CDF sampling allows exact common-random-number interventions."""
+def sample_agent_actions(logits, seed, step):
+    """Inverse-CDF sampling; return actions and the per-agent log probabilities."""
     distribution = Categorical(logits=logits)
     uniform = torch.rand(logits.shape[0], dtype=logits.dtype,
                          generator=_generator(seed, step))
@@ -40,7 +40,13 @@ def sample_actions(logits, seed, step):
     cdf = cdf / cdf[:, -1:]
     action = torch.searchsorted(cdf, uniform[:, None], right=True).squeeze(-1)
     action = action.clamp_max(logits.shape[-1] - 1)
-    return action, distribution.log_prob(action).sum()
+    return action, distribution.log_prob(action)
+
+
+def sample_actions(logits, seed, step):
+    """Inverse-CDF sampling allows exact common-random-number interventions."""
+    action, log_probs = sample_agent_actions(logits, seed, step)
+    return action, log_probs.sum()
 
 
 def communication_adjacency(positions, comm_range):
@@ -159,11 +165,17 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
                 comm_off=intervention == "comm_off" and is_intervened,
             )
             actions, log_prob = sample_actions(out["logits"], scenario.action_seed, t)
+            # Per-agent scores of the same sampled actions; no additional draw.
+            agent_log_probs = Categorical(logits=out["logits"]).log_prob(actions)
             obs, rewards, done, info = adapter.step(actions.detach().cpu().numpy(), kappa)
             returns += np.asarray(rewards)
             episode.log_probs.append(log_prob)
+            episode.agent_log_probs.append(agent_log_probs)
             episode.values.append(out["value"].reshape(()))
+            if out.get("agent_values") is not None:
+                episode.agent_values.append(out["agent_values"])
             episode.rewards.append(float(np.asarray(rewards).sum()))
+            episode.agent_rewards.append(np.asarray(rewards, dtype=np.float64).tolist())
             memory = out["memory"]
             memory["a_prev"] = actions.detach()
             if training and (t + 1) % config.detach_gap == 0:

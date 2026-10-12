@@ -5,7 +5,9 @@ deliberately absent.  Dense adjacency is indexed ``[receiver, sender]``.
 
 Opt-in variants (every default reproduces the pre-existing model exactly):
 ``communication`` adds ``real_noisy`` and ``binary_deterministic`` channels,
-``null_degree_correction`` adds ``log(max(d,1)/2)`` to the null attention logit.
+``null_degree_correction`` adds ``log(max(d,1)/2)`` to the null attention logit,
+``critic_mode="decomposed"`` replaces the scalar team head by per-agent values
+that sum to the team value.
 """
 
 from __future__ import annotations
@@ -203,6 +205,10 @@ class SoftRoleNet(nn.Module):
     gate, shared=one actual expert with no gate parameters.  All modes retain
     capability-aware shared recurrence.  ``feedback=False`` removes the
     previous communicated features from the LSTM input.
+
+    ``critic_mode="decomposed"`` computes v_j = psi([H_j; kappa_j; mean_i
+    phi([H_i; kappa_i]); N; sum kappa; remaining]) with one shared head and
+    V = sum_j v_j.
     """
 
     def __init__(self, base: int = 25, n_squares: int = 25, mode: str = "banked",
@@ -210,7 +216,8 @@ class SoftRoleNet(nn.Module):
                  heads: int = 4, head_dim: int = 16, msg_dim: int = 16,
                  feedback: bool = True, allow_stay: bool = True,
                  comm_rounds: int = 2, independent_heads: bool = False,
-                 communication: str = "binary", null_degree_correction: bool = False):
+                 communication: str = "binary", null_degree_correction: bool = False,
+                 critic_mode: str = "team"):
         super().__init__()
         if type(allow_stay) is not bool:
             raise ValueError("allow_stay must be boolean")
@@ -222,6 +229,8 @@ class SoftRoleNet(nn.Module):
             raise ValueError(f"communication must be one of {CHANNELS}")
         if type(null_degree_correction) is not bool:
             raise ValueError("null_degree_correction must be boolean")
+        if critic_mode not in ("team", "decomposed"):
+            raise ValueError("critic_mode must be team or decomposed")
         self.allow_stay = allow_stay
         if mode not in {"banked", "shared", "capability", "constant"}:
             raise ValueError(f"Unknown gate mode: {mode}")
@@ -234,6 +243,7 @@ class SoftRoleNet(nn.Module):
         self.heads, self.comm_rounds = heads, comm_rounds
         self.independent_heads, self.communication = independent_heads, communication
         self.null_degree_correction = null_degree_correction
+        self.critic_mode = critic_mode
         self.pre = nn.Linear(self.obs_dim, pre_dim)
         self.lstm = nn.LSTMCell(pre_dim + (head_dim if feedback else 0) + 6, hidden_dim)
         self.gate_network = None
@@ -254,7 +264,11 @@ class SoftRoleNet(nn.Module):
         ])
         self.output = nn.Linear(head_dim, 6)
         self.critic_agent = nn.Sequential(nn.Linear(hidden_dim + 2, 64), nn.ReLU())
-        self.critic = nn.Sequential(nn.Linear(68, 64), nn.ReLU(), nn.Linear(64, 1))
+        if critic_mode == "team":
+            self.critic = nn.Sequential(nn.Linear(68, 64), nn.ReLU(), nn.Linear(64, 1))
+        else:
+            # Shared per-agent head over [H_j; kappa_j; pooled phi; N; sum kappa; remaining].
+            self.critic = nn.Sequential(nn.Linear(hidden_dim + 2 + 64 + 4, 64), nn.ReLU(), nn.Linear(64, 1))
 
     def initial_memory(self, n: int) -> dict[str, Tensor]:
         """Zero local state; previous action is stay (index 4)."""
@@ -293,6 +307,8 @@ class SoftRoleNet(nn.Module):
         real and binary_deterministic reject it.
         A gate override is either the full gate or ``(agent_mask, pinned_gate)``
         to freeze selected agents while all others continue adapting.
+        ``agent_values`` is the per-agent value vector of the decomposed critic
+        (summing to ``value``) and None for the team critic.
         """
         n = obs.shape[0]
         if n == 0 or obs.shape != (n, self.obs_dim) or kappa.shape != (n, 2):
@@ -337,8 +353,16 @@ class SoftRoleNet(nn.Module):
         pooled = self.critic_agent(torch.cat((hidden, kappa), dim=-1)).mean(dim=0)
         remaining_tensor = torch.as_tensor(remaining, dtype=obs.dtype, device=obs.device).reshape(1)
         team = torch.cat((obs.new_tensor([n]), kappa.sum(dim=0), remaining_tensor))
-        value = self.critic(torch.cat((pooled, team))).squeeze(-1)
+        if self.critic_mode == "team":
+            value = self.critic(torch.cat((pooled, team))).squeeze(-1)
+            agent_values = None
+        else:
+            per_agent = torch.cat((hidden, kappa, pooled.unsqueeze(0).expand(n, -1),
+                                   team.unsqueeze(0).expand(n, -1)), dim=-1)
+            agent_values = self.critic(per_agent).squeeze(-1)
+            value = agent_values.sum()
         next_memory = {"H": hidden, "C": cell, "u_bar": features, "a_prev": memory["a_prev"]}
-        return {"logits": logits, "value": value, "memory": next_memory, "gate": gate,
+        return {"logits": logits, "value": value, "agent_values": agent_values,
+                "memory": next_memory, "gate": gate,
                 "bits": messages if self.communication in BIT_CHANNELS else [],
                 "messages": messages, "alpha_null": alpha_null}

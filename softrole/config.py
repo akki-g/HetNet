@@ -10,6 +10,7 @@ EXTRAPOLATION_TEST = ((4, 1), (4, 2))
 # Opt-in channel, critic, credit, objective and capability-input variants.
 # Every default below reproduces the pre-existing behaviour and checkpoint layout.
 CHANNELS = ("binary", "real", "real_noisy", "binary_deterministic")
+CRITIC_MODES = ("team", "decomposed")
 
 
 @dataclass
@@ -34,6 +35,7 @@ class Config:
     independent_heads: bool = False
     communication: str = "binary"
     null_degree_correction: bool = False
+    critic_mode: str = "team"
     feedback: bool = True
     comm_range: float = -1.0
     seed: int = 0
@@ -77,7 +79,8 @@ class Config:
         # Omit default additions so original checkpoint model_config dictionaries
         # still match exactly and retain their original state-dict layout.
         for name, default in (("comm_rounds", 2), ("independent_heads", False),
-                              ("communication", "binary"), ("null_degree_correction", False)):
+                              ("communication", "binary"), ("null_degree_correction", False),
+                              ("critic_mode", "team")):
             if getattr(self, name) != default:
                 settings[name] = getattr(self, name)
         return settings
@@ -98,6 +101,8 @@ class Config:
             raise ValueError(f"communication must be one of {CHANNELS}")
         if type(self.null_degree_correction) is not bool:
             raise ValueError("null_degree_correction must be a boolean")
+        if self.critic_mode not in CRITIC_MODES:
+            raise ValueError(f"critic_mode must be one of {CRITIC_MODES}")
         if self.optimizer not in ("rmsprop", "adam"):
             raise ValueError("optimizer must be rmsprop or adam")
         if type(self.comm_rounds) is not int or self.comm_rounds <= 0:

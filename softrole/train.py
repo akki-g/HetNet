@@ -248,7 +248,8 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
                "optimizer_initialization": "checkpoint" if resume else "fresh",
                "parameters": sum(p.numel() for p in model.parameters()),
                "actor_objective": "undiscounted sum of physical-agent rewards",
-               "learner": {"null_degree_correction": config.null_degree_correction,
+               "learner": {"critic_mode": config.critic_mode,
+                           "null_degree_correction": config.null_degree_correction,
                            "communication": config.communication},
                "approximations": channel_approximations(config.communication) +
                                   ["GAE with learned critic", "truncated BPTT"]})
