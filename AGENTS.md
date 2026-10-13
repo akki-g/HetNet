@@ -3191,3 +3191,63 @@ the legacy `prepare-evaluation` route for paper-v1 or pool unmatched old FC runs
   validation's recorded source hash is the tree before this entry.
 - Ten commits named after the proposals and stages, authored solely by the
   repository owner, on branch `claude/funny-ritchie-6fw3dq`.
+
+### 2026-10-13 — Adam D1–D6 diagnostics at midway and final checkpoints
+
+- The user selected `runs/softrole_adam_pcp_911488`, then requested both the
+  midway and final metrics. Read-only inspection of the copied archive found
+  all three shared Binary Adam seeds. `epoch1000.pt` contains 10,000 updates
+  and 20,516,805 / 20,473,644 / 20,513,864 steps (seeds 0/1/2); terminal
+  `epoch2000.pt` contains 20,000 updates and 40,626,850 / 40,578,698 /
+  40,616,881 steps. Midway diagnostics replay the next recorded update;
+  terminal diagnostics explicitly use a fresh checkpoint-probe batch. Both
+  stages keep the same D6 panel settings. This choice is not evidence that
+  Adam improves task performance.
+- Fixed the launch workflow behind the missing `CAPCOM_DIAGNOSTICS_MANIFEST`
+  error: a helper prepares both locked manifests, validates all six array
+  tasks, and optionally submits two three-seed arrays with each manifest and
+  output root explicitly exported. Default invocation only prepares/validates;
+  `--submit` opts into submission. It uses the existing one-CPU, 16 GB, 12-hour
+  Sapphire Rapids Slurm script. A single fresh results root contains both
+  manifests and separate `midway/` and `final/` task directories.
+- The selected Adam archive predates the current model/configuration/rollout
+  interfaces. Added an explicit `archived-adam` numerical runtime limited to
+  the audited source profile at `692b88d`, source identity
+  `4c5dfbd6b9d519d99c999c638abb2d9f0679293e90d7ad235a099ea18a9e876e`.
+  All 306 archived files and pinned numerical file hashes are checked before
+  executing verified source bytes in a private namespace. Its original PCP
+  simulator, model, rollout, loss and optimizer execute unchanged; Config/model
+  subclasses add metadata only. Private modules and diagnostic bindings are
+  cleaned up even on error. Checkpoint signatures, optimizer state, recorded
+  Torch/NumPy versions, exact historical replay and input/source immutability
+  remain checked. Current-code diagnostics remain the default, including old
+  manifests without a runtime selector; programme version 2 is preserved.
+- D1's current team loss split was checked against the original five-field
+  Episode and archived production loss/collector. The old Episode has no
+  per-agent value records; diagnostics now handle that absence. D5 accepts the
+  archive's `bits` output key as well as the current `messages` key. No training
+  configuration, policy parameters or production numerical defaults changed.
+- Files touched: `softrole/diagnostic_archive.py` (new isolated runtime),
+  `softrole/diagnostics.py` (explicit runtime selection/provenance and old
+  Episode compatibility), `softrole/diagnostic_surrogate.py` (payload-key
+  compatibility), `scripts/softrole_adam_diagnostics.sh` (new two-stage helper),
+  `tests/test_softrole_diagnostic_archive.py`,
+  `tests/test_softrole_archived_diagnostics.py`,
+  `tests/test_softrole_adam_diagnostics_launcher.py` (new tests), `README.md`
+  (launch and analysis paths), and `AGENTS.md` (this record).
+- Bounded validation includes a three-step compatibility sample from one
+  archived checkpoint and a disposable synthetic checkpoint using the verified
+  archived code, a two-step horizon and tiny D5/D6 panels. These check execution
+  and mathematical compatibility, not historical replay or research performance
+  on the local machine. Actual archived inputs remain unchanged. No full
+  research diagnostics, training sweep, cluster submission, dependency change,
+  commit or push was performed.
+- Validation: **117 tests passed in 11.90 seconds** across the existing D1–D6
+  runner, estimators, surrogate, protocol-version-2 and launcher tests plus the
+  three new test files. Coverage includes source-tamper refusal, runtime
+  routing/restoration, old-manifest defaults, exact archived collector-gradient
+  agreement, complete tiny archived D1–D6 execution, both stage/seed mappings,
+  explicit Slurm environment export and refusal to submit before all six
+  validations succeed. Shell syntax for the new helper, diagnostic wrapper and
+  Sapphire Rapids sbatch script passed; `git diff --check` passed. No full
+  repository regression suite was rerun for these diagnostic-only changes.

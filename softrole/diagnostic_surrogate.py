@@ -139,7 +139,8 @@ def audit_surrogate(model: SoftRoleNet, *, obs: Tensor, kappa: Tensor,
     logged_log_probs = F.log_softmax(logged["logits"], dim=-1).gather(1, actions[:, None]).squeeze(1)
     if not torch.isfinite(logged_log_probs).all():
         raise ValueError("The logged action is physically masked or has nonfinite probability")
-    payloads = [value.detach().clone() for value in logged["messages"]]
+    payload_key = "messages" if "messages" in logged else "bits"
+    payloads = [value.detach().clone() for value in logged[payload_key]]
     base = payloads[round_index]
     if bit_indices is None:
         eligible = torch.nonzero(adjacency.any(dim=0), as_tuple=False).flatten()

@@ -14,6 +14,7 @@ stays labelled separately) and applies D5 only to stochastic Binary bits.
 import argparse
 import ast
 import copy
+from contextlib import contextmanager
 from dataclasses import asdict, replace
 import hashlib
 import io
@@ -44,6 +45,8 @@ from softrole.scenarios import make_scenarios
 from softrole.train import apply_gradients, source_snapshot, write_json
 
 ROOT = Path(__file__).resolve().parents[1]
+NUMERICAL_ROOT = ROOT
+RUNTIMES = ('current', 'archived-adam')
 COMPOSITIONS = ((1, 2), (2, 2), (3, 1))
 PROTOCOL_VERSIONS = (1, 2)
 LEARNER_FIELDS = ('communication', 'null_degree_correction', 'critic_mode', 'credit_beta',
@@ -52,6 +55,29 @@ LEARNER_FIELDS = ('communication', 'null_degree_correction', 'critic_mode', 'cre
 CORE = tuple('softrole/' + name + '.py' for name in
              ('config', 'env', 'model', 'learning', 'optimizers', 'rollout', 'scenarios')) + (
                  'envs/ic3net_envs/predator_capture_env.py',)
+
+
+@contextmanager
+def numerical_runtime(runtime, checkpoint):
+    """Select verified numerical code for this serial offline diagnostic task."""
+    if runtime not in RUNTIMES:
+        raise ValueError('Unknown diagnostic numerical runtime')
+    if runtime == 'current':
+        yield {'runtime': 'current'}
+        return
+    from softrole.diagnostic_archive import archived_adam_runtime
+    with archived_adam_runtime(checkpoint) as archived:
+        names = ('Config', 'SoftRoleNet', 'make_env', 'run_episode',
+                 'compute_episode_loss', 'team_gae', 'make_scenarios',
+                 'apply_gradients', 'make_optimizer', 'validate_optimizer_resume')
+        replacements = {name: archived[name] for name in names}
+        replacements['NUMERICAL_ROOT'] = archived['numerical_root']
+        original = {name: globals()[name] for name in replacements}
+        try:
+            globals().update(replacements)
+            yield {'runtime': runtime, **archived['provenance']}
+        finally:
+            globals().update(original)
 
 
 def sha(path):
@@ -156,7 +182,7 @@ def audit_archive(checkpoint, saved, cfg):
         if path.is_absolute() or '..' in path.parts or sha(run / 'source' / name) != expected:
             raise ValueError(f'Archived source hash mismatch: {name}')
     for name in CORE:
-        if manifest['files'].get(name) != sha(ROOT / name):
+        if manifest['files'].get(name) != sha(NUMERICAL_ROOT / name):
             raise ValueError(f'Numerical source differs from archive: {name}; audit/reconcile before replay')
     # New read-only diagnostic hooks in train() do not alter these numerical
     # functions. Compare their ASTs so unrelated logging additions are allowed.
@@ -165,7 +191,7 @@ def audit_archive(checkpoint, saved, cfg):
             tree = ast.parse(path.read_text())
             return ast.dump(next(node for node in tree.body
                                  if isinstance(node, ast.FunctionDef) and node.name == function))
-        if function_ast(run / 'source' / 'softrole/train.py') != function_ast(ROOT / 'softrole/train.py'):
+        if function_ast(run / 'source' / 'softrole/train.py') != function_ast(NUMERICAL_ROOT / 'softrole/train.py'):
             raise ValueError(f'Numerical training function differs from archive: {function}')
     if Config(**read_json(run / 'config.json')).to_dict() != cfg.to_dict():
         raise ValueError('Run/checkpoint configuration mismatch')
@@ -200,10 +226,14 @@ def logged_batch(run, update):
 
 def prepare(checkpoints, output, checkpoint_rule, batch_mode='logged-next-update',
             probe_episodes=100, seed=2711, d5_instances=8, d5_bits=3, d5_samples=256,
-            protocol_version=1):
+            protocol_version=1, runtime='current'):
     torch.set_num_threads(1)
     if protocol_version not in PROTOCOL_VERSIONS:
         raise ValueError('Unsupported diagnostic protocol version')
+    if runtime not in RUNTIMES:
+        raise ValueError('Unknown diagnostic numerical runtime')
+    if runtime == 'archived-adam' and protocol_version != 1:
+        raise ValueError('Archived Adam requires diagnostic protocol version 1')
     if not checkpoint_rule.strip():
         raise ValueError('Declare the checkpoint selection rule before outcomes')
     if batch_mode not in ('logged-next-update', 'checkpoint-probe'):
@@ -222,11 +252,12 @@ def prepare(checkpoints, output, checkpoint_rule, batch_mode='logged-next-update
     seen = set()
     for checkpoint in checkpoints:
         checkpoint = Path(checkpoint).resolve()
-        saved, cfg, _, digest = load_checkpoint(checkpoint, protocol_version)
+        with numerical_runtime(runtime, checkpoint) as provenance:
+            saved, cfg, _, digest = load_checkpoint(checkpoint, protocol_version)
+            run = audit_archive(checkpoint, saved, cfg)
         if digest in seen:
             raise ValueError('Duplicate checkpoint')
         seen.add(digest)
-        run = audit_archive(checkpoint, saved, cfg)
         inputs = {str(checkpoint): digest}
         for name in ('config.json', 'run.json', 'source_manifest.json'):
             inputs[str(run / name)] = sha(run / name)
@@ -239,6 +270,8 @@ def prepare(checkpoints, output, checkpoint_rule, batch_mode='logged-next-update
                  'training_seed': cfg.seed, 'communication': cfg.communication,
                  'progress': {key: saved[key] for key in ('updates', 'total_steps', 'total_episodes')},
                  'model': cfg.model, 'source_sha256': saved['source_sha256']}
+        if runtime != 'current':
+            entry['numerical_runtime_provenance'] = provenance
         if protocol_version >= 2:
             entry.update(learner=learner_identity(cfg), training_study=training_study(cfg),
                          training_compositions=[list(c) for c in cfg.training_compositions],
@@ -247,6 +280,7 @@ def prepare(checkpoints, output, checkpoint_rule, batch_mode='logged-next-update
     if not entries:
         raise ValueError('Select at least one checkpoint')
     manifest = {'version': protocol_version, 'checkpoint_rule': checkpoint_rule, 'batch_mode': batch_mode,
+                'numerical_runtime': runtime,
                 'probe_episodes_per_composition': probe_episodes, 'panel_seed': seed,
                 'd5_instances': d5_instances, 'd5_bits': d5_bits, 'd5_samples': d5_samples,
                 'compositions': [list(c) for c in COMPOSITIONS], 'event_step': 1,
@@ -358,7 +392,8 @@ def batch_diagnostics(saved, cfg, model, manifest, run):
             value = scale * cfg.value_coeff * terms['value']
             total_actor += flat_grad(actor, model, retain_graph=True)
             total_value += flat_grad(value, model, retain_graph=True)
-            agent_values = torch.stack(episode.agent_values).detach() if episode.agent_values else None
+            per_agent_values = getattr(episode, 'agent_values', None)
+            agent_values = torch.stack(per_agent_values).detach() if per_agent_values else None
             estimators = actor_episode_gradients(log_probs, values, rewards, model, cfg, retain_graph=True,
                                                  agent_values=agent_values, scale=scale)
             moments.add(estimators['gradients'])
@@ -522,6 +557,20 @@ def frozen_probes(model, cfg, manifest, output):
 
 
 def execute(manifest_path, index, output, dry_run=False):
+    manifest = read_json(manifest_path)
+    if type(index) is not int or not 0 <= index < len(manifest['entries']):
+        raise ValueError('Array index outside manifest')
+    runtime = manifest.get('numerical_runtime', 'current')
+    if runtime == 'archived-adam' and manifest['version'] != 1:
+        raise ValueError('Archived Adam requires diagnostic protocol version 1')
+    entry = manifest['entries'][index]
+    with numerical_runtime(runtime, entry['checkpoint']) as provenance:
+        if runtime != 'current' and entry.get('numerical_runtime_provenance') != provenance:
+            raise ValueError('Archived numerical runtime differs from prepared manifest')
+        return _execute(manifest_path, index, output, dry_run, provenance)
+
+
+def _execute(manifest_path, index, output, dry_run, provenance):
     torch.set_num_threads(1)
     manifest_digest = sha(manifest_path)
     manifest = read_json(manifest_path)
@@ -562,6 +611,7 @@ def execute(manifest_path, index, output, dry_run=False):
     if output.exists() or output.is_symlink():
         raise FileExistsError(output)
     plan = {'index': index, 'checkpoint': entry['checkpoint'], 'output': str(output),
+            'numerical_runtime': provenance,
             'batch_mode': manifest['batch_mode'], 'D6_policy_episodes': 9 * manifest['probe_episodes_per_composition'],
             'training_steps_persisted': 0}
     if dry_run:
@@ -609,6 +659,8 @@ def main(argv=None):
         parser.add_argument('--d5-samples', type=positive, default=256)
         parser.add_argument('--protocol-version', type=int, choices=PROTOCOL_VERSIONS, default=1,
                             help='1: nominal fixed-2P1A team learner (unchanged); 2: composition/failure training and programme learner variants')
+        parser.add_argument('--runtime', choices=RUNTIMES, default='current',
+                            help='archived-adam: verified historical job 911488 numerical code; protocol 1 only')
         parser.add_argument('--output', required=True)
         args = vars(parser.parse_args(argv[1:]))
         result = prepare(**args)

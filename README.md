@@ -455,6 +455,39 @@ ledgers and rejects missing/mismatched episodes, counts or pre-clip norms.
 The checkpoint rule is recorded verbatim; preparation validates supplied inputs
 but does not search archives or assert that your declared selection rule was met.
 
+For the completed **Adam job `911488`**, the helper below prepares both requested
+stages for seeds 0–2 and validates all six tasks before submitting two arrays:
+
+```bash
+# Run from the updated HetNet checkout on Stokes.
+bash scripts/softrole_adam_diagnostics.sh --submit
+```
+
+Omit `--submit` to prepare and validate only. The input root defaults to
+`runs/softrole_adam_pcp_911488` (override with `--run-root DIR`). Midway uses
+`pcp_shared/seed{0,1,2}/checkpoints/epoch1000.pt`, the first saved checkpoints
+at or above 20M steps in the audited archive, and replays update 10001. Final
+uses `epoch2000.pt` (about 40M steps) with explicit `checkpoint-probe` batches.
+Both stages use the same D6 panel seed and settings. Each array requests the
+existing Sapphire Rapids placement, with indices 0–2 corresponding to seeds 0–2.
+
+The helper prints a fresh `runs/capcom_adam_diagnostics_<timestamp>_<pid>/`
+output root; `--output-root DIR` can choose another fresh path. **Pull that entire
+directory for analysis**, including `manifests/{midway,final}.json`,
+`midway/task_{0,1,2}/` and `final/task_{0,1,2}/`. Pull the corresponding
+`logs_sr/capcom-diagnostics-JOBID_*.out` and `.err` files as well. Each task's
+`report.json` is written only after all D1–D6 diagnostics finish successfully.
+The failed missing-manifest job did not create diagnostic results.
+
+This helper selects `--runtime archived-adam`: the original job's model,
+rollout, environment, loss and optimizer code run from its verified source
+archive. Only the audited source profile at `692b88d` is accepted; all archived
+file hashes, checkpoint identities and recorded Torch/NumPy versions remain
+required. Metadata adapters expose the old two-round Binary shared-payload
+architecture without changing its parameter layout or numerical methods.
+Current-checkout diagnostics remain the default for other runs. Keep the
+evaluator checkout and input archives fixed until both arrays complete.
+
 Optional preparation settings are `--probe-episodes`, `--seed`, `--d5-instances`,
 `--d5-bits` (1–4) and `--d5-samples` (2–65536). Lock them before outcomes. A tiny
 execution check can use `--probe-episodes 1 --d5-instances 1 --d5-bits 2
