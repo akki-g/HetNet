@@ -455,29 +455,37 @@ ledgers and rejects missing/mismatched episodes, counts or pre-clip norms.
 The checkpoint rule is recorded verbatim; preparation validates supplied inputs
 but does not search archives or assert that your declared selection rule was met.
 
-For the completed **Adam job `911488`**, the helper below prepares both requested
-stages for seeds 0–2 and validates all six tasks before submitting two arrays:
+For the completed **Adam job `911488`**, submit the preparation job below from
+Stokes. It prepares both requested stages for seeds 0–2 and validates all six
+tasks on an allocated Sapphire Rapids node before submitting two diagnostic
+arrays. No Python preparation or Bash helper needs to run on the login node:
 
 ```bash
 # Run from the updated HetNet checkout on Stokes.
-bash scripts/softrole_adam_diagnostics.sh --submit
+sbatch slurm/softrole_adam_diagnostics.sbatch
 ```
 
-Omit `--submit` to prepare and validate only. The input root defaults to
-`runs/softrole_adam_pcp_911488` (override with `--run-root DIR`). Midway uses
+The preparation job requests one CPU, 16 GB and two hours. Its input root defaults
+to `runs/softrole_adam_pcp_911488` (override with the exported environment variable
+`CAPCOM_ADAM_RUN_ROOT`). Midway uses
 `pcp_shared/seed{0,1,2}/checkpoints/epoch1000.pt`, the first saved checkpoints
 at or above 20M steps in the audited archive, and replays update 10001. Final
 uses `epoch2000.pt` (about 40M steps) with explicit `checkpoint-probe` batches.
 Both stages use the same D6 panel seed and settings. Each array requests the
 existing Sapphire Rapids placement, with indices 0–2 corresponding to seeds 0–2.
 
-The helper prints a fresh `runs/capcom_adam_diagnostics_<timestamp>_<pid>/`
-output root; `--output-root DIR` can choose another fresh path. **Pull that entire
-directory for analysis**, including `manifests/{midway,final}.json`,
+The preparation job prints `runs/capcom_adam_diagnostics_<PREPARATION_JOBID>/`
+as the fresh output root; the exported `CAPCOM_ADAM_OUTPUT_ROOT` variable can
+choose another fresh path. **Pull that entire directory for analysis**, including
+`manifests/{midway,final}.json`,
 `midway/task_{0,1,2}/` and `final/task_{0,1,2}/`. Pull the corresponding
 `logs_sr/capcom-diagnostics-JOBID_*.out` and `.err` files as well. Each task's
 `report.json` is written only after all D1–D6 diagnostics finish successfully.
-The failed missing-manifest job did not create diagnostic results.
+Preparation logs are `capcom-adam-prepare-PREPARATION_JOBID.out` and `.err` in
+the repository root; the stdout log includes the two submitted array job IDs.
+The job creates `logs_sr` before submitting the arrays. No prior manifest or
+log-directory setup is needed. The failed missing-manifest job did not create
+diagnostic results.
 
 This helper selects `--runtime archived-adam`: the original job's model,
 rollout, environment, loss and optimizer code run from its verified source

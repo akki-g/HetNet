@@ -21,6 +21,8 @@ def case(tmp_path):
     for name in ('softrole_adam_diagnostics.sh', 'softrole_diagnostics.sh'):
         shutil.copyfile(ROOT / 'scripts' / name, root / 'scripts' / name)
     shutil.copyfile(ROOT / 'slurm/softrole_diagnostics.sbatch', root / 'slurm/softrole_diagnostics.sbatch')
+    shutil.copyfile(ROOT / 'slurm/softrole_adam_diagnostics.sbatch',
+                    root / 'slurm/softrole_adam_diagnostics.sbatch')
     runs = root / 'runs/softrole_adam_pcp_911488'
     for seed in range(3):
         directory = runs / f'pcp_shared/seed{seed}/checkpoints'
@@ -191,4 +193,83 @@ def test_malformed_options_rejected_before_work(case, arguments):
 def test_shell_syntax():
     result = subprocess.run(['bash', '-n', str(ROOT / 'scripts/softrole_adam_diagnostics.sh')],
                             capture_output=True)
+    assert result.returncode == 0, result.stderr
+
+
+def slurm_launch(case, *arguments, python_source='HETNET_PYTHON'):
+    root, _, capture, original_env = case
+    env = dict(original_env, SLURM_SUBMIT_DIR=str(root), SLURM_JOB_ID='916000')
+    interpreter = original_env['PYTHON']
+    env.pop('HETNET_PYTHON', None)
+    env.pop('PYTHON', None)
+    if python_source:
+        env[python_source] = interpreter
+    else:
+        (root / '.venv/bin').mkdir(parents=True)
+        (root / '.venv/bin/python').symlink_to(interpreter)
+    for name in ('module', 'srun'):
+        command = capture.parent / name
+        command.write_text(f'#!{sys.executable}\n' + '''
+import json, os, pathlib, sys
+name = pathlib.Path(sys.argv[0]).name
+with open(os.environ['CAPTURE'], 'a') as stream:
+    stream.write(json.dumps({'kind': name, 'argv': sys.argv[1:], 'cwd': os.getcwd()}) + '\\n')
+if name == 'srun':
+    assert sys.argv[1] == '--cpu-bind=cores'
+    os.execvpe(sys.argv[2], sys.argv[2:], os.environ)
+''')
+        command.chmod(0o755)
+    return subprocess.run(['bash', str(root / 'slurm/softrole_adam_diagnostics.sbatch'), *arguments],
+                          cwd=root.parent, env=env, text=True, capture_output=True)
+
+
+@pytest.mark.parametrize('python_source', ['HETNET_PYTHON', 'PYTHON', None])
+def test_slurm_only_entry_prepares_under_srun_then_submits_both_arrays(case, python_source):
+    root = case[0]
+    result = slurm_launch(case, python_source=python_source)
+    assert result.returncode == 0, result.stderr
+    rows = calls(case)
+    assert [row['kind'] for row in rows] == ['module', 'srun'] + ['python'] * 8 + ['sbatch'] * 2
+    assert rows[0]['argv'] == ['load', 'anaconda/anaconda-2024.10']
+    assert all(row['cwd'] == str(root) for row in rows)
+    assert 'Results root: runs/capcom_adam_diagnostics_916000' in result.stdout
+    for row, stage in zip(rows[-2:], ('midway', 'final')):
+        assert row['manifest'] == f'runs/capcom_adam_diagnostics_916000/manifests/{stage}.json'
+        assert row['output_root'] == f'runs/capcom_adam_diagnostics_916000/{stage}'
+        assert row['argv'] == ['--export=ALL', '--array=0-2%3', 'slurm/softrole_diagnostics.sbatch']
+        assert row['logs_exists']
+
+
+def test_slurm_only_entry_honors_explicit_roots_and_stops_on_validation_failure(case):
+    case[3]['CAPCOM_ADAM_RUN_ROOT'] = str(case[1])
+    case[3]['CAPCOM_ADAM_OUTPUT_ROOT'] = 'runs/custom slurm diagnostics'
+    case[3]['FAIL_DRY_RUN'] = 'final:2'
+    result = slurm_launch(case)
+    assert result.returncode == 9, result.stderr
+    rows = calls(case)
+    assert [row['kind'] for row in rows] == ['module', 'srun'] + ['python'] * 8
+    assert argument(rows[2], '--output') == 'runs/custom slurm diagnostics/manifests/midway.json'
+    start = rows[2]['argv'].index('--checkpoints') + 1
+    assert rows[2]['argv'][start] == str(case[1] / 'pcp_shared/seed0/checkpoints/epoch1000.pt')
+
+
+def test_slurm_only_entry_rejects_arguments_before_work(case):
+    result = slurm_launch(case, '--submit')
+    assert result.returncode != 0
+    assert calls(case) == []
+
+
+def test_slurm_only_entry_placement_logs_and_shell_syntax():
+    wrapper = ROOT / 'slurm/softrole_adam_diagnostics.sbatch'
+    worker = ROOT / 'slurm/softrole_diagnostics.sbatch'
+    for script in (wrapper, worker):
+        content = script.read_text()
+        for directive in ('--constraint=sapphirerapids', '--account=cenyioha',
+                          '--partition=normal', '--cpus-per-task=1'):
+            assert '#SBATCH ' + directive in content
+    content = wrapper.read_text()
+    assert '#SBATCH --array=' not in content
+    assert '#SBATCH --output=capcom-adam-prepare-%j.out' in content
+    assert '#SBATCH --error=capcom-adam-prepare-%j.err' in content
+    result = subprocess.run(['bash', '-n', str(wrapper)], capture_output=True)
     assert result.returncode == 0, result.stderr

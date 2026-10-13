@@ -3251,3 +3251,30 @@ the legacy `prepare-evaluation` route for paper-v1 or pool unmatched old FC runs
   validations succeed. Shell syntax for the new helper, diagnostic wrapper and
   Sapphire Rapids sbatch script passed; `git diff --check` passed. No full
   repository regression suite was rerun for these diagnostic-only changes.
+
+### 2026-10-13 — Slurm-only Adam diagnostic entry point
+
+- The user clarified that Stokes work must start through Slurm. Added
+  `slurm/softrole_adam_diagnostics.sbatch` so a single `sbatch` command starts
+  preparation and validation inside a Sapphire Rapids allocation (one CPU,
+  16 GB, two hours), then submits the two existing three-seed diagnostic
+  arrays after all six validations pass. No preparation executes on the login
+  node. Both worker arrays retain their existing Sapphire Rapids requests.
+- The default result root is now predictable from the preparation job ID:
+  `runs/capcom_adam_diagnostics_JOBID/`, with `manifests/`, `midway/` and
+  `final/` beneath it. Preparation logs go directly to the repository root as
+  `capcom-adam-prepare-JOBID.out` and `.err`; the helper creates the worker log
+  directory before submissions. No pre-created manifest or log directory is
+  required. Optional `CAPCOM_ADAM_RUN_ROOT` / `CAPCOM_ADAM_OUTPUT_ROOT` variables
+  select input/output paths. Interpreter selection honors `HETNET_PYTHON`, then
+  `PYTHON`, then the checkout's `.venv/bin/python`.
+- Files touched: `slurm/softrole_adam_diagnostics.sbatch` (new entry point),
+  `tests/test_softrole_adam_diagnostics_launcher.py` (mock Slurm coverage),
+  `README.md` (Slurm-only command and paths), and `AGENTS.md` (this record).
+- Validation: **55 launcher tests passed in 6.32 seconds**, including mocked
+  module loading and `srun`, all interpreter selections, preparation before
+  submissions, both stage roots/exports, custom paths, failure propagation,
+  placement directives and argument rejection. Shell syntax and
+  `git diff --check` passed. No research computation, cluster submission,
+  dependency change, commit or push occurred; diagnostic mathematics and the
+  original reproduction entry points are unchanged.
