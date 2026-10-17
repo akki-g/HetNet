@@ -1,52 +1,39 @@
+# Version only the runnable project and its development files.
+/*
+!/.gitignore
+!/.python-version
+!/LICENSE
+!/README.md
+!/AGENTS.md
+!/*.py
+!/pyproject.toml
+!/requirements.txt
+!/uv.lock
+!/envs/
+!/hetgat/
+!/hetnet_ext/
+!/publication_reconstruction/
+!/scripts/
+!/scripts_eval/
+!/slurm/
+!/softrole/
+!/test_config/
+!/tests/
 
-*.pyc
-.venv*/
-.tools/
+# Reusable verification tools; all other analysis stays private.
+!/analysis/
+/analysis/*
+!/analysis/capcom_programme_2026-10-12/
+/analysis/capcom_programme_2026-10-12/*
+!/analysis/capcom_programme_2026-10-12/validate.py
+!/analysis/capcom_programme_2026-10-12/validate_fixes.py
+!/analysis/capcom_programme_2026-10-12/integration/
+/analysis/capcom_programme_2026-10-12/integration/*
+!/analysis/capcom_programme_2026-10-12/integration/stage_evidence.py
+
+# Generated files within the allowed source directories.
 __pycache__/
-.pytest_cache/
+*.py[cod]
 *.egg-info/
-build/
-dist/
+.pytest_cache/
 .DS_Store
-runs/
-saved/
-results/
-slurm-*.out
-slurm-*.err
-
-*.pdf
-*.md
-!README.md
-!softrole/ADAM_PCP.md
-# Required by the reconstruction source manifest and upstream license terms.
-!publication_reconstruction/runtime/envs/LICENSE.md
-research/
-evidence/
-logs/
-docs/
-
-logs_1/
-logs_sr/
-logs/
-
-*.tar.gz
-*.zip
-
-# Keep the self-contained SoftRole guide; other local docs stay excluded.
-
-docs/
-analysis/*
-output/
-
-*.pptx
-stokes_runs/
-
-# Evidence-backed HetNet performance plan; keep other research inputs excluded.
-!publication_reconstruction/PERFORMANCE_PLAN.md
-
-# Paper reconciliation, numerical backend validation and source audit evidence.
-!publication_reconstruction/FIDELITY.md
-
-# CapCom proposal programme record (12 October 2026); large run outputs stay under runs/.
-!analysis/capcom_programme_2026-10-12/
-!analysis/capcom_programme_2026-10-12/**

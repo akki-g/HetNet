@@ -22,8 +22,8 @@ def parser():
     train = commands.add_parser("train", help="train in a fresh run directory")
     train.add_argument("--output", required=True, type=Path)
     train.add_argument("--resume", type=Path, help="resume into a new output directory")
-    train.add_argument("--episode-log", choices=("file", "stdout"), default="file",
-                       help="episode records: buffered JSONL file or tagged stdout batch per update")
+    train.add_argument("--episode-log", choices=("file", "stdout", "chunked-gzip"), default="file",
+                       help="episode records: JSONL file (default), tagged stdout batches, or indexed gzip chunks")
     train.add_argument("--dry-run", action="store_true")
     train.add_argument("--diagnostics-every", type=int,
                        help="opt-in nominal PCP update norms and sampled policy replay every N updates")

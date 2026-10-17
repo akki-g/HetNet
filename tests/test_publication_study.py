@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess
 
 import pytest
+import torch
 
 from publication_reconstruction import study
 from publication_reconstruction.__main__ import parser, resolve
@@ -159,7 +160,9 @@ def preflight_evidence(tmp_path, monkeypatch):
             "checkpoint_sha256": artifacts.digest(checkpoint)}) + "\n")
         (tmp_path / "protocol.json").write_text(json.dumps({"task": "pp", "variant": "real",
             "updates_per_epoch": 10, "output": str(tmp_path)}))
-        (tmp_path / "environment.json").write_text(json.dumps({"packages": {"torch": "2.2.1"}}))
+        # This fixture models evidence produced in the current environment,
+        # including any distribution suffix such as +cu121.
+        (tmp_path / "environment.json").write_text(json.dumps({"packages": {"torch": torch.__version__}}))
         saved = {"reconstruction": {"counts": dict(final)}}
         monkeypatch.setattr(artifacts, "load_checkpoint", lambda *args: saved)
         validated = []

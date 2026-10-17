@@ -722,12 +722,20 @@ estimator equals $\beta$ times the exact gradient. The run record lists
 
 **L1c mean-agent objective** (`--objective mean_agent`). Each complete episode
 loss is multiplied by $1/N_e$ before collection; the learner still averages once
-by the global episode count and clips once. Recorded loss sums stay unscaled.
+by the global episode count and clips once. Existing raw loss fields remain
+unchanged. Mean-agent runs additionally record objective-scaled actor, value
+and total losses, summing each episode after its own $1/N_e$ scaling; scaling
+the final aggregate by an average roster size would be a different quantity.
 
 **O1 physical-only actor input** (`--actor-capabilities physical_only`). The
 actor preprocessing receives $x_{jt}$ without its final two capability entries;
 the action mask and the critic keep $\kappa$; banked gates use $H$ only. The
-capability-gated model is rejected with this option.
+capability-gated model is rejected with this option. Any inference of sensing
+from nonzero sensory entries depends on the observation construction (for
+example, a visible own-agent count). This does not establish redundancy of
+actuation capability: removing both entries removes direct actuation
+conditioning. The physical mask remains capability-dependent. Neither an
+information-equivalence claim nor guaranteed post-failure adaptation follows.
 
 **Diagnostics.** Protocol version 2 (`--protocol-version 2`) admits composition- and
 failure-trained checkpoints and the learner variants: D1 uses the production
@@ -747,5 +755,116 @@ gate freezes for gated arms. With $\Delta_I$ the within-seed full-panel
 failure-minus-sham mean under intervention $I$, the difference-in-differences
 is $D_I=\Delta_I-\Delta_{\mathrm{none}}$ per seed, reported with equal-seed means
 and whole-seed bootstrap intervals, as are the arm-minus-control contrasts.
-Reserved compositions are never used during development; development windows
-are read from training ledgers only.
+Development uses training-support panels and the windows below, separately
+from final transfer panels. $(3,2)$ is a historically examined transfer
+benchmark; prior access to $(4,1)$ and $(4,2)$ must be audited before calling
+them untouched. Tiny engineering evaluations do not constitute policy tuning.
+
+
+### 11.1 Evidence admission, recovery and evaluation phases (13 October 2026)
+
+The implementation fixes evidence handling without changing the equations above
+or the production gradient order. General training retains plain JSONL logging;
+programme launches default to indexed gzip level 1 with deterministic headers.
+Chunks seal at 100 global updates, checkpoints and completion. Published chunks
+and indexes are atomic; a checkpoint is committed only when its model file,
+signature and required ledger chunks are complete. Index statistics accelerate
+reading but cannot substitute for an independent raw-record audit.
+
+The ledger auditor reconciles episode counts and steps against every accepted
+global update, validates rosters and finite metrics, and rejects missing,
+duplicated or gapped evidence. Episode identity is logical run, global update,
+collector and scenario ID. An audit receipt pins identities, byte ranges, hashes
+and per-update sufficient statistics. Reusing a receipt means trusting those
+immutable admitted bytes; explicit re-audit checks their current contents.
+S1 admission copies only the committed prefix ending at the earliest completely
+written checkpoint reaching 12M, so a running job's later appends are irrelevant.
+Damaged committed prefixes are refused. Selection requires all six rate/seed
+prefixes and compares exact rational equal-seed capped-completion means over
+update endpoints in $(8M,12M]$; exact ties choose the lower rate. Incomplete
+windows cannot supply scientific evidence.
+
+A timeout continuation writes a fresh numbered attempt under the original run,
+with a crash-released entry lock and immutable parent checkpoint/configuration/
+source/manifest identities. It resumes the latest valid committed checkpoint,
+or the original seed when none exists. Accepted ancestry truncates abandoned
+parent tails at the chosen checkpoint. Accepted global update records determine
+progress; partial-epoch summaries are never concatenated. A committed checkpoint
+already reaching the budget completes the logical run even if `finished.json`
+was lost. Frozen evaluation chooses the first accepted saved checkpoint reaching
+20M across that ancestry and verifies the preceding saved checkpoint.
+
+Development preparation explicitly selects completed stages and their controls;
+final preparation requires the whole programme. Both use frozen checkpoints,
+separate evaluation streams and 500 common scenarios per composition and seed.
+
+| Development family | Composition and condition panels |
+|---|---|
+| C1 and L1 | Nominal (2,1). |
+| A1 and diversity-trained arms | Nominal (1,1), (1,2), (2,1), (2,2), (3,1). |
+| O1 and its Real64 control | Nominal and step-1 failure/sham on (2,1), (1,2), (2,2), (3,1). |
+| Diversity-trained arms | Step-1 failure/sham on (2,1), (2,2), (3,1), communication removal and matched shams; affected/all gate freezes only for banked/capability models. |
+| Historical timing sensitivity | Separate 10–30-step failure/sham on (2,1) for the O1 pair and diversity arms. |
+
+Sensor loss in (1,2) removes the team's sole sensor and is labelled fully blind.
+Final panels retain (3,2), (4,1), (4,2), with 63 tasks, 1,278 reports and 639,000
+policy episodes at 500 scenarios/report. Training windows are 4–8M, 8–12M and
+18–20M. Development findings do not authorize rate retuning, combining factors,
+or excluding seeds; these would need a separately declared experiment.
+
+Existing-output reuse and summarization validate the same prepared-job identity:
+checkpoint/progress/configuration, training and evaluator sources, complete
+protocol/scenario panel, intervention timing, sham status and unique outcomes.
+Within-seed $D_I$ requires the exact same checkpoint and complete panel in both
+operands. Arm contrasts allow different arm checkpoints but require identical
+seeds, panels and evaluation strata. Derived rows retain provenance. Reports
+without sufficient identities can support absolute summaries, not certified
+paired contrasts. Summarization decodes one report at a time, retaining compact
+outcomes and pre-event trace digests; raw reports remain unchanged.
+
+All 63 programme runs are fresh (1.26B joint steps before overshoot). The three
+Real64 controls deliberately retrain the selected S1 recipe, costing another
+60M steps to keep a single programme training-source identity. Matching S1 seeds
+do not become additional independent replicates. Source locking remains strict:
+finish code, tests and work-log changes before manifest preparation, then use a
+frozen execution checkout. Write later documentation from another worktree.
+The six real S1 prefixes still require admission; no common rate or performance
+improvement is certified by engineering validation alone.
+
+## CapCon L1 40M profile (17 October 2026)
+
+The historical programme above retains its original 63-run/20M semantics.
+The separately versioned `capcon_l1_40m_v1` profile is the next nominal study:
+`c1_real64`, `l1b_decomposed_beta1`, `l1a_decomposed_beta05` and
+`l1a_decomposed_beta0`, in that order, each with seeds 0, 1 and 2. All twelve
+runs use a shared Real64 actor, fixed 2P1A PCP, three rounds, four independent
+heads, four collectors, horizon 80 and 40M joint steps. All other C1/L1 learner
+settings remain unchanged, including the 500-step floor per collector and
+2,000-epoch ceiling. No expert-bank comparison is included.
+
+The existing non-bounded S1 evidence certifies Adam 0.001 under the historical
+20M configuration and fixed (8M,12M] comparison window. The new profile reuses
+that certification; it does not reinterpret the S1 budget or repeat its training.
+Changing the research budget through a runtime override remains an engineering
+check and is ineligible for research evaluation.
+
+The beta-one decomposed arm tests value decomposition while retaining full
+cross-agent credit. For beta below one, the existing actor weight is
+$A_j+\beta\sum_{i\ne j}A_i$. This changes the actor estimator; beta zero is not
+a claim of an unbiased team-objective gradient. The shared actor and centralized
+critic separation, production GAE and truncated recurrence remain unchanged.
+
+Nominal selection uses the first accepted committed checkpoint at or above 40M
+across continuation attempts, with actual overshoot recorded. Exactly 500 common
+nominal 2P1A scenarios at panel seed 2704 produce twelve reports/6,000 episodes.
+Select the lowest equal-seed mean horizon-capped completion, computed as exact
+rational sums; failures count as 80. Exact ties follow the arm order above.
+Success rate and team return are accompanying outcomes, not tie breakers.
+Incomplete or bounded reports cannot select a research configuration.
+
+The selected configuration is a development result, not a final held-out claim.
+The eventual HetNet comparison, frozen composition/sensor-failure studies and
+expert-bank experiments remain separate. The full protocol, readiness and
+continuation commands are in [the runbook](CAPCON_L1_40M.md). Finish source and
+AGENTS records before the final source freeze; local bounded validation and the
+prior 21-arm staging check do not replace full Stokes readiness.

@@ -3278,3 +3278,986 @@ the legacy `prepare-evaluation` route for paper-v1 or pool unmatched old FC runs
   `git diff --check` passed. No research computation, cluster submission,
   dependency change, commit or push occurred; diagnostic mathematics and the
   original reproduction entry points are unchanged.
+
+### 2026-10-14 — nine-page architecture and experiment study guide
+
+- Created the requested self-contained LaTeX study guide and rendered PDF,
+  under ten pages, from inspected `main` at `dd20f5d`. Its nine pages explain
+  MARL/MDP/partial observation, capabilities, LSTM internals, affine expert
+  mixtures, Binary/Real channels, receiver attention/null, masked actions,
+  team rewards/critic/GAE, episode aggregation/Adam, experiment variants,
+  current results and paired frozen evaluation. Eighteen numbered equation
+  blocks introduce symbols inline and explain their interpretation and
+  connections. Added a vector architecture diagram, worked examples, seven
+  primary-paper links, and check-yourself prompts/note space on every page.
+- Distinguished the preserved two-round Binary/RMSprop defaults, measured
+  three-round shared Binary/Real Adam runs, banked architecture and implemented
+  October 12 opt-in programme. Historical transfer/pilot outcomes are separate
+  from nominal training metrics; neither current shared results nor smoke
+  checks are presented as evidence for adaptive gates or sensor robustness.
+- Recomputed copied training ledgers read-only: 15 runs, 78 per-seed windows,
+  55 hashed input files. All six copied channel stdout files now reach about
+  40M; equal-seed mean steps over (39M,40M] are 5.400943 earlier Binary,
+  5.219497 larger-channel Binary and 5.144773 Real. S1 update-ledger screening
+  over (8M,12M] is 5.352615 at 3e-4 versus 5.178936 at 1e-3. This numerical
+  preference is not a formal programme-selection manifest or new checkpoint
+  eligibility audit. Channel attribution remains conditional on launchers
+  because the scientific run archives are unavailable locally. Reused dated
+  HetNet/frozen/pilot audits with explicit scope, recalculating their summary
+  arithmetic rather than rerunning policies or raw-episode audits.
+- Files added: `output/pdf/capcom_study_guide_2026-10-14.tex` and `.pdf`;
+  `output/pdf/capcom_study_guide_2026-10-14/{README.txt,recompute_results.py,
+  results_evidence.json,build.log,validation.json,artifact_manifest.json}`.
+  Existing file touched: this uppercase `AGENTS.md` (additive record).
+  The artifact manifest enumerates the seven other deliverable files with
+  sizes/hashes and records this work log separately. Temporary compilation,
+  extracted-text and nine-page PNG review files under
+  `tmp/pdfs/capcom_study_guide_2026-10-14/` were removed after inspection.
+- Validation: pdfLaTeX (TeX Live 2026) compiled nine pages with no overfull or
+  underfull boxes, unresolved references or missing-character warnings; all
+  16 fonts are embedded and no raster images are present. Rendered and visually
+  inspected every page with Poppler. Independent read-only reviews checked
+  architecture/math, novice explanations, protocols and numerical claims.
+  The supplied results script reproduces its JSON byte-for-byte; source and
+  scientific input hashes, equation/page/prompt counts, paper links and
+  whitespace were checked. No model/environment/learner/test/dependency edits,
+  training, policy evaluation, full test-suite rerun, cluster operation,
+  scientific input/checkpoint mutation, commit or push occurred. Existing
+  guides, reports and inputs were preserved.
+
+### 2026-10-14 — additive Stokes preflight test-tool repair
+
+- User-provided Stokes job 919894 logs confirm that the pinned runtime/source
+  checks passed, but `~/HetNet/.venv/bin/python -m pytest` failed with
+  `No module named pytest`. The original external preflight driver accepted
+  return code 1 before checking for a JUnit report and obscured the startup
+  failure with a missing `baseline.xml` error. No test suite or training ran
+  in that job. The Gym maintenance notice was unrelated.
+- Prepared an additive repair in the integrated worktree's ignored
+  `runs/preflight_repair_20261014/`. New `preflight_v2.py` and
+  `preflight_v2.sbatch` preserve the original driver, checksums, frozen source,
+  S1 evidence and failed-job outputs. The wrapper checks imports/versions
+  before tests, reports original command stderr for missing/malformed XML,
+  and requires test counts and exit/report consistency before comparing suites.
+- Bundled hash-verified universal wheels already pinned by `uv.lock`:
+  pytest 8.3.5, iniconfig 2.3.0, pluggy 1.6.0 and packaging 26.3. The Slurm
+  wrapper extracts these with Python's standard library into a fresh
+  staging-local `testtools_JOBID`; only test subprocesses receive that import
+  path. No pip, network access or shared-venv modification is needed on Stokes.
+  Temporary files remain at the short staging-local `tmp/` path.
+- Local validation: 12 repair-specific tests passed in 0.44 seconds. Actual
+  passing/failing pytest fixtures ran with site-packages disabled; the exact
+  missing-pytest failure, missing/empty/malformed XML, inconsistent reports,
+  version pins and import isolation were checked. A relocated mocked Slurm
+  bootstrap verified both checksum manifests and actual wheel extraction/
+  imports. Shell syntax and whitespace passed. Independent read-only review
+  found no additional retry blocker. Full training/regression/preflight work
+  was not rerun locally for this external orchestration repair.
+- Files created beneath `HetNet-capcom-integrated/runs/preflight_repair_20261014/`:
+  `build_repair.py`, `test_repair.py`, `package_repair.py`, `repair_tests.xml`,
+  `bootstrap.out`, `bootstrap.err`, `delivery.json`, `artifact_manifest.json`,
+  `capcom_preflight_v2.tar.gz`; `payload/` contains the two v2 drivers,
+  `preflight_v2_wheels.json`, four wheels, `PREFLIGHT_V2_README.txt` and
+  `PREFLIGHT_V2_SHA256SUMS`. Local generated test-tool/bootstrap trees are
+  enumerated in `artifact_manifest.json`. Existing file touched: this original
+  checkout's uppercase `AGENTS.md`, preserving the concurrent study-guide log.
+  The integrated execution worktree's tracked source/work log and original
+  staging archives remain unchanged.
+- Repair archive: 501,640 bytes, SHA256
+  `ba8e4fd4c78aec84d8870f9092219e1d86b6c13e49a2f781781acaf71514f761`.
+  Frozen candidate source remains
+  `2077c3303bb2b9bcc2a9dc2681fe078f5c0b49da9e1b43c5bfd858a01024d3fd`.
+  Supplied user-run transfer/retry instructions targeting only
+  `~/HetNet/runs/capcom_staging_20261014`. No SSH, transfer, scheduler submission,
+  research manifest, dependency change, commit or push was performed by the
+  assistant. Successful Stokes preflight remains required before research launch.
+
+
+### 2026-10-14 — digestible architecture study presentation
+
+- Expanded the existing nine-page architecture guide into a 77-slide study
+  presentation, preserving the guide's 14 October evidence snapshot. All nine
+  guide sections and 18 numbered equation blocks are mapped in `coverage.json`.
+  Split observations, LSTM gates, expert mixtures, messages, attention, action
+  masking, critic, GAE, losses and optimizer updates into short teaching steps.
+  Symbols and plain-English readings remain beside equations; detailed teaching
+  explanations, exact LaTeX and references are retained in speaker notes.
+- Honored the user's clarification: no blank note areas. Added a native editable
+  architecture diagram, 21 native tables, 38 LaTeX-typeset vector equation assets,
+  and section/slide bookmarks in the PDF. The 63-run programme is explained as
+  21 arms times three seeds, with separate experiment-family and control slides.
+  Kept current results, historical comparisons, S1 status, missing evidence,
+  failure exposure, frozen interventions and uncertainty caveats distinct.
+- Files created: `output/presentations/capcom_study_presentation_2026-10-14.pdf`,
+  the matching `.pptx`, `_source.zip`, and `_source/` directory. The source
+  directory contains `README.txt`, `part1.json`, `part2.json`, `part3.json`,
+  `content.json`, `slide_map.json`, `coverage.json`, `prepare.py`, `build.mjs`,
+  `bookmark_pdf.py`, `requirements.json`, `finalization.json`, `validation.json`,
+  `artifact_manifest.json`, 38 equation `.tex`/`.svg` pairs and two unchanged
+  source-guide/evidence copies. Existing file touched: this uppercase `AGENTS.md`
+  (additive record; concurrent preflight-repair work preserved).
+- Private authoring/rendering files are under
+  `.tools/capcom_teaching_deck_2026-10-14/`: content drafts, equation compilation,
+  JavaScript builder/finalizer, PDF bookmarking and verification scripts,
+  PowerPoint/PDF drafts, validation logs and rendered PNGs. The source artifact
+  manifest enumerates their exact paths/hashes, excluding the existing runtime
+  `node_modules` symlink, itself, the accompanying source zip and the post-packaging
+  `delivery.json` receipt. No project
+  source, scientific inputs or existing study-guide outputs were modified.
+- Validation: 77 PDF pages and 77 PowerPoint slides/notes verified. All original
+  equation labels have slide mappings. Package, geometry, font-policy, native
+  table and first-party re-import checks passed with no findings. Every slide
+  was individually rendered/reviewed, with independent reviews covering pages
+  1–26, 27–52 and 53–77. Corrected arrow direction, one escaped LaTeX label,
+  subscript font fallback, the long loss layout and two protocol qualifications.
+  The final precision revision changed only page 58 in pixel comparison;
+  that page was rechecked. PDF fonts are embedded; source identities are hashed.
+- Used the bundled Artifact Tool runtime for editable PowerPoint authoring,
+  pdfLaTeX for equations and bundled LibreOffice/Poppler for PDF/rendering.
+  No model/environment/learner/test/dependency edits, training, policy evaluation,
+  scientific recomputation, full test-suite rerun, cluster operation, checkpoint
+  mutation, commit or push occurred. Original research evidence remains dated
+  to its source snapshot; this task reformatted and explained it.
+
+### 2026-10-14 — Stokes preflight timeout triage
+
+- User-supplied job 920179 records show successful v2 test-tool imports and
+  matching candidate/runtime identity, followed by an incomplete baseline
+  suite. The baseline emitted three initial errors and subsequent failures;
+  no combined suite, bounded validator or preflight training began. Slurm
+  terminated the job at its two-hour limit. The JSON's `running` state is
+  stale after external termination, not evidence that the job remains active.
+- The error cause is not yet established. Requested the surviving gradient
+  probe JSON, which may contain the original traceback without rerunning.
+  Prepared a ten-minute fallback baseline diagnostic using `-x -vv`, long
+  tracebacks and pytest's 120-second thread-stack dump. This stops at the first
+  error and preserves full failure output instead of waiting for a quiet full
+  suite. Did not extend the full preflight allocation or suppress failing tests.
+- Files created in the integrated worktree's ignored
+  `runs/preflight_timeout_20261014/`: `diagnose_baseline.sbatch` and
+  `diagnosis.json`. Existing file touched: this original checkout's uppercase
+  `AGENTS.md`, preserving the presentation and earlier repair records. Shell
+  syntax passed and the installed pytest CLI supports the diagnostic options.
+  No candidate/baseline/runtime edits, dependency changes, local training,
+  full test-suite rerun, remote access, cluster submission, commit or push.
+
+- Follow-up evidence: the surviving gradient probe reports `ERROR` after its
+  60-second timeout, with zero completed updates and the parent blocked in
+  `multi_processing.py:104` on `comm.recv()`. This establishes a missing worker
+  response, not why the worker stopped. The baseline's exact progress sequence
+  ends before test 321, the source-audit batch mock whose subprocess has no
+  timeout. A local harmless exported `module` function reproduces mock-command
+  shadowing; removing `BASH_FUNC_*`, `BASH_ENV` and `ENV` for test subprocesses
+  restores that test. Real module PATH changes causing nested `srun` to wait
+  remain an inference pending remote evidence.
+- Added `diagnose_stokes.py`, `diagnose_stokes.sbatch`,
+  `CAPCOM_DIAGNOSE_SHA256SUMS` and `validation.json` in the same ignored timeout
+  directory. This supersedes the simpler unused `diagnose_baseline.sbatch`
+  fallback: the new ten-minute job records per-process worker stacks through
+  an external `sitecustomize` hook, runs the existing gradient probe with a
+  150-second outer cap, and runs isolated existing shell tests with a 240-second
+  cap. Hooks and shell-environment isolation do not edit baseline/candidate
+  files. Sanitization applies only to mocked shell tests, after real allocation
+  and module setup; ordinary PATH/library/allocation variables are retained.
+- Local final driver execution: gradient probe passed; isolated shell tests
+  gave 39 passed and the one known publication train-array directive failure.
+  Neither command timed out. All five worker/interpreter trace files were
+  retained; shell tests ran without the tracing hook. Earlier local-check and
+  reviewer reproduction outputs remain under `local_check/`, `review/` and
+  adjacent `local_check*.out/.err`, with all generated paths/hashes enumerated
+  in `artifact_manifest.json`. Independent review found no diagnostic blocker.
+  `diagnosis_complete` denotes completed diagnostic collection, not a test
+  pass. No full preflight retry or remote action was executed by the assistant.
+
+### 2026-10-14 — successful Stokes gradient diagnosis and transport clarification
+
+- User-supplied job 920385 evidence shows the gradient probe passed: return
+  code zero, no outer timeout or stderr, 100.78 seconds. Scheduled 30-second
+  faulthandler snapshots are informational; they show Torch's native extension
+  still loading at 30/60 seconds. All three workers subsequently exited
+  normally. This successful elapsed time exceeds the existing pytest fixture's
+  85-second deadline. Slow startup is established, but its filesystem/cache
+  cause and the exact cause of job 920179's earlier worker timeout remain
+  unproved; do not conflate those separate runs.
+- Isolated shell tests finished in 6.49 seconds without timeout, with return
+  code one. Their existing stdout was requested to identify remaining failures;
+  the known array-directive failure is not assumed to be the sole failure.
+  Exported module/ml/which functions and BASH_ENV are confirmed on Stokes.
+- Explained that all source/launchers can travel through Git. The original
+  tar preserved uncommitted integrated changes without a push and also carried
+  about 874 MB of S1 evidence plus 145 MB of candidate/baseline source copies.
+  No Python environment was transferred. The slow import is from the existing
+  Stokes .venv; there is no evidence of tar corruption. Code transport and
+  large experiment-artifact transport can be separated without changing the
+  scientific protocol. No commit/push or new submission was authorized or run.
+- Files added beneath the integrated worktree's ignored timeout directory:
+  `received_920385/user_report.txt` (exact supplied attachment bytes) and
+  `received_920385/assessment.json` (evidence hash, findings and limits).
+  Existing file touched: this original checkout's uppercase `AGENTS.md`.
+  No candidate/baseline/runtime edits, new tests, local training, dependency
+  changes, remote access, cluster actions, commit or push occurred.
+
+### 2026-10-14 — existing Stokes evidence and stopped-job clarification
+
+- User confirms the necessary original run logs already reside under Stokes
+  `~/HetNet/runs` and no runs are active. The full preflight 920179 timed out;
+  diagnostic 920385 subsequently finished with a passing gradient probe and
+  39 passing shell tests plus exactly the known `0-11` versus `0-11%3` baseline
+  assertion. The full combined preflight remains uncompleted, not running.
+  No programme training has been launched by this workflow.
+- Read-only inspection confirms that the portable S1 bundle was optional, not
+  required when matching original archives exist on Stokes. It copied original
+  checkpoint/source/configuration data and added Mac-generated admitted gzip
+  prefixes, indexes, audit receipts and selection/transport metadata. These
+  derivatives are not new training results. The original raw-prefix hashes
+  and compressed-input hashes are separately recorded; simply replacing one
+  set of file paths with the other would be invalid.
+- Acknowledge the unnecessary return transfer choice. Subsequent work should
+  reuse and verify existing Stokes originals, regenerating derivative layouts
+  there if required, and use Git for source changes. Do not request another
+  full evidence upload, delete existing copies, or imply a job is active.
+  No files other than this additive original-checkout work-log entry changed;
+  no job, transfer, remote access, commit or push was performed.
+
+### 2026-10-14 — user-run staging cleanup instructions
+
+- User requested cleanup of `~/HetNet/runs/capcom_staging_20261014` and confirms
+  no runs are active. Prepared bounded cleanup of five redundant archives:
+  `capcom_stokes_20261013.tar`, `capcom_preflight_v2.tar.gz`,
+  `source_candidate.tar.gz`, `baseline.tar.gz`, `s1_evidence.tar.gz` (about
+  2.04 GB total). Preserve all `tmp/**/probe.json` files with relative paths
+  under `retained_probe_results/` before removing temporary test fixtures.
+- Retain extracted checkout/baseline, admitted S1 evidence, installed pytest
+  tools/wheels, the three job result directories, scheduler logs and small
+  provenance/scripts. This avoids needing another upload before the Git/source
+  and existing-original-evidence transition is complete. The old package
+  launchers/checksum manifests remain historical records; their all-archive
+  checks intentionally cannot succeed once those archives are removed.
+- Files added: integrated worktree's ignored
+  `runs/preflight_timeout_20261014/cleanup_staging.sh` (explicit directory guard,
+  expected-layout checks, exact archive names, probe preservation before temp
+  removal). Existing file touched: this original checkout's uppercase
+  `AGENTS.md`. `bash -n` and whitespace passed. No deletion, remote command,
+  transfer, submission, source/dependency change, commit or push was executed.
+
+### 2026-10-16 — Stokes bounded-validator 920409 artifact review
+
+- Located the user-provided results at
+  `runs/capcom_staging_20261014/checks_920409/` (the staging directory includes
+  an underscore). The final `validation.json` and artifact manifest establish
+  that the bounded validator completed. All 85 recorded commands have their
+  expected outcomes: 84 exit zero; `stdout_rejected` exits two with the intended
+  episode-log refusal. The copied directory contains no scheduler accounting or
+  outer Slurm log, so no scheduler exit state or total job elapsed time is asserted.
+- Independently checked all 1,661 artifact-manifest entries, totaling 582,612,419
+  bytes: no missing files, hash mismatches or extra non-source files. The
+  validator file hash matches the integrated implementation. Recorded source,
+  staging freeze and a fresh read-only integrated `source_snapshot()` agree on
+  708 files and identity
+  `2077c3303bb2b9bcc2a9dc2681fe078f5c0b49da9e1b43c5bfd858a01024d3fd`.
+  The frozen integrated checkout was not edited.
+- Independent checkpoint review loaded all 51 checkpoints, including six
+  admitted copies, and checked all 8,648 model/optimizer tensors for finiteness.
+  Legacy/S1 Real/channels Binary baseline-versus-candidate model and optimizer
+  tensors match by dtype, shape and bytes; counts and all three JSONL ledgers
+  agree after excluding only wall time. The 33 actual tiny training runs
+  total 3,323 joint environment steps, 45 episodes and 45 updates. All 39 source
+  manifests recompute correctly; all 27,522 archived file copies match their
+  hashes. Three manifests identify the unchanged baseline; 36 identify the
+  candidate, including the six admitted copies.
+- All 21 programme arms executed one update with seed zero and one collector.
+  Development has 386 reports and final has 426, with no missing reports.
+  Independent review matched all 812 reports to their jobs/panels/protocols,
+  reconciled report returns/exposure, checked 560 required traces and 280 paired
+  failure/sham pre-event prefixes, and checked 8,700 summary metric means against
+  their single-seed rows; intervals remain null. Reuse skipped all existing
+  reports for task zero (14 development, 18 final). The completed-run resume
+  command succeeded; it is not an interrupted-process recovery experiment.
+- The bounded S1 fixture uses window `(0,80]` and ties at capped completion 80,
+  selecting `3e-4` by the declared tie rule. Its bounded manifest is engineering
+  evidence only and does not replace the certified research Adam `1e-3`
+  selection from job 915888. Writer-only logging measurements likewise do not
+  establish four-collector training throughput or memory requirements. The
+  progress file omits final postprocessing fields because it is written inside
+  each command; the complete final record is `validation.json`.
+- Remaining Stokes work: complete full regression/integration checks, verify
+  location-valid certified S1 evidence, measure the four declared four-collector
+  cases, and exercise actual interrupted continuation. Then finalize/freeze
+  source and prepare/verify the real 63-entry manifest before the separate
+  research-submission instruction. This completed bounded check alone does not
+  establish learning quality or finish the scientific D1-D6 analyses.
+- Files touched: only this original checkout's uppercase `AGENTS.md`, appended
+  without altering earlier concurrent records. All supplied run artifacts,
+  checkpoints and candidate/baseline source were read-only. No training, policy
+  evaluation, test-suite rerun, dependency change, SSH, transfer, scheduler
+  command, commit or push was performed during this review.
+
+
+### 2026-10-13 — real S1 learning-rate admission, job 915888
+
+- User requested analysis of the completed job 915888 stdout in `logs_sr/`
+  and run archives in `stokes_runs/`. Created separate worktree
+  `HetNet-s1-analysis`, branch `s1-915888-analysis`, from `5142119`. Read inputs
+  from the original checkout and used the tested auditor in
+  `HetNet-capcom-fixes`; neither checkout nor any input/checkpoint was edited.
+- Admitted all six real S1 prefixes at the earliest completely written saved
+  checkpoint reaching 12M. The production auditor verified 10,146,326 episodes,
+  identities, rosters, finite metrics, update/count/step reconciliation,
+  checkpoint signatures, source and configuration; imported deterministic gzip
+  evidence and independently checked it. Six receipts passed non-bounded rate
+  selection and `validate_selection`; exact rational equal-seed means select
+  Adam **1e-3**, 5.1789361384 versus 5.3526154103 capped-completion steps in
+  (8M,12M], a 3.2448% reduction. Every seed favors 1e-3 in that window.
+- Independent full-ledger analysis reconciled all 19,278,819 episodes and
+  120,006,884 joint steps (20,672,756,841 raw bytes). Exact selection sums/counts
+  agree with all six production receipts. All 5,929 stdout epoch records match
+  metrics exactly; episode-to-epoch statistics agree to roundoff. A separate
+  provenance check verified 4,068 archived source-file copies, six final
+  checkpoint tensors/signatures/optimizer/counts and common source identity
+  694f57d3576a228c0d34437f21717ac0d2159ff94987069a6fb4ffa6a92a67fa (644f8f1).
+- Interpretation: 3e-4 performs better early (0–2M completion 41.1713 vs
+  55.4541); 1e-3 wins the agreed middle window, but 18–20M means are near parity
+  (5.16307 vs 5.15590), with one seed favoring the lower rate. Only three
+  training seeds exist per rate. These training outcomes do not establish
+  held-out/failure robustness or an optimal rate for every mechanism. All
+  updates clip, but mean parameter displacement is about 3.06 times larger at
+  1e-3; sparse early recurrent KL spikes are also larger, without a causal claim.
+- Stored research-admissible `lr_selection.json`, raw-derived sufficient
+  statistics, input hashes, audit commands/source identity, report and PNG/PDF
+  plots. The complete auditor source snapshot and six immutable admitted runs
+  are retained under ignored `runs/s1_915888_evidence/`; pinned receipt hashes
+  bind those archives. The snapshot identity is
+  0a072b0fc971b723f9c6be96813349c09c9a054cc65408677f07c62be7e490bf.
+  A distinct analysis worktree preserves the frozen execution source.
+- Validation: all six production audit commands exited 0; exact independent
+  sums/counts crosscheck, small-input mutation checks, receipt validation,
+  report-link checks and plot aggregate checks passed. Visually inspected the
+  complete figure; saved a vector PDF. Plotting used isolated uv NumPy 1.26.4 /
+  Matplotlib 3.10.7, without changing training dependencies. `git diff --check`
+  passed. No runtime code changed, so the training regression suite was not
+  rerun; prior engineering validations remain attributed to their own record.
+- The six-real-prefix and LR-selection prerequisites are now complete. No
+  research manifest, training/evaluation job, scheduler submission, commit or
+  push was performed. Frozen-source integration and a bounded Stokes preflight
+  remain before full submission. All 63 fresh runs remain the agreed scope.
+- Files touched: `AGENTS.md` (this entry), plus the following new analysis files:
+  - `analysis/capcom_programme_2026-10-12/s1_915888/REPORT.md`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/analysis_validation.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/artifact_manifest.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/audit_commands.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/auditor_source_manifest.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/independent/analyze.py`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/independent/results.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/independent/summary.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/independent/summary_validation.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/independent/updates_lr0.0003_seed0.csv`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/independent/updates_lr0.0003_seed1.csv`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/independent/updates_lr0.0003_seed2.csv`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/independent/updates_lr0.001_seed0.csv`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/independent/updates_lr0.001_seed1.csv`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/independent/updates_lr0.001_seed2.csv`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/independent/validate_summaries.py`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/independent/windows.csv`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/learning_rate_evidence.pdf`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/learning_rate_evidence.png`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/lr_selection.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/plot.py`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/plot_provenance.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/provenance/analyze.py`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/provenance/results.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_915888/verify.py`.
+
+
+### 2026-10-13 — LR plots and matched-budget HetNet training comparison
+
+- User requested plots for each LR result, a matched-budget HetNet comparison
+  and interpretation of research readiness. Continued in `HetNet-s1-analysis`;
+  preserved the prior certified S1 files byte-for-byte, all original inputs and
+  the frozen CapCom-fixes execution checkout. No runtime code changed.
+- Added three visually reviewed PNG/vector-PDF figures: every S1 rate/seed,
+  late learning/failure/return/window differences, and common 0–20M joint-step
+  comparisons against the paper-v1 HetNet Real/Binary job 908316 cohort.
+  Excluded preflights and historical reproduction duplicates. Curves use
+  non-overlapping 0.5M update-endpoint bins; no additional smoothing, interpolation
+  or confidence intervals. All summaries weight episodes within each seed and
+  then weight the three seeds equally.
+- Fresh independent HetNet stdout audit reconciled 34,298,013 episodes,
+  199,180,549 joint steps, 98,292 updates and 9,829 completed epochs, including
+  partial-epoch suffixes. Verified raw episode/collector identities, finite
+  metrics, rosters, return identities, failure lengths, every epoch and final
+  counts. All six file hashes match the earlier October 11 snapshot. All six
+  comparators reach 20M. The current publication counters require no historical
+  reproduction-counter correction. Retained raw-derived update sufficient
+  statistics, byte offsets, hashes, scripts, protocol declarations and audits.
+- Matched-budget result: selected CapCom 1e-3 completion is 5.178936 at 8–12M
+  versus HetNet Real 5.119867 and Binary 5.164125. At 18–20M it is 5.155902
+  versus 5.118240/5.123158 (0.74%/0.64% higher). Late nominal performance is
+  close descriptively but does not establish superiority or statistical
+  equivalence. CapCom late residual failures are concentrated in particular
+  seeds. The S1 common-rate choice remains 1e-3 under the original exact rule.
+- Interpretation: matching physical nominal task, scalar Adam rate and joint
+  steps still leaves actor information, recurrence/communication, critic/credit
+  and loss differences. Same seed labels are not paired scenarios. The exact
+  scientific job 908316 checkpoints/source archives remain absent locally;
+  its raw-record audit does not admit missing weights/source. These plots are
+  training-record comparisons, not official published scores or frozen-policy
+  common-panel evidence. S1 fixed/shared/no-failure outcomes do not establish
+  adaptation, robustness, transfer or bank specialization. Preserve the planned
+  63-run mechanism programme and obtain comparator archives before certified
+  frozen evaluation. No post-20M HetNet outcome enters the matched comparison.
+- Validation: independent HetNet window sums/counts match the reaggregation;
+  exact S1 selection is unchanged; all 12 runs cover 20M; input/plot hashes and
+  local report links verify. All three figures were visually reviewed. Fresh
+  physical simulator AST comparisons match archived S1 against current paper
+  reconstruction dynamics, with the missing scientific source caveat retained.
+  Isolated uv NumPy 1.26.4 / Matplotlib 3.10.7 left training dependencies intact.
+  `git diff --check` passed. No training regression rerun was needed for data,
+  plots and analysis-only scripts. No policy execution, cluster submission,
+  research manifest, training, commit or push occurred.
+- Files touched: `AGENTS.md` (this entry) and the following new analysis files:
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/REPORT.md`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/artifact_manifest.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/compare.py`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/comparison.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/comparison_scope.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/curve_bins.csv`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/hetnet_audit/NOTES.md`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/hetnet_audit/audit.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/hetnet_audit/audit.py`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/hetnet_audit/epochs.jsonl`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/hetnet_audit/groups.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/hetnet_audit/summarize.py`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/hetnet_audit/updates.csv`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/hetnet_audit/validation.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/lr_all_six_runs.pdf`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/lr_all_six_runs.png`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/lr_late_training_detail.pdf`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/lr_late_training_detail.png`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/lr_plot_provenance.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/matched_budget.pdf`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/matched_budget.png`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/matched_plot_provenance.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/plot_lr.py`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/plot_matched.py`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/validation.json`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/verify.py`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/windows_by_group.csv`.
+  - `analysis/capcom_programme_2026-10-12/s1_hetnet_comparison/windows_by_seed.csv`.
+
+### 2026-10-13 — CapCom evidence, recovery and experiment-readiness fixes
+
+- Scope: implement the user's approved fix plan in the isolated
+  `capcom-evidence-fixes` worktree based on merge `504096c`. Preserve model
+  mathematics, optimizer order and legacy numerical defaults. The original
+  running-experiment checkout is untouched. All 63 research runs stay fresh,
+  programme episode logging defaults to indexed gzip, and development panels
+  precede the final transfer panels. No scheduler submission, push or research
+  training is authorized or performed by this implementation validation.
+- Evidence: raw episode/update reconciliation with versioned receipts, exact
+  equal-seed S1 rate comparison, committed-prefix import while original jobs
+  append later records, deterministic compressed chunks and checkpoint commit
+  records. Cached receipt reuse explicitly trusts immutable admitted inputs;
+  re-audit rereads raw bytes. Programme stdout logging fails before outputs.
+- Recovery: lock each entry, retain fresh numbered attempt directories and
+  immutable parent identities, select committed checkpoints by global progress,
+  exclude abandoned ancestor tails, and recognize a completed budget despite
+  a lost final completion receipt. General trainer fresh-directory and resume
+  configuration restrictions remain.
+- Evaluation: bind reused/summarized reports to prepared checkpoint/source/
+  configuration/protocol/panel/intervention identities; require same per-seed
+  checkpoints for D_I and identical strata/panels for arm contrasts. Compact
+  retained outcomes and pre-event trace digests bound summary memory while
+  preserving raw report files. Development supports declared completed stages
+  and their controls, including fully blind (1,2) and separate historical timing;
+  final mapping remains 63 tasks / 1,278 reports / 639,000 policy episodes.
+- Diagnostics: lossless β labels, correct fixed-roster classification with the
+  independent protocol-v1 2P1A restriction, and additional coefficient-weighted
+  objective-scaled loss fields only for mean-agent runs. Raw/default fields and
+  production gradient calculations retain their existing order.
+- Documentation: corrected the Adam finite-t bound and ε qualification; limited
+  O1 sensing redundancy to its assumptions and acknowledged loss of direct
+  actuation conditioning. Preserve strict source locks; finish this record
+  before preparing an execution manifest. S1 recipe duplication costs 60M steps
+  intentionally and does not create additional independent-seed evidence.
+- Baseline validation on this Mac: unchanged `644f8f1` full suite returned
+  **854 passed, 1 failed in 299.78 s**. The failure is the known publication Slurm
+  `0-11%3` expectation versus `0-11` directive. The previously reported x86
+  snapshot and CUDA Torch-version failures do not reproduce in this environment.
+  Current-tree validation results and the complete file list follow after the
+  fixed-tree checks. Historical 12 October validation artifacts are preserved;
+  the replacement validation entrypoint writes only fresh scratch outputs.
+- Files touched for these fixes (including source, tests and documentation):
+  - `.gitignore`.
+  - `AGENTS.md`.
+  - `README.md`.
+  - `analysis/capcom_programme_2026-10-12/RECORD.md`.
+  - `analysis/capcom_programme_2026-10-12/validate.py`.
+  - `analysis/capcom_programme_2026-10-12/validate_fixes.py`.
+  - `scripts/softrole_programme.sh`.
+  - `softrole/RESEARCH.md`.
+  - `softrole/__main__.py`.
+  - `softrole/diagnostic_estimators.py`.
+  - `softrole/diagnostics.py`.
+  - `softrole/learning.py`.
+  - `softrole/ledger.py`.
+  - `softrole/lr_diagnostics.py`.
+  - `softrole/programme.py`.
+  - `softrole/programme_evaluation.py`.
+  - `softrole/report.py`.
+  - `softrole/train.py`.
+  - `tests/test_softrole_diagnostic_estimators.py`.
+  - `tests/test_softrole_diagnostics_v2.py`.
+  - `tests/test_softrole_evidence_review.py`.
+  - `tests/test_softrole_l1c_objective.py`.
+  - `tests/test_softrole_ledger_integrity_review.py`.
+  - `tests/test_softrole_lr_diagnostics.py`.
+  - `tests/test_softrole_programme.py`.
+  - `tests/test_softrole_programme_evaluation.py`.
+  - `tests/test_softrole_programme_launcher.py`.
+  - `tests/test_softrole_programme_recovery.py`.
+  - `tests/test_softrole_report.py`.
+  - `tests/test_softrole_report_contrasts.py`.
+- Focused pre-integration checks: storage/programme/recovery/launcher tests
+  **59 passed in 15.98 s**; diagnostic/loss/independent-evidence subset
+  **91 passed in 10.02 s**; report/contrast tests **39 passed**. These subsets
+  overlap and are not added together. Final full-tree and bounded-launcher
+  results will be appended after the fixed-tree executions.
+- Final fixed-tree validation: **1,034 passed, 1 failed in 376.08 s**. The sole
+  failure is identical to unchanged `644f8f1` above; no new regression failure.
+  The bounded validator executed **85 commands** (276.57 s summed command wall
+  time), all 21 arms through the shell launcher, 1,533 programme training steps
+  (3,323 including baseline/S1 replays), and **386 development + 426 final**
+  one-scenario reports with successful reuse and summaries. The research final
+  matrix is separately tested as 63 tasks / 1,278 reports / 639,000 episodes.
+- Legacy recipe, S1 Real launcher and channels Binary launcher each match
+  unchanged `644f8f1` bitwise after two updates in weights, optimizer states,
+  counts and every JSONL ledger except wall-clock fields. Plain/compressed
+  logging equality, old checkpoint loading, strict resume settings, repeated
+  interruptions, partial epochs, orphan/uncommitted checkpoints, abandoned
+  tails, metadata publication interruption, entry locks, stable S1 prefixes,
+  missing episodes, exact close/tied rational comparisons, forged chunk/index
+  evidence, mixed-checkpoint D_I and complete panel identity all have passing
+  regressions. The actual launcher run caught and fixed Bash 3's empty-array
+  `set -u` behavior for bare launch/resume; final validation covers the fix.
+- Memory: the saved synthetic traced-report measurement used **12,605,629 B**
+  peak Python allocations for one 4,391,644-B report and **12,711,416 B** for
+  eight. This measures `tracemalloc`, not total process RSS. Writer benchmark:
+  6,300 episodes / 300 updates, median plain 0.04961 s versus indexed gzip
+  0.04991 s; the repeated-metric fixture compressed 7,339,164 B to 337,459 B
+  including indexes. The 21 actual single-episode terminal chunks compressed
+  24,300 B to 11,311 B, excluding index overhead. These different workloads do
+  not establish a full-training or cluster compression/speed guarantee.
+- Durable evidence: new `analysis/capcom_programme_2026-10-12/fix_validation.json`
+  records commands, outcomes, provenance, baseline comparison and measured
+  projections; `fix_artifact_manifest.json` pins generated files and the local
+  complete validation archive under ignored `runs/`. Historical `validation.json`
+  and `artifact_manifest.json` are unchanged. Complete raw outputs remain in
+  `/tmp/capcom-fixes-validation-20261013-final` and are archived locally; raw
+  reports/checkpoints/source snapshots are retained. Shell syntax and
+  `git diff --check` pass. No dependency, model/configuration mathematics,
+  original checkout, cluster job, commit or push was changed by this work.
+- Admission status: all six study families are engineering-ready (63 fresh runs,
+  1.26B joint steps plus overshoot). Six real audited S1 prefixes, common-rate
+  certification and a research manifest remain required. Only a clearly bounded
+  manifest is regenerated after this final source/work-log update; no bounded
+  result is admitted as scientific evidence. Concurrent edits observed in the
+  original checkout belong to another workflow and were preserved separately.
+
+### 2026-10-13 — combined fixes/diagnostics staging candidate
+
+- Integrated the uncommitted `capcom-evidence-fixes` patch from `504096c` into
+  isolated `capcom-integrated` at main `dd20f5d`. Preserved the main, fixes,
+  S1-analysis and clean baseline checkouts. Only appended work-log text conflicted;
+  both histories were retained. The newer private archived-Adam runtime/source
+  checks coexist with indexed-gzip replay and programme diagnostic corrections.
+- Preserved certified Adam 1e-3, all 63 fresh runs and 1.26B joint steps. Set the
+  programme Slurm cap explicitly to twelve. Added source-fingerprint validation
+  to programme dry runs, with a stale-source/no-output regression. Fixed a
+  symlink-sensitive path in the archive corruption test; no production archive
+  logic, model/configuration/rollout or original numerical default changed.
+- Full combined suite: 1,072 passed, two failed, zero skipped in 387.81 seconds.
+  After the test-path correction, archive/archived diagnostics/v2/launcher checks
+  gave 49 passed in 11.05 seconds, zero skipped. The other failure is the known
+  publication-array 0-11%3 expectation versus 0-11 directive, reproduced on clean
+  unchanged 644f8f1. The full suite was not rerun after the test-only repair.
+- The combined bounded validator completed 85 commands, 33 tiny runs/3,323
+  steps, all 21 arms, 386 development and 426 final one-scenario reports, reuse
+  and summaries. Two-update legacy/S1 Real/channels Binary runs matched baseline
+  model, optimizer, counts and non-wall-time ledgers bitwise. Existing tests
+  cover compressed diagnostic replay, archived numerical isolation, checkpoint
+  loading and recovery. These executions do not establish scientific performance.
+- Added a portable S1 transport helper and staging procedure. The actual 4,475-file
+  bundle preserves six canonical audit receipts, source/checkpoint bytes and
+  exact LR-window scores; a fresh wrapper relocates only audit-file references.
+  This verifies transport of prior admission, not a new decoded episode audit.
+  Synthetic relocation/corruption checks and raw outputs are retained separately.
+- `uv lock --check` resolved 59 packages unchanged; relevant shell/Slurm syntax
+  and whitespace passed. Final local candidate source identity, transport hashes
+  and all-63 bounded-manifest dry-run results are generated under
+  `runs/integration_20261013/staging/` after this source/work-log record. Local
+  source identity is a staging candidate; final research freeze/manifest still
+  require successful Stokes preflight. Bounded validation source identity is
+  explicitly recorded separately in the integration record.
+- User supplied `ak565492@stokes.ist.ucf.edu`, existing repo `~/HetNet`.
+  Noninteractive SSH failed authentication before any remote command executed.
+  Requested local interactive authentication for staging. No Stokes computation,
+  transfer, scheduler submission, real research manifest, dependency change,
+  commit or push occurred in this recorded local integration phase. Prepare/run
+  the bounded Stokes preflight only on subsequent explicit execution authority.
+- Files touched in this isolated checkout (includes the imported fixes):
+  - `.gitignore`.
+  - `AGENTS.md`.
+  - `README.md`.
+  - `analysis/capcom_programme_2026-10-12/RECORD.md`.
+  - `analysis/capcom_programme_2026-10-12/fix_artifact_manifest.json`.
+  - `analysis/capcom_programme_2026-10-12/fix_validation.json`.
+  - `analysis/capcom_programme_2026-10-12/integration/RECORD.md`.
+  - `analysis/capcom_programme_2026-10-12/integration/STOKES_PREFLIGHT.md`.
+  - `analysis/capcom_programme_2026-10-12/integration/stage_evidence.py`.
+  - `analysis/capcom_programme_2026-10-12/integration/validation.json`.
+  - `analysis/capcom_programme_2026-10-12/validate.py`.
+  - `analysis/capcom_programme_2026-10-12/validate_fixes.py`.
+  - `scripts/softrole_programme.sh`.
+  - `slurm/softrole_programme.sbatch`.
+  - `softrole/RESEARCH.md`.
+  - `softrole/__main__.py`.
+  - `softrole/diagnostic_estimators.py`.
+  - `softrole/diagnostics.py`.
+  - `softrole/learning.py`.
+  - `softrole/ledger.py`.
+  - `softrole/lr_diagnostics.py`.
+  - `softrole/programme.py`.
+  - `softrole/programme_evaluation.py`.
+  - `softrole/report.py`.
+  - `softrole/train.py`.
+  - `tests/test_softrole_diagnostic_archive.py`.
+  - `tests/test_softrole_diagnostic_estimators.py`.
+  - `tests/test_softrole_diagnostics_v2.py`.
+  - `tests/test_softrole_evidence_review.py`.
+  - `tests/test_softrole_l1c_objective.py`.
+  - `tests/test_softrole_ledger_integrity_review.py`.
+  - `tests/test_softrole_lr_diagnostics.py`.
+  - `tests/test_softrole_programme.py`.
+  - `tests/test_softrole_programme_evaluation.py`.
+  - `tests/test_softrole_programme_launcher.py`.
+  - `tests/test_softrole_programme_recovery.py`.
+  - `tests/test_softrole_report.py`.
+  - `tests/test_softrole_report_contrasts.py`.
+- Generated artifacts: only fresh `runs/integration_20261013/`, including
+  the imported patch/input identities, full and focused test logs/XML, bounded
+  validator outputs, staging evidence/source candidates and transport receipts.
+  A local `stokes_runs` symlink supplies read-only optional archived test inputs;
+  no copied research input was edited. Every final packaged artifact is pinned
+  in the generated staging/freeze and package hash records.
+
+### 2026-10-17 — CapCon twelve-run 40M local preparation
+
+- Implemented the approved `capcon_l1_40m_v1` profile in the existing
+  `HetNet-capcom-integrated` checkout, preserving all previously staged changes.
+  Indices 0–2 are `c1_real64`, 3–5 `l1b_decomposed_beta1`, 6–8
+  `l1a_decomposed_beta05`, and 9–11 `l1a_decomposed_beta0`, each with seeds 0–2.
+  Every research configuration targets 40,000,000 environment steps with fixed
+  nominal 2P1A PCP, shared Real64 actor, three rounds, four independent heads,
+  certified Adam 0.001, four collectors, horizon 80, 500 steps per collector,
+  ten updates per epoch and the existing 2,000-epoch ceiling. No model, loss,
+  optimizer, rollout or continuation mathematics changed in this task.
+- Profile-aware preparation and arm inspection retain the historical default
+  `capcom_proposals_2026-10-12` (63 runs, 20M each). Existing S1 configuration
+  and certification checks remain unchanged. The new profile requires validated
+  non-bounded S1 evidence selecting 0.001, including the admitted audit receipts.
+  Complete ordered manifest validation covers arm/seed/configuration/path
+  coverage, source locks, certification and checkpoint/evaluation policy before
+  launch or evaluation. Overrides retain explicit engineering labels.
+- Added `nominal-selection`: first accepted committed checkpoint at or above
+  the profile budget, following authoritative continuation history and excluding
+  orphan checkpoints and abandoned tails. The research panel is exactly 500
+  common nominal 2P1A scenarios, seed 2704: twelve reports/6,000 episodes.
+  Selection uses rational equal-seed mean horizon-capped completion, failure
+  capped at 80, with exact ties resolved in the declared arm order. Success and
+  return remain descriptive. Incomplete or engineering evaluation selects no
+  research configuration. Selection records pin the manifest, panel, reports,
+  checkpoints and per-seed results; historical phases and contrasts remain.
+- Added the focused readiness driver and four-CPU Slurm wrapper, using explicit
+  checkout, baseline, evidence and fresh-output paths. The normal driver verifies
+  admitted S1 evidence, runs twelve dry runs and regressions, measures four
+  60-update cases with production collector floor/horizon, and interrupts a
+  separate disposable run after a committed checkpoint. It terminates the owned
+  process group, resumes without configuration overrides and compares accepted
+  progress, model and Adam state against uninterrupted execution. Parent/tail
+  bytes must remain unchanged. Startup/first-epoch and later throughput are
+  separate; sampled memory and process-group cleanup limits are documented.
+- Test environment corrections are confined to tests and readiness orchestration:
+  exported shell functions and shell startup hooks are isolated for test runs;
+  the gradient probe permits a documented 180-second outer deadline while its
+  internal 60-second timeout, cleanup and assertions remain unchanged. A scoped,
+  hashed external adapter applies this deadline to immutable baseline tests.
+  Corrected the demonstrated stale publication-array expectation, runtime Torch
+  version suffix handling and platform-sensitive floating-point snapshot check.
+  The latter compares exact forward output against a hash-pinned legacy fixture
+  on the same platform while preserving initialization/RNG identity checks.
+- Files touched by this task (earlier integrated changes remain separate):
+  - `.gitignore`: narrow runbook inclusion.
+  - `README.md`: profile discovery and commands.
+  - `softrole/RESEARCH.md`: locked protocol and exact selection rule.
+  - `softrole/CAPCON_L1_40M.md` (new): full operational runbook.
+  - `softrole/programme.py`: profile resolution and manifest validation.
+  - `softrole/programme_evaluation.py`: nominal selection and provenance.
+  - `scripts/softrole_programme.sh`: manifest-driven index validation.
+  - `slurm/softrole_programme.sbatch`: explicit new-profile array guidance;
+    historical 0–62 default preserved.
+  - `scripts/softrole_capcon_readiness.py` (new): focused readiness driver.
+  - `slurm/softrole_capcon_readiness.sbatch` (new): compute-node wrapper.
+  - `tests/test_gradient_contract.py`: outer probe deadline option.
+  - `tests/test_publication_slurm.py`: corrected historical array expectation.
+  - `tests/test_publication_study.py`: runtime version evidence portability.
+  - `tests/test_softrole_channels_model.py`: same-platform legacy comparison.
+  - `tests/test_softrole_capcon_profile.py` (new): mapping, S1, malformed
+    manifests, source locks and legacy compatibility.
+  - `tests/test_softrole_capcon_evaluation.py` (new): nominal-only panels,
+    exact ties, missing/substituted reports and interrupted checkpoint history.
+  - `tests/test_softrole_capcon_readiness.py` (new): timing bounds, environment,
+    baseline adapter, process cleanup and continuation orchestration.
+  - `AGENTS.md`: this additive record.
+- All new generated artifacts are under the fresh
+  `runs/capcon_l1_40m_validation_20261017/`. Principal records are
+  `full_suite.{out,xml}`, `full_suite_source.json`,
+  `final_readiness_tests.{out,xml}`, `readiness/readiness.json`,
+  `panel/validation.json`, `verified_lr_selection.json`, and the reproducible
+  `validate_panel.py`/`finalize.py` drivers. Final `validation.json`,
+  `final_source/bounded_manifest.json`, archived final source and the recursive
+  `artifact_manifest.json` are generated only after completing this work log.
+- Initial portability checks had 111 passes and one failure: the stale
+  `test_publication_slurm.py` expectation of `0-11%3` versus the actual `0-11`
+  directive. This exact failure was reproduced on clean baseline `644f8f1` and
+  retained in `baseline_known_failure.out`; it was not reported as a pass or
+  excused as environmental. After the test-only repair, 112 checks passed.
+- Full local suite: **1,138 passed, zero failures/errors/skips in 529.10 s**.
+  Command used the existing `HetNet/.venv/bin/python -m pytest -q`, JUnit output,
+  one-thread BLAS variables and `HETNET_GRADIENT_PROBE_OUTER_TIMEOUT=180`.
+  Full-suite source identity was
+  `d28e6602d945f300a725d7de392ec228cbf40c608ac1937c8958ad10f7f7a175`.
+  Subsequent readiness-only refinements added the private short TMPDIR, external
+  baseline timeout adapter and later-epoch timing. Final readiness/gradient
+  focused checks then gave **34 passed in 8.05 s**. These overlap the full suite;
+  the full suite was not rerun after those refinements. No learner source changed.
+- Actual local readiness invocation:
+
+  ```bash
+  /Users/akshatguduru/Desktop/Thesis/HetNet/.venv/bin/python -u \
+    scripts/softrole_capcon_readiness.py \
+    --checkout /Users/akshatguduru/Desktop/Thesis/HetNet-capcom-integrated \
+    --baseline /Users/akshatguduru/Desktop/Thesis/HetNet-capcom-baseline \
+    --selection /Users/akshatguduru/Desktop/Thesis/HetNet-s1-analysis/analysis/capcom_programme_2026-10-12/s1_915888/lr_selection.json \
+    --output runs/capcon_l1_40m_validation_20261017/readiness \
+    --updates 2 --skip-tests
+  ```
+
+  All eighteen command outcomes matched expectations (the disposable interrupted
+  command intentionally exits by SIGTERM). Four two-update, four-collector cases
+  collected 17,402 steps/241 episodes using the production floor and horizon.
+  After the actual interruption, resumed model/Adam tensors, signatures, counts
+  and audited statistics exactly matched uninterrupted execution. Parent and
+  abandoned files remained immutable. An independent audit verified ten accepted
+  checkpoints, 1,760 finite tensors, 4,426 artifact hashes and 4,278 archived
+  source-file hashes. Status remains `passed_reduced_engineering_check`: this
+  local two-update execution is not the full 60-update Stokes readiness run.
+- Actual twelve-entry bounded panel command used the same certified selection:
+
+  ```bash
+  /Users/akshatguduru/Desktop/Thesis/HetNet/.venv/bin/python -u \
+    runs/capcon_l1_40m_validation_20261017/validate_panel.py \
+    --selection /Users/akshatguduru/Desktop/Thesis/HetNet-s1-analysis/analysis/capcom_programme_2026-10-12/s1_915888/lr_selection.json \
+    --output runs/capcon_l1_40m_validation_20261017/panel
+  ```
+
+  Forty commands passed: preparation, twelve dry runs, twelve two-update runs,
+  evaluation preparation, twelve reports, report reuse and summary. Explicit
+  engineering overrides used four collectors, horizon 80 and a one-step floor:
+  24 updates, 6,552 steps, 96 training episodes and 36 frozen evaluation episodes
+  on one common three-scenario nominal panel. Independent audit verified all
+  24 checkpoint hashes, final finite model/Adam tensors, 8,556 archived source
+  files, unchanged reused reports and exact descriptive ranking. The first
+  accepted checkpoint satisfied the bounded one-step evaluation target; this
+  correctly selected epoch 1 although training completed two updates. The
+  selection record has `status: engineering_check`, `selected_arm: null`.
+- Reverified the existing extracted S1 transport bundle with
+  `analysis/capcom_programme_2026-10-12/integration/stage_evidence.py verify`,
+  bundle `runs/integration_20261013/staging/s1_evidence`, inventory SHA256
+  `08826cbdedbf2a91dd57b27bedccded186bfd7490396c213c234a6bc3feaa527`.
+  Exact scores and canonical receipt bytes are unchanged; certified selection
+  remains non-bounded Adam 0.001. This verifies transport/admitted evidence,
+  not a new raw-episode audit or new learning-rate experiment. The new local
+  selector wrapper hash is
+  `2edbdef5732cd2e4b0706b1bdf0b6321b397aeff488c9fd23d76333f08616335`.
+- Both bounded execution suites used source
+  `b80c51e48c375138a03198160d51a51075b76a3b8bc57606fcb1c6471e284ebe`.
+  Finalization explicitly verifies that only this `AGENTS.md` record differs
+  from that executed source, archives the completed final source, prepares a
+  fresh bounded manifest and dry-runs all twelve entries against it. Execution
+  archives remain immutable; the final source hash is recorded in the generated
+  validation record rather than recursively embedded in this source file.
+- `uv lock --check` passed with 59 packages unchanged; shell syntax, documented
+  shell blocks/local links and `git diff --check` passed. Final records also
+  verify that `model.py`, `learning.py`, `train.py`, `config.py`, `pyproject.toml`
+  and `uv.lock` are byte-identical to their pre-task integrated versions.
+- The runbook supplies exact-commit deployment, compute-node readiness, final
+  non-bounded manifest preparation, twelve dry runs, explicit `--array=0-11%12`
+  training, subset `--resume`, and nominal evaluation commands. It reuses the
+  extracted Stokes evidence/baseline and retains `checks_920409`; no deleted
+  staging archive is required. Full remote readiness and final research freeze
+  remain later steps. No Git publication, Stokes action, research submission,
+  full training sweep, expert-bank comparison, held-out tuning, dependency
+  change, commit or push occurred. Existing inputs and the main checkout were
+  preserved. Bounded execution and ranking checks are not scientific results.
+
+### 2026-10-17 — simplified twelve-job Slurm submission
+
+- At the user's request, added a dedicated direct submission script instead of
+  requiring another remote readiness job. `slurm/softrole_capcon_40m.sbatch`
+  requests `--array=0-11%12`, account `cenyioha`, partition `normal`, constraint
+  `sapphirerapids`, one node/task, four CPUs, 16 GB and 48 hours per task with
+  `srun --cpu-bind=cores`. These directives match all six certified S1 source
+  archives. HetNet scripts match the resource sizes; the inspected committed
+  HetNet scripts did not pin a CPU family. S1 pinned the CPU family rather than
+  a specific hostname, so no physical node identity was invented. Each new task
+  prints its allocated node list. Actual concurrency depends on scheduler capacity.
+- The wrapper defaults to the existing Stokes Python environment, the new
+  profile's manifest and a stable training root; rejects historical/bounded
+  manifests; delegates complete validation to the existing programme launcher;
+  and uses compressed episode logging. Subset `--resume` uses the same source,
+  manifest and root. No learner, training setting or historical launcher changed.
+- Files touched: `slurm/softrole_capcon_40m.sbatch` (new), `README.md`,
+  `softrole/CAPCON_L1_40M.md` and this `AGENTS.md`. The runbook has a short
+  preparation/dry-run/submission sequence and marks the longer readiness route
+  optional in accordance with the latest user instruction. Submission after
+  deployment and manifest preparation is:
+
+  ```bash
+  mkdir -p logs_sr
+  sbatch slurm/softrole_capcon_40m.sbatch
+  # Example continuation of stopped, unfinished tasks:
+  sbatch --array=4,7 slurm/softrole_capcon_40m.sbatch --resume
+  ```
+
+- Validation: `bash -n slurm/softrole_capcon_40m.sbatch` and `git diff --check`
+  passed. Mocked scheduler calls checked all twelve indices, core binding,
+  logging arguments, explicit and default paths, resume forwarding, and rejection
+  of historical/bounded/unlabelled manifests before `srun`. All nine runbook
+  Bash blocks passed syntax checks. Independent read-only review confirmed the
+  exact S1 resource match and launcher forwarding. Record:
+  `runs/capcon_slurm_20261017/validation.json`. No training or scheduler call ran;
+  the full suite was not repeated for this wrapper/documentation-only change.
+- This changes the source fingerprint, so a new research manifest must be
+  prepared on the deployed complete checkout. Earlier local validation archives
+  and their bounded manifest remain unchanged historical evidence. No commit,
+  push, transfer, research manifest freeze or Stokes submission was performed.
+
+### 2026-10-17 — consolidate into the sole HetNet checkout
+
+- The user directs that `/Users/akshatguduru/Desktop/Thesis/HetNet` be the sole
+  active experimental setup. Consolidated the completed CapCon implementation
+  into this existing `main` checkout at `dd20f5d`, preserving its Python
+  environment, research runs, copied logs, outputs and pre-existing staged work.
+  New work and launch commands must use this directory; do not create another
+  sibling experimental checkout unless the user explicitly requests one.
+- Preserved pre-migration status, staged/unstaged binary patches, index bytes
+  and original work logs under `.archive/consolidation_20261017/`. Imported the
+  integrated checkout's 48 non-AGENTS source/document/test paths with matching
+  bytes and its staging distinctions. Exact path/hash inventory is
+  `.archive/consolidation_20261017/source_inventory.json`. The canonical staged
+  AGENTS entry remains intact; the working AGENTS preserves every original line
+  and adds the S1 worktree's two unique records and the integrated worktree's
+  unique records. The source implementations are unchanged by consolidation.
+- Moved five unique integrated artifact directories into canonical `runs/`:
+  `integration_20261013`, `preflight_repair_20261014`,
+  `preflight_timeout_20261014`, `capcon_l1_40m_validation_20261017`, and
+  `capcon_slurm_20261017`. Copied and byte-verified the two unique analysis
+  directories `analysis/capcom_programme_2026-10-12/s1_915888` and
+  `s1_hetnet_comparison`. Existing `runs/capcom_staging_20261014/checks_920409`
+  and original S1 research data under `stokes_runs/` were preserved.
+- Used `git worktree move` to archive all five former Thesis siblings under
+  `.archive/consolidation_20261017/worktrees/`: `HetNet-capcom-baseline`,
+  `HetNet-capcom-fixes`, `HetNet-capcom-integrated`, `HetNet-s1-analysis`, and
+  `HetNet-sensor-adaptation`. Every HEAD and dirty/untracked Git status matches
+  its pre-move state. No worktree was deleted. In particular, the unfinished
+  sensor study has unique uncommitted implementation/tests/artifacts; these
+  remain intact in its archive and were not silently merged into this nominal
+  critic experiment. The unrelated older worktree under Documents was untouched.
+- Added `/.archive/` to `.gitignore`; updated `README.md` and
+  `softrole/CAPCON_L1_40M.md` to identify this sole checkout and remove advice
+  to create another active worktree. Future Stokes deployment uses existing
+  `~/HetNet` after jobs using it have stopped. Historical path strings inside
+  immutable evidence and validation archives retain their original meaning;
+  `.archive/consolidation_20261017/{relocations,worktree_moves}.json` maps moves.
+- Reverified the relocated complete S1 transport bundle with
+  `analysis/capcom_programme_2026-10-12/integration/stage_evidence.py verify`
+  and the existing pinned inventory
+  `08826cbdedbf2a91dd57b27bedccded186bfd7490396c213c234a6bc3feaa527`.
+  Fresh selector: `runs/capcon_consolidation_20261017/lr_selection.json`, SHA256
+  `1814076c163b251f3daaa806b82b0bd71d8bd9414ac4d39fff5d07e9965817a2`.
+  Certified non-bounded Adam 0.001, exact scores and receipt bytes are unchanged.
+  No raw inputs or canonical receipts were rewritten.
+- Validation in canonical `HetNet`: **113 passed in 58.45 s**, using
+  `.venv/bin/python -m pytest -q` on `test_softrole_capcon_profile.py`,
+  `test_softrole_capcon_evaluation.py`, `test_softrole_capcon_readiness.py`,
+  `test_softrole_programme_launcher.py` and `test_softrole_programme_recovery.py`,
+  with one-thread BLAS variables and the documented 180-second probe deadline.
+  Output/JUnit records are `runs/capcon_consolidation_20261017/tests.{out,xml}`.
+  These include bounded test executions; no research training was performed.
+  The full suite was not repeated for byte-preserving relocation.
+- Independent read-only audit verified all 14,099 earlier CapCon validation
+  artifact hashes (396,908,116 bytes), with no missing/changed/extra artifacts.
+  Thesis now contains only the canonical HetNet directory among HetNet-named
+  directories; the supplied HetNet guide PDF remains untouched. Shell syntax
+  and whitespace checks passed. Post-log finalization records the new canonical
+  source identity, prepares a fresh bounded manifest with the relocated S1
+  selector and checks all twelve dry-run configurations without creating runs.
+- Consolidation-specific edited files are `.gitignore`, `README.md`,
+  `softrole/CAPCON_L1_40M.md` and this `AGENTS.md`; the exact imported paths are
+  retained in the inventory above. Fresh records are only under
+  `runs/capcon_consolidation_20261017/` and the hidden consolidation archive.
+  Previous manifests remain evidence for their original source; a research
+  manifest must be prepared after final publication/deployment. No checkpoint,
+  dependency, remote checkout or scheduler job changed; no commit or push.
+
+### 2026-10-17 — core-only Git inventory and private references
+
+- At the user's request, replaced the accumulated `.gitignore` rules with a
+  39-line root allowlist for core Python code, environments, reconstruction
+  runtime, SoftRole, tests/fixtures, launchers, Slurm scripts, dependencies,
+  licenses and development/operational documentation. Unknown root files and
+  private artifact directories now stay excluded by default. Cache/bytecode
+  exclusions still apply within allowed code directories.
+- Replaced the broad analysis exception with three exact operational tools:
+  `analysis/capcom_programme_2026-10-12/validate.py`, `validate_fixes.py`, and
+  `integration/stage_evidence.py`. The last is called by compute-node readiness.
+  Kept the complete pinned reconstruction runtime, ORIGINS/STUDY metadata and
+  upstream evaluation fixtures. AGENTS and RESEARCH remain development source
+  because the existing SoftRole source lock explicitly includes their bytes.
+- `.gitignore` cannot remove already tracked files, so used `git rm --cached`
+  on an exact, saved path list: 1,072 analysis/reference files, seven IDE files,
+  three output PDFs and the historical `softrole.patch` (1,083 total). All
+  1,083 local files remain byte-identical. Existing commits/history were not
+  rewritten; this changes the next commit's contents. Git now contains 250
+  core files. Only `.gitignore` was newly staged; existing core staged entries
+  were checked against a saved index and remain identical.
+- Files edited: `.gitignore` and this additive `AGENTS.md` entry. All index-only
+  removals and their local hashes are enumerated in the private record
+  `runs/gitignore_cleanup_20261017/private_files.json`; the exact NUL-separated
+  path list is `private_paths.zlist`. That directory also preserves the prior
+  index, staged binary patch, prior ignore file and removal output. No reference
+  file, scientific input, checkpoint, dependency or learner implementation was
+  edited or deleted.
+- Validation: 27 positive/negative ignore checks passed; no indexed files remain
+  ignored, required core assets remain eligible, and no unexpected untracked
+  files became visible. Focused dependency/source-archive/profile checks gave
+  **104 passed in 20.27 s** via `.venv/bin/python -m pytest -q
+  tests/test_publication_artifacts.py tests/test_publication_spec.py
+  tests/test_softrole_capcon_profile.py`, with one-thread BLAS variables.
+  Logs/JUnit and rule-check results are in `runs/gitignore_cleanup_20261017/`.
+  Whitespace checks passed. The full suite was not repeated for this inventory
+  change; no Slurm job, research run, remote operation, commit or push occurred.
+- Reducing Git's inventory changes the source fingerprint without changing
+  learner behavior. Final source identity is recorded after this entry; earlier
+  validation manifests remain historical evidence. Prepare the research manifest
+  from the final published core inventory rather than reusing an old source lock.

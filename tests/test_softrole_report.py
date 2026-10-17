@@ -239,3 +239,64 @@ def test_legacy_sidecar_requires_exact_companion_panel_and_keeps_inputs_immutabl
     panel_path.write_bytes(panel_bytes + b" ")
     with pytest.raises(ValueError, match="hash"):
         summarize_reports(source, bootstrap_samples=50, protocol=sidecar)
+
+
+def test_reviewed_did_mixture_of_20m_and_21m_checkpoints_is_rejected(tmp_path):
+    from softrole.report import difference_in_differences
+    files = []
+    for intervention, epoch, steps in (("none", 100, 20_000_100), ("comm_off", 105, 21_000_000)):
+        for sham in (False, True):
+            path = protocol_report(tmp_path, 0, epoch, sham, (0., 0.) if sham else (-1., -3.))
+            report = json.loads(path.read_text())
+            report["checkpoint_progress"]["total_steps"] = steps
+            report["intervention"] = intervention
+            for episode in report["per_episode"]:
+                episode["intervention"] = intervention
+                episode["intervention_step"] = episode["event_step"]
+            path.write_text(json.dumps(report))
+            files.append(path)
+    summary = summarize_reports(files, bootstrap_samples=10)
+    assert len(summary["paired_groups"]) == 2
+    with pytest.raises(ValueError, match="same exact checkpoint"):
+        difference_in_differences(summary["paired_groups"], 10)
+
+
+def test_legacy_reports_without_checkpoint_identity_remain_absolute_only(tmp_path):
+    files = [protocol_report(tmp_path, 0, 100, sham) for sham in (False, True)]
+    for path in files:
+        report = json.loads(path.read_text())
+        report.pop("checkpoint_sha256")
+        path.write_text(json.dumps(report))
+    summary = summarize_reports(files, bootstrap_samples=10)
+    assert len(summary["groups"]) == 2 and summary["paired_groups"] == []
+
+
+def test_summary_retains_only_compact_evidence_from_full_traces(tmp_path):
+    import gc
+    import tracemalloc
+    paths = []
+    # Distinct decoded lists are deliberately large; traces after step 1 have
+    # no role in any statistic or pairing check.
+    trace = [{"step": t, "payload": [float(i) / 7 for i in range(256)]} for t in range(80)]
+    for seed in range(8):
+        paths.append(report_file(tmp_path, seed, [episode(i, False, steps=80, event_step=1, trace=trace)
+                                                  for i in range(12)]))
+    del trace
+
+    def peak(selected):
+        gc.collect()
+        tracemalloc.start()
+        result = summarize_reports(selected, bootstrap_samples=10)
+        _, measured = tracemalloc.get_traced_memory()
+        tracemalloc.stop()
+        return measured, result
+
+    single, one = peak(paths[:1])
+    multiple, many = peak(paths)
+    assert many["groups"][0]["training_seeds"] == 8
+    assert one["groups"][0]["metrics"] == many["groups"][0]["metrics"] or all(
+        one["groups"][0]["metrics"][m]["mean"] == many["groups"][0]["metrics"][m]["mean"]
+        for m in one["groups"][0]["metrics"])
+    assert multiple < single * 2.5
+    print(json.dumps({"one_report_peak_bytes": single, "eight_report_peak_bytes": multiple,
+                      "one_report_file_bytes": paths[0].stat().st_size}))

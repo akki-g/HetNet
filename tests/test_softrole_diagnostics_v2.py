@@ -10,7 +10,7 @@ import torch
 
 from softrole.config import Config, recipe
 from softrole.diagnostics import (execute, learner_identity, load_checkpoint, prepare, sha,
-                                   training_study)
+                                   training_study, version_one_eligible)
 from softrole.train import train
 
 
@@ -26,6 +26,43 @@ FIXTURES = {
                                                 actor_capabilities="physical_only", objective="mean_agent",
                                                 vision=1, **COMMON),
 }
+
+
+def test_fixed_nonnominal_roster_is_fixed_but_not_version_one_eligible():
+    cfg = Config(num_p=3, num_a=1)
+    assert training_study(cfg) == "fixed"
+    assert not version_one_eligible(cfg)
+    assert training_study(Config(compositions=((1, 2),))) == "fixed"
+    assert not version_one_eligible(Config(compositions=((1, 2),)))
+    assert version_one_eligible(Config())
+    assert training_study(Config(compositions=((2, 1), (3, 1)))) == "composition"
+    assert training_study(Config(failure_prob=.5)) == "failure"
+    assert not version_one_eligible(Config(failure_prob=.5))
+
+
+def test_version_one_rejects_a_fixed_nonnominal_checkpoint(tmp_path):
+    cfg = Config(num_p=3, num_a=1, model="shared", communication="real", vision=1, **COMMON)
+    checkpoint = train(cfg, tmp_path / "run")
+    with pytest.raises(ValueError, match="nominal fixed 2P1A"):
+        load_checkpoint(checkpoint, protocol_version=1)
+    _, loaded, _, _ = load_checkpoint(checkpoint, protocol_version=2)
+    assert training_study(loaded) == "fixed"
+
+
+def test_version_two_replays_a_chunked_episode_ledger(tmp_path):
+    cfg = FIXTURES["fixed_physical_mean_agent"]()
+    train(cfg, tmp_path / "run", episode_log="chunked-gzip")
+    checkpoint = tmp_path / "run" / "checkpoints" / "epoch0001.pt"
+    manifest = prepare([checkpoint], tmp_path / "manifest.json", "bounded first saved epoch",
+                       probe_episodes=1, d5_instances=1, d5_bits=2, d5_samples=32,
+                       protocol_version=2)
+    assert not (tmp_path / "run" / "episodes.jsonl").exists()
+    assert any(name.endswith(".gz") for name in manifest["entries"][0]["inputs"])
+    execute(tmp_path / "manifest.json", 0, tmp_path / "out")
+    report = json.loads((tmp_path / "out" / "report.json").read_text())
+    actual = torch.load(checkpoint.with_name("epoch0002.pt"), weights_only=False)
+    assert report["D1"]["historical_update_verified"]
+    assert report["D1"]["disposable_post_update_signature"] == actual["signature"]["sha256"]
 
 
 def fixture_run(tmp_path, name):

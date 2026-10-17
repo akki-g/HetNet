@@ -1,5 +1,10 @@
 # HetNet reproduction
 
+Use this `HetNet` directory as the sole active experimental checkout. The
+current CapCon implementation, launchers and validation records are here.
+Earlier sibling worktrees are retained only as reversible backups under
+`.archive/consolidation_20261017/`; do not launch experiments from those copies.
+
 Implementation of **Learning Efficient Diverse Communication for Cooperative Heterogeneous Teaming** (Seraj et al., AAMAS 2022): [paper](https://ifaamas.org/Proceedings/aamas2022/pdfs/p1173.pdf), [author repository](https://github.com/CORE-Robotics-Lab/HetNet), and the included [supplement](AAMAS_22___HetNet_Supplementary.pdf).
 
 Our order of work is:
@@ -516,7 +521,41 @@ Engineering checks:
   tests/test_softrole_diagnostics_launcher.py
 ```
 
-### CapCom proposal programme (C1, A1, L1b/L1a, L1c, O1; 12 October 2026)
+### CapCon critic/credit study: twelve 40M runs (17 October 2026)
+
+For the simple twelve-job Slurm route, use
+[`slurm/softrole_capcon_40m.sbatch`](slurm/softrole_capcon_40m.sbatch) and the
+[submission commands](softrole/CAPCON_L1_40M.md#simple-slurm-submission).
+It retains S1's Sapphire Rapids placement, four CPUs, 16 GB and 48 hours
+per task, with up to twelve concurrent tasks.
+
+The explicit `capcon_l1_40m_v1` profile reuses four existing learners: the
+team critic and decomposed critics with beta 1, 0.5 and 0, each with seeds 0–2.
+All twelve runs use fixed 2P1A PCP, shared Real64, three communication rounds,
+four independent heads, certified Adam 0.001, four collectors and horizon 80.
+Each targets 40M joint environment steps, with complete-update overshoot.
+
+The [protocol and runbook](softrole/CAPCON_L1_40M.md) covers local validation,
+the focused Stokes readiness driver, source/evidence verification, manifest
+preparation, twelve-entry launch and continuation, and common nominal evaluation.
+This profile does not compare expert banks. Configuration selection minimizes
+equal-seed horizon-capped completion on 500 common nominal scenarios; later
+HetNet comparisons and frozen composition/failure studies are separate.
+
+```bash
+"$HETNET_PYTHON" -m softrole.programme arms --profile capcon_l1_40m_v1
+# In HetNet, after source deployment and evidence verification:
+"$HETNET_PYTHON" -m softrole.programme prepare --profile capcon_l1_40m_v1 \
+  --lr-selection /absolute/verified/lr_selection.json \
+  --output runs/capcon_l1_40m_20261017/manifest.json
+```
+
+The historical profile below remains the default when `--profile` is omitted.
+Its 20M S1 configuration and archived manifests retain their original meaning.
+Local bounded checks are engineering evidence; they do not establish Stokes
+readiness or constitute a research submission.
+
+### Historical CapCom proposal programme (C1, A1, L1b/L1a, L1c, O1; 12 October 2026)
 
 The proposals of the 11 October review are implemented as independent opt-in
 options. Every default reproduces the pre-programme model and learner bitwise
@@ -544,15 +583,16 @@ record in [analysis/capcom_programme_2026-10-12/RECORD.md](analysis/capcom_progr
 # Locked programme: 21 arms x seeds 0-2 x 20M joint steps = 63 runs.
 .venv/bin/python -m softrole.programme arms
 
-# Learning-rate rule on the six finished S1 runs: equal-seed mean capped completion
-# in the (8M, 12M] window, lower wins, ties choose the lower rate, partial windows refused.
+# Audit the six S1 prefixes anchored to the first complete saved checkpoint >=12M.
+# Running jobs may append later data. Exact equal-seed capped completion in (8M,12M]
+# selects the lower mean, with exact ties going to the lower rate; partial windows fail.
 .venv/bin/python -m softrole.programme select-lr \
   --runs runs/softrole_lr_pcp_JOBID/pcp_shared/real/adam_lr3e-4/seed{0,1,2} \
          runs/softrole_lr_pcp_JOBID/pcp_shared/real/adam_lr1e-3/seed{0,1,2} \
   --output runs/capcom_programme_plan/lr_selection.json
 
 # Lock the manifest on the final fixed checkout (it records the source identity
-# every run must execute), check one entry, then submit the 63-job array.
+# every run must execute), check one entry, then submit the 63-job array (12 concurrent).
 .venv/bin/python -m softrole.programme prepare \
   --lr-selection runs/capcom_programme_plan/lr_selection.json \
   --output runs/capcom_programme_plan/manifest.json
@@ -561,11 +601,19 @@ bash scripts/softrole_programme.sh 0 --dry-run
 mkdir -p logs_sr
 sbatch slurm/softrole_programme.sbatch
 
-# After every run finishes: first saved checkpoint at or above 20M, common
+# Recover an interrupted entry in a fresh numbered attempt; no existing files are overwritten.
+bash scripts/softrole_programme.sh 0 --resume
+
+# Development defaults to training-support panels; select completed stages and controls.
+.venv/bin/python -m softrole.programme_evaluation prepare \
+  --manifest runs/capcom_programme_plan/manifest.json --phase development --stages C1 \
+  --run-root runs/capcom_programme_JOBID --output runs/capcom_development_C1
+
+# After every run finishes: first accepted saved checkpoint at or above 20M, common
 # 500-scenario panels for (3,2), (4,1), (4,2), one evaluation task per run.
 .venv/bin/python -m softrole.programme_evaluation prepare \
   --manifest runs/capcom_programme_plan/manifest.json \
-  --run-root runs/capcom_programme_JOBID --output runs/capcom_programme_evaluation
+  --run-root runs/capcom_programme_JOBID --phase final --output runs/capcom_programme_evaluation
 sbatch runs/capcom_programme_evaluation/evaluate.sbatch
 .venv/bin/python -m softrole.programme_evaluation summarize \
   --evaluation runs/capcom_programme_evaluation --output runs/capcom_programme_summary
@@ -576,16 +624,41 @@ sbatch runs/capcom_programme_evaluation/evaluate.sbatch
   --output runs/capcom_diagnostics_plan/manifest.json
 ```
 
+The combined-checkout staging and compute-node preflight procedure is in
+[the integration handoff](analysis/capcom_programme_2026-10-12/integration/STOKES_PREFLIGHT.md).
+
+For explicit evidence storage, `python -m softrole.programme audit --run RUN
+--output FRESH_ARCHIVE` imports the committed S1 prefix and writes `audit.json`.
+`select-lr --audits ARCHIVE_1/audit.json ... ARCHIVE_6/audit.json --output FILE`
+reuses those six receipts. `programme reaudit --audit ARCHIVE/audit.json`
+checks the admitted raw bytes again. The compatibility `select-lr --runs` route
+performs these imports automatically beside its selection record. Prepare the
+manifest only after the six audited research prefixes are available.
+
 Index order is the arm order printed by `arms` times seeds 0, 1, 2; outputs are
 `runs/capcom_programme_JOBID/STAGE/ARM/seedN` with a `seedN.programme.json`
-provenance record beside each run. The launcher accepts only runtime budget
-options and `--episode-log`; scientific settings come from the manifest, and a
-checkout whose source hash differs from the manifest is refused. Runs with
+provenance record beside each run. The launcher accepts runtime budget options,
+`--resume` and `--episode-log file|chunked-gzip` (default `chunked-gzip`). Programme
+stdout logging is rejected before outputs are created; standalone training keeps
+its existing `file` default and stdout support. Every episode is preserved in
+indexed gzip chunks, sealed every 100 global updates, at checkpoints and at
+completion. Admission independently audits raw records; pinned receipts support
+subsequent summaries without repeatedly scanning all ledgers. Explicit re-audit
+checks the current bytes again. Recovery keeps accepted global-update ancestry
+across fresh `attempts/0001`, etc.; abandoned tails remain on disk but do not enter
+scientific statistics. Scientific settings come from the manifest, and a
+checkout whose source hash differs from the manifest is refused, including during
+`--dry-run`. The programme Slurm array permits twelve concurrent four-collector
+runs; submission still requires an explicit decision. Runs with
 runtime overrides are marked `bounded_check` and cannot enter the research
 evaluation. The evaluation summary reports equal-seed means with whole-seed
 bootstrap intervals per arm, composition and condition; full-panel
 failure-minus-sham differences; difference-in-differences `D_I` for
-communication removal and (gated arms only) gate freezes, which are structural
+communication removal and (gated arms only) gate freezes. Prepared jobs bind full
+checkpoint, source, protocol and scenario identities. D_I additionally requires
+the same checkpoint within each seed; arm contrasts require identical strata and
+panels. Summarization retains compact evidence and pre-event trace digests while
+leaving raw traces intact. Gate freezes are structural
 no-ops for shared and constant actors; and arm-minus-control contrasts. HetNet
 E2/E5 admission reuses the panel files through the reconstruction evaluator
 with the gaps labelled in `evaluation_manifest.json`.
@@ -594,9 +667,21 @@ Protocol version 1 diagnostics remain nominal-only and unchanged. Their strict
 numerical-source guard means that checkpoints archived under commit `644f8f1`
 (S1 and the existing D1–D6 inputs) must be diagnosed from a checkout at that
 commit; the programme's own runs archive the current source. The bounded
-engineering validation, `analysis/capcom_programme_2026-10-12/validate.py`,
-exercises every mode through these launchers with one-update budgets; it is
-not a research run, and no programme result exists yet.
+engineering validation, `analysis/capcom_programme_2026-10-12/validate.py`, accepts
+`--baseline /checkout/at/644f8f1 --output /fresh/scratch/path` and exercises all
+21 arms, both evaluation phases and default bitwise replay. Its outputs are
+engineering evidence, not research results. The old 12 October validation files
+remain historical records; current runs never overwrite them.
+
+All 63 runs remain fresh, including the three Real64 controls that deliberately
+repeat the selected S1 recipe (60M steps); matching S1 seeds are not extra
+independent replicates. The total remains 1.26B joint steps plus overshoot and
+evaluation. Six real audited S1 prefixes and a locked common rate are still
+required before research launch. Development never retunes those rates or drops
+seeds. Final (3,2) is a historically examined transfer benchmark; audit prior
+access before describing (4,1)/(4,2) as untouched. Finish work-log and source edits
+before manifest preparation, then keep this execution checkout frozen until
+the runs finish. Record later notes outside the source-included files.
 
 ```bash
 .venv/bin/python -m pytest -q tests/test_softrole_programme_defaults.py tests/test_softrole_c1_channels.py \

@@ -118,6 +118,34 @@ def _protocol_for_report(report, sidecar, sidecar_path):
     return protocol
 
 
+def canonical_digest(value):
+    """Stable identity independent of dictionary order and file whitespace."""
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
+                                     allow_nan=False).encode()).hexdigest()
+
+
+def panel_digest(panel):
+    return canonical_digest([panel[key] for key in sorted(panel)]) if panel is not None else None
+
+
+def _compact_episode(episode):
+    # Keep only quantities used by absolute summaries and pre-event pairing.
+    fields = ("scenario_id", "success", "steps", "team_return", "composition", "event_step",
+              "event_exposed", "scheduled_event_exposed", "pre_event_victim_reached",
+              "pre_event_victim_target_visible", "pre_event_victim_target_seen")
+    compact = {key: episode[key] for key in fields if key in episode}
+    compact["initial_state"] = canonical_digest(episode.get("initial_state"))
+    compact["trace_prefix_sha256"] = (canonical_digest(episode["trace"][:max(0, episode["event_step"])])
+                                         if "trace" in episode else None)
+    return compact
+
+
+def _certified_checkpoint(metadata):
+    return bool(metadata.get("checkpoint_sha256") and metadata.get("model_signature")
+                and all(metadata.get("progress", {}).get(k) is not None
+                        for k in ("epoch", "updates", "total_steps", "total_episodes")))
+
+
 def _paired_summaries(groups, records, metadata, panels, rng, samples):
     """Full-panel within-checkpoint failure minus sham, then whole-seed inference."""
     candidates = defaultdict(dict)
@@ -133,7 +161,8 @@ def _paired_summaries(groups, records, metadata, panels, rng, samples):
         actual, sham = conditions[False], conditions[True]
         # Older report schemas may not contain the full random-stream panel.
         # Their absolute strata remain supported, but cannot certify pairing.
-        if not all(panels.get((k, seed)) is not None for k in (actual, sham) for seed in records[k]):
+        if not all(panels.get((k, seed)) is not None and _certified_checkpoint(metadata[(k, seed)])
+                   for k in (actual, sham) for seed in records[k]):
             continue
         if set(records[actual]) != set(records[sham]):
             raise ValueError("Failure/sham pairs require identical training-seed sets")
@@ -153,15 +182,14 @@ def _paired_summaries(groups, records, metadata, panels, rng, samples):
                                    "initial_state"):
                     if failure.get(diagnostic) != control.get(diagnostic):
                         raise ValueError("Failure/sham pre-event diagnostics disagree")
-                if "trace" in failure and "trace" in control:
-                    event = failure["event_step"]
-                    if failure["trace"][:event] != control["trace"][:event]:
-                        raise ValueError("Failure/sham pre-event traces disagree")
+                if failure["trace_prefix_sha256"] != control["trace_prefix_sha256"]:
+                    raise ValueError("Failure/sham pre-event traces or trace coverage disagree")
             delta = (_metrics(left, identity["config"]["max_steps"])
                      - _metrics(right, identity["config"]["max_steps"])).mean(axis=0)
             per_seed.append({"training_seed": training_seed, "episodes": len(left),
                              "scenario_ids": [str(e["scenario_id"]) for e in left],
                              "checkpoint": metadata[(actual, training_seed)],
+                             "panel_sha256": panel_digest(panels[(actual, training_seed)]),
                              **dict(zip(METRICS, delta.tolist()))})
         paired.append(dict(identity, contrast="failure_minus_sham", training_seeds=len(per_seed),
                            episodes=sum(r["episodes"] for r in per_seed), per_seed=per_seed,
@@ -177,13 +205,38 @@ def _identity(group, exclude=()):
     return {k: v for k, v in group.items() if k not in IDENTITY_EXCLUDED and k not in exclude}
 
 
-def _paired_difference(left_rows, right_rows, label):
-    left = {row["training_seed"]: row for row in left_rows}
-    right = {row["training_seed"]: row for row in right_rows}
+def _paired_difference(left_rows, right_rows, label, same_checkpoint=False):
+    def indexed(rows):
+        result = {}
+        for row in rows:
+            training_seed = row["training_seed"]
+            if training_seed in result:
+                raise ValueError(f"{label}: duplicate training-seed row")
+            result[training_seed] = row
+        return result
+
+    left, right = indexed(left_rows), indexed(right_rows)
     if not left or set(left) != set(right):
         raise ValueError(f"{label} requires identical nonempty training-seed sets")
-    return [{"training_seed": seed, **{m: left[seed][m] - right[seed][m] for m in METRICS}}
-            for seed in sorted(left)]
+    results = []
+    for seed in sorted(left):
+        a, b = left[seed], right[seed]
+        if not a.get("panel_sha256") or not b.get("panel_sha256"):
+            raise ValueError(f"{label} requires certified complete panels")
+        if (a["panel_sha256"] != b["panel_sha256"]
+                or a.get("scenario_ids") != b.get("scenario_ids") or a.get("episodes") != b.get("episodes")):
+            raise ValueError(f"{label} requires identical complete panels")
+        if not _certified_checkpoint(a.get("checkpoint", {})) or not _certified_checkpoint(b.get("checkpoint", {})):
+            raise ValueError(f"{label} requires exact checkpoint identities")
+        if same_checkpoint and a["checkpoint"] != b["checkpoint"]:
+            raise ValueError(f"{label} requires the same exact checkpoint within each seed")
+        row = {"training_seed": seed, "episodes": a["episodes"], "scenario_ids": a["scenario_ids"],
+               "panel_sha256": a["panel_sha256"],
+               "checkpoint": a["checkpoint"],
+               "left_checkpoint": a["checkpoint"], "right_checkpoint": b["checkpoint"],
+               **{m: a[m] - b[m] for m in METRICS}}
+        results.append(row)
+    return results
 
 
 def difference_in_differences(paired_groups, bootstrap_samples=10000, seed=0):
@@ -210,7 +263,7 @@ def difference_in_differences(paired_groups, bootstrap_samples=10000, seed=0):
         for intervention, group in sorted(conditions.items()):
             if intervention == "none":
                 continue
-            per_seed = _paired_difference(group["per_seed"], reference["per_seed"], "Difference-in-differences")
+            per_seed = _paired_difference(group["per_seed"], reference["per_seed"], "Difference-in-differences", same_checkpoint=True)
             results.append(dict(json.loads(base), intervention=intervention,
                                 intervention_offset_from_event=group.get("intervention_offset_from_event"),
                                 contrast="difference_in_differences", training_seeds=len(per_seed),
@@ -242,10 +295,13 @@ def contrast_groups(groups, left_config, right_config, bootstrap_samples=10000, 
             if key(group) in right_index:
                 raise ValueError("Duplicate right-hand stratum")
             right_index[key(group)] = group
-    results = []
+    results, left_seen = [], set()
     for group in groups:
         if group["config"] != left_config:
             continue
+        if key(group) in left_seen:
+            raise ValueError("Duplicate left-hand stratum")
+        left_seen.add(key(group))
         partner = right_index.get(key(group))
         if partner is None:
             continue
@@ -256,7 +312,7 @@ def contrast_groups(groups, left_config, right_config, bootstrap_samples=10000, 
     return results
 
 
-def summarize_reports(paths, output=None, bootstrap_samples=10000, seed=0, protocol=None):
+def summarize_reports(paths, output=None, bootstrap_samples=10000, seed=0, protocol=None, *, report_validator=None):
     """Average per-seed metrics and bootstrap independent training seeds.
 
     Stratify by configuration (except seed), checkpoint epoch/update, source,
@@ -281,6 +337,8 @@ def summarize_reports(paths, output=None, bootstrap_samples=10000, seed=0, proto
     for path in paths:
         with Path(path).open() as stream:
             report = json.load(stream)
+        if report_validator is not None:
+            report_validator(report, path)
         config = dict(report.get("config", {}))
         if not {"seed", "model", "task", "max_steps"}.issubset(config):
             raise ValueError("Evaluation reports must contain config with seed/model/task/max_steps")
@@ -355,7 +413,8 @@ def summarize_reports(paths, output=None, bootstrap_samples=10000, seed=0, proto
                 raise ValueError("Episode steps/return are outside the finite evaluation contract")
             if sum(episode["composition"]) <= 0:
                 raise ValueError("Episode composition must contain at least one agent")
-            records[key][training_seed].append(episode)
+            records[key][training_seed].append(_compact_episode(episode))
+        del episode, report
     if not groups:
         raise ValueError("Supply at least one evaluation report")
 
@@ -369,6 +428,7 @@ def summarize_reports(paths, output=None, bootstrap_samples=10000, seed=0, proto
             per_seed.append({
                 "training_seed": training_seed, "episodes": count,
                 "checkpoint": metadata[(key, training_seed)],
+                "panel_sha256": panel_digest(panels[(key, training_seed)]),
                 "successes": successes, "censored_completions": count - successes,
                 "event_exposed_episodes": sum(bool(episode.get("event_exposed")) for episode in episodes),
                 "scenario_ids": sorted(str(episode["scenario_id"]) for episode in episodes),

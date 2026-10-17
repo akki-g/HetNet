@@ -17,10 +17,13 @@ def gradient_probe(tmp_path_factory):
     output = Path(configured) if configured else tmp_path_factory.mktemp("gradient_probe") / "probe.json"
     command = [sys.executable, str(root / "tests/helpers/shared_gradient_probe.py"),
                "--output", str(output), "--updates", "3", "--timeout-seconds", "60"]
+    outer_timeout = float(os.environ.get("HETNET_GRADIENT_PROBE_OUTER_TIMEOUT", "85"))
+    if not 85 <= outer_timeout <= 600:
+        raise ValueError("HETNET_GRADIENT_PROBE_OUTER_TIMEOUT must lie between 85 and 600 seconds")
     with subprocess.Popen(command, cwd=root, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                           text=True, start_new_session=True) as process:
         try:
-            stdout, _ = process.communicate(timeout=85)
+            stdout, _ = process.communicate(timeout=outer_timeout)
         except subprocess.TimeoutExpired:
             os.killpg(process.pid, signal.SIGTERM)
             try:

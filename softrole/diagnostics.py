@@ -97,14 +97,15 @@ def learner_identity(cfg):
 
 
 def training_study(cfg):
-    """fixed: nominal 2P1A; failure: scheduled sensor loss; composition: mixed rosters."""
+    """Classify scheduled sensor loss first, then fixed versus mixed rosters."""
     if cfg.failure_prob:
         return 'failure'
-    return 'fixed' if cfg.training_compositions == ((2, 1),) else 'composition'
+    return 'fixed' if len(cfg.training_compositions) == 1 else 'composition'
 
 
 def version_one_eligible(cfg):
-    return (training_study(cfg) == 'fixed' and cfg.critic_mode == 'team'
+    return (not cfg.failure_prob and cfg.training_compositions == ((2, 1),)
+            and cfg.critic_mode == 'team'
             and cfg.credit_beta == 1 and cfg.objective == 'team')
 
 
@@ -204,12 +205,11 @@ def audit_archive(checkpoint, saved, cfg):
 
 
 def logged_batch(run, update):
+    from softrole.ledger import iter_episodes
     episodes = []
-    with (run / 'episodes.jsonl').open() as stream:
-        for line in stream:
-            row = json.loads(line)
-            if row['update'] == update:
-                episodes.append(row)
+    for row in iter_episodes(run, through_update=update):
+        if row['update'] == update:
+            episodes.append(row)
     updates = []
     with (run / 'updates.jsonl').open() as stream:
         for line in stream:
@@ -263,9 +263,10 @@ def prepare(checkpoints, output, checkpoint_rule, batch_mode='logged-next-update
             inputs[str(run / name)] = sha(run / name)
         inputs[str(checkpoint) + '.signature.json'] = sha(str(checkpoint) + '.signature.json')
         if batch_mode == 'logged-next-update':
+            from softrole.ledger import ledger_files
             logged_batch(run, saved['updates'] + 1)
-            for name in ('episodes.jsonl', 'updates.jsonl'):
-                inputs[str(run / name)] = sha(run / name)
+            for path in [*ledger_files(run), run / 'updates.jsonl']:
+                inputs[str(path)] = sha(path)
         entry = {'checkpoint': str(checkpoint), 'inputs': inputs,
                  'training_seed': cfg.seed, 'communication': cfg.communication,
                  'progress': {key: saved[key] for key in ('updates', 'total_steps', 'total_episodes')},

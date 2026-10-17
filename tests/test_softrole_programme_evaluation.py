@@ -11,7 +11,8 @@ from softrole.env import make_env
 from softrole.model import SoftRoleNet
 from softrole.programme import entries, launch, prepare
 from softrole.programme_evaluation import (CONDITIONS, FINAL_COMPOSITIONS, main, panels, prepare_evaluation,
-                                           protocol, run_task, select_checkpoint, summarize_evaluation)
+                                           protocol, run_task, select_checkpoint, summarize_evaluation,
+                                           development_conditions, selected_entries, validate_report_job)
 from softrole.report import validate_evaluation_protocol
 from softrole.rollout import run_episode
 from softrole.scenarios import Scenario, make_scenarios
@@ -103,16 +104,18 @@ def test_select_checkpoint_takes_the_first_saved_at_or_above_and_verifies_the_le
     assert early["epoch"] == 2 and early["preceding_saved_epoch"] is None and early["total_steps"] == metrics[1]["total_steps"]
     with pytest.raises(ValueError, match="no saved checkpoint reaches"):
         select_checkpoint(tmp_path / "run", config, metrics[3]["total_steps"] + 1)
-    ledger = tmp_path / "run" / "metrics.jsonl"
-    original = ledger.read_bytes()
-    metrics[3]["total_steps"] += 1
-    ledger.write_text("".join(json.dumps(row) + "\n" for row in metrics))
-    with pytest.raises(ValueError, match="differs from the metrics ledger"):
-        select_checkpoint(tmp_path / "run", config, 1 + metrics[1]["total_steps"])
-    ledger.write_bytes(original)
+    # Epoch summaries are presentation-only. Accepted update/episode evidence
+    # and committed checkpoints remain authoritative even if finish publication
+    # was interrupted.
     (tmp_path / "run" / "finished.json").rename(tmp_path / "finished.json")
-    with pytest.raises(ValueError, match="has not finished"):
-        select_checkpoint(tmp_path / "run", config, 1)
+    assert select_checkpoint(tmp_path / "run", config, 1)["epoch"] == 2
+    ledger = tmp_path / "run" / "updates.jsonl"
+    updates = [json.loads(line) for line in ledger.open()]
+    updates[-1]["total_steps"] += 1
+    ledger.write_text("".join(json.dumps(row) + "\n" for row in updates))
+    with pytest.raises(ValueError, match="count|progress|steps|cumulative"):
+        select_checkpoint(tmp_path / "run", config, 1 + metrics[1]["total_steps"])
+
 
 
 BOUNDED = {"epochs": 1, "updates_per_epoch": 1, "batch_steps": 1, "nprocesses": 1, "total_steps": 1, "save_every": 1}
@@ -124,7 +127,7 @@ def bounded_runs(tmp_path_factory):
     root = tmp_path_factory.mktemp("bounded")
     _, selection = synthetic_selection(root)
     manifest = root / "manifest.json"
-    prepare(selection, manifest)
+    prepare(selection, manifest, bounded=True)
     for index in ENTRIES:
         launch(manifest, index, root / "runs", overrides=dict(BOUNDED), diagnostics_every=1)
     return root, manifest
@@ -132,8 +135,8 @@ def bounded_runs(tmp_path_factory):
 
 def test_research_preparation_refuses_bounded_runs_and_panel_changes(bounded_runs, tmp_path):
     root, manifest = bounded_runs
-    with pytest.raises(ValueError, match="bounded engineering run"):
-        prepare_evaluation(manifest, root / "runs", tmp_path / "research")
+    with pytest.raises(ValueError, match="bounded manifest"):
+        prepare_evaluation(manifest, root / "runs", tmp_path / "research", phase="final")
     with pytest.raises(ValueError, match="locked panel seed"):
         prepare_evaluation(manifest, root / "runs", tmp_path / "research", episodes=3)
     with pytest.raises(ValueError, match="locked panel seed"):
@@ -144,7 +147,7 @@ def test_research_preparation_refuses_bounded_runs_and_panel_changes(bounded_run
 def test_bounded_evaluation_prepares_runs_and_summarizes_end_to_end(bounded_runs, tmp_path):
     root, manifest = bounded_runs
     evaluation = prepare_evaluation(manifest, root / "runs", tmp_path / "eval", panel_seed=2704, episodes=1,
-                                    target_steps=1, bounded=True, entry_indices=list(ENTRIES))
+                                    target_steps=1, bounded=True, entry_indices=list(ENTRIES), phase="final")
     assert evaluation["bounded_check"] and evaluation["tasks"] == 6
     gated = [r for r in evaluation["runs"] if r["gated"]]
     assert [r["arm"] for r in gated] == ["banks_composition_banked"]
@@ -204,3 +207,79 @@ def test_cli_entry_points(bounded_runs, tmp_path, capsys):
     with pytest.raises(SystemExit) as error:
         main(["run", "--tasks", str(tmp_path / "eval" / "tasks.json"), "--index", "1", "--dry-run"])
     assert error.value.code == 2
+
+
+def test_development_stage_selection_includes_controls_and_requires_explicit_stages():
+    manifest = {"entries": entries(1e-3)}
+    chosen, stages = selected_entries(manifest, "development", ["O1"], None, False)
+    assert {row["arm"] for row in chosen} == {"c1_real64", "o1_physical_only"}
+    assert len(chosen) == 6 and stages == ["O1"]
+    with pytest.raises(ValueError, match="explicitly selected"):
+        selected_entries(manifest, "development", None, None, False)
+    with pytest.raises(ValueError, match="complete programme"):
+        selected_entries(manifest, "final", ["C1"], None, False)
+    assert len(selected_entries(manifest, "final", None, None, False)[0]) == 63
+
+
+def test_development_panels_include_blind_o1_and_separate_historical_timing():
+    panel = panels(2704, 5, ((1, 2),), allow_fully_blind=True)[(1, 2)]
+    assert all(s.event_step == 1 and s.victim == 0 for s in panel["failure"])
+    o1 = development_conditions("o1_physical_only", (1, 2), ["O1"])
+    assert [row[0] for row in o1] == ["nominal", "failure", "sham"]
+    assert development_conditions("c1_real64", (1, 2), ["O1"]) == o1
+    assert development_conditions("c1_real64", (1, 2), ["C1"]) == []
+    diversity = development_conditions("banks_composition_banked", (2, 1), ["BANKS"])
+    assert "historical_failure_freeze_all" in {row[0] for row in diversity}
+    assert any(row[1] == "failure_historical" for row in diversity)
+    historical = panels(2704, 5, ((2, 1),))[(2, 1)]["failure_historical"]
+    assert all(10 <= row.event_step <= 30 for row in historical)
+    nominal = development_conditions("a1_composition_original_null", (1, 1), ["A1"])
+    assert {row[0] for row in nominal} == {"nominal", "comm_off_nominal"}
+
+
+def test_prepared_report_binding_checks_all_metadata_and_full_coverage(bounded_runs, tmp_path):
+    from copy import deepcopy
+    root, manifest = bounded_runs
+    evaluation = prepare_evaluation(manifest, root / "runs", tmp_path / "eval", episodes=1,
+                                    target_steps=1, bounded=True, entry_indices=[0])
+    task_path = tmp_path / "eval" / "tasks.json"
+    assert evaluation["phase"] == "development" and evaluation["jobs"] == 1
+    run_task(task_path, 0)
+    job = json.loads(task_path.read_text())["tasks"][0]["jobs"][0]
+    good = json.loads(Path(job["output"]).read_text())
+    validate_report_job(good, job, evaluation)
+    for field in ("config", "checkpoint_progress", "source_sha256", "evaluation_protocol", "intervention", "sham"):
+        bad = deepcopy(good)
+        bad[field] = None
+        with pytest.raises(ValueError, match="match its prepared job"):
+            validate_report_job(bad, job, evaluation)
+    for mutate in (lambda r: r["per_episode"].append(r["per_episode"][0]),
+                   lambda r: r["per_episode"][0].update(intervention_step=2),
+                   lambda r: r["scenarios"][0].update(action_seed=123)):
+        bad = deepcopy(good)
+        mutate(bad)
+        with pytest.raises(ValueError):
+            validate_report_job(bad, job, evaluation)
+    bad = deepcopy(good)
+    bad["checkpoint_progress"]["total_steps"] += 1
+    Path(job["output"]).write_text(json.dumps(bad))
+    with pytest.raises(ValueError, match="checkpoint_progress"):
+        run_task(task_path, 0)
+    with pytest.raises(ValueError, match="checkpoint_progress"):
+        summarize_evaluation(tmp_path / "eval", tmp_path / "summary", 10)
+
+
+def test_complete_final_condition_matrix_is_1278_reports_and_639000_episodes():
+    from softrole.programme import ARMS, SEEDS
+    reports = sum(len(SEEDS) * len(FINAL_COMPOSITIONS) * sum(
+        not condition[5] or arm["factors"]["model"] in ("banked", "capability")
+        for condition in CONDITIONS) for arm in ARMS)
+    assert len(ARMS) * len(SEEDS) == 63
+    assert reports == 1278 and reports * 500 == 639000
+
+
+@pytest.mark.parametrize("phase,stages", [("final", None), ("development", ["O1"])])
+def test_research_selection_requires_every_selected_arm_seed(phase, stages):
+    manifest = {"entries": entries(1e-3)[1:]}  # Real64 seed 0 is required directly or as O1's control.
+    with pytest.raises(ValueError, match="every seed"):
+        selected_entries(manifest, phase, stages, None, False)

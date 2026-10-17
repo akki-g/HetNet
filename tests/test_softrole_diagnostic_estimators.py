@@ -6,7 +6,7 @@ import torch
 from torch import nn
 
 from softrole.diagnostic_estimators import (
-    GradientMoments, actor_episode_gradients, critic_episode_diagnostics,
+    GradientMoments, actor_episode_gradients, beta_key, critic_episode_diagnostics,
     discounted_returns, summarize_critic_diagnostics,
 )
 from softrole.learning import Episode, compute_episode_loss
@@ -26,6 +26,40 @@ class Scores(nn.Module):
         super().__init__()
         self.logits = nn.Parameter(torch.tensor([-.4, .7], dtype=DTYPE))
         self.value = nn.Parameter(torch.tensor(1., dtype=DTYPE))
+
+
+@pytest.mark.parametrize("beta", [.5000004, .5000000000000001, .9999999999999999])
+def test_nearby_beta_variants_preserve_the_configured_production_gradient(beta):
+    model = nn.Linear(1, 2, bias=False).double()
+    with torch.no_grad():
+        model.weight.zero_()
+    log_probs = model(torch.ones(1, 1, dtype=DTYPE)).log_softmax(-1)
+    values = torch.zeros(1, dtype=DTYPE)
+    rewards = torch.tensor([[1., 3.]], dtype=DTYPE)
+    cfg = config(critic_mode="decomposed", credit_beta=beta)
+    result = actor_episode_gradients(log_probs, values, rewards, model, cfg,
+                                     agent_values=torch.zeros_like(rewards))
+    key = "learned_gae_beta_" + beta_key(beta)
+    assert result["protocol"]["production_variant"] == key
+    assert key not in {"learned_gae_beta_1", "learned_gae_beta_0.5", "learned_gae_beta_0"}
+    assert sum(k.startswith("learned_gae_beta_") for k in result["gradients"]) == 4
+    # At zero two-action logits, d log pi_i / dz_j = 1[i=j] - 1/2.
+    # The common team advantage cancels, leaving 50 * (1-beta) * (1,-1).
+    expected = torch.tensor([50 * (1 - beta), -50 * (1 - beta)], dtype=DTYPE)
+    torch.testing.assert_close(result["gradients"][key], expected, rtol=0, atol=1e-12)
+    assert float(beta_key(beta)) == beta
+    assert [beta_key(b) for b in (1., .5, 0.)] == ["1", "0.5", "0"]
+
+
+def test_negative_zero_beta_uses_the_same_variant_as_zero():
+    model = nn.Linear(1, 2, bias=False).double()
+    scores = model(torch.ones(1, 1, dtype=DTYPE)).log_softmax(-1)
+    rewards = torch.tensor([[1., 3.]], dtype=DTYPE)
+    result = actor_episode_gradients(scores, torch.zeros(1, dtype=DTYPE), rewards, model,
+                                    config(critic_mode="decomposed", credit_beta=-0.),
+                                    agent_values=torch.zeros_like(rewards))
+    assert result["protocol"]["production_variant"] == "learned_gae_beta_0"
+    assert beta_key(-0.) == beta_key(0.)
 
 
 def test_discounted_returns_match_realized_finite_horizon_sums():

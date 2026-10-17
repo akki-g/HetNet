@@ -81,7 +81,7 @@ def test_nested_contexts_isolated_and_cleaned_on_exception(checkpoint):
 
 def test_changed_archived_bytes_refused_before_import(checkpoint, monkeypatch):
     original = Path.read_bytes
-    target = checkpoint.parent.parent / 'source/softrole/model.py'
+    target = checkpoint.resolve().parent.parent / 'source/softrole/model.py'
 
     def altered(path):
         data = original(path)

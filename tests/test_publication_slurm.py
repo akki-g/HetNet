@@ -166,7 +166,9 @@ def test_batch_files_have_required_directives_and_valid_shell(name):
     assert directives["mem"] == ("16G" if training else "4G")
     assert directives["time"] == {"train": "48:00:00", "resume": "48:00:00", "preflight": "02:00:00",
                                    "prepare_evaluation": "00:30:00", "evaluate": "04:00:00"}[name]
-    assert directives.get("array") == {"train": "0-11%3", "preflight": "0-3%1"}.get(name)
+    # The committed training launcher exposes all twelve tasks. A concurrency
+    # cap, when wanted, is supplied by the submission command.
+    assert directives.get("array") == {"train": "0-11", "preflight": "0-3%1"}.get(name)
     for key in ("output", "error"):
         assert directives[key].startswith("logs_1/") and "%A_%a" in directives[key]
     assert "sbatch " not in content and "exec srun " in content

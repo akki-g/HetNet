@@ -135,8 +135,18 @@ def compute_episode_loss(episode, config):
     total = config.actor_coeff * terms["policy"] + config.value_coeff * terms["value"]
     if terms["scale"] != 1.0:
         total = terms["scale"] * total
-    return total, {"policy_loss_sum": float(terms["policy"].detach()),
-                   "value_loss_sum": float(terms["value"].detach()), "episode_count": 1}
+    stats = {"policy_loss_sum": float(terms["policy"].detach()),
+             "value_loss_sum": float(terms["value"].detach()), "episode_count": 1}
+    if getattr(config, "objective", "team") == "mean_agent":
+        # Preserve raw diagnostics and legacy ledger fields. These additional
+        # detached metrics include coefficients and this episode's own 1/N,
+        # so mixed rosters cannot be scaled by a batch-average team size.
+        stats.update(
+            objective_policy_loss_sum=float(terms["scale"] * config.actor_coeff * terms["policy"].detach()),
+            objective_value_loss_sum=float(terms["scale"] * config.value_coeff * terms["value"].detach()),
+            objective_total_loss_sum=float(total.detach()),
+        )
+    return total, stats
 
 
 def loss_sum(episodes, config):
@@ -148,6 +158,6 @@ def loss_sum(episodes, config):
     for episode in episodes:
         loss, fresh = compute_episode_loss(episode, config)
         losses.append(loss)
-        for key in stats:
-            stats[key] += fresh[key]
+        for key, value in fresh.items():
+            stats[key] = stats.get(key, 0) + value
     return torch.stack(losses).sum(), stats

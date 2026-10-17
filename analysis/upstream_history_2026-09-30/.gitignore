@@ -1,5 +1,0 @@
-history.git/
-__pycache__/
-!snapshots/**/README.md
-!snapshots/**/.gitignore
-!papers/*.pdf

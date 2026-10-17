@@ -44,6 +44,18 @@ def test_masked_kl_matches_two_action_reference():
         policy_statistics(old, torch.zeros_like(old))
 
 
+def test_lr_summary_reads_chunked_episodes_without_changing_results(tmp_path):
+    config = small_config()
+    summaries = []
+    for mode in ("file", "chunked-gzip"):
+        run = tmp_path / mode
+        train(config, run, diagnostics_every=1, episode_log=mode)
+        summary = summarize_run(run)
+        del summary["finished"]["checkpoint"]
+        summaries.append(summary)
+    assert summaries[0] == summaries[1]
+
+
 @pytest.mark.parametrize("channel", ["real", "binary"])
 def test_diagnostics_preserve_exact_training_and_optimizer(tmp_path, channel):
     config = small_config(channel)

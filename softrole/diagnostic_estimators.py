@@ -140,6 +140,12 @@ def summarize_critic_diagnostics(records):
     }
 
 
+def beta_key(beta):
+    """Round-trip a binary64 credit coefficient without merging nearby variants."""
+    value = float(beta)
+    return "0" if value == 0 else format(value, ".17g")
+
+
 def actor_episode_gradients(log_probs, values, rewards, model, config, retain_graph=False,
                             agent_values=None, scale=1.0):
     """Return unclipped actor loss gradient sums for paired D4 comparisons.
@@ -177,7 +183,7 @@ def actor_episode_gradients(log_probs, values, rewards, model, config, retain_gr
     for prefix, own in (("allocated_gae", own_advantages), ("mc", returns)):
         for beta in (1.0, 0.5, 0.0):
             mixed = beta * own.sum(-1, keepdim=True) + (1 - beta) * own
-            losses[f"{prefix}_beta_{beta:g}"] = -coefficient * (log_probs * mixed).sum()
+            losses[f"{prefix}_beta_{beta_key(beta)}"] = -coefficient * (log_probs * mixed).sum()
     critic_mode = getattr(config, "critic_mode", "team")
     configured_beta = float(getattr(config, "credit_beta", 1.0))
     learned = None
@@ -190,10 +196,10 @@ def actor_episode_gradients(log_probs, values, rewards, model, config, retain_gr
         learned, _ = agent_gae(rewards, agent_values, config.gamma, config.gae_lambda)
         for beta in sorted({1.0, 0.5, 0.0, configured_beta}, reverse=True):
             mixed = beta * learned.sum(-1, keepdim=True) + (1 - beta) * learned
-            losses[f"learned_gae_beta_{beta:g}"] = -coefficient * (log_probs * mixed).sum()
+            losses[f"learned_gae_beta_{beta_key(beta)}"] = -coefficient * (log_probs * mixed).sum()
     elif critic_mode == "decomposed":
         raise ValueError("A decomposed critic needs its learned per-agent values for D4")
-    production = "team_gae" if critic_mode == "team" else f"learned_gae_beta_{configured_beta:g}"
+    production = "team_gae" if critic_mode == "team" else f"learned_gae_beta_{beta_key(configured_beta)}"
     gradients = {}
     for index, (name, loss) in enumerate(losses.items()):
         parts = torch.autograd.grad(loss, parameters, allow_unused=True,

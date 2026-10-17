@@ -42,9 +42,31 @@ def test_unequal_rosters_are_weighted_by_one_over_n_with_one_global_sum():
     # lambda = 1 advantages: 2 for the singleton, (4, 3) for the trio.
     torch.testing.assert_close(torch.autograd.grad(team_loss, theta)[0], theta.new_tensor(-9.))
     torch.testing.assert_close(torch.autograd.grad(mean_loss, theta)[0], theta.new_tensor(-2. - 7. / 3.))
-    # Recorded sums stay unscaled so ledgers remain comparable across objectives.
-    assert team_stats == mean_stats and mean_stats["policy_loss_sum"] == pytest.approx(-1.8)
+    # Raw sums retain their old meaning; objective metrics scale each episode.
+    assert {k: mean_stats[k] for k in team_stats} == team_stats
+    assert mean_stats["policy_loss_sum"] == pytest.approx(-1.8)
+    assert mean_stats["objective_policy_loss_sum"] == pytest.approx(-.4 - 1.4 / 3)
+    assert mean_stats["objective_value_loss_sum"] == 0
+    assert mean_stats["objective_total_loss_sum"] == pytest.approx(float(mean_loss.detach()))
+    assert not any(k.startswith("objective_") for k in team_stats)
     assert episode_loss_terms(synthetic_episodes(theta)[1], learner("mean_agent"))["scale"] == pytest.approx(1 / 3)
+
+
+def test_objective_logs_include_coefficients_and_value_scaling_without_changing_gradients():
+    theta = torch.tensor(.2, dtype=torch.float64, requires_grad=True)
+    episode = Episode(log_probs=[theta], values=[theta * 0], rewards=[6.],
+                      agent_rewards=[[1., 2., 3.]])
+    team, raw = compute_episode_loss(episode, learner("team", actor_coeff=50., value_coeff=1.))
+    scaled, stats = compute_episode_loss(episode, learner("mean_agent", actor_coeff=50., value_coeff=1.))
+    assert raw == {"policy_loss_sum": pytest.approx(-1.2), "value_loss_sum": 36., "episode_count": 1}
+    assert stats["policy_loss_sum"] == raw["policy_loss_sum"]
+    assert stats["value_loss_sum"] == raw["value_loss_sum"]
+    assert float(team.detach()) == pytest.approx(-24.)
+    assert stats["objective_policy_loss_sum"] == pytest.approx(-20.)
+    assert stats["objective_value_loss_sum"] == 12.
+    assert stats["objective_total_loss_sum"] == pytest.approx(-8.)
+    assert torch.equal(scaled, team / 3)
+    assert float(torch.autograd.grad(scaled, theta)[0]) == pytest.approx(-100., abs=1e-12)
 
 
 def test_mean_agent_scale_needs_the_roster_size():
@@ -73,11 +95,16 @@ def test_collector_gradient_sums_scale_each_episode_before_the_global_average():
     scenarios = make_scenarios(seed, mean_config.batch_steps, mean_config.training_compositions)
     parameters = list(model.parameters())
     expected = [torch.zeros_like(p) for p in parameters]
+    objective = dict(objective_policy_loss_sum=0., objective_value_loss_sum=0., objective_total_loss_sum=0.)
     steps = 0
     for scenario, record in zip(scenarios, batch["episodes"]):
         episode = run_episode(model, make_env(team_config), team_config, scenario, training=True)
         assert episode.metrics == record
-        loss, _ = compute_episode_loss(episode, team_config)
+        loss, raw = compute_episode_loss(episode, team_config)
+        n = episode.metrics["num_agents"]
+        objective["objective_policy_loss_sum"] += team_config.actor_coeff * raw["policy_loss_sum"] / n
+        objective["objective_value_loss_sum"] += team_config.value_coeff * raw["value_loss_sum"] / n
+        objective["objective_total_loss_sum"] += float(loss.detach()) / n
         for total, gradient in zip(expected, torch.autograd.grad(loss / episode.metrics["num_agents"], parameters, allow_unused=True)):
             if gradient is not None:
                 total.add_(gradient)
@@ -86,6 +113,8 @@ def test_collector_gradient_sums_scale_each_episode_before_the_global_average():
             break
     for total, actual in zip(expected, batch["gradients"]):
         torch.testing.assert_close(total, torch.as_tensor(actual), rtol=1e-12, atol=1e-12)
+    for key, value in objective.items():
+        assert batch[key] == pytest.approx(value, rel=1e-12, abs=1e-12)
 
 
 def test_cli_run_record_and_resume_guard(tmp_path, capsys):
@@ -103,6 +132,13 @@ def test_cli_run_record_and_resume_guard(tmp_path, capsys):
     assert "objective" not in config.model_kwargs()
     metrics = json.loads((tmp_path / "run" / "metrics.jsonl").read_text())
     assert np.isfinite(metrics["policy_loss_per_episode"]) and metrics["episodes"] >= 1
+    update = json.loads((tmp_path / "run" / "updates.jsonl").read_text())
+    for component in ("policy", "value", "total"):
+        key = f"objective_{component}_loss_sum"
+        assert np.isfinite(metrics[key]) and update[key] == metrics[key]
+        assert metrics[f"objective_{component}_loss_per_episode"] == metrics[key] / metrics["episodes"]
+    assert metrics["objective_total_loss_sum"] == pytest.approx(
+        metrics["objective_policy_loss_sum"] + metrics["objective_value_loss_sum"])
     partial = train(replace(config, total_steps=1), tmp_path / "partial")
     with pytest.raises(ValueError, match="resume may change only"):
         train(replace(config, objective="team"), tmp_path / "switched", resume=partial)

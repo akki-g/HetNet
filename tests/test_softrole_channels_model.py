@@ -6,6 +6,7 @@ import pytest
 import torch
 
 from softrole.model import CommunicationRound, SoftRoleNet
+from test_softrole_programme_defaults import load_fixture
 
 
 def small_model(**kwargs):
@@ -34,8 +35,9 @@ def state_hash(state):
 
 
 def test_default_retains_pre_extension_state_initialization_and_forward_snapshot():
-    # Captured from the original two-round shared-payload model before this
-    # extension.  Fix float32 initialization, then use the CPU float64 forward.
+    # Preserve the original initialization/RNG snapshots. Compare forward
+    # arithmetic to the hash-pinned legacy implementation on this platform:
+    # Mac and Linux BLAS can differ in the last bit of a captured output.
     previous_dtype, previous_threads = torch.get_default_dtype(), torch.get_num_threads()
     try:
         torch.set_default_dtype(torch.float32)
@@ -49,18 +51,15 @@ def test_default_retains_pre_extension_state_initialization_and_forward_snapshot
                 "909f0ccddb78ae68c215767e11b65e4ac4f85c3e713847cc9089674ccf2fb783")
             obs, kappa, memory, adjacency, noise = inputs(model)
             result = model(obs, kappa, memory, adjacency, 0.7, noise)
-        expected = torch.tensor([
-            [-0.05515769298362636, 0.26924067265513807, -0.002819023557041796,
-             0.29392129348452106, 0.2418135160093554, -float("inf")],
-            [-0.08173075636416927, 0.4009697359648734, -0.04399140770424496,
-             0.3746780222462355, 0.23361216000170126, 0.2676854325808391],
-            [-0.06845446209957944, 0.3296809498356963, -0.022054982786637426,
-             0.32953635193541075, 0.23031460804591847, 0.29992398963960953],
-        ], dtype=torch.float64)
-        torch.testing.assert_close(result["logits"], expected, atol=0, rtol=0)
-        assert result["value"].item() == 0.021982999691623206
-        assert state_hash(result["memory"]) == (
-            "0e7bbd9271866a045372c9d60e090cb71f65b8f4fd10ee4ae64193d0452b75d8")
+            torch.manual_seed(194)
+            legacy = load_fixture().SoftRoleNet(
+                base=2, n_squares=3, experts=3, pre_dim=8, hidden_dim=8,
+                heads=2, head_dim=3, msg_dim=5).double()
+            expected = legacy(obs, kappa, legacy.initial_memory(3), adjacency, 0.7, noise)
+        for key in ("logits", "value", "gate"):
+            torch.testing.assert_close(result[key], expected[key], atol=0, rtol=0)
+        for key in result["memory"]:
+            assert torch.equal(result["memory"][key], expected["memory"][key])
         assert result["messages"] is result["bits"]
     finally:
         torch.set_default_dtype(previous_dtype)

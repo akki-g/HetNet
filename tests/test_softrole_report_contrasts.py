@@ -8,7 +8,10 @@ B = {"model": "shared", "communication": "binary", "max_steps": 80}
 
 
 def rows(values):
-    return [{"training_seed": seed, "episodes": 4, **{m: value + i for i, m in enumerate(METRICS)}}
+    return [{"training_seed": seed, "episodes": 4, "scenario_ids": ["0", "1", "2", "3"],
+             "panel_sha256": "panel", "checkpoint": {"checkpoint_sha256": f"seed{seed}", "model_signature": f"seed{seed}",
+                                                        "progress": {"epoch": 1, "updates": 1, "total_steps": 20_000_100, "total_episodes": 4}},
+             **{m: value + i for i, m in enumerate(METRICS)}}
             for seed, value in values.items()]
 
 
@@ -69,3 +72,32 @@ def test_difference_in_differences_subtracts_the_uninterrupted_pair_within_seed(
                                  A, B, 10, label="A_minus_B")
     assert len(contrasted) == 1 and contrasted[0]["intervention"] == "comm_off"
     assert contrasted[0]["metrics"]["success_rate"]["mean"] == pytest.approx(-2.)
+
+
+@pytest.mark.parametrize("damage", ["checkpoint", "panel", "ids", "duplicate", "missing_identity"])
+def test_difference_in_differences_rejects_unpaired_seed_evidence(damage):
+    reference = paired(A, "none", {0: 0.})
+    intervention = paired(A, "comm_off", {0: 1.})
+    row = intervention["per_seed"][0]
+    if damage == "checkpoint":
+        row["checkpoint"]["progress"]["total_steps"] = 21_000_000
+    elif damage == "panel":
+        row["panel_sha256"] = "other"
+    elif damage == "ids":
+        row["scenario_ids"] = ["0", "1", "2", "4"]
+    elif damage == "duplicate":
+        intervention["per_seed"].append(dict(row))
+    else:
+        row.pop("panel_sha256")
+    with pytest.raises(ValueError, match="checkpoint|panels|duplicate"):
+        difference_in_differences([reference, intervention], 10)
+
+
+def test_arm_contrasts_allow_distinct_checkpoints_but_retain_both():
+    left, right = stratum(A, values={0: 2.}), stratum(B, values={0: 1.})
+    right["per_seed"][0]["checkpoint"]["checkpoint_sha256"] = "binary-weights"
+    row = contrast_groups([left, right], A, B, 10)[0]["per_seed"][0]
+    assert row["left_checkpoint"] != row["right_checkpoint"]
+    assert row["panel_sha256"] == "panel"
+    with pytest.raises(ValueError, match="Duplicate left"):
+        contrast_groups([left, left, right], A, B, 10)

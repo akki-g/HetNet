@@ -19,7 +19,7 @@ SLURM = ROOT / "slurm/softrole_programme.sbatch"
 def manifest(tmp_path_factory):
     root = tmp_path_factory.mktemp("programme")
     _, selection = synthetic_selection(root)
-    prepare(selection, root / "locked manifest.json")
+    prepare(selection, root / "locked manifest.json", bounded=True)
     return root / "locked manifest.json"
 
 
@@ -40,7 +40,7 @@ def test_dry_run_resolves_the_manifest_entry(tmp_path, manifest, index):
 
 def test_runtime_options_change_only_runtime_fields(tmp_path, manifest):
     result = launch(tmp_path, manifest, "7", "--dry-run", "--epochs", "1", "--total-steps", "9", "--diagnostics-every", "1",
-                    "--episode-log", "stdout")
+                    "--episode-log", "chunked-gzip")
     assert result.returncode == 0, result.stderr
     config = json.loads(result.stdout)
     expected = entries(3e-4)[7]["config"]
@@ -50,7 +50,7 @@ def test_runtime_options_change_only_runtime_fields(tmp_path, manifest):
 
 @pytest.mark.parametrize("args", [(), ("63",), ("00",), ("-1",), ("a",), ("0", "--lr", ".1"), ("0", "--communication", "binary"),
                                   ("0", "--seed", "4"), ("0", "--epochs", "0"), ("0", "--total-steps"), ("0", "--episode-log", "x"),
-                                  ("0", "--resume", "x")])
+                                  ("0", "--resume", "x"), ("0", "--episode-log", "stdout")])
 def test_invalid_index_or_scientific_override_rejected(tmp_path, manifest, args):
     result = launch(tmp_path, manifest, *args)
     assert result.returncode == 2 and not result.stdout
@@ -108,3 +108,21 @@ def test_slurm_rejects_indices_outside_the_array(tmp_path, manifest, index):
 def test_shell_syntax():
     result = subprocess.run(["bash", "-n", str(LAUNCHER), str(SLURM)], capture_output=True)
     assert result.returncode == 0, result.stderr
+
+
+def test_resume_without_other_options_reaches_python_with_empty_bash_array(tmp_path, manifest):
+    # macOS Bash3 with `set -u` treats an empty array expansion as unbound.
+    result = launch(tmp_path, manifest, "0", "--resume")
+    assert "unbound variable" not in result.stderr
+    assert result.returncode == 2 and "No programme run exists" in result.stderr
+
+
+def test_dry_run_refuses_a_stale_source_lock_without_creating_outputs(tmp_path, manifest):
+    stale = json.loads(manifest.read_text())
+    stale["source_sha256"] = "0" * 64
+    path = tmp_path / "stale.json"
+    path.write_text(json.dumps(stale))
+    result = launch(tmp_path, path, "0", "--dry-run")
+    assert result.returncode == 2
+    assert "Checkout differs from the locked manifest source" in result.stderr
+    assert not (tmp_path / "runs").exists()

@@ -135,8 +135,8 @@ def summarize_run(output):
     for line in (output / "updates.jsonl").open():
         row = json.loads(line)
         update_steps[row["update"]] = row["total_steps"]
-    for line in (output / "episodes.jsonl").open():
-        episode = json.loads(line)
+    from softrole.ledger import iter_episodes
+    for episode in iter_episodes(output):
         for (lo, hi), records in windows.items():
             if lo < update_steps[episode["update"]] <= hi:
                 records["episodes"] += 1

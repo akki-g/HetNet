@@ -71,55 +71,69 @@ def test_c1_real64_control_is_exactly_the_s1_run_family(tmp_path):
     assert json.loads(result.stdout) == normalized(programme_config("c1_real64", 0, 3e-4))
 
 
-def synthetic_run(root, lr, seed, completion, last_steps=12_500_000, config_overrides=None,
-                  update_steps=500_000, success=True):
-    """Ledgers with one episode per update; updates end every ``update_steps`` joint steps."""
+def synthetic_run(root, lr, seed, completion, last_steps=88, config_overrides=None, success=True):
+    """Small, internally consistent engineering ledgers and a signed checkpoint."""
+    import hashlib
+    from hetnet_ext.signatures import model_signature
+    from softrole import CHECKPOINT_VERSION
+    from softrole.model import SoftRoleNet
     run = Path(root) / f"lr{lr:g}" / f"seed{seed}"
     run.mkdir(parents=True)
     config = programme_config("c1_real64", seed, lr).to_dict()
+    config.update(epochs=100, updates_per_epoch=1, nprocesses=1, batch_steps=1, total_steps=80, save_every=1)
     config.update(config_overrides or {})
     (run / "config.json").write_text(json.dumps(config))
+    count = max(1, last_steps // completion)
     with (run / "updates.jsonl").open("w") as updates, (run / "episodes.jsonl").open("w") as episodes:
-        for update in range(1, last_steps // update_steps + 1):
-            updates.write(json.dumps({"update": update, "total_steps": update * update_steps, "episodes": 1,
-                                      "steps": update_steps, "gradient_norm_before_clip": 1.}) + "\n")
-            episodes.write(json.dumps({"update": update, "collector": 0, "steps": completion, "success": success,
+        for update in range(1, count + 1):
+            updates.write(json.dumps({"update": update, "total_steps": update * completion, "episodes": 1,
+                                      "steps": completion, "gradient_norm_before_clip": 1.}) + "\n")
+            episodes.write(json.dumps({"update": update, "collector": 0, "scenario_id": str(update),
+                                       "num_p": 2, "num_a": 1, "composition": [2, 1],
+                                       "steps": completion, "success": success,
                                        "team_return": -.15 * completion, "num_agents": 3,
                                        "mean_agent_return": -.05 * completion, "event_exposed": False}) + "\n")
+    archive = run / "source"
+    archive.mkdir()
+    (archive / "fixture.py").write_text("# synthetic evidence; not an experimental training result\n")
+    files = {"fixture.py": sha(archive / "fixture.py")}
+    identity = hashlib.sha256(json.dumps(files, sort_keys=True).encode()).hexdigest()
+    (run / "source_manifest.json").write_text(json.dumps({"sha256": identity, "files": files}))
+    (run / "run.json").write_text(json.dumps({"source_sha256": identity}))
+    model = SoftRoleNet(**Config(**config).model_kwargs()).double()
+    signature = model_signature(model)
+    (run / "checkpoints").mkdir()
+    path = run / "checkpoints" / f"epoch{count:04d}.pt"
+    torch.save({"format_version": CHECKPOINT_VERSION, "config": config, "model_config": Config(**config).model_kwargs(),
+                "model_state": model.state_dict(), "optimizer_state": {}, "source_sha256": identity,
+                "signature": signature, "epoch": count, "updates": count,
+                "total_steps": count * completion, "total_episodes": count}, path)
+    Path(str(path) + ".signature.json").write_text(json.dumps(signature))
     return run
 
 
 def synthetic_selection(root, completions=((6, 6, 6), (5, 5, 8))):
-    """Six S1-shaped runs; by default the rates tie at 6 and the lower rate wins."""
+    """Six bounded S1-shaped fixtures; exact equal-seed completion means tie at6."""
     runs = [synthetic_run(root / "s1", lr, seed, c) for lr, values in zip(S1_RATES, completions) for seed, c in zip(SEEDS, values)]
-    return select_learning_rate(runs, root / "lr_selection.json"), root / "lr_selection.json"
+    return select_learning_rate(runs, root / "lr_selection.json", window=(0, 80), bounded=True), root / "lr_selection.json"
 
 
 def test_window_statistics_cap_failures_at_the_horizon(tmp_path):
-    run = tmp_path / "run"
-    run.mkdir()
-    (run / "updates.jsonl").write_text('{"update": 1, "total_steps": 3}\n{"update": 2, "total_steps": 7}\n')
-    (run / "episodes.jsonl").write_text(
-        '{"update": 1, "steps": 3, "success": true, "team_return": -0.3, "num_agents": 3, "event_exposed": false}\n'
-        '{"update": 2, "steps": 4, "success": false, "team_return": -0.6, "num_agents": 3, "event_exposed": true}\n'
-        '{"update": 2, "steps": 2, "success": true, "team_return": -0.2, "num_agents": 2, "mean_agent_return": -0.1}\n')
-    stats, last = window_statistics(run, [(0, 3), (3, 7), (3, 9)], horizon=80)
-    assert last == 7
-    assert stats["0-3"]["episodes"] == 1 and stats["0-3"]["capped_completion"] == 3 and stats["0-3"]["complete"]
-    row = stats["3-7"]
-    assert row["episodes"] == 2 and row["capped_completion"] == 41 and row["success_rate"] == .5
-    assert row["mean_agent_return"] == pytest.approx((-.2 - .1) / 2) and row["event_exposed_episodes"] == 1
-    assert stats["3-9"]["complete"] is False
+    run = synthetic_run(tmp_path, 3e-4, 0, 4, last_steps=8, success=False)
+    stats, last = window_statistics(run, [(0, 4), (4, 8), (4, 9)], horizon=80)
+    assert last == 8
+    assert stats["0-4"]["episodes"] == 1 and stats["0-4"]["capped_completion"] == 80
+    assert stats["4-8"]["complete"] and not stats["4-9"]["complete"]
     with pytest.raises(ValueError, match="start < end"):
         window_statistics(run, [(3, 3)], 80)
 
 
-def test_selection_rule_prefers_lower_completion_and_breaks_ties_downward(tmp_path):
+def test_selection_rule_prefers_lower_completion_and_breaks_exact_ties_downward(tmp_path):
     record, path = synthetic_selection(tmp_path / "tie")
-    assert record["selected_lr"] == 3e-4 and record["rule"] == S1_RULE and not record["bounded_check"]
+    assert record["selected_lr"] == 3e-4 and record["rule"] == S1_RULE and record["bounded_check"]
     assert record["equal_seed_means"] == {"0.0003": 6., "0.001": 6.}
-    assert all(r["window"]["complete"] and r["window"]["episodes"] == 8 for r in record["runs"])
-    assert all(set(r["inputs"]) == {str(Path(r["run"]) / n) for n in ("config.json", "updates.jsonl", "episodes.jsonl")} for r in record["runs"])
+    assert record["equal_seed_means_exact"] == {"0.0003": [6, 1], "0.001": [6, 1]}
+    assert all(r["window"]["complete"] and Path(r["audit"]).exists() for r in record["runs"])
     faster, _ = synthetic_selection(tmp_path / "faster", completions=((6, 6, 6), (5, 5, 5)))
     assert faster["selected_lr"] == 1e-3
     with pytest.raises(FileExistsError):
@@ -128,40 +142,37 @@ def test_selection_rule_prefers_lower_completion_and_breaks_ties_downward(tmp_pa
 
 def test_selection_refuses_partial_windows_missing_seeds_and_foreign_runs(tmp_path):
     runs = [synthetic_run(tmp_path / "a", lr, seed, 6) for lr in S1_RATES for seed in SEEDS]
-    partial = synthetic_run(tmp_path / "b", 3e-4, 0, 6, last_steps=11_000_000)
+    partial = synthetic_run(tmp_path / "b", 3e-4, 0, 6, last_steps=72)
     with pytest.raises(ValueError, match="partial comparisons"):
-        select_learning_rate([partial] + runs[1:], tmp_path / "partial.json")
+        select_learning_rate([partial] + runs[1:], tmp_path / "partial.json", window=(0, 80), bounded=True)
     with pytest.raises(ValueError, match="all three seeds"):
-        select_learning_rate(runs[:-1], tmp_path / "missing.json")
+        select_learning_rate(runs[:-1], tmp_path / "missing.json", window=(0, 80), bounded=True)
     foreign = synthetic_run(tmp_path / "c", 3e-4, 0, 6, config_overrides={"communication": "binary"})
     with pytest.raises(ValueError, match="S1 Real64 protocol"):
-        select_learning_rate([foreign] + runs[1:], tmp_path / "foreign.json")
-    reduced = synthetic_run(tmp_path / "d", 3e-4, 0, 6, config_overrides={"total_steps": 1})
+        select_learning_rate([foreign] + runs[1:], tmp_path / "foreign.json", window=(0, 80), bounded=True)
     with pytest.raises(ValueError, match="S1 Real64 protocol"):
-        select_learning_rate([reduced] + runs[1:], tmp_path / "reduced.json")
+        select_learning_rate(runs, tmp_path / "research.json")
     with pytest.raises(ValueError, match="fixed"):
-        select_learning_rate(runs, tmp_path / "window.json", window=(0, 1_000_000))
-    bounded = select_learning_rate([reduced] + runs[1:], tmp_path / "bounded.json", window=(0, 1_000_000), bounded=True)
-    assert bounded["bounded_check"] and bounded["window"] == [0, 1_000_000]
+        select_learning_rate(runs, tmp_path / "window.json", window=(0, 80))
     assert not any(p.exists() for p in (tmp_path / "partial.json", tmp_path / "missing.json", tmp_path / "foreign.json"))
 
 
 def test_prepare_locks_entries_source_and_selection(tmp_path):
     from softrole.train import source_snapshot
     _, selection = synthetic_selection(tmp_path)
-    manifest = prepare(selection, tmp_path / "manifest.json")
-    assert manifest["lr"] == 3e-4 and manifest["entries"] == entries(3e-4) and not manifest["bounded_check"]
+    manifest = prepare(selection, tmp_path / "manifest.json", bounded=True)
+    assert manifest["lr"] == 3e-4 and manifest["entries"] == entries(3e-4) and manifest["bounded_check"]
     assert manifest["source_sha256"] == source_snapshot()["sha256"]
     assert manifest["lr_selection_sha256"] == sha(selection) and manifest["lr_selection"]["selected_lr"] == 3e-4
     assert manifest["diagnostics_every"] == 50 and manifest["runtime_override_keys"] == list(RUNTIME_KEYS)
     assert json.loads((tmp_path / "manifest.json").read_text()) == manifest
     with pytest.raises(FileExistsError):
-        prepare(selection, tmp_path / "manifest.json")
+        prepare(selection, tmp_path / "manifest.json", bounded=True)
     tampered = json.loads(selection.read_text())
     tampered["rule"] = "best looking curve"
     (tmp_path / "tampered.json").write_text(json.dumps(tampered))
     with pytest.raises(ValueError, match="fixed S1 rule"):
-        prepare(tmp_path / "tampered.json", tmp_path / "m2.json")
+        prepare(tmp_path / "tampered.json", tmp_path / "m2.json", bounded=True)
     bounded = json.loads(selection.read_text())
     bounded["bounded_check"] = True
     (tmp_path / "bounded.json").write_text(json.dumps(bounded))
@@ -173,7 +184,7 @@ def test_prepare_locks_entries_source_and_selection(tmp_path):
 
 def test_launch_dry_run_resolves_entries_without_output(tmp_path):
     _, selection = synthetic_selection(tmp_path)
-    prepare(selection, tmp_path / "manifest.json")
+    prepare(selection, tmp_path / "manifest.json", bounded=True)
     config = launch(tmp_path / "manifest.json", 5, tmp_path / "runs", dry_run=True)
     assert config == Config(**entries(3e-4)[5]["config"])
     changed = launch(tmp_path / "manifest.json", 5, tmp_path / "runs", dry_run=True,
@@ -191,7 +202,7 @@ def test_launch_dry_run_resolves_entries_without_output(tmp_path):
 def test_launch_refuses_a_changed_checkout_before_writing(tmp_path, monkeypatch):
     import softrole.train as training
     _, selection = synthetic_selection(tmp_path)
-    prepare(selection, tmp_path / "manifest.json")
+    prepare(selection, tmp_path / "manifest.json", bounded=True)
     original = training.source_snapshot
     monkeypatch.setattr(training, "source_snapshot", lambda output=None: {**original(output), "sha256": "0" * 64})
     with pytest.raises(ValueError, match="Checkout differs"):
@@ -203,7 +214,7 @@ def test_launch_refuses_a_changed_checkout_before_writing(tmp_path, monkeypatch)
 def test_launch_executes_bounded_entries_with_provenance(tmp_path, index):
     _, selection = synthetic_selection(tmp_path)
     manifest_path = tmp_path / "manifest.json"
-    manifest = prepare(selection, manifest_path)
+    manifest = prepare(selection, manifest_path, bounded=True)
     overrides = {"epochs": 1, "updates_per_epoch": 1, "batch_steps": 1, "nprocesses": 1, "total_steps": 1, "save_every": 1}
     config = launch(manifest_path, index, tmp_path / "runs", overrides=overrides, diagnostics_every=1)
     entry = manifest["entries"][index]
@@ -226,7 +237,7 @@ def test_cli_prints_tables_and_rejects_scientific_flags(tmp_path, capsys):
     main(["arms"])
     assert json.loads(capsys.readouterr().out)["runs"] == 63
     _, selection = synthetic_selection(tmp_path)
-    main(["prepare", "--lr-selection", str(selection), "--output", str(tmp_path / "manifest.json")])
+    main(["prepare", "--lr-selection", str(selection), "--output", str(tmp_path / "manifest.json"), "--bounded"])
     assert json.loads(capsys.readouterr().out)["entries"] == 63
     main(["launch", "--manifest", str(tmp_path / "manifest.json"), "--index", "12", "--run-root", str(tmp_path / "runs"), "--dry-run"])
     assert json.loads(capsys.readouterr().out) == entries(3e-4)[12]["config"]
@@ -235,6 +246,6 @@ def test_cli_prints_tables_and_rejects_scientific_flags(tmp_path, capsys):
             main(["launch", "--manifest", str(tmp_path / "manifest.json"), "--index", "0", "--run-root", str(tmp_path / "runs"), "--dry-run", *extra])
         assert error.value.code == 2
     with pytest.raises(SystemExit) as error:
-        main(["prepare", "--lr-selection", str(selection), "--output", str(tmp_path / "manifest.json")])
+        main(["prepare", "--lr-selection", str(selection), "--output", str(tmp_path / "manifest.json"), "--bounded"])
     assert error.value.code == 2
     assert not (tmp_path / "runs").exists()

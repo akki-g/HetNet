@@ -47,7 +47,7 @@ def log_episode_batch(path, episodes, update, mode="file"):
                           "update": update, "episodes": episodes},
                          sort_keys=True, allow_nan=False), flush=True)
     else:
-        raise ValueError("episode_log must be file or stdout")
+        raise ValueError("episode_log must be file, stdout or chunked-gzip")
 
 
 def source_snapshot(output=None):
@@ -105,6 +105,8 @@ def collect_batch(model, config, collector, update, environment_source=None):
                                config.failure_prob, config.failure_window)
     episodes, steps = [], 0
     policy_sum = value_sum = 0.0
+    objective_sums = {name: 0.0 for name in ("objective_policy_loss_sum", "objective_value_loss_sum",
+                                          "objective_total_loss_sum")} if config.objective == "mean_agent" else {}
     for scenario in scenarios:
         episode = run_episode(model, adapter, config, scenario, training=True)
         loss, losses = loss_sum([episode], config)
@@ -113,6 +115,8 @@ def collect_batch(model, config, collector, update, environment_source=None):
         loss.backward()
         policy_sum += losses["policy_loss_sum"]
         value_sum += losses["value_loss_sum"]
+        for name in objective_sums:
+            objective_sums[name] += losses[name]
         episodes.append(episode.metrics)
         steps += episode.metrics["steps"]
         if steps >= config.batch_steps:
@@ -123,7 +127,7 @@ def collect_batch(model, config, collector, update, environment_source=None):
         raise FloatingPointError("non-finite collector gradient")
     return {"gradients": gradients, "episodes": episodes, "num_steps": steps,
             "num_episodes": len(episodes), "policy_loss_sum": policy_sum,
-            "value_loss_sum": value_sum, "collector": collector}
+            "value_loss_sum": value_sum, "collector": collector, **objective_sums}
 
 
 def worker_collect(state, model_config, config_dict, collector, update, environment_source=None):
@@ -178,11 +182,12 @@ def summarize(episodes):
     return row
 
 
-def train(config, output, resume=None, episode_log="file", diagnostics_every=None):
+def train(config, output, resume=None, episode_log="file", diagnostics_every=None,
+          checkpoint_commits=False, attempt=None):
     """Run bounded training in a fresh directory; no changes to legacy entrypoints."""
     config.validate()
-    if episode_log not in ("file", "stdout"):
-        raise ValueError("episode_log must be file or stdout")
+    if episode_log not in ("file", "stdout", "chunked-gzip"):
+        raise ValueError("episode_log must be file, stdout or chunked-gzip")
     if diagnostics_every is not None and (type(diagnostics_every) is not int or diagnostics_every < 1):
         raise ValueError("diagnostics_every must be a positive integer")
     if diagnostics_every is not None and config.task != "pcp":
@@ -223,6 +228,12 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
         raise ValueError("the requested budget is already exhausted by the resume checkpoint")
     output.mkdir(parents=True)
     (output / "checkpoints").mkdir()
+    if attempt is not None:
+        from softrole.ledger import atomic_json
+        atomic_json(output / "attempt.json", attempt)
+    checkpoint_commits = checkpoint_commits or episode_log == "chunked-gzip"
+    from softrole.ledger import ChunkedEpisodes, checkpoint_commit, atomic_json
+    episode_writer = ChunkedEpisodes(output, config.max_steps) if episode_log == "chunked-gzip" else None
     provenance = source_snapshot(output)
     diagnostics = None
     if diagnostics_every is not None:
@@ -238,7 +249,7 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
             raise ValueError("Archived paper simulator differs from the source manifest")
     write_json(output / "config.json", config.to_dict())
     write_json(output / "initial_signature.json", model_signature(model))
-    write_json(output / "run.json", {"environment_version": config.env_version,
+    run_record = {"environment_version": config.env_version,
                "simulator_source": simulator_source,
                "source_sha256": provenance["sha256"], "resume": str(resume) if resume else None,
                "parent_source_sha256": checkpoint["source_sha256"] if resume else None,
@@ -255,7 +266,10 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
                            "communication": config.communication},
                "approximations": channel_approximations(config.communication) +
                                   (["credit mixing: beta<1 drops cross-agent credit"] if config.credit_beta != 1 else []) +
-                                  ["GAE with learned critic", "truncated BPTT"]})
+                                  ["GAE with learned critic", "truncated BPTT"]}
+    if checkpoint_commits:
+        run_record["checkpoint_commits"] = True
+    write_json(output / "run.json", run_record)
 
     def save(epoch):
         if environment_source is not None:
@@ -272,9 +286,22 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
                    "source_sha256": provenance["sha256"], "signature": model_signature(model)}
         if simulator_source is not None:
             payload["simulator_source"] = simulator_source
-        with path.open("xb") as stream:
-            torch.save(payload, stream)
-        write_json(Path(str(path) + ".signature.json"), payload["signature"])
+        if episode_writer is not None:
+            episode_writer.seal()
+        if checkpoint_commits:
+            temporary = Path(str(path) + ".tmp")
+            with temporary.open("xb") as stream:
+                torch.save(payload, stream)
+                stream.flush()
+                import os
+                os.fsync(stream.fileno())
+            temporary.replace(path)
+            atomic_json(str(path) + ".signature.json", payload["signature"])
+            checkpoint_commit(path, output, payload)
+        else:
+            with path.open("xb") as stream:
+                torch.save(payload, stream)
+            write_json(Path(str(path) + ".signature.json"), payload["signature"])
         return path
 
     executor = (ProcessPoolExecutor(max_workers=config.nprocesses, mp_context=mp.get_context("spawn"))
@@ -285,6 +312,8 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
             started = time.monotonic()
             epoch_episodes = []
             policy_sum = value_sum = 0.0
+            objective_sums = {name: 0.0 for name in ("objective_policy_loss_sum", "objective_value_loss_sum",
+                                                  "objective_total_loss_sum")} if config.objective == "mean_agent" else {}
             # A step-budget stop may checkpoint partway through an epoch. Resume
             # the remaining updates instead of silently skipping that work.
             remaining_updates = config.updates_per_epoch - completed_updates % config.updates_per_epoch
@@ -307,16 +336,21 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
                     total_episodes += batch["num_episodes"]
                     policy_sum += batch["policy_loss_sum"]
                     value_sum += batch["value_loss_sum"]
+                    for name in objective_sums:
+                        objective_sums[name] += batch[name]
                     epoch_episodes.extend(batch["episodes"])
                     episode_records.extend(dict(episode, update=completed_updates,
                                                 collector=batch["collector"])
                                            for episode in batch["episodes"])
-                log_episode_batch(output / "episodes.jsonl", episode_records, completed_updates,
-                                  episode_log)
+                if episode_writer is not None:
+                    episode_writer.append(episode_records, completed_updates)
+                else:
+                    log_episode_batch(output / "episodes.jsonl", episode_records, completed_updates, episode_log)
                 append_json(output / "updates.jsonl", {"update": completed_updates,
                     "episodes": sum(b["num_episodes"] for b in batches),
                     "steps": sum(b["num_steps"] for b in batches), "total_steps": total_steps,
-                    "gradient_norm_before_clip": norm})
+                    "gradient_norm_before_clip": norm,
+                    **{name: sum(batch[name] for batch in batches) for name in objective_sums}})
                 if diagnostics is not None:
                     diagnostics.after(model, completed_updates, total_steps, norm)
                 if config.total_steps is not None and total_steps >= config.total_steps:
@@ -327,6 +361,10 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
                        partial_epoch=bool(completed_updates % config.updates_per_epoch),
                        policy_loss_per_episode=policy_sum / row["episodes"],
                        value_loss_per_episode=value_sum / row["episodes"])
+            if objective_sums:
+                row.update(objective_sums)
+                row.update({name.replace("_sum", "_per_episode"): value / row["episodes"]
+                            for name, value in objective_sums.items()})
             append_json(output / "metrics.jsonl", row)
             print(json.dumps(row, sort_keys=True, allow_nan=False), flush=True)
             exhausted = config.total_steps is not None and total_steps >= config.total_steps
@@ -335,6 +373,8 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
             if exhausted:
                 break
     finally:
+        if episode_writer is not None:
+            episode_writer.close()
         if executor is not None:
             executor.shutdown(wait=True, cancel_futures=True)
     write_json(output / "finished.json", {"checkpoint": str(checkpoint_path.resolve()),
