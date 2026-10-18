@@ -41,7 +41,7 @@ def prepared_identity():
     payloads["publication_reconstruction/ORIGINS.json"] = origins
     for path in sorted((ROOT / "publication_reconstruction").glob("*.py")):
         payloads[path.relative_to(ROOT).as_posix()] = path.read_bytes()
-    for name in ("README.md", "FIDELITY.md", "STUDY.json"):
+    for name in ("STUDY.json",):
         path = ROOT / "publication_reconstruction" / name
         payloads[path.relative_to(ROOT).as_posix()] = path.read_bytes()
     for name, payload in payloads.items():

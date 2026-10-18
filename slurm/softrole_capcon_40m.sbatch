@@ -1,5 +1,5 @@
 #!/bin/bash -l
-# Prepare the research manifest first; see softrole/CAPCON_L1_40M.md.
+# Prepare the admitted research manifest first; see softrole.programme prepare --help.
 # Then submit from the frozen checkout: sbatch slurm/softrole_capcon_40m.sbatch
 # Same resources as S1/HetNet and S1 CPU family; twelve 40M runs concurrently.
 # Resume a stopped subset: sbatch --array=4,7 slurm/softrole_capcon_40m.sbatch --resume
@@ -25,7 +25,7 @@ export SOFTROLE_PROGRAMME_RUN_ROOT="${SOFTROLE_PROGRAMME_RUN_ROOT:-$PWD/runs/cap
 if [[ ! -f $SOFTROLE_PROGRAMME_MANIFEST ]]; then
   printf 'Missing research manifest: %s\n' "$SOFTROLE_PROGRAMME_MANIFEST" >&2
   echo 'Prepare capcon_l1_40m_v1 on this checkout using the existing certified S1 evidence before submitting.' >&2
-  echo 'Commands: softrole/CAPCON_L1_40M.md, Simple Slurm submission.' >&2
+  echo 'Preparation options: python -m softrole.programme prepare --help' >&2
   exit 2
 fi
 

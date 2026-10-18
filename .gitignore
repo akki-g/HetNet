@@ -1,10 +1,8 @@
-# Version only the runnable project and its development files.
+# Version runtime code, launchers, pinned dependencies and required assets.
 /*
 !/.gitignore
 !/.python-version
 !/LICENSE
-!/README.md
-!/AGENTS.md
 !/*.py
 !/pyproject.toml
 !/requirements.txt
@@ -18,15 +16,14 @@
 !/slurm/
 !/softrole/
 !/test_config/
+# Required by slurm/softrole_capcon_readiness.sbatch (full pytest gate).
 !/tests/
 
-# Reusable verification tools; all other analysis stays private.
+# Evidence transport is called by the Stokes readiness launcher.
 !/analysis/
 /analysis/*
 !/analysis/capcom_programme_2026-10-12/
 /analysis/capcom_programme_2026-10-12/*
-!/analysis/capcom_programme_2026-10-12/validate.py
-!/analysis/capcom_programme_2026-10-12/validate_fixes.py
 !/analysis/capcom_programme_2026-10-12/integration/
 /analysis/capcom_programme_2026-10-12/integration/*
 !/analysis/capcom_programme_2026-10-12/integration/stage_evidence.py
@@ -37,3 +34,11 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 .DS_Store
+
+# Local documentation, development tools and examples are not deployment inputs.
+*.md
+/envs/examples/
+# Preserve legal notices and the exact inventory validated by ORIGINS.json.
+!/envs/LICENSE.md
+!/publication_reconstruction/runtime/envs/LICENSE.md
+!/publication_reconstruction/runtime/envs/README.md

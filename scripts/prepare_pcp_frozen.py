@@ -234,7 +234,7 @@ def prepare(run_root, output, min_steps=30_000_000):
         "failure_panel": {"composition": [2, 1], "episodes_per_condition": 100, "seed": 2701,
                           "failure_probability": 1, "failure_window": [10, 30], "count": len(failure),
                           "paired_sham_uses_same_scenarios": True, "trace": True},
-        "execution_requirement": "submit.sbatch uses the live evaluator checkout. Submit from its repository root after creating logs_sr. Keep the checkout, including AGENTS.md, unchanged while jobs are queued/running. The source archive is provenance, not an alternate execution checkout.",
+        "execution_requirement": "submit.sbatch uses the live evaluator checkout. Submit from its repository root after creating logs_sr. Keep the runtime source and launchers unchanged while jobs are queued/running. The source archive is provenance, not an alternate execution checkout.",
         "limitations": ["Sample counts can overshoot the threshold and differ across checkpoints",
                         "The 100-scenario native failure/sham panel is an exposure diagnostic",
                         "Early completion can prevent exposure to the reference 10..30 event window"]}

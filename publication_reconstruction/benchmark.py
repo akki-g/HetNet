@@ -98,7 +98,7 @@ def source_identity():
     runtime, origins = validate_source_origins()
     payloads = {"runtime/" + name: data for name, data in runtime.items()}
     payloads["ORIGINS.json"] = origins
-    for pattern in ("publication_reconstruction/*.py", "publication_reconstruction/*.md",
+    for pattern in ("publication_reconstruction/*.py",
                     "slurm/publication_*.sbatch", "slurm/softrole_paper_fc.sbatch",
                     "publication_reconstruction/STUDY.json", "pyproject.toml", "uv.lock"):
         for path in sorted(ROOT.glob(pattern)):

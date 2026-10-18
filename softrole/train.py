@@ -54,16 +54,16 @@ def source_snapshot(output=None):
     """Identify actual source bytes; optionally archive them in a fresh output.
 
     The read-only form lets evaluation record the same provenance as training.
+    Local documentation and tests are not part of the learner identity.
     """
     root = Path(__file__).resolve().parents[1]
     tracked = subprocess.check_output(["git", "ls-files", "-z"], cwd=root).decode().split("\0")
-    files = {root / name for name in tracked if name and Path(name).suffix in
-             (".py", ".sh", ".toml", ".lock", ".txt", ".sbatch")}
+    files = {root / name for name in tracked
+             if name and not name.startswith("tests/")
+             and Path(name).suffix in (".py", ".sh", ".toml", ".lock", ".txt", ".sbatch")}
     files.update((root / "softrole").glob("*.py"))
-    files.update((root / "tests").glob("test_softrole*.py"))
     files.update((root / "scripts").glob("softrole*"))
     files.update((root / "slurm").glob("softrole*"))
-    files.update([root / "AGENTS.md", root / "softrole" / "RESEARCH.md"])
     from softrole.publication_env import SIMULATOR_FILES
     files.update(root / name for name in SIMULATOR_FILES)
     manifest = {}

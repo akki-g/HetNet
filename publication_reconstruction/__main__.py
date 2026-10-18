@@ -246,8 +246,8 @@ def archive_source(run):
     runtime, origins_bytes = validate_source_origins()
     payloads = {f"runtime/{name}": payload for name, payload in runtime.items()}
     payloads["ORIGINS.json"] = origins_bytes
-    for name in ["__init__.py", "__main__.py", "README.md", "artifacts.py", "study.py", "STUDY.json",
-                 "benchmark.py", "paper_study.py", "FIDELITY.md"]:
+    for name in ["__init__.py", "__main__.py", "artifacts.py", "study.py", "STUDY.json",
+                 "benchmark.py", "paper_study.py"]:
         payloads[name] = (HERE / name).read_bytes()
     files = {}
     for name, payload in payloads.items():
