@@ -325,6 +325,17 @@ sbatch slurm/publication_resume.sbatch \
 
 Resume inherits science, source, collector count and budgets; its CLI rejects
 scientific overrides. Old checkpoints without recovery state are rejected.
+
+The resume batch wrapper uses non-login Bash, clears inherited Conda activation
+bookkeeping before loading the existing Anaconda module, prints startup/failure
+markers, and requests Sapphire Rapids with core binding. Submit it with
+`env -u BASH_ENV -u ENV sbatch slurm/publication_resume.sbatch ...` so an exported
+shell startup hook cannot run before the wrapper. This changes launch setup,
+not the archived training code or checkpoint. Repeated `conda deactivate`
+initialization errors with empty training output and no training job step are
+not evidence of training progress. Inspect accounting and the recorded output
+paths before continuing; use a fresh continuation output directory for a retry.
+
 It restores model, active optimizer, parent/worker Python/NumPy/Torch RNG,
 absolute counts, partial-epoch statistics, elapsed epoch time and completed
 milestones, after constructing workers. Checkpoint names include absolute updates.

@@ -4261,3 +4261,242 @@ the legacy `prepare-evaluation` route for paper-v1 or pool unmatched old FC runs
   learner behavior. Final source identity is recorded after this entry; earlier
   validation manifests remain historical evidence. Prepare the research manifest
   from the final published core inventory rather than reusing an old source lock.
+
+### 2026-10-17 — missing Stokes manifest in array 944657
+
+- The user supplied task `944657_2` stderr: the launcher could not read
+  `~/HetNet/runs/capcon_l1_40m_20261017/manifest.json`. That task failed before
+  training began. The earlier queue snapshot showed tasks 0–3 running but did
+  not establish the final state of every array element. A read-only SSH query
+  was denied authentication, so no remote accounting result is claimed.
+- The short submission answer omitted the one-time preparation step. Generated
+  manifests are excluded from Git and must be prepared on the actual execution
+  checkout. Updated `slurm/softrole_capcon_40m.sbatch` to exit with a clear
+  missing-manifest message before invoking Python or srun; its array, resources,
+  training settings and existing validation remain unchanged.
+- Updated `softrole/CAPCON_L1_40M.md` with a self-contained compute-allocation
+  preparation sequence using the existing extracted Stokes S1 bundle and its
+  pinned inventory hash. It writes a fresh location-valid selector, prepares
+  the research profile, dry-runs all twelve entries, and submits only when the
+  preparation allocation succeeds. No rerun of S1 or new evidence upload is
+  requested. Cancel only the earlier failed CapCon array before creating its
+  missing manifest, so late pending elements cannot overlap the replacement.
+  The unrelated running HetNet job is preserved.
+- Files touched: `slurm/softrole_capcon_40m.sbatch`,
+  `softrole/CAPCON_L1_40M.md` and this `AGENTS.md`. Validation: shell syntax and
+  all nine runbook Bash blocks passed; a mocked missing-manifest invocation
+  exited 2 with the intended message and started neither Python nor srun.
+  Records are `runs/capcon_missing_manifest_944657/`. Whitespace passed.
+  Independent read-only review checked evidence relocation, shell environment,
+  fresh-output behavior, submission ordering and old-array overlap avoidance.
+- These are local launcher/documentation fixes. No remote cancellation,
+  preparation, submission, training, dependency change, commit or push occurred.
+  The recovery commands use capabilities already present in the deployed source;
+  prepare against that fixed source and do not pull source edits during its runs.
+
+### 2026-10-17 — HetNet continuation 944615 startup recovery
+
+- User-provided accounting shows job 944615 remained RUNNING after 19:05 on
+  ec79, with only batch/extern entries, no recorded training step, empty stdout
+  and repeated `CondaError: Run 'conda init' before 'conda deactivate'` stderr.
+  It requested no CPU feature constraint. Running-job `TotalCPU=0` alone does
+  not prove zero work; the combined evidence points to startup before normal
+  training, without proving which site initialization file/module is responsible.
+- The submitted continuation is PCP Real seed 0 from the archived
+  `model_update00018117_paused.pt` checkpoint at 36,766,831 steps. The original
+  run's recent rate projects about 3.6 hours to 40M, or about 4.0 hours using
+  its whole-segment average. The earlier 17–22-hour estimate concerned Binary
+  seeds, not this Real job; no useful training progress is inferred from the
+  reported 19-hour allocation age.
+- Updated `slurm/publication_resume.sbatch`: non-login Bash, visible startup and
+  error markers, reset inherited Conda activation bookkeeping before the same
+  Anaconda module, reuse the module command or guarded standard initialization
+  files, and fail clearly when unavailable. Added the intended Sapphire Rapids
+  constraint and `srun --cpu-bind=cores`, retaining four CPUs/16 GB/48 hours,
+  interpreter selection, 46-hour graceful pause and all quoted resume arguments.
+  No `conda init`, environment replacement, package installation, learner,
+  optimizer, archived source or checkpoint edit is involved.
+- Updated `tests/test_publication_slurm.py`: mocked core-binding routing,
+  stale Conda bookkeeping rejection/cleanup, and early module failure that
+  reaches neither srun nor Python. Existing argument quoting, failure propagation,
+  interpreter selection and all other publication routes remain covered.
+  `.venv/bin/python -m pytest -q tests/test_publication_slurm.py` passed
+  **41 tests in 13.20 seconds**. Shell syntax and whitespace passed. These are
+  local launcher checks, not a successful Stokes replay; the full suite was not
+  repeated for this operational change.
+- Other touched files: `publication_reconstruction/README.md` documents the
+  `env -u BASH_ENV -u ENV` submission prefix and fresh-output retry; this
+  `AGENTS.md` records scope/evidence. Pre-existing changes to the CapCon launcher
+  and runbook were preserved. Operational records are under fresh
+  `runs/hetnet_resume_944615_recovery/`.
+- The recovery instructions cancel only stalled job 944615, use its exact parent
+  and checkpoint with a fresh output directory, and bypass login initialization
+  and stale Conda activation state. A disposable copy under `runs/` permits the
+  same immediate workaround on the deployed checkout without pulling or editing
+  source beneath other jobs. Site execution remains unverified: SSH access was
+  unavailable, and no cancellation, remote file write, resubmission, research
+  training, commit or push was performed here. Check for actual epoch/update
+  progress soon after the replacement starts rather than relying on RUNNING.
+
+### 2026-10-17 — CapCon 944671 matched-budget training-log analysis
+
+- Analyzed the newly copied twelve `logs_sr/capcon-l1-40m-944671_*` stdout/stderr
+  pairs. In these files 944671 identifies CapCon, not HetNet. Used the recorded
+  PCP Real HetNet array 908316, indices 3–5 / seeds 0–2, as the reference after
+  flagging that identity distinction. All fifteen logs cover 30M steps, so no
+  continuation segment is needed for the common-budget comparison. No live
+  scheduler state is inferred from the copied files.
+- Added only the fresh private directory
+  `analysis/capcon_944671_2026-10-17/` and this additive work-log entry. Its
+  source/documentation files are `analyze.py`,
+  `hetnet_reference/parse_reference.py` and `README.txt`. Generated files are
+  `hetnet_reference.json`, `summary.json`, `matched_windows.csv`,
+  `group_results.csv`, `hetnet_regression_windows.csv`, `run_progress.csv`,
+  `epoch_metrics.csv`, `learning_comparison.png`/`.svg`,
+  `seed_trajectories.png`/`.svg`, `report.html`, `validation.json`,
+  `independent_audit.json`, `analysis_console.json` and
+  `artifact_manifest.json`. The manifest inventories every other delivered
+  file in that directory. Existing launcher, runbook, test and documentation
+  changes, input logs and older analysis artifacts were preserved.
+- Method: use whole epochs entirely contained within common step intervals;
+  weight episodes within each seed, then weight the three seeds equally.
+  Horizon-capped completion is exact total steps / episodes for fixed nominal
+  static-prey PCP; compute its seed-average with rational arithmetic. Report
+  seven trailing-1M windows (1, 2, 3, 5, 10, 20, 30M), retaining actual bounds
+  and denominators. The reference extractor's auxiliary historical epoch-end
+  windows are explicitly distinct and unused by the final comparison.
+- Findings are descriptive training observations: at 1–2M, completion is
+  52.376 / 27.520 / 32.201 / 6.700 steps for team / beta1 / beta0.5 / beta0,
+  versus HetNet 65.460. At 29–30M these are 5.125 / 5.139 / 5.301 / 5.119,
+  versus HetNet 5.114. All groups have at least 99.982% success in that late
+  window. These differences do not select a research configuration or establish
+  significance, convergence, frozen-policy performance or generalization.
+- The beta0.5 declared seed 1 records 1,154 consecutive zero-success epochs:
+  25,849,600 steps from 836,430 through 26,686,030, before recovery. Also report
+  HetNet seed 0's shorter regression around 24–27M; its 25–26M completion is
+  34.208 steps with 63.0033% success, returning near 5.12 later. Epoch-average
+  losses/attention statistics cannot identify either event's causal mechanism.
+- Validation: all 21,626 CapCon epochs reconcile contiguous counts and updates,
+  438,468,908 steps and 75,452,835 episodes; finite metrics, integral success
+  counts, collector-floor bounds and reward/duration identities pass. CapCon
+  stderr contains only repeated Gym notices; initial exact-block parsing was
+  corrected after inspecting interleaved collector warning lines, without
+  hiding residual text. Freshly streamed HetNet epoch/status/batch-update
+  metadata pass; all three whole-file hashes match the October 8 audit. Raw
+  HetNet episode bodies, checkpoint tensors and archived source were not
+  re-audited. Independent review reproduces all 35 matched group rows and
+  checks the stability observations and simulator metric comparability.
+- Executed `.venv/bin/python
+  analysis/capcon_944671_2026-10-17/hetnet_reference/parse_reference.py`, then
+  `uv run --no-project --isolated --offline --python .venv/bin/python
+  --with numpy==1.26.4 --with matplotlib==3.10.7 python
+  analysis/capcon_944671_2026-10-17/analyze.py`. Full commands and fresh-directory
+  reproduction instructions are in `README.txt`. Both PNG figures were visually
+  inspected. Final link, CSV/JSON, artifact-hash and whitespace checks are
+  recorded with the delivered package; no learner test suite was rerun because
+  this task changes no runtime implementation.
+- Limits: actual 944671 research manifest/config/source/checkpoints were not
+  copied, so CapCon mapping and exact executed settings remain conditional on
+  the declared launcher/profile. Only indices 7 and 10 cross 40M in stdout;
+  this is not accepted-checkpoint or successful-job evidence. Recorded nodes
+  are ec170, ec174 and ec175, so wall-clock comparisons confound placement and
+  load. HetNet shares physical PCP metrics but differs in typed observations,
+  actor, critics and loss coefficients; this is a whole-system comparison.
+  The frozen 500-scenario nominal selection remains separate. No training,
+  evaluation, remote command, dependency change, commit or push occurred.
+
+### 2026-10-18 — completed CapCon logs and HetNet continuation resync
+
+- Read the resynced CapCon array 944671 logs. All twelve now cross 40M, with
+  95–1,921 steps of overshoot. Every October 17 stdout prefix and every stderr
+  byte is unchanged. The 23,699 epoch records include 2,073 new records and
+  reconcile 480,010,797 steps / 83,556,037 episodes, finite metrics, integral
+  successes, collector-floor bounds and reward/duration identities. Stderr
+  still contains only known Gym notices. Logged epoch durations range from
+  15.83 to 20.99 hours; this is not live accounting or an exit-state audit.
+- All three original HetNet PCP Real logs remain byte-identical. During the
+  inspection, an actively growing hidden rsync file for retry 944815 finished
+  copying to its final regular stdout name. Only the finalized file enters the
+  final comparison. It reports `budget_completed` at 40,001,236 steps,
+  6,842,316 episodes and 19,727 updates. Its 162 continuation epochs join the
+  original 1,811 complete epochs. The first resumed aggregate includes the
+  previous seven-update tail exactly once plus three resumed updates; cumulative
+  counts, configuration, parent checkpoint path and finite metrics reconcile.
+  Full log hashes and this lineage are recorded; checkpoint bytes, archived
+  source and authoritative accepted-checkpoint history were not audited.
+- At the strict whole-epoch 39–40M window, equal-seed completion is team
+  5.122132, beta1 5.120904, beta0.5 5.126437, beta0 5.123810 and HetNet
+  5.113784. Success is respectively 99.997389%, 99.998785%, 99.991303%,
+  99.995126% and 100%. Beta0 retains the previously observed early-learning
+  advantage but does not have the lowest final training-window mean. Its
+  matched HetNet gap is 0.010026 steps / 0.1961%; these descriptive differences
+  are not frozen-policy selection results or proof of equivalence/superiority.
+- No CapCon epoch after 30M has zero success; the beta0.5 seed-1 stall remains
+  recovered. Recorded short regressions include beta1 seed 1 near 35.59M and
+  beta1 seed 0's final four-update partial epoch at 40,001,921 steps: 98.6270%
+  success and 6.250191 completion. The latter is outside the strict 39–40M
+  window, so both its endpoint behavior and the aggregate window are reported.
+- Files added only under fresh `analysis/capcon_944671_2026-10-18/`:
+  `resync.py`, `refresh_reference.py`, `README.txt`, `summary.json`,
+  `group_results.csv`, `matched_windows.csv`, `run_progress.csv`,
+  `hetnet_reference.json`, `reference_check.json`, `independent_audit.json`,
+  `report.html`, `late_training.png`/`.svg`, `analysis_console.json`,
+  `validation.json` and `artifact_manifest.json`. Also appended this existing
+  uppercase `AGENTS.md`. Earlier analysis artifacts and all pre-existing
+  launcher/runbook/test changes were preserved.
+- Reproduction command: `uv run --no-project --isolated --offline --python
+  .venv/bin/python --with numpy==1.26.4 --with matplotlib==3.10.7 python -B
+  analysis/capcon_944671_2026-10-18/resync.py`; reference extraction/validation
+  uses the adjacent `refresh_reference.py`. The new driver reuses hash-checked
+  October 17 analysis functions and independently recomputes whole-contained
+  epoch windows. Reference helper epoch-end windows are explicitly auxiliary.
+  Separate review verifies all CapCon 30/36/40M group values and the joined
+  HetNet 39–40M values, including absence of tail duplication. Syntax, JSON/CSV,
+  exact-fraction, link, source/input/artifact hash and whitespace checks are
+  recorded in the package; the final plot was visually inspected.
+- No training, policy evaluation, runtime/dependency change, remote command,
+  commit or push occurred. The learner suite was not rerun for analysis-only
+  changes. CapCon research manifest/source/checkpoint identities remain absent;
+  mapping follows the declared profile. The next scientific step remains the
+  planned common frozen 500-scenario nominal selection after checkpoint admission.
+
+### 2026-10-18 — additional PCP seeds 3–5, prepared only
+
+- Added isolated `softrole/pcp_additional_seeds.py` and
+  `slurm/softrole_pcp_additional_seeds.sbatch`; existing programme seeds 0–2,
+  launchers, model/learner defaults and outputs remain unchanged. Main indices
+  0–2 are HetNet PCP Real and 3–5 are CapCon decomposed beta0, each seeds 3/4/5;
+  optional indices 6–8 are beta0.5 seeds 3/4/5. Every run is fresh, targets 40M
+  joint environment steps and uses a unique array-ID/arm/seed output tree.
+- Reused the existing PCP paper study arguments with the observed Torch backend
+  and certified CapCon profile configs, changing only root seed/output. Preserved
+  Adam .001, architecture/communication, horizon80, four collectors/500-step
+  floors, ten-update epochs, checkpoints/diagnostics and loss scales: CapCon
+  50/1 versus the active HetNet paper actor/critic 1/1. HetNet retains its 46-hour
+  recoverable pause inside the same four-CPU/16GB/48-hour Sapphire Rapids job.
+- Preparation and dependency/S1 admission checks run inside Slurm, with guarded
+  non-login module activation and no login-node dry run requirement. A shared
+  locked extension manifest records all nine configs, actual seeds/zero counters,
+  pinned versions, commit/status, binary diff and untracked bytes/source hashes.
+  Existing S1 receipts are revalidated; no evidence is regenerated or re-tuned.
+  Repeated outputs or changed array source/configuration fail without overwrite.
+- Added `softrole/PCP_ADDITIONAL_SEEDS.md` with direct main/optional submission
+  commands, source references, resources, provenance and runtime/recovery limits.
+  This fresh-seed extension is separate from the original programme/evaluator;
+  keep the checkout frozen during pending/running CapCon jobs. No automatic
+  submission, recovery, training, evaluation, installation, commit or push occurs.
+- Added `tests/test_softrole_pcp_additional_seeds.py`. Focused checks plus existing
+  CapCon-profile/publication-Slurm regressions passed **126 tests in 26.57 s**;
+  shell syntax, Python AST, local pinned activation and runtime ORIGINS checks
+  passed. Four initial legacy subprocess checks hit sandbox OpenMP shared-memory
+  restrictions; the unchanged tests passed with local shared-memory access.
+  Records and resolved-entry preview are in the Codex task workspace under
+  `additional_seed_work/`. All unrelated pre-existing edits were preserved.
+- Follow-up seed audit confirms the active paper worker branch passes the root
+  and collector ID separately to seedsequence-v1; adjacent roots do not force
+  legacy additive-worker overlap. Preserved the existing CapCon 32-bit batch-key
+  projection and documented its bounded repeats: 28 over roots0..5/20k updates/
+  four collectors, including seven within new roots and eleven old-to-new. These
+  reuse particular scenario RNG keys, not whole trajectories. Source call-path
+  tests and collision CSV/script evidence are included in the task workspace;
+  no seeding, RNG algorithm or scientific configuration was changed.

@@ -1,5 +1,6 @@
 #!/bin/bash -l
-# Submit from the frozen checkout: sbatch slurm/softrole_capcon_40m.sbatch
+# Prepare the research manifest first; see softrole/CAPCON_L1_40M.md.
+# Then submit from the frozen checkout: sbatch slurm/softrole_capcon_40m.sbatch
 # Same resources as S1/HetNet and S1 CPU family; twelve 40M runs concurrently.
 # Resume a stopped subset: sbatch --array=4,7 slurm/softrole_capcon_40m.sbatch --resume
 #SBATCH --job-name=capcon-l1-40m
@@ -20,6 +21,13 @@ module load anaconda/anaconda-2024.10
 export HETNET_PYTHON="${HETNET_PYTHON:-$HOME/HetNet/.venv/bin/python}"
 export SOFTROLE_PROGRAMME_MANIFEST="${SOFTROLE_PROGRAMME_MANIFEST:-$PWD/runs/capcon_l1_40m_20261017/manifest.json}"
 export SOFTROLE_PROGRAMME_RUN_ROOT="${SOFTROLE_PROGRAMME_RUN_ROOT:-$PWD/runs/capcon_l1_40m_20261017/training}"
+
+if [[ ! -f $SOFTROLE_PROGRAMME_MANIFEST ]]; then
+  printf 'Missing research manifest: %s\n' "$SOFTROLE_PROGRAMME_MANIFEST" >&2
+  echo 'Prepare capcon_l1_40m_v1 on this checkout using the existing certified S1 evidence before submitting.' >&2
+  echo 'Commands: softrole/CAPCON_L1_40M.md, Simple Slurm submission.' >&2
+  exit 2
+fi
 
 # Reject the historical or engineering manifest before starting a research task.
 "$HETNET_PYTHON" - <<'PY'

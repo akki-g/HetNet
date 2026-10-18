@@ -22,27 +22,51 @@ task. HetNet used the same resource sizes; S1 explicitly pinned this CPU family,
 not a particular hostname.
 The allocated node is recorded in each task's stdout.
 
-After deploying the complete validated source to Stokes, use the existing
-location-valid S1 selector to prepare the research manifest once. From that
-checkout (run the Python preparation/dry runs under a compute allocation):
+The manifest is a generated run artifact and is intentionally excluded from
+Git. Copying/pulling the source and running `sbatch` does not create it.
+After deploying the complete validated source to Stokes, prepare it once from
+the existing S1 evidence. This command verifies that evidence, writes a selector
+with Stokes-local paths, prepares the twelve-entry manifest and checks every
+entry on a compute node. Submission happens only if all preparation succeeds:
 
 ```bash
-export HETNET_PYTHON="$HOME/HetNet/.venv/bin/python"
-export CAPCON_LR_SELECTION=/absolute/path/to/verified/lr_selection.json
-export SOFTROLE_PROGRAMME_MANIFEST="$PWD/runs/capcon_l1_40m_20261017/manifest.json"
-export SOFTROLE_PROGRAMME_RUN_ROOT="$PWD/runs/capcon_l1_40m_20261017/training"
-mkdir -p logs_sr
+cd "$HOME/HetNet"
+(
+  set -e
+  export HETNET_PYTHON="$PWD/.venv/bin/python"
+  export SOFTROLE_PROGRAMME_MANIFEST="$PWD/runs/capcon_l1_40m_20261017/manifest.json"
+  export SOFTROLE_PROGRAMME_RUN_ROOT="$PWD/runs/capcon_l1_40m_20261017/training"
+  export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
+  mkdir -p logs_sr
+  srun --account=cenyioha --partition=normal --constraint=sapphirerapids \
+    --nodes=1 --ntasks=1 --cpus-per-task=1 --mem=4G --time=00:30:00 \
+    bash -l -s <<'PREPARE'
+set -euo pipefail
+cd "$HOME/HetNet"
+module load anaconda/anaconda-2024.10
+"$HETNET_PYTHON" analysis/capcom_programme_2026-10-12/integration/stage_evidence.py verify \
+  --bundle "$PWD/runs/capcom_staging_20261014/s1_evidence" \
+  --inventory-sha256 08826cbdedbf2a91dd57b27bedccded186bfd7490396c213c234a6bc3feaa527 \
+  --output "$PWD/runs/capcon_l1_40m_20261017/lr_selection.json"
 "$HETNET_PYTHON" -m softrole.programme prepare --profile capcon_l1_40m_v1 \
-  --lr-selection "$CAPCON_LR_SELECTION" --output "$SOFTROLE_PROGRAMME_MANIFEST"
+  --lr-selection "$PWD/runs/capcon_l1_40m_20261017/lr_selection.json" \
+  --output "$SOFTROLE_PROGRAMME_MANIFEST"
 for index in {0..11}; do
-  bash scripts/softrole_programme.sh "$index" --dry-run || exit
+  bash scripts/softrole_programme.sh "$index" --dry-run
 done
-sbatch slurm/softrole_capcon_40m.sbatch
+PREPARE
+  sbatch slurm/softrole_capcon_40m.sbatch
+)
 ```
 
 The manifest must be prepared after this launcher and source documentation are
 in place; the earlier local bounded manifest is validation evidence. The script
 uses compressed episode logging and the existing source/configuration checks.
+The evidence bundle path is the extracted bundle retained during the earlier
+Stokes staging cleanup; no deleted archive is needed. Preparation refuses to
+overwrite an existing selector or manifest. If an earlier array was submitted
+without a manifest, cancel that array before preparation so its remaining tasks
+cannot start while the manifest is being created.
 Resume stopped, unfinished indices with the same manifest and run root:
 
 ```bash

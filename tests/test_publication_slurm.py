@@ -37,12 +37,21 @@ def shell(tmp_path):
         "    with pathlib.Path(os.environ['MOCK_CAPTURE']).open('a') as stream: "
         "stream.write(json.dumps(row) + '\\n')\n"
         "    return row\n")
-    executable(tools / "module", preamble + "record('module')\n")
+    executable(tools / "module", preamble + "record('module')\n"
+        "if os.environ.get('MOCK_REQUIRE_CLEAN_CONDA') == '1':\n"
+        "    assert os.environ.get('CONDA_SHLVL') == '0'\n"
+        "    assert not any(key in os.environ for key in "
+        "('CONDA_PREFIX', 'CONDA_DEFAULT_ENV', 'CONDA_PROMPT_MODIFIER'))\n"
+        "    assert not any(key.startswith('CONDA_PREFIX_') for key in os.environ)\n"
+        "raise SystemExit(int(os.environ.get('MOCK_MODULE_EXIT', '0')))\n")
     executable(tools / "srun", preamble + "row = record('srun')\n"
         "if os.environ.get('MOCK_CAPTURE_ONLY') == '1':\n"
         "    print(json.dumps(row))\n"
         "    raise SystemExit(int(os.environ.get('MOCK_PYTHON_EXIT', '0')))\n"
-        "os.execv(sys.argv[1], sys.argv[1:])\n")
+        "arguments = sys.argv[1:]\n"
+        "if arguments[0] == '--cpu-bind=cores':\n"
+        "    arguments = arguments[1:]\n"
+        "os.execv(arguments[0], arguments)\n")
     executable(tools / "sbatch", preamble + "record('FORBIDDEN_SUBMISSION')\nraise SystemExit(99)\n")
     interpreter = tools / "capture python ' $(not-executed)"
     python_body = preamble + "print(json.dumps(record('python')))\nraise SystemExit(int(os.environ.get('MOCK_PYTHON_EXIT', '0')))\n"
@@ -121,7 +130,8 @@ def test_single_job_wrappers_preserve_quoted_arguments_and_thread_limits(shell, 
     if name == "resume":
         prefix += ["--wall-seconds", "165600", "--episode-log", "stdout"]
     assert records[-1]["argv"] == prefix + arguments
-    assert records[-2]["argv"] == [str(interpreter), *prefix, *arguments]
+    binding = ["--cpu-bind=cores"] if name == "resume" else []
+    assert records[-2]["argv"] == [*binding, str(interpreter), *prefix, *arguments]
     assert_runtime(records[-1], submit)
     assert_runtime(records[-2], submit)
     assert not unusual.exists()
@@ -140,8 +150,31 @@ def test_default_interpreter_uses_submit_checkout(shell, name):
     submit, _, invoke = shell
     result, records = invoke(name, extra={"SLURM_ARRAY_TASK_ID": "0"}, remove=("HETNET_PYTHON",))
     assert result.returncode == 0, result.stderr
-    assert records[-2]["argv"][0] == str(submit / ".venv/bin/python")
+    interpreter_index = 1 if name == "resume" else 0
+    assert records[-2]["argv"][interpreter_index] == str(submit / ".venv/bin/python")
     assert_runtime(records[-1], submit)
+
+
+def test_resume_discards_stale_conda_activation_before_loading_module(shell):
+    _, _, invoke = shell
+    result, records = invoke("resume", extra={
+        "CONDA_SHLVL": "3", "CONDA_PREFIX": "/stale/current",
+        "CONDA_PREFIX_1": "/stale/first", "CONDA_PREFIX_2": "/stale/second",
+        "CONDA_DEFAULT_ENV": "stale", "CONDA_PROMPT_MODIFIER": "(stale) ",
+        "MOCK_REQUIRE_CLEAN_CONDA": "1",
+    })
+    assert result.returncode == 0, result.stderr
+    assert [row["kind"] for row in records] == ["module", "srun", "python"]
+    assert "hetnet-resume" in result.stderr
+
+
+def test_resume_module_failure_is_visible_and_never_starts_training(shell):
+    _, _, invoke = shell
+    result, records = invoke("resume", extra={"MOCK_MODULE_EXIT": "23"})
+    assert result.returncode == 23
+    assert [row["kind"] for row in records] == ["module"]
+    assert "hetnet-resume" in result.stderr
+    assert "23" in result.stderr
 
 
 @pytest.mark.parametrize("name", ["train", "preflight"])
@@ -166,6 +199,9 @@ def test_batch_files_have_required_directives_and_valid_shell(name):
     assert directives["mem"] == ("16G" if training else "4G")
     assert directives["time"] == {"train": "48:00:00", "resume": "48:00:00", "preflight": "02:00:00",
                                    "prepare_evaluation": "00:30:00", "evaluate": "04:00:00"}[name]
+    if name == "resume":
+        assert content.splitlines()[0] == "#!/bin/bash"
+        assert directives["constraint"] == "sapphirerapids"
     # The committed training launcher exposes all twelve tasks. A concurrency
     # cap, when wanted, is supplied by the submission command.
     assert directives.get("array") == {"train": "0-11", "preflight": "0-3%1"}.get(name)
