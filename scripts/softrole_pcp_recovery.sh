@@ -24,6 +24,28 @@ fi
 [[ $output_root == /* ]] || output_root="$PWD/$output_root"
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$root"
+# Preparation imports NumPy/Torch on the login node before sbatch. Apply the
+# same runtime setup as the compute wrapper, including its one-thread limits.
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
+export CONDA_SHLVL=0
+unset CONDA_PREFIX CONDA_DEFAULT_ENV CONDA_PROMPT_MODIFIER
+for conda_prefix_name in "${!CONDA_PREFIX_@}"; do unset "$conda_prefix_name"; done
+if ! type module >/dev/null 2>&1; then
+  for module_init in /etc/profile.d/modules.sh /etc/profile.d/lmod.sh; do
+    if [[ -r $module_init ]]; then
+      set +u
+      source "$module_init"
+      set -u
+      type module >/dev/null 2>&1 && break
+    fi
+  done
+fi
+type module >/dev/null 2>&1 || { echo 'pcp-recovery: module initialization unavailable' >&2; exit 2; }
+module load anaconda/anaconda-2024.10
+# A module may set thread defaults itself; enforce the limit again afterwards.
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
+export PYTHONUNBUFFERED=1 DGLBACKEND=pytorch PYTHONNOUSERSITE=1
+export PYTHONPATH="$root:$root/envs"
 export HETNET_PYTHON="${HETNET_PYTHON:-$root/.venv/bin/python}"
 [[ -x $HETNET_PYTHON ]] || { echo 'Pinned interpreter is not executable' >&2; exit 2; }
 "$HETNET_PYTHON" -u -m softrole.pcp_recovery prepare \

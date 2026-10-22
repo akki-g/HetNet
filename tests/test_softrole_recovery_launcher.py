@@ -22,15 +22,18 @@ def shell_env(tmp_path):
     binaries = tmp_path / "bin"
     binaries.mkdir()
     log = tmp_path / "calls.jsonl"
-    recorder = "import json, os, pathlib, sys\nwith open(os.environ['CALL_LOG'], 'a') as f: f.write(json.dumps({'tool': pathlib.Path(sys.argv[0]).name, 'args': sys.argv[1:], 'bash_env': os.environ.get('BASH_ENV'), 'conda': os.environ.get('CONDA_SHLVL')})+'\\n')\n"
+    recorder = "import json, os, pathlib, sys\nwith open(os.environ['CALL_LOG'], 'a') as f: f.write(json.dumps({'tool': pathlib.Path(sys.argv[0]).name, 'args': sys.argv[1:], 'bash_env': os.environ.get('BASH_ENV'), 'conda': os.environ.get('CONDA_SHLVL'), 'threads': {key: os.environ.get(key) for key in ('OPENBLAS_NUM_THREADS', 'OMP_NUM_THREADS', 'MKL_NUM_THREADS', 'NUMEXPR_NUM_THREADS')}})+'\\n')\n"
     python = mock_executable(binaries / "pinned-python", recorder + "if 'prepare' in sys.argv:\n p=pathlib.Path(sys.argv[sys.argv.index('--output')+1]); p.mkdir(); (p/'manifest.json').write_text('{}')\n")
     mock_executable(binaries / "sbatch", recorder + "print('101;cluster' if 'reconstruct' in sys.argv else '102;cluster')\n")
     mock_executable(binaries / "module", recorder)
     mock_executable(binaries / "srun", recorder)
-    env = dict(os.environ, PATH=str(binaries) + os.pathsep + os.environ['PATH'],
+    # An exported host module function would hide the explicit test executable.
+    env = dict({k: v for k, v in os.environ.items() if not k.startswith('BASH_FUNC_')},
+               PATH=str(binaries) + os.pathsep + os.environ['PATH'],
                HETNET_PYTHON=str(python), CALL_LOG=str(log),
                SLURM_SUBMIT_DIR=str(ROOT), SLURM_ARRAY_JOB_ID='101',
-               SLURM_ARRAY_TASK_ID='0', CONDA_SHLVL='99')
+               SLURM_ARRAY_TASK_ID='0', CONDA_SHLVL='99', OPENBLAS_NUM_THREADS='32',
+               OMP_NUM_THREADS='32', MKL_NUM_THREADS='32', NUMEXPR_NUM_THREADS='32')
     env.pop('BASH_ENV', None)
     env.pop('ENV', None)
     return env, log
@@ -47,15 +50,18 @@ def test_two_stage_submission_dependency_and_quoted_paths(tmp_path, shell_env):
                             env=env, cwd=tmp_path, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     records = calls(log)
-    assert [r['tool'] for r in records] == ['pinned-python', 'sbatch', 'sbatch']
-    assert records[0]['args'] == ['-u', '-m', 'softrole.pcp_recovery', 'prepare',
+    assert [r['tool'] for r in records] == ['module', 'pinned-python', 'sbatch', 'sbatch']
+    assert records[0]['args'] == ['load', 'anaconda/anaconda-2024.10']
+    assert all(set(r['threads'].values()) == {'1'} for r in records)
+    assert all(r['conda'] == '0' for r in records)
+    assert records[1]['args'] == ['-u', '-m', 'softrole.pcp_recovery', 'prepare',
         '--archive-root', str(tmp_path / 'archive with spaces'), '--output', str(output),
         '--additional-steps', '5000000']
-    assert records[1]['args'] == ['--parsable', '--array=0-1%2', str(WRAPPER),
+    assert records[2]['args'] == ['--parsable', '--array=0-1%2', str(WRAPPER),
                                   'reconstruct', str(output / 'manifest.json')]
-    assert records[2]['args'] == ['--parsable', '--dependency=afterok:101', '--array=0-5%6',
+    assert records[3]['args'] == ['--parsable', '--dependency=afterok:101', '--array=0-5%6',
                                   str(WRAPPER), 'run', str(output / 'manifest.json')]
-    assert all(r['bash_env'] is None for r in records[1:])
+    assert all(r['bash_env'] is None for r in records[2:])
 
 
 def test_prepare_only_never_submits(tmp_path, shell_env):
@@ -63,8 +69,8 @@ def test_prepare_only_never_submits(tmp_path, shell_env):
     result = subprocess.run(['bash', str(SCRIPT), str(tmp_path), str(tmp_path / 'out'),
                              '123', '--prepare-only'], env=env, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
-    assert [r['tool'] for r in calls(log)] == ['pinned-python']
-    assert calls(log)[0]['args'][-1] == '123'
+    assert [r['tool'] for r in calls(log)] == ['module', 'pinned-python']
+    assert calls(log)[1]['args'][-1] == '123'
 
 
 @pytest.mark.parametrize('phase,index,extra', [('reconstruct', '0', []), ('reconstruct', '1', []),
@@ -80,6 +86,8 @@ def test_wrapper_routes_phase_index_and_resume(tmp_path, shell_env, phase, index
     assert result.returncode == 0, result.stderr
     records = calls(log)
     assert [r['tool'] for r in records] == ['module', 'srun']
+    assert records[0]['args'] == ['load', 'anaconda/anaconda-2024.10']
+    assert all(set(r['threads'].values()) == {'1'} for r in records)
     assert records[1]['args'] == ['--cpu-bind=cores', env['HETNET_PYTHON'], '-u', '-m',
         'softrole.pcp_recovery', phase, '--manifest', str(manifest), '--index', index, *extra]
     assert records[1]['conda'] == '0'
@@ -106,7 +114,24 @@ def test_reconstruction_submission_failure_never_submits_recovery(tmp_path, shel
                             env=env, capture_output=True, text=True)
     assert result.returncode != 0
     assert 'Recovery job:' not in result.stdout
-    assert [r['tool'] for r in calls(log)] == ['pinned-python']
+    assert [r['tool'] for r in calls(log)] == ['module', 'pinned-python']
+
+
+@pytest.mark.parametrize('wrapper', [False, True])
+def test_module_failure_aborts_before_python_or_submission(tmp_path, shell_env, wrapper):
+    env, log = shell_env
+    mock_executable(Path(env['PATH'].split(os.pathsep)[0]) / 'module',
+                    "import sys\nprint('module load failed', file=sys.stderr)\nsys.exit(7)\n")
+    if wrapper:
+        manifest = tmp_path / 'manifest.json'
+        manifest.write_text('{}')
+        command = ['bash', str(WRAPPER), 'run', str(manifest)]
+    else:
+        command = ['bash', str(SCRIPT), str(tmp_path), str(tmp_path / 'out')]
+    result = subprocess.run(command, env=env, capture_output=True, text=True)
+    assert result.returncode == 7
+    assert 'module load failed' in result.stderr
+    assert not log.exists()
 
 
 def test_scheduler_resources_and_shell_syntax():

@@ -29,6 +29,7 @@ esac
 [[ ${SLURM_ARRAY_JOB_ID:-} =~ ^[1-9][0-9]*$ ]] || { echo 'Expected a Slurm array job ID' >&2; exit 2; }
 cd "${SLURM_SUBMIT_DIR:?Submit from the frozen repository root}"
 [[ -f $manifest ]] || { echo 'Recovery manifest does not exist' >&2; exit 2; }
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 export CONDA_SHLVL=0
 unset CONDA_PREFIX CONDA_DEFAULT_ENV CONDA_PROMPT_MODIFIER
 for conda_prefix_name in "${!CONDA_PREFIX_@}"; do unset "$conda_prefix_name"; done
