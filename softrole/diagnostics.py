@@ -360,6 +360,8 @@ def policy_replay(model, replays):
 
 
 def batch_diagnostics(saved, cfg, model, manifest, run):
+    if getattr(cfg, "entropy_coeff", 0):
+        raise ValueError("Actor/value gradient decomposition does not support an entropy bonus; use online update diagnostics")
     from softrole.diagnostic_estimators import (actor_episode_gradients, GradientMoments,
         agent_critic_episode_diagnostics, critic_episode_diagnostics,
         summarize_agent_critic_diagnostics, summarize_critic_diagnostics)

@@ -54,6 +54,7 @@ class Config:
     gamma: float = 1.0
     gae_lambda: float = 0.95
     actor_coeff: float = 50.0
+    entropy_coeff: float = 0.0
     value_coeff: float = 1.0
     detach_gap: int = 5
     max_grad_norm: float = 0.75
@@ -91,7 +92,11 @@ class Config:
         return settings
 
     def to_dict(self):
-        return asdict(self)
+        settings = asdict(self)
+        # Preserve historical configuration hashes for runs without a bonus.
+        if self.entropy_coeff == 0:
+            del settings["entropy_coeff"]
+        return settings
 
     def validate(self):
         if self.task not in ("pp", "pcp", "fc"):
@@ -138,6 +143,9 @@ class Config:
                 raise ValueError(f"{name} must be finite and positive")
         if not math.isfinite(self.value_coeff) or self.value_coeff < 0:
             raise ValueError("value_coeff must be finite and nonnegative")
+        if (isinstance(self.entropy_coeff, bool) or not isinstance(self.entropy_coeff, (int, float))
+                or not math.isfinite(self.entropy_coeff) or self.entropy_coeff < 0):
+            raise ValueError("entropy_coeff must be a finite nonnegative number")
         # This study defines an undiscounted, finite-horizon team objective.
         if self.gamma != 1.0:
             raise ValueError("gamma must be 1 for the specified finite-horizon objective")

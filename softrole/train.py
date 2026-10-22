@@ -107,6 +107,8 @@ def collect_batch(model, config, collector, update, environment_source=None):
     policy_sum = value_sum = 0.0
     objective_sums = {name: 0.0 for name in ("objective_policy_loss_sum", "objective_value_loss_sum",
                                           "objective_total_loss_sum")} if config.objective == "mean_agent" else {}
+    if config.entropy_coeff:
+        objective_sums.update(action_entropy_sum=0.0, objective_entropy_loss_sum=0.0)
     for scenario in scenarios:
         episode = run_episode(model, adapter, config, scenario, training=True)
         loss, losses = loss_sum([episode], config)
@@ -314,6 +316,8 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
             policy_sum = value_sum = 0.0
             objective_sums = {name: 0.0 for name in ("objective_policy_loss_sum", "objective_value_loss_sum",
                                                   "objective_total_loss_sum")} if config.objective == "mean_agent" else {}
+            if config.entropy_coeff:
+                objective_sums.update(action_entropy_sum=0.0, objective_entropy_loss_sum=0.0)
             # A step-budget stop may checkpoint partway through an epoch. Resume
             # the remaining updates instead of silently skipping that work.
             remaining_updates = config.updates_per_epoch - completed_updates % config.updates_per_epoch

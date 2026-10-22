@@ -166,7 +166,12 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
             )
             actions, log_prob = sample_actions(out["logits"], scenario.action_seed, t)
             # Per-agent scores of the same sampled actions; no additional draw.
-            agent_log_probs = Categorical(logits=out["logits"]).log_prob(actions)
+            action_distribution = Categorical(logits=out["logits"])
+            agent_log_probs = action_distribution.log_prob(actions)
+            if getattr(config, "entropy_coeff", 0.0):
+                # Categorical handles -inf masked logits without 0 * -inf NaNs.
+                # Reuse the same policy and draws; no time or roster averaging.
+                episode.agent_entropies.append(action_distribution.entropy())
             obs, rewards, done, info = adapter.step(actions.detach().cpu().numpy(), kappa)
             returns += np.asarray(rewards)
             episode.log_probs.append(log_prob)

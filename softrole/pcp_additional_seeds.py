@@ -1,10 +1,13 @@
 """Fresh PCP seeds 3/4/5; preserve the existing trainers and scientific recipes.
 
 Indices 0..2: HetNet paper-v1 Real; 3..5: CapCon beta0; 6..8: beta0.5.
+Indices 9..11: CapCon team critic; 12..14: decomposed beta1.
+Indices 15..41: banked K=2,3,4 x decomposed beta=1,.5,0 x seeds=3,4,5.
 This is a separate extension manifest, not a change to programme.SEEDS or a
 manifest accepted by the original seeds-0..2 programme/evaluation interface.
 """
 import argparse
+from dataclasses import replace
 import fcntl
 import hashlib
 import importlib.metadata
@@ -16,14 +19,25 @@ import sys
 import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
-STUDY = "pcp-additional-seeds-v1"
+STUDY = "pcp-additional-seeds-v3"
 SEEDS = (3, 4, 5)
-ARMS = ("hetnet_pcp_real", "l1a_decomposed_beta0", "l1a_decomposed_beta05")
+ARMS = ("hetnet_pcp_real", "l1a_decomposed_beta0", "l1a_decomposed_beta05",
+        "c1_real64", "l1b_decomposed_beta1")
+# Preserve every v2 index; append the declared actor/K factorial only.
+BANKED_ARMS = {
+    f"banked_k{k}_decomposed_beta{beta}": (base, k)
+    for k in (2, 3, 4)
+    for beta, base in (("1", "l1b_decomposed_beta1"),
+                       ("05", "l1a_decomposed_beta05"),
+                       ("0", "l1a_decomposed_beta0"))
+}
+ARMS += tuple(BANKED_ARMS)
+ENTRY_COUNT = len(ARMS) * len(SEEDS)
 
 
 def index_value(value):
-    if not isinstance(value, str) or value not in tuple(map(str, range(9))):
-        raise argparse.ArgumentTypeError("index must be one decimal digit, 0..8")
+    if not isinstance(value, str) or value not in tuple(map(str, range(ENTRY_COUNT))):
+        raise argparse.ArgumentTypeError(f"index must be a canonical decimal integer, 0..{ENTRY_COUNT - 1}")
     return int(value)
 
 
@@ -38,8 +52,8 @@ def write_json(path, value):
 
 
 def entry(index, run_root):
-    if type(index) is not int or not 0 <= index < 9:
-        raise ValueError("index must be 0..8")
+    if type(index) is not int or not 0 <= index < ENTRY_COUNT:
+        raise ValueError(f"index must be 0..{ENTRY_COUNT - 1}")
     seed = SEEDS[index % 3]
     arm = ARMS[index // 3]
     task = Path(run_root).resolve() / arm / f"seed{seed}"
@@ -54,7 +68,12 @@ def entry(index, run_root):
         result.update(kind="hetnet", arguments=args, resolved=resolve(parser().parse_args(args)))
     else:
         from softrole.programme import CAPCON_PROFILE, normalized, programme_config
-        config = normalized(programme_config(arm, seed, .001, profile=CAPCON_PROFILE))
+        base, experts = BANKED_ARMS.get(arm, (arm, None))
+        config = programme_config(base, seed, .001, profile=CAPCON_PROFILE)
+        if experts is not None:
+            config = replace(config, model="banked", experts=experts)
+        config.validate()
+        config = normalized(config)
         result.update(kind="capcon", resolved=config, episode_log="chunked-gzip", diagnostics_every=50)
     return result
 
@@ -121,10 +140,14 @@ def prepare(run_root, baseline, environment):
         source = source_snapshot()
         git, patch = git_identity()
         plan = dict(version=1, study=STUDY, seeds=list(SEEDS),
-                    entries=[entry(i, run_root) for i in range(9)],
+                    entries=[entry(i, run_root) for i in range(ENTRY_COUNT)],
                     source=source, git=git, baseline_capcon=baseline,
                     environment=environment,
-                    scope="Additional independent training seeds; recipes unchanged; no automatic submission or resume",
+                    scope=("Additional independent training seeds and declared banked actor/K factorial; "
+                           "banked entries change only model and experts from corresponding shared "
+                           "decomposed recipes. Baseline S1 receipts support the reused baseline "
+                           "optimizer choice, not independent certification of banked actors. "
+                           "No automatic submission or resume"),
                     losses="CapCon actor/value 50/1; HetNet active paper actor/critic 1/1; no equalization")
         target = run_root / "manifest.json"
         if target.exists():

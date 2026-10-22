@@ -28,6 +28,8 @@ class Episode:
     agent_log_probs: list = field(default_factory=list)
     agent_rewards: list = field(default_factory=list)
     agent_values: list = field(default_factory=list)
+    # Optional differentiable categorical entropy [N] per step, only for a bonus.
+    agent_entropies: list = field(default_factory=list)
 
 
 def team_gae(rewards, values, gamma=1.0, gae_lambda=0.95, bootstrap=0.0):
@@ -130,13 +132,31 @@ def episode_loss_terms(episode, config):
 
 
 def compute_episode_loss(episode, config):
-    """Sum time/action scores against the configured advantages; mean the value error."""
+    """Sum action scores and optional entropy over time/agents; mean value error.
+
+    The entropy coefficient is inside the actor coefficient. A zero coefficient
+    takes the original arithmetic path and requires no additional episode data.
+    """
     terms = episode_loss_terms(episode, config)
-    total = config.actor_coeff * terms["policy"] + config.value_coeff * terms["value"]
+    entropy_coeff = getattr(config, "entropy_coeff", 0.0)
+    policy = terms["policy"]
+    if entropy_coeff:
+        if len(episode.agent_entropies) != len(episode.values):
+            raise ValueError("Entropy bonus needs per-agent entropy for every step")
+        entropies = torch.stack(episode.agent_entropies)
+        if entropies.ndim != 2 or entropies.shape[1] < 1:
+            raise ValueError("Per-agent entropies must have nonempty [T,N] shape")
+        entropy_sum = entropies.sum()
+        policy = policy - entropy_coeff * entropy_sum
+    total = config.actor_coeff * policy + config.value_coeff * terms["value"]
     if terms["scale"] != 1.0:
         total = terms["scale"] * total
     stats = {"policy_loss_sum": float(terms["policy"].detach()),
              "value_loss_sum": float(terms["value"].detach()), "episode_count": 1}
+    if entropy_coeff:
+        stats.update(action_entropy_sum=float(entropy_sum.detach()),
+                     objective_entropy_loss_sum=float(
+                         -terms["scale"] * config.actor_coeff * entropy_coeff * entropy_sum.detach()))
     if getattr(config, "objective", "team") == "mean_agent":
         # Preserve raw diagnostics and legacy ledger fields. These additional
         # detached metrics include coefficients and this episode's own 1/N,

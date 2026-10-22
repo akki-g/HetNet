@@ -1,5 +1,6 @@
 #!/bin/bash
-# Fresh seeds 3,4,5: main 0..5; optional beta0.5 stability group 6..8.
+# Fresh seeds 3,4,5: shared beta0.5/team/beta1 (6..14), banked factorial (15..41).
+# Original HetNet (0..2) and beta0 (3..5) remain available via --array.
 # Submit from the frozen checkout with inherited BASH_ENV/ENV removed.
 #SBATCH --job-name=pcp-add-seeds
 #SBATCH --account=cenyioha
@@ -10,13 +11,13 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
 #SBATCH --time=48:00:00
-#SBATCH --array=0-5%6
+#SBATCH --array=6-41%36
 #SBATCH --output=pcp-add-seeds-%A_%a.out
 #SBATCH --error=pcp-add-seeds-%A_%a.err
 set -Eeuo pipefail
 trap 'printf "pcp-add-seeds failed at line %s (exit %s)\n" "$LINENO" "$?" >&2' ERR
 (( $# == 0 )) || { echo 'No script arguments: scientific settings are fixed; select indices with the scheduler array option.' >&2; exit 2; }
-[[ ${SLURM_ARRAY_TASK_ID:-} =~ ^[0-8]$ ]] || { echo 'Expected array index 0..8' >&2; exit 2; }
+[[ ${SLURM_ARRAY_TASK_ID:-} =~ ^([0-9]|[1-3][0-9]|4[01])$ ]] || { echo 'Expected array index 0..41' >&2; exit 2; }
 [[ ${SLURM_ARRAY_JOB_ID:-} =~ ^[1-9][0-9]*$ ]] || { echo 'Expected a Slurm array job ID' >&2; exit 2; }
 cd "${SLURM_SUBMIT_DIR:?Submit from the repository root}"
 
@@ -44,5 +45,5 @@ export PYTHONPATH="$PWD:$PWD/envs"
 printf 'pcp-add-seeds: job=%s index=%s node=%s\n' "$SLURM_ARRAY_JOB_ID" "$SLURM_ARRAY_TASK_ID" "${SLURM_JOB_NODELIST:-unknown}" >&2
 exec srun --cpu-bind=cores "$HETNET_PYTHON" -u -m softrole.pcp_additional_seeds \
   --index "$SLURM_ARRAY_TASK_ID" \
-  --run-root "$PWD/runs/pcp_additional_seeds_v1_${SLURM_ARRAY_JOB_ID}" \
+  --run-root "$PWD/runs/pcp_additional_seeds_v3_${SLURM_ARRAY_JOB_ID}" \
   --capcon-manifest "${PCP_ADDITIONAL_BASE_MANIFEST:-$PWD/runs/capcon_l1_40m_20261017/manifest.json}"
