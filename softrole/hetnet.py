@@ -107,11 +107,17 @@ def hetnet_logits(model, adapter, config, memory, message_seed, step):
 
 def evaluate_hetnet(checkpoint, config, scenarios, output, use_binary=True, trace=False):
     """Strictly load original checkpoint['policy_net']; never adapt its weights."""
+    if _option(config, "capabilities", "binary") != "binary":
+        raise ValueError("Released HetNet requires a binary-mode adapter")
     scenarios = list(scenarios)
     if not scenarios:
         raise ValueError("HetNet evaluation requires at least one scenario")
     if any(s.event_step != -1 for s in scenarios):
         raise ValueError("legacy HetNet has no known-health input; sensor-failure evaluation is unsupported")
+    for scenario in scenarios:
+        native = ((_option(config, "vision", 2) + 1,) * scenario.num_p + (0,) * scenario.num_a)
+        if getattr(scenario, "sensing", ()) and tuple(scenario.sensing) != native:
+            raise ValueError("Released HetNet supports only native sensing levels")
     ids = [str(s.scenario_id) for s in scenarios]
     if len(ids) != len(set(ids)):
         raise ValueError("Evaluation scenario IDs must be unique")

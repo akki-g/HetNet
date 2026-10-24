@@ -40,7 +40,7 @@ from softrole.programme import (ARM_INDEX, CAPCON_ARMS, CAPCON_PROFILE, DEVELOPM
                                 window_statistics, write_json)
 from softrole.report import (canonical_digest, contrast_groups, difference_in_differences, panel_digest,
                              protocol_identity, summarize_reports, validate_evaluation_protocol)
-from softrole.scenarios import Scenario, make_scenarios
+from softrole.scenarios import Scenario, make_scenarios, scenario_from_record
 
 EVALUATION_VERSION = 2
 FINAL_COMPOSITIONS = ((3, 2), (4, 1), (4, 2))
@@ -494,7 +494,7 @@ def run_task(tasks_path, index, dry_run=False):
             continue
         if dry_run:
             continue
-        report = evaluate_checkpoint(job["checkpoint"], [Scenario(**row) for row in json.loads(data)], output,
+        report = evaluate_checkpoint(job["checkpoint"], [scenario_from_record(row) for row in json.loads(data)], output,
                             job["intervention"], job["intervention_step"], trace=job["trace"], sham=job["sham"],
                             protocol=declared, scenarios_sha256=job["scenarios_sha256"])
         validate_report_job(report, job, evaluation)

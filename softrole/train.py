@@ -101,8 +101,10 @@ def collect_batch(model, config, collector, update, environment_source=None):
     # Seed coordinates describe work, not process scheduling. Restarts and different
     # executor scheduling therefore do not alter a collector's scenario sequence.
     seed = int(np.random.SeedSequence([config.seed, update, collector, 2026]).generate_state(1)[0])
+    sensing = (dict(sensing_p=config.sensing_p, sensing_a=config.sensing_a, vision=config.vision)
+               if config.capabilities == "graded" else {})
     scenarios = make_scenarios(seed, config.batch_steps, config.training_compositions,
-                               config.failure_prob, config.failure_window)
+                               config.failure_prob, config.failure_window, **sensing)
     episodes, steps = [], 0
     policy_sum = value_sum = 0.0
     objective_sums = {name: 0.0 for name in ("objective_policy_loss_sum", "objective_value_loss_sum",
@@ -194,6 +196,8 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
         raise ValueError("diagnostics_every must be a positive integer")
     if diagnostics_every is not None and config.task != "pcp":
         raise ValueError("Update diagnostics currently support PCP only")
+    if diagnostics_every is not None and config.capabilities != "binary":
+        raise ValueError("Update diagnostics currently support binary capabilities only")
     output = Path(output)
     if output.exists():
         raise FileExistsError(f"refusing to overwrite run: {output}")

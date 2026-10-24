@@ -42,6 +42,8 @@ def clone(value):
 
 class UpdateDiagnostics:
     def __init__(self, config, output, every):
+        if getattr(config, "capabilities", "binary") != "binary":
+            raise ValueError("Update diagnostics currently support binary capabilities only")
         self.config, self.output, self.every = config, Path(output), every
         from softrole.train import write_json
         write_json(self.output / "diagnostics_protocol.json", {

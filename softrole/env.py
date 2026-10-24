@@ -16,26 +16,38 @@ def _option(config, name, default=None):
     return config.get(name, default) if isinstance(config, dict) else getattr(config, name, default)
 
 
-def adapt_observation(raw_obs, kappa, base):
+def adapt_observation(raw_obs, kappa, base, visible=None, tail=None):
     """x = [position one-hots, sense*(outside,target,P+A), own kappa].
 
     The occupancy sum preserves counts, including co-located agents, but removes
     information about neighbor physical types. No internal completion flags enter
     the actor. The transform is pure and never writes to simulator observations.
+    Optional visibility replaces binary whole-window masking; an optional tail
+    supplies the policy descriptor independently of physical capabilities.
     """
     raw_obs, kappa = np.asarray(raw_obs), np.asarray(kappa, dtype=np.float64)
     if raw_obs.ndim < 2 or kappa.shape != (raw_obs.shape[0], 2):
         raise ValueError("observation and kappa must share the agent dimension")
-    if np.any((kappa != 0) & (kappa != 1)):
+    if visible is None and np.any((kappa != 0) & (kappa != 1)):
         raise ValueError("kappa entries must be binary current capabilities")
     if raw_obs.size % (raw_obs.shape[0] * (base + 4)):
         raise ValueError("native observations require base+4 features per cell")
     cells = raw_obs.reshape(raw_obs.shape[0], -1, base + 4)
     sensory = np.stack((cells[..., base + 1], cells[..., base + 2],
                         cells[..., base] + cells[..., base + 3]), axis=-1)
-    sensory = sensory * kappa[:, None, :1]
+    if visible is None:
+        sensory = sensory * kappa[:, None, :1]
+    else:
+        visible = np.asarray(visible)
+        if visible.shape != cells.shape[:2] or np.any((visible != 0) & (visible != 1)):
+            raise ValueError("visible must be a binary mask with one entry per agent and cell")
+        sensory = sensory * visible[..., None]
+    if tail is not None:
+        tail = np.asarray(tail, dtype=np.float64)
+        if tail.shape != kappa.shape or not np.isfinite(tail).all():
+            raise ValueError("observation tail must be a finite Nx2 descriptor")
     return np.concatenate((cells[..., :base].reshape(len(cells), -1),
-                           sensory.reshape(len(cells), -1), kappa), axis=1).astype(np.float64)
+                           sensory.reshape(len(cells), -1), kappa if tail is None else tail), axis=1).astype(np.float64)
 
 
 class EnvironmentAdapter:
@@ -57,6 +69,16 @@ class EnvironmentAdapter:
         self.environment_version = _option(config, "env_version", ENVIRONMENT_VERSION)
         if self.environment_version not in (ENVIRONMENT_VERSION, "paper-v1"):
             raise ValueError("Unknown SoftRole environment version")
+        self.capabilities = _option(config, "capabilities", "binary")
+        self.descriptor_mode = _option(config, "descriptor", "capability")
+        if self.capabilities not in ("binary", "graded"):
+            raise ValueError("capabilities must be binary or graded")
+        if self.descriptor_mode not in ("capability", "type"):
+            raise ValueError("descriptor must be capability or type")
+        if self.capabilities == "graded" and (self.task != "pcp" or self.environment_version != ENVIRONMENT_VERSION):
+            raise ValueError("graded capabilities require PCP corrected-observation-v1")
+        if self.descriptor_mode == "type" and _option(config, "actor_capabilities", "explicit") == "physical_only":
+            raise ValueError("type descriptor is incompatible with physical_only actor capabilities")
         if self.environment_version == "paper-v1":
             from .publication_env import load_environment_class
             self.raw = load_environment_class(self.task, environment_source)()
@@ -71,6 +93,8 @@ class EnvironmentAdapter:
         self.args.max_steps = self.max_steps
         self.args.nfriendly_P, self.args.nfriendly_A = self.num_p, self.num_a
         self.args.eval = False
+        if self.capabilities == "graded":
+            self.args.A_vision = self.vision
         if self.environment_version == "paper-v1":
             self.args.publication_env_version = "paper-v1"
         if self.task == "fc":
@@ -110,9 +134,23 @@ class EnvironmentAdapter:
             self.raw.captured_prey_index = num_p + num_a
             self.raw.state_len = num_p + num_a + 1
         self.native_kappa = np.array([[1., 0.]] * num_p + [[0., 1.]] * num_a)
+        self.native_levels = np.array([self.vision + 1] * num_p + [0] * num_a, dtype=int)
+        self.type_descriptor = self.native_kappa.copy()
 
     def _validate_kappa(self, kappa):
         kappa = np.asarray(kappa, dtype=np.float64)
+        if self.capabilities == "graded":
+            if kappa.shape != self.native_kappa.shape or not np.isfinite(kappa).all():
+                raise ValueError("graded kappa must be a finite Nx2 array")
+            levels = kappa[:, 0] * (self.vision + 1)
+            if (np.any(levels < 0) or np.any(levels > self.vision + 1)
+                    or not np.allclose(levels, np.rint(levels), rtol=0, atol=1e-12)):
+                raise ValueError("graded sensing levels must be integers in [0, vision+1]")
+            if not np.array_equal(kappa[:, 1], self.native_kappa[:, 1]):
+                raise ValueError("changes to physical actuation capability are not implemented")
+            if np.any(np.rint(levels) > self.initial_levels):
+                raise ValueError("sensing levels cannot grow beyond their initial levels")
+            return kappa
         if kappa.shape != self.native_kappa.shape or np.any((kappa != 0) & (kappa != 1)):
             raise ValueError("kappa must be an Nx2 array of binary capabilities")
         if not np.array_equal(kappa[:, 1], self.native_kappa[:, 1]):
@@ -123,14 +161,27 @@ class EnvironmentAdapter:
             raise ValueError("the adapter cannot add a sensor to a physically blind agent")
         return kappa
 
-    def reset(self, seed, num_p=None, num_a=None):
+    def reset(self, seed, num_p=None, num_a=None, sensing=None):
         self._set_composition(self.num_p if num_p is None else num_p,
                               self.num_a if num_a is None else num_a)
+        levels = np.asarray(()) if sensing is None else np.asarray(sensing)
+        if self.capabilities == "binary":
+            if levels.size:
+                raise ValueError("binary capabilities require empty sensing levels")
+        else:
+            if not levels.size:
+                levels = self.native_levels
+            if (levels.shape != (self.num_p + self.num_a,) or levels.dtype.kind not in "iu"
+                    or np.any(levels < 0) or np.any(levels > self.vision + 1)):
+                raise ValueError("sensing must contain one integer in [0, vision+1] per agent")
+            self.initial_levels = levels.astype(int, copy=True)
         self._rng = IsolatedRNG(seed)
         with self._rng.use():
             self._raw_obs = np.array(self.raw.reset(), copy=True)
         self._steps, self._done = 0, False
         self.kappa = self.native_kappa.copy()
+        if self.capabilities == "graded":
+            self.kappa[:, 0] = self.initial_levels / (self.vision + 1)
         return self.observe(self.kappa), self.kappa.copy()
 
     @property
@@ -149,19 +200,46 @@ class EnvironmentAdapter:
     def observe(self, kappa):
         if self._raw_obs is None:
             raise RuntimeError("reset the environment before observing")
+        if self.capabilities == "graded":
+            kappa = self._validate_kappa(kappa)
+            return adapt_observation(self._raw_obs, kappa, self.base,
+                                     visible=self._visibility(kappa), tail=self.descriptor(kappa))
+        if self.descriptor_mode == "type":
+            return adapt_observation(self._raw_obs, self._validate_kappa(kappa), self.base,
+                                     tail=self.descriptor(kappa))
         return adapt_observation(self._raw_obs, self._validate_kappa(kappa), self.base)
+
+    def descriptor(self, kappa):
+        """Policy metadata, separate from the physical capabilities used by the simulator."""
+        return kappa if self.descriptor_mode == "capability" else self.type_descriptor.copy()
+
+    def _visibility(self, kappa):
+        side = 2 * self.vision + 1
+        cells = np.arange(side ** 2)
+        distance = np.maximum(np.abs(cells // side - self.vision),
+                              np.abs(cells % side - self.vision))
+        levels = np.rint(kappa[:, 0] * (self.vision + 1)).astype(int)
+        return distance[None, :] < levels[:, None]
 
     def pcp_sensor_status(self, victim):
         """Read diagnostic state without generating an observation or using RNG.
 
-        Visibility is the cached native sensing view, before capability masking.
-        The rollout reads it only up to the scheduled event; this is neither a
-        policy input nor a claim about knowledge obtained through communication.
+        Graded visibility respects the current radius; binary visibility is the
+        cached native sensing view. The rollout reads it only up to the scheduled
+        event; this is neither a policy input nor a claim about knowledge obtained
+        through communication.
         """
         if self.task != "pcp":
             raise ValueError("Sensor-event diagnostics are supported only for PCP")
         if self._raw_obs is None:
             raise RuntimeError("reset the environment before reading sensor status")
+        if self.capabilities == "graded":
+            if not 0 <= victim < self.num_p + self.num_a or self.kappa[victim, 0] <= 0:
+                raise ValueError("Sensor diagnostic victim must identify a sensing agent")
+            cells = self._raw_obs[victim].reshape(-1, self.base + 4)
+            visible = self._visibility(self.kappa)[victim]
+            return {"reached": bool(self.raw.reached_prey[victim]),
+                    "target_visible": bool(np.any(cells[visible, self.base + 2] > 0))}
         if not 0 <= victim < self.num_p:
             raise ValueError("Sensor diagnostic victim must identify a sensing agent")
         cells = self._raw_obs[victim].reshape(-1, self.base + 4)

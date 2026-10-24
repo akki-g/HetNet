@@ -125,6 +125,8 @@ def load_checkpoint(path, protocol_version=1):
     if saved.get('format_version') != CHECKPOINT_VERSION:
         raise ValueError('Unsupported checkpoint format')
     cfg = Config(**saved['config'])
+    if getattr(cfg, 'capabilities', 'binary') != 'binary':
+        raise ValueError('D1--D6 currently support binary capabilities only')
     if cfg.task != 'pcp' or cfg.env_version != 'corrected-observation-v1':
         raise ValueError('D1--D6 require native PCP checkpoints')
     if protocol_version == 1 and not version_one_eligible(cfg):

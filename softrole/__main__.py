@@ -48,6 +48,13 @@ def parser():
                        help="team: expected team return; mean_agent: complete episode loss divided by the roster size (L1c)")
     train.add_argument("--actor-capabilities", dest="actor_capabilities", choices=("explicit", "physical_only"),
                        help="physical_only removes the two capability inputs from the actor; masks and critic keep them (O1)")
+    train.add_argument("--capabilities", choices=("binary", "graded"), default=None,
+                       help="graded: PCP sensing levels from blind to the full observation window")
+    train.add_argument("--descriptor", choices=("capability", "type"), default=None,
+                       help="policy and critic receive physical capabilities or a constant class descriptor")
+    for name in ("sensing-p", "sensing-a", "held-out-sensing-p", "held-out-sensing-a"):
+        train.add_argument(f"--{name}", nargs="*", type=int, default=None,
+                           help="integer sensing levels; an empty training list means native sensing")
     # Familiar release spellings are aliases, not a second set of defaults.
     integers = {
         "num_p": ("--num-p", "--nfriendly_P"), "num_a": ("--num-a", "--nfriendly_A"),
@@ -121,11 +128,11 @@ def parser():
 
 
 def scenarios_for(args, config):
-    from softrole.scenarios import Scenario, make_scenarios
+    from softrole.scenarios import make_scenarios, scenario_from_record
     if args.scenarios:
         with args.scenarios.open() as stream:
             records = json.load(stream)
-        return [Scenario(**record) for record in records]
+        return [scenario_from_record(record) for record in records]
     if args.episodes <= 0 or args.seed < 0:
         raise ValueError("episodes must be positive and the scenario seed nonnegative")
     compositions = args.compositions or config.held_out or ((config.num_p, config.num_a),)
@@ -138,8 +145,12 @@ def scenarios_for(args, config):
         # receives the same scenarios when using the same evaluation seed.
         import numpy as np
         seed = int(np.random.SeedSequence([args.seed, p, a]).generate_state(1)[0])
+        sensing = (dict(sensing_p=config.held_out_sensing_p or config.sensing_p,
+                        sensing_a=config.held_out_sensing_a or config.sensing_a,
+                        vision=config.vision) if config.capabilities == "graded" else {})
         scenarios.extend(make_scenarios(seed, args.episodes, [(p, a)],
-                         getattr(args, "failure_prob", 0), getattr(args, "failure_window", (10, 30))))
+                         getattr(args, "failure_prob", 0), getattr(args, "failure_window", (10, 30)),
+                         **sensing))
     return scenarios
 
 
@@ -166,6 +177,8 @@ def main(argv=None):
                     raise ValueError("--diagnostics-every must be positive")
                 if config.task != "pcp":
                     raise ValueError("Update diagnostics currently support PCP only")
+                if config.capabilities != "binary":
+                    raise ValueError("Update diagnostics currently support binary capabilities only")
             if args.dry_run:
                 print(json.dumps(config.to_dict(), indent=2, sort_keys=True))
             else:

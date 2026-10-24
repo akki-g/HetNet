@@ -4,6 +4,7 @@ import torch
 from torch.distributions import Categorical
 
 from softrole.learning import Episode
+from softrole.scenarios import GradedScenario
 
 
 INTERVENTIONS = ("none", "freeze_affected", "freeze_all", "comm_off")
@@ -79,7 +80,20 @@ def validate_scenario(config, scenario, intervention="none", intervention_step=N
     if intervention.startswith("freeze") and trigger < 1:
         raise ValueError("Gate freezing needs at least one pre-intervention step")
     n_agents = scenario.num_p + scenario.num_a
-    if scenario.event_step >= 0 and not 0 <= scenario.victim < scenario.num_p:
+    if isinstance(scenario, GradedScenario):
+        if getattr(config, "capabilities", "binary") != "graded":
+            raise ValueError("Graded scenarios require graded capabilities")
+        vision = getattr(config, "vision", 2)
+        levels = scenario.sensing or (vision + 1,) * scenario.num_p + (0,) * scenario.num_a
+        if len(levels) != n_agents or any(type(level) is not int or not 0 <= level <= vision + 1
+                                          for level in levels):
+            raise ValueError("sensing must contain one integer level in [0, vision+1] per agent")
+        if scenario.event_step >= 0:
+            if not 0 <= scenario.victim < n_agents or levels[scenario.victim] < 1:
+                raise ValueError("Sensor failure victim must identify a sensing agent")
+            if sum(level > 0 for level in levels) < 2:
+                raise ValueError("Graded failures require at least two sensing agents initially")
+    elif scenario.event_step >= 0 and not 0 <= scenario.victim < scenario.num_p:
         raise ValueError("Sensor failure victim must identify a sensing agent")
     if intervention == "freeze_affected" and not 0 <= scenario.victim < n_agents:
         raise ValueError("freeze_affected needs a valid victim, also in a no-event control")
@@ -106,7 +120,10 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
     communication = getattr(config, "communication", "binary")
     comm_rounds = getattr(config, "comm_rounds", 2)
     independent_heads = getattr(config, "independent_heads", False)
-    obs, kappa = adapter.reset(seed=scenario.env_seed, num_p=scenario.num_p, num_a=scenario.num_a)
+    sensing = ({"sensing": scenario.sensing}
+               if isinstance(scenario, GradedScenario) and scenario.sensing else {})
+    obs, kappa = adapter.reset(seed=scenario.env_seed, num_p=scenario.num_p, num_a=scenario.num_a,
+                               **sensing)
     kappa = np.asarray(kappa).copy()
     memory = model.initial_memory(n_agents)
     episode = Episode()
@@ -157,8 +174,9 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
                     comm_rounds=comm_rounds,
                     heads=config.heads if independent_heads else None,
                 )
+            descriptor = adapter.descriptor(kappa) if hasattr(adapter, "descriptor") else kappa
             out = model(
-                torch.as_tensor(obs, dtype=dtype), torch.as_tensor(kappa, dtype=dtype),
+                torch.as_tensor(obs, dtype=dtype), torch.as_tensor(descriptor, dtype=dtype),
                 memory, adjacency, remaining=(config.max_steps - t) / config.max_steps,
                 noise=noise,
                 gate_override=gate_override,
@@ -239,6 +257,8 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
         "environment_version": info.get("environment_version", "unspecified"),
     }
     episode.metrics.update(diagnostic_metrics)
+    if isinstance(scenario, GradedScenario):
+        episode.metrics["sensing"] = list(scenario.sensing)
     if communication != "binary" or independent_heads or comm_rounds != 2:
         episode.metrics.update(communication=communication,
                                payload_values_per_agent_step=payload_values,

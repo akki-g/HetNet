@@ -41,6 +41,12 @@ class Config:
     credit_beta: float = 1.0
     objective: str = "team"
     actor_capabilities: str = "explicit"
+    capabilities: str = "binary"
+    descriptor: str = "capability"
+    sensing_p: tuple = ()
+    sensing_a: tuple = ()
+    held_out_sensing_p: tuple = ()
+    held_out_sensing_a: tuple = ()
     feedback: bool = True
     comm_range: float = -1.0
     seed: int = 0
@@ -65,6 +71,13 @@ class Config:
     failure_window: tuple = (10, 30)
 
     def __post_init__(self):
+        for name in ("sensing_p", "sensing_a", "held_out_sensing_p", "held_out_sensing_a"):
+            if isinstance(getattr(self, name), (str, bytes, dict, set, frozenset)):
+                raise ValueError(f"{name} must be an ordered sequence of integer sensing levels")
+            try:
+                setattr(self, name, tuple(getattr(self, name)))
+            except TypeError as error:
+                raise ValueError(f"{name} must be a sequence of integer sensing levels") from error
         self.compositions = tuple(tuple(pair) for pair in self.compositions)
         self.held_out = tuple(tuple(pair) for pair in self.held_out)
         self.failure_window = tuple(self.failure_window)
@@ -96,6 +109,12 @@ class Config:
         # Preserve historical configuration hashes for runs without a bonus.
         if self.entropy_coeff == 0:
             del settings["entropy_coeff"]
+        # Default binary configurations retain their historical manifest hashes.
+        for name, default in (("capabilities", "binary"), ("descriptor", "capability"),
+                              ("sensing_p", ()), ("sensing_a", ()),
+                              ("held_out_sensing_p", ()), ("held_out_sensing_a", ())):
+            if getattr(self, name) == default:
+                del settings[name]
         return settings
 
     def validate(self):
@@ -138,6 +157,27 @@ class Config:
         if any(type(getattr(self, name)) is not int or getattr(self, name) < 0
                for name in ("seed", "vision")):
             raise ValueError("seed and vision must be nonnegative integers")
+        if self.capabilities not in ("binary", "graded"):
+            raise ValueError("capabilities must be binary or graded")
+        if self.descriptor not in ("capability", "type"):
+            raise ValueError("descriptor must be capability or type")
+        if self.descriptor == "type" and self.actor_capabilities == "physical_only":
+            raise ValueError("type descriptor is incompatible with physical_only actor capabilities")
+        if self.capabilities == "graded" and (self.task != "pcp" or
+                                              self.env_version != "corrected-observation-v1"):
+            raise ValueError("graded capabilities require PCP corrected-observation-v1")
+        for name in ("sensing_p", "sensing_a", "held_out_sensing_p", "held_out_sensing_a"):
+            levels = getattr(self, name)
+            if any(type(level) is not int or not 0 <= level <= self.vision + 1 for level in levels):
+                raise ValueError(f"{name} must contain integer sensing levels in [0, vision+1]")
+            if len(set(levels)) != len(levels):
+                raise ValueError(f"{name} must contain unique sensing levels")
+            if self.capabilities == "binary" and levels:
+                raise ValueError("binary capabilities require empty sensing lists")
+        for suffix, native in (("p", self.vision + 1), ("a", 0)):
+            training = getattr(self, f"sensing_{suffix}") or (native,)
+            if set(training) & set(getattr(self, f"held_out_sensing_{suffix}")):
+                raise ValueError(f"held-out sensing_{suffix} levels overlap training levels")
         for name in ("lr", "max_grad_norm", "actor_coeff"):
             if not math.isfinite(getattr(self, name)) or getattr(self, name) <= 0:
                 raise ValueError(f"{name} must be finite and positive")
@@ -171,7 +211,14 @@ class Config:
         if self.failure_prob:
             if self.task != "pcp":
                 raise ValueError("sensor-failure experiments are defined only for PCP")
-            if any(p < 2 for p, _ in self.training_compositions):
+            supports = (self.sensing_p or (self.vision + 1,), self.sensing_a or (0,))
+            if self.capabilities == "graded":
+                enough_sensors = all(sum(count for count, levels in zip(team, supports)
+                                         if all(level > 0 for level in levels)) >= 2
+                                     for team in self.training_compositions)
+            else:
+                enough_sensors = all(p >= 2 for p, _ in self.training_compositions)
+            if not enough_sensors:
                 raise ValueError("failure training requires at least two functioning sensors initially")
             if not 1 <= lo <= hi < self.max_steps:
                 raise ValueError("failure times must be between 1 and max_steps-1")
