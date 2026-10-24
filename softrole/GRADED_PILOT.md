@@ -26,39 +26,40 @@ ceiling remains from the primary configuration; the 2M-step limit stops this pil
 earlier. There is no evaluation, held-out selection or automatic verdict. The
 held-out sensing fields are recorded only as configuration metadata.
 
-## Pull, prepare and dry-run on Stokes
+## Submit through Slurm
 
 Use the existing `~/HetNet` checkout after jobs using it have stopped. Source,
 tests and these instructions are versioned in Git. Manifests, logs, checkpoints
-and local validation artifacts stay under ignored `runs/` directories. Prepare
-the manifest on Stokes after pulling so it records the deployed commit and source
-bytes. Keep that checkout fixed until both pilot jobs finish.
+and local validation artifacts stay under ignored `runs/` directories. A small
+Slurm preparation job creates the manifest and dry-runs both entries on a compute
+node. The training array starts only if that job succeeds. Keep the checkout fixed
+from preparation until both pilot jobs finish.
 
 ```bash
 cd ~/HetNet
 git pull --ff-only origin main
-module load anaconda/anaconda-2024.10
-export HETNET_PYTHON="$PWD/.venv/bin/python"
-export SOFTROLE_GRADED_PILOT_MANIFEST=runs/graded_sensing_pilot_20261024/manifest.json
-"$HETNET_PYTHON" -m softrole.graded_pilot prepare \
-  --output "$SOFTROLE_GRADED_PILOT_MANIFEST"
-bash scripts/softrole_graded_pilot.sh 0 --dry-run
-bash scripts/softrole_graded_pilot.sh 1 --dry-run
+mkdir -p logs_sr
+export SOFTROLE_GRADED_PILOT_MANIFEST="runs/graded_sensing_pilot_20261024/manifest_$(git rev-parse --short HEAD).json"
+graded_prep_job=$(sbatch --parsable slurm/softrole_graded_pilot_prepare.sbatch) && \
+  sbatch --dependency="afterok:${graded_prep_job%%;*}" --kill-on-invalid-dep=yes \
+    slurm/softrole_graded_pilot.sbatch
 ```
 
-Each command must succeed before continuing. Use a clean `main` checkout and the
-existing working Stokes Python environment. Preparation creates only the
-manifest; both dry runs check exact source/config identity and fresh output paths
-without collecting episodes or creating run directories. Preparation refuses an
-existing manifest. If this checkout already has a pilot manifest, inspect its
-origin and source before reusing it; do not overwrite it or regenerate one to
-bypass a mismatch.
+Use a clean `main` checkout and the existing working Stokes Python environment.
+Both jobs load the Anaconda module and call the Python entrypoint directly through
+`srun`; no `scripts/*.sh` wrapper or login-node Python invocation is required.
+Preparation requests one CPU, 2 GB and ten minutes. It creates only the manifest;
+both dry runs check exact source/config identity and fresh output paths without
+collecting episodes or creating run directories. An existing manifest is validated
+without being overwritten. A mismatch fails preparation and prevents training.
+The command names the manifest after the pulled commit, preserving manifests from
+earlier source revisions. Both submissions inherit that same path. Existing
+training output directories still prevent duplicate launches.
 
-Once those checks pass, the user submission command is:
+To inspect the submitted jobs:
 
 ```bash
-mkdir -p logs_sr
-sbatch slurm/softrole_graded_pilot.sbatch
+squeue -u "$USER"
 ```
 
 Create `logs_sr` before `sbatch`, because Slurm opens its output files before the
@@ -74,6 +75,8 @@ runs/graded_sensing_pilot_20261024/training/g_cap/seed0/
 runs/graded_sensing_pilot_20261024/training/g_type/seed0/
 logs_sr/graded-sensing-pilot-<array job>_<index>.out
 logs_sr/graded-sensing-pilot-<array job>_<index>.err
+logs_sr/graded-sensing-prepare-<job>.out
+logs_sr/graded-sensing-prepare-<job>.err
 ```
 
 The launcher rejects budget, seed, model, descriptor, collector and resume

@@ -15,6 +15,9 @@
 #SBATCH --output=logs_sr/graded-sensing-pilot-%A_%a.out
 #SBATCH --error=logs_sr/graded-sensing-pilot-%A_%a.err
 set -euo pipefail
+if (( $# > 1 )) || { (( $# == 1 )) && [[ $1 != --dry-run ]]; }; then
+  echo 'Usage: sbatch slurm/softrole_graded_pilot.sbatch [--dry-run]' >&2; exit 2
+fi
 cd "${SLURM_SUBMIT_DIR:?Submit from the repository root}"
 index=${SLURM_ARRAY_TASK_ID:?Array index required}
 [[ $index =~ ^[01]$ ]] || { echo 'Expected index 0 or 1' >&2; exit 2; }
@@ -24,5 +27,9 @@ export SOFTROLE_GRADED_PILOT_MANIFEST="${SOFTROLE_GRADED_PILOT_MANIFEST:-runs/gr
 }
 module load anaconda/anaconda-2024.10
 export HETNET_PYTHON="${HETNET_PYTHON:-$PWD/.venv/bin/python}"
+run_root=${SOFTROLE_GRADED_PILOT_RUN_ROOT:-runs/graded_sensing_pilot_20261024/training}
+export PYTHONPATH="$PWD:$PWD/envs${PYTHONPATH:+:$PYTHONPATH}"
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
-exec srun --cpu-bind=cores bash scripts/softrole_graded_pilot.sh "$index" "$@"
+export PYTHONUNBUFFERED=1 DGLBACKEND=pytorch
+exec srun --cpu-bind=cores "$HETNET_PYTHON" -u -m softrole.graded_pilot launch \
+  --manifest "$SOFTROLE_GRADED_PILOT_MANIFEST" --index "$index" --run-root "$run_root" "$@"

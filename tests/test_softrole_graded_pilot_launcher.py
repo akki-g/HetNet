@@ -1,8 +1,7 @@
-"""The exploratory pilot shell route cannot override its locked experiment."""
+"""Slurm-only pilot preparation and launch, without a scheduler or training."""
 import json
 import os
 from pathlib import Path
-import shutil
 import subprocess
 import sys
 
@@ -10,165 +9,204 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-LAUNCHER = ROOT / "scripts/softrole_graded_pilot.sh"
 SLURM = ROOT / "slurm/softrole_graded_pilot.sbatch"
+PREPARE = ROOT / "slurm/softrole_graded_pilot_prepare.sbatch"
 THREADS = ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS")
+DEFAULT_MANIFEST = "runs/graded_sensing_pilot_20261024/manifest.json"
+DEFAULT_RUN_ROOT = "runs/graded_sensing_pilot_20261024/training"
 
 
 def capture_python(path):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
         f"#!{sys.executable}\n"
-        "import json, os, sys\n"
+        "import json, os, pathlib, sys\n"
         f"names = {(*THREADS, 'PYTHONPATH', 'PYTHONUNBUFFERED', 'DGLBACKEND')!r}\n"
-        "print(json.dumps({'args': sys.argv[1:], 'cwd': os.getcwd(), "
-        "'environment': {name: os.environ.get(name) for name in names}}))\n"
+        "args = sys.argv[1:]\n"
+        "with open(os.environ['PYTHON_CAPTURE'], 'a') as stream:\n"
+        "    stream.write(json.dumps({'args': args, 'cwd': os.getcwd(), 'python': sys.argv[0], "
+        "'environment': {name: os.environ.get(name) for name in names}}) + '\\n')\n"
+        "assert args[:3] == ['-u', '-m', 'softrole.graded_pilot']\n"
+        "operation = args[3]\n"
+        "key = operation if operation == 'prepare' else 'launch:' + args[args.index('--index') + 1]\n"
+        "if os.environ.get('MOCK_FAIL') == key: sys.exit(17)\n"
+        "if operation == 'prepare':\n"
+        "    output = pathlib.Path(args[args.index('--output') + 1])\n"
+        "    output.parent.mkdir(parents=True, exist_ok=True)\n"
+        "    with output.open('x') as stream: stream.write('{\"mock_manifest\": true}\\n')\n"
+        "else:\n"
+        "    assert pathlib.Path(args[args.index('--manifest') + 1]).is_file()\n"
     )
     path.chmod(0o755)
     return path
 
 
-def environment(tmp_path, *, manifest=True, python=True):
-    env = dict(os.environ)
-    for name in ("SOFTROLE_GRADED_PILOT_MANIFEST", "SOFTROLE_GRADED_PILOT_RUN_ROOT", "HETNET_PYTHON"):
-        env.pop(name, None)
-    env.update({name: "32" for name in THREADS})
-    env.update(PYTHONPATH="inherited-path", PYTHONUNBUFFERED="0", DGLBACKEND="other")
-    if manifest:
-        file = tmp_path / "locked manifest.json"
-        file.write_text("{}\n")
-        env["SOFTROLE_GRADED_PILOT_MANIFEST"] = str(file)
-    if python:
-        env["HETNET_PYTHON"] = str(capture_python(tmp_path / "capture python"))
-    return env
-
-
-def run_shell(script, args, tmp_path, env):
-    return subprocess.run(["bash", str(script), *args], cwd=tmp_path, env=env,
-                          text=True, capture_output=True)
-
-
-def assert_execution(result, root, manifest, index, run_root, options):
-    assert result.returncode == 0, result.stderr
-    captured = json.loads(result.stdout)
-    assert captured["args"] == ["-u", "-m", "softrole.graded_pilot", "launch",
-                                 "--manifest", str(manifest), "--index", str(index),
-                                 "--run-root", str(run_root), *options]
-    assert captured["cwd"] == str(root)
-    assert all(captured["environment"][name] == "1" for name in THREADS)
-    assert captured["environment"]["PYTHONPATH"] == f"{root}:{root}/envs:inherited-path"
-    assert captured["environment"]["PYTHONUNBUFFERED"] == "1"
-    assert captured["environment"]["DGLBACKEND"] == "pytorch"
-
-
-@pytest.mark.parametrize("index", [0, 1])
-@pytest.mark.parametrize("options", [[], ["--dry-run"]])
-def test_direct_shell_routes_only_manifest_index_and_optional_preview(tmp_path, index, options):
-    env = environment(tmp_path)
-    env["SOFTROLE_GRADED_PILOT_RUN_ROOT"] = str(tmp_path / "fresh pilot runs")
-    # The manifest path is resolved relative to the caller before cd.
-    env["SOFTROLE_GRADED_PILOT_MANIFEST"] = "locked manifest.json"
-    result = run_shell(LAUNCHER, [str(index), *options], tmp_path, env)
-    assert_execution(result, ROOT, tmp_path / "locked manifest.json", index,
-                     tmp_path / "fresh pilot runs", options)
-    assert not (tmp_path / "fresh pilot runs").exists()
-
-
-def test_direct_shell_uses_default_output_root(tmp_path):
-    env = environment(tmp_path)
-    result = run_shell(LAUNCHER, ["0", "--dry-run"], tmp_path, env)
-    assert_execution(result, ROOT, tmp_path / "locked manifest.json", 0,
-                     "runs/graded_sensing_pilot_20261024/training", ["--dry-run"])
-
-
-@pytest.mark.parametrize("args", [
-    [], ["2"], ["-1"], ["00"], ["01"], ["x"],
-    ["0", "--dry"], ["0", "--dry-run=true"], ["0", "--resume", "checkpoint.pt"],
-    ["0", "--total-steps", "1"], ["0", "--epochs", "1"], ["0", "--nprocesses", "1"],
-    ["0", "--max-steps", "4"], ["0", "--seed", "1"], ["0", "--descriptor", "type"],
-    ["0", "--manifest", "other.json"], ["0", "--run-root", "other"],
-    ["0", "--sensing-a", "2"], ["0", "--held-out-sensing-p", "2"],
-    ["0", "--episode-log", "stdout"],
-])
-def test_direct_shell_rejects_invalid_indices_and_all_configuration_overrides(tmp_path, args):
-    result = run_shell(LAUNCHER, args, tmp_path, environment(tmp_path))
-    assert result.returncode == 2 and not result.stdout
-
-
-@pytest.mark.parametrize("missing", ["unset", "absent-file"])
-def test_direct_shell_requires_an_existing_manifest(tmp_path, missing):
-    env = environment(tmp_path, manifest=False)
-    if missing == "absent-file":
-        env["SOFTROLE_GRADED_PILOT_MANIFEST"] = str(tmp_path / "missing.json")
-    result = run_shell(LAUNCHER, ["0", "--dry-run"], tmp_path, env)
-    assert result.returncode == 2 and not result.stdout
-    assert ("SOFTROLE_GRADED_PILOT_MANIFEST" if missing == "unset" else "not found") in result.stderr
-
-
-def fake_checkout(tmp_path):
+def setup_environment(tmp_path, *, index="0", existing=False, defaults=False):
     root = tmp_path / "checkout"
-    (root / "scripts").mkdir(parents=True)
-    shutil.copyfile(LAUNCHER, root / "scripts" / LAUNCHER.name)
-    capture_python(root / ".venv/bin/python")
-    return root
-
-
-def slurm_environment(tmp_path, index, *, defaults=False):
-    root = fake_checkout(tmp_path)
-    env = environment(tmp_path, manifest=not defaults, python=not defaults)
-    if defaults:
-        manifest = root / "runs/graded_sensing_pilot_20261024/manifest.json"
-        manifest.parent.mkdir(parents=True)
-        manifest.write_text("{}\n")
+    root.mkdir()
     tools = tmp_path / "mock-tools"
     tools.mkdir()
     for name, code in {
         "module": '#!/bin/bash\nprintf "%s\\n" "$*" > "$MODULE_CAPTURE"\n',
         "srun": '#!/bin/bash\n[[ $1 == --cpu-bind=cores ]] || exit 3\nshift\nexec "$@"\n',
     }.items():
-        path = tools / name
-        path.write_text(code)
-        path.chmod(0o755)
-    env.update(PATH=f"{tools}:{env['PATH']}", MODULE_CAPTURE=str(tmp_path / "module.txt"),
-               SLURM_SUBMIT_DIR=str(root), SLURM_ARRAY_TASK_ID=str(index), SLURM_ARRAY_JOB_ID="4242")
-    return root, env
+        file = tools / name
+        file.write_text(code)
+        file.chmod(0o755)
+    env = dict(os.environ)
+    for name in ("SOFTROLE_GRADED_PILOT_MANIFEST", "SOFTROLE_GRADED_PILOT_RUN_ROOT", "HETNET_PYTHON", "MOCK_FAIL"):
+        env.pop(name, None)
+    env.update({name: "32" for name in THREADS})
+    env.update(PATH=f"{tools}:{env['PATH']}", PYTHONPATH="inherited-path", PYTHONUNBUFFERED="0", DGLBACKEND="other",
+               MODULE_CAPTURE=str(tmp_path / "module.txt"), PYTHON_CAPTURE=str(tmp_path / "python.jsonl"),
+               SLURM_SUBMIT_DIR=str(root), SLURM_ARRAY_TASK_ID=index, SLURM_ARRAY_JOB_ID="4242")
+    if defaults:
+        capture_python(root / ".venv/bin/python")
+        manifest, run_root = root / DEFAULT_MANIFEST, root / DEFAULT_RUN_ROOT
+    else:
+        env["HETNET_PYTHON"] = str(capture_python(tmp_path / "capture python"))
+        manifest, run_root = tmp_path / "locked manifest.json", tmp_path / "training runs"
+        env.update(SOFTROLE_GRADED_PILOT_MANIFEST=str(manifest), SOFTROLE_GRADED_PILOT_RUN_ROOT=str(run_root))
+    if existing:
+        manifest.parent.mkdir(parents=True, exist_ok=True)
+        manifest.write_text('{"existing": "preserve these bytes"}\n')
+    return root, manifest, run_root, env
+
+
+def run_slurm(script, arguments, tmp_path, env):
+    return subprocess.run(["bash", str(script), *arguments], cwd=tmp_path, env=env,
+                          text=True, capture_output=True)
+
+
+def calls(env):
+    path = Path(env["PYTHON_CAPTURE"])
+    return [json.loads(line) for line in path.read_text().splitlines()] if path.exists() else []
+
+
+def assert_environment(call, root):
+    assert call["cwd"] == str(root)
+    assert all(call["environment"][name] == "1" for name in THREADS)
+    assert call["environment"]["PYTHONPATH"] == f"{root}:{root}/envs:inherited-path"
+    assert call["environment"]["PYTHONUNBUFFERED"] == "1"
+    assert call["environment"]["DGLBACKEND"] == "pytorch"
+
+
+def launch_args(manifest, index, run_root, *, dry_run=False):
+    result = ["-u", "-m", "softrole.graded_pilot", "launch", "--manifest", str(manifest),
+              "--index", str(index), "--run-root", str(run_root)]
+    return result + (["--dry-run"] if dry_run else [])
 
 
 @pytest.mark.parametrize("index", [0, 1])
-def test_mocked_slurm_preserves_mapping_binding_and_thread_limits(tmp_path, index):
-    root, env = slurm_environment(tmp_path, index)
-    env["SOFTROLE_GRADED_PILOT_RUN_ROOT"] = str(tmp_path / "cluster runs")
-    result = run_shell(SLURM, ["--dry-run"], tmp_path, env)
-    assert_execution(result, root, tmp_path / "locked manifest.json", index,
-                     tmp_path / "cluster runs", ["--dry-run"])
-    assert (tmp_path / "module.txt").read_text() == "load anaconda/anaconda-2024.10\n"
-
-
-def test_mocked_slurm_defaults_manifest_python_and_output_paths(tmp_path):
-    root, env = slurm_environment(tmp_path, 1, defaults=True)
-    result = run_shell(SLURM, [], tmp_path, env)
-    assert_execution(result, root, root / "runs/graded_sensing_pilot_20261024/manifest.json", 1,
-                     "runs/graded_sensing_pilot_20261024/training", [])
-
-
-@pytest.mark.parametrize("index", ["2", "-1", "01", "x"])
-def test_mocked_slurm_rejects_indices_outside_its_two_arms(tmp_path, index):
-    _, env = slurm_environment(tmp_path, index)
-    result = run_shell(SLURM, ["--dry-run"], tmp_path, env)
-    assert result.returncode == 2 and not result.stdout
-    assert not (tmp_path / "module.txt").exists()
-
-
-def test_mocked_slurm_refuses_runtime_override_before_invoking_python(tmp_path):
-    _, env = slurm_environment(tmp_path, 0)
-    result = run_shell(SLURM, ["--total-steps", "40"], tmp_path, env)
-    assert result.returncode == 2 and not result.stdout
-
-
-def test_shell_syntax_and_declared_stokes_resources():
-    result = subprocess.run(["bash", "-n", str(LAUNCHER), str(SLURM)], capture_output=True)
+@pytest.mark.parametrize("dry_run", [False, True])
+def test_training_slurm_invokes_python_directly_with_locked_index(tmp_path, index, dry_run):
+    root, manifest, run_root, env = setup_environment(tmp_path, index=str(index), existing=True)
+    result = run_slurm(SLURM, ["--dry-run"] if dry_run else [], tmp_path, env)
     assert result.returncode == 0, result.stderr
-    script = SLURM.read_text()
-    for setting in ("--account=cenyioha", "--partition=normal", "--constraint=sapphirerapids",
-                    "--cpus-per-task=4", "--mem=16G", "--time=06:00:00", "--array=0-1%2"):
-        assert f"#SBATCH {setting}\n" in script
+    observed = calls(env)
+    assert len(observed) == 1
+    assert observed[0]["args"] == launch_args(manifest, index, run_root, dry_run=dry_run)
+    assert_environment(observed[0], root)
+    assert Path(env["MODULE_CAPTURE"]).read_text() == "load anaconda/anaconda-2024.10\n"
+    assert not run_root.exists()
+
+
+def test_training_slurm_default_paths_and_interpreter(tmp_path):
+    root, manifest, run_root, env = setup_environment(tmp_path, existing=True, defaults=True)
+    result = run_slurm(SLURM, ["--dry-run"], tmp_path, env)
+    assert result.returncode == 0, result.stderr
+    observed = calls(env)[0]
+    assert observed["args"] == launch_args(DEFAULT_MANIFEST, 0, DEFAULT_RUN_ROOT, dry_run=True)
+    assert observed["python"] == str(root / ".venv/bin/python")
+    assert_environment(observed, root)
+
+
+@pytest.mark.parametrize("index", ["2", "-1", "00", "01", "x"])
+def test_training_slurm_rejects_invalid_array_indices_before_execution(tmp_path, index):
+    _, _, _, env = setup_environment(tmp_path, index=index, existing=True)
+    result = run_slurm(SLURM, [], tmp_path, env)
+    assert result.returncode == 2 and not calls(env)
+    assert not Path(env["MODULE_CAPTURE"]).exists()
+
+
+@pytest.mark.parametrize("args", [
+    ["--dry"], ["--dry-run=true"], ["--dry-run", "--dry-run"], ["--resume", "checkpoint.pt"],
+    ["--total-steps", "1"], ["--epochs", "1"], ["--nprocesses", "1"], ["--max-steps", "4"],
+    ["--seed", "1"], ["--descriptor", "type"], ["--manifest", "other.json"],
+    ["--run-root", "other"], ["--sensing-a", "2"], ["--episode-log", "stdout"],
+])
+def test_training_slurm_rejects_all_config_and_runtime_overrides_before_execution(tmp_path, args):
+    _, _, _, env = setup_environment(tmp_path, existing=True)
+    result = run_slurm(SLURM, args, tmp_path, env)
+    assert result.returncode == 2 and not calls(env)
+    assert not Path(env["MODULE_CAPTURE"]).exists()
+
+
+def test_training_slurm_requires_prepared_manifest(tmp_path):
+    _, _, _, env = setup_environment(tmp_path)
+    result = run_slurm(SLURM, ["--dry-run"], tmp_path, env)
+    assert result.returncode == 2 and "not found" in result.stderr and not calls(env)
+
+
+@pytest.mark.parametrize("defaults", [False, True])
+def test_preparation_creates_manifest_then_previews_both_arms_without_training(tmp_path, defaults):
+    root, manifest, run_root, env = setup_environment(tmp_path, defaults=defaults)
+    result = run_slurm(PREPARE, [], tmp_path, env)
+    assert result.returncode == 0, result.stderr
+    manifest_arg = DEFAULT_MANIFEST if defaults else manifest
+    root_arg = DEFAULT_RUN_ROOT if defaults else run_root
+    expected = [["-u", "-m", "softrole.graded_pilot", "prepare", "--output", str(manifest_arg)],
+                launch_args(manifest_arg, 0, root_arg, dry_run=True),
+                launch_args(manifest_arg, 1, root_arg, dry_run=True)]
+    observed = calls(env)
+    assert [call["args"] for call in observed] == expected
+    for call in observed:
+        assert_environment(call, root)
+    assert manifest.is_file() and not run_root.exists()
+
+
+def test_existing_manifest_is_validated_by_both_previews_and_never_rewritten(tmp_path):
+    _, manifest, run_root, env = setup_environment(tmp_path, existing=True)
+    before = manifest.read_bytes()
+    result = run_slurm(PREPARE, [], tmp_path, env)
+    assert result.returncode == 0, result.stderr
+    assert [call["args"] for call in calls(env)] == [launch_args(manifest, i, run_root, dry_run=True) for i in (0, 1)]
+    assert manifest.read_bytes() == before and not run_root.exists()
+
+
+@pytest.mark.parametrize("failure, expected_count", [("prepare", 1), ("launch:0", 2), ("launch:1", 3)])
+def test_preparation_stops_on_first_failed_step(tmp_path, failure, expected_count):
+    _, _, run_root, env = setup_environment(tmp_path)
+    env["MOCK_FAIL"] = failure
+    result = run_slurm(PREPARE, [], tmp_path, env)
+    assert result.returncode == 17 and len(calls(env)) == expected_count
+    assert not run_root.exists()
+
+
+def test_existing_invalid_manifest_fails_validation_without_regeneration(tmp_path):
+    _, manifest, run_root, env = setup_environment(tmp_path, existing=True)
+    before = manifest.read_bytes()
+    env["MOCK_FAIL"] = "launch:0"
+    result = run_slurm(PREPARE, [], tmp_path, env)
+    assert result.returncode == 17
+    assert [call["args"] for call in calls(env)] == [launch_args(manifest, 0, run_root, dry_run=True)]
+    assert manifest.read_bytes() == before and not run_root.exists()
+
+
+@pytest.mark.parametrize("args", [["--dry-run"], ["--output", "other.json"], ["--total-steps", "1"]])
+def test_preparation_rejects_arguments_before_execution(tmp_path, args):
+    _, _, _, env = setup_environment(tmp_path)
+    result = run_slurm(PREPARE, args, tmp_path, env)
+    assert result.returncode == 2 and not calls(env)
+    assert not Path(env["MODULE_CAPTURE"]).exists()
+
+
+def test_slurm_shell_syntax_and_declared_resources():
+    result = subprocess.run(["bash", "-n", str(SLURM), str(PREPARE)], capture_output=True)
+    assert result.returncode == 0, result.stderr
+    for path, extra in ((SLURM, ("--cpus-per-task=4", "--mem=16G", "--time=06:00:00", "--array=0-1%2")),
+                        (PREPARE, ("--cpus-per-task=1", "--mem=2G", "--time=00:10:00"))):
+        text = path.read_text()
+        for setting in ("--account=cenyioha", "--partition=normal", "--constraint=sapphirerapids", *extra):
+            assert f"#SBATCH {setting}\n" in text
+        assert "scripts/softrole_graded_pilot.sh" not in text
