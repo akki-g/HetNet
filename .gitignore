@@ -42,3 +42,6 @@ __pycache__/
 !/envs/LICENSE.md
 !/publication_reconstruction/runtime/envs/LICENSE.md
 !/publication_reconstruction/runtime/envs/README.md
+
+# Keep the graded pilot's deployment instructions beside its launcher.
+!/softrole/GRADED_PILOT.md
