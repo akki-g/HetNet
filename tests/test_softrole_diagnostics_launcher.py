@@ -8,6 +8,8 @@ import sys
 import pytest
 
 
+from stokes_test_support import configure_stokes_run
+
 ROOT = Path(__file__).resolve().parents[1]
 LAUNCHER = ROOT / "scripts/softrole_diagnostics.sh"
 SLURM = ROOT / "slurm/softrole_diagnostics.sbatch"
@@ -44,7 +46,7 @@ def test_exact_arguments_thread_limits_and_noncreating_dry_run(tmp_path, setup):
     captured = json.loads(result.stdout)
     assert captured["argv"] == ["-u", "-m", "softrole.diagnostics", *args]
     assert captured["cwd"] == str(tmp_path)
-    assert captured["env"]["PYTHONPATH"].split(":")[:2] == [str(ROOT), str(ROOT / "envs")]
+    assert captured["env"]["PYTHONPATH"].split(":")[:2] == [str(ROOT / "src"), str(ROOT / "src/envs")]
     for key in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
         assert captured["env"][key] == "1"
     assert captured["env"]["DGLBACKEND"] == "pytorch"
@@ -116,9 +118,9 @@ def slurm_env(tmp_path, setup):
         path = tmp_path / name
         path.write_text(content)
         path.chmod(0o755)
-    return dict(env, PATH=f"{tmp_path}:{env['PATH']}", SLURM_SUBMIT_DIR=str(ROOT),
+    return configure_stokes_run(dict(env, PATH=f"{tmp_path}:{env['PATH']}", SLURM_SUBMIT_DIR=str(ROOT),
                 SLURM_ARRAY_JOB_ID="12345", CAPCOM_DIAGNOSTICS_MANIFEST=str(manifest),
-                CAPCOM_DIAGNOSTICS_OUTPUT_ROOT=str(output))
+                CAPCOM_DIAGNOSTICS_OUTPUT_ROOT=str(output)), tmp_path)
 
 
 @pytest.mark.parametrize("index", [0, 1, 12])
@@ -137,8 +139,8 @@ def test_slurm_default_is_job_specific(tmp_path, setup):
     env.pop("CAPCOM_DIAGNOSTICS_OUTPUT_ROOT")
     result = subprocess.run(["bash", str(SLURM), "--dry-run"], env=env, text=True, capture_output=True)
     assert result.returncode == 0, result.stderr
-    assert json.loads(result.stdout)["argv"][-2] == "runs/capcom_diagnostics_12345/task_0"
-    assert not (ROOT / "runs/capcom_diagnostics_12345").exists()
+    assert json.loads(result.stdout)["argv"][-2] == str(Path(env["HETNET_RUN_DIR"]) / "diagnostics/task_0")
+    assert not (Path(env["HETNET_RUN_DIR"]) / "diagnostics").exists()
 
 
 @pytest.mark.parametrize("extra", [["--index", "1"], ["--output", "elsewhere"], ["--dry-run", "--dry-run"]])

@@ -154,7 +154,7 @@ def test_real_pilot_archives_panel_and_source_replays_and_refuses_overwrite(tmp_
     assert len(scenarios) == 2
     assert all((row["num_p"], row["num_a"]) == (2, 1)
                and 10 <= row["event_step"] <= 30 and row["victim"] in (0, 1) for row in scenarios)
-    assert "softrole/pilot.py" in source["files"]
+    assert "src/softrole/pilot.py" in source["files"]
     for name, digest in source["files"].items():
         assert hashlib.sha256((output / "source" / name).read_bytes()).hexdigest() == digest
     reports = {}

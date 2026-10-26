@@ -11,7 +11,7 @@ import socket
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKAGE = ROOT / "publication_reconstruction"
+PACKAGE = ROOT / "src/publication_reconstruction"
 
 
 def sha(data):
@@ -39,9 +39,16 @@ def refresh(output):
         files[name] = row
         repo_path = path.relative_to(ROOT).as_posix()
         original = subprocess.run(["git", "show", f"{head}:{repo_path}"], cwd=ROOT,
-                                  capture_output=True).stdout
-        patches.extend(difflib.unified_diff(original.decode().splitlines(True), payload.decode().splitlines(True),
-                                           fromfile=f"{head}/{repo_path}", tofile=f"working/{repo_path}"))
+                                  capture_output=True)
+        # Before the layout migration, the same frozen runtime lived at the
+        # repository root. Compare against those bytes, not an empty new file.
+        base_path = repo_path
+        if original.returncode and repo_path.startswith("src/"):
+            base_path = repo_path.removeprefix("src/")
+            original = subprocess.run(["git", "show", f"{head}:{base_path}"], cwd=ROOT,
+                                      capture_output=True)
+        patches.extend(difflib.unified_diff(original.stdout.decode().splitlines(True), payload.decode().splitlines(True),
+                                           fromfile=f"{head}/{base_path}", tofile=f"working/{repo_path}"))
     removed = sorted(set(old_files) - set(files))
     if removed:
         raise ValueError(f"Refusing silent removal of runtime provenance: {removed}")
@@ -72,7 +79,7 @@ def main():
     if args.check:
         import sys
         sys.dont_write_bytecode = True
-        sys.path.insert(0, str(ROOT))
+        sys.path[:0] = [str(ROOT / "src"), str(ROOT / "src/envs")]
         from publication_reconstruction.__main__ import inspect_source_origins
         _, _, audit = inspect_source_origins()
         head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True)

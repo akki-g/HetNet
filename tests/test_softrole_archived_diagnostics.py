@@ -86,8 +86,8 @@ def test_current_d4_keeps_old_team_objective_and_has_no_learned_critic_variant()
     assert all(parameter.grad is None for parameter in model.parameters())
 
 
-ARCHIVE_CHECKPOINT = (Path(__file__).resolve().parents[1] / 'stokes_runs' /
-                      'softrole_adam_pcp_911488' / 'pcp_shared' / 'seed0' /
+ARCHIVE_CHECKPOINT = (Path(__file__).resolve().parents[1] / 'old_logs' /
+                      'softrole_adam' / 'pcp_shared_lr0.0001' / 'seed0' /
                       'checkpoints' / 'epoch1000.pt')
 
 

@@ -18,7 +18,7 @@ import sys
 import traceback
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 
 import numpy as np
 import torch
@@ -36,9 +36,9 @@ from multi_processing import MultiProcessTrainer
 from trainer import Trainer
 from shared_gradient_probe import model_signature, timeout_handler
 
-SOURCES = ["multi_processing.py", "trainer.py", "hetgat/policy.py", "hetgat/uavnet.py",
-           "hetgat/graph/fastreal.py", "hetgat/utils.py", "data.py", "env_wrappers.py",
-           "envs/ic3net_envs/predator_capture_env.py", "uv.lock",
+SOURCES = ["src/multi_processing.py", "src/trainer.py", "src/hetgat/policy.py", "src/hetgat/uavnet.py",
+           "src/hetgat/graph/fastreal.py", "src/hetgat/utils.py", "src/data.py", "src/env_wrappers.py",
+           "src/envs/ic3net_envs/predator_capture_env.py", "uv.lock",
            "tests/helpers/hetnet_gradient_probe.py", "tests/helpers/shared_gradient_probe.py"]
 
 
@@ -50,7 +50,7 @@ def make_args(seed, batch_size, horizon, num_p, num_a):
     parser = argparse.ArgumentParser()
     # Read only top-level parser.add_argument expressions, retaining current
     # upstream defaults without importing the side-effectful main module.
-    tree = ast.parse((ROOT / "main.py").read_text())
+    tree = ast.parse((ROOT / "src/main.py").read_text())
     for node in tree.body:
         if (isinstance(node, ast.Expr) and isinstance(node.value, ast.Call)
                 and isinstance(node.value.func, ast.Attribute)

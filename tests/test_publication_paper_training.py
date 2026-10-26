@@ -12,7 +12,7 @@ import torch
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNTIME = ROOT / "publication_reconstruction/runtime"
+RUNTIME = ROOT / "src/publication_reconstruction/runtime"
 
 
 def same(left, right):

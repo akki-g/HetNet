@@ -5,6 +5,8 @@ from pathlib import Path
 import shlex
 import subprocess
 
+from stokes_test_support import configure_stokes_run
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -20,6 +22,7 @@ def test_slurm_array_covers_each_author_readme_recipe_and_seed_once(tmp_path):
     env = {**os.environ, 'PATH': str(tools) + os.pathsep + os.environ['PATH'],
            'SLURM_SUBMIT_DIR': str(ROOT), 'HETNET_RUN_ROOT': str(tmp_path / 'runs'),
            'HETNET_PYTHON': str(tmp_path / 'custom environment/bin/python')}
+    env = configure_stokes_run(env, tmp_path)
     seen = Counter()
     for index in range(9):
         env['SLURM_ARRAY_TASK_ID'] = str(index)
@@ -66,6 +69,7 @@ def test_missing_environment_explains_setup_without_creating_run(tmp_path):
                             cwd=ROOT, env=env, text=True, capture_output=True)
     assert result.returncode == 2
     assert env['HETNET_PYTHON'] in result.stderr
-    assert 'sbatch slurm/setup.sbatch' in result.stderr
+    assert 'scripts/submit_stokes.py --title' in result.stderr
+    assert '--purpose' in result.stderr and '-- slurm/setup.sbatch' in result.stderr
     assert 'bash scripts/setup_env.sh' in result.stderr
     assert not (tmp_path / 'runs').exists()

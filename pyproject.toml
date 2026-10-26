@@ -26,14 +26,29 @@ dependencies = [
 dev = ["pytest==8.3.5"]
 
 [tool.uv.sources]
-ic3net-envs = { path = "envs", editable = true }
+ic3net-envs = { path = "src/envs", editable = true }
 
 [tool.uv]
 build-constraint-dependencies = ["setuptools==75.8.0"]
 
+[tool.setuptools]
+package-dir = { "" = "src" }
+py-modules = [
+    "WildFire_Simulate_Original", "action_utils", "comm", "data", "env_wrappers",
+    "eval_trainer", "main", "models", "multi_processing", "print_plot_eval",
+    "trainer", "utils",
+]
+
 [tool.setuptools.packages.find]
-include = ["hetnet_ext*", "softrole*"]
+where = ["src"]
+include = ["hetgat*", "hetnet_ext*", "softrole*", "publication_reconstruction*"]
+
+[tool.setuptools.package-data]
+publication_reconstruction = [
+    "ORIGINS.json", "STUDY.json", "runtime/LICENSE", "runtime/envs/LICENSE.md",
+    "runtime/envs/README.md", "runtime/envs/.gitignore",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["."]
+pythonpath = ["src", "src/envs", "."]

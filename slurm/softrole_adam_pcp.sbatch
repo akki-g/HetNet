@@ -1,4 +1,5 @@
 #!/bin/bash -l
+# Submit with: python scripts/submit_stokes.py --title SLUG --purpose TEXT -- slurm/softrole_adam_pcp.sbatch
 # Three fresh shared PCP seeds; compare with archived RMSprop history.
 #SBATCH --job-name=softrole-adam-pcp
 #SBATCH --account=cenyioha
@@ -9,9 +10,9 @@
 #SBATCH --mem=16G
 #SBATCH --time=2-00:00:00
 #SBATCH --array=0-2%3
-#SBATCH --output=logs_sr/softrole-adam-pcp-%A_%a.out
-#SBATCH --error=logs_sr/softrole-adam-pcp-%A_%a.err
 set -euo pipefail
+source "${SLURM_SUBMIT_DIR:?Submit from repository root}/scripts/stokes_run.sh"
+export SOFTROLE_ADAM_PCP_RUN_ROOT="${SOFTROLE_ADAM_PCP_RUN_ROOT:-$HETNET_RUN_DIR/training}"
 if (( $# )) && [[ "$*" != "--dry-run" ]]; then
   echo 'Only optional --dry-run is accepted; scientific settings are fixed.' >&2
   exit 2

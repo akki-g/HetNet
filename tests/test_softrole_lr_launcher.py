@@ -8,6 +8,8 @@ import sys
 import pytest
 
 
+from stokes_test_support import configure_stokes_run
+
 ROOT = Path(__file__).resolve().parents[1]
 LAUNCHER = ROOT / "scripts/softrole_lr_pcp.sh"
 SLURM = ROOT / "slurm/softrole_lr_pcp.sbatch"
@@ -59,9 +61,9 @@ def test_slurm_mapping_without_scheduler(tmp_path, index):
         path.write_text(content)
         path.chmod(0o755)
     result = subprocess.run(["bash", str(SLURM), "--dry-run"], text=True, capture_output=True,
-        env=dict(os.environ, PATH=f"{tmp_path}:{os.environ['PATH']}", HETNET_PYTHON=sys.executable,
+        env=configure_stokes_run(dict(os.environ, PATH=f"{tmp_path}:{os.environ['PATH']}", HETNET_PYTHON=sys.executable,
                  SLURM_SUBMIT_DIR=str(ROOT), SLURM_ARRAY_JOB_ID="12345", SLURM_ARRAY_TASK_ID=str(index),
-                 SOFTROLE_LR_PCP_RUN_ROOT=str(tmp_path / "runs")))
+                 SOFTROLE_LR_PCP_RUN_ROOT=str(tmp_path / "runs")), tmp_path))
     assert result.returncode == 0, result.stderr
     config = json.loads(result.stdout)
     assert config["seed"] == index % 3 and config["lr"] == (.0003 if index < 3 else .001)

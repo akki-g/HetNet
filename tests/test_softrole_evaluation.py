@@ -185,7 +185,7 @@ def test_checkpoint_evaluation_replays_and_never_overwrites(tmp_path):
     assert first == second
     assert first["evaluation_version"] == 2
     assert first["source_sha256"] is None  # Do not invent missing training identity.
-    assert first["evaluator"]["source"]["files"]["softrole/evaluate.py"]
+    assert first["evaluator"]["source"]["files"]["src/softrole/evaluate.py"]
     assert first["evaluator"]["runtime"]["packages"]["torch"] == torch.__version__
     assert first["evaluator"]["runtime"]["torch_threads"] == 1
     assert first["model_signature"] == model_signature(model)

@@ -9,7 +9,7 @@ from softrole.diagnostic_archive import archived_adam_runtime, ARCHIVED_SOURCE_S
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CHECKPOINT = ROOT / 'stokes_runs/softrole_adam_pcp_911488/pcp_shared/seed0/checkpoints/epoch0050.pt'
+CHECKPOINT = ROOT / 'old_logs/softrole_adam/pcp_shared_lr0.0001/seed0/checkpoints/epoch0050.pt'
 
 
 def private_modules():

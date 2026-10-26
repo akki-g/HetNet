@@ -3,8 +3,12 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import shutil
+import sys
 
 import pytest
+
+from stokes_test_support import configure_stokes_run
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts/softrole_pcp_recovery.sh"
@@ -18,12 +22,21 @@ def mock_executable(path, source):
 
 
 @pytest.fixture
-def shell_env(tmp_path):
+def shell_env(tmp_path, monkeypatch):
+    checkout = tmp_path / "checkout"
+    (checkout / "scripts").mkdir(parents=True)
+    (checkout / "slurm").mkdir()
+    (checkout / "runs").mkdir()
+    for original in (SCRIPT, WRAPPER, ROOT / "scripts/submit_stokes.py"):
+        shutil.copyfile(original, checkout / original.relative_to(ROOT))
+    monkeypatch.setattr(sys.modules[__name__], "SCRIPT", checkout / "scripts/softrole_pcp_recovery.sh")
+    monkeypatch.setattr(sys.modules[__name__], "WRAPPER", checkout / "slurm/softrole_pcp_recovery.sbatch")
     binaries = tmp_path / "bin"
     binaries.mkdir()
     log = tmp_path / "calls.jsonl"
     recorder = "import json, os, pathlib, sys\nwith open(os.environ['CALL_LOG'], 'a') as f: f.write(json.dumps({'tool': pathlib.Path(sys.argv[0]).name, 'args': sys.argv[1:], 'bash_env': os.environ.get('BASH_ENV'), 'conda': os.environ.get('CONDA_SHLVL'), 'threads': {key: os.environ.get(key) for key in ('OPENBLAS_NUM_THREADS', 'OMP_NUM_THREADS', 'MKL_NUM_THREADS', 'NUMEXPR_NUM_THREADS')}})+'\\n')\n"
-    python = mock_executable(binaries / "pinned-python", recorder + "if 'prepare' in sys.argv:\n p=pathlib.Path(sys.argv[sys.argv.index('--output')+1]); p.mkdir(); (p/'manifest.json').write_text('{}')\n")
+    python = mock_executable(binaries / "pinned-python",
+        "import os, pathlib, sys\nif len(sys.argv)>1 and pathlib.Path(sys.argv[1]).name == 'submit_stokes.py':\n os.execv(sys.executable, [sys.executable, *sys.argv[1:]])\n" + recorder + "if 'prepare' in sys.argv:\n p=pathlib.Path(sys.argv[sys.argv.index('--output')+1]); p.mkdir(); (p/'manifest.json').write_text('{}')\n")
     mock_executable(binaries / "sbatch", recorder + "print('101;cluster' if 'reconstruct' in sys.argv else '102;cluster')\n")
     mock_executable(binaries / "module", recorder)
     mock_executable(binaries / "srun", recorder)
@@ -31,9 +44,10 @@ def shell_env(tmp_path):
     env = dict({k: v for k, v in os.environ.items() if not k.startswith('BASH_FUNC_')},
                PATH=str(binaries) + os.pathsep + os.environ['PATH'],
                HETNET_PYTHON=str(python), CALL_LOG=str(log),
-               SLURM_SUBMIT_DIR=str(ROOT), SLURM_ARRAY_JOB_ID='101',
+               SLURM_SUBMIT_DIR=str(checkout), SLURM_ARRAY_JOB_ID='101',
                SLURM_ARRAY_TASK_ID='0', CONDA_SHLVL='99', OPENBLAS_NUM_THREADS='32',
                OMP_NUM_THREADS='32', MKL_NUM_THREADS='32', NUMEXPR_NUM_THREADS='32')
+    env = configure_stokes_run(env, checkout / "runs")
     env.pop('BASH_ENV', None)
     env.pop('ENV', None)
     return env, log
@@ -43,9 +57,15 @@ def calls(log):
     return [json.loads(line) for line in log.read_text().splitlines()]
 
 
-def test_two_stage_submission_dependency_and_quoted_paths(tmp_path, shell_env):
+@pytest.mark.parametrize('reuse_parent', [False, True])
+def test_two_stage_submission_dependency_and_quoted_paths(tmp_path, shell_env, reuse_parent):
     env, log = shell_env
-    output = tmp_path / 'new output'
+    output = Path(env['HETNET_RUN_DIR']) / 'new output'
+    expected_container = env['HETNET_RUN_DIR']
+    if not reuse_parent:
+        env.pop('HETNET_RUN_DIR')
+        env.pop('HETNET_RUN_TITLE')
+        expected_container = str(output)
     result = subprocess.run(['bash', str(SCRIPT), 'archive with spaces', str(output)],
                             env=env, cwd=tmp_path, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
@@ -57,16 +77,19 @@ def test_two_stage_submission_dependency_and_quoted_paths(tmp_path, shell_env):
     assert records[1]['args'] == ['-u', '-m', 'softrole.pcp_recovery', 'prepare',
         '--archive-root', str(tmp_path / 'archive with spaces'), '--output', str(output),
         '--additional-steps', '5000000']
-    assert records[2]['args'] == ['--parsable', '--array=0-1%2', str(WRAPPER),
-                                  'reconstruct', str(output / 'manifest.json')]
-    assert records[3]['args'] == ['--parsable', '--dependency=afterok:101', '--array=0-5%6',
-                                  str(WRAPPER), 'run', str(output / 'manifest.json')]
+    assert '--parsable' in records[2]['args'] and '--array=0-1%2' in records[2]['args']
+    assert records[2]['args'][-3:] == [str(WRAPPER), 'reconstruct', str(output / 'manifest.json')]
+    assert '--dependency=afterok:101' in records[3]['args'] and '--array=0-5%6' in records[3]['args']
+    assert records[3]['args'][-3:] == [str(WRAPPER), 'run', str(output / 'manifest.json')]
+    for record in records[2:]:
+        assert record['args'][record['args'].index('--output') + 1].startswith(expected_container + '/logs/')
+    assert (Path(expected_container) / 'run_info.json').is_file()
     assert all(r['bash_env'] is None for r in records[2:])
 
 
 def test_prepare_only_never_submits(tmp_path, shell_env):
     env, log = shell_env
-    result = subprocess.run(['bash', str(SCRIPT), str(tmp_path), str(tmp_path / 'out'),
+    result = subprocess.run(['bash', str(SCRIPT), str(tmp_path), str(Path(env['HETNET_RUN_DIR']) / 'out'),
                              '123', '--prepare-only'], env=env, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     assert [r['tool'] for r in calls(log)] == ['module', 'pinned-python']
@@ -110,7 +133,7 @@ def test_reconstruction_submission_failure_never_submits_recovery(tmp_path, shel
     env, log = shell_env
     mock_executable(Path(env['PATH'].split(os.pathsep)[0]) / 'sbatch',
                     "import sys\nprint('scheduler unavailable', file=sys.stderr)\nsys.exit(1)\n")
-    result = subprocess.run(['bash', str(SCRIPT), str(tmp_path), str(tmp_path / 'out')],
+    result = subprocess.run(['bash', str(SCRIPT), str(tmp_path), str(Path(env['HETNET_RUN_DIR']) / 'out')],
                             env=env, capture_output=True, text=True)
     assert result.returncode != 0
     assert 'Recovery job:' not in result.stdout
@@ -127,7 +150,7 @@ def test_module_failure_aborts_before_python_or_submission(tmp_path, shell_env, 
         manifest.write_text('{}')
         command = ['bash', str(WRAPPER), 'run', str(manifest)]
     else:
-        command = ['bash', str(SCRIPT), str(tmp_path), str(tmp_path / 'out')]
+        command = ['bash', str(SCRIPT), str(tmp_path), str(Path(env['HETNET_RUN_DIR']) / 'out')]
     result = subprocess.run(command, env=env, capture_output=True, text=True)
     assert result.returncode == 7
     assert 'module load failed' in result.stderr

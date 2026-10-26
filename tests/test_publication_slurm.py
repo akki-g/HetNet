@@ -11,6 +11,8 @@ from publication_reconstruction import study
 from publication_reconstruction.__main__ import parser, resolve
 
 
+from stokes_test_support import configure_stokes_run
+
 ROOT = Path(__file__).resolve().parents[1]
 THREADS = ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS")
 SCRIPTS = ("train", "preflight", "resume", "prepare_evaluation", "evaluate")
@@ -61,6 +63,7 @@ def shell(tmp_path):
         "SLURM_SUBMIT_DIR": str(submit), "SLURM_ARRAY_JOB_ID": "4321",
         "HETNET_PYTHON": str(interpreter), "MOCK_CAPTURE": str(capture),
         **dict.fromkeys(THREADS, "64")}
+    environment = configure_stokes_run(environment, tmp_path)
     environment.pop("SLURM_ARRAY_TASK_ID", None)
     def invoke(name, arguments=(), extra=None, remove=()):
         env = {**environment, **(extra or {})}
@@ -206,14 +209,15 @@ def test_batch_files_have_required_directives_and_valid_shell(name):
     # cap, when wanted, is supplied by the submission command.
     assert directives.get("array") == {"train": "0-11", "preflight": "0-3%1"}.get(name)
     for key in ("output", "error"):
-        assert directives[key].startswith("logs_1/") and "%A_%a" in directives[key]
+        assert key not in directives
+    assert "scripts/stokes_run.sh" in content
     assert "sbatch " not in content and "exec srun " in content
 
 
 @pytest.mark.parametrize("condition", ["nominal", "failure", "sham"])
 def test_generated_frozen_array_uses_exact_paths_and_condition_without_policy_execution(shell, tmp_path, condition):
     submit, _, invoke = shell
-    unusual = str(tmp_path / "source ' $(not-executed); with spaces")
+    unusual = str(tmp_path / "titled run" / "source ' $(not-executed); with spaces")
     job = {"run_dir": unusual, "path": unusual + "/model.pt", "scenarios": unusual + "/scenarios.json",
            "protocol": unusual + "/protocol.json", "output": unusual + "/result.json", "condition": condition}
     path = tmp_path / "prepared.sbatch"

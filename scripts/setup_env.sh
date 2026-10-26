@@ -13,7 +13,7 @@ python="$venv/bin/python"
 "$python" -m pip install 'pip==25.0.1' 'setuptools==75.8.0' 'wheel==0.45.1'
 # Match uv.lock's setuptools build constraint for legacy Gym/Visdom sources.
 "$python" -m pip install --no-build-isolation -r requirements.txt
-"$python" -m pip install --no-deps --no-build-isolation -e ./envs
+"$python" -m pip install --no-deps --no-build-isolation -e ./src/envs -e .
 "$python" -m pip check
 export DGLBACKEND=pytorch OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
 "$python" - <<'PY'

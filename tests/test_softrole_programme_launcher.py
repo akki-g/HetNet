@@ -10,6 +10,8 @@ import pytest
 from softrole.programme import entries, prepare
 from test_softrole_programme import synthetic_selection
 
+from stokes_test_support import configure_stokes_run
+
 ROOT = Path(__file__).resolve().parents[1]
 LAUNCHER = ROOT / "scripts/softrole_programme.sh"
 SLURM = ROOT / "slurm/softrole_programme.sbatch"
@@ -86,9 +88,9 @@ def slurm_env(tmp_path, manifest, index):
         path = tmp_path / name
         path.write_text(content)
         path.chmod(0o755)
-    return dict(os.environ, PATH=f"{tmp_path}:{os.environ['PATH']}", HETNET_PYTHON=sys.executable,
+    return configure_stokes_run(dict(os.environ, PATH=f"{tmp_path}:{os.environ['PATH']}", HETNET_PYTHON=sys.executable,
                 SLURM_SUBMIT_DIR=str(ROOT), SLURM_ARRAY_JOB_ID="12345", SLURM_ARRAY_TASK_ID=str(index),
-                SOFTROLE_PROGRAMME_MANIFEST=str(manifest), SOFTROLE_PROGRAMME_RUN_ROOT=str(tmp_path / "runs"))
+                SOFTROLE_PROGRAMME_MANIFEST=str(manifest), SOFTROLE_PROGRAMME_RUN_ROOT=str(tmp_path / "runs")), tmp_path)
 
 
 @pytest.mark.parametrize("index", [0, 31, 62])

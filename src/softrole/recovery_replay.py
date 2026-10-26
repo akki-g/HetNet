@@ -75,15 +75,19 @@ def replay(run_dir, output, boundary_update, anchor_before, anchor_after):
         raise ValueError('Run/source identity mismatch')
     root = run / 'source'
     # Absolute imports in the archive are intentional. Never reuse current modules.
+    numerical_packages = ('softrole', 'hetnet_ext', 'envs', 'ic3net_envs', 'WildFire_Simulate_Original')
     for name, module in list(sys.modules.items()):
-        if name.split('.')[0] in ('softrole', 'hetnet_ext', 'envs'):
+        if name.split('.')[0] in numerical_packages:
             path = getattr(module, '__file__', None)
             if path and not Path(path).resolve().is_relative_to(root):
                 raise ValueError('Replay requires an isolated process without current numerical modules')
-    sys.path.insert(0, str(root))
+    # The manifest retains its original keys. Only the import search root
+    # changes for archives created after the move to src/.
+    runtime = root / 'src' if 'src/softrole/__init__.py' in source['files'] else root
+    sys.path[:0] = [str(runtime), str(runtime / 'envs')]
     train = importlib.import_module('softrole.train')
     for name, module in list(sys.modules.items()):
-        if name.split('.')[0] in ('softrole', 'hetnet_ext', 'envs'):
+        if name.split('.')[0] in numerical_packages:
             path = getattr(module, '__file__', None)
             if path:
                 relative = str(Path(path).resolve().relative_to(root))

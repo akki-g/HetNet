@@ -37,7 +37,7 @@ root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$root"
 python=${HETNET_PYTHON:-$root/.venv/bin/python}
 run_root=${SOFTROLE_PROGRAMME_RUN_ROOT:-runs/capcom_programme_${SLURM_ARRAY_JOB_ID:-manual}}
-export PYTHONPATH="$root:$root/envs${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONPATH="$root/src:$root/src/envs${PYTHONPATH:+:$PYTHONPATH}"
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 export PYTHONUNBUFFERED=1 DGLBACKEND=pytorch
 exec "$python" -u -m softrole.programme "$operation" \

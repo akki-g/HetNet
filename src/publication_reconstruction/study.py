@@ -10,7 +10,7 @@ from pathlib import Path
 import shlex
 import sys
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 WORKLOADS = (("pp", "real", 40_000_000), ("pcp", "real", 40_000_000),
              ("fc", "real", 28_000_000), ("pcp", "binary", 40_000_000))
 
@@ -246,11 +246,13 @@ def slurm_array(jobs):
              "#SBATCH --job-name=hetnet-frozen", "#SBATCH --account=cenyioha", "#SBATCH --partition=normal",
              "#SBATCH --nodes=1", "#SBATCH --ntasks=1", "#SBATCH --cpus-per-task=1", "#SBATCH --mem=4G",
              "#SBATCH --time=04:00:00", f"#SBATCH --array=0-{len(jobs)-1}%3",
-             "#SBATCH --output=logs_1/hetnet-frozen-%A_%a.out", "#SBATCH --error=logs_1/hetnet-frozen-%A_%a.err",
-             "set -euo pipefail", "cd \"${SLURM_SUBMIT_DIR:?Submit from the repository root}\"",
+             "set -euo pipefail",
+             'source "${SLURM_SUBMIT_DIR:?Submit from repository root}/scripts/stokes_run.sh"',
+             "cd \"${SLURM_SUBMIT_DIR:?Submit from the repository root}\"",
              "module load anaconda/anaconda-2024.10",
              "export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1",
-             "export PYTHONUNBUFFERED=1 DGLBACKEND=pytorch", 'case "${SLURM_ARRAY_TASK_ID:?}" in']
+             "export PYTHONUNBUFFERED=1 DGLBACKEND=pytorch",
+             'export PYTHONPATH="$PWD/src:$PWD/src/envs${PYTHONPATH:+:$PYTHONPATH}"', 'case "${SLURM_ARRAY_TASK_ID:?}" in']
     for index, job in enumerate(jobs):
         command = ["srun", str(ROOT / ".venv/bin/python"), "-m", "publication_reconstruction", "evaluate",
                    "--run-dir", job["run_dir"], "--checkpoint", job["path"],
@@ -259,9 +261,27 @@ def slurm_array(jobs):
             command.append("--trace")
         if job["condition"] == "sham":
             command.append("--sham")
-        lines.append(f"  {index}) exec {shlex.join(command)} ;;")
+        lines.append(f"  {index}) stokes_run_output {shlex.quote(job['output'])}; exec {shlex.join(command)} ;;")
     lines += ["  *) echo 'Invalid evaluation array index' >&2; exit 2 ;;", "esac", ""]
     return "\n".join(lines)
+
+
+def submission_script(output):
+    output = Path(output).resolve()
+    container = next((path for path in (output, *output.parents)
+                      if (path / "run_info.json").is_file()), output)
+    return "\n".join([
+        "#!/usr/bin/env bash", "set -euo pipefail", f"cd {shlex.quote(str(ROOT))}",
+        'run_dir=${HETNET_RUN_DIR:-}',
+        f'[[ -n $run_dir ]] || run_dir={shlex.quote(str(container))}', 'identity=()',
+        'if [[ ! -f "$run_dir/run_info.json" ]]; then',
+        "  identity=(--title 'Frozen HetNet publication-reconstruction evaluation'",
+        "    --purpose 'Evaluate the locked PP, PCP and FC reconstruction policies on their preregistered panels.')",
+        'fi',
+        'exec "${HETNET_SUBMISSION_PYTHON:-$PWD/.venv/bin/python}" scripts/submit_stokes.py '
+        '--run-dir "$run_dir" ${identity[@]+"${identity[@]}"} -- ' + shlex.quote(str(output / "submit.sbatch")),
+        "",
+    ])
 
 
 def prepare_evaluation(args):
@@ -320,10 +340,12 @@ def prepare_evaluation(args):
         (output / name / "scenarios.json").write_bytes(payload)
         write_json(output / name / "protocol.json", protocols[name])
     (output / "submit.sbatch").write_text(slurm_array(jobs))
+    (output / "submit.sh").write_text(submission_script(output))
+    (output / "submit.sh").chmod(0o755)
     manifest = {"schema_version": 1, "submitted": False, "policies": policies, "jobs": jobs,
                 "preparation_sha256": digest(__file__), "study": study,
                 "artifacts": {str(p.relative_to(output)): digest(p) for p in sorted(output.rglob("*")) if p.is_file()},
-                "execution_requirement": "Keep evaluator checkout and all selected run archives unchanged while queued/running.",
+                "execution_requirement": "Use submit.sh through scripts/submit_stokes.py; all outputs and scheduler logs must share one runs/ directory. Keep evaluator checkout and all selected run archives unchanged while queued/running.",
                 "fc_comparison_boundary": "Corrected FC must not pool with old-environment SoftRole FC."}
     write_json(output / "manifest.json", manifest)
     return {"output": str(output), "policies": len(policies), "jobs": len(jobs), "submitted": False}

@@ -196,7 +196,7 @@ def test_softrole_masks_stay_without_changing_six_head_parameters_or_rng():
 
 def test_softrole_and_isolated_publication_fc_have_identical_physical_replay():
     actions = [[0, 2, 5], [1, 3, 0], [2, 0, 1], [3, 1, 5], [0, 2, 2], [1, 3, 3]]
-    runtime = ROOT / "publication_reconstruction/runtime"
+    runtime = ROOT / "src/publication_reconstruction/runtime"
     code = f"""
 import sys, json, argparse, numpy as np
 sys.path[:0] = [{str(runtime)!r}, {str(runtime / 'envs')!r}]
@@ -239,7 +239,7 @@ def copy_simulator(tmp_path):
     for name in SIMULATOR_FILES:
         target = tmp_path / name
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes((ROOT / name).read_bytes())
+        target.write_bytes((ROOT / "src" / name).read_bytes())
     return source_binding(tmp_path)
 
 
@@ -274,7 +274,7 @@ def test_paper_softrole_checkpoint_uses_archive_for_evaluation_and_resume(tmp_pa
     assert saved["environment_version"] == "paper-v1"
     assert saved["simulator_source"] == simulator_identity()
     binding = checkpoint_binding(checkpoint, saved)
-    assert binding["root"] == str(tmp_path / "trained/source")
+    assert binding["root"] == str(tmp_path / "trained/source/src")
     report = evaluate_checkpoint(checkpoint, make_scenarios(11, 1, [(2, 1)]), tmp_path / "evaluation.json")
     assert report["environment_version"] == "paper-v1"
     assert report["simulator_source"] == saved["simulator_source"]

@@ -9,6 +9,8 @@ import sys
 
 import pytest
 
+from stokes_test_support import configure_stokes_run
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -18,7 +20,7 @@ def case(tmp_path):
     root = tmp_path / 'isolated checkout'
     (root / 'scripts').mkdir(parents=True)
     (root / 'slurm').mkdir()
-    for name in ('softrole_adam_diagnostics.sh', 'softrole_diagnostics.sh'):
+    for name in ('softrole_adam_diagnostics.sh', 'softrole_diagnostics.sh', 'submit_stokes.py', 'stokes_run.sh'):
         shutil.copyfile(ROOT / 'scripts' / name, root / 'scripts' / name)
     shutil.copyfile(ROOT / 'slurm/softrole_diagnostics.sbatch', root / 'slurm/softrole_diagnostics.sbatch')
     shutil.copyfile(ROOT / 'slurm/softrole_adam_diagnostics.sbatch',
@@ -34,6 +36,8 @@ def case(tmp_path):
     interpreter.write_text(f'#!{sys.executable}\n' + '''
 import json, os, pathlib, sys
 args = sys.argv[1:]
+if args and pathlib.Path(args[0]).name == 'submit_stokes.py':
+    os.execv(sys.executable, [sys.executable, *args])
 with open(os.environ['CAPTURE'], 'a') as stream:
     stream.write(json.dumps({'kind': 'python', 'argv': args, 'cwd': os.getcwd()}) + '\\n')
 if 'prepare' in args:
@@ -59,8 +63,9 @@ with open(os.environ['CAPTURE'], 'a') as stream:
         'manifest': os.environ['CAPCOM_DIAGNOSTICS_MANIFEST'],
         'output_root': os.environ['CAPCOM_DIAGNOSTICS_OUTPUT_ROOT'],
         'python': os.environ['HETNET_PYTHON'],
-        'logs_exists': pathlib.Path('logs_sr').is_dir()}) + '\\n')
-print('Submitted batch job 12345')
+        'run_dir': os.environ['HETNET_RUN_DIR'],
+        'logs_exists': (pathlib.Path(os.environ['HETNET_RUN_DIR']) / 'logs').is_dir()}) + '\\n')
+print('12345')
 ''')
     sbatch.chmod(0o755)
     env = dict(os.environ, PYTHON=str(interpreter), CAPTURE=str(capture),
@@ -122,9 +127,11 @@ def test_submit_occurs_after_all_validations_and_exports_each_stage(case):
     rows = calls(case)
     assert [row['kind'] for row in rows] == ['python'] * 8 + ['sbatch'] * 2
     for row, stage in zip(rows[-2:], ('midway', 'final')):
-        assert row['argv'] == ['--export=ALL', '--array=0-2%3', 'slurm/softrole_diagnostics.sbatch']
+        assert '--array=0-2%3' in row['argv']
+        assert row['argv'][-1] == str(root / 'slurm/softrole_diagnostics.sbatch')
+        assert row['argv'][row['argv'].index('--output') + 1].startswith(row['run_dir'] + '/logs/')
         assert row['manifest'] == f'runs/submitted/manifests/{stage}.json'
-        assert row['output_root'] == f'runs/submitted/{stage}'
+        assert row['output_root'] == str(root / f'runs/submitted/{stage}')
         assert row['python'] == env['PYTHON']
         assert row['cwd'] == str(root) and row['logs_exists']
 
@@ -199,6 +206,8 @@ def test_shell_syntax():
 def slurm_launch(case, *arguments, python_source='HETNET_PYTHON'):
     root, _, capture, original_env = case
     env = dict(original_env, SLURM_SUBMIT_DIR=str(root), SLURM_JOB_ID='916000')
+    (root / 'runs').mkdir(exist_ok=True)
+    env = configure_stokes_run(env, root / 'runs')
     interpreter = original_env['PYTHON']
     env.pop('HETNET_PYTHON', None)
     env.pop('PYTHON', None)
@@ -232,11 +241,13 @@ def test_slurm_only_entry_prepares_under_srun_then_submits_both_arrays(case, pyt
     assert [row['kind'] for row in rows] == ['module', 'srun'] + ['python'] * 8 + ['sbatch'] * 2
     assert rows[0]['argv'] == ['load', 'anaconda/anaconda-2024.10']
     assert all(row['cwd'] == str(root) for row in rows)
-    assert 'Results root: runs/capcom_adam_diagnostics_916000' in result.stdout
+    assert f'Results root: {root}/runs/titled run/diagnostics' in result.stdout
     for row, stage in zip(rows[-2:], ('midway', 'final')):
-        assert row['manifest'] == f'runs/capcom_adam_diagnostics_916000/manifests/{stage}.json'
-        assert row['output_root'] == f'runs/capcom_adam_diagnostics_916000/{stage}'
-        assert row['argv'] == ['--export=ALL', '--array=0-2%3', 'slurm/softrole_diagnostics.sbatch']
+        assert row['manifest'] == f'{root}/runs/titled run/diagnostics/manifests/{stage}.json'
+        assert row['output_root'] == f'{root}/runs/titled run/diagnostics/{stage}'
+        assert '--array=0-2%3' in row['argv']
+        assert row['argv'][-1] == str(root / 'slurm/softrole_diagnostics.sbatch')
+        assert row['argv'][row['argv'].index('--output') + 1].startswith(row['run_dir'] + '/logs/')
         assert row['logs_exists']
 
 
@@ -269,7 +280,8 @@ def test_slurm_only_entry_placement_logs_and_shell_syntax():
             assert '#SBATCH ' + directive in content
     content = wrapper.read_text()
     assert '#SBATCH --array=' not in content
-    assert '#SBATCH --output=capcom-adam-prepare-%j.out' in content
-    assert '#SBATCH --error=capcom-adam-prepare-%j.err' in content
+    assert '#SBATCH --output=' not in content
+    assert '#SBATCH --error=' not in content
+    assert 'scripts/stokes_run.sh' in content
     result = subprocess.run(['bash', '-n', str(wrapper)], capture_output=True)
     assert result.returncode == 0, result.stderr

@@ -1,4 +1,5 @@
 #!/bin/bash
+# Submit with: python scripts/submit_stokes.py --title SLUG --purpose TEXT -- slurm/publication_resume.sbatch
 # Submit from the repository root; omit inherited BASH_ENV/ENV at submission.
 #SBATCH --job-name=hetnet-resume
 #SBATCH --account=cenyioha
@@ -9,9 +10,8 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
 #SBATCH --time=48:00:00
-#SBATCH --output=logs_1/hetnet-resume-%A_%a.out
-#SBATCH --error=logs_1/hetnet-resume-%A_%a.err
 set -Eeuo pipefail
+source "${SLURM_SUBMIT_DIR:?Submit from repository root}/scripts/stokes_run.sh"
 trap 'printf "hetnet-resume failed at line %s (exit %s)\n" "$LINENO" "$?" >&2' ERR
 printf 'hetnet-resume starting: job=%s node=%s\n' "${SLURM_JOB_ID:-local}" "${SLURM_JOB_NODELIST:-unknown}" >&2
 cd "${SLURM_SUBMIT_DIR:?Submit from the repository root}"
@@ -37,6 +37,7 @@ type module >/dev/null 2>&1 || { echo 'hetnet-resume: module initialization unav
 echo 'hetnet-resume: loading anaconda/anaconda-2024.10' >&2
 module load anaconda/anaconda-2024.10
 export HETNET_PYTHON="${HETNET_PYTHON:-$PWD/.venv/bin/python}"
+export PYTHONPATH="$PWD/src:$PWD/src/envs${PYTHONPATH:+:$PYTHONPATH}"
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 export PYTHONUNBUFFERED=1 DGLBACKEND=pytorch
 printf 'hetnet-resume: launching %s\n' "$HETNET_PYTHON" >&2

@@ -5,12 +5,15 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import shutil
 
 import pytest
 import torch
 
 from hetnet_ext.signatures import model_signature
 from scripts.prepare_pcp_frozen import ROOT, prepare
+from scripts import prepare_pcp_frozen
+from stokes_test_support import configure_stokes_run
 from softrole import CHECKPOINT_VERSION, ENVIRONMENT_VERSION
 from softrole.config import Config
 from softrole.model import SoftRoleNet
@@ -133,8 +136,15 @@ def test_existing_output_is_preserved(tmp_path):
     assert evidence.read_text() == "prior evidence"
 
 
-def test_submit_script_quotes_paths_records_array_tasks_and_refuses_reuse(run_root, tmp_path):
-    output = tmp_path / "plan with spaces ' $(not-a-command)"
+def test_submit_script_quotes_paths_records_array_tasks_and_refuses_reuse(run_root, tmp_path, monkeypatch):
+    checkout = tmp_path / "checkout"
+    (checkout / "scripts").mkdir(parents=True)
+    (checkout / ".venv/bin").mkdir(parents=True)
+    (checkout / ".venv/bin/python").symlink_to(sys.executable)
+    for name in ("submit_stokes.py", "stokes_run.sh"):
+        shutil.copyfile(ROOT / "scripts" / name, checkout / "scripts" / name)
+    monkeypatch.setattr(prepare_pcp_frozen, "ROOT", checkout)
+    output = checkout / "runs" / "plan with spaces ' $(not-a-command)"
     manifest = prepare(run_root, output)
     tools = tmp_path / "mock tools"
     tools.mkdir()
@@ -152,7 +162,11 @@ def test_submit_script_quotes_paths_records_array_tasks_and_refuses_reuse(run_ro
                            env=env, text=True, capture_output=True)
     assert first.returncode == 0, first.stderr
     commands = [json.loads(line) for line in capture.read_text().splitlines()]
-    assert commands == [["--parsable", str(output / "submit.sbatch")]]
+    assert len(commands) == 1 and commands[0][-1] == str(output / "submit.sbatch")
+    assert "--parsable" in commands[0]
+    assert commands[0][commands[0].index("--output") + 1].startswith(str(output / "logs") + "/")
+    assert (output / "run_info.json").is_file()
+    assert not (checkout / "logs_sr").exists()
     rows = (output / "job_ids.tsv").read_text().splitlines()
     assert rows[0] == "model\tseed\tcondition\tjob_id"
     assert [row.split("\t") for row in rows[1:]] == [
@@ -167,7 +181,7 @@ def test_submit_script_quotes_paths_records_array_tasks_and_refuses_reuse(run_ro
 
 
 def test_generated_slurm_array_routes_all_tasks_and_rejects_invalid_indices(run_root, tmp_path):
-    output = tmp_path / "array with spaces ' $(not-a-command)"
+    output = tmp_path / "titled run" / "array with spaces ' $(not-a-command)"
     manifest = prepare(run_root, output)
     batch_script = output / "submit.sbatch"
     directives = dict(line[len("#SBATCH --"):].split("=", 1)
@@ -179,8 +193,8 @@ def test_generated_slurm_array_routes_all_tasks_and_rejects_invalid_indices(run_
         assert directives[name] == expected
     assert directives["job-name"]
     for name in ("output", "error"):
-        assert directives[name].startswith("logs_sr/")
-        assert "%A_%a" in directives[name]
+        assert name not in directives
+    assert "scripts/stokes_run.sh" in batch_script.read_text()
     tools = tmp_path / "mock Slurm tools"
     tools.mkdir()
     srun_body = ''.join(f'[[ "${{{name}}}" == 1 ]] || exit 91\n' for name in THREAD_VARIABLES)
@@ -197,6 +211,7 @@ def test_generated_slurm_array_routes_all_tasks_and_rejects_invalid_indices(run_
     env = {**os.environ, "PATH": str(tools) + os.pathsep + os.environ["PATH"],
            "SLURM_SUBMIT_DIR": str(ROOT), "HETNET_PYTHON": str(interpreter),
            **dict.fromkeys(THREAD_VARIABLES, "64")}
+    env = configure_stokes_run(env, tmp_path)
     env.pop("SLURM_ARRAY_TASK_ID", None)
     for index, job in enumerate(manifest["jobs"]):
         result = subprocess.run(["bash", str(batch_script)], cwd=tmp_path,
@@ -270,6 +285,7 @@ def test_standalone_launchers_override_inherited_threads_and_forward_arguments(t
     env = {**os.environ, **dict.fromkeys(THREAD_VARIABLES, "64"),
            "PATH": str(tmp_path) + os.pathsep + os.environ["PATH"],
            "SLURM_SUBMIT_DIR": str(ROOT), "HETNET_PYTHON": str(interpreter)}
+    env = configure_stokes_run(env, tmp_path)
     if launcher == "slurm/softrole_prepare_frozen.sbatch":
         arguments = ["--run-root", str(tmp_path / "runs with spaces ' $(not-a-command)"),
                      "--output", str(tmp_path / "prepared panel"), "--min-steps", "123"]

@@ -14,7 +14,7 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNTIME = ROOT / "publication_reconstruction/runtime"
+RUNTIME = ROOT / "src/publication_reconstruction/runtime"
 PUBLIC_REFERENCE = ROOT / "tests/fixtures/publication_uavnet_public_v1.py"
 PUBLIC_REFERENCE_SHA256 = "8db99d5ee4be94836cee626a612977872ffe277a7824a6100afbc758961a01bd"
 

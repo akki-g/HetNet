@@ -1,4 +1,5 @@
 #!/bin/bash -l
+# Submit with: python scripts/submit_stokes.py --title SLUG --purpose TEXT -- slurm/softrole_prepare_frozen.sbatch
 # Validate checkpoints and prepare the frozen PCP array on a compute node.
 # Memory/time requests are unmeasured starting values; override with sbatch.
 # Submit from the repository root with prepare_pcp_frozen.py CLI arguments.
@@ -10,9 +11,8 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=4G
 #SBATCH --time=00:30:00
-#SBATCH --output=logs_sr/pcp-prepare-%j.out
-#SBATCH --error=logs_sr/pcp-prepare-%j.err
 set -euo pipefail
+source "${SLURM_SUBMIT_DIR:?Submit from repository root}/scripts/stokes_run.sh"
 cd "${SLURM_SUBMIT_DIR:?Submit from the repository root}"
 module load anaconda/anaconda-2024.10
 export HETNET_PYTHON="${HETNET_PYTHON:-$PWD/.venv/bin/python}"

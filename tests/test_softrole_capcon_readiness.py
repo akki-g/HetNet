@@ -11,13 +11,18 @@ from types import SimpleNamespace
 import pytest
 import torch
 
+from stokes_test_support import configure_stokes_run
+
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("capcon_readiness", ROOT / "scripts/softrole_capcon_readiness.py")
 readiness = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(readiness)
 
 
-def test_shell_environment_isolation_retains_compute_runtime(tmp_path):
+@pytest.mark.parametrize("source_folder", (".", "src"), ids=("legacy-flat", "src-layout"))
+def test_shell_environment_isolation_retains_compute_runtime(tmp_path, source_folder):
+    source = tmp_path / source_folder
+    (source / "softrole").mkdir(parents=True)
     original = {"BASH_FUNC_module%%": "function", "BASH_FUNC_srun%%": "function", "BASH_ENV": "bad",
                 "ENV": "bad", "PATH": "/module/bin", "LD_LIBRARY_PATH": "/module/lib", "SLURM_JOB_ID": "7"}
     actual = readiness.test_environment(tmp_path, tmp_path / "tools", original)
@@ -25,7 +30,7 @@ def test_shell_environment_isolation_retains_compute_runtime(tmp_path):
     assert {k: actual[k] for k in ("PATH", "LD_LIBRARY_PATH", "SLURM_JOB_ID")} == {
         "PATH": "/module/bin", "LD_LIBRARY_PATH": "/module/lib", "SLURM_JOB_ID": "7"}
     assert actual["HETNET_GRADIENT_PROBE_OUTER_TIMEOUT"] == "180"
-    assert actual["PYTHONPATH"].split(os.pathsep) == [str(tmp_path), str(tmp_path / "envs"), str(tmp_path / "tools")]
+    assert actual["PYTHONPATH"].split(os.pathsep) == [str(source), str(source / "envs"), str(tmp_path / "tools")]
     assert original["BASH_ENV"] == "bad"
 
 
@@ -190,7 +195,9 @@ def test_slurm_wrapper_preserves_arguments_and_uses_existing_interpreter(tmp_pat
                f"Path({str(capture)!r}).write_text(json.dumps({{'args':sys.argv[1:],'tmp':os.environ['TMPDIR'],'threads':os.environ['OMP_NUM_THREADS']}}))\n")
     env = readiness.test_environment(ROOT, environment={**os.environ, "PATH": str(tools) + os.pathsep + os.environ["PATH"],
         "SLURM_SUBMIT_DIR": str(submit), "SLURM_JOB_ID": "123", "HETNET_PYTHON": str(interpreter)})
-    args = ["--baseline", "/path with spaces/base", "--selection", "/selection", "--output", "/new"]
+    env = configure_stokes_run(env, tmp_path)
+    output = Path(env["HETNET_RUN_DIR"]) / "readiness"
+    args = ["--baseline", "/path with spaces/base", "--selection", "/selection", "--output", str(output)]
     result = subprocess.run(["bash", str(ROOT / "slurm/softrole_capcon_readiness.sbatch"), *args],
                             env=env, capture_output=True, text=True, timeout=10)
     assert result.returncode == 0, result.stderr

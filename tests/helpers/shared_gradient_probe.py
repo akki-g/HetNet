@@ -21,7 +21,7 @@ import traceback
 from types import SimpleNamespace
 
 REPOSITORY = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(REPOSITORY))
+sys.path.insert(0, str(REPOSITORY / "src"))
 
 import torch
 import torch.multiprocessing as mp
@@ -36,7 +36,7 @@ def policy_clear_keywords():
     it now lets the surrogate follow an explicitly approved compatibility fix
     while the actual-HetNet probe verifies the complete loss independently.
     """
-    tree = ast.parse((REPOSITORY / "hetgat/policy.py").read_text())
+    tree = ast.parse((REPOSITORY / "src/hetgat/policy.py").read_text())
     owner = next(node for node in tree.body if isinstance(node, ast.ClassDef)
                  and node.name == "A2CPolicy")
     method = next(node for node in owner.body if isinstance(node, ast.FunctionDef)
@@ -156,7 +156,7 @@ def run_probe(updates, timeout_seconds):
             "start_method": mp.get_start_method(), "nprocesses": 4,
             "zero_grad_signature": str(inspect.signature(torch.optim.Optimizer.zero_grad)),
             "upstream_aggregator_sha256": hashlib.sha256(
-                (REPOSITORY / "multi_processing.py").read_bytes()).hexdigest(),
+                (REPOSITORY / "src/multi_processing.py").read_bytes()).hexdigest(),
             "clearing_sites": ["upstream outer RMSprop.zero_grad()",
                                "surrogate policy-local Adam.zero_grad() matching policy.py:846"],
             "policy_clear_keywords_from_selected_source": policy_clear_keywords(),

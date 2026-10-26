@@ -204,7 +204,7 @@ requires-dist = [
     { name = "bitstring", specifier = "==4.2.3" },
     { name = "dgl", specifier = "==2.1.0" },
     { name = "gym", specifier = "==0.26.2" },
-    { name = "ic3net-envs", editable = "envs" },
+    { name = "ic3net-envs", editable = "src/envs" },
     { name = "numpy", specifier = "==1.26.4" },
     { name = "packaging", specifier = "==26.3" },
     { name = "pandas", specifier = "==2.2.3" },
@@ -221,7 +221,7 @@ dev = [{ name = "pytest", specifier = "==8.3.5" }]
 [[package]]
 name = "ic3net-envs"
 version = "0.0.2"
-source = { editable = "envs" }
+source = { editable = "src/envs" }
 dependencies = [
     { name = "gym" },
     { name = "numpy" },

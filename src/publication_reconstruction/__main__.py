@@ -17,7 +17,7 @@ import sys
 from . import SCHEMA_VERSION, SCAFFOLD_REFERENCE, UPSTREAM_REFERENCE
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parent
+ROOT = HERE.parent.parent if HERE.parent.name == "src" else HERE.parent
 
 
 def positive(value):

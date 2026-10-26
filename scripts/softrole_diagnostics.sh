@@ -33,7 +33,7 @@ done
 # Preserve paths relative to the caller while importing this checkout explicitly.
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 python=${HETNET_PYTHON:-$root/.venv/bin/python}
-export PYTHONPATH="$root:$root/envs${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONPATH="$root/src:$root/src/envs${PYTHONPATH:+:$PYTHONPATH}"
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 export PYTHONUNBUFFERED=1 DGLBACKEND=pytorch
 options=(--manifest "$manifest" --index "$index" --output "$output")

@@ -18,14 +18,14 @@ def test_prepared_study_hashes_sources_dependencies_launchers_and_shared_simulat
         assert manifest["sha256"] == expected
     assert set(identity["dependencies"]["files"]) == {"pyproject.toml", "uv.lock"}
     assert set(identity["launchers"]["files"]) == set(paper_study.LAUNCHER_FILES)
-    for name in ("publication_reconstruction/runtime/hetgat/paper.py",
-                 "publication_reconstruction/runtime/hetgat/graph/torch_backend.py",
-                 "publication_reconstruction/paper_study.py", "softrole/model.py",
-                 "softrole/publication_env.py", *paper_study.DEPENDENCY_FILES,
+    for name in ("src/publication_reconstruction/runtime/hetgat/paper.py",
+                 "src/publication_reconstruction/runtime/hetgat/graph/torch_backend.py",
+                 "src/publication_reconstruction/paper_study.py", "src/softrole/model.py",
+                 "src/softrole/publication_env.py", *paper_study.DEPENDENCY_FILES,
                  *paper_study.LAUNCHER_FILES):
         assert identity["source"]["files"][name] == hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
     for name, digest in identity["simulator_source"]["files"].items():
-        assert identity["source"]["files"][name] == digest
+        assert identity["source"]["files"]["src/" + name] == digest
     assert set(identity["runtime_provenance"]) == {
         "valid", "origins_sha256", "missing", "unexpected", "changed"}
 

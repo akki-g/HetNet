@@ -13,7 +13,7 @@ from publication_reconstruction.__main__ import parser, resolve
 
 
 def test_committed_study_matches_resolved_scientific_protocols(tmp_path):
-    manifest = json.loads((study.ROOT / "publication_reconstruction/STUDY.json").read_text())
+    manifest = json.loads((study.ROOT / "src/publication_reconstruction/STUDY.json").read_text())
     resolved = study.resolved_study(tmp_path)["protocols"]
     assert len(manifest["runs"]) == len(resolved) == 12
     for entry, protocol in zip(manifest["runs"], resolved):
@@ -62,7 +62,9 @@ def test_budget_floor_rejected():
 
 
 def test_generated_shell_preserves_arguments(tmp_path):
-    unusual = str(tmp_path / "folder with ' quote; and $x")
+    from stokes_test_support import configure_stokes_run
+    environment = configure_stokes_run({"PATH": "/usr/bin:/bin", "SLURM_SUBMIT_DIR": str(tmp_path), "SLURM_ARRAY_TASK_ID": "0"}, tmp_path)
+    unusual = str(tmp_path / "titled run" / "folder with ' quote; and $x")
     job = {"run_dir": unusual, "path": unusual + "/model.pt", "scenarios": unusual + "/panel.json",
            "protocol": unusual + "/protocol.json", "output": unusual + "/result.json", "condition": "sham"}
     path = tmp_path / "submit.sbatch"
@@ -73,12 +75,12 @@ def test_generated_shell_preserves_arguments(tmp_path):
     # Execute mocked shell builtins: no Slurm submission or actual evaluator.
     harness = 'module() { :; }; srun() { printf "%s\\n" "$@"; }; export -f module srun; '
     result = subprocess.run(["bash", "-c", harness + 'source "$1"', "bash", str(path)],
-                            env={"PATH": "/usr/bin:/bin", "SLURM_SUBMIT_DIR": str(tmp_path), "SLURM_ARRAY_TASK_ID": "0"},
+                            env=environment,
                             text=True, capture_output=True)
     # exec cannot execute a shell function; replace exec solely in this mocked harness.
     path.write_text(path.read_text().replace("exec srun", "srun"))
     result = subprocess.run(["bash", "-c", harness + 'source "$1"', "bash", str(path)],
-                            env={"PATH": "/usr/bin:/bin", "SLURM_SUBMIT_DIR": str(tmp_path), "SLURM_ARRAY_TASK_ID": "0"},
+                            env=environment,
                             text=True, capture_output=True, check=True)
     assert unusual in result.stdout.splitlines()
     assert job["scenarios"] in result.stdout.splitlines()

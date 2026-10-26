@@ -14,14 +14,15 @@ import time
 from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path[:0] = [str(ROOT / "src"), str(ROOT / "src/envs")]
 
 from publication_reconstruction.__main__ import validate_source_origins
 from publication_reconstruction.study import WORKLOADS
 
 THREAD_ENV = {name: "1" for name in
               ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS")}
-THREAD_ENV.update(PYTHONUNBUFFERED="1", DGLBACKEND="pytorch")
+THREAD_ENV.update(PYTHONUNBUFFERED="1", DGLBACKEND="pytorch",
+                  PYTHONPATH=os.pathsep.join((str(ROOT / "src"), str(ROOT / "src/envs"))))
 
 
 def timestamp():

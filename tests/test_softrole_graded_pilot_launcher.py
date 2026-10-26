@@ -8,12 +8,12 @@ import sys
 import pytest
 
 
+from stokes_test_support import configure_stokes_run
+
 ROOT = Path(__file__).resolve().parents[1]
 SLURM = ROOT / "slurm/softrole_graded_pilot.sbatch"
 PREPARE = ROOT / "slurm/softrole_graded_pilot_prepare.sbatch"
 THREADS = ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS")
-DEFAULT_MANIFEST = "runs/graded_sensing_pilot_20261024/manifest.json"
-DEFAULT_RUN_ROOT = "runs/graded_sensing_pilot_20261024/training"
 
 
 def capture_python(path):
@@ -60,9 +60,10 @@ def setup_environment(tmp_path, *, index="0", existing=False, defaults=False):
     env.update(PATH=f"{tools}:{env['PATH']}", PYTHONPATH="inherited-path", PYTHONUNBUFFERED="0", DGLBACKEND="other",
                MODULE_CAPTURE=str(tmp_path / "module.txt"), PYTHON_CAPTURE=str(tmp_path / "python.jsonl"),
                SLURM_SUBMIT_DIR=str(root), SLURM_ARRAY_TASK_ID=index, SLURM_ARRAY_JOB_ID="4242")
+    env = configure_stokes_run(env, tmp_path)
     if defaults:
         capture_python(root / ".venv/bin/python")
-        manifest, run_root = root / DEFAULT_MANIFEST, root / DEFAULT_RUN_ROOT
+        manifest, run_root = Path(env["HETNET_RUN_DIR"]) / "manifest.json", Path(env["HETNET_RUN_DIR"]) / "training"
     else:
         env["HETNET_PYTHON"] = str(capture_python(tmp_path / "capture python"))
         manifest, run_root = tmp_path / "locked manifest.json", tmp_path / "training runs"
@@ -86,7 +87,7 @@ def calls(env):
 def assert_environment(call, root):
     assert call["cwd"] == str(root)
     assert all(call["environment"][name] == "1" for name in THREADS)
-    assert call["environment"]["PYTHONPATH"] == f"{root}:{root}/envs:inherited-path"
+    assert call["environment"]["PYTHONPATH"] == f"{root}/src:{root}/src/envs:inherited-path"
     assert call["environment"]["PYTHONUNBUFFERED"] == "1"
     assert call["environment"]["DGLBACKEND"] == "pytorch"
 
@@ -116,7 +117,7 @@ def test_training_slurm_default_paths_and_interpreter(tmp_path):
     result = run_slurm(SLURM, ["--dry-run"], tmp_path, env)
     assert result.returncode == 0, result.stderr
     observed = calls(env)[0]
-    assert observed["args"] == launch_args(DEFAULT_MANIFEST, 0, DEFAULT_RUN_ROOT, dry_run=True)
+    assert observed["args"] == launch_args(manifest, 0, run_root, dry_run=True)
     assert observed["python"] == str(root / ".venv/bin/python")
     assert_environment(observed, root)
 
@@ -153,8 +154,8 @@ def test_preparation_creates_manifest_then_previews_both_arms_without_training(t
     root, manifest, run_root, env = setup_environment(tmp_path, defaults=defaults)
     result = run_slurm(PREPARE, [], tmp_path, env)
     assert result.returncode == 0, result.stderr
-    manifest_arg = DEFAULT_MANIFEST if defaults else manifest
-    root_arg = DEFAULT_RUN_ROOT if defaults else run_root
+    manifest_arg = manifest
+    root_arg = run_root
     expected = [["-u", "-m", "softrole.graded_pilot", "prepare", "--output", str(manifest_arg)],
                 launch_args(manifest_arg, 0, root_arg, dry_run=True),
                 launch_args(manifest_arg, 1, root_arg, dry_run=True)]

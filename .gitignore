@@ -3,18 +3,13 @@
 !/.gitignore
 !/.python-version
 !/LICENSE
-!/*.py
 !/pyproject.toml
 !/requirements.txt
 !/uv.lock
-!/envs/
-!/hetgat/
-!/hetnet_ext/
-!/publication_reconstruction/
+!/src/
 !/scripts/
 !/scripts_eval/
 !/slurm/
-!/softrole/
 !/test_config/
 # Required by slurm/softrole_capcon_readiness.sbatch (full pytest gate).
 !/tests/
@@ -37,11 +32,14 @@ __pycache__/
 
 # Local documentation, development tools and examples are not deployment inputs.
 *.md
-/envs/examples/
+# Durable operating instructions must travel with the code.
+!/AGENTS.md
+!/README.md
+/src/envs/examples/
 # Preserve legal notices and the exact inventory validated by ORIGINS.json.
-!/envs/LICENSE.md
-!/publication_reconstruction/runtime/envs/LICENSE.md
-!/publication_reconstruction/runtime/envs/README.md
+!/src/envs/LICENSE.md
+!/src/publication_reconstruction/runtime/envs/LICENSE.md
+!/src/publication_reconstruction/runtime/envs/README.md
 
 # Keep the graded pilot's deployment instructions beside its launcher.
-!/softrole/GRADED_PILOT.md
+!/src/softrole/GRADED_PILOT.md

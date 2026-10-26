@@ -21,6 +21,7 @@ from softrole.env import make_env
 from softrole.learning import loss_sum
 from softrole.model import SoftRoleNet
 from softrole.optimizers import make_optimizer, optimizer_spec, validate_optimizer_resume
+from softrole.paths import code_root, repository_root
 from softrole.rollout import run_episode
 from softrole.scenarios import make_scenarios
 
@@ -56,16 +57,36 @@ def source_snapshot(output=None):
     The read-only form lets evaluation record the same provenance as training.
     Local documentation and tests are not part of the learner identity.
     """
-    root = Path(__file__).resolve().parents[1]
+    root = repository_root()
     tracked = subprocess.check_output(["git", "ls-files", "-z"], cwd=root).decode().split("\0")
     files = {root / name for name in tracked
              if name and not name.startswith("tests/")
              and Path(name).suffix in (".py", ".sh", ".toml", ".lock", ".txt", ".sbatch")}
-    files.update((root / "softrole").glob("*.py"))
-    files.update((root / "scripts").glob("softrole*"))
-    files.update((root / "slurm").glob("softrole*"))
+    # Discover the actual source tree, including moves/new files that have not
+    # been staged. Git alone still reports the old names during a layout change.
+    runtime = code_root(root)
+    files.update(runtime.glob("*.py"))
+    # Explicit package roots also keep a historical flat checkout from walking
+    # run archives, virtual environments or locally copied example inputs.
+    for package in ("softrole", "hetgat", "hetnet_ext", "publication_reconstruction", "envs/ic3net_envs"):
+        files.update(path for path in (runtime / package).rglob("*.py")
+                     if "tests" not in path.relative_to(runtime).parts
+                     and not any(part.startswith(".") for part in path.relative_to(runtime).parts))
+    files.add(runtime / "envs/setup.py")
+    for directory in ("scripts", "scripts_eval", "slurm"):
+        files.update(path for path in (root / directory).glob("*")
+                     if path.suffix in (".py", ".sh", ".sbatch"))
+    files.update(root / name for name in ("pyproject.toml", "uv.lock", "requirements.txt", "LICENSE"))
+    files.update(runtime / "publication_reconstruction" / name
+                 for name in ("ORIGINS.json", "STUDY.json"))
+    files.update(runtime / name for name in (
+        "envs/LICENSE.md", "envs/.gitignore",
+        "publication_reconstruction/runtime/LICENSE",
+        "publication_reconstruction/runtime/envs/LICENSE.md",
+        "publication_reconstruction/runtime/envs/README.md",
+        "publication_reconstruction/runtime/envs/.gitignore"))
     from softrole.publication_env import SIMULATOR_FILES
-    files.update(root / name for name in SIMULATOR_FILES)
+    files.update(runtime / name for name in SIMULATOR_FILES)
     manifest = {}
     for path in sorted(files):
         if not path.is_file():
@@ -250,7 +271,9 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
         from softrole.publication_env import source_binding, SIMULATOR_FILES
         environment_source = source_binding(output / "source")
         simulator_source = {key: environment_source[key] for key in ("sha256", "files")}
-        if any(provenance["files"].get(name) != simulator_source["files"][name]
+        archive_root = (output / "source").resolve()
+        if any(provenance["files"].get(str((Path(environment_source["root"]) / name).relative_to(archive_root)))
+               != simulator_source["files"][name]
                for name in SIMULATOR_FILES):
             raise ValueError("Archived paper simulator differs from the source manifest")
     write_json(output / "config.json", config.to_dict())

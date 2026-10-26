@@ -2,7 +2,7 @@
 # Released HetNet recipes. No preflight files or custom scheduler framework.
 set -eo pipefail
 if (( $# < 3 )); then
-  echo 'Usage: bash scripts/reproduce.sh {pp|pcp|fc} {real|binary} SEED [--dry-run] [main.py options...]' >&2
+  echo 'Usage: bash scripts/reproduce.sh {pp|pcp|fc} {real|binary} SEED [--dry-run] [src/main.py options...]' >&2
   exit 2
 fi
 task=$1 variant=$2 seed=$3
@@ -10,6 +10,7 @@ shift 3
 [[ $seed =~ ^[0-9]+$ ]] || { echo 'SEED must be a nonnegative integer' >&2; exit 2; }
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$root"
+export PYTHONPATH="$root/src:$root/src/envs${PYTHONPATH:+:$PYTHONPATH}"
 python=${HETNET_PYTHON:-$root/.venv/bin/python}
 run=${HETNET_RUN_ROOT:-runs/reproduction}/${task}_${variant}/seed${seed}
 case "$task" in
@@ -28,7 +29,7 @@ extra=()
 for arg in "$@"; do
   if [[ $arg == --dry-run ]]; then dry_run=true; else extra+=("$arg"); fi
 done
-command=("$python" -u main.py "${domain[@]}" --hetgat --hetgat_a2c
+command=("$python" -u src/main.py "${domain[@]}" --hetgat --hetgat_a2c
   --nprocesses 4 --epoch_size 10 --batch_size 500 --hid_size 128
   --detach_gap 5 --lrate 0.0001 --dim 5 --seed "$seed" --save_every 50
   "${method[@]}" "${extra[@]}"
@@ -37,7 +38,8 @@ command=("$python" -u main.py "${domain[@]}" --hetgat --hetgat_a2c
 if $dry_run; then printf '%q ' "${command[@]}"; printf '\n'; exit 0; fi
 if [[ ! -x $python ]]; then
   printf 'Python environment missing or not executable: %s\n' "$python" >&2
-  echo 'On Stokes, first run: mkdir -p logs; sbatch slurm/setup.sbatch' >&2
+  echo 'On Stokes, first run: module load anaconda/anaconda-2024.10' >&2
+  echo 'Then: python scripts/submit_stokes.py --title "HetNet environment setup" --purpose "Install the pinned training environment." -- slurm/setup.sbatch' >&2
   echo 'Elsewhere with Python 3.12: bash scripts/setup_env.sh' >&2
   echo 'An existing environment can be selected with HETNET_PYTHON=/absolute/path/bin/python.' >&2
   exit 2

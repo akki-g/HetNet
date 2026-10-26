@@ -1,8 +1,9 @@
 #!/bin/bash -l
+# Submit with: python scripts/submit_stokes.py --title SLUG --purpose TEXT -- slurm/softrole_capcon_40m.sbatch
 # Prepare the admitted research manifest first; see softrole.programme prepare --help.
-# Then submit from the frozen checkout: sbatch slurm/softrole_capcon_40m.sbatch
+# Submit from the frozen checkout through scripts/submit_stokes.py.
 # Same resources as S1/HetNet and S1 CPU family; twelve 40M runs concurrently.
-# Resume a stopped subset: sbatch --array=4,7 slurm/softrole_capcon_40m.sbatch --resume
+# Resume a stopped subset with the same run directory and array indices 4,7.
 #SBATCH --job-name=capcon-l1-40m
 #SBATCH --account=cenyioha
 #SBATCH --partition=normal
@@ -13,14 +14,14 @@
 #SBATCH --mem=16G
 #SBATCH --time=2-00:00:00
 #SBATCH --array=0-11%12
-#SBATCH --output=logs_sr/capcon-l1-40m-%A_%a.out
-#SBATCH --error=logs_sr/capcon-l1-40m-%A_%a.err
 set -euo pipefail
+source "${SLURM_SUBMIT_DIR:?Submit from repository root}/scripts/stokes_run.sh"
 cd "${SLURM_SUBMIT_DIR:?Submit from the repository root}"
 module load anaconda/anaconda-2024.10
 export HETNET_PYTHON="${HETNET_PYTHON:-$HOME/HetNet/.venv/bin/python}"
-export SOFTROLE_PROGRAMME_MANIFEST="${SOFTROLE_PROGRAMME_MANIFEST:-$PWD/runs/capcon_l1_40m_20261017/manifest.json}"
-export SOFTROLE_PROGRAMME_RUN_ROOT="${SOFTROLE_PROGRAMME_RUN_ROOT:-$PWD/runs/capcon_l1_40m_20261017/training}"
+export PYTHONPATH="$PWD/src:$PWD/src/envs${PYTHONPATH:+:$PYTHONPATH}"
+export SOFTROLE_PROGRAMME_MANIFEST="${SOFTROLE_PROGRAMME_MANIFEST:-$HETNET_RUN_DIR/manifest.json}"
+export SOFTROLE_PROGRAMME_RUN_ROOT="${SOFTROLE_PROGRAMME_RUN_ROOT:-$HETNET_RUN_DIR/training}"
 
 if [[ ! -f $SOFTROLE_PROGRAMME_MANIFEST ]]; then
   printf 'Missing research manifest: %s\n' "$SOFTROLE_PROGRAMME_MANIFEST" >&2

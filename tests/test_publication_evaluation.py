@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def archived_runs(tmp_path_factory):
     """Build untrained checkpoint fixtures; no collector, optimizer or job runs."""
     directory = tmp_path_factory.mktemp("publication-evaluation")
-    runtime = ROOT / "publication_reconstruction/runtime"
+    runtime = ROOT / "src/publication_reconstruction/runtime"
     specifications = [(task, spec, "corrected-v1", 2)
                       for task in ("pp", "pcp", "fc")
                       for spec in ("public-code-v1", "supplement-v1")]

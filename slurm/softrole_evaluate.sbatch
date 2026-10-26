@@ -1,4 +1,5 @@
 #!/bin/bash -l
+# Submit with: python scripts/submit_stokes.py --title SLUG --purpose TEXT -- slurm/softrole_evaluate.sbatch
 # One frozen evaluation, without moving checkpoint files off Stokes.
 # Memory/time requests are unmeasured starting values; override with sbatch.
 #SBATCH --job-name=softrole-evaluate
@@ -9,9 +10,8 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=4G
 #SBATCH --time=04:00:00
-#SBATCH --output=logs_sr/softrole-evaluate-%j.out
-#SBATCH --error=logs_sr/softrole-evaluate-%j.err
 set -euo pipefail
+source "${SLURM_SUBMIT_DIR:?Submit from repository root}/scripts/stokes_run.sh"
 cd "${SLURM_SUBMIT_DIR:?Submit from the repository root}"
 module load anaconda/anaconda-2024.10
 export HETNET_PYTHON="${HETNET_PYTHON:-$PWD/.venv/bin/python}"

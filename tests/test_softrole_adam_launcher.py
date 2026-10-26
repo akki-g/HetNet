@@ -8,6 +8,8 @@ import sys
 import pytest
 
 
+from stokes_test_support import configure_stokes_run
+
 ROOT = Path(__file__).resolve().parents[1]
 LAUNCHER = ROOT / "scripts" / "softrole_adam_pcp.sh"
 
@@ -58,6 +60,7 @@ def test_slurm_wrapper_resolves_all_indices_without_scheduler(tmp_path, seed):
     env = dict(os.environ, PATH=f"{tmp_path}:{os.environ['PATH']}", HETNET_PYTHON=sys.executable,
                SLURM_SUBMIT_DIR=str(ROOT), SLURM_ARRAY_TASK_ID=str(seed), SLURM_ARRAY_JOB_ID="812345",
                SOFTROLE_ADAM_PCP_RUN_ROOT=str(tmp_path / "adam"))
+    env = configure_stokes_run(env, tmp_path)
     result = subprocess.run(["bash", str(ROOT / "slurm" / "softrole_adam_pcp.sbatch"), "--dry-run"],
                             env=env, text=True, capture_output=True)
     assert result.returncode == 0, result.stderr

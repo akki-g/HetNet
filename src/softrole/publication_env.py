@@ -10,6 +10,8 @@ import json
 from pathlib import Path
 from types import ModuleType
 
+from softrole.paths import code_root
+
 
 SIMULATOR_FILES = (
     "publication_reconstruction/runtime/WildFire_Simulate_Original.py",
@@ -24,7 +26,7 @@ def _digest(files):
 
 
 def simulator_identity(root=None):
-    root = Path(root) if root is not None else Path(__file__).resolve().parents[1]
+    root = code_root(root) if root is not None else Path(__file__).resolve().parents[1]
     files = {name: hashlib.sha256((root / name).read_bytes()).hexdigest()
              for name in SIMULATOR_FILES}
     return {"sha256": _digest(files), "files": files}
@@ -32,7 +34,7 @@ def simulator_identity(root=None):
 
 def source_binding(root, identity=None):
     """Bind an explicit source root to a complete, validated simulator identity."""
-    root = Path(root).resolve()
+    root = code_root(root)
     current = simulator_identity(root)
     if identity is not None and current != identity:
         raise ValueError("Paper simulator source bytes differ from the recorded identity")
@@ -49,10 +51,14 @@ def checkpoint_binding(checkpoint, saved):
         raise ValueError("Checkpoint source manifest identity is inconsistent")
     identity = saved.get("simulator_source")
     if (not isinstance(identity, dict) or set(identity.get("files", {})) != set(SIMULATOR_FILES)
-            or _digest(identity["files"]) != identity.get("sha256")
-            or any(files.get(name) != digest for name, digest in identity["files"].items())):
+            or _digest(identity["files"]) != identity.get("sha256")):
         raise ValueError("Checkpoint paper simulator identity is missing or inconsistent")
-    return source_binding(source / "source", identity)
+    binding = source_binding(source / "source", identity)
+    for name, digest in identity["files"].items():
+        archived_name = str((Path(binding["root"]) / name).relative_to(source / "source"))
+        if files.get(archived_name) != digest:
+            raise ValueError("Checkpoint paper simulator identity is missing or inconsistent")
+    return binding
 
 
 def load_environment_class(task, binding=None):

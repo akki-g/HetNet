@@ -18,7 +18,9 @@ import subprocess
 import sys
 import tomllib
 
-ROOT = Path(__file__).resolve().parents[1]
+from softrole.paths import repository_root
+
+ROOT = repository_root()
 STUDY = "pcp-additional-seeds-v3"
 SEEDS = (3, 4, 5)
 ARMS = ("hetnet_pcp_real", "l1a_decomposed_beta0", "l1a_decomposed_beta05",

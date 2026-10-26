@@ -12,6 +12,7 @@ checkpoint=$1 output=$2
 shift 2
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$root"
+export PYTHONPATH="$root/src:$root/src/envs${PYTHONPATH:+:$PYTHONPATH}"
 [[ -f "$checkpoint" ]] || { echo "Checkpoint not found: $checkpoint" >&2; exit 2; }
 python=${HETNET_PYTHON:-$root/.venv/bin/python}
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1

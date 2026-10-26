@@ -8,7 +8,7 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNTIME = ROOT / "publication_reconstruction/runtime"
+RUNTIME = ROOT / "src/publication_reconstruction/runtime"
 
 
 @pytest.fixture(scope="module")
@@ -119,7 +119,7 @@ for binary in (False, True):
 # features, identical weights and coupled binary noise, for nonempty A teams.
 for binary in (False, True):
     filename = "fastbinary.py" if binary else "fastreal.py"
-    spec = importlib.util.spec_from_file_location("original_" + filename[:-3], root / "hetgat/graph" / filename)
+    spec = importlib.util.spec_from_file_location("original_" + filename[:-3], root / "src/hetgat/graph" / filename)
     original = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(original)
     original_cls = getattr(original, "MultiHeteroGATLayerBinary" if binary else "MultiHeteroGATLayerReal")

@@ -5,7 +5,7 @@ import json
 import sys
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 LAUNCHER_FILES = (
     "slurm/publication_backend_benchmark.sbatch",
     "slurm/publication_paper_preflight.sbatch",
@@ -36,13 +36,13 @@ def prepared_identity():
     runtime, origins, audit = inspect_source_origins()
     softrole = source_snapshot()
     files = dict(softrole["files"])
-    payloads = {"publication_reconstruction/runtime/" + name: payload
+    payloads = {"src/publication_reconstruction/runtime/" + name: payload
                 for name, payload in runtime.items()}
-    payloads["publication_reconstruction/ORIGINS.json"] = origins
-    for path in sorted((ROOT / "publication_reconstruction").glob("*.py")):
+    payloads["src/publication_reconstruction/ORIGINS.json"] = origins
+    for path in sorted((ROOT / "src/publication_reconstruction").glob("*.py")):
         payloads[path.relative_to(ROOT).as_posix()] = path.read_bytes()
     for name in ("STUDY.json",):
-        path = ROOT / "publication_reconstruction" / name
+        path = ROOT / "src/publication_reconstruction" / name
         payloads[path.relative_to(ROOT).as_posix()] = path.read_bytes()
     for name, payload in payloads.items():
         checksum = hashlib.sha256(payload).hexdigest()
@@ -58,7 +58,9 @@ def prepared_identity():
             raise RuntimeError("Source changed while preparing study identity: " + name)
         files[name] = checksum
     simulator = simulator_identity()
-    if any(files.get(name) != checksum for name, checksum in simulator["files"].items()):
+    # Simulator keys stay stable so existing checkpoints keep their identity;
+    # the complete checkout manifest records their current repository paths.
+    if any(files.get("src/" + name) != checksum for name, checksum in simulator["files"].items()):
         raise RuntimeError("Simulator changed while preparing its shared source identity")
     return {"source": _manifest(files), "dependencies": _manifest(dependencies),
             "launchers": _manifest(launchers), "simulator_source": simulator,

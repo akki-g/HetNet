@@ -1,4 +1,5 @@
 #!/bin/bash -l
+# Submit with: python scripts/submit_stokes.py --title SLUG --purpose TEXT -- slurm/softrole_capcon_readiness.sbatch
 # Focused bounded checks only; forward explicit evidence/baseline/output arguments.
 #SBATCH --job-name=capcon-readiness
 #SBATCH --account=cenyioha
@@ -9,16 +10,15 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
 #SBATCH --time=06:00:00
-#SBATCH --output=capcon-readiness-%j.out
-#SBATCH --error=capcon-readiness-%j.err
 set -euo pipefail
+source "${SLURM_SUBMIT_DIR:?Submit from repository root}/scripts/stokes_run.sh"
 cd "${SLURM_SUBMIT_DIR:?Submit from the revised checkout}"
 module load anaconda/anaconda-2024.10
 export HETNET_PYTHON="${HETNET_PYTHON:-$HOME/HetNet/.venv/bin/python}"
 [[ -x $HETNET_PYTHON ]] || { echo 'Set HETNET_PYTHON to the existing pinned interpreter' >&2; exit 2; }
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 export PYTHONUNBUFFERED=1 DGLBACKEND=pytorch PYTHONNOUSERSITE=1
-export PYTHONPATH="$PWD:$PWD/envs"
+export PYTHONPATH="$PWD/src:$PWD/src/envs"
 # Short paths avoid Unix multiprocessing socket-length limits in test fixtures.
 export TMPDIR
 TMPDIR=$(mktemp -d "/tmp/capcon-${SLURM_JOB_ID:?}.XXXXXX")

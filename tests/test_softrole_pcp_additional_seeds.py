@@ -19,6 +19,8 @@ from softrole import programme
 from publication_reconstruction.__main__ import parser, resolve
 from publication_reconstruction.study import train_arguments
 
+from stokes_test_support import configure_stokes_run
+
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "slurm/softrole_pcp_additional_seeds.sbatch"
 
@@ -115,7 +117,7 @@ def test_capcon_collector_seed_uses_new_root_seed_and_is_work_indexed(monkeypatc
 
 
 def test_hetnet_root_seeds_reach_existing_independent_worker_streams():
-    path = ROOT / "publication_reconstruction/runtime/hetnet_ext/recovery.py"
+    path = ROOT / "src/publication_reconstruction/runtime/hetnet_ext/recovery.py"
     spec = importlib.util.spec_from_file_location("additional_seed_recovery", path)
     recovery = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(recovery)
@@ -221,6 +223,7 @@ def shell(tmp_path):
     env={**os.environ,"PATH":str(tools)+os.pathsep+os.environ['PATH'],"SLURM_SUBMIT_DIR":str(submit),
          "SLURM_ARRAY_JOB_ID":"123456","SLURM_ARRAY_TASK_ID":"0","HETNET_PYTHON":str(interpreter),
          "CAPTURE":str(capture),"CONDA_SHLVL":"4","CONDA_PREFIX_1":"/stale"}
+    env = configure_stokes_run(env, tmp_path)
     env.pop("BASH_ENV",None);env.pop("ENV",None)
     def invoke(arguments=(),**changes):
         result=subprocess.run(['bash',str(SCRIPT),*arguments],env={**env,**changes},capture_output=True,text=True,timeout=10)
@@ -236,7 +239,7 @@ def test_slurm_routes_each_index_without_shell_interpolation(shell,index):
     assert [r['tool'] for r in rows]==['module','srun']
     assert rows[0]['args']==['load','anaconda/anaconda-2024.10']
     assert rows[-1]['args']==['--cpu-bind=cores',str(interpreter),'-u','-m','softrole.pcp_additional_seeds',
-                             '--index',str(index),'--run-root',str(submit/'runs/pcp_additional_seeds_v3_123456'),
+                             '--index',str(index),'--run-root',str(submit.parent/'titled run/training'),
                              '--capcon-manifest',str(submit/'runs/capcon_l1_40m_20261017/manifest.json')]
     assert rows[-1]['threads']=='1' and rows[-1]['conda']=='0'
 
@@ -281,7 +284,7 @@ def test_pinned_version_accepts_standard_local_build_label(tmp_path, monkeypatch
 def test_actual_paper_worker_branch_does_not_use_adjacent_additive_seeds():
     import ast
     from types import SimpleNamespace
-    path = ROOT / "publication_reconstruction/runtime/multi_processing.py"
+    path = ROOT / "src/publication_reconstruction/runtime/multi_processing.py"
     tree = ast.parse(path.read_text())
     worker = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == "MultiProcessWorker")
     method = next(n for n in worker.body if isinstance(n, ast.FunctionDef) and n.name == "run")

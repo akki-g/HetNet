@@ -40,12 +40,13 @@ from softrole.learning import compute_episode_loss, episode_loss_terms, team_gae
 from softrole.lr_diagnostics import clone, policy_statistics
 from softrole.model import SoftRoleNet
 from softrole.optimizers import make_optimizer, validate_optimizer_resume
+from softrole.paths import code_root, repository_root
 from softrole.rollout import run_episode
 from softrole.scenarios import make_scenarios
 from softrole.train import apply_gradients, source_snapshot, write_json
 
-ROOT = Path(__file__).resolve().parents[1]
-NUMERICAL_ROOT = ROOT
+ROOT = repository_root()
+NUMERICAL_ROOT = code_root(ROOT)
 RUNTIMES = ('current', 'archived-adam')
 COMPOSITIONS = ((1, 2), (2, 2), (3, 1))
 PROTOCOL_VERSIONS = (1, 2)
@@ -184,8 +185,10 @@ def audit_archive(checkpoint, saved, cfg):
         path = Path(name)
         if path.is_absolute() or '..' in path.parts or sha(run / 'source' / name) != expected:
             raise ValueError(f'Archived source hash mismatch: {name}')
+    archived_runtime = code_root(run / 'source')
     for name in CORE:
-        if manifest['files'].get(name) != sha(NUMERICAL_ROOT / name):
+        archived_name = str((archived_runtime / name).relative_to(run / 'source'))
+        if manifest['files'].get(archived_name) != sha(NUMERICAL_ROOT / name):
             raise ValueError(f'Numerical source differs from archive: {name}; audit/reconcile before replay')
     # New read-only diagnostic hooks in train() do not alter these numerical
     # functions. Compare their ASTs so unrelated logging additions are allowed.
@@ -194,7 +197,7 @@ def audit_archive(checkpoint, saved, cfg):
             tree = ast.parse(path.read_text())
             return ast.dump(next(node for node in tree.body
                                  if isinstance(node, ast.FunctionDef) and node.name == function))
-        if function_ast(run / 'source' / 'softrole/train.py') != function_ast(NUMERICAL_ROOT / 'softrole/train.py'):
+        if function_ast(archived_runtime / 'softrole/train.py') != function_ast(NUMERICAL_ROOT / 'softrole/train.py'):
             raise ValueError(f'Numerical training function differs from archive: {function}')
     if Config(**read_json(run / 'config.json')).to_dict() != cfg.to_dict():
         raise ValueError('Run/checkpoint configuration mismatch')

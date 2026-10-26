@@ -1,4 +1,5 @@
 #!/bin/bash
+# Submit with: python scripts/submit_stokes.py --title SLUG --purpose TEXT -- slurm/softrole_pcp_additional_seeds.sbatch
 # Fresh seeds 3,4,5: shared beta0.5/team/beta1 (6..14), banked factorial (15..41).
 # Original HetNet (0..2) and beta0 (3..5) remain available via --array.
 # Submit from the frozen checkout with inherited BASH_ENV/ENV removed.
@@ -12,9 +13,8 @@
 #SBATCH --mem=16G
 #SBATCH --time=48:00:00
 #SBATCH --array=6-41%36
-#SBATCH --output=pcp-add-seeds-%A_%a.out
-#SBATCH --error=pcp-add-seeds-%A_%a.err
 set -Eeuo pipefail
+source "${SLURM_SUBMIT_DIR:?Submit from repository root}/scripts/stokes_run.sh"
 trap 'printf "pcp-add-seeds failed at line %s (exit %s)\n" "$LINENO" "$?" >&2' ERR
 (( $# == 0 )) || { echo 'No script arguments: scientific settings are fixed; select indices with the scheduler array option.' >&2; exit 2; }
 [[ ${SLURM_ARRAY_TASK_ID:-} =~ ^([0-9]|[1-3][0-9]|4[01])$ ]] || { echo 'Expected array index 0..41' >&2; exit 2; }
@@ -41,9 +41,9 @@ export HETNET_PYTHON="${HETNET_PYTHON:-$PWD/.venv/bin/python}"
 [[ -x $HETNET_PYTHON ]] || { echo 'pcp-add-seeds: pinned interpreter is not executable' >&2; exit 2; }
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 export PYTHONUNBUFFERED=1 DGLBACKEND=pytorch PYTHONNOUSERSITE=1
-export PYTHONPATH="$PWD:$PWD/envs"
+export PYTHONPATH="$PWD/src:$PWD/src/envs"
 printf 'pcp-add-seeds: job=%s index=%s node=%s\n' "$SLURM_ARRAY_JOB_ID" "$SLURM_ARRAY_TASK_ID" "${SLURM_JOB_NODELIST:-unknown}" >&2
 exec srun --cpu-bind=cores "$HETNET_PYTHON" -u -m softrole.pcp_additional_seeds \
   --index "$SLURM_ARRAY_TASK_ID" \
-  --run-root "$PWD/runs/pcp_additional_seeds_v3_${SLURM_ARRAY_JOB_ID}" \
+  --run-root "${PCP_ADDITIONAL_RUN_ROOT:-$HETNET_RUN_DIR/training}" \
   --capcon-manifest "${PCP_ADDITIONAL_BASE_MANIFEST:-$PWD/runs/capcon_l1_40m_20261017/manifest.json}"

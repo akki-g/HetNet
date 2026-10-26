@@ -70,7 +70,7 @@ FREEZE_CERTIFICATION = ("Gate freezes pin the gate of the previous step; shared 
                         "They are scheduled only for banked and capability arms.")
 HETNET_ADMISSION = {
     "E2_nominal": "Evaluate each admitted paper-v1 HetNet PCP checkpoint on panels/final_P_A_nominal.json with "
-                  "publication_reconstruction/evaluation.py (--run-dir, --checkpoint, --scenarios, --protocol) and "
+                  "src/publication_reconstruction/evaluation.py (--run-dir, --checkpoint, --scenarios, --protocol) and "
                   "summarize its reports as a separate stratum labelled by its own configuration.",
     "E5_sensor_loss": "Use panels/final_P_A_failure.json with and without --sham. HetNet has no health input, so "
                       "that evaluator zeroes the victim's typed sensory block: an evaluation-only distribution shift.",
@@ -356,7 +356,7 @@ def prepare_evaluation(manifest_path, run_root, output, panel_seed=PANEL_SEED, e
                   "arm_configs": arm_configs, "controls": {arm["name"]: arm["control"] for arm in manifest["arms"]},
                   "runs": runs, "tasks": len(tasks), "jobs": sum(len(t["jobs"]) for t in tasks),
                   "tasks_sha256": canonical_digest(tasks),
-                  "submission": "Preparation never submits. Submit evaluate.sbatch from the repository root after creating logs_sr; keep this checkout fixed until all tasks finish."}
+                  "submission": "Preparation never submits. Use submit.sh through scripts/submit_stokes.py so outputs and logs share one runs/ directory; keep this checkout fixed until all tasks finish."}
     if capcon:
         evaluation.update(checkpoint_policy=manifest["checkpoint_policy"], evaluation_policy=manifest["evaluation_policy"])
     else:
@@ -368,6 +368,8 @@ def prepare_evaluation(manifest_path, run_root, output, panel_seed=PANEL_SEED, e
                                                    "per_arm": development_summary(runs),
                                                    "weighting": "episode-weighted within seed; equal seeds across"})
     (destination / "evaluate.sbatch").write_text(slurm_script(destination / "tasks.json", len(tasks)))
+    (destination / "submit.sh").write_text(submission_script(destination))
+    (destination / "submit.sh").chmod(0o755)
     return evaluation
 
 
@@ -375,23 +377,42 @@ def slurm_script(tasks_path, task_count):
     return "\n".join([
         "#!/bin/bash -l",
         "# Generated frozen-evaluation array for the locked CapCom programme; one task per run.",
-        "# Resources are unmeasured starting settings. Submit from the repository root after creating logs_sr.",
+        "# Resources are unmeasured starting settings. Submit with the adjacent submit.sh.",
         "#SBATCH --job-name=capcom-programme-eval",
         "#SBATCH --account=cenyioha", "#SBATCH --partition=normal", "#SBATCH --constraint=sapphirerapids",
         "#SBATCH --nodes=1", "#SBATCH --ntasks=1", "#SBATCH --cpus-per-task=1",
         "#SBATCH --mem=8G", "#SBATCH --time=12:00:00",
         f"#SBATCH --array=0-{task_count - 1}%6",
-        "#SBATCH --output=logs_sr/capcom-programme-eval-%A_%a.out",
-        "#SBATCH --error=logs_sr/capcom-programme-eval-%A_%a.err",
         "set -euo pipefail",
+        'source "${SLURM_SUBMIT_DIR:?Submit from repository root}/scripts/stokes_run.sh"',
         'cd "${SLURM_SUBMIT_DIR:?Submit from the repository root}"',
+        f'stokes_run_output {shlex.quote(str(Path(tasks_path).resolve().parent))}',
         'index=${SLURM_ARRAY_TASK_ID:?Array index required}',
         "module load anaconda/anaconda-2024.10",
         "export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1",
         "export PYTHONUNBUFFERED=1 DGLBACKEND=pytorch",
-        'export PYTHONPATH="$PWD:$PWD/envs${PYTHONPATH:+:$PYTHONPATH}"',
+        'export PYTHONPATH="$PWD/src:$PWD/src/envs${PYTHONPATH:+:$PYTHONPATH}"',
         'python=${HETNET_PYTHON:-$PWD/.venv/bin/python}',
         f'exec srun --cpu-bind=cores "$python" -u -m softrole.programme_evaluation run --tasks {shlex.quote(str(Path(tasks_path).resolve()))} --index "$index"',
+        "",
+    ])
+
+
+def submission_script(destination):
+    root = Path(__file__).resolve().parents[2]
+    destination = Path(destination).resolve()
+    container = next((path for path in (destination, *destination.parents)
+                      if (path / "run_info.json").is_file()), destination)
+    return "\n".join([
+        "#!/usr/bin/env bash", "set -euo pipefail", f"cd {shlex.quote(str(root))}",
+        'run_dir=${HETNET_RUN_DIR:-}',
+        f'[[ -n $run_dir ]] || run_dir={shlex.quote(str(container))}', 'identity=()',
+        'if [[ ! -f "$run_dir/run_info.json" ]]; then',
+        "  identity=(--title 'Frozen CapCom programme evaluation'",
+        "    --purpose 'Compare the prepared programme arms on their locked development or final evaluation panels.')",
+        'fi',
+        'exec "${HETNET_SUBMISSION_PYTHON:-$PWD/.venv/bin/python}" scripts/submit_stokes.py '
+        '--run-dir "$run_dir" ${identity[@]+"${identity[@]}"} -- ' + shlex.quote(str(destination.resolve() / "evaluate.sbatch")),
         "",
     ])
 

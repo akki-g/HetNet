@@ -19,10 +19,11 @@ import sys
 import time
 
 WORKLOADS = (("pp", "real"), ("pcp", "real"), ("fc", "real"), ("pcp", "binary"))
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 THREAD_ENV = {name: "1" for name in
               ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS")}
-THREAD_ENV.update(DGLBACKEND="pytorch", PYTHONUNBUFFERED="1")
+THREAD_ENV.update(DGLBACKEND="pytorch", PYTHONUNBUFFERED="1",
+                  PYTHONPATH=os.pathsep.join((str(ROOT / "src"), str(ROOT / "src/envs"))))
 
 
 def add_commands(commands):
@@ -98,9 +99,9 @@ def source_identity():
     runtime, origins = validate_source_origins()
     payloads = {"runtime/" + name: data for name, data in runtime.items()}
     payloads["ORIGINS.json"] = origins
-    for pattern in ("publication_reconstruction/*.py",
+    for pattern in ("src/publication_reconstruction/*.py",
                     "slurm/publication_*.sbatch", "slurm/softrole_paper_fc.sbatch",
-                    "publication_reconstruction/STUDY.json", "pyproject.toml", "uv.lock"):
+                    "src/publication_reconstruction/STUDY.json", "pyproject.toml", "uv.lock"):
         for path in sorted(ROOT.glob(pattern)):
             payloads[path.relative_to(ROOT).as_posix()] = path.read_bytes()
     return {name: hashlib.sha256(data).hexdigest() for name, data in payloads.items()}

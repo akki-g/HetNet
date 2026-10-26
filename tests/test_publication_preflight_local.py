@@ -45,7 +45,7 @@ def fake_job(tmp_path):
             "pid": os.getpid(), "started": started,
             "environment": {key: os.environ.get(key) for key in
                 ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",
-                 "NUMEXPR_NUM_THREADS", "PYTHONUNBUFFERED", "DGLBACKEND")}}))
+                 "NUMEXPR_NUM_THREADS", "PYTHONUNBUFFERED", "DGLBACKEND", "PYTHONPATH")}}))
         if mode == "wait":
             grandchild = subprocess.Popen([sys.executable, "-u", __file__, str(root),
                                            name + "_probe", "grandchild"])
@@ -105,7 +105,9 @@ def test_four_jobs_overlap_and_save_episode_metrics(launcher, fake_job, tmp_path
     assert max(row["started"] for row in starts) < min(finishes)
     expected_environment = {"OPENBLAS_NUM_THREADS": "1", "OMP_NUM_THREADS": "1",
                             "MKL_NUM_THREADS": "1", "NUMEXPR_NUM_THREADS": "1",
-                            "PYTHONUNBUFFERED": "1", "DGLBACKEND": "pytorch"}
+                            "PYTHONUNBUFFERED": "1", "DGLBACKEND": "pytorch",
+                            "PYTHONPATH": os.pathsep.join((str(launcher.ROOT / "src"),
+                                                        str(launcher.ROOT / "src/envs")))}
     assert all(row["environment"] == expected_environment for row in starts)
     manifest = json.loads((root / "local_launch.json").read_text())
     assert manifest["concurrency"] == 4

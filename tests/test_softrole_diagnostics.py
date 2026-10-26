@@ -81,7 +81,7 @@ def test_changed_locked_ledger_and_reserved_panel_rejected_before_output(tmp_pat
 def test_archive_tamper_and_signature_tamper_rejected(tmp_path):
     checkpoint = fixture_run(tmp_path)
     saved, cfg, _, _ = load_checkpoint(checkpoint)
-    source = checkpoint.parent.parent / 'source' / 'softrole' / 'model.py'
+    source = checkpoint.parent.parent / 'source' / 'src' / 'softrole' / 'model.py'
     original = source.read_bytes()
     source.write_bytes(original + b'\n')
     with pytest.raises(ValueError, match='Archived source hash mismatch'):

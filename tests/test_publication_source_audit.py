@@ -12,11 +12,13 @@ import pytest
 from publication_reconstruction import __main__ as launcher
 
 
+from stokes_test_support import configure_stokes_run
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def source_tree(tmp_path):
-    package = tmp_path / "publication_reconstruction"
+    package = tmp_path / "src/publication_reconstruction"
     source = package / "runtime/main.py"
     source.parent.mkdir(parents=True)
     source.write_text("print('approved')\n")
@@ -68,7 +70,7 @@ def test_bytecode_remains_non_source_but_other_metadata_does_not(tmp_path, monke
 def test_read_only_cli_reports_inventory_and_exit_status(tmp_path, valid):
     package, source = source_tree(tmp_path)
     for name in ("__init__.py", "__main__.py"):
-        shutil.copy2(ROOT / "publication_reconstruction" / name, package / name)
+        shutil.copy2(ROOT / "src/publication_reconstruction" / name, package / name)
     scripts = tmp_path / "scripts"
     scripts.mkdir()
     shutil.copy2(ROOT / "scripts/record_publication_sources.py", scripts)
@@ -87,8 +89,8 @@ def test_read_only_cli_reports_inventory_and_exit_status(tmp_path, valid):
 
 
 def test_all_required_runtime_files_are_distributable_by_git():
-    origins = json.loads((ROOT / "publication_reconstruction/ORIGINS.json").read_text())["files"]
-    paths = [f"publication_reconstruction/runtime/{name}" for name in origins]
+    origins = json.loads((ROOT / "src/publication_reconstruction/ORIGINS.json").read_text())["files"]
+    paths = [f"src/publication_reconstruction/runtime/{name}" for name in origins]
     assert all((ROOT / name).is_file() for name in paths)
     # --no-index tests the ignore rule even when a file is already tracked. A
     # future fresh checkout must not depend on a locally ignored runtime file.
@@ -113,8 +115,8 @@ def test_source_audit_batch_is_read_only_and_propagates_guard_failure(tmp_path):
         path.write_text("#!/bin/bash\n" + body)
         path.chmod(0o755)
     result = subprocess.run(["bash", str(script)], cwd=tmp_path, text=True, capture_output=True,
-        env={**os.environ, "PATH": str(tools) + os.pathsep + os.environ["PATH"],
-             "SLURM_SUBMIT_DIR": str(tmp_path), "HETNET_PYTHON": str(tools / "audit interpreter")})
+        env=configure_stokes_run({**os.environ, "PATH": str(tools) + os.pathsep + os.environ["PATH"],
+             "SLURM_SUBMIT_DIR": str(tmp_path), "HETNET_PYTHON": str(tools / "audit interpreter")}, tmp_path))
     assert result.returncode == 17
     assert result.stdout.splitlines() == ["-u", "scripts/record_publication_sources.py", "--check"]
     assert "--output" not in result.stdout.splitlines() and " train " not in content

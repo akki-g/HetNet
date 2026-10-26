@@ -11,7 +11,7 @@ import textwrap
 import pytest
 
 
-RUNTIME = Path(__file__).resolve().parents[1] / "publication_reconstruction" / "runtime"
+RUNTIME = Path(__file__).resolve().parents[1] / "src/publication_reconstruction" / "runtime"
 COMMON = """
 import argparse
 import inspect

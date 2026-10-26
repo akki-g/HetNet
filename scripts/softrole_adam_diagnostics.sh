@@ -40,7 +40,7 @@ for epoch in 1000 2000; do
   done
 done
 export HETNET_PYTHON="$python"
-export PYTHONPATH="$root:$root/envs${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONPATH="$root/src:$root/src/envs${PYTHONPATH:+:$PYTHONPATH}"
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 export PYTHONUNBUFFERED=1 DGLBACKEND=pytorch
 mkdir -p "$(dirname "$output_root")"
@@ -75,11 +75,17 @@ for stage in midway final; do
   done
 done
 if [[ $submit == true ]]; then
-  mkdir -p logs_sr
+  submission_root=${HETNET_RUN_DIR:-$output_root}
+  submission_identity=()
+  if [[ -z ${HETNET_RUN_DIR:-} ]]; then
+    submission_identity=(--title 'PCP historical Adam midway versus final diagnostics'
+      --purpose 'Compare frozen D1-D6 diagnostics at midway and final checkpoints for historical Adam seeds 0-2.')
+  fi
   for stage in midway final; do
     CAPCOM_DIAGNOSTICS_MANIFEST="$output_root/manifests/$stage.json" \
     CAPCOM_DIAGNOSTICS_OUTPUT_ROOT="$output_root/$stage" \
-      sbatch --export=ALL --array=0-2%3 slurm/softrole_diagnostics.sbatch
+      "$python" scripts/submit_stokes.py --run-dir "$submission_root" ${submission_identity[@]+"${submission_identity[@]}"} \
+        -- --export=ALL --array=0-2%3 slurm/softrole_diagnostics.sbatch
   done
 fi
 echo "Results root: $output_root"

@@ -14,7 +14,7 @@ import shlex
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path[:0] = [str(ROOT / "src"), str(ROOT / "src/envs")]
 
 # NumPy/OpenBLAS can start threads while Torch is importing. Limit them before
 # any numerical imports, including when the login environment requests 64.
@@ -128,15 +128,15 @@ def slurm_script(jobs):
     """One real Slurm array: each task executes exactly one frozen evaluation."""
     lines = ["#!/bin/bash -l",
         "# Frozen PCP evaluation only. Resource limits are unmeasured starting values.",
-        "# Submit from the repository root after creating logs_sr.",
+        "# Submit with the adjacent submit.sh to keep all evidence in one run directory.",
         "#SBATCH --job-name=softrole-pcp-frozen",
         "#SBATCH --account=cenyioha", "#SBATCH --partition=normal",
         "#SBATCH --nodes=1", "#SBATCH --ntasks=1", "#SBATCH --cpus-per-task=1",
         "#SBATCH --mem=4G", "#SBATCH --time=04:00:00",
         f"#SBATCH --array=0-{len(jobs) - 1}%3",
-        "#SBATCH --output=logs_sr/pcp-frozen-%A_%a.out",
-        "#SBATCH --error=logs_sr/pcp-frozen-%A_%a.err",
-        "set -euo pipefail", f"cd {shlex.quote(str(ROOT))}",
+        "set -euo pipefail",
+        'source "${SLURM_SUBMIT_DIR:?Submit from repository root}/scripts/stokes_run.sh"',
+        f"cd {shlex.quote(str(ROOT))}",
         "index=${SLURM_ARRAY_TASK_ID:?Submit this file with sbatch as an array}",
         "module load anaconda/anaconda-2024.10",
         'export HETNET_PYTHON="${HETNET_PYTHON:-$PWD/.venv/bin/python}"',
@@ -150,20 +150,32 @@ def slurm_script(jobs):
             command.append("--trace")
         if job["condition"] == "sham":
             command.append("--sham")
-        lines.extend([f"  {index})", "    exec " + shlex.join(command) + " ;;"])
+        lines.extend([f"  {index})",
+                      f"    stokes_run_output {shlex.quote(job['output'])}",
+                      "    exec " + shlex.join(command) + " ;;"])
     lines.extend([f"  *) echo 'Expected array index 0..{len(jobs) - 1}' >&2; exit 2 ;;", "esac"])
     return "\n".join(lines) + "\n"
 
 
 def submission_script(output, jobs):
+    output = Path(output).resolve()
+    container = next((path for path in (output, *output.parents)
+                      if (path / "run_info.json").is_file()), output)
     lines = ["#!/usr/bin/env bash", "set -euo pipefail",
         "# Optional convenience wrapper: submit.sbatch is the actual Slurm job file.",
         "# Keep this evaluator checkout unchanged while jobs are queued or running.",
         f"cd {shlex.quote(str(ROOT))}",
-        "mkdir -p logs_sr", "set -o noclobber",
+        'run_dir=${HETNET_RUN_DIR:-}',
+        f'[[ -n $run_dir ]] || run_dir={shlex.quote(str(container))}', 'identity=()',
+        'if [[ ! -f "$run_dir/run_info.json" ]]; then',
+        "  identity=(--title 'Frozen PCP shared versus banked evaluation'",
+        "    --purpose 'Evaluate the six fixed nominal PCP policies on locked composition and paired failure/sham panels.')",
+        "fi", "set -o noclobber",
         f"exec 3> {shlex.quote(str(output / 'job_ids.tsv'))}", "set +o noclobber",
         "printf 'model\\tseed\\tcondition\\tjob_id\\n' >&3",
-        f"submission=$({shlex.join(['sbatch', '--parsable', str(output / 'submit.sbatch')])})",
+        'submission=$("${HETNET_SUBMISSION_PYTHON:-$PWD/.venv/bin/python}" scripts/submit_stokes.py '
+        '--run-dir "$run_dir" ${identity[@]+"${identity[@]}"} -- '
+        + shlex.quote(str(output / 'submit.sbatch')) + ')',
         'array_id=${submission%%;*}']
     for index, job in enumerate(jobs):
         fields = shlex.join([job["model"], str(job["training_seed"]), job["condition"]])
@@ -218,7 +230,7 @@ def prepare(run_root, output, min_steps=30_000_000):
     script.write_text(submission_script(output, jobs))
     script.chmod(0o755)
     manifest = {"schema_version": 1, "run_root": str(run_root), "submitted": False,
-        "submission_status_scope": "Preparation never submits. Submit submit.sbatch with sbatch; optional submit.sh also records job_ids.tsv. This field is not live scheduler status.",
+        "submission_status_scope": "Preparation never submits. Use submit.sh to submit through scripts/submit_stokes.py and record job_ids.tsv. This field is not live scheduler status.",
         "slurm_array": {"tasks": len(jobs), "max_concurrent": 3, "cpus_per_task": 1,
                         "memory": "4G", "time_limit": "04:00:00"},
         "checkpoint_rule": "First available saved checkpoint at or above min_steps in each true metrics.jsonl ledger; no outcome-based selection",
@@ -234,7 +246,7 @@ def prepare(run_root, output, min_steps=30_000_000):
         "failure_panel": {"composition": [2, 1], "episodes_per_condition": 100, "seed": 2701,
                           "failure_probability": 1, "failure_window": [10, 30], "count": len(failure),
                           "paired_sham_uses_same_scenarios": True, "trace": True},
-        "execution_requirement": "submit.sbatch uses the live evaluator checkout. Submit from its repository root after creating logs_sr. Keep the runtime source and launchers unchanged while jobs are queued/running. The source archive is provenance, not an alternate execution checkout.",
+        "execution_requirement": "submit.sbatch uses the live evaluator checkout. Use submit.sh from its repository root; preparation and scheduler logs share HETNET_RUN_DIR when set, otherwise the prepared output must be under runs/. Keep the runtime source and launchers unchanged while jobs are queued/running. The source archive is provenance, not an alternate execution checkout.",
         "limitations": ["Sample counts can overshoot the threshold and differ across checkpoints",
                         "The 100-scenario native failure/sham panel is an exposure diagnostic",
                         "Early completion can prevent exposure to the reference 10..30 event window"]}

@@ -9,7 +9,7 @@ import torch
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location(
     "paper_learning_under_test",
-    ROOT / "publication_reconstruction/runtime/hetnet_ext/paper_learning.py")
+    ROOT / "src/publication_reconstruction/runtime/hetnet_ext/paper_learning.py")
 learning = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(learning)
 DTYPE = torch.float64

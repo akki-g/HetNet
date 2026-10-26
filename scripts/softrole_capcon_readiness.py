@@ -27,11 +27,18 @@ def write(path, payload):
     Path(path).write_text(json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\n")
 
 
+def source_paths(checkout):
+    """Import the current src layout or an immutable historical flat checkout."""
+    checkout = Path(checkout)
+    source = checkout / "src" if (checkout / "src/softrole").is_dir() else checkout
+    return [str(source), str(source / "envs")]
+
+
 def test_environment(checkout, test_tools=None, environment=None):
     """Isolate mocked shell commands after the real module/allocation setup."""
     env = {k: v for k, v in (os.environ if environment is None else environment).items()
            if not k.startswith("BASH_FUNC_") and k not in ("BASH_ENV", "ENV")}
-    paths = [str(checkout), str(Path(checkout) / "envs")]
+    paths = source_paths(checkout)
     if test_tools is not None:
         paths.append(str(test_tools))
     env.update(PYTHONPATH=os.pathsep.join(paths), PYTHONNOUSERSITE="1",
@@ -190,7 +197,7 @@ class Runner:
                        "temporary_directory": os.environ.get("TMPDIR"),
                        "cleanup_scope": "Training interruption waits for its disposable process group. Separate sessions created by pytest helpers are not claimed to belong to that group."}
         self.env = dict(os.environ, HETNET_PYTHON=sys.executable,
-                        PYTHONPATH=os.pathsep.join((str(checkout), str(Path(checkout) / "envs"))),
+                        PYTHONPATH=os.pathsep.join(source_paths(checkout)),
                         PYTHONUNBUFFERED="1", DGLBACKEND="pytorch", **dict.fromkeys(THREADS, "1"))
         self.save()
 
@@ -345,7 +352,7 @@ def execute(args):
         raise ValueError("Baseline and candidate must be separate checkouts")
     if args.test_tools is not None and not args.test_tools.is_dir():
         raise ValueError("--test-tools must name an existing directory")
-    sys.path[:0] = [str(checkout), str(checkout / "envs")]
+    sys.path[:0] = source_paths(checkout)
     runner = Runner(checkout, args.output.resolve(), args.timeout_seconds)
     try:
         from importlib.metadata import version

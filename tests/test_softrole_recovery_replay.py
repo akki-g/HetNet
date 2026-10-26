@@ -11,7 +11,7 @@ from softrole.config import Config
 from softrole.recovery_replay import exact, sha, verify_source
 from softrole.train import train
 
-WORKER = Path(__file__).resolve().parents[1] / 'softrole/recovery_replay.py'
+WORKER = Path(__file__).resolve().parents[1] / 'src/softrole/recovery_replay.py'
 
 
 @pytest.fixture
@@ -74,6 +74,25 @@ def test_rejects_unprovable_replay(archive, tmp_path, failure):
 
 def test_source_mutation_and_tensor_type_rejected(archive):
     assert not exact(torch.ones(1), torch.ones(1, dtype=torch.float64))
-    (archive / 'source/softrole/model.py').write_text('changed')
+    (archive / 'source/src/softrole/model.py').write_text('changed')
     with pytest.raises(ValueError, match='source hash mismatch'):
         verify_source(archive)
+
+
+@pytest.mark.parametrize("archive", [1, 4], indirect=True)
+def test_replay_loads_archived_simulator_even_when_live_import_path_is_poisoned(archive, tmp_path, monkeypatch):
+    poisoned = tmp_path / 'unrelated-live-modules'
+    (poisoned / 'ic3net_envs').mkdir(parents=True)
+    (poisoned / 'ic3net_envs/__init__.py').write_text(
+        "raise RuntimeError('live simulator must not enter archived replay')\n")
+    (poisoned / 'WildFire_Simulate_Original.py').write_text(
+        "raise RuntimeError('live wildfire must not enter archived replay')\n")
+    monkeypatch.setenv('PYTHONPATH', str(poisoned))
+    output = tmp_path / 'isolated-replay'
+    result = execute(archive, output)
+    assert result.returncode == 0, result.stderr
+    assert json.loads((output / 'admission.json').read_text())['admitted']
+    boundary = torch.load(output / 'boundary.pt', weights_only=False)
+    recorded = torch.load(archive / 'checkpoints/epoch0002.pt', weights_only=False)
+    assert exact(boundary['model_state'], recorded['model_state'])
+    assert exact(boundary['optimizer_state'], recorded['optimizer_state'])

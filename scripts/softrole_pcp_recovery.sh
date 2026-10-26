@@ -45,7 +45,7 @@ module load anaconda/anaconda-2024.10
 # A module may set thread defaults itself; enforce the limit again afterwards.
 export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1
 export PYTHONUNBUFFERED=1 DGLBACKEND=pytorch PYTHONNOUSERSITE=1
-export PYTHONPATH="$root:$root/envs"
+export PYTHONPATH="$root/src:$root/src/envs"
 export HETNET_PYTHON="${HETNET_PYTHON:-$root/.venv/bin/python}"
 [[ -x $HETNET_PYTHON ]] || { echo 'Pinned interpreter is not executable' >&2; exit 2; }
 "$HETNET_PYTHON" -u -m softrole.pcp_recovery prepare \
@@ -57,12 +57,20 @@ if $prepare_only; then
   exit 0
 fi
 # A successful reconstruction of BOTH boundaries is required for every branch.
-reconstruct_submission=$(env -u BASH_ENV -u ENV sbatch --parsable --array=0-1%2 \
+submission_root=${HETNET_RUN_DIR:-$output_root}
+submission_identity=()
+if [[ -z ${HETNET_RUN_DIR:-} ]]; then
+  submission_identity=(--title 'PCP post-collapse recovery from reconstructed boundaries'
+    --purpose 'Reconstruct both locked collapse boundaries before comparing six prescribed recovery branches.')
+fi
+reconstruct_submission=$(env -u BASH_ENV -u ENV "$HETNET_PYTHON" scripts/submit_stokes.py \
+  --run-dir "$submission_root" ${submission_identity[@]+"${submission_identity[@]}"} -- --array=0-1%2 \
   "$root/slurm/softrole_pcp_recovery.sbatch" reconstruct "$manifest")
 reconstruct_job=${reconstruct_submission%%;*}
 [[ $reconstruct_job =~ ^[1-9][0-9]*$ ]] || { echo 'Invalid reconstruction sbatch job ID' >&2; exit 2; }
 printf 'Reconstruction job: %s\n' "$reconstruct_submission"
-run_submission=$(env -u BASH_ENV -u ENV sbatch --parsable \
+run_submission=$(env -u BASH_ENV -u ENV "$HETNET_PYTHON" scripts/submit_stokes.py \
+  --run-dir "$submission_root" -- \
   "--dependency=afterok:$reconstruct_job" --array=0-5%6 \
   "$root/slurm/softrole_pcp_recovery.sbatch" run "$manifest")
 run_job=${run_submission%%;*}

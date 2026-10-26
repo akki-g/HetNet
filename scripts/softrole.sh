@@ -12,6 +12,7 @@ case "$model" in shared|banked|capability|constant) ;; *) echo 'Unknown model' >
 [[ $seed =~ ^[0-9]+$ ]] || { echo 'SEED must be nonnegative' >&2; exit 2; }
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$root"
+export PYTHONPATH="$root/src:$root/src/envs${PYTHONPATH:+:$PYTHONPATH}"
 python=${HETNET_PYTHON:-$root/.venv/bin/python}
 run=${SOFTROLE_RUN_ROOT:-runs/softrole}/${task}_${model}/seed${seed}
 export OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 PYTHONUNBUFFERED=1 DGLBACKEND=pytorch

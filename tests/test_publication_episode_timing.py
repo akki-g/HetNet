@@ -6,7 +6,7 @@ import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNTIME = ROOT / "publication_reconstruction/runtime"
+RUNTIME = ROOT / "src/publication_reconstruction/runtime"
 
 
 def test_episode_timing_preserves_rollout_records_and_random_streams():
