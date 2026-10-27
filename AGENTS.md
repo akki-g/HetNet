@@ -12,37 +12,42 @@ SoftRole, CapCom and CapCon are successive protocol names sharing
 the current code before changing an experiment. Explicit user instructions take
 precedence over older plans and dated reports.
 
-The current direction is **graded sensing on the shared CapCon MLP**, specified
-by [Amendment A-2](docs/graded_sensing_amendment_a2.tex). The implemented B1 pilot
-compares G-cap (physical capability descriptor) with G-type (constant class
-descriptor). Both use PCP 2P1A, seed 0, P sensing levels sampled from `(1, 3)`,
-blind A sensing, real messages, three communication rounds, independent heads,
-a decomposed critic with beta 1, Adam at 0.001 and a 2M-step target. There are no
-sensor failures in this pilot. These are the locked pilot settings, not defaults
-for every supported experiment.
+The current direction is the **stale-capability study**, specified by the
+[implementation design](docs/stale_capability_implementation_design.md) and the
+[study runbook](src/softrole/STALE_CAPABILITY.md). Amendment A-3 is the user's
+scientific document; its source/link is pending and agents must not author its
+hypotheses or claims. Implement the design in its declared stages, stopping for
+handoff after the observation fix and stability-gate tooling. Proposed protocol
+values require user confirmation; the user selects entropy regularization after
+the gate. No training or evaluation jobs are authorized by implementation work.
 
-Both pilot runs reached their budgets. The
-[current analysis](analysis/graded_sensing_2026-10-26/report.md) identifies
-training instability and action saturation; it does not establish held-out
-transfer or architecture superiority. See the
-[pilot runbook](src/softrole/GRADED_PILOT.md) for source checks and launch wiring.
-B2–B4, class-specific weights and the full graded research programme remain
-separate work. CCCA and its Gate 1/Gate 2 programme are retired. Do not revive
-older sensor-failure, binary-bank or optimizer studies as the current experiment
-without a user request.
+The G-cap/G-type graded pilot completed both budgets; its
+[analysis](analysis/graded_sensing_2026-10-26/report.md) records instability and
+saturation, without establishing held-out transfer or architecture superiority.
+B2–B4, class-specific weights and other research programmes remain separate work.
+CCCA and its Gate 1/Gate 2 programme are retired; do not revive earlier studies
+as the current experiment without a user request.
 
 ## Scientific and implementation boundaries
 
 - Preserve original HetNet reproduction entrypoints and default numerical
   behavior. New experimental options must be opt-in and keep existing binary
   configurations, scenario identities and manifests compatible.
-- Graded sensing is supported in PCP with `corrected-observation-v1`. Physical
-  sensing/capture capabilities drive observation masking, action legality and
-  failure. Position encoding is unchanged; sensory channels are outside, target
-  and total agent **counts**, with independent observation copies.
-- G-cap receives physical capability; the explicitly declared G-type control
-  receives a constant class descriptor. The descriptor enters both actor and
-  critic. Do not describe this comparison as an actor-only intervention or add
+- Graded sensing is supported in PCP. Physical κ drives observation masking,
+  environment-side action legality (`env.py`) and failure. The model's action
+  mask uses the κ passed by rollout: physical for `descriptor="capability"`,
+  the class descriptor for `descriptor="type"`. Position encoding is unchanged;
+  sensory channels are outside, target and total agent **counts**, with
+  independent observation copies.
+- `graded-observation-v2` is opt-in for graded PCP: outside flags are unmasked,
+  while target and occupancy channels retain physical visibility masking.
+  `corrected-observation-v1`, binary observations and observation width stay
+  unchanged. Binary-only diagnostics keep their existing version restrictions.
+- In the completed pilot, G-cap uses physical capability and G-type a constant
+  class descriptor; that descriptor enters both actor and critic. The
+  stale-capability design instead sends declared capability through the actor's
+  observation tail while the model κ argument (critic and action mask) remains
+  physical. Declaration support follows the stability-gate handoff; never add
   hidden class, identity or visibility information to the capability arm.
 - Keep model, learner, reward, random streams and protocol parameters fixed
   unless they are the declared subject of the change. Use the matching protocol,

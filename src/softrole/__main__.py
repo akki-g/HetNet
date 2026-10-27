@@ -28,7 +28,7 @@ def parser():
     train.add_argument("--diagnostics-every", type=int,
                        help="opt-in nominal PCP update norms and sampled policy replay every N updates")
     train.add_argument("--task", choices=("pp", "pcp", "fc"))
-    train.add_argument("--env-version", choices=("corrected-observation-v1", "paper-v1"))
+    train.add_argument("--env-version", choices=("corrected-observation-v1", "graded-observation-v2", "paper-v1"))
     train.add_argument("--study", choices=("fixed", "composition", "failure"))
     train.add_argument("--model", choices=("banked", "shared", "capability", "constant"))
     train.add_argument("--optimizer", choices=("rmsprop", "adam"))

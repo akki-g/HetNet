@@ -9,27 +9,20 @@ the [retained experiment references](old_logs/README.md),
 the [local cleanup record](output/local_prune_2026-10-26/cleanup_report.txt),
 and [AGENTS.md](AGENTS.md) for current experiment boundaries and repository rules.
 
-## Current experiment: graded sensing
+## Current experiment: stale capability
 
-The current B1 implementation adds graded physical sensing and a descriptor control
-to the shared CapCon MLP. The exploratory pilot compares G-cap, which receives
-physical capability, with G-type, which receives a constant physical-class
-descriptor. The descriptor enters both actor and critic.
+The stale-capability study asks how a capability-conditioned policy responds
+when its declared sensing level differs from its physical level. Read the
+[implementation design](docs/stale_capability_implementation_design.md) and
+[study runbook](src/softrole/STALE_CAPABILITY.md) for the staged implementation,
+locked controls and pending protocol choices. The first handoff covers the
+opt-in `graded-observation-v2` observation fix and stability-gate tooling;
+declarations, paired frozen evaluation and main-study launchers follow later.
+Amendment A-3 remains user-owned and its source/link is pending.
 
-Both arms use PCP 2P1A, seed 0, P sensing levels sampled from `(1, 3)`, blind A
-sensing, real messages, three rounds, independent heads, Adam at 0.001 and a
-2M-step target. There are no sensor failures in this pilot. It is a small
-training check; the full B4 programme and held-out evaluation are separate work.
-
-Both pilot runs completed their budgets. The
-[26 October analysis](analysis/graded_sensing_2026-10-26/report.md) records their
-training histories and the frozen saturation diagnostic. These one-seed results
-do not establish generalization or architecture superiority.
-
-Read [the graded pilot runbook](src/softrole/GRADED_PILOT.md) for the locked protocol,
-source checks, output locations and Slurm-only preparation/submission route.
-It describes fresh submissions using the current layout. [Amendment A-2](docs/graded_sensing_amendment_a2.tex)
-provides the broader research specification.
+The completed G-cap/G-type pilot reached both budgets; its
+[analysis](analysis/graded_sensing_2026-10-26/report.md) documents instability and
+saturation without establishing generalization or architecture superiority.
 
 ## Code map
 
@@ -38,6 +31,7 @@ provides the broader research specification.
 | `src/softrole/config.py`, `env.py`, `scenarios.py` | Experimental configurations, observations, capabilities and reproducible scenarios. |
 | `src/softrole/model.py`, `learning.py`, `rollout.py`, `train.py` | Shared actor/critic models, losses, collection and training. |
 | `src/softrole/graded_pilot.py` | Locked G-cap/G-type pilot configuration, manifest and launch checks. |
+| `src/softrole/stale_capability.py` | Current observation-study stability gate, source locks and diagnostic verdicts. |
 | `src/softrole/evaluate.py`, `report.py`, `ledger.py` | Frozen evaluation, summaries and committed run evidence. |
 | `scripts/`, `slurm/` | Experiment-specific launchers and cluster jobs; use the matching protocol document. |
 | `tests/` | Mathematical, behavioral, provenance and launcher checks. |
@@ -64,7 +58,8 @@ record `src/` paths and require fresh source-locked preparation manifests.
 
 | Study or reference | Read first |
 |---|---|
-| Current graded sensing pilot | [GRADED_PILOT.md](src/softrole/GRADED_PILOT.md) |
+| Current stale-capability study | [STALE_CAPABILITY.md](src/softrole/STALE_CAPABILITY.md) |
+| Completed graded sensing pilot | [GRADED_PILOT.md](src/softrole/GRADED_PILOT.md) |
 | Shared architecture and successive experimental extensions | [RESEARCH.md](src/softrole/RESEARCH.md) |
 | CapCon critic comparison and 40M protocol | [CAPCON_L1_40M.md](src/softrole/CAPCON_L1_40M.md) |
 | Additional PCP training seeds | [PCP_ADDITIONAL_SEEDS.md](src/softrole/PCP_ADDITIONAL_SEEDS.md) |
@@ -75,8 +70,8 @@ record `src/` paths and require fresh source-locked preparation manifests.
 | Architecture explanation and thesis | [Thesis sources and final documents](docs/CapCon/), [build and scope notes](docs/CapCon/README.txt) |
 
 Sensor-failure, optimizer, message-channel and diagnostic modules remain part of
-the shared implementation. Their protocol settings are not the current graded
-pilot defaults. The [CCCA reference runs](old_logs/ccca_local_frontends/) record a
+the shared implementation. Their protocol settings are not the current stale-capability
+study defaults. The [CCCA reference runs](old_logs/ccca_local_frontends/) record a
 retired alternative; they are not a current launch route. Amendment A-2 specifies
 which earlier requirements still apply to graded sensing.
 
@@ -103,11 +98,12 @@ cd ~/HetNet
 squeue -u "$USER"
 ```
 
-For a fresh graded pilot, follow the exact preparation and dependent-array commands
-in [GRADED_PILOT.md](src/softrole/GRADED_PILOT.md). Keep the checkout fixed from
-preparation until both jobs finish. The launcher rejects existing outputs and
+For the current stability gate, follow the preparation and dependent-array commands
+in [STALE_CAPABILITY.md](src/softrole/STALE_CAPABILITY.md). The gate settings are
+confirmed; main-study proposals remain pending. Keep the checkout fixed from
+preparation until all jobs finish. The launcher rejects existing outputs and
 protocol overrides; preserve completed or interrupted runs. It does not implement
-continuation. No cluster jobs were submitted by this repository cleanup.
+continuation. No cluster jobs were submitted during this implementation.
 
 ## One directory per Stokes experiment
 
@@ -118,14 +114,14 @@ jobs reuse that directory; model/arm/seed outputs remain separate children.
 
 ```bash
 run_dir=$(.venv/bin/python scripts/submit_stokes.py --init-only \
-  --title 'PCP graded sensing capability versus type' \
-  --purpose 'Compare G-cap and G-type at matched sensing levels and a 2M-step budget.')
+  --title 'PCP stale capability stability gate' \
+  --purpose 'Exploratory A1 stability check: entropy 0.003/0.01, seeds 0-2, 2M steps each.')
 
 prep=$(.venv/bin/python scripts/submit_stokes.py --run-dir "$run_dir" -- \
-  slurm/softrole_graded_pilot_prepare.sbatch)
+  slurm/softrole_stale_prepare.sbatch)
 .venv/bin/python scripts/submit_stokes.py --run-dir "$run_dir" -- \
   --dependency="afterok:${prep%%;*}" --kill-on-invalid-dep=yes \
-  slurm/softrole_graded_pilot.sbatch
+  slurm/softrole_stale_train.sbatch
 ```
 
 The container holds `README.md`, `run_info.json`, `submissions/`, `logs/`, protocol

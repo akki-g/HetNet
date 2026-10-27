@@ -120,7 +120,7 @@ class Config:
     def validate(self):
         if self.task not in ("pp", "pcp", "fc"):
             raise ValueError("task must be pp, pcp, or fc")
-        if self.env_version not in ("corrected-observation-v1", "paper-v1"):
+        if self.env_version not in ("corrected-observation-v1", "graded-observation-v2", "paper-v1"):
             raise ValueError("unknown SoftRole environment version")
         if self.task == "fc" and self.env_version == "paper-v1" and self.reward_type != 3:
             raise ValueError("paper-v1 FC uses the fixed paper reward (reward_type=3)")
@@ -164,8 +164,12 @@ class Config:
         if self.descriptor == "type" and self.actor_capabilities == "physical_only":
             raise ValueError("type descriptor is incompatible with physical_only actor capabilities")
         if self.capabilities == "graded" and (self.task != "pcp" or
-                                              self.env_version != "corrected-observation-v1"):
-            raise ValueError("graded capabilities require PCP corrected-observation-v1")
+                                              self.env_version not in ("corrected-observation-v1",
+                                                                       "graded-observation-v2")):
+            raise ValueError("graded capabilities require PCP corrected-observation-v1 or graded-observation-v2")
+        if self.env_version == "graded-observation-v2" and (
+                self.capabilities != "graded" or self.task != "pcp"):
+            raise ValueError("graded-observation-v2 requires graded capabilities and PCP")
         for name in ("sensing_p", "sensing_a", "held_out_sensing_p", "held_out_sensing_a"):
             levels = getattr(self, name)
             if any(type(level) is not int or not 0 <= level <= self.vision + 1 for level in levels):

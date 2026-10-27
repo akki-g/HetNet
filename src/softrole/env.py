@@ -10,13 +10,14 @@ from .scenarios import IsolatedRNG
 
 
 ENVIRONMENT_VERSION = "corrected-observation-v1"
+GRADED_ENVIRONMENT_VERSION = "graded-observation-v2"
 
 
 def _option(config, name, default=None):
     return config.get(name, default) if isinstance(config, dict) else getattr(config, name, default)
 
 
-def adapt_observation(raw_obs, kappa, base, visible=None, tail=None):
+def adapt_observation(raw_obs, kappa, base, visible=None, tail=None, mask_outside=True):
     """x = [position one-hots, sense*(outside,target,P+A), own kappa].
 
     The occupancy sum preserves counts, including co-located agents, but removes
@@ -24,6 +25,8 @@ def adapt_observation(raw_obs, kappa, base, visible=None, tail=None):
     the actor. The transform is pure and never writes to simulator observations.
     Optional visibility replaces binary whole-window masking; an optional tail
     supplies the policy descriptor independently of physical capabilities.
+    With explicit visibility, mask_outside=False preserves outside flags while
+    masking target and occupancy counts; the binary transform is unchanged.
     """
     raw_obs, kappa = np.asarray(raw_obs), np.asarray(kappa, dtype=np.float64)
     if raw_obs.ndim < 2 or kappa.shape != (raw_obs.shape[0], 2):
@@ -41,7 +44,10 @@ def adapt_observation(raw_obs, kappa, base, visible=None, tail=None):
         visible = np.asarray(visible)
         if visible.shape != cells.shape[:2] or np.any((visible != 0) & (visible != 1)):
             raise ValueError("visible must be a binary mask with one entry per agent and cell")
-        sensory = sensory * visible[..., None]
+        if mask_outside:
+            sensory = sensory * visible[..., None]
+        else:
+            sensory[..., 1:] = sensory[..., 1:] * visible[..., None]
     if tail is not None:
         tail = np.asarray(tail, dtype=np.float64)
         if tail.shape != kappa.shape or not np.isfinite(tail).all():
@@ -67,7 +73,7 @@ class EnvironmentAdapter:
         self.base = self.dim ** 2
         self.observation_dim = (2 * self.vision + 1) ** 2 * (self.base + 3) + 2
         self.environment_version = _option(config, "env_version", ENVIRONMENT_VERSION)
-        if self.environment_version not in (ENVIRONMENT_VERSION, "paper-v1"):
+        if self.environment_version not in (ENVIRONMENT_VERSION, GRADED_ENVIRONMENT_VERSION, "paper-v1"):
             raise ValueError("Unknown SoftRole environment version")
         self.capabilities = _option(config, "capabilities", "binary")
         self.descriptor_mode = _option(config, "descriptor", "capability")
@@ -75,8 +81,12 @@ class EnvironmentAdapter:
             raise ValueError("capabilities must be binary or graded")
         if self.descriptor_mode not in ("capability", "type"):
             raise ValueError("descriptor must be capability or type")
-        if self.capabilities == "graded" and (self.task != "pcp" or self.environment_version != ENVIRONMENT_VERSION):
-            raise ValueError("graded capabilities require PCP corrected-observation-v1")
+        if self.capabilities == "graded" and (self.task != "pcp" or self.environment_version not in
+                                               (ENVIRONMENT_VERSION, GRADED_ENVIRONMENT_VERSION)):
+            raise ValueError("graded capabilities require PCP corrected-observation-v1 or graded-observation-v2")
+        if self.environment_version == GRADED_ENVIRONMENT_VERSION and (
+                self.capabilities != "graded" or self.task != "pcp"):
+            raise ValueError("graded-observation-v2 requires graded capabilities and PCP")
         if self.descriptor_mode == "type" and _option(config, "actor_capabilities", "explicit") == "physical_only":
             raise ValueError("type descriptor is incompatible with physical_only actor capabilities")
         if self.environment_version == "paper-v1":
@@ -203,7 +213,8 @@ class EnvironmentAdapter:
         if self.capabilities == "graded":
             kappa = self._validate_kappa(kappa)
             return adapt_observation(self._raw_obs, kappa, self.base,
-                                     visible=self._visibility(kappa), tail=self.descriptor(kappa))
+                                     visible=self._visibility(kappa), tail=self.descriptor(kappa),
+                                     mask_outside=self.environment_version != GRADED_ENVIRONMENT_VERSION)
         if self.descriptor_mode == "type":
             return adapt_observation(self._raw_obs, self._validate_kappa(kappa), self.base,
                                      tail=self.descriptor(kappa))
