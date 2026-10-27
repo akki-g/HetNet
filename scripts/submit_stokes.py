@@ -41,6 +41,9 @@ ENV_ROUTES = {
                                       'SOFTROLE_STALE_MANIFEST': 'manifest.json'},
     'softrole_stale_train.sbatch': {'SOFTROLE_STALE_RUN_ROOT': 'training',
                                     'SOFTROLE_STALE_MANIFEST': 'manifest.json'},
+    'softrole_stale_gate_summary.sbatch': {'SOFTROLE_STALE_RUN_ROOT': 'training',
+                                           'SOFTROLE_STALE_MANIFEST': 'manifest.json',
+                                           'SOFTROLE_STALE_SUMMARY': 'gate_summary.json'},
     'publication_train.sbatch': {'PUBLICATION_RUN_ROOT': 'training'},
     'publication_paper_train.sbatch': {'PUBLICATION_RUN_ROOT': 'training'},
     'publication_preflight.sbatch': {'PUBLICATION_PREFLIGHT_ROOT': 'preflight'},
@@ -59,6 +62,7 @@ RUN_ROOT_OUTPUT_JOBS = {
     'publication_paper_train.sbatch', 'publication_paper_preflight.sbatch',
     'softrole_graded_pilot.sbatch', 'softrole_pcp_additional_seeds.sbatch',
     'softrole_stale_prepare.sbatch', 'softrole_stale_train.sbatch',
+    'softrole_stale_gate_summary.sbatch',
 }
 
 

@@ -98,7 +98,7 @@ cd ~/HetNet
 squeue -u "$USER"
 ```
 
-For the current stability gate, follow the preparation and dependent-array commands
+For the current stability gate, follow the preparation, training-array and summary-job commands
 in [STALE_CAPABILITY.md](src/softrole/STALE_CAPABILITY.md). The gate settings are
 confirmed; main-study proposals remain pending. Keep the checkout fixed from
 preparation until all jobs finish. The launcher rejects existing outputs and

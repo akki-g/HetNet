@@ -78,6 +78,10 @@ protocol overrides are refused; interrupted runs are preserved, not overwritten.
 
 These are commands for the user to run after deploying the reviewed source.
 Implementation validation uses only local tests and dry runs.
+Deploy the summary-job commit to `~/HetNet` before preparing the gate: the new
+batch script and submission routing enter the source snapshot. Adding them to
+an already prepared or running gate changes the source hash and makes subsequent
+launches refuse the manifest.
 
 ```bash
 cd ~/HetNet
@@ -86,25 +90,38 @@ run_dir=$(.venv/bin/python scripts/submit_stokes.py --init-only \
   --title 'PCP stale capability stability gate' \
   --purpose 'Exploratory A1 stability check: entropy 0.003/0.01, seeds 0-2, 2M steps each.')
 
-stale_prep_job=$(.venv/bin/python scripts/submit_stokes.py --run-dir "$run_dir" -- \
+prep=$(.venv/bin/python scripts/submit_stokes.py --run-dir "$run_dir" -- \
   slurm/softrole_stale_prepare.sbatch) && \
-  .venv/bin/python scripts/submit_stokes.py --run-dir "$run_dir" -- \
-    --dependency="afterok:${stale_prep_job%%;*}" --kill-on-invalid-dep=yes \
-    slurm/softrole_stale_train.sbatch
+train=$(.venv/bin/python scripts/submit_stokes.py --run-dir "$run_dir" -- \
+  --dependency="afterok:${prep%%;*}" --kill-on-invalid-dep=yes \
+  slurm/softrole_stale_train.sbatch) && \
+.venv/bin/python scripts/submit_stokes.py --run-dir "$run_dir" -- \
+  --dependency="afterok:${prep%%;*},afterany:${train%%;*}" --kill-on-invalid-dep=yes \
+  slurm/softrole_stale_gate_summary.sbatch
 ```
+
+The summary's `afterany` dependency waits for every training-array task to end,
+including failures, so incomplete seeds still get recorded. Its `afterok`
+dependency on preparation prevents summary execution without a prepared manifest.
+The comma joins both required conditions; failed preparation cancels the
+dependent jobs through `--kill-on-invalid-dep=yes`.
 
 Preparation creates `manifest.json` and dry-runs all six entries. An existing
 manifest is validated without rewriting it. The array uses indices 0–2 for
 `a1_entropy_0p003` seeds 0–2, and 3–5 for `a1_entropy_0p01` seeds 0–2. At most two
 tasks run concurrently. Each training task requests four CPUs, 16 GB and six
-hours; preparation requests one CPU, 2 GB and ten minutes. These are unmeasured
-starting allocations. Both use account `cenyioha`, partition `normal` and
+hours; preparation requests one CPU, 2 GB and ten minutes. Summary requests one
+CPU, 4 GB and 30 minutes. These resources are unmeasured starting values. All three
+jobs use account `cenyioha`, partition `normal` and
 constraint `sapphirerapids`.
 
-`SOFTROLE_STALE_MANIFEST` and `SOFTROLE_STALE_RUN_ROOT` default to
-`$HETNET_RUN_DIR/manifest.json` and `$HETNET_RUN_DIR/training`. Unset stale exports
-or point them inside this container; the submission helper enforces containment.
-The batch scripts accept only an optional `--dry-run`, never protocol overrides.
+`SOFTROLE_STALE_MANIFEST`, `SOFTROLE_STALE_RUN_ROOT` and `SOFTROLE_STALE_SUMMARY`
+default to `$HETNET_RUN_DIR/manifest.json`, `$HETNET_RUN_DIR/training` and
+`$HETNET_RUN_DIR/gate_summary.json`. Unset stale exports or point them inside this
+container; the submission helper and batch scripts enforce containment, resolving
+symlinks. Preparation and training accept only an optional `--dry-run`, never
+protocol overrides. The summary job accepts no arguments, including `--dry-run`;
+preview its submission through the helper's `--dry-run` option.
 
 Preview submission routing without creating a run directory or submitting:
 
@@ -115,6 +132,9 @@ Preview submission routing without creating a run directory or submitting:
 .venv/bin/python scripts/submit_stokes.py --dry-run \
   --title 'PCP stale capability stability gate' \
   --purpose 'Preview gate training routing.' -- slurm/softrole_stale_train.sbatch
+.venv/bin/python scripts/submit_stokes.py --dry-run \
+  --title 'PCP stale capability stability gate' \
+  --purpose 'Preview gate summary routing.' -- slurm/softrole_stale_gate_summary.sbatch
 ```
 
 The numerical CLI also supports a no-write preparation preview:
@@ -124,27 +144,39 @@ The numerical CLI also supports a no-write preparation preview:
   --output /tmp/stale-capability-preview/manifest.json --dry-run
 ```
 
-After all gate jobs finish, summarize their records (or the same copied run
-directory locally):
+After all training tasks end, the chain writes `gate_summary.json` automatically.
+Exit 0 means the summary was written, including `incomplete`, `error` or
+`collapsed` verdicts; read the JSON for the outcome. A non-zero exit means no
+summary could be written. The job never selects a coefficient.
+
+To summarize again, submit the same job with a fresh filename inside the container:
+
+```bash
+SOFTROLE_STALE_SUMMARY="$run_dir/gate_summary_$(date -u +%Y%m%dT%H%M%SZ).json" \
+  .venv/bin/python scripts/submit_stokes.py --run-dir "$run_dir" -- \
+  slurm/softrole_stale_gate_summary.sbatch
+```
+
+The manual CLI remains available for local re-summaries of the copied run:
 
 ```bash
 .venv/bin/python -m softrole.stale_capability gate-summary \
   --manifest "$run_dir/manifest.json" --run-root "$run_dir/training" \
-  --output "$run_dir/gate_summary.json"
+  --output "$run_dir/gate_summary_$(date -u +%Y%m%dT%H%M%SZ).json"
 ```
 
 Preserve incomplete/error summaries. A later summary needs a fresh filename;
 do not overwrite earlier evidence. A successful launcher writes
 `stale_capability.json` only after its post-training source check.
 
-Related preparation and training jobs share one fresh titled container:
+Related preparation, training and summary jobs share one fresh titled container:
 
 ```text
 runs/<UTC timestamp>_pcp-stale-capability-stability-gate_<id>/
   README.md
   run_info.json
   submissions/
-  logs/
+  logs/                               # preparation, training and summary job logs
   manifest.json
   training/a1_entropy_0p003/seed<N>/
     source/
