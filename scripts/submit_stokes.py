@@ -41,6 +41,9 @@ ENV_ROUTES = {
                                         'SOFTROLE_MECHANISM_MANIFEST': 'manifest.json'},
     'softrole_mechanism_prepare.sbatch': {'SOFTROLE_MECHANISM_RUN_ROOT': 'training',
                                           'SOFTROLE_MECHANISM_MANIFEST': 'manifest.json'},
+    # The training run container (SOFTROLE_MECHANISM_TRAINING_RUN) is a read-only input, not routed here.
+    'softrole_mechanism_eval.sbatch': {'SOFTROLE_MECHANISM_EVAL_DIR': 'evaluation'},
+    'softrole_mechanism_eval_prepare.sbatch': {'SOFTROLE_MECHANISM_EVAL_DIR': 'evaluation'},
     'softrole_stale_prepare.sbatch': {'SOFTROLE_STALE_RUN_ROOT': 'training',
                                       'SOFTROLE_STALE_MANIFEST': 'manifest.json'},
     'softrole_stale_train.sbatch': {'SOFTROLE_STALE_RUN_ROOT': 'training',
