@@ -43,6 +43,7 @@ __pycache__/
 
 # Keep the graded pilot's deployment instructions beside its launcher.
 !/src/softrole/GRADED_PILOT.md
+!/src/softrole/MECHANISM_STUDY.md
 
 # Stale-capability operating instructions and the supplied implementation design.
 !/src/softrole/STALE_CAPABILITY.md

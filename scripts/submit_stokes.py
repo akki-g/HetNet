@@ -37,6 +37,10 @@ ENV_ROUTES = {
                                      'SOFTROLE_GRADED_PILOT_MANIFEST': 'manifest.json'},
     'softrole_graded_pilot_prepare.sbatch': {'SOFTROLE_GRADED_PILOT_RUN_ROOT': 'training',
                                              'SOFTROLE_GRADED_PILOT_MANIFEST': 'manifest.json'},
+    'softrole_mechanism_train.sbatch': {'SOFTROLE_MECHANISM_RUN_ROOT': 'training',
+                                        'SOFTROLE_MECHANISM_MANIFEST': 'manifest.json'},
+    'softrole_mechanism_prepare.sbatch': {'SOFTROLE_MECHANISM_RUN_ROOT': 'training',
+                                          'SOFTROLE_MECHANISM_MANIFEST': 'manifest.json'},
     'softrole_stale_prepare.sbatch': {'SOFTROLE_STALE_RUN_ROOT': 'training',
                                       'SOFTROLE_STALE_MANIFEST': 'manifest.json'},
     'softrole_stale_train.sbatch': {'SOFTROLE_STALE_RUN_ROOT': 'training',
@@ -60,7 +64,8 @@ CLI_ROUTES = {
 RUN_ROOT_OUTPUT_JOBS = {
     'publication_train.sbatch', 'publication_preflight.sbatch',
     'publication_paper_train.sbatch', 'publication_paper_preflight.sbatch',
-    'softrole_graded_pilot.sbatch', 'softrole_pcp_additional_seeds.sbatch',
+    'softrole_graded_pilot.sbatch', 'softrole_mechanism_train.sbatch',
+    'softrole_pcp_additional_seeds.sbatch',
     'softrole_stale_prepare.sbatch', 'softrole_stale_train.sbatch',
     'softrole_stale_gate_summary.sbatch',
 }
