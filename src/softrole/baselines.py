@@ -9,6 +9,11 @@ No baseline receives the previous action or the remaining time in the actor.
 
 Dense adjacency is indexed ``[receiver, sender]``.  Baselines always use the
 real-valued channel and no gate, so noise and gate overrides are rejected.
+
+``class_typed`` is the exception to "capability-conditioned": a controlled
+class-typed variant of the shared CapCon actor in which every actor parameter is
+indexed by agent class (``kappa[:, 1] > 0`` is capture, otherwise perception).
+It keeps the SoftRole recurrence, attention communication and critic.
 """
 
 from __future__ import annotations
@@ -18,6 +23,7 @@ from torch import Tensor, nn
 from torch.nn import functional as F
 
 from softrole.config import BASELINE_MODES  # noqa: F401  (re-exported)
+from softrole.model import CommunicationRound
 
 
 ACTIONS = 6
@@ -271,7 +277,136 @@ class CashNet(_RecurrentNet):
         return logits, state, {"H": state}, []
 
 
+class ClassTypedNet(nn.Module):
+    """``class_typed``: the shared CapCon actor with every parameter indexed by agent class.
+
+    Follows ``SoftRoleNet.forward`` in its shared mode: ``LSTMCell`` input
+    ``[ReLU(pre(obs)), u_bar (if feedback), one-hot previous action]``, then
+    ``comm_rounds`` rounds of ``CommunicationRound`` and a linear head.  Agent i
+    has class ``c_i = 1`` if ``kappa[i, 1] > 0`` (capture), else ``0``
+    (perception) and uses the encoder, LSTM cell and output head of its class.
+    The communication rounds are built with two experts and the one-hot class
+    matrix as the gate, which makes the self map, sender encoder, receiver
+    decoder, attention, score and null logit class-specific.  The critic is the
+    shared ``CapabilityCritic`` on the LSTM state.  With both classes' weights
+    set to a shared ``SoftRoleNet`` the two models agree exactly.
+
+    The real channel carries no noise, there is no gate to override, and the
+    rollout's own payload formula applies (so no ``payload_values_per_agent_step``).
+    """
+
+    mode = "class_typed"
+    CLASSES = 2
+
+    def __init__(self, mode: str = "class_typed", base: int = 25, n_squares: int = 25,
+                 pre_dim: int = 128, hidden_dim: int = 64, heads: int = 4, head_dim: int = 16,
+                 msg_dim: int = 16, feedback: bool = True, comm_rounds: int = 2,
+                 independent_heads: bool = False, null_degree_correction: bool = False,
+                 critic_mode: str = "team"):
+        super().__init__()
+        if mode != self.mode:
+            raise ValueError(f"{type(self).__name__} implements mode {self.mode!r}, not {mode!r}")
+        if any(type(value) is not int or value <= 0
+               for value in (base, n_squares, pre_dim, hidden_dim, heads, head_dim, msg_dim)):
+            raise ValueError("All model dimensions must be positive")
+        if type(comm_rounds) is not int or comm_rounds <= 0:
+            raise ValueError("comm_rounds must be a positive integer")
+        if any(type(value) is not bool for value in (feedback, independent_heads, null_degree_correction)):
+            raise ValueError("feedback, independent_heads and null_degree_correction must be boolean")
+        self.allow_stay = True
+        self.experts, self.communication = self.CLASSES, "real"
+        self.obs_dim = n_squares * (base + 3) + CAPABILITY_WIDTH
+        self.hidden_dim, self.head_dim, self.msg_dim = hidden_dim, head_dim, msg_dim
+        self.heads, self.comm_rounds, self.feedback = heads, comm_rounds, feedback
+        self.independent_heads, self.null_degree_correction = independent_heads, null_degree_correction
+        self.critic_mode = critic_mode
+        self.pre = nn.ModuleList([nn.Linear(self.obs_dim, pre_dim) for _ in range(self.CLASSES)])
+        self.lstm = nn.ModuleList([nn.LSTMCell(pre_dim + (head_dim if feedback else 0) + 6, hidden_dim)
+                                   for _ in range(self.CLASSES)])
+        self.rounds = nn.ModuleList([
+            CommunicationRound(hidden_dim if index == 0 else heads * head_dim, heads, head_dim, msg_dim,
+                               self.CLASSES, final=index == comm_rounds - 1,
+                               independent_heads=independent_heads, communication="real",
+                               degree_correction=null_degree_correction)
+            for index in range(comm_rounds)
+        ])
+        self.output = nn.ModuleList([nn.Linear(head_dim, ACTIONS) for _ in range(self.CLASSES)])
+        self.critic_head = CapabilityCritic(hidden_dim, critic_mode)
+
+    def initial_memory(self, n: int) -> dict[str, Tensor]:
+        """Zero local state; previous action is stay (index 4)."""
+        if n <= 0:
+            raise ValueError("The roster must contain at least one active agent")
+        reference = self.pre[0].weight
+        return {"H": reference.new_zeros(n, self.hidden_dim),
+                "C": reference.new_zeros(n, self.hidden_dim),
+                "u_bar": reference.new_zeros(n, self.head_dim),
+                "a_prev": torch.full((n,), 4, dtype=torch.long, device=reference.device)}
+
+    @staticmethod
+    def detach_memory(memory: dict[str, Tensor]) -> dict[str, Tensor]:
+        """Cut every recurrent gradient path at the same truncation boundary."""
+        return {name: tensor.detach() for name, tensor in memory.items()}
+
+    def _by_class(self, classes: Tensor, apply, *inputs: Tensor) -> list[Tensor]:
+        """Run ``apply(c, *rows)`` on the rows of each present class; scatter back in roster order.
+
+        A class absent from the roster is never evaluated, so its parameters
+        receive no gradient.
+        """
+        outputs = None
+        for index in range(self.CLASSES):
+            rows = classes == index
+            if not rows.any():
+                continue
+            result = apply(index, *(value[rows] for value in inputs))
+            result = result if isinstance(result, tuple) else (result,)
+            if outputs is None:
+                outputs = [part.new_zeros((len(classes),) + part.shape[1:]) for part in result]
+            for output, part in zip(outputs, result):
+                output[rows] = part
+        return outputs
+
+    def forward(self, obs: Tensor, kappa: Tensor, memory: dict[str, Tensor],
+                adjacency: Tensor, remaining: float, noise=None, gate_override=None,
+                comm_off: bool = False) -> dict:
+        if noise is not None:
+            raise ValueError("Class-typed actors use the real channel and do not accept noise")
+        if gate_override is not None:
+            raise ValueError("Class-typed actors have no gate to override")
+        n = obs.shape[0]
+        if n == 0 or obs.shape != (n, self.obs_dim) or kappa.shape != (n, 2):
+            raise ValueError("Observation/capability shapes do not match this nonempty roster")
+        if adjacency.shape != (n, n) or adjacency.dtype != torch.bool:
+            raise ValueError("Adjacency must be a boolean [receiver, sender] matrix")
+        classes = (kappa[:, 1] > 0).long()
+        gate = F.one_hot(classes, num_classes=self.CLASSES).to(obs.dtype)
+        previous_action = F.one_hot(memory["a_prev"].long(), num_classes=6).to(obs.dtype)
+        (encoded,) = self._by_class(classes, lambda c, x: self.pre[c](x), obs)
+        recurrent_inputs = [F.relu(encoded)]
+        if self.feedback:
+            recurrent_inputs.append(memory["u_bar"])
+        recurrent_inputs.append(previous_action)
+        hidden, cell = self._by_class(classes, lambda c, x, h, s: self.lstm[c](x, (h, s)),
+                                      torch.cat(recurrent_inputs, dim=-1), memory["H"], memory["C"])
+        features, messages, alpha_null = hidden, [], []
+        for layer in self.rounds:
+            features, message, null = layer(features, gate, adjacency, None, comm_off)
+            messages.append(message)
+            alpha_null.append(null)
+        (logits,) = self._by_class(classes, lambda c, x: self.output[c](x), features)
+        feasible = torch.ones_like(logits, dtype=torch.bool)
+        feasible[:, 4] = self.allow_stay
+        feasible[:, 5] = kappa[:, 1] > 0
+        logits = logits.masked_fill(~feasible, -torch.inf)
+        value, agent_values = self.critic_head(hidden, obs, kappa, remaining)
+        next_memory = {"H": hidden, "C": cell, "u_bar": features, "a_prev": memory["a_prev"]}
+        return {"logits": logits, "value": value, "agent_values": agent_values,
+                "memory": next_memory, "gate": gate, "bits": [],
+                "messages": messages, "alpha_null": alpha_null}
+
+
 BASELINE_CLASSES = {cls.mode: cls for cls in (CapabilityMLP, CapabilityCommGNN, CapabilityGNN,
-                                              ExplicitRNN, CashNet)}
+                                              ExplicitRNN, CashNet, ClassTypedNet)}
 if set(BASELINE_CLASSES) != set(BASELINE_MODES):
     raise RuntimeError("BASELINE_MODES and BASELINE_CLASSES disagree")

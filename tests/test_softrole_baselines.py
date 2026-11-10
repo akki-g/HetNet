@@ -17,11 +17,16 @@ from softrole.scenarios import make_scenarios
 from softrole.train import train
 
 MODES = ("ca_mlp", "ca_cc_gnn", "ca_gnn", "rnn_exp", "cash")
+ALL_MODES = MODES + ("class_typed",)
 GNN_MODES = ("ca_cc_gnn", "ca_gnn")
+# Modes whose messages reach other agents, so silencing them changes behaviour.
+CONNECTED_MODES = GNN_MODES + ("class_typed",)
 # Actor-only parameters at 5x5, vision 2 (obs_dim 702), H = hyper_dim = 64.
 EXPECTED_ACTOR_PARAMETERS = {"ca_mlp": 57_862, "ca_cc_gnn": 61_830, "ca_gnn": 61_830,
                              "rnn_exp": 70_342, "cash": 202_566}
 SMALL = dict(base=4, n_squares=9, hidden_dim=8)  # obs_dim 65
+CLASS_TYPED_SMALL = dict(pre_dim=12, heads=2, head_dim=4, msg_dim=6, comm_rounds=3, independent_heads=True,
+                         null_degree_correction=True)
 KAPPA = torch.tensor([[1., 0.], [1., 1.], [0., 1.], [1., 0.], [0., 0.]], dtype=torch.float64)
 
 
@@ -30,6 +35,8 @@ def small_model(mode, critic_mode="team", seed=0):
     settings = dict(mode=mode, critic_mode=critic_mode, **SMALL)
     if mode == "cash":
         settings["hyper_dim"] = 8
+    if mode == "class_typed":
+        settings.update(CLASS_TYPED_SMALL)
     return build_model(settings).double()
 
 
@@ -76,14 +83,14 @@ def test_actor_parameter_counts_match_the_specification(mode, critic_mode):
 
 
 def test_baseline_registry_is_consistent():
-    assert set(BASELINE_MODES) == set(MODES) == set(BASELINE_CLASSES)
+    assert set(BASELINE_MODES) == set(ALL_MODES) == set(BASELINE_CLASSES)
 
 
 # 2. Contract: shapes, masks, critic ---------------------------------------
 
 @pytest.mark.parametrize("critic_mode", ["team", "decomposed"])
 @pytest.mark.parametrize("n", [1, 2, 3, 4, 5])
-@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("mode", ALL_MODES)
 def test_forward_contract(mode, n, critic_mode):
     model = small_model(mode, critic_mode)
     kappa, adjacency = KAPPA[:n], adjacency_for(n)
@@ -103,27 +110,35 @@ def test_forward_contract(mode, n, critic_mode):
         assert out["agent_values"] is None
     assert torch.equal(out["memory"]["a_prev"], memory["a_prev"])
     assert set(out["memory"]) == set(model.initial_memory(n))
-    assert torch.equal(out["gate"], torch.ones(n, 1, dtype=torch.float64))
     assert out["bits"] == []
     assert isinstance(out["messages"], list)
-    assert len(out["alpha_null"]) == 1 and out["alpha_null"][0].shape == (n, 1)
-    expected_null = 0. if mode in GNN_MODES else 1.
-    assert torch.equal(out["alpha_null"][0], torch.full((n, 1), expected_null, dtype=torch.float64))
+    if mode == "class_typed":
+        # The gate is the one-hot class matrix; messages and null attention are per round and head.
+        assert torch.equal(out["gate"], torch.nn.functional.one_hot((kappa[:, 1] > 0).long(), 2).double())
+        assert len(out["messages"]) == len(out["alpha_null"]) == model.comm_rounds
+        assert all(null.shape == (n, model.heads) for null in out["alpha_null"])
+        assert all(0. <= float(null.min()) and float(null.max()) <= 1. for null in out["alpha_null"])
+    else:
+        assert torch.equal(out["gate"], torch.ones(n, 1, dtype=torch.float64))
+        assert len(out["alpha_null"]) == 1 and out["alpha_null"][0].shape == (n, 1)
+        expected_null = 0. if mode in GNN_MODES else 1.
+        assert torch.equal(out["alpha_null"][0], torch.full((n, 1), expected_null, dtype=torch.float64))
     initial = model.initial_memory(n)
     assert torch.equal(initial["a_prev"], torch.full((n,), 4))
     detached = model.detach_memory(out["memory"])
     assert all(not tensor.requires_grad for tensor in detached.values())
 
 
-@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("mode", ALL_MODES)
 def test_comm_off_marks_every_model_silent(mode):
     model = small_model(mode)
     out = forward(model, random_obs(model, 3), KAPPA[:3], model.initial_memory(3),
                   adjacency_for(3), comm_off=True)
-    assert torch.equal(out["alpha_null"][0], torch.ones(3, 1, dtype=torch.float64))
+    assert all(torch.equal(null, torch.ones_like(null)) for null in out["alpha_null"])
+    assert out["alpha_null"][0].shape[0] == 3
 
 
-@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("mode", ALL_MODES)
 def test_noise_and_gate_overrides_and_bad_shapes_are_rejected(mode):
     model = small_model(mode)
     obs, adjacency, memory = random_obs(model, 2), adjacency_for(2), model.initial_memory(2)
@@ -143,12 +158,14 @@ def test_payload_sizes_are_reported_by_the_models():
     sizes = {mode: small_model(mode).payload_values_per_agent_step for mode in MODES}
     assert sizes == {"ca_mlp": 0, "ca_cc_gnn": 8, "ca_gnn": 8, "rnn_exp": 0, "cash": 0}
     assert not hasattr(SoftRoleNet(mode="shared", communication="real"), "payload_values_per_agent_step")
+    # class_typed uses the rollout's own formula (comm_rounds * msg_dim * heads if independent heads).
+    assert not hasattr(small_model("class_typed"), "payload_values_per_agent_step")
 
 
 # 3. Permutation equivariance ----------------------------------------------
 
 @pytest.mark.parametrize("critic_mode", ["team", "decomposed"])
-@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("mode", ALL_MODES)
 def test_permuting_agents_permutes_logits_and_preserves_value(mode, critic_mode):
     n = 5
     model = small_model(mode, critic_mode)
@@ -319,14 +336,19 @@ SENSING = dict(sensing_p=(1, 2), sensing_a=(0,), vision=1)
 
 
 def tiny_config(mode):
+    extra = {}
+    if mode == "class_typed":
+        extra = dict(descriptor="type", pre_dim=12, heads=2, head_dim=4, msg_dim=6, comm_rounds=3,
+                     independent_heads=True, null_degree_correction=True)
     return Config(task="pcp", env_version="graded-observation-v2", capabilities="graded",
                   sensing_p=(1, 2), sensing_a=(0,), vision=1, compositions=((1, 1), (2, 1)),
                   max_steps=4, batch_steps=4, nprocesses=1, epochs=1, updates_per_epoch=2,
                   save_every=1, detach_gap=2, seed=11, hidden_dim=8, hyper_dim=8,
-                  entropy_coeff=0.003, critic_mode="decomposed", communication="real", model=mode)
+                  entropy_coeff=0.003, critic_mode="decomposed", communication="real", model=mode,
+                  **extra)
 
 
-@pytest.fixture(scope="module", params=MODES)
+@pytest.fixture(scope="module", params=ALL_MODES)
 def trained(request, tmp_path_factory):
     root = tmp_path_factory.mktemp(f"baseline_{request.param}")
     config = tiny_config(request.param)
@@ -364,10 +386,13 @@ def test_frozen_evaluation_with_failure_and_comm_off(trained):
     model.load_state_dict(saved["model_state"])
     for report in (plain, silent):
         assert report["episodes"] == 4 and report["model_config"] == config.model_kwargs()
+        assert report["config"].get("descriptor", "capability") == config.descriptor
         assert report["model_signature"] == model_signature(model)
         assert tensor_signature(model) == saved["signature"]
         assert all(torch.isfinite(torch.tensor(e["team_return"])) for e in report["per_episode"])
-        expected_payload = model.payload_values_per_agent_step
+        expected_payload = getattr(
+            model, "payload_values_per_agent_step",
+            config.comm_rounds * config.msg_dim * (config.heads if config.independent_heads else 1))
         for episode in report["per_episode"]:
             assert episode["communication"] == "real"
             assert episode["payload_values_per_agent_step"] == expected_payload
@@ -378,14 +403,14 @@ def test_frozen_evaluation_with_failure_and_comm_off(trained):
     assert all(e["event_exposed"] == e["scheduled_event_exposed"] for e in plain["per_episode"])
     # The model is untouched by the frozen evaluation, and the unconnected
     # models ignore the intervention exactly.
-    if mode not in GNN_MODES:
+    if mode not in CONNECTED_MODES:
         assert [e["team_return"] for e in plain["per_episode"]] == [
             e["team_return"] for e in silent["per_episode"]]
 
 
 def test_collector_workers_rebuild_baselines_from_the_model_config():
     from softrole.train import worker_collect
-    for mode in MODES:
+    for mode in ALL_MODES:
         config = tiny_config(mode)
         torch.manual_seed(config.seed)
         model = build_model(config.model_kwargs()).double()
@@ -393,3 +418,167 @@ def test_collector_workers_rebuild_baselines_from_the_model_config():
         batch = worker_collect(state, config.model_kwargs(), config.to_dict(), 0, 0)
         assert len(batch["gradients"]) == len(list(model.parameters()))
         assert batch["num_episodes"] >= 1
+
+
+# 8. class_typed: the class-specific actor ---------------------------------
+
+# 5x5, vision 2, the capability-mechanism study's actor settings.
+CLASS_TYPED_STUDY = dict(model="class_typed", communication="real", pre_dim=128, hidden_dim=64, heads=4,
+                         head_dim=16, msg_dim=64, comm_rounds=3, independent_heads=True, feedback=True,
+                         null_degree_correction=True)
+EXPECTED_CLASS_TYPED_PARAMETERS = 453_604
+SHARED_CAPCON_ACTOR_PARAMETERS = 226_802
+CLASS_KAPPA = torch.tensor([[1., 0.], [0., 1.], [1., 0.], [0., 1.], [1., 0.]], dtype=torch.float64)
+
+
+def actor_parameters(model):
+    return sum(p.numel() for name, p in model.named_parameters() if not name.startswith("critic"))
+
+
+@pytest.mark.parametrize("critic_mode", ["team", "decomposed"])
+def test_class_typed_actor_has_twice_the_parameters_of_the_shared_capcon_actor(critic_mode):
+    config = Config(critic_mode=critic_mode, **CLASS_TYPED_STUDY)
+    model = build_model(config.model_kwargs())
+    assert type(model) is BASELINE_CLASSES["class_typed"] and model.obs_dim == 702
+    assert actor_parameters(model) == EXPECTED_CLASS_TYPED_PARAMETERS
+    shared = SoftRoleNet(**Config(critic_mode=critic_mode, **{**CLASS_TYPED_STUDY, "model": "shared"}).model_kwargs())
+    assert actor_parameters(shared) == SHARED_CAPCON_ACTOR_PARAMETERS
+    assert EXPECTED_CLASS_TYPED_PARAMETERS == 2 * SHARED_CAPCON_ACTOR_PARAMETERS
+    critic = sum(p.numel() for name, p in model.named_parameters() if name.startswith("critic_head."))
+    assert critic == sum(p.numel() for name, p in shared.named_parameters() if name.startswith("critic"))
+
+
+def class_typed_pair(null_degree_correction, seed=0):
+    """A shared SoftRoleNet and a ClassTypedNet carrying the same weights in both classes."""
+    torch.manual_seed(seed)
+    settings = dict(base=4, n_squares=9, pre_dim=12, hidden_dim=8, heads=2, head_dim=4, msg_dim=6,
+                    comm_rounds=3, independent_heads=True, feedback=True,
+                    null_degree_correction=null_degree_correction, critic_mode="decomposed")
+    shared = SoftRoleNet(mode="shared", communication="real", **settings).double()
+    typed = build_model(dict(mode="class_typed", **settings)).double()
+    with torch.no_grad():
+        for parameter in shared.parameters():
+            parameter.normal_(0., 0.5)  # also moves the zero-initialised biases and null logits
+    state = {}
+    for name, value in shared.state_dict().items():
+        if name.startswith(("pre.", "lstm.", "output.")):
+            head, tail = name.split(".", 1)
+            for index in range(2):
+                state[f"{head}.{index}.{tail}"] = value.clone()
+        elif name.startswith("rounds."):
+            state[name] = value.expand(2, *value.shape[1:]).clone()  # both experts = the shared expert
+        else:
+            state[f"critic_head.{name}"] = value.clone()
+    typed.load_state_dict(state, strict=True)
+    return shared, typed
+
+
+@pytest.mark.parametrize("null_degree_correction", [False, True])
+@pytest.mark.parametrize("comm_off", [False, True])
+def test_class_typed_equals_the_shared_actor_when_both_classes_carry_its_weights(comm_off, null_degree_correction):
+    shared, typed = class_typed_pair(null_degree_correction)
+    n = 5
+    adjacency = adjacency_for(n, seed=4)
+    adjacency[4] = False  # one agent with no permitted sender
+    assert adjacency[:4].any()
+    generator = torch.Generator().manual_seed(7)
+    memory_shared, memory_typed = shared.initial_memory(n), typed.initial_memory(n)
+    for _ in range(5):
+        obs = torch.randn(n, shared.obs_dim, generator=generator, dtype=torch.float64)
+        expected = forward(shared, obs, CLASS_KAPPA, memory_shared, adjacency, comm_off=comm_off)
+        actual = forward(typed, obs, CLASS_KAPPA, memory_typed, adjacency, comm_off=comm_off)
+        assert torch.equal(torch.isinf(actual["logits"]), torch.isinf(expected["logits"]))
+        torch.testing.assert_close(actual["logits"], expected["logits"], rtol=0, atol=1e-10)
+        for name in ("H", "C", "u_bar"):
+            torch.testing.assert_close(actual["memory"][name], expected["memory"][name], rtol=0, atol=1e-10)
+        assert len(actual["alpha_null"]) == len(expected["alpha_null"]) == 3
+        for ours, theirs in zip(actual["alpha_null"], expected["alpha_null"]):
+            torch.testing.assert_close(ours, theirs, rtol=0, atol=1e-10)
+        torch.testing.assert_close(actual["value"], expected["value"], rtol=0, atol=1e-10)
+        torch.testing.assert_close(actual["agent_values"], expected["agent_values"], rtol=0, atol=1e-10)
+        actions = torch.randint(0, 5, (n,), generator=generator)
+        memory_shared, memory_typed = expected["memory"], actual["memory"]
+        memory_shared["a_prev"] = memory_typed["a_prev"] = actions
+    if not comm_off:
+        silent = forward(typed, obs, CLASS_KAPPA, typed.initial_memory(n), adjacency, comm_off=True)
+        talking = forward(typed, obs, CLASS_KAPPA, typed.initial_memory(n), adjacency)
+        assert not torch.allclose(silent["logits"][:, :5], talking["logits"][:, :5])
+
+
+def class_gradients(model, kappa, seed=5):
+    n = kappa.shape[0]
+    model.zero_grad()
+    out = forward(model, random_obs(model, n, seed), kappa, random_memory(model, n, seed), adjacency_for(n, seed))
+    (out["logits"][:, :5].square().sum() + out["value"]).backward()
+    return {name: parameter.grad for name, parameter in model.named_parameters()}
+
+
+def class_entries(model, index):
+    """Per-class parameter names: encoder, LSTM, head, and the class-indexed expert slices."""
+    private = [name for name, _ in model.named_parameters() if name.split(".")[:2] in (
+        ["pre", str(index)], ["lstm", str(index)], ["output", str(index)])]
+    banks = [name for name, _ in model.named_parameters() if name.startswith("rounds.")]
+    return private, banks
+
+
+@pytest.mark.parametrize("present", [0, 1])
+def test_class_typed_parameters_of_an_absent_class_receive_no_gradient(present):
+    model = small_model("class_typed", "decomposed")
+    kappa = torch.zeros(3, 2, dtype=torch.float64)
+    kappa[:, present] = 1.
+    grads = class_gradients(model, kappa)
+    own_private, banks = class_entries(model, present)
+    other_private, _ = class_entries(model, 1 - present)
+    assert own_private and other_private and len(own_private) == len(other_private) == 8
+    for name in other_private:
+        assert grads[name] is None or torch.count_nonzero(grads[name]) == 0, name
+    for name in own_private:
+        assert grads[name] is not None and torch.count_nonzero(grads[name]) > 0, name
+    # The communication banks: the absent class's expert slice is untouched, the present one is trained.
+    for name in banks:
+        assert torch.count_nonzero(grads[name][1 - present]) == 0, name
+    assert any(torch.count_nonzero(grads[name][present]) > 0 for name in banks)
+    # The shared critic trains regardless of the roster.
+    assert all(torch.count_nonzero(g) > 0 for name, g in grads.items()
+               if name.startswith("critic_head.") and g is not None)
+
+
+def test_class_typed_mixed_roster_trains_both_classes():
+    model = small_model("class_typed", "decomposed")
+    grads = class_gradients(model, CLASS_KAPPA)
+    for index in (0, 1):
+        private, banks = class_entries(model, index)
+        assert all(grads[name] is not None and torch.count_nonzero(grads[name]) > 0 for name in private)
+        assert any(torch.count_nonzero(grads[name][index]) > 0 for name in banks)
+
+
+def test_class_index_follows_the_capture_entry_of_kappa_only():
+    model = small_model("class_typed")
+    obs, adjacency, memory = random_obs(model, 3), adjacency_for(3), random_memory(model, 3)
+    kappa = torch.tensor([[1., 0.], [0., 1.], [0.3, 0.]], dtype=torch.float64)  # graded sensing is perception
+    out = forward(model, obs, kappa, memory, adjacency)
+    assert out["gate"].tolist() == [[1., 0.], [0., 1.], [1., 0.]]
+    other = forward(model, obs, torch.tensor([[0., 0.], [1., 0.5], [0.9, 0.]], dtype=torch.float64), memory, adjacency)
+    assert other["gate"].tolist() == [[1., 0.], [0., 1.], [1., 0.]]
+
+
+def test_class_typed_model_kwargs_validation_and_command_line(tmp_path):
+    config = Config(critic_mode="decomposed", **CLASS_TYPED_STUDY)
+    expected = dict(mode="class_typed", base=25, n_squares=25, pre_dim=128, hidden_dim=64, heads=4, head_dim=16,
+                    msg_dim=64, feedback=True, comm_rounds=3, independent_heads=True,
+                    null_degree_correction=True, critic_mode="decomposed")
+    assert config.model_kwargs() == expected
+    assert Config(**config.to_dict()).model_kwargs() == expected
+    assert Config(model="class_typed", communication="real", feedback=False).model_kwargs()["feedback"] is False
+    with pytest.raises(ValueError, match="communication"):
+        Config(model="class_typed")
+    with pytest.raises(ValueError, match="actor capabilities"):
+        Config(model="class_typed", communication="real", actor_capabilities="physical_only")
+    with pytest.raises(ValueError, match="mode"):
+        BASELINE_CLASSES["class_typed"](**dict(expected, mode="ca_mlp"))
+    buffer = io.StringIO()
+    with redirect_stdout(buffer):
+        main(["train", "--output", str(tmp_path / "unused"), "--dry-run", "--model", "class_typed",
+              "--communication", "real", "--descriptor", "type", "--comm-rounds", "3"])
+    printed = json.loads(buffer.getvalue())
+    assert printed["model"] == "class_typed" and printed["descriptor"] == "type" and printed["comm_rounds"] == 3
