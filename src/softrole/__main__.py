@@ -3,7 +3,7 @@ import argparse
 import json
 from pathlib import Path
 
-from softrole.config import Config, recipe
+from softrole.config import BASELINE_MODES, Config, recipe
 
 
 def composition(text):
@@ -30,7 +30,9 @@ def parser():
     train.add_argument("--task", choices=("pp", "pcp", "fc"))
     train.add_argument("--env-version", choices=("corrected-observation-v1", "graded-observation-v2", "paper-v1"))
     train.add_argument("--study", choices=("fixed", "composition", "failure"))
-    train.add_argument("--model", choices=("banked", "shared", "capability", "constant"))
+    train.add_argument("--model", choices=("banked", "shared", "capability", "constant") + BASELINE_MODES,
+                       help="gated SoftRole variants, or a capability-conditioned baseline actor "
+                            "(baselines need --communication real)")
     train.add_argument("--optimizer", choices=("rmsprop", "adam"))
     train.add_argument("--communication", choices=("binary", "real", "real_noisy", "binary_deterministic"),
                        help="binary: Bernoulli bits with the straight-through surrogate; real: raw encoder values; "
@@ -62,6 +64,7 @@ def parser():
         "nfires": ("--nfires",), "reward_type": ("--reward-type", "--reward_type"),
         "experts": ("--experts",), "pre_dim": ("--pre-dim",), "hidden_dim": ("--hidden-dim",),
         "heads": ("--heads",), "head_dim": ("--head-dim",), "msg_dim": ("--msg-dim", "--msg_dim"),
+        "hyper_dim": ("--hyper-dim",),
         "comm_rounds": ("--comm-rounds",),
         "seed": ("--seed",), "epochs": ("--epochs", "--num_epochs"),
         "updates_per_epoch": ("--updates-per-epoch", "--epoch_size"),
@@ -76,6 +79,7 @@ def parser():
         "gamma": ("--gamma",), "gae_lambda": ("--gae-lambda",),
         "actor_coeff": ("--actor-coeff",), "value_coeff": ("--value-coeff",),
         "max_grad_norm": ("--max-grad-norm",), "failure_prob": ("--failure-prob",),
+        "entropy_coeff": ("--entropy-coeff",),
     }.items():
         train.add_argument(*flags, dest=name, type=float)
     train.add_argument("--no-feedback", dest="feedback", action="store_false", default=None)

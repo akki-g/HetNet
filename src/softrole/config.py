@@ -13,6 +13,8 @@ CHANNELS = ("binary", "real", "real_noisy", "binary_deterministic")
 CRITIC_MODES = ("team", "decomposed")
 OBJECTIVES = ("team", "mean_agent")
 ACTOR_CAPABILITIES = ("explicit", "physical_only")
+# Opt-in baseline actors (softrole.baselines); they require the real channel.
+BASELINE_MODES = ("ca_mlp", "ca_cc_gnn", "ca_gnn", "rnn_exp", "cash")
 
 
 @dataclass
@@ -33,6 +35,7 @@ class Config:
     heads: int = 4
     head_dim: int = 16
     msg_dim: int = 16
+    hyper_dim: int = 64
     comm_rounds: int = 2
     independent_heads: bool = False
     communication: str = "binary"
@@ -88,6 +91,12 @@ class Config:
         return self.compositions or ((self.num_p, self.num_a),)
 
     def model_kwargs(self):
+        if self.model in BASELINE_MODES:
+            settings = dict(mode=self.model, base=self.dim ** 2, n_squares=(2 * self.vision + 1) ** 2,
+                            hidden_dim=self.hidden_dim, critic_mode=self.critic_mode)
+            if self.model == "cash":
+                settings["hyper_dim"] = self.hyper_dim
+            return settings
         settings = dict(base=self.dim ** 2, n_squares=(2 * self.vision + 1) ** 2,
                     mode=self.model, experts=self.experts, pre_dim=self.pre_dim,
                     hidden_dim=self.hidden_dim, heads=self.heads,
@@ -109,6 +118,8 @@ class Config:
         # Preserve historical configuration hashes for runs without a bonus.
         if self.entropy_coeff == 0:
             del settings["entropy_coeff"]
+        if self.hyper_dim == 64:
+            del settings["hyper_dim"]
         # Default binary configurations retain their historical manifest hashes.
         for name, default in (("capabilities", "binary"), ("descriptor", "capability"),
                               ("sensing_p", ()), ("sensing_a", ()),
@@ -124,8 +135,17 @@ class Config:
             raise ValueError("unknown SoftRole environment version")
         if self.task == "fc" and self.env_version == "paper-v1" and self.reward_type != 3:
             raise ValueError("paper-v1 FC uses the fixed paper reward (reward_type=3)")
-        if self.model not in ("banked", "shared", "capability", "constant"):
+        if self.model not in ("banked", "shared", "capability", "constant") + BASELINE_MODES:
             raise ValueError("unknown deterministic model variant")
+        if self.model in BASELINE_MODES:
+            if self.communication != "real":
+                raise ValueError("baseline models require communication='real'")
+            if self.actor_capabilities != "explicit":
+                raise ValueError("baseline models require explicit actor capabilities")
+            if self.env_version == "paper-v1":
+                raise ValueError("baseline models do not support the paper-v1 environment")
+        elif self.hyper_dim != 64:
+            raise ValueError("hyper_dim applies only to the cash model")
         if self.communication not in CHANNELS:
             raise ValueError(f"communication must be one of {CHANNELS}")
         if type(self.null_degree_correction) is not bool:
@@ -150,7 +170,7 @@ class Config:
         if type(self.independent_heads) is not bool:
             raise ValueError("independent_heads must be a boolean")
         for name in ("dim", "max_steps", "nfires", "experts", "pre_dim", "hidden_dim",
-                     "heads", "head_dim", "msg_dim", "epochs", "updates_per_epoch",
+                     "heads", "head_dim", "msg_dim", "hyper_dim", "epochs", "updates_per_epoch",
                      "batch_steps", "nprocesses", "detach_gap", "save_every"):
             if not isinstance(getattr(self, name), int) or getattr(self, name) <= 0:
                 raise ValueError(f"{name} must be a positive integer")

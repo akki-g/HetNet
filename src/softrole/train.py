@@ -19,7 +19,7 @@ from softrole import CHECKPOINT_VERSION
 from softrole.config import Config
 from softrole.env import make_env
 from softrole.learning import loss_sum
-from softrole.model import SoftRoleNet
+from softrole.model import SoftRoleNet  # noqa: F401  (recovery_replay builds models via train.SoftRoleNet)
 from softrole.optimizers import make_optimizer, optimizer_spec, validate_optimizer_resume
 from softrole.paths import code_root, repository_root
 from softrole.rollout import run_episode
@@ -157,9 +157,11 @@ def collect_batch(model, config, collector, update, environment_source=None):
 
 def worker_collect(state, model_config, config_dict, collector, update, environment_source=None):
     torch.set_num_threads(1)
+    # Imported here so that importing this module keeps its historical module set.
+    from softrole.factory import build_model
     # Construction randomness is irrelevant after strict loading; communication and
     # actions use explicit scenario streams rather than Torch's global stream.
-    model = SoftRoleNet(**model_config).double()
+    model = build_model(model_config).double()
     model.load_state_dict(state, strict=True)
     return collect_batch(model, Config(**config_dict), collector, update, environment_source)
 
@@ -224,7 +226,8 @@ def train(config, output, resume=None, episode_log="file", diagnostics_every=Non
         raise FileExistsError(f"refusing to overwrite run: {output}")
     torch.set_num_threads(1)
     torch.manual_seed(config.seed)
-    model = SoftRoleNet(**config.model_kwargs()).double()
+    from softrole.factory import build_model
+    model = build_model(config.model_kwargs()).double()
     optimizer = make_optimizer(model.parameters(), config)
     completed_updates = total_steps = total_episodes = completed_epochs = 0
     if resume is not None:

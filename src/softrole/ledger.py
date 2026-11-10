@@ -479,12 +479,12 @@ def committed_checkpoints(run, verify_ledgers=True, stop_at_steps=None):
             raise ValueError(f"Invalid checkpoint: {path}") from error
         from softrole import CHECKPOINT_VERSION
         from softrole.config import Config
-        from softrole.model import SoftRoleNet
+        from softrole.factory import build_model
         from hetnet_ext.signatures import model_signature
         if payload.get("format_version") != CHECKPOINT_VERSION:
             raise ValueError("Unsupported checkpoint format")
         with torch.random.fork_rng():
-            model = SoftRoleNet(**Config(**payload["config"]).model_kwargs()).double()
+            model = build_model(Config(**payload["config"]).model_kwargs()).double()
         model.load_state_dict(payload["model_state"], strict=True)
         if any(not torch.isfinite(t).all() for t in model.state_dict().values()):
             raise ValueError("Nonfinite checkpoint model state")

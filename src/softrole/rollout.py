@@ -220,8 +220,9 @@ def run_episode(model, adapter, config, scenario, training=True, intervention="n
     steps = len(episode.rewards)
     success = bool(info.get("success", False))
     cap = kappa[:, 1].astype(bool)
-    payload_values = comm_rounds * config.msg_dim * (
-        config.heads if independent_heads else 1)
+    payload_values = getattr(model, "payload_values_per_agent_step",
+                             comm_rounds * config.msg_dim * (
+                                 config.heads if independent_heads else 1))
     # Logical representation size, not measured traffic: binary values are
     # counted as packed bits, Real as the model's floating-point scalar width.
     value_bits = (1 if communication in ("binary", "binary_deterministic")

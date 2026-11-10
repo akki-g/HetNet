@@ -42,7 +42,7 @@ def evaluate_checkpoint(checkpoint, scenarios, output, intervention="none",
                         protocol=None, scenarios_sha256=None):
     from softrole.config import Config
     from softrole.env import make_env
-    from softrole.model import SoftRoleNet
+    from softrole.factory import build_model
     from softrole import CHECKPOINT_VERSION, EVALUATION_VERSION
     from softrole.train import source_snapshot
 
@@ -81,7 +81,7 @@ def evaluate_checkpoint(checkpoint, scenarios, output, intervention="none",
     adapter = make_env(config, environment_source)
     if saved.get("environment_version") != adapter.environment_version:
         raise ValueError("Checkpoint environment version differs from the evaluation adapter")
-    model = SoftRoleNet(**saved["model_config"]).double()
+    model = build_model(saved["model_config"]).double()
     model.load_state_dict(saved["model_state"])
     model.eval()
     before = model_signature(model)

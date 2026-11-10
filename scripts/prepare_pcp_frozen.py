@@ -28,7 +28,7 @@ from hetnet_ext.signatures import model_signature
 from softrole import CHECKPOINT_VERSION, ENVIRONMENT_VERSION
 from softrole.__main__ import scenarios_for
 from softrole.config import Config
-from softrole.model import SoftRoleNet
+from softrole.factory import build_model
 from softrole.rollout import validate_scenario
 from softrole.train import source_snapshot, write_json
 
@@ -91,7 +91,7 @@ def select_checkpoint(run_root, model_name, seed, min_steps):
         raise ValueError(f"Checkpoint epoch/update mismatch: {path}")
     if saved.get("model_config") != config.model_kwargs():
         raise ValueError(f"Checkpoint model configuration mismatch: {path}")
-    model = SoftRoleNet(**config.model_kwargs()).double()
+    model = build_model(config.model_kwargs()).double()
     model.load_state_dict(saved["model_state"], strict=True)
     if not all(torch.isfinite(value).all() for value in model.state_dict().values()):
         raise ValueError(f"Nonfinite model tensor: {path}")

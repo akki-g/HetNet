@@ -141,10 +141,10 @@ def select_checkpoint(run, config, target_steps, *, accepted=None):
         raise ValueError("Selected checkpoint configuration differs from the run configuration")
     if previous is not None and previous["total_steps"] >= target_steps:
         raise ValueError("An earlier accepted checkpoint already reaches the target")
-    from softrole.model import SoftRoleNet
+    from softrole.factory import build_model
     from softrole.evaluate import model_signature
     with torch.random.fork_rng():
-        model = SoftRoleNet(**config.model_kwargs()).double()
+        model = build_model(config.model_kwargs()).double()
     model.load_state_dict(payload["model_state"], strict=True)
     return {**chosen, "model_signature": payload["signature"]["sha256"],
             "evaluation_model_signature": model_signature(model), "target_steps": int(target_steps),
