@@ -111,7 +111,7 @@ cd ~/HetNet
 squeue -u "$USER"
 run_dir=$(.venv/bin/python scripts/submit_stokes.py --init-only \
   --title 'Capability mechanism study training' \
-  --purpose 'Confirmatory training: s5/s6 maps, five arms, seeds 0-4, 10M steps each.')
+  --purpose 'Confirmatory training: s5/s6 maps, seven arms, seeds 0-4, 10M steps each.')
 
 mech_prep_job=$(.venv/bin/python scripts/submit_stokes.py --run-dir "$run_dir" -- \
   slurm/softrole_mechanism_prepare.sbatch) && \
