@@ -10,8 +10,8 @@ from softrole.programme import CAPCON_PROFILE, normalized, programme_config
 from softrole.train import source_snapshot, train, write_json
 
 
-VERSION = 1
-STUDY = "capability_mechanism_study_v1"
+VERSION = 2
+STUDY = "capability_mechanism_study_v2"
 CONDITIONS = (("s5", 5), ("s6", 6))
 # (arm name, Config.model, Config.descriptor)
 ARMS = (("capcon", "shared", "capability"), ("capcon_class_input", "shared", "type"),
@@ -59,7 +59,7 @@ def study_config(index):
     config = replace(primary, model=model, descriptor=descriptor, dim=dim, vision=2, capabilities="graded",
                      env_version="graded-observation-v2", sensing_p=(1, 3), held_out_sensing_p=(2,),
                      compositions=COMPOSITION_TRAIN, held_out=COMPOSITION_TEST + EXTRAPOLATION_TEST,
-                     entropy_coeff=0.003, null_degree_correction=True, total_steps=TARGET_STEPS)
+                     entropy_coeff=0.01, null_degree_correction=True, total_steps=TARGET_STEPS)
     changed = {key for key in primary.__dataclass_fields__
                if getattr(primary, key) != getattr(config, key)}
     allowed = {"model", "descriptor", "dim", "vision", "capabilities", "env_version", "sensing_p",

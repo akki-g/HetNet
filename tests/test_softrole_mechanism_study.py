@@ -42,7 +42,7 @@ def expected_rows():
 
 
 def test_locked_constants():
-    assert (study.VERSION, study.STUDY) == (1, "capability_mechanism_study_v1")
+    assert (study.VERSION, study.STUDY) == (2, "capability_mechanism_study_v2")
     assert study.CONDITIONS == CONDITIONS and study.ARMS == ARMS
     assert study.SEEDS == (0, 1, 2, 3, 4) and study.TARGET_STEPS == 10_000_000
 
@@ -78,7 +78,7 @@ def test_every_config_differs_from_the_primary_arm_only_in_allowed_fields():
                         dim=dict(CONDITIONS)[condition], vision=2,
                         capabilities="graded", env_version="graded-observation-v2",
                         sensing_p=(1, 3), held_out_sensing_p=(2,), compositions=COMPOSITION_TRAIN,
-                        held_out=COMPOSITION_TEST + EXTRAPOLATION_TEST, entropy_coeff=0.003,
+                        held_out=COMPOSITION_TEST + EXTRAPOLATION_TEST, entropy_coeff=0.01,
                         null_degree_correction=True, total_steps=10_000_000)
         assert isinstance(config, Config) and asdict(config) == expected
         changed = {key for key in asdict(base) if asdict(base)[key] != asdict(config)[key]}
@@ -152,7 +152,7 @@ def test_prepare_validate_round_trip_without_training_or_other_artifacts(tmp_pat
     loaded = json.loads(path.read_text())
     assert loaded == manifest and study.validate_manifest(loaded) is loaded
     assert manifest.keys() == {"version", "study", "protocol", "entries", "source", "manifest_sha256"}
-    assert manifest["version"] == 1 and manifest["study"] == "capability_mechanism_study_v1"
+    assert manifest["version"] == 2 and manifest["study"] == "capability_mechanism_study_v2"
     assert manifest["entries"] == study.expected_entries() and len(manifest["entries"]) == 70
     assert manifest["protocol"] == json.loads(json.dumps(study.PROTOCOL))
     assert manifest["source"]["files"]
@@ -191,7 +191,7 @@ def test_resigned_manifest_tampering_is_rejected_before_any_output(manifest_path
     manifest = json.loads(manifest_path.read_text())
     entries = manifest["entries"]
     if corruption == "version":
-        manifest["version"] = 2
+        manifest["version"] = 1  # a v1 manifest must not be accepted by the v2 launcher
     elif corruption == "study":
         manifest["study"] = programme.CAPCON_PROFILE
     elif corruption == "extra_key":
@@ -262,7 +262,7 @@ def test_dry_run_returns_exact_dispatch_for_all_seventy_indices_and_writes_nothi
     for index in range(70):
         result = study.launch(manifest_path, index, root, dry_run=True)
         row = rows[index]
-        assert result["study"] == "capability_mechanism_study_v1"
+        assert result["study"] == "capability_mechanism_study_v2"
         assert (result["index"], result["condition"], result["arm"], result["seed"]) == (
             index, row["condition"], row["arm"], row["seed"])
         assert result["config"] == row["config"]
@@ -345,7 +345,7 @@ def test_cli_prepare_and_dry_runs_are_reviewable_without_training(tmp_path, monk
     monkeypatch.setattr(study, "train", forbid_training)
     manifest = tmp_path / "manifest.json"
     study.main(["prepare", "--output", str(manifest)])
-    assert json.loads(capsys.readouterr().out)["study"] == "capability_mechanism_study_v1"
+    assert json.loads(capsys.readouterr().out)["study"] == "capability_mechanism_study_v2"
     for index in (0, 12, 34, 35, 69):
         study.main(["launch", "--manifest", str(manifest), "--index", str(index),
                     "--run-root", str(tmp_path / "runs"), "--dry-run"])

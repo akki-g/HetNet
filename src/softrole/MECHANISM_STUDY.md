@@ -26,6 +26,14 @@ deploying the reviewed source.
 Seeds are 0, 1, 2, 3 and 4. The target is 10,000,000 joint environment steps per
 run.
 
+### Study version
+
+This is `capability_mechanism_study_v2` (manifest version 2). It differs from v1 in one
+setting: `entropy_coeff` is 0.01 instead of 0.003, for every arm. The v1 array was
+stopped after 50 of 70 runs because some runs lost all action entropy early in
+training and did not recover. v1 manifests are rejected by this launcher, and v1
+runs are not part of the comparison.
+
 ### Representation arms
 
 Three arms share the CapCon learner, decomposed critic, environment and attention
@@ -84,7 +92,7 @@ any other difference from that primary arm.
 | `sensing_p` / `held_out_sensing_p` | `(1, 3)` / `(2,)` |
 | `compositions` | `COMPOSITION_TRAIN` |
 | `held_out` | `COMPOSITION_TEST + EXTRAPOLATION_TEST` |
-| `entropy_coeff` | 0.003 |
+| `entropy_coeff` | 0.01 |
 | `null_degree_correction` | true |
 | `total_steps` | 10,000,000 |
 
