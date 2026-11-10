@@ -3,6 +3,7 @@
 # Select the first committed checkpoint at the target for every training run, write the frozen panels and the
 # source-locked evaluation manifest, then preview all 70 entries. Set SOFTROLE_MECHANISM_TRAINING_RUN to the
 # finished training run container (read only). Submit the evaluation array with an afterok dependency on this job.
+# A study with fewer entries (the 10-run supplement) sets SOFTROLE_MECHANISM_EVAL_COUNT to its entry count.
 # Resources are initial allocations, not measured runtime guarantees.
 #SBATCH --job-name=mechanism-eval-prepare
 #SBATCH --account=cenyioha
@@ -21,6 +22,10 @@ fi
 cd "${SLURM_SUBMIT_DIR:?Submit from the repository root}"
 training=${SOFTROLE_MECHANISM_TRAINING_RUN:?Set SOFTROLE_MECHANISM_TRAINING_RUN to the finished training run directory}
 [[ -d $training ]] || { echo "Training run directory not found: $training" >&2; exit 2; }
+count=${SOFTROLE_MECHANISM_EVAL_COUNT:-70}
+[[ $count =~ ^[1-9][0-9]?$ ]] && (( count <= 70 )) || {
+  echo 'SOFTROLE_MECHANISM_EVAL_COUNT must be an entry count from 1 through 70' >&2; exit 2
+}
 [[ ! $training -ef $HETNET_RUN_DIR ]] || {
   echo 'The evaluation needs its own run directory; the training run is read only' >&2; exit 2
 }
@@ -35,9 +40,9 @@ if [[ ! -e $eval_dir && ! -L $eval_dir ]]; then
   srun --cpu-bind=cores "$HETNET_PYTHON" -u -m softrole.mechanism_evaluation prepare \
     --training-run "$training" --output "$eval_dir" "$@"
 fi
-# An existing evaluation directory is never rewritten; all 70 previews verify its source lock,
+# An existing evaluation directory is never rewritten; the previews of every entry verify its source lock,
 # checkpoint hashes and panels.
-for index in {0..69}; do
+for (( index = 0; index < count; index++ )); do
   srun --cpu-bind=cores "$HETNET_PYTHON" -u -m softrole.mechanism_evaluation launch \
     --manifest "$eval_dir/manifest.json" --index "$index" --training-run "$training" --dry-run
 done

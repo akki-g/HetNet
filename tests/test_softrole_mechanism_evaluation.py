@@ -20,6 +20,7 @@ import pytest
 from scripts import submit_stokes as submit
 from softrole import mechanism_evaluation as mech
 from softrole import mechanism_study as study
+from softrole import mechanism_supplement as supplement
 from softrole.config import COMPOSITION_TEST, COMPOSITION_TRAIN, EXTRAPOLATION_TEST
 from softrole.ledger import committed_checkpoints
 from softrole.rollout import validate_scenario
@@ -32,7 +33,7 @@ PREPARE = ROOT / "slurm/softrole_mechanism_eval_prepare.sbatch"
 RUNBOOK = ROOT / "src/softrole/MECHANISM_EVALUATION.md"
 THREADS = ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS")
 ARM_NAMES = [name for name, _, _ in study.ARMS]
-MESSAGING = ("capcon", "capcon_class_input", "class_typed", "ca_cc_gnn")
+MESSAGING = ("capcon", "capcon_class_input", "class_typed", "ca_cc_gnn", "capcon_hyper")
 
 
 # --- 1. Panels ----------------------------------------------------------------
@@ -980,6 +981,24 @@ def test_preparation_stops_on_the_first_failed_step(tmp_path, failure, expected_
     assert result.returncode == 17 and len(calls(env)) == expected_count
 
 
+def test_preparation_previews_only_the_declared_entry_count(tmp_path):
+    _, evaluation, training, env = setup_environment(tmp_path)
+    env["SOFTROLE_MECHANISM_EVAL_COUNT"] = "10"
+    result = run_slurm(PREPARE, [], tmp_path, env)
+    assert result.returncode == 0, result.stderr
+    expected = [prepare_args(evaluation, training)]
+    expected += [launch_args(evaluation, index, training, dry_run=True) for index in range(10)]
+    assert [call["args"] for call in calls(env)] == expected
+
+
+@pytest.mark.parametrize("count", ["0", "71", "100", "ten", "-1", "07", "1 0"])
+def test_preparation_rejects_an_invalid_entry_count_before_execution(tmp_path, count):
+    _, _, _, env = setup_environment(tmp_path)
+    env["SOFTROLE_MECHANISM_EVAL_COUNT"] = count
+    result = run_slurm(PREPARE, [], tmp_path, env)
+    assert result.returncode == 2 and "SOFTROLE_MECHANISM_EVAL_COUNT" in result.stderr and not calls(env)
+
+
 @pytest.mark.parametrize("args", [["--dry-run"], ["--output", "other"], ["--total-steps", "1"],
                                   ["--allow-missing", "--allow-missing"], ["--training-run", "other"]])
 def test_preparation_rejects_arguments_before_execution(tmp_path, args):
@@ -1041,3 +1060,293 @@ def test_runbook_exists_is_listed_in_gitignore_and_states_the_commands():
         assert needle in text
     for name in SPEC_CELLS:
         assert f"`{name}`" in text
+
+
+# --- 6. The supplement: one code path for both studies --------------------------
+
+# Golden values from the code before the generalisation: the parent study's protocol without its messaging-arm
+# list, and its five panels at the real 500 episodes per composition.
+PARENT_PROTOCOL_WITHOUT_MESSAGING_SHA256 = "38be09d9216e486b093c792903a44d2881bf6934310a91147da2652cdd283b24"
+PANEL_SHA256 = {
+    "in_dist": "3e6617c6bdd2bddc1120fcfe1022adbd976a32177245edf8cb8b4c03a6b326b2",
+    "heldout_composition": "fa7e59f2436912dd65ce24ee986a6899b7b4141b7468cfb07139c643f883ec22",
+    "larger_teams": "5c8ddf6ee4079c6601a1e8cbbb2ceecd7e1a6936fc909b224b0517479bef08c7",
+    "heldout_level": "c94668623fe7baae41a0e963b7f1024f5610b581491a305c8afa7a4bfba6382a",
+    "failure": "cfb73dda78651596522f35820eb3d5d0a0eadca6f33a749bddf6bc867bb7dc90",
+}
+SUPPLEMENT_INDICES = (0, 1)  # s5/capcon_hyper/seed0 and seed1
+
+
+def apply_tiny_supplement(patcher):
+    apply_tiny(patcher)  # the supplement derives its configurations from the parent study's capcon entries
+    patcher.setattr(supplement, "TARGET_STEPS", TINY_TARGET)
+
+
+@pytest.fixture
+def tiny_supplement(monkeypatch):
+    apply_tiny_supplement(monkeypatch)
+
+
+@pytest.fixture(scope="module")
+def supplement_training_run(tmp_path_factory):
+    container = tmp_path_factory.mktemp("supplement_training_container")
+    with pytest.MonkeyPatch.context() as patcher:
+        apply_tiny_supplement(patcher)
+        manifest = container / "manifest.json"
+        supplement.prepare(manifest)
+        for index in SUPPLEMENT_INDICES:
+            supplement.launch(manifest, index, container / "training")
+    return container
+
+
+@pytest.fixture(scope="module")
+def supplement_evaluated(supplement_training_run, tmp_path_factory):
+    root = tmp_path_factory.mktemp("supplement_evaluation_container")
+    output = root / "evaluation"
+    with pytest.MonkeyPatch.context() as patcher:
+        apply_tiny_supplement(patcher)
+        manifest = mech.prepare(supplement_training_run, output, allow_missing=True)
+        records = {index: mech.launch(output / "manifest.json", index) for index in SUPPLEMENT_INDICES}
+        summary = mech.summarize(output / "manifest.json", root / "summary", allow_missing=True)
+    return SimpleNamespace(root=root, output=output, manifest=manifest, records=records, summary=summary,
+                           summary_dir=root / "summary")
+
+
+def test_the_registry_maps_study_names_to_their_launchers():
+    assert mech.STUDIES == {study.STUDY: study, supplement.STUDY: supplement}
+    assert mech.study_named("capability_mechanism_study_v2") is study
+    assert mech.study_named("capability_mechanism_supplement_v1") is supplement
+    for name in ("capability_mechanism_study_v1", "", None, 2, ["capability_mechanism_study_v2"], {}):
+        with pytest.raises(ValueError, match="Unknown mechanism study"):
+            mech.study_named(name)
+    assert mech.protocol() == mech.protocol(study)
+    assert mech.protocol(study)["study"] == study.STUDY and mech.protocol(supplement)["study"] == supplement.STUDY
+
+
+def test_the_two_studies_share_everything_in_the_protocol_except_the_study_and_its_arms():
+    parent_protocol, supplement_protocol = mech.protocol(study), mech.protocol(supplement)
+    assert {key for key in parent_protocol if parent_protocol[key] != supplement_protocol[key]} == {"study", "arms"}
+    assert supplement_protocol["arms"] == [{"name": "capcon_hyper", "model": "capcon_hyper", "descriptor": "capability"}]
+    assert supplement_protocol["messaging_arms"] == list(MESSAGING) == parent_protocol["messaging_arms"]
+    assert supplement_protocol["seeds"] == [0, 1, 2, 3, 4] and supplement_protocol["panel_seed"] == 4100
+    assert supplement_protocol["target_joint_environment_steps_per_run"] == 10_000_000
+    assert study.digest(parent_protocol) != study.digest(supplement_protocol)
+
+
+def test_the_parent_protocol_is_unchanged_apart_from_the_messaging_arm_list():
+    protocol = mech.protocol()
+    assert protocol["messaging_arms"] == [*MESSAGING[:4], "capcon_hyper"]
+    unchanged = {key: value for key, value in protocol.items() if key != "messaging_arms"}
+    assert study.digest(unchanged) == PARENT_PROTOCOL_WITHOUT_MESSAGING_SHA256
+    assert protocol["study"] == "capability_mechanism_study_v2" and mech.EVALUATION == "capability_mechanism_evaluation_v1"
+    assert [(arm["name"], arm["model"], arm["descriptor"]) for arm in protocol["arms"]] == list(study.ARMS)
+
+
+def test_capcon_hyper_is_a_messaging_arm_with_all_nine_cells():
+    assert "capcon_hyper" in mech.MESSAGING_ARMS
+    cells = mech.applicable_cells("capcon_hyper")
+    assert [cell["name"] for cell in cells] == list(SPEC_CELLS) and len(cells) == 9
+    for cell in cells:
+        assert (cell["panel"], cell["intervention"], cell["intervention_step"], cell["sham"]) == SPEC_CELLS[cell["name"]]
+    assert cells == mech.applicable_cells("capcon")
+    for arm in ("ca_mlp", "rnn_exp", "cash"):
+        assert len(mech.applicable_cells(arm)) == 6
+
+
+def test_panels_are_byte_identical_for_both_studies_and_to_the_pre_existing_panels(panels):
+    assert not inspect.signature(mech.build_panels).parameters  # independent of arm and study
+    assert {name: hashlib.sha256(mech.panel_bytes(scenarios)).hexdigest()
+            for name, scenarios in panels.items()} == PANEL_SHA256
+    for study_module in (study, supplement):
+        assert mech.protocol(study_module)["panels"] == mech.panel_table()
+        assert mech.protocol(study_module)["panel_seed"] == 4100
+
+
+def test_a_supplement_evaluation_is_prepared_for_the_supplement_and_shares_the_panels_of_the_parent(
+        tiny_supplement, supplement_training_run, supplement_evaluated, evaluated):
+    manifest = json.loads((supplement_evaluated.output / "manifest.json").read_text())
+    assert manifest == json.loads(json.dumps(supplement_evaluated.manifest))
+    assert mech.validate_manifest(manifest) is manifest
+    assert manifest["evaluation"] == "capability_mechanism_evaluation_v1" and manifest["version"] == 1
+    assert manifest["protocol"]["study"] == "capability_mechanism_supplement_v1"
+    assert manifest["protocol"] == json.loads(json.dumps(mech.protocol(supplement)))
+    assert mech.study_of(manifest) is supplement
+    assert manifest["training"]["manifest_sha256"] == json.loads(
+        (supplement_training_run / "manifest.json").read_text())["manifest_sha256"]
+    assert manifest["training"]["run_dir"] == str(supplement_training_run.resolve())
+    assert len(manifest["entries"]) == 10
+    assert manifest["manifest_sha256"] == study.digest({k: v for k, v in manifest.items() if k != "manifest_sha256"})
+    # Identical panel records and files for the two studies.
+    assert manifest["panels"] == evaluated.manifest["panels"]
+    for name, panel in manifest["panels"].items():
+        data = (supplement_evaluated.output / panel["path"]).read_bytes()
+        assert data == (evaluated.output / panel["path"]).read_bytes()
+        assert panel["sha256"] == hashlib.sha256(data).hexdigest() == evaluated.manifest["panels"][name]["sha256"]
+    for index in SUPPLEMENT_INDICES:
+        entry = manifest["entries"][index]
+        run = supplement_training_run / "training" / entry["relative_output"]
+        candidates = committed_checkpoints(run)
+        first = next(c for c in candidates if c["total_steps"] >= TINY_TARGET)
+        assert first["epoch"] < candidates[-1]["epoch"]  # never the final or best checkpoint
+        assert entry["relative_output"] == f"s5/capcon_hyper/seed{index}" and entry["arm"] == "capcon_hyper"
+        assert entry["status"] == "ready" and entry["cells"] == list(SPEC_CELLS) and entry["skipped_cells"] == []
+        assert entry["checkpoint"]["path"] == (
+            f"training/{entry['relative_output']}/checkpoints/epoch{first['epoch']:04d}.pt")
+        assert entry["checkpoint"]["sha256"] == first["sha256"]
+        assert entry["checkpoint"]["source_sha256"] == manifest["training"]["source_sha256"]
+    for entry in manifest["entries"]:
+        if entry["index"] not in SUPPLEMENT_INDICES:
+            assert entry["status"] == "missing" and entry["reason"] == "training run directory absent"
+            assert entry["cells"] == list(SPEC_CELLS)
+
+
+def test_a_supplement_evaluation_runs_every_cell_and_summarizes(tiny_supplement, supplement_evaluated):
+    manifest, reports = supplement_evaluated.manifest, supplement_evaluated.output / "reports"
+    assert sorted(str(p.relative_to(reports)) for p in reports.rglob("*") if p.is_file()) == sorted(
+        f"s5/capcon_hyper/seed{index}/{cell}.json" for index in SUPPLEMENT_INDICES for cell in SPEC_CELLS)
+    for index in SUPPLEMENT_INDICES:
+        record, entry = supplement_evaluated.records[index], manifest["entries"][index]
+        assert record["status"] == "evaluated" and record["index"] == index and not record["dry_run"]
+        assert [row["action"] for row in record["cells"]] == ["evaluated"] * 9
+        relative = entry["relative_output"]
+        for cell in mech.applicable_cells("capcon_hyper"):
+            report = json.loads((reports / relative / f"{cell['name']}.json").read_text())
+            panel = manifest["panels"][cell["panel"]]
+            assert report["checkpoint_sha256"] == entry["checkpoint"]["sha256"]
+            assert report["scenarios_sha256"] == panel["sha256"]
+            assert report["intervention"] == cell["intervention"] and report["sham"] is cell["sham"]
+            assert report["episodes"] == panel["scenarios"] == len(report["per_episode"])
+            assert report["model_config"]["mode"] == "capcon_hyper" and report["config"]["model"] == "capcon_hyper"
+            assert report["evaluator"]["source"]["sha256"] == manifest["source"]["sha256"]
+            assert all(np.isfinite(e["team_return"]) for e in report["per_episode"])
+        silent = json.loads((reports / relative / "in_dist_comm_off.json").read_text())
+        assert all(e["intervention_exposed"] for e in silent["per_episode"])
+        failure = json.loads((reports / relative / "failure.json").read_text())
+        assert any(e["event_exposed"] for e in failure["per_episode"])
+    rows = read_csv(supplement_evaluated.summary_dir / "cells.csv")
+    assert list(rows[0]) == list(mech.CELL_COLUMNS) and len(rows) == 2 * 30
+    assert {row["arm"] for row in rows} == {"capcon_hyper"} and {row["cell"] for row in rows} == set(SPEC_CELLS)
+    paired = read_csv(supplement_evaluated.summary_dir / "paired.csv")
+    assert Counter((r["seed"], r["comparison"]) for r in paired) == {
+        (str(seed), name): count for seed in SUPPLEMENT_INDICES
+        for name, count in (("failure_minus_sham", 4), ("in_dist_comm_off_minus_in_dist", 6),
+                            ("failure_comm_off_minus_failure", 4), ("sham_comm_off_minus_sham", 4))}
+    missing = supplement_evaluated.summary["missing"]
+    assert {m["index"] for m in missing} == set(range(10)) - set(SUPPLEMENT_INDICES) and len(missing) == 8
+    assert supplement_evaluated.summary["manifest_sha256"] == manifest["manifest_sha256"]
+
+
+def test_launch_resolves_the_study_from_the_manifest_and_fails_clearly_for_out_of_range_indices(
+        tiny_supplement, supplement_evaluated, evaluated, monkeypatch):
+    monkeypatch.setattr(mech, "evaluate_checkpoint", forbid_evaluation)
+    supplement_manifest, parent_manifest = supplement_evaluated.output / "manifest.json", evaluated.output / "manifest.json"
+    for index in (10, 15, 69):
+        for dry_run in (True, False):
+            with pytest.raises(ValueError, match=r"index %d is out of range for capability_mechanism_supplement_v1.*"
+                                                 r"10 entries, indices 0 through 9" % index):
+                mech.launch(supplement_manifest, index, dry_run=dry_run)
+    for index in (70, 100, -1, True, 0., "0", None):
+        with pytest.raises(ValueError, match="index"):
+            mech.launch(supplement_manifest, index, dry_run=True)
+    # The same indices are valid for the parent study's manifest; its range is unchanged.
+    assert mech.launch(parent_manifest, 15, dry_run=True)["status"] == "dry_run"
+    with pytest.raises(ValueError, match=r"out of range for capability_mechanism_study_v2.*0 through 69"):
+        mech.launch(parent_manifest, 70, dry_run=True)
+    assert mech.launch(supplement_manifest, 0, dry_run=True)["status"] == "dry_run"
+    assert mech.launch(supplement_manifest, 9, dry_run=True)["status"] == "skipped"
+
+
+def test_cli_index_range_follows_the_study_of_the_manifest(tiny_supplement, supplement_evaluated, evaluated, capsys):
+    supplement_manifest, parent_manifest = supplement_evaluated.output / "manifest.json", evaluated.output / "manifest.json"
+    mech.main(["launch", "--manifest", str(supplement_manifest), "--index", "9", "--dry-run"])
+    assert json.loads(capsys.readouterr().out)["status"] == "skipped"
+    for index in ("10", "15", "69"):
+        with pytest.raises(SystemExit) as error:
+            mech.main(["launch", "--manifest", str(supplement_manifest), "--index", index, "--dry-run"])
+        assert error.value.code == 2
+        assert "out of range for capability_mechanism_supplement_v1" in capsys.readouterr().err
+    mech.main(["launch", "--manifest", str(parent_manifest), "--index", "15", "--dry-run"])
+    assert json.loads(capsys.readouterr().out)["index"] == 15
+    with pytest.raises(SystemExit) as error:  # beyond every study
+        mech.main(["launch", "--manifest", str(supplement_manifest), "--index", "70", "--dry-run"])
+    assert error.value.code == 2
+
+
+def test_prepare_chooses_the_study_from_the_training_manifest_and_rejects_an_unknown_name(
+        tiny_supplement, supplement_training_run, training_run, tmp_path):
+    assert mech.prepare(supplement_training_run, tmp_path / "a", allow_missing=True)["protocol"]["study"] == supplement.STUDY
+    assert mech.prepare(training_run, tmp_path / "b", allow_missing=True)["protocol"]["study"] == study.STUDY
+    container = tmp_path / "other training"
+    shutil.copytree(supplement_training_run, container)
+    manifest = json.loads((container / "manifest.json").read_text())
+    for name in ("capability_mechanism_study_v1", "capability_mechanism", "", None, 7, ["x"]):
+        manifest["study"] = name
+        resign(manifest)
+        (container / "manifest.json").write_text(json.dumps(manifest))
+        with pytest.raises(ValueError, match="Unknown mechanism study"):
+            mech.prepare(container, tmp_path / "c", allow_missing=True)
+    # A supplement training manifest under the parent's name (or the reverse) fails that study's own checks.
+    for claimed in (study.STUDY, supplement.STUDY):
+        source = supplement_training_run if claimed == study.STUDY else training_run
+        manifest = json.loads((source / "manifest.json").read_text())
+        manifest["study"] = claimed
+        resign(manifest)
+        (container / "manifest.json").write_text(json.dumps(manifest))
+        with pytest.raises(ValueError, match="differs from the locked"):
+            mech.prepare(container, tmp_path / "c", allow_missing=True)
+    (container / "manifest.json").write_text(json.dumps([]))
+    with pytest.raises(ValueError, match="Unknown mechanism study"):
+        mech.prepare(container, tmp_path / "c", allow_missing=True)
+    assert not (tmp_path / "c").exists()
+
+
+@pytest.mark.parametrize("corruption", ["study_name", "unknown_study", "study_removed", "protocol_not_object",
+                                        "parent_entries", "entry_dropped", "entry_added"])
+def test_the_evaluation_manifest_binds_its_entries_to_the_study_it_names(
+        tiny_supplement, supplement_evaluated, evaluated, tmp_path, monkeypatch, corruption):
+    monkeypatch.setattr(mech, "evaluate_checkpoint", forbid_evaluation)
+    manifest = json.loads((supplement_evaluated.output / "manifest.json").read_text())
+    if corruption == "study_name":
+        manifest["protocol"]["study"] = study.STUDY  # a 10-entry manifest claiming the 70-run study
+    elif corruption == "unknown_study":
+        manifest["protocol"]["study"] = "capability_mechanism_study_v1"
+    elif corruption == "study_removed":
+        del manifest["protocol"]["study"]
+    elif corruption == "protocol_not_object":
+        manifest["protocol"] = ["capability_mechanism_supplement_v1"]
+    elif corruption == "parent_entries":
+        manifest["entries"] = json.loads((evaluated.output / "manifest.json").read_text())["entries"]
+    elif corruption == "entry_dropped":
+        manifest["entries"].pop()
+    else:
+        manifest["entries"].append(deepcopy(manifest["entries"][-1]))
+    resign(manifest)
+    corrupted = tmp_path / "corrupted.json"
+    corrupted.write_text(json.dumps(manifest))
+    with pytest.raises(ValueError):
+        mech.validate_manifest(manifest)
+    for dry_run in (True, False):
+        with pytest.raises(ValueError):
+            mech.launch(corrupted, 0, dry_run=dry_run)
+    with pytest.raises(ValueError):
+        mech.summarize(corrupted, tmp_path / "summary", allow_missing=True)
+    assert [p.name for p in tmp_path.iterdir()] == ["corrupted.json"]
+
+
+def test_supplement_evaluation_is_submitted_with_the_shorter_array_and_needs_no_second_script(checkout, capsys):
+    scripts = sorted(path.name for path in (ROOT / "slurm").glob("softrole_mechanism_*eval*.sbatch"))
+    assert scripts == ["softrole_mechanism_eval.sbatch", "softrole_mechanism_eval_prepare.sbatch"]
+    assert "#SBATCH --array=0-69%20\n" in EVAL.read_text()
+    args = ["--dry-run", "--title", "Capability mechanism supplement evaluation", "--purpose", "Preview routing only.",
+            "--", "--array=0-9", "slurm/softrole_mechanism_eval.sbatch"]
+    assert submit.main(args) == 0
+    plan = json.loads(capsys.readouterr().out)
+    assert "--array=0-9" in plan["command"] and plan["command"][-1] == str(checkout / "slurm/softrole_mechanism_eval.sbatch")
+    assert plan["output_environment"]["SOFTROLE_MECHANISM_EVAL_DIR"] == str(Path(plan["run_dir"]) / "evaluation")
+
+
+def test_runbook_documents_the_supplement_evaluation():
+    text = " ".join(RUNBOOK.read_text().split())
+    for needle in ("capability_mechanism_supplement_v1", "capcon_hyper", "--array=0-9", "10 entries", "indices 0-9",
+                   "SOFTROLE_MECHANISM_TRAINING_RUN", "9 cells", "overrides"):
+        assert needle in text, needle

@@ -41,6 +41,10 @@ ENV_ROUTES = {
                                         'SOFTROLE_MECHANISM_MANIFEST': 'manifest.json'},
     'softrole_mechanism_prepare.sbatch': {'SOFTROLE_MECHANISM_RUN_ROOT': 'training',
                                           'SOFTROLE_MECHANISM_MANIFEST': 'manifest.json'},
+    'softrole_mechanism_supp_train.sbatch': {'SOFTROLE_MECHANISM_SUPP_RUN_ROOT': 'training',
+                                             'SOFTROLE_MECHANISM_SUPP_MANIFEST': 'manifest.json'},
+    'softrole_mechanism_supp_prepare.sbatch': {'SOFTROLE_MECHANISM_SUPP_RUN_ROOT': 'training',
+                                               'SOFTROLE_MECHANISM_SUPP_MANIFEST': 'manifest.json'},
     # The training run container (SOFTROLE_MECHANISM_TRAINING_RUN) is a read-only input, not routed here.
     'softrole_mechanism_eval.sbatch': {'SOFTROLE_MECHANISM_EVAL_DIR': 'evaluation'},
     'softrole_mechanism_eval_prepare.sbatch': {'SOFTROLE_MECHANISM_EVAL_DIR': 'evaluation'},
@@ -67,7 +71,7 @@ CLI_ROUTES = {
 RUN_ROOT_OUTPUT_JOBS = {
     'publication_train.sbatch', 'publication_preflight.sbatch',
     'publication_paper_train.sbatch', 'publication_paper_preflight.sbatch',
-    'softrole_graded_pilot.sbatch', 'softrole_mechanism_train.sbatch',
+    'softrole_graded_pilot.sbatch', 'softrole_mechanism_train.sbatch', 'softrole_mechanism_supp_train.sbatch',
     'softrole_pcp_additional_seeds.sbatch',
     'softrole_stale_prepare.sbatch', 'softrole_stale_train.sbatch',
     'softrole_stale_gate_summary.sbatch',

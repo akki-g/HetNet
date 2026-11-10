@@ -17,10 +17,10 @@ from softrole.scenarios import make_scenarios
 from softrole.train import train
 
 MODES = ("ca_mlp", "ca_cc_gnn", "ca_gnn", "rnn_exp", "cash")
-ALL_MODES = MODES + ("class_typed",)
+ALL_MODES = MODES + ("class_typed", "capcon_hyper")
 GNN_MODES = ("ca_cc_gnn", "ca_gnn")
 # Modes whose messages reach other agents, so silencing them changes behaviour.
-CONNECTED_MODES = GNN_MODES + ("class_typed",)
+CONNECTED_MODES = GNN_MODES + ("class_typed", "capcon_hyper")
 # Actor-only parameters at 5x5, vision 2 (obs_dim 702), H = hyper_dim = 64.
 EXPECTED_ACTOR_PARAMETERS = {"ca_mlp": 57_862, "ca_cc_gnn": 61_830, "ca_gnn": 61_830,
                              "rnn_exp": 70_342, "cash": 202_566}
@@ -35,8 +35,10 @@ def small_model(mode, critic_mode="team", seed=0):
     settings = dict(mode=mode, critic_mode=critic_mode, **SMALL)
     if mode == "cash":
         settings["hyper_dim"] = 8
-    if mode == "class_typed":
+    if mode in ("class_typed", "capcon_hyper"):
         settings.update(CLASS_TYPED_SMALL)
+    if mode == "capcon_hyper":
+        settings["hyper_dim"] = 8
     return build_model(settings).double()
 
 
@@ -118,6 +120,12 @@ def test_forward_contract(mode, n, critic_mode):
         assert len(out["messages"]) == len(out["alpha_null"]) == model.comm_rounds
         assert all(null.shape == (n, model.heads) for null in out["alpha_null"])
         assert all(0. <= float(null.min()) and float(null.max()) <= 1. for null in out["alpha_null"])
+    elif mode == "capcon_hyper":
+        # One expert: the gate is all ones; messages and null attention are per round and head.
+        assert torch.equal(out["gate"], torch.ones(n, 1, dtype=torch.float64))
+        assert len(out["messages"]) == len(out["alpha_null"]) == model.comm_rounds
+        assert all(null.shape == (n, model.heads) for null in out["alpha_null"])
+        assert all(0. <= float(null.min()) and float(null.max()) <= 1. for null in out["alpha_null"])
     else:
         assert torch.equal(out["gate"], torch.ones(n, 1, dtype=torch.float64))
         assert len(out["alpha_null"]) == 1 and out["alpha_null"][0].shape == (n, 1)
@@ -160,6 +168,7 @@ def test_payload_sizes_are_reported_by_the_models():
     assert not hasattr(SoftRoleNet(mode="shared", communication="real"), "payload_values_per_agent_step")
     # class_typed uses the rollout's own formula (comm_rounds * msg_dim * heads if independent heads).
     assert not hasattr(small_model("class_typed"), "payload_values_per_agent_step")
+    assert not hasattr(small_model("capcon_hyper"), "payload_values_per_agent_step")
 
 
 # 3. Permutation equivariance ----------------------------------------------
@@ -339,6 +348,10 @@ def tiny_config(mode):
     extra = {}
     if mode == "class_typed":
         extra = dict(descriptor="type", pre_dim=12, heads=2, head_dim=4, msg_dim=6, comm_rounds=3,
+                     independent_heads=True, null_degree_correction=True)
+    if mode == "capcon_hyper":
+        # Graded capabilities with the physical capability descriptor.
+        extra = dict(descriptor="capability", pre_dim=12, heads=2, head_dim=4, msg_dim=6, comm_rounds=3,
                      independent_heads=True, null_degree_correction=True)
     return Config(task="pcp", env_version="graded-observation-v2", capabilities="graded",
                   sensing_p=(1, 2), sensing_a=(0,), vision=1, compositions=((1, 1), (2, 1)),
@@ -582,3 +595,186 @@ def test_class_typed_model_kwargs_validation_and_command_line(tmp_path):
               "--communication", "real", "--descriptor", "type", "--comm-rounds", "3"])
     printed = json.loads(buffer.getvalue())
     assert printed["model"] == "class_typed" and printed["descriptor"] == "type" and printed["comm_rounds"] == 3
+
+
+# 9. capcon_hyper: the shared CapCon body with a capability-hypernetwork head ---
+
+# 5x5 and 6x6, vision 2, the capability-mechanism study's actor settings and hyper_dim 64.
+CAPCON_HYPER_STUDY = {**CLASS_TYPED_STUDY, "model": "capcon_hyper"}
+EXPECTED_CAPCON_HYPER = {  # dim: (obs_dim, actor total, body, hyper_w, hyper_b)
+    5: (702, 340_466, 226_444, 59_936, 54_086),
+    6: (977, 410_866, 261_644, 77_536, 71_686),
+}
+
+
+def parameters_under(model, *prefixes):
+    return sum(p.numel() for name, p in model.named_parameters() if name.startswith(prefixes))
+
+
+@pytest.mark.parametrize("critic_mode", ["team", "decomposed"])
+@pytest.mark.parametrize("dim", [5, 6])
+def test_capcon_hyper_actor_parameter_counts(dim, critic_mode):
+    obs_dim, total, body, hyper_w, hyper_b = EXPECTED_CAPCON_HYPER[dim]
+    config = Config(critic_mode=critic_mode, dim=dim, **CAPCON_HYPER_STUDY)
+    model = build_model(config.model_kwargs())
+    assert type(model) is BASELINE_CLASSES["capcon_hyper"] and model.obs_dim == obs_dim
+    assert model.hyper_dim == 64 and "output.weight" not in model.state_dict()
+    assert actor_parameters(model) == total == body + hyper_w + hyper_b
+    assert parameters_under(model, "pre.", "lstm.", "rounds.") == body
+    assert parameters_under(model, "hyper_w.") == hyper_w and parameters_under(model, "hyper_b.") == hyper_b
+    # The body is the shared CapCon actor without its capability input and without the output layer.
+    shared = SoftRoleNet(**Config(critic_mode=critic_mode, dim=dim, actor_capabilities="physical_only",
+                                  **{**CAPCON_HYPER_STUDY, "model": "shared"}).model_kwargs())
+    assert actor_parameters(shared) - parameters_under(shared, "output.") == body
+    assert parameters_under(shared, "output.") == 16 * 6 + 6
+    critic = parameters_under(model, "critic_head.")
+    assert critic == sum(p.numel() for name, p in shared.named_parameters() if name.startswith("critic"))
+
+
+def capcon_hyper_pair(null_degree_correction, seed=0):
+    """A physical-only shared SoftRoleNet and a CapConHyperNet whose head is its constant output layer."""
+    torch.manual_seed(seed)
+    settings = dict(base=4, n_squares=9, pre_dim=12, hidden_dim=8, heads=2, head_dim=4, msg_dim=6,
+                    comm_rounds=3, independent_heads=True, feedback=True,
+                    null_degree_correction=null_degree_correction, critic_mode="decomposed")
+    shared = SoftRoleNet(mode="shared", communication="real", actor_capabilities="physical_only",
+                         **settings).double()
+    hyper = build_model(dict(mode="capcon_hyper", hyper_dim=8, **settings)).double()
+    with torch.no_grad():
+        for parameter in shared.parameters():
+            parameter.normal_(0., 0.5)  # also moves the zero-initialised biases and null logits
+    state = {}
+    for name, value in shared.state_dict().items():
+        if name.startswith(("pre.", "lstm.", "rounds.")):
+            state[name] = value.clone()
+        elif not name.startswith("output."):
+            state[f"critic_head.{name}"] = value.clone()
+    result = hyper.load_state_dict(state, strict=False)
+    assert not result.unexpected_keys
+    assert result.missing_keys and all(key.startswith(("hyper_w.", "hyper_b.")) for key in result.missing_keys)
+    with torch.no_grad():
+        # logits_i = u_i W + b: the generated W is the output weight arranged as [head_dim, actions].
+        for network, bias in ((hyper.hyper_w, shared.output.weight.T.reshape(-1)),
+                              (hyper.hyper_b, shared.output.bias)):
+            final = network.net[-1]
+            assert final.bias.shape == bias.shape
+            final.weight.zero_()
+            final.bias.copy_(bias)
+    return shared, hyper
+
+
+@pytest.mark.parametrize("null_degree_correction", [False, True])
+@pytest.mark.parametrize("comm_off", [False, True])
+def test_capcon_hyper_equals_the_physical_only_shared_actor_under_a_constant_head(comm_off, null_degree_correction):
+    shared, hyper = capcon_hyper_pair(null_degree_correction)
+    n = 5
+    adjacency = adjacency_for(n, seed=4)
+    adjacency[4] = False  # one agent with no permitted sender
+    assert adjacency[:4].any()
+    generator = torch.Generator().manual_seed(7)
+    memory_shared, memory_hyper = shared.initial_memory(n), hyper.initial_memory(n)
+    for _ in range(5):
+        obs = torch.randn(n, shared.obs_dim, generator=generator, dtype=torch.float64)
+        expected = forward(shared, obs, CLASS_KAPPA, memory_shared, adjacency, comm_off=comm_off)
+        actual = forward(hyper, obs, CLASS_KAPPA, memory_hyper, adjacency, comm_off=comm_off)
+        assert torch.equal(torch.isinf(actual["logits"]), torch.isinf(expected["logits"]))
+        torch.testing.assert_close(actual["logits"], expected["logits"], rtol=0, atol=1e-10)
+        for name in ("H", "C", "u_bar"):
+            torch.testing.assert_close(actual["memory"][name], expected["memory"][name], rtol=0, atol=1e-10)
+        assert len(actual["alpha_null"]) == len(expected["alpha_null"]) == 3
+        for ours, theirs in zip(actual["alpha_null"], expected["alpha_null"]):
+            torch.testing.assert_close(ours, theirs, rtol=0, atol=1e-10)
+        for ours, theirs in zip(actual["messages"], expected["messages"]):
+            torch.testing.assert_close(ours, theirs, rtol=0, atol=1e-10)
+        assert torch.equal(actual["gate"], expected["gate"])
+        torch.testing.assert_close(actual["value"], expected["value"], rtol=0, atol=1e-10)
+        torch.testing.assert_close(actual["agent_values"], expected["agent_values"], rtol=0, atol=1e-10)
+        actions = torch.randint(0, 5, (n,), generator=generator)
+        memory_shared, memory_hyper = expected["memory"], actual["memory"]
+        memory_shared["a_prev"] = memory_hyper["a_prev"] = actions
+    if not comm_off:
+        silent = forward(hyper, obs, CLASS_KAPPA, hyper.initial_memory(n), adjacency, comm_off=True)
+        talking = forward(hyper, obs, CLASS_KAPPA, hyper.initial_memory(n), adjacency)
+        assert not torch.allclose(silent["logits"][:, :5], talking["logits"][:, :5])
+
+
+@pytest.mark.parametrize("comm_off", [False, True])
+def test_capcon_hyper_capability_entries_reach_the_logits_through_the_head_only(comm_off):
+    model = small_model("capcon_hyper", "decomposed")  # default initialisation: hyper_w depends on its input
+    n = 5
+    obs, memory, adjacency = random_obs(model, n), random_memory(model, n), adjacency_for(n)
+    assert adjacency.any()
+    changed = obs.clone()
+    changed[:, -2:] = 1.0 - changed[:, -2:]
+    assert torch.equal(obs[:, :-2], changed[:, :-2]) and not torch.equal(obs, changed)
+    base = forward(model, obs, CLASS_KAPPA, memory, adjacency, comm_off=comm_off)
+    after = forward(model, changed, CLASS_KAPPA, memory, adjacency, comm_off=comm_off)
+    for name in ("H", "C", "u_bar"):
+        assert torch.equal(base["memory"][name], after["memory"][name]), name
+    assert len(base["messages"]) == len(after["messages"]) == model.comm_rounds
+    assert all(torch.equal(a, b) for a, b in zip(base["messages"], after["messages"]))
+    assert all(torch.equal(a, b) for a, b in zip(base["alpha_null"], after["alpha_null"]))
+    assert torch.equal(base["value"], after["value"])
+    assert torch.equal(base["agent_values"], after["agent_values"])
+    unmasked = (slice(None), slice(0, 5))
+    assert not torch.allclose(base["logits"][unmasked], after["logits"][unmasked])
+    # Only an agent's own capability entries reach its own head: teammates' tails change nothing for others.
+    teammate = obs.clone()
+    teammate[1, -2:] = 1.0 - teammate[1, -2:]
+    other = forward(model, teammate, CLASS_KAPPA, memory, adjacency, comm_off=comm_off)
+    rest = [i for i in range(n) if i != 1]
+    assert torch.equal(base["logits"][rest], other["logits"][rest])
+    assert not torch.equal(base["logits"][1, :5], other["logits"][1, :5])
+    for name in ("H", "C", "u_bar"):
+        assert torch.equal(base["memory"][name], other["memory"][name])
+
+
+def test_capcon_hyper_head_initialisation_follows_cash():
+    model = small_model("capcon_hyper")
+    obs = random_obs(model, 4)
+    assert torch.count_nonzero(model.hyper_b(obs)) == 0
+    assert torch.count_nonzero(model.hyper_w(obs)) > 0
+    for network, zero in ((model.hyper_b, True), (model.hyper_w, False)):
+        linears = [layer for layer in network.net if isinstance(layer, torch.nn.Linear)]
+        assert len(linears) == 4 and sum(isinstance(m, torch.nn.LayerNorm) for m in network.net) == 3
+        assert type(network) is type(small_model("cash").hyper_w)
+        for layer in linears:
+            assert torch.count_nonzero(layer.bias) == 0
+            assert (torch.count_nonzero(layer.weight) == 0) == zero
+    assert model.hyper_w.net[0].in_features == model.hyper_b.net[0].in_features == model.obs_dim
+    assert model.hyper_w.net[-1].out_features == model.head_dim * 6 and model.hyper_b.net[-1].out_features == 6
+    assert model.pre.in_features == model.obs_dim - 2
+
+
+def test_capcon_hyper_model_kwargs_validation_and_command_line(tmp_path):
+    config = Config(critic_mode="decomposed", **CAPCON_HYPER_STUDY)
+    expected = dict(mode="capcon_hyper", base=25, n_squares=25, pre_dim=128, hidden_dim=64, heads=4, head_dim=16,
+                    msg_dim=64, feedback=True, comm_rounds=3, independent_heads=True,
+                    null_degree_correction=True, critic_mode="decomposed", hyper_dim=64)
+    assert config.model_kwargs() == expected
+    assert Config(**config.to_dict()).model_kwargs() == expected
+    assert "hyper_dim" not in config.to_dict()  # the default keeps the normalised settings minimal, as for cash
+    assert Config(model="capcon_hyper", communication="real", hyper_dim=32).to_dict()["hyper_dim"] == 32
+    # The class_typed and cash dictionaries and the hyper_dim rule for other models are unchanged.
+    assert "hyper_dim" not in Config(**{**CLASS_TYPED_STUDY, "model": "class_typed"}).model_kwargs()
+    assert Config(model="cash", communication="real", hyper_dim=32).model_kwargs()["hyper_dim"] == 32
+    with pytest.raises(ValueError, match="hyper_dim applies only to the cash and capcon_hyper"):
+        Config(model="shared", hyper_dim=32)
+    with pytest.raises(ValueError, match="communication"):
+        Config(model="capcon_hyper")
+    with pytest.raises(ValueError, match="actor capabilities"):
+        Config(model="capcon_hyper", communication="real", actor_capabilities="physical_only")
+    with pytest.raises(ValueError, match="hyper_dim"):
+        Config(model="capcon_hyper", communication="real", hyper_dim=0)
+    with pytest.raises(ValueError, match="mode"):
+        BASELINE_CLASSES["capcon_hyper"](**dict(expected, mode="cash"))
+    with pytest.raises(ValueError, match="hyper_dim"):
+        BASELINE_CLASSES["capcon_hyper"](**dict(expected, hyper_dim=0))
+    with pytest.raises(ValueError, match="comm_rounds"):
+        BASELINE_CLASSES["capcon_hyper"](**dict(expected, comm_rounds=0))
+    buffer = io.StringIO()
+    with redirect_stdout(buffer):
+        main(["train", "--output", str(tmp_path / "unused"), "--dry-run", "--model", "capcon_hyper",
+              "--communication", "real", "--hyper-dim", "32", "--comm-rounds", "3"])
+    printed = json.loads(buffer.getvalue())
+    assert printed["model"] == "capcon_hyper" and printed["hyper_dim"] == 32 and printed["comm_rounds"] == 3

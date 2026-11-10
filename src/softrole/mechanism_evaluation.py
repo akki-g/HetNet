@@ -1,4 +1,4 @@
-"""Locked frozen evaluation of the capability-mechanism study checkpoints; no training."""
+"""Locked frozen evaluation of the capability-mechanism study (and supplement) checkpoints; no training."""
 import argparse
 import csv
 from dataclasses import asdict
@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from softrole import mechanism_study as study
+from softrole import mechanism_study, mechanism_supplement
 from softrole.config import Config
 from softrole.evaluate import evaluate_checkpoint
 from softrole.ledger import committed_checkpoints, sha
@@ -25,7 +25,10 @@ PANEL_SEED = 4100
 EPISODES = 500  # scenarios per composition per panel
 FAILURE_WINDOW = (5, 15)
 VISION = 2
-MESSAGING_ARMS = ("capcon", "capcon_class_input", "class_typed", "ca_cc_gnn")
+MESSAGING_ARMS = ("capcon", "capcon_class_input", "class_typed", "ca_cc_gnn", "capcon_hyper")
+# One evaluation code path serves every study with a locked launcher: the module is chosen by the study name
+# the training manifest (at preparation) or the evaluation manifest's protocol (afterwards) records.
+STUDIES = {mechanism_study.STUDY: mechanism_study, mechanism_supplement.STUDY: mechanism_supplement}
 # (panel, compositions, sensing levels of P agents, sensor failure on every scenario)
 PANELS = (
     ("in_dist", ((1, 1), (1, 2), (2, 1), (2, 2), (3, 1)), (1, 3), False),
@@ -80,7 +83,33 @@ def applicable_cells(arm):
     return [cell for cell in cell_table() if cell["arms"] == "all" or arm in MESSAGING_ARMS]
 
 
-def protocol():
+def study_named(name):
+    """The study module registered under a recorded study name."""
+    if not isinstance(name, str) or name not in STUDIES:
+        raise ValueError(f"Unknown mechanism study {name!r}; the evaluation supports {sorted(STUDIES)}")
+    return STUDIES[name]
+
+
+def study_of(manifest):
+    """The study module an evaluation manifest was prepared for, from its protocol's study name."""
+    record = manifest.get("protocol") if isinstance(manifest, dict) else None
+    return study_named(record.get("study") if isinstance(record, dict) else None)
+
+
+def require_natural(index):
+    if type(index) is not int or index < 0:
+        raise ValueError("evaluation index must be a nonnegative integer")
+
+
+def require_index(study, index):
+    """An index inside the study's own range (the array of a study with fewer runs is submitted shorter)."""
+    require_natural(index)
+    if index >= study.COUNT:
+        raise ValueError(f"evaluation index {index} is out of range for {study.STUDY}: it has {study.COUNT} "
+                         f"entries, indices 0 through {study.COUNT - 1}")
+
+
+def protocol(study=mechanism_study):
     return {
         "purpose": "Frozen evaluation of the capability-mechanism study checkpoints; the training "
                    "stage is complete and no model is changed here",
@@ -153,7 +182,7 @@ def core(entry):
     return {key: entry[key] for key in ("index", "condition", "arm", "seed", "relative_output")}
 
 
-def validate_entry(entry, row, training):
+def validate_entry(entry, row, training, study):
     keys = set(core(row))
     if not isinstance(entry, dict) or not keys <= set(entry) or core(entry) != core(row):
         raise ValueError("Manifest entries differ from the locked study")
@@ -188,9 +217,10 @@ def validate_manifest(manifest):
     if not isinstance(manifest, dict) or set(manifest) != {
             "version", "evaluation", "protocol", "panels", "entries", "training", "source", "manifest_sha256"}:
         raise ValueError("Unsupported mechanism evaluation manifest")
+    study = study_of(manifest)
     if (type(manifest["version"]) is not int or manifest["version"] != VERSION
             or manifest["evaluation"] != EVALUATION
-            or study.digest(manifest["protocol"]) != study.digest(protocol())):
+            or study.digest(manifest["protocol"]) != study.digest(protocol(study))):
         raise ValueError("Manifest differs from the locked mechanism evaluation")
     panels = manifest["panels"]
     if not isinstance(panels, dict) or sorted(panels) != sorted(row["name"] for row in panel_table()):
@@ -213,7 +243,7 @@ def validate_manifest(manifest):
     if not isinstance(entries, list) or len(entries) != len(expected):
         raise ValueError("Manifest requires one entry per training run")
     for entry, row in zip(entries, expected):
-        validate_entry(entry, row, training)
+        validate_entry(entry, row, training, study)
     source = manifest["source"]
     if not isinstance(source, dict) or not isinstance(source.get("files"), dict) or not source["files"]:
         raise ValueError("Manifest requires a source file inventory")
@@ -227,7 +257,7 @@ def validate_manifest(manifest):
     return manifest
 
 
-def select_checkpoint(training_run, entry, training_manifest):
+def select_checkpoint(training_run, entry, training_manifest, study):
     """Return the entry's evaluation fields: a ready checkpoint record or a declared missing reason."""
     run = training_run / "training" / entry["relative_output"]
     cells = applicable_cells(entry["arm"])
@@ -267,8 +297,11 @@ def prepare(training_run_dir, output_dir, allow_missing=False):
     training_run, output = Path(training_run_dir).resolve(), Path(output_dir)
     if output.exists() or output.is_symlink():
         raise FileExistsError(f"Evaluation output already exists: {output}")
-    training_manifest = study.validate_manifest(json.loads((training_run / "manifest.json").read_text()))
-    entries = [select_checkpoint(training_run, entry, training_manifest) for entry in training_manifest["entries"]]
+    recorded = json.loads((training_run / "manifest.json").read_text())
+    study = study_named(recorded.get("study") if isinstance(recorded, dict) else None)
+    training_manifest = study.validate_manifest(recorded)
+    entries = [select_checkpoint(training_run, entry, training_manifest, study)
+               for entry in training_manifest["entries"]]
     absent = [entry for entry in entries if entry["status"] == "missing"]
     if absent and not allow_missing:
         raise ValueError(f"{len(absent)} training runs are missing or incomplete (first: "
@@ -276,7 +309,7 @@ def prepare(training_run_dir, output_dir, allow_missing=False):
                          "use --allow-missing to record them")
     files = {name: panel_bytes(scenarios) for name, scenarios in build_panels().items()}
     manifest = dict(
-        version=VERSION, evaluation=EVALUATION, protocol=protocol(),
+        version=VERSION, evaluation=EVALUATION, protocol=protocol(study),
         panels={name: dict(path=f"panels/{name}.json", sha256=hashlib.sha256(data).hexdigest(),
                            scenarios=len(json.loads(data))) for name, data in files.items()},
         entries=entries,
@@ -339,8 +372,9 @@ def contained(path, root, label):
 
 
 def launch(manifest_path, index, dry_run=False, training_run=None):
-    study.require_index(index)
+    require_natural(index)
     manifest = validate_manifest(json.loads(Path(manifest_path).read_text()))
+    require_index(study_of(manifest), index)
     source = source_snapshot()
     if source["sha256"] != manifest["source"]["sha256"]:
         raise ValueError("Source changed since evaluation preparation; use the frozen checkout")
@@ -496,7 +530,9 @@ def main(argv=None):
     preparation.add_argument("--allow-missing", action="store_true")
     execution = commands.add_parser("launch", allow_abbrev=False)
     execution.add_argument("--manifest", type=Path, required=True)
-    execution.add_argument("--index", type=int, choices=range(study.COUNT), metavar="INDEX", required=True)
+    # The study is known only from the manifest; launch() enforces that study's own range.
+    execution.add_argument("--index", type=int, choices=range(max(module.COUNT for module in STUDIES.values())),
+                           metavar="INDEX", required=True)
     execution.add_argument("--training-run", type=Path)
     execution.add_argument("--dry-run", action="store_true")
     summary = commands.add_parser("summarize", allow_abbrev=False)

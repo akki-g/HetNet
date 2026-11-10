@@ -5,7 +5,9 @@ the 70 checkpoints from the [training stage](MECHANISM_STUDY.md) (2 conditions x
 arms x 5 seeds) are each evaluated, without further training, on fixed scenario
 panels, a sensor-failure panel with a matched no-failure (sham) control, and
 message-off interventions. Implementation and tests authorize no cluster jobs; the
-commands below are for the user to run after deploying the reviewed source.
+commands below are for the user to run after deploying the reviewed source. The same
+evaluation also serves the 10 `capcon_hyper` checkpoints of the
+[supplement](MECHANISM_SUPPLEMENT.md); see [Evaluating the supplement](#evaluating-the-supplement).
 
 The protocol is locked in code (`softrole.mechanism_evaluation`) and hashed into
 the evaluation manifest as `capability_mechanism_evaluation_v1`. Panels, cells,
@@ -49,9 +51,10 @@ One frozen-evaluation report is written per cell per checkpoint, with the
 
 A sham keeps the scheduled event step but suppresses the sensor loss, so its
 scenarios are those of the `failure` cell. The messaging arms are `capcon`,
-`capcon_class_input`, `class_typed` and `ca_cc_gnn`: 9 cells each. `ca_mlp`,
-`rnn_exp` and `cash` exchange no messages and skip the three `comm_off` cells: 6
-cells each. The manifest records the cells and the skipped cells of every entry.
+`capcon_class_input`, `class_typed`, `ca_cc_gnn` and the supplement's `capcon_hyper`:
+9 cells each. `ca_mlp`, `rnn_exp` and `cash` exchange no messages and skip the three
+`comm_off` cells: 6 cells each. The manifest records the cells and the skipped cells
+of every entry.
 
 ## Checkpoint rule
 
@@ -140,6 +143,61 @@ scenario IDs and intervention step); otherwise the task fails without touching i
 An interrupted task can therefore be resubmitted: complete cells are kept and only
 absent cells are evaluated. Do not delete reports to make a retry pass; a truncated
 report left by a killed task must be moved aside by hand.
+
+## Evaluating the supplement
+
+The supplement (`capability_mechanism_supplement_v1`, see
+[MECHANISM_SUPPLEMENT.md](MECHANISM_SUPPLEMENT.md)) trains one more arm, `capcon_hyper`,
+for 2 conditions x 5 seeds = 10 runs. It is evaluated by the same code on the same
+panels and cells; nothing in the protocol above changes for the parent study.
+
+- **Which study.** `prepare` reads the `study` field of the training manifest in
+  `SOFTROLE_MECHANISM_TRAINING_RUN` and uses that study's locked launcher (the
+  parent study or the supplement; any other name is an error). The study name is
+  recorded in the evaluation manifest's locked protocol (`protocol.study`), and
+  `launch` and `summarize` resolve the study from it. The evaluation manifest
+  records the supplement's arm list, and a manifest of one study is rejected by the
+  checks of the other.
+- **Panels.** The panel seed rule does not depend on the arm or the study, so the
+  supplement's panel files and their sha256 records are byte-identical to those of
+  a parent-study evaluation and `capcon_hyper` is evaluated on exactly the same
+  scenarios as the 70 parent-study runs.
+- **Cells.** `capcon_hyper` exchanges messages, so it has all 9 cells, including the
+  three `comm_off` cells.
+- **Index map.** `index = condition_i * 5 + seed_i` (the supplement's training index):
+  indices 0-4 are `s5` and 5-9 are `s6`, output `<condition>/capcon_hyper/seed<k>`.
+  The supplement has 10 entries, indices 0-9; `launch` fails with an
+  `evaluation index N is out of range for capability_mechanism_supplement_v1` message
+  for any other index.
+- **Array.** There is one evaluation array script, whose directive is the parent
+  study's `--array=0-69%20`; there is no second script. Submit the supplement with
+  `--array=0-9` on the command line, which overrides the directive:
+
+```bash
+cd ~/HetNet   # only once no array is running from this checkout
+squeue -u "$USER"
+export SOFTROLE_MECHANISM_TRAINING_RUN="$PWD/runs/<supplement training run directory>"   # must exist
+export SOFTROLE_MECHANISM_EVAL_COUNT=10   # the supplement has 10 entries
+eval_run_dir=$(.venv/bin/python scripts/submit_stokes.py --init-only \
+  --title 'Capability mechanism supplement evaluation' \
+  --purpose 'Frozen evaluation of the 10 capcon_hyper supplement checkpoints on the parent study panels.')
+
+eval_prep_job=$(.venv/bin/python scripts/submit_stokes.py --run-dir "$eval_run_dir" -- \
+  slurm/softrole_mechanism_eval_prepare.sbatch) && \
+  .venv/bin/python scripts/submit_stokes.py --run-dir "$eval_run_dir" -- --array=0-9 \
+    --dependency="afterok:${eval_prep_job%%;*}" --kill-on-invalid-dep=yes \
+    slurm/softrole_mechanism_eval.sbatch
+```
+
+  Preview the routing with `--dry-run`, as above. A single interrupted index is
+  re-run with `-- --array=<index>`, as for the parent study.
+- **The preparation script and its previews.** `softrole_mechanism_eval_prepare.sbatch`
+  previews entries 0 through `SOFTROLE_MECHANISM_EVAL_COUNT - 1` (default 70, the parent
+  study). Set `SOFTROLE_MECHANISM_EVAL_COUNT=10` for the supplement, as in the commands
+  above; with the default, the preview of index 10 fails with the out-of-range message
+  and the dependent array is not released. `--allow-missing` is passed to the
+  preparation script as for the parent study.
+- **Summarize** is unchanged: it reads the study from the manifest.
 
 ## Summarize
 

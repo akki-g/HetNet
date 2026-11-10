@@ -14,7 +14,7 @@ CRITIC_MODES = ("team", "decomposed")
 OBJECTIVES = ("team", "mean_agent")
 ACTOR_CAPABILITIES = ("explicit", "physical_only")
 # Opt-in baseline actors (softrole.baselines); they require the real channel.
-BASELINE_MODES = ("ca_mlp", "ca_cc_gnn", "ca_gnn", "rnn_exp", "cash", "class_typed")
+BASELINE_MODES = ("ca_mlp", "ca_cc_gnn", "ca_gnn", "rnn_exp", "cash", "class_typed", "capcon_hyper")
 
 
 @dataclass
@@ -91,13 +91,16 @@ class Config:
         return self.compositions or ((self.num_p, self.num_a),)
 
     def model_kwargs(self):
-        if self.model == "class_typed":
-            return dict(mode=self.model, base=self.dim ** 2, n_squares=(2 * self.vision + 1) ** 2,
-                        pre_dim=self.pre_dim, hidden_dim=self.hidden_dim, heads=self.heads,
-                        head_dim=self.head_dim, msg_dim=self.msg_dim, feedback=self.feedback,
-                        comm_rounds=self.comm_rounds, independent_heads=self.independent_heads,
-                        null_degree_correction=self.null_degree_correction,
-                        critic_mode=self.critic_mode)
+        if self.model in ("class_typed", "capcon_hyper"):
+            settings = dict(mode=self.model, base=self.dim ** 2, n_squares=(2 * self.vision + 1) ** 2,
+                            pre_dim=self.pre_dim, hidden_dim=self.hidden_dim, heads=self.heads,
+                            head_dim=self.head_dim, msg_dim=self.msg_dim, feedback=self.feedback,
+                            comm_rounds=self.comm_rounds, independent_heads=self.independent_heads,
+                            null_degree_correction=self.null_degree_correction,
+                            critic_mode=self.critic_mode)
+            if self.model == "capcon_hyper":
+                settings["hyper_dim"] = self.hyper_dim
+            return settings
         if self.model in BASELINE_MODES:
             settings = dict(mode=self.model, base=self.dim ** 2, n_squares=(2 * self.vision + 1) ** 2,
                             hidden_dim=self.hidden_dim, critic_mode=self.critic_mode)
@@ -152,7 +155,7 @@ class Config:
             if self.env_version == "paper-v1":
                 raise ValueError("baseline models do not support the paper-v1 environment")
         elif self.hyper_dim != 64:
-            raise ValueError("hyper_dim applies only to the cash model")
+            raise ValueError("hyper_dim applies only to the cash and capcon_hyper models")
         if self.communication not in CHANNELS:
             raise ValueError(f"communication must be one of {CHANNELS}")
         if type(self.null_degree_correction) is not bool:

@@ -14,6 +14,13 @@ real-valued channel and no gate, so noise and gate overrides are rejected.
 class-typed variant of the shared CapCon actor in which every actor parameter is
 indexed by agent class (``kappa[:, 1] > 0`` is capture, otherwise perception).
 It keeps the SoftRole recurrence, attention communication and critic.
+
+``capcon_hyper`` is the fourth way of representing agent ability on that same body:
+the shared CapCon actor without its capability input, whose output layer is replaced
+by the CASH hypernetwork head (weights generated from the agent's own capability
+entries).  It differs from ``cash`` in the body (LSTM and attention communication
+instead of a GRU) and from the shared CapCon actor only in where the capabilities
+enter (the head, not the recurrent input).
 """
 
 from __future__ import annotations
@@ -406,7 +413,123 @@ class ClassTypedNet(nn.Module):
                 "messages": messages, "alpha_null": alpha_null}
 
 
+class CapConHyperNet(nn.Module):
+    """``capcon_hyper``: the shared CapCon body with a capability-hypernetwork output head.
+
+    The body is ``SoftRoleNet`` in its shared mode with ``actor_capabilities=
+    "physical_only"``: ``LSTMCell`` input ``[ReLU(pre(obs[:, :-2])), u_bar (if
+    feedback), one-hot previous action]``, then ``comm_rounds`` rounds of
+    ``CommunicationRound`` built with one expert and an all-ones ``N x 1`` gate.
+    The output layer is replaced by the ``cash`` head: ``hyper_w`` and ``hyper_b``
+    read the full observation (the agent's own capability entries included) and
+    emit the per-agent output weights ``W_i`` (``head_dim x 6``) and biases
+    ``b_i``, so that ``logits_i = u_i W_i + b_i`` with ``u`` the final-round
+    feature.  Capabilities therefore reach the logits only through the head; the
+    LSTM state, messages and null attention do not depend on them.  Teammate
+    capabilities are not an input to the hypernetworks (matched-information rule
+    of ``cash``).  The critic is the shared ``CapabilityCritic`` on the LSTM state.
+    With a constant hypernetwork map equal to a shared output layer the model
+    agrees exactly with ``SoftRoleNet(mode="shared", actor_capabilities=
+    "physical_only")``.
+
+    The real channel carries no noise, there is no gate to override, and the
+    rollout's own payload formula applies (so no ``payload_values_per_agent_step``).
+    """
+
+    mode = "capcon_hyper"
+
+    def __init__(self, mode: str = "capcon_hyper", base: int = 25, n_squares: int = 25,
+                 pre_dim: int = 128, hidden_dim: int = 64, heads: int = 4, head_dim: int = 16,
+                 msg_dim: int = 16, feedback: bool = True, comm_rounds: int = 2,
+                 independent_heads: bool = False, null_degree_correction: bool = False,
+                 critic_mode: str = "team", hyper_dim: int = 64):
+        super().__init__()
+        if mode != self.mode:
+            raise ValueError(f"{type(self).__name__} implements mode {self.mode!r}, not {mode!r}")
+        if any(type(value) is not int or value <= 0
+               for value in (base, n_squares, pre_dim, hidden_dim, heads, head_dim, msg_dim)):
+            raise ValueError("All model dimensions must be positive")
+        if type(comm_rounds) is not int or comm_rounds <= 0:
+            raise ValueError("comm_rounds must be a positive integer")
+        if type(hyper_dim) is not int or hyper_dim <= 0:
+            raise ValueError("hyper_dim must be a positive integer")
+        if any(type(value) is not bool for value in (feedback, independent_heads, null_degree_correction)):
+            raise ValueError("feedback, independent_heads and null_degree_correction must be boolean")
+        self.allow_stay = True
+        self.experts, self.communication = 1, "real"
+        self.obs_dim = n_squares * (base + 3) + CAPABILITY_WIDTH
+        self.hidden_dim, self.head_dim, self.msg_dim = hidden_dim, head_dim, msg_dim
+        self.heads, self.comm_rounds, self.feedback = heads, comm_rounds, feedback
+        self.independent_heads, self.null_degree_correction = independent_heads, null_degree_correction
+        self.hyper_dim = hyper_dim
+        self.critic_mode = critic_mode
+        self.pre = nn.Linear(self.obs_dim - CAPABILITY_WIDTH, pre_dim)
+        self.lstm = nn.LSTMCell(pre_dim + (head_dim if feedback else 0) + 6, hidden_dim)
+        self.rounds = nn.ModuleList([
+            CommunicationRound(hidden_dim if index == 0 else heads * head_dim, heads, head_dim, msg_dim,
+                               self.experts, final=index == comm_rounds - 1,
+                               independent_heads=independent_heads, communication="real",
+                               degree_correction=null_degree_correction)
+            for index in range(comm_rounds)
+        ])
+        self.hyper_w = HyperNetwork(self.obs_dim, hyper_dim, head_dim * ACTIONS, zero_init=False)
+        self.hyper_b = HyperNetwork(self.obs_dim, hyper_dim, ACTIONS, zero_init=True)
+        self.critic_head = CapabilityCritic(hidden_dim, critic_mode)
+
+    def initial_memory(self, n: int) -> dict[str, Tensor]:
+        """Zero local state; previous action is stay (index 4)."""
+        if n <= 0:
+            raise ValueError("The roster must contain at least one active agent")
+        reference = self.pre.weight
+        return {"H": reference.new_zeros(n, self.hidden_dim),
+                "C": reference.new_zeros(n, self.hidden_dim),
+                "u_bar": reference.new_zeros(n, self.head_dim),
+                "a_prev": torch.full((n,), 4, dtype=torch.long, device=reference.device)}
+
+    @staticmethod
+    def detach_memory(memory: dict[str, Tensor]) -> dict[str, Tensor]:
+        """Cut every recurrent gradient path at the same truncation boundary."""
+        return {name: tensor.detach() for name, tensor in memory.items()}
+
+    def forward(self, obs: Tensor, kappa: Tensor, memory: dict[str, Tensor],
+                adjacency: Tensor, remaining: float, noise=None, gate_override=None,
+                comm_off: bool = False) -> dict:
+        if noise is not None:
+            raise ValueError("CapCon-hypernetwork actors use the real channel and do not accept noise")
+        if gate_override is not None:
+            raise ValueError("CapCon-hypernetwork actors have no gate to override")
+        n = obs.shape[0]
+        if n == 0 or obs.shape != (n, self.obs_dim) or kappa.shape != (n, 2):
+            raise ValueError("Observation/capability shapes do not match this nonempty roster")
+        if adjacency.shape != (n, n) or adjacency.dtype != torch.bool:
+            raise ValueError("Adjacency must be a boolean [receiver, sender] matrix")
+        gate = obs.new_ones(n, 1)
+        previous_action = F.one_hot(memory["a_prev"].long(), num_classes=ACTIONS).to(obs.dtype)
+        recurrent_inputs = [F.relu(self.pre(obs[:, :-CAPABILITY_WIDTH]))]
+        if self.feedback:
+            recurrent_inputs.append(memory["u_bar"])
+        recurrent_inputs.append(previous_action)
+        hidden, cell = self.lstm(torch.cat(recurrent_inputs, dim=-1), (memory["H"], memory["C"]))
+        features, messages, alpha_null = hidden, [], []
+        for layer in self.rounds:
+            features, message, null = layer(features, gate, adjacency, None, comm_off)
+            messages.append(message)
+            alpha_null.append(null)
+        weights = self.hyper_w(obs).reshape(n, self.head_dim, ACTIONS)
+        biases = self.hyper_b(obs)
+        logits = torch.einsum("nh,nha->na", features, weights) + biases
+        feasible = torch.ones_like(logits, dtype=torch.bool)
+        feasible[:, 4] = self.allow_stay
+        feasible[:, 5] = kappa[:, 1] > 0
+        logits = logits.masked_fill(~feasible, -torch.inf)
+        value, agent_values = self.critic_head(hidden, obs, kappa, remaining)
+        next_memory = {"H": hidden, "C": cell, "u_bar": features, "a_prev": memory["a_prev"]}
+        return {"logits": logits, "value": value, "agent_values": agent_values,
+                "memory": next_memory, "gate": gate, "bits": [],
+                "messages": messages, "alpha_null": alpha_null}
+
+
 BASELINE_CLASSES = {cls.mode: cls for cls in (CapabilityMLP, CapabilityCommGNN, CapabilityGNN,
-                                              ExplicitRNN, CashNet, ClassTypedNet)}
+                                              ExplicitRNN, CashNet, ClassTypedNet, CapConHyperNet)}
 if set(BASELINE_CLASSES) != set(BASELINE_MODES):
     raise RuntimeError("BASELINE_MODES and BASELINE_CLASSES disagree")

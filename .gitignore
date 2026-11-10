@@ -45,6 +45,7 @@ __pycache__/
 !/src/softrole/GRADED_PILOT.md
 !/src/softrole/MECHANISM_STUDY.md
 !/src/softrole/MECHANISM_EVALUATION.md
+!/src/softrole/MECHANISM_SUPPLEMENT.md
 
 # Stale-capability operating instructions and the supplied implementation design.
 !/src/softrole/STALE_CAPABILITY.md
