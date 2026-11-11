@@ -52,6 +52,8 @@ def parser():
     train.add_argument("--message-backend", choices=["dgl", "torch-v1"], default="dgl")
     train.add_argument("--profile-phases", action="store_true", help="diagnostic phase timers; off for throughput runs")
     train.add_argument("--seed", type=seed_value, required=True)
+    train.add_argument("--dim", type=int, choices=[5, 6], default=5,
+                       help="map side length; 6 is accepted only for --task pcp with --reconstruction-spec paper-v1")
     train.add_argument("--env-version", choices=["historical-2022", "corrected-v1", "paper-v1"])
     train.add_argument("--recipe", choices=["june-2022", "october-2022"])
     train.add_argument("--output", type=Path)
@@ -101,6 +103,11 @@ def resolve(args):
         args.env_version = args.env_version or "historical-2022"
         if "paper-v1" in (args.model_spec, args.env_version) or args.message_backend != "dgl":
             raise ValueError("paper-v1 components and torch-v1 require --reconstruction-spec paper-v1")
+    dim = getattr(args, "dim", 5)
+    if type(dim) is not int or dim not in (5, 6):
+        raise ValueError("Map dimension must be 5 or 6")
+    if dim == 6 and not (args.task == "pcp" and paper):
+        raise ValueError("Map dimension 6 requires --task pcp with --reconstruction-spec paper-v1")
     fc = args.task == "fc"
     epochs = args.epochs or (1400 if fc else 2000)
     horizon = args.horizon or (300 if fc else 80)
@@ -128,7 +135,7 @@ def resolve(args):
         "--hetgat", "--hetgat_a2c", "--num_epochs", str(epochs),
         "--nprocesses", str(collectors), "--epoch_size", str(args.updates_per_epoch),
         "--batch_size", str(args.batch_steps), "--max_steps", str(horizon),
-        "--detach_gap", "5", "--lrate", "0.001" if supplement else "0.0001", "--hid_size", "128", "--dim", "5",
+        "--detach_gap", "5", "--lrate", "0.001" if supplement else "0.0001", "--hid_size", "128", "--dim", str(dim),
         "--vision", "1" if fc else "2", "--seed", str(args.seed),
         "--save_every", str(args.save_every), "--experiment_name", f"{args.task}_{args.variant}",
         "--save_dir", str(run / "checkpoints"), "--metrics_file", str(run / "metrics.jsonl"),
@@ -173,7 +180,8 @@ def resolve(args):
             "optimizer": ({"name": "Adam", "lr": .001, "betas": [.9, .999], "epsilon": 1e-8,
                            "weight_decay": 0, "amsgrad": False, "foreach": False, "fused": False}
                           if supplement else {"name": "RMSprop", "lr": 1e-4, "alpha": .97, "epsilon": 1e-6}),
-            "budget_semantics": "first of epoch cap or complete-update step threshold; no partial episodes"}
+            "budget_semantics": "first of epoch cap or complete-update step threshold; no partial episodes",
+            **({"dim": dim} if dim != 5 else {})}
 
 
 def resolve_resume(args):

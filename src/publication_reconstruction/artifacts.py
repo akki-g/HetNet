@@ -82,7 +82,8 @@ def _validate_scientific_protocol(protocol, args):
             updates_per_epoch=protocol["updates_per_epoch"], batch_steps=protocol["batch_step_floor_per_collector"],
             horizon=protocol["episode_horizon"], save_every=args["save_every"],
             max_env_steps=protocol["max_env_steps"], milestones=protocol["milestones"],
-            episode_log=protocol["episode_log"], wall_seconds=protocol["wall_seconds"]))
+            episode_log=protocol["episode_log"], wall_seconds=protocol["wall_seconds"],
+            dim=protocol.get("dim", 5)))
         for key in ("model_spec", "optimizer", "rng_scheme", "learner_spec"):
             if protocol[key] != expected[key]:
                 raise ValueError(f"Scientific protocol mismatch: {key}")
